@@ -20,3 +20,5 @@ export const getEditorIsValid = createSelector(getEditorState, fromEditor.isEdit
 export const getEditorIsSaved = createSelector(getEditorState, fromEditor.isEditorSaved);
 export const getEditorChanges = createSelector(getEditorState, fromEditor.getChanges);
 export const getEditorIsSaving = createSelector(getEditorState, fromEditor.isEditorSaving);
+export const getFormStatus = createSelector(getEditorState, fromEditor.getFormStatus);
+export const getInvalidEditorForms = createSelector(getEditorState, fromEditor.getInvalidForms);

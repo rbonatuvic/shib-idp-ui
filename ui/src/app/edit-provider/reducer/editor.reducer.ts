@@ -60,11 +60,10 @@ export function reducer(state = initialState, action: editor.Actions | provider.
 }
 
 export const isEditorValid = (state: EditorState) =>
-    !Object
-        .keys(state.formStatus)
-        .some(key => {
-            return state.formStatus[key] === ('INVALID');
-        });
+    !Object.keys(state.formStatus).some(key => state.formStatus[key] === ('INVALID'));
 export const isEditorSaved = (state: EditorState) => !Object.keys(state.changes).length;
 export const getChanges = (state: EditorState) => state.changes;
 export const isEditorSaving = (state: EditorState) => state.saving;
+export const getFormStatus = (state: EditorState) => state.formStatus;
+export const getInvalidForms = (state: EditorState) =>
+    Object.keys(state.formStatus).filter(key => state.formStatus[key] === 'INVALID');

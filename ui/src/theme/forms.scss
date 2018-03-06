@@ -27,9 +27,11 @@
         padding-right: 1.5em;
         padding-left: 0;
 
-        & > .custom-control-indicator {
-            right: 0px;
-            left: auto;
+        & > .custom-control-label {
+            &::after, &::before {
+                right: 0px;
+                left: auto;
+            }
         }
     }
 }

@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check">
                                         <fieldset aria-label="Mark this assertion consumer service endpoint as the default?">
                                             <label class="d-block">
                                                 <ng-container i18n="@@label--mark-as-default">Mark as Default</ng-container>
@@ -80,17 +80,17 @@
                                                    i18n-aria-label="@@tooltip--instruction"
                                                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                             </label>
-                                            <label class="custom-control custom-checkbox">
+                                            <div class="custom-control custom-checkbox">
                                                 <input type="checkbox"
-                                                       class="custom-control-input"
-                                                       (click)="markAsDefault(endpoint)"
-                                                       [checked]="endpoint.get('makeDefault').value"
-                                                       name="defaultEndpoint"
-                                                       aria-checked="false"
-                                                       role="checkbox">
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description" i18n="@@label--yes">Yes</span>
-                                            </label>
+                                                    id="markAsDefault"
+                                                    class="custom-control-input"
+                                                    (click)="markAsDefault(endpoint)"
+                                                    [checked]="endpoint.get('makeDefault').value"
+                                                    name="defaultEndpoint"
+                                                    aria-checked="false"
+                                                    role="checkbox">
+                                                <label class="custom-control-label" for="markAsDefault" i18n="@@label--yes">Yes</label>
+                                            </div>
                                         </fieldset>
                                     </div>
                                 </div>

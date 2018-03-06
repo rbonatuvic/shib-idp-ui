@@ -48,11 +48,10 @@
                        role="textbox"/>
             </div>
             <div class="form-group">
-                <label class="custom-control custom-checkbox custom-control-reverse" for="serviceEnabled" aria-label="Enable this service?">
-                    <input class="custom-control-input" type="checkbox" formControlName="serviceEnabled" id="serviceEnabled" name="serviceEnabled" role="checkbox">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description" i18n="@@label--enable-this-service">Enable this service?</span>
-                </label>
+                <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse" for="serviceEnabled">
+                    <input disableValidation="true" class="custom-control-input" type="checkbox" formControlName="serviceEnabled" id="serviceEnabled" name="serviceEnabled" role="checkbox">
+                    <label class="custom-control-label" i18n="@@label--enable-this-service" for="serviceEnabled" aria-label="Enable this service?">Enable this service?</label>
+                </div>
             </div>
             <div formGroupName="organization">
                 <div class="form-group clearfix">

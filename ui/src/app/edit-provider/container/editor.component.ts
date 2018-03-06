@@ -20,7 +20,9 @@ import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 
 import 'rxjs/add/operator/skip';
+import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
 import * as fromProviders from '../../metadata-provider/reducer';
@@ -57,6 +59,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     editor$: Observable<any[]>;
     editor: EditorFlowDefinition[];
     currentPage$: Observable<any>;
+    invalidForms$: Observable<string[]>;
+    invalidForms: string[];
+    otherPageInvalid$: Observable<boolean>;
     saving: boolean;
 
     wizardIsValid$: Observable<boolean>;
@@ -124,8 +129,9 @@ export class EditorComponent implements OnInit, OnDestroy {
 
         this.statusEmitter
             .changeEmitted$
+            .debounceTime(1)
             .takeUntil(this.ngUnsubscribe)
-            .combineLatest(this.currentPage$, (status: string, page: any) => {
+            .withLatestFrom(this.currentPage$, (status: string, page: any) => {
                 return { [page.path]: status };
             })
             .subscribe(status => {
@@ -136,6 +142,20 @@ export class EditorComponent implements OnInit, OnDestroy {
             .takeUntil(this.ngUnsubscribe)
             .skipWhile(() => this.saving)
             .subscribe(latest => this.latest = latest);
+
+        this.invalidForms$ = this.store.select(fromEditor.getInvalidEditorForms);
+
+        this.invalidForms$
+            .distinctUntilChanged()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(forms => {
+                this.invalidForms = forms;
+            });
+
+        this.otherPageInvalid$ = this.invalidForms$
+            .distinctUntilChanged()
+            .withLatestFrom(this.currentPage$, (invalid, current) => invalid.filter(key => key !== current.path))
+            .map(otherInvalid => !!otherInvalid.length);
     }
 
     ngOnDestroy(): void {

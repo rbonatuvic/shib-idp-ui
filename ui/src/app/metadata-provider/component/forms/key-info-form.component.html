@@ -4,7 +4,7 @@
             <fieldset aria-label="Is there a X509 certificate? Radio choice">
                 <div class="form-group">
                     <div class="row">
-                        <label>
+                        <label for="x509CertificateAvailableRadioGroup">
                             <ng-container i18n="@@label--is-there-a-x509-certificate">Is there a X509 Certificate?</ng-container>
                         </label>&nbsp;
                         <span>
@@ -15,24 +15,24 @@
                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                         </span>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" formControlName="x509CertificateAvailable" [value]="true" name="x509CertificateAvailable" aria-checked="false" role="radio">
-                            <ng-container i18n="@@label--yes">Yes</ng-container>
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" tabindex="0" formControlName="x509CertificateAvailable" name="x509CertificateAvailable" [value]="false" aria-checked="true" role="radio">
-                            <ng-container i18n="@@label--no">No</ng-container>
-                        </label>
+                    <div id="x509CertificateAvailableRadioGroup" role="radiogroup" aria-activedescendant="x509CertificateAvailableNo" tabindex="0">
+                        <div class="form-check form-check-inline">
+                            <input disableValidation="true" class="form-check-input" type="radio" formControlName="x509CertificateAvailable" name="x509CertificateAvailable"
+                                [value]="true" id="x509CertificateAvailableTrue" aria-checked="false" role="radio">
+                            <label class="form-check-label" i18n="@@label--yes" for="x509CertificateAvailableTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input disableValidation="true" class="form-check-input" type="radio" tabindex="0" formControlName="x509CertificateAvailable"
+                                name="x509CertificateAvailable" id="x509CertificateAvailableFalse" [value]="false" aria-checked="true" role="radio">
+                            <label class="form-check-label" i18n="@@label--no" for="x509CertificateAvailableFalse">No</label>
+                        </div>
                     </div>
                 </div>
             </fieldset>
             <div class="form-group">
                 <fieldset aria-label="Should authentication requests be signed? Radio choice">
                     <div class="row">
-                        <label>
+                        <label for="authenticationRequestsSignedRadioGroup">
                             <ng-container i18n="@@label--authentication-requests-signed">Authentication Requests Signed?</ng-container>
                         </label>&nbsp;
                         <span>
@@ -42,19 +42,18 @@
                            i18n-aria-label="@@tooltip--instruction"
                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                         </span>
-                    
                     </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" tabindex="0" formControlName="authenticationRequestsSigned" name="authenticationRequestsSigned" [value]="true" aria-checked="false" role="radio">
-                            <ng-container i18n="@@label--yes">Yes</ng-container>
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" tabindex="0" formControlName="authenticationRequestsSigned" name="authenticationRequestsSigned" [value]="false" aria-checked="true" role="radio">
-                            <ng-container i18n="@@label--no">No</ng-container>
-                        </label>
+                    <div id="authenticationRequestsSignedRadioGroup" role="radiogroup" aria-activedescendant="authenticationRequestsSignedNo" tabindex="0">
+                        <div class="form-check form-check-inline">
+                            <input disableValidation="true" class="form-check-input" type="radio" tabindex="0" formControlName="authenticationRequestsSigned"
+                                name="authenticationRequestsSigned" id="authenticationRequestsSignedTrue" [value]="true" aria-checked="false" role="radio">
+                            <label class="form-check-label" i18n="@@label--yes" for="authenticationRequestsSignedTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input disableValidation="true" class="form-check-input" type="radio" tabindex="0" formControlName="authenticationRequestsSigned"
+                                name="authenticationRequestsSigned" id="authenticationRequestsSignedFalse" [value]="false" aria-checked="true" role="radio">
+                            <label class="form-check-label" i18n="@@label--no" for="authenticationRequestsSignedFalse">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -66,23 +65,23 @@
                         </label>&nbsp;
                         <span>
                             <ng-template #tooltipWantAssertionsSigned i18n="@@tooltip--want-assertions-signed">Want Assertions Signed</ng-template>
-                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
-                           [ngbPopover]="tooltipWantAssertionsSigned"
-                           i18n-aria-label="@@tooltip--instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                [ngbPopover]="tooltipWantAssertionsSigned"
+                                i18n-aria-label="@@tooltip--instruction"
+                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                         </span>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" tabindex="0" formControlName="wantAssertionsSigned" name="wantAssertionsSigned" [value]="true" aria-checked="false" role="radio">
-                            <ng-container i18n="@@label--yes">Yes</ng-container>
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" tabindex="0" formControlName="wantAssertionsSigned" name="wantAssertionsSigned" [value]="false" aria-checked="true" role="radio">
-                            <ng-container i18n="@@label--no">No</ng-container>
-                        </label>
+                    <div id="wantAssertionsSignedRadioGroup" role="radiogroup" aria-activedescendant="wantAssertionsSignedNo" tabindex="0">
+                        <div class="form-check form-check-inline">
+                            <input disableValidation="true" class="form-check-input" type="radio" tabindex="0" formControlName="wantAssertionsSigned"
+                                name="wantAssertionsSigned" id="wantAssertionsSignedTrue" [value]="true" aria-checked="false" role="radio">
+                            <label class="form-check-label" i18n="@@label--yes" for="wantAssertionsSignedTrue">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input disableValidation="true" class="form-check-input" type="radio" tabindex="0" formControlName="wantAssertionsSigned"
+                                name="wantAssertionsSigned" name="wantAssertionsSigned" id="wantAssertionsSignedFalse" [value]="false" aria-checked="true" role="radio">
+                            <label class="form-check-label" i18n="@@label--no" for="wantAssertionsSignedFalse">No</label>
+                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -152,11 +151,14 @@
                                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                         </span>
                                     </div>
-                                    <div class="form-check form-check-inline" *ngFor="let type of types">
-                                        <label class="form-check-label" [for]="'type-' + i">
-                                            <input [id]="'type-' + i" class="form-check-input" type="radio" tabindex="0" formControlName="type" [value]="type" role="radio">
-                                            <i18n-text [key]="type"></i18n-text>
-                                        </label>
+                                    <div id="certTypeRadioGroup" role="radiogroup" tabindex="0">
+                                        <div *ngFor="let type of types; let t=index;" class="form-check form-check-inline">
+                                            <input disableValidation="true" id="type-{{ i }}-{{ t }}" class="form-check-input" type="radio" tabindex="0" formControlName="type"
+                                                [value]="type" role="radio">
+                                            <label class="form-check-label" for="type-{{ i }}-{{ t }}">
+                                                <i18n-text [key]="type"></i18n-text>
+                                            </label>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </div>

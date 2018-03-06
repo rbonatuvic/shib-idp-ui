@@ -3,11 +3,12 @@
         <fieldset class="col-xl-6 form-section">
             <section class="entity-section">
                 <div class="form-group">
-                    <label class="custom-control custom-checkbox custom-control-reverse">
-                        <input class="custom-control-input" type="checkbox" formControlName="serviceEnabled" >
-                        <span class="custom-control-indicator"></span>
-                        <span class="custom-control-description" i18n="@@label--enable-this-service-opon-saving">Enable this service upon saving?</span>
-                    </label>
+                    <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
+                        <input class="custom-control-input" type="checkbox" id="serviceEnabled" formControlName="serviceEnabled">
+                        <label class="custom-control-label"
+                            i18n="@@label--enable-this-service-opon-saving"
+                            for="serviceEnabled">Enable this service upon saving?</label>
+                    </div>
                     <ng-template #tooltipEnableThisServiceUponSaving i18n="@@tooltip--enable-this-service-upon-saving">Enable this service upon saving popover</ng-template>
                     <i class="info-icon fa fa-info-circle text-primary fa-lg"
                        [ngbPopover]="tooltipEnableThisServiceUponSaving"

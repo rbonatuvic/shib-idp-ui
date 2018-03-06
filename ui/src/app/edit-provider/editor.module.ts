@@ -20,6 +20,7 @@ import { CanDeactivateGuard } from '../core/service/can-deactivate.guard';
 import { WizardNavComponent } from './component/wizard-nav.component';
 import { WizardEffects } from './effect/wizard.effect';
 import { EditorEffects } from './effect/editor.effect';
+import { ValidFormIconComponent } from './component/valid-form-icon.component';
 
 export const routes: Routes = [
     {
@@ -57,7 +58,8 @@ export const routes: Routes = [
         WizardComponent,
         UnsavedDialogComponent,
         WizardNavComponent,
-        DraftComponent
+        DraftComponent,
+        ValidFormIconComponent
     ],
     entryComponents: [
         UnsavedDialogComponent
