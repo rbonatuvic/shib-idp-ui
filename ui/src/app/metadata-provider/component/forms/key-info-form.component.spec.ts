@@ -12,6 +12,7 @@ import { KeyInfoFormComponent } from './key-info-form.component';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
 
 import * as stubs from '../../../../testing/provider.stub';
+import { I18nTextComponent } from '../i18n-text.component';
 
 @Component({
     template: `<key-info-form [provider]="provider"></key-info-form>`
@@ -58,7 +59,8 @@ describe('Security (Key) Info Form Component', () => {
             declarations: [
                 KeyInfoFormComponent,
                 TestHostComponent,
-                InputDefaultsDirective
+                InputDefaultsDirective,
+                I18nTextComponent
             ],
         }).compileComponents();
         store = TestBed.get(Store);

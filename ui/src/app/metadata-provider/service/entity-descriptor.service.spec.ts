@@ -50,7 +50,7 @@ describe(`EntityDescriptorService`, () => {
                     expect(next).toBeTruthy();
                 });
 
-                backend.expectOne('/api/EntityDescriptors').flush(null, { status: 200, statusText: 'Ok' });
+                backend.expectOne('/api/EntityDescriptors').flush([], { status: 200, statusText: 'Ok' });
             }
         )));
     });

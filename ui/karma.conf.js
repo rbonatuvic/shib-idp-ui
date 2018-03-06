@@ -22,7 +22,7 @@ module.exports = function (config) {
             fixWebpackSourcePaths: true,
             skipFilesWithNoCoverage: false,
             thresholds: {
-                emitWarning: false,
+                emitWarning: true,
                 global: {
                     statements: 80,
                     branches: 80,
