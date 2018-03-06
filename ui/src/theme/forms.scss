@@ -1,0 +1,49 @@
+@import './_palette';
+@import './_variables';
+
+.form-section {
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+
+    &:not(:first-child) {
+        border-left: 1px solid $hr-border-color;
+    }
+
+    .btn-link {
+        &:focus {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    }
+
+    .form-check-label {
+        &:focus {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    }
+}
+
+.custom-control {
+    &.custom-control-reverse {
+        padding-right: 1.5em;
+        padding-left: 0;
+
+        & > .custom-control-indicator {
+            right: 0px;
+            left: auto;
+        }
+    }
+}
+
+.custom-file {
+    & > .custom-file-control {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .form-section:not(:first-child) {
+        border-left: 0px;
+    }
+}

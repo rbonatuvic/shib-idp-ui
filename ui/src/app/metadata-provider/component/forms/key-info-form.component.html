@@ -1,0 +1,187 @@
+<form [formGroup]="form" role="form">
+    <div class="row" formGroupName="securityInfo">
+        <div class="col-xl-6 form-section">
+            <fieldset aria-label="Is there a X509 certificate? Radio choice">
+                <div class="form-group">
+                    <div class="row">
+                        <label>
+                            <ng-container i18n="@@label--is-there-a-x509-certificate">Is there a X509 Certificate?</ng-container>
+                        </label>&nbsp;
+                        <span>
+                            <ng-template #tooltipIsThereAX509Certificate i18n="@@tooltip--authentication-requests-signed">Is there a X509 Certificate popover</ng-template>
+                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                               [ngbPopover]="tooltipIsThereAX509Certificate"
+                               i18n-aria-label="@@tooltip--instruction"
+                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                        </span>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" formControlName="x509CertificateAvailable" [value]="true" name="x509CertificateAvailable" aria-checked="false" role="radio">
+                            <ng-container i18n="@@label--yes">Yes</ng-container>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" tabindex="0" formControlName="x509CertificateAvailable" name="x509CertificateAvailable" [value]="false" aria-checked="true" role="radio">
+                            <ng-container i18n="@@label--no">No</ng-container>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <fieldset aria-label="Should authentication requests be signed? Radio choice">
+                    <div class="row">
+                        <label>
+                            <ng-container i18n="@@label--authentication-requests-signed">Authentication Requests Signed?</ng-container>
+                        </label>&nbsp;
+                        <span>
+                            <ng-template #tooltipAuthenticationRequestsSigned i18n="@@tooltip--authentication-requests-signed">Authentication Requests Signed popover</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipAuthenticationRequestsSigned"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                        </span>
+                    
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" tabindex="0" formControlName="authenticationRequestsSigned" name="authenticationRequestsSigned" [value]="true" aria-checked="false" role="radio">
+                            <ng-container i18n="@@label--yes">Yes</ng-container>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" tabindex="0" formControlName="authenticationRequestsSigned" name="authenticationRequestsSigned" [value]="false" aria-checked="true" role="radio">
+                            <ng-container i18n="@@label--no">No</ng-container>
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="form-group">
+                <fieldset aria-label="Do you want the assertions signed? Radio choice">
+                    <div class="row">
+                        <label>
+                            <ng-container i18n="@@label--want-assertions-signed">Want Assertions Signed?</ng-container>
+                        </label>&nbsp;
+                        <span>
+                            <ng-template #tooltipWantAssertionsSigned i18n="@@tooltip--want-assertions-signed">Want Assertions Signed</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipWantAssertionsSigned"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                        </span>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" tabindex="0" formControlName="wantAssertionsSigned" name="wantAssertionsSigned" [value]="true" aria-checked="false" role="radio">
+                            <ng-container i18n="@@label--yes">Yes</ng-container>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" tabindex="0" formControlName="wantAssertionsSigned" name="wantAssertionsSigned" [value]="false" aria-checked="true" role="radio">
+                            <ng-container i18n="@@label--no">No</ng-container>
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <fieldset class="col form-section">
+            <p>
+                <ng-container i18n="@@label--x509-certificates">X509 Certificates:</ng-container>
+                <button class="btn btn-success btn-sm" (click)="addCert()" [disabled]="!(hasCert$ | async)" i18n="@@action--add-certificate" tabindex="1" aria-label="Add certificate to accordion group" role="button">Add Certificate</button>
+            </p>
+            <div formArrayName="x509Certificates" class="bg-light border rounded p-4" *ngIf="x509Certificates.length">
+                <ul class="list-group" aria-label="x509 Certificates accordion"  tabindex="0" role="presentation">
+                    <li *ngFor="let cert of x509Certificates.controls; let i=index;"
+                        [formGroupName]="i"
+                        class="list-group-item"
+                        [attr.aria-label]="'x509 certificate information accordion item for ' + cert.get('name').value">
+                        <div class="clearfix">
+                            <div class="row" (click)="isHidden = !isHidden" (keydown.space)="isHidden = !isHidden" [id]="'certAccordion' + i" aria-expanded="true" [attr.aria-controls]="'certContent' + i" role="button">
+                                <div class="col-sm-10">
+                                    <i class="fa" [ngClass]="{'fa-chevron-right': isHidden, 'fa-chevron-down': !isHidden}"></i>
+                                    <span tabindex="0" role="heading" aria-level="3">
+                                        <ng-container *ngIf="cert.get('name').value">{{ cert.get('name').value }}</ng-container>
+                                        <ng-container *ngIf="!cert.get('name').value" i18n="@@label--new-cert">New Certificate</ng-container>
+                                        <small *ngIf="cert.get('type').value">
+                                            (<i18n-text [key]="cert.get('type').value"></i18n-text>)
+                                        </small>
+                                    </span>
+                                </div>
+                                <div class="col-sm-2 text-right">
+                                    <button class="btn btn-link btn-sm text-danger" (click)="removeCert(i)" aria-label="Delete certificate" role="button">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse" [ngClass]="{'show': !isHidden}"  [id]="'certContent' + i" [attr.aria-labelledby]="'certAccordion' + i" role="region">
+                            <hr />
+                            <div class="form-group">
+                                <div class="row">
+                                    <label [for]="'name-' + i" class="col-sm-10">
+                                        <span>
+                                             <ng-container i18n="@@label--certificate-name-display-only">Certificate Name (Display Only)</ng-container> <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                        </span>
+                                    </label>
+                                    <span class="col-sm-2 text-right">
+                                        <ng-template #tooltipCertificateName i18n="@@tooltip--certificate-name">Certificate Name Popover</ng-template>
+                                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                           [ngbPopover]="tooltipCertificateName"
+                                           i18n-aria-label="@@tooltip--instruction"
+                                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                    </span>
+                                </div>
+                                <input [id]="'name-' + i" type="text" class="form-control" placeholder="" formControlName="name" aria-label="x509 certificate name" role="textbox" />
+                            </div>
+                            <div class="form-group">
+                                <fieldset aria-label="What is the type of ceritifcate? Radio choice">
+                                    <div class="row">
+                                        <label [for]="'type-' + i" class="col-sm-10">
+                                            <span>
+                                                <ng-container i18n="@@label--type">Type <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></ng-container>
+                                            </span>
+                                        </label>
+                                        <span class="col-sm-2 text-right">
+                                            <ng-template #tooltipCertificateType i18n="@@tooltip--certificate-type">Certificate Type Popover</ng-template>
+                                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                           [ngbPopover]="tooltipCertificateType"
+                                           i18n-aria-label="@@tooltip--instruction"
+                                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                        </span>
+                                    </div>
+                                    <div class="form-check form-check-inline" *ngFor="let type of types">
+                                        <label class="form-check-label" [for]="'type-' + i">
+                                            <input [id]="'type-' + i" class="form-check-input" type="radio" tabindex="0" formControlName="type" [value]="type" role="radio">
+                                            <i18n-text [key]="type"></i18n-text>
+                                        </label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label [for]="'cert-' + i" class="col-sm-10">
+                                        <span>
+                                            <ng-container i18n="@@label--certificate">Certificate</ng-container>
+                                            <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                        </span>
+                                    </label>
+                                    <span class="col-sm-2 text-right">
+                                        <ng-template #tooltipCertificateBody i18n="@@tooltip--certificate">Certificate Popover</ng-template>
+                                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                               [ngbPopover]="tooltipCertificateBody"
+                                               i18n-aria-label="@@tooltip--instruction"
+                                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                    </span>
+                                </div>
+                                <textarea [id]="'cert-' + i" class="form-control" placeholder="" formControlName="value" rows="10" [disableDefaults]="true" role="textbox" aria-multiline="true"></textarea>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+</form>

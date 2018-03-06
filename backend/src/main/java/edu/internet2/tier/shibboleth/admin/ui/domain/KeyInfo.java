@@ -1,0 +1,141 @@
+package edu.internet2.tier.shibboleth.admin.ui.domain;
+
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.encryption.AgreementMethod;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
+import org.opensaml.xmlsec.signature.KeyInfoReference;
+import org.opensaml.xmlsec.signature.KeyName;
+import org.opensaml.xmlsec.signature.KeyValue;
+import org.opensaml.xmlsec.signature.MgmtData;
+import org.opensaml.xmlsec.signature.PGPData;
+import org.opensaml.xmlsec.signature.RetrievalMethod;
+import org.opensaml.xmlsec.signature.SPKIData;
+import org.opensaml.xmlsec.signature.X509Data;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Entity
+public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.signature.KeyInfo {
+
+    @OneToMany(cascade = CascadeType.ALL)
+    List<AbstractXMLObject> xmlObjects = new ArrayList<>();
+
+
+    @Nullable
+    @Override
+    public String getID() {
+        return null;
+    }
+
+    @Override
+    public void setID(@Nullable String newID) {
+
+    }
+
+    @Nonnull
+    @Override
+    public List<XMLObject> getXMLObjects() {
+        return (List<XMLObject>) (List<? extends XMLObject>) this.xmlObjects;
+    }
+
+    @Nonnull
+    @Override
+    public List<XMLObject> getXMLObjects(@Nonnull QName typeOrName) {
+        return this.getXMLObjects().stream().filter(p -> p.getElementQName().equals(typeOrName) || p.getSchemaType().equals(typeOrName)).collect(Collectors.toList());
+    }
+
+    @Nonnull
+    @Override
+    public List<KeyName> getKeyNames() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<KeyValue> getKeyValues() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<DEREncodedKeyValue> getDEREncodedKeyValues() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<RetrievalMethod> getRetrievalMethods() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<KeyInfoReference> getKeyInfoReferences() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<X509Data> getX509Datas() {
+        return Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof X509Data).toArray(X509Data[]::new));
+    }
+
+    public void addX509Data(edu.internet2.tier.shibboleth.admin.ui.domain.X509Data x509Data) {
+        this.xmlObjects.add(x509Data);
+    }
+
+    @Nonnull
+    @Override
+    public List<PGPData> getPGPDatas() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<SPKIData> getSPKIDatas() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<MgmtData> getMgmtDatas() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<AgreementMethod> getAgreementMethods() {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public List<EncryptedKey> getEncryptedKeys() {
+        return Collections.emptyList();
+    }
+
+    @Nullable
+    @Override
+    public List<XMLObject> getOrderedChildren() {
+        ArrayList<XMLObject> children = new ArrayList<>();
+
+        children.addAll(this.getXMLObjects());
+
+        if (children.size() == 0) {
+            return null;
+        }
+
+        return children;
+    }
+}

@@ -1,0 +1,560 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="autoIncrement" value="true" dbms="mysql,mariadb"/>
+    <property name="autoIncrement" value="false" dbms="postgres,H2,oracle"/>
+
+    <changeSet dbms="postgresql,H2,oracle" author="paul.spaude" id="create sequence id postgres,h2,oracle">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+
+    <changeSet author="paul spaude" id="add schema for entity descriptor">
+
+        <createTable tableName="additional_metadata_location">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="additional_metadata_location_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locationuri" type="VARCHAR(255)"/>
+            <column name="namespaceuri" type="VARCHAR(255)"/>
+            <column name="entitydesc_addlmetdatlocations_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="affiliate_member">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="affiliate_member_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="affildesc_affilmemb_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="affiliation_descriptor">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="affiliation_descriptor_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cache_duration" type="BIGINT"/>
+            <column name="is_signed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_valid" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="signature_referenceid" type="VARCHAR(255)"/>
+            <column name="valid_until" type="timestamp"/>
+            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="extensions_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="attribute">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="attribute_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dtype" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="friendly_name" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="name_format" type="VARCHAR(255)"/>
+            <column name="is_required" type="BOOLEAN"/>
+            <column name="attribauthdesc_attrib_id" type="BIGINT"/>
+            <column name="idpssodesc_attrib_id" type="BIGINT"/>
+            <column name="attribconsserv_requestedattrib_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="attribute_consuming_service">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="attribute_consuming_service_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="acs_index" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_default" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="spssodesc_attribconsserv_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="attribute_profile">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="attribute_profile_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="profileuri" type="VARCHAR(255)"/>
+            <column name="attribauthdesc_attribprofile_id" type="BIGINT"/>
+            <column name="idpssodesc_attribprofile_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="company">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="company_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="contact_person">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="contact_person_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="extensions_id" type="BIGINT"/>
+            <column name="given_name_id" type="BIGINT"/>
+            <column name="sur_name_id" type="BIGINT"/>
+            <column name="roledesc_contactperson_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="email_address">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="email_address_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="contactpersn_emailaddr_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="encryption_method">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="encryption_method_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="algorithm" type="VARCHAR(255)"/>
+            <column name="keydesc_encryptionmethod_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="endpoint">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="endpoint_pkey"/>
+            </column>
+            <column name="dtype" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="binding" type="VARCHAR(255)"/>
+            <column name="location" type="VARCHAR(255)"/>
+            <column name="response_location" type="VARCHAR(255)"/>
+            <column name="endpoint_index" type="INT"/>
+            <column name="is_default" type="BOOLEAN"/>
+            <column name="authnauthdesc_authnqueryserv_id" type="BIGINT"/>
+            <column name="authnauthdesc_assertidreqserv_id" type="BIGINT"/>
+            <column name="attribauthdesc_attribserv_id" type="BIGINT"/>
+            <column name="attribauthdesc_assertidreqservc_id" type="BIGINT"/>
+            <column name="spssodesc_assertconsserv_id" type="BIGINT"/>
+            <column name="pdpdesc_authzserv_id" type="BIGINT"/>
+            <column name="pdpdesc_assertidreqserv_id" type="BIGINT"/>
+            <column name="idpssodesc_ssoserv_id" type="BIGINT"/>
+            <column name="idpssodesc_nameidmapserv_id" type="BIGINT"/>
+            <column name="idpssodesc_asseridreqserv_id" type="BIGINT"/>
+            <column name="ssodesc_singlelogoutserv_id" type="BIGINT"/>
+            <column name="ssodesc_managenameidserv_id" type="BIGINT"/>
+            <column name="ssodesc_artifctresserv_id" type="BIGINT"/>
+            <column name="roledesc_endpoint_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="entity_descriptor">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="entity_descriptor_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cache_duration" type="BIGINT"/>
+            <column name="is_signed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_valid" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="signature_referenceid" type="VARCHAR(255)"/>
+            <column name="valid_until" type="timestamp"/>
+            <column name="entityid" type="VARCHAR(255)"/>
+            <column name="extensions_id" type="BIGINT"/>
+            <column name="affiliation_descriptor_id" type="BIGINT"/>
+            <column name="attribute_authority_descriptor_id" type="BIGINT"/>
+            <column name="authn_authority_descriptor_id" type="BIGINT"/>
+            <column name="contact_person_id" type="BIGINT"/>
+            <column name="idpssodescriptor_id" type="BIGINT"/>
+            <column name="organization_id" type="BIGINT"/>
+            <column name="pdp_descriptor_id" type="BIGINT"/>
+            <column name="spsso_descriptor_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="extensions">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="extensions_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="given_name">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="given_name_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="key_descriptor">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="key_descriptor_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="affildesc_keydesc_id" type="BIGINT"/>
+            <column name="roledesc_keydesc_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="nameidformat">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="nameidformat_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="format" type="VARCHAR(255)"/>
+            <column name="authnauthdesc_nameidfmt_id" type="BIGINT"/>
+            <column name="attribauthdesc_nameidfrmt_id" type="BIGINT"/>
+            <column name="pdpdesc_nameidfmt_id" type="BIGINT"/>
+            <column name="ssodesc_nameidfmt_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="organization">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="organization_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extensions_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="organization_display_name">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="organization_display_name_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="xmllang" type="VARCHAR(255)"/>
+            <column name="org_orgdisplayname_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="organization_name">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="organization_name_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="xmllang" type="VARCHAR(255)"/>
+            <column name="org_orgname_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="organizationurl">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="organizationurl_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="xml_lang" type="VARCHAR(255)"/>
+            <column name="org_orgurl_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="role_descriptor">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_descriptor_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dtype" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cache_duration" type="BIGINT"/>
+            <column name="is_signed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_valid" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="signature_referenceid" type="VARCHAR(255)"/>
+            <column name="valid_until" type="timestamp"/>
+            <column name="errorurl" type="VARCHAR(255)"/>
+            <column name="is_supported_protocol" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="want_authn_requests_signed" type="BOOLEAN"/>
+            <column name="is_authn_requests_signed" type="BOOLEAN"/>
+            <column name="want_assertions_signed" type="BOOLEAN"/>
+            <column name="extensions_id" type="BIGINT"/>
+            <column name="organization_id" type="BIGINT"/>
+            <column name="entitydesc_roledesc_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="role_descriptor_supported_protocols">
+            <column name="role_descriptor_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="supported_protocols" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="service_description">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="service_description_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="xmllang" type="VARCHAR(255)"/>
+            <column name="attribconsserv_servicedesc_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="service_name">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="service_name_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="xmllang" type="VARCHAR(255)"/>
+            <column name="attribconsserv_servicename_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="sur_name">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="sur_name_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="telephone_number">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="telephone_number_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(255)"/>
+            <column name="contactpersn_telenmbr_id" type="BIGINT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="idpssodesc_attrib_id" baseTableName="attribute" constraintName="fk_idpssodesc_attrib_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="extensions_id" baseTableName="affiliation_descriptor" constraintName="fk_extensions_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="extensions"/>
+        <addForeignKeyConstraint baseColumnNames="org_orgname_id" baseTableName="organization_name" constraintName="fk_org_orgname_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization"/>
+        <addForeignKeyConstraint baseColumnNames="pdp_descriptor_id" baseTableName="entity_descriptor" constraintName="fk_pdp_descriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribconsserv_requestedattrib_id" baseTableName="attribute" constraintName="fk_attribconsserv_requestedattrib_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="attribute_consuming_service"/>
+        <addForeignKeyConstraint baseColumnNames="roledesc_endpoint_id" baseTableName="endpoint" constraintName="fk_roledesc_endpoint_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="idpssodescriptor_id" baseTableName="entity_descriptor" constraintName="fk_idpssodescriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="contactpersn_telenmbr_id" baseTableName="telephone_number" constraintName="fk_contactpersn_telenmbr_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact_person"/>
+        <addForeignKeyConstraint baseColumnNames="attribauthdesc_attribserv_id" baseTableName="endpoint" constraintName="fk_attribauthdesc_attribserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribute_authority_descriptor_id" baseTableName="entity_descriptor" constraintName="fk_attribute_authority_descriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="pdpdesc_authzserv_id" baseTableName="endpoint" constraintName="fk_pdpdesc_authzserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="authnauthdesc_nameidfmt_id" baseTableName="nameidformat" constraintName="fk_authnauthdesc_nameidfmt_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="spsso_descriptor_id" baseTableName="entity_descriptor" constraintName="fk_spsso_descriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribconsserv_servicename_id" baseTableName="service_name" constraintName="fk_attribconsserv_servicename_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="attribute_consuming_service"/>
+        <addForeignKeyConstraint baseColumnNames="keydesc_encryptionmethod_id" baseTableName="encryption_method" constraintName="fk_keydesc_encryptionmethod_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="key_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribauthdesc_attribprofile_id" baseTableName="attribute_profile" constraintName="fk_attribauthdesc_attribprofile_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="role_descriptor_id" baseTableName="role_descriptor_supported_protocols" constraintName="fk_role_descriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="spssodesc_attribconsserv_id" baseTableName="attribute_consuming_service" constraintName="fk_spssodesc_attribconsserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="entity_descriptor" constraintName="fk_entity_organization_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization"/>
+        <addForeignKeyConstraint baseColumnNames="contact_person_id" baseTableName="entity_descriptor" constraintName="fk_contact_person_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact_person"/>
+        <addForeignKeyConstraint baseColumnNames="ssodesc_singlelogoutserv_id" baseTableName="endpoint" constraintName="fk_ssodesc_singlelogoutserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="given_name_id" baseTableName="contact_person" constraintName="fk_cp_given_name_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="given_name"/>
+        <addForeignKeyConstraint baseColumnNames="org_orgurl_id" baseTableName="organizationurl" constraintName="fk_org_orgurl_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization"/>
+        <addForeignKeyConstraint baseColumnNames="entitydesc_addlmetdatlocations_id" baseTableName="additional_metadata_location" constraintName="fk_entitydesc_addlmetdatlocations_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="entity_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="pdpdesc_assertidreqserv_id" baseTableName="endpoint" constraintName="fk_pdpdesc_assertidreqserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="spssodesc_assertconsserv_id" baseTableName="endpoint" constraintName="fk_spssodesc_assertconsserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="org_orgdisplayname_id" baseTableName="organization_display_name" constraintName="fk_org_orgdisplayname_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization"/>
+        <addForeignKeyConstraint baseColumnNames="pdpdesc_nameidfmt_id" baseTableName="nameidformat" constraintName="fk_pdpdesc_nameidfmt_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="affiliation_descriptor_id" baseTableName="entity_descriptor" constraintName="fk_affiliation_descriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="affiliation_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="ssodesc_artifctresserv_id" baseTableName="endpoint" constraintName="fk_ssodesc_artifctresserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="roledesc_contactperson_id" baseTableName="contact_person" constraintName="fk_roledesc_contactperson_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="idpssodesc_attribprofile_id" baseTableName="attribute_profile" constraintName="fk_idpssodesc_attribprofile_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribauthdesc_nameidfrmt_id" baseTableName="nameidformat" constraintName="fk_attribauthdesc_nameidfrmt_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="authnauthdesc_assertidreqserv_id" baseTableName="endpoint" constraintName="fk_authnauthdesc_assertidreqserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="extensions_id" baseTableName="contact_person" constraintName="fk_cp_extensions_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="extensions"/>
+        <addForeignKeyConstraint baseColumnNames="ssodesc_nameidfmt_id" baseTableName="nameidformat" constraintName="fk_ssodesc_nameidfmt_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="affildesc_keydesc_id" baseTableName="key_descriptor" constraintName="fk_affildesc_keydesc_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="affiliation_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="extensions_id" baseTableName="organization" constraintName="fk_org_extensions_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="extensions"/>
+        <addForeignKeyConstraint baseColumnNames="entitydesc_roledesc_id" baseTableName="role_descriptor" constraintName="fk_entitydesc_roledesc_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="entity_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribconsserv_servicedesc_id" baseTableName="service_description" constraintName="fk_attribconsserv_servicedesc_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="attribute_consuming_service"/>
+        <addForeignKeyConstraint baseColumnNames="contactpersn_emailaddr_id" baseTableName="email_address" constraintName="fk_contactpersn_emailaddr_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="contact_person"/>
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="contact_person" constraintName="fk_cp_company_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="company"/>
+        <addForeignKeyConstraint baseColumnNames="idpssodesc_ssoserv_id" baseTableName="endpoint" constraintName="fk_idpssodesc_ssoserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribauthdesc_attrib_id" baseTableName="attribute" constraintName="fk_attribauthdesc_attrib_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="extensions_id" baseTableName="role_descriptor" constraintName="fk_role_extensions_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="extensions"/>
+        <addForeignKeyConstraint baseColumnNames="extensions_id" baseTableName="entity_descriptor" constraintName="fk_entity_extensions_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="extensions"/>
+        <addForeignKeyConstraint baseColumnNames="ssodesc_managenameidserv_id" baseTableName="endpoint" constraintName="fk_ssodesc_managenameidserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="sur_name_id" baseTableName="contact_person" constraintName="fk_cp_sur_name_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="sur_name"/>
+        <addForeignKeyConstraint baseColumnNames="affildesc_affilmemb_id" baseTableName="affiliate_member" constraintName="fk_affildesc_affilmemb_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="affiliation_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="attribauthdesc_assertidreqservc_id" baseTableName="endpoint" constraintName="fk_attribauthdesc_assertidreqservc_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="authnauthdesc_authnqueryserv_id" baseTableName="endpoint" constraintName="fk_authnauthdesc_authnqueryserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="idpssodesc_asseridreqserv_id" baseTableName="endpoint" constraintName="fk_idpssodesc_asseridreqserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="authn_authority_descriptor_id" baseTableName="entity_descriptor" constraintName="fk_authn_authority_descriptor_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="organization_id" baseTableName="role_descriptor" constraintName="fk_role_organization_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="organization"/>
+        <addForeignKeyConstraint baseColumnNames="idpssodesc_nameidmapserv_id" baseTableName="endpoint" constraintName="fk_idpssodesc_nameidmapserv_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+        <addForeignKeyConstraint baseColumnNames="roledesc_keydesc_id" baseTableName="key_descriptor" constraintName="fk_roledesc_keydesc_id" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role_descriptor"/>
+    </changeSet>
+
+    <changeSet author="paul spaude" id="add schema for metadata resolver">
+        <createTable tableName="metadata_resolver">
+            <column name="dtype" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="metadata_resolver_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_require_valid_metadata" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_refresh" type="timestamp"/>
+            <column name="last_update" type="timestamp"/>
+            <column name="last_successful_refresh" type="timestamp"/>
+            <column name="was_last_refresh_success" type="BOOLEAN"/>
+            <column name="is_root_valid" type="BOOLEAN"/>
+            <column name="root_valid_until" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="role_descriptor_resolver">
+            <column name="id" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_descriptor_resolver_pkey"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_require_valid_metadata" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

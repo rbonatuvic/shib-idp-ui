@@ -1,0 +1,36 @@
+<div class="container-fluid p-3" role="main">
+    <section class="section" *ngIf="provider$ | async" tabindex="0" [attr.aria-label]="'Add a new metadata provider wizard form - ' + (currentPage$ | async).label + ' ' + (provider$ | async).serviceProviderName">
+        <div class="section-header bg-info p-2 text-light">
+            <div class="row justify-content-between">
+                <div class="col-md-12">
+                    <span class="display-6" role="heading" aria-level="1">
+                        <i class="fa fa-plus-square"></i>
+                        <ng-container i18n="@@message--add-new-md-provider">Add a new metadata provider</ng-container>
+                        &ndash; {{ (currentPage$ | async).label }} ({{ (provider$ | async).serviceProviderName }})
+                        <span class="pull-right">
+                            (<ng-container i18n="@@message--wizard-status">Step {{ wizardIndex$ | async }} of {{ wizard.length + 1 }}</ng-container>)
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="section-body p-4 border border-top-0 border-info" *ngIf="wizardIndex$ | async">
+            <wizard-nav [index]="wizardIndex$ | async"
+                (onNext)="next($event)"
+                (onPrevious)="previous($event)"
+                (onSave)="save($event)"></wizard-nav>
+            <hr />
+            <div [ngSwitch]="wizardIndex$ | async" class="py-4">
+                <org-info-form *ngSwitchDefault [provider]="provider$ | async"></org-info-form>
+                <metadata-ui-form *ngSwitchCase="3" [provider]="provider$ | async"></metadata-ui-form>
+                <descriptor-info-form *ngSwitchCase="4" [provider]="provider$ | async"></descriptor-info-form>
+                <logout-form *ngSwitchCase="5" [provider]="provider$ | async"></logout-form>
+                <key-info-form *ngSwitchCase="6" [provider]="provider$ | async"></key-info-form>
+                <assertion-form *ngSwitchCase="7" [provider]="provider$ | async"></assertion-form>
+                <relying-party-form *ngSwitchCase="8" [provider]="provider$ | async"></relying-party-form>
+                <attribute-release-form *ngSwitchCase="9" [provider]="provider$ | async"></attribute-release-form>
+                <finish-form *ngSwitchCase="10" [provider]="provider$ | async"></finish-form>
+            </div>
+        </div>
+    </section>
+</div>

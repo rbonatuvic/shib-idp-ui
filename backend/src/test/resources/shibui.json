@@ -1,0 +1,67 @@
+{
+  "id": "",
+  "entityId": "test",
+  "serviceProviderName": "test",
+  "organization": {
+    "name": "org name",
+    "displayName": "org display name",
+    "url": "http://org.ed"
+  },
+  "contacts": [
+    {
+      "type": "support",
+      "name": "test support name",
+      "emailAddress": "test@here.ed"
+    },
+    {
+      "type": "administrative",
+      "name": "test admin",
+      "emailAddress": "testadmin@here.ed"
+    }
+  ],
+  "mdui": {
+    "displayName": null,
+    "informationUrl": null,
+    "privacyStatementUrl": null,
+    "description": null,
+    "logoUrl": null,
+    "logoHeight": null,
+    "logoWidth": null
+  },
+  "securityInfo": {
+    "x509CertificateAvailable": false,
+    "authenticationRequestsSigned": false,
+    "wantAssertionsSigned": false,
+    "x509Certificates": []
+  },
+  "assertionConsumerServices": [
+    {
+      "binding": "HTTP-REDIRECT",
+      "locationUrl": "https://test.ed",
+      "makeDefault": true
+    },
+    {
+      "binding": "HTTP-POST",
+      "locationUrl": "https://test.ed/POST",
+      "makeDefault": false
+    }
+  ],
+  "serviceProviderSsoDescriptor": {
+    "protocolSupportEnum": "SAML 2",
+    "nameIdFormats": [
+      "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+    ]
+  },
+  "logoutEndpoints": [
+    {
+      "url": "http://logout.ed",
+      "bindingType": "HTTP-POST"
+    }
+  ],
+  "serviceEnabled": false,
+  "relyingPartyOverrides": {
+    "nameIdFormats": [],
+    "authenticationMethods": []
+  },
+  "attributeRelease": {}
+}

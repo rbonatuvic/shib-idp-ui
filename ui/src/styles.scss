@@ -1,0 +1,45 @@
+@import './theme/bootstrap';
+@import './theme/buttons';
+@import './theme/forms';
+@import './theme/modal';
+@import './theme/tags';
+
+body {
+    background-color: theme-color("light");
+    padding-top: 56px;
+}
+
+.section {
+    .section-body {
+        background: $white;
+    }
+}
+
+nav.fixed-top {
+    border-bottom: 3px solid map-get($theme-colors, primary);
+}
+
+footer {
+    background-color: $white;
+    padding: 0 20px;
+    font-size: $font-size-xs;
+    border-top: 3px solid map-get($theme-colors, primary);
+
+    .copyright {
+        padding-top: 10px;
+
+        a {
+            color: map-get($theme-colors, primary);
+            text-decoration: underline;
+        }
+    }
+
+    img {
+        max-height: 88px;
+    }
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+}

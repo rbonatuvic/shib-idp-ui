@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:ds11="http://www.w3.org/2009/xmldsig11#" xmlns="http://www.opensaml.org/xmltooling-config">
+    
+    <ObjectProviders>
+
+        <!-- KeyInfo -->
+        <ObjectProvider qualifiedName="ds:KeyInfo">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.KeyInfoBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyInfoMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyInfoUnmarshaller"/>
+        </ObjectProvider>
+        
+        <!-- KeyName -->
+        <ObjectProvider qualifiedName="ds:KeyName">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.KeyNameBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
+        </ObjectProvider>
+        
+        <!-- KeyValue -->
+        <!--
+        <ObjectProvider qualifiedName="ds:KeyValue">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.KeyValueBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyValueMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.KeyValueUnmarshaller"/>
+        </ObjectProvider>
+        -->
+        
+        <!-- X509Certificate -->
+        <ObjectProvider qualifiedName="ds:X509Certificate">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.X509CertificateBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller"/>
+        </ObjectProvider>
+        
+        <!-- X509Data -->
+        <ObjectProvider qualifiedName="ds:X509Data">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.X509DataBuilder"/>
+            <MarshallingClass className="org.opensaml.xmlsec.signature.impl.X509DataMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.xmlsec.signature.impl.X509DataUnmarshaller"/>
+        </ObjectProvider>
+        
+    </ObjectProviders>
+    
+</XMLTooling>

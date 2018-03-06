@@ -1,0 +1,34 @@
+plugins {
+    id 'base'
+    id 'com.moowork.node' version '1.2.0'
+}
+
+node {
+    version = '8.9.1'
+    npmVersion = '5.5.1'
+    download = true
+}
+
+npm_run_build {
+    inputs.dir 'src'
+    outputs.dir 'dist'
+    if (project.hasProperty('npm-args')) {
+        args = project.'npm-args'.tokenize()
+    }
+}
+
+npm_run_buildProd {
+    inputs.dir 'src'
+    outputs.dir 'dist'
+}
+
+npm_run_start {
+    if (project.hasProperty('npm-args')) {
+        args = project.'npm-args'.tokenize()
+    }
+}
+
+clean.doFirst {
+    file('node_modules').deleteDir()
+    file('dist').deleteDir()
+}

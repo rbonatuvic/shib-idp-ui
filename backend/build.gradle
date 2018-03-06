@@ -1,0 +1,161 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'war'
+}
+
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven { url 'https://build.shibboleth.net/nexus/content/groups/public' }
+    mavenCentral()
+}
+
+//Integration of the frontend and backend into the build to have all of the UI resources available in the app's jar
+jar.dependsOn(':ui:npm_run_buildProd')
+jar {
+    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
+        into 'public'
+    }
+}
+jar.baseName = 'shibui'
+processResources.dependsOn(':ui:npm_run_buildProd')
+
+war.dependsOn(':ui:npm_run_buildProd')
+war {
+    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
+        into '/'
+    }
+    archiveName = 'shibui.war'
+}
+war.baseName = 'shibui'
+
+dependencies {
+    // opensaml deps
+    ['opensaml-saml-api', 'opensaml-saml-impl', 'opensaml-xmlsec-api', 'opensaml-xmlsec-impl'].each {
+        compile "org.opensaml:${it}:${project.'opensaml.version'}"
+    }
+
+    // shibboleth idp deps
+    [].each {
+        compile "net.shibboleth.idp:${it}:${project.'shibboleth.version'}"
+    }
+
+    // hibernate deps
+    ['hibernate-core'].each {
+        compile "org.hibernate:${it}:${project.'hibernate.version'}"
+    }
+
+    // spring boot plugins
+    ['starter-web', 'starter-actuator', 'starter-data-jpa', 'starter-security', 'devtools'].each {
+        compile "org.springframework.boot:spring-boot-${it}"
+    }
+    compile "org.liquibase:liquibase-core"
+    compile group: 'org.jadira.usertype', name: 'usertype.core', version: '6.0.1.GA'
+
+    // TODO: these will likely only be runtimeOnly or test scope, unless we want to ship the libraries with the final product
+    compile "com.h2database:h2"
+    runtimeOnly "org.postgresql:postgresql"
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.2.0'
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+    testCompile "org.xmlunit:xmlunit-core:2.5.1"
+    testRuntime 'cglib:cglib-nodep:3.2.5'
+
+    //JSON schema generator
+    testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.28'
+    testCompile 'javax.validation:validation-api:2.0.1.Final'
+}
+
+def generatedSrcDir = new File(buildDir, 'generated/src/main/java')
+
+sourceSets {
+    main {
+        java {
+            srcDirs += generatedSrcDir
+        }
+    }
+}
+
+task generateSources {
+    inputs.dir('src/main/templates')
+    inputs.files fileTree('src/main/resources') {
+        include '*-config.xml'
+    }
+    outputs.dir(generatedSrcDir)
+
+    doLast {
+        println "generating Builders"
+
+        def processLine = { dest, template ->
+            def token = dest.split('\\.')[-1].replace('Builder', '')
+            def infile = file(template)
+            def outfile = file("${generatedSrcDir}/${dest.replaceAll('\\.', '/')}.java")
+            def outdir = file(outfile.parent)
+            if (!outdir.exists()) {
+                outdir.mkdirs()
+            }
+            if (!outfile.exists()) {
+                println "creating class ${dest}"
+                outfile.withWriter { writer ->
+                    infile.eachLine { line ->
+                        writer.println(line.replaceAll('\\{\\{TOKEN}}', token))
+                    }
+                }
+            }
+        }
+
+        def metadataBuilders = new XmlSlurper().parse(file('src/main/resources/jpa-saml2-metadata-config.xml'))
+        metadataBuilders.ObjectProviders.ObjectProvider.BuilderClass.each {
+            processLine(it['@className'].toString(), 'src/main/templates/MetadataBuilderTemplate.java')
+        }
+
+        def assertionBuilders = new XmlSlurper().parse(file('src/main/resources/jpa-saml2-assertion-config.xml'))
+        assertionBuilders.ObjectProviders.ObjectProvider.BuilderClass.each {
+            processLine(it['@className'].toString(), 'src/main/templates/AssertionBuilderTemplate.java')
+        }
+
+        ['jpa-default-config.xml', 'jpa-schema-config.xml'].each {
+            def builders = new XmlSlurper().parse(file("src/main/resources/${it}"))
+            builders.ObjectProviders.ObjectProvider.BuilderClass.each {
+                processLine(it['@className'].toString(), 'src/main/templates/XSBuilderTemplate.java')
+            }
+        }
+
+        def metadataUIBuilders = new XmlSlurper().parse(file('src/main/resources/jpa-saml2-metadata-ui-config.xml'))
+        metadataUIBuilders.ObjectProviders.ObjectProvider.BuilderClass.each {
+            processLine(it['@className'].toString(), 'src/main/templates/MetadataUIBuilderTemplate.java')
+        }
+
+        def xmlSecBuilders = new XmlSlurper().parse(file('src/main/resources/jpa-signature-config.xml'))
+        xmlSecBuilders.ObjectProviders.ObjectProvider.BuilderClass.each {
+            processLine(it['@className'].toString(), 'src/main/templates/XMLSecBuilderTemplate.java')
+        }
+    }
+}
+
+compileJava {
+    dependsOn generateSources
+}
+
+bootRun {
+    systemProperties = System.properties
+}
+
+bootRepackage {
+    mainClass = 'edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication'
+}

@@ -1,0 +1,82 @@
+<div class="container-fluid p-3" *ngIf="provider$ | async" role="main">
+    <section class="section" [attr.aria-label]="'Edit metadata source - ' + (provider$ | async).serviceProviderName" tabindex="0">
+        <div class="section-header bg-info p-2 text-light">
+            <div class="row justify-content-between">
+                <div class="col-md-12">
+                    <span class="display-6"><i class="fa fa-gears"></i> Edit Metadata Source - {{ (provider$ | async).serviceProviderName }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="section-body p-4 border border-top-0 border-info">
+            <div class="row">
+                <div class="col-6 d-lg-none">
+                    <div class="dropdown" ngbDropdown #dropdown="ngbDropdown">
+                        <button
+                            class="btn btn-secondary"
+                            role="button"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            ngbDropdownToggle>
+                            <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+                            <span class="d-inline-block mx-2">{{ (currentPage$ | async).label }}</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" ngbDropdownMenu>
+                            <a *ngFor="let route of editor"
+                                href=""
+                                class="dropdown-item"
+                                [ngClass]="{'active': (editorIndex$ | async) === route.index}"
+                                (click)="go($event, route.index); dropdown.close()"
+                                [attr.aria-label]="route.path"
+                                role="button">
+                                <i18n-text [key]="route.path"></i18n-text>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-12 text-right">
+                    <button class="btn btn-info"
+                        (click)="save()"
+                        [disabled]="wizardIsInvalid$ | async"
+                        aria-label="Save changes to the metadata provider. You will return to the dashboard"
+                        role="button">
+                        <i class="fa fa-save"></i>
+                        <ng-container i18n="@@action--save">Save</ng-container>
+                    </button>
+                    <button class="btn btn-secondary"
+                        (click)="cancel()" aria-label="Cancel changes, go back to dashboard"
+                        role="button">
+                        <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                    </button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-3 d-none d-lg-block">
+                    <nav class="nav nav-pills flex-column" role="navigation">
+                        <a *ngFor="let route of editor"
+                            href=""
+                            class="nav-link"
+                            [ngClass]="{'active': (editorIndex$ | async) === route.index}"
+                            (click)="go($event, route.index)"
+                            role="button"
+                            [attr.aria-label]="route.path">
+                            <i18n-text [key]="route.path"></i18n-text>
+                        </a>
+                    </nav>
+                </div>
+                <div class="col-lg-9" *ngIf="latest">
+                    <div [ngSwitch]="editorIndex$ | async" class="px-3">
+                        <adv-info-form *ngSwitchDefault [provider]="latest$ | async"></adv-info-form>
+                        <metadata-ui-form *ngSwitchCase="3" [provider]="latest$ | async"></metadata-ui-form>
+                        <descriptor-info-form *ngSwitchCase="4" [provider]="latest$ | async"></descriptor-info-form>
+                        <logout-form *ngSwitchCase="5" [provider]="latest$ | async"></logout-form>
+                        <key-info-form *ngSwitchCase="6" [provider]="latest$ | async"></key-info-form>
+                        <assertion-form *ngSwitchCase="7" [provider]="latest$ | async"></assertion-form>
+                        <relying-party-form *ngSwitchCase="8" [provider]="latest$ | async"></relying-party-form>
+                        <attribute-release-form *ngSwitchCase="9" [provider]="latest$ | async"></attribute-release-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

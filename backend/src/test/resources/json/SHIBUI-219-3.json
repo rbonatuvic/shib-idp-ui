@@ -1,0 +1,44 @@
+{
+  "id": "",
+  "entityId": "test",
+  "serviceProviderName": "test",
+  "organization": {
+    "name": null,
+    "displayName": null,
+    "url": null
+  },
+  "contacts": [],
+  "mdui": {
+    "displayName": null,
+    "informationUrl": null,
+    "privacyStatementUrl": null,
+    "description": null,
+    "logoUrl": null,
+    "logoHeight": null,
+    "logoWidth": null
+  },
+  "securityInfo": {
+    "x509CertificateAvailable": false,
+    "authenticationRequestsSigned": false,
+    "wantAssertionsSigned": false,
+    "x509Certificates": []
+  },
+  "assertionConsumerServices": [
+    {
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+      "locationUrl": "test",
+      "makeDefault": true
+    }
+  ],
+  "serviceProviderSsoDescriptor": {
+    "protocolSupportEnum": null,
+    "nameIdFormats": []
+  },
+  "logoutEndpoints": [],
+  "serviceEnabled": false,
+  "relyingPartyOverrides": {
+    "nameIdFormats": [],
+    "authenticationMethods": []
+  },
+  "attributeRelease": []
+}

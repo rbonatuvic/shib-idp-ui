@@ -1,0 +1,18 @@
+<ng-container [ngSwitch]="key">
+    <!-- page name -->
+    <ng-container *ngSwitchDefault>{{ key }}</ng-container>
+    <ng-container *ngSwitchCase="'metadata-ui'" i18n="@@label--ui-mdui-info">User Interface / MDUI Information</ng-container>
+    <ng-container *ngSwitchCase="'descriptor-info'" i18n="@@label--sp-sso-descriptor-info">SP SSO Descriptor Information</ng-container>
+    <ng-container *ngSwitchCase="'logout-endpoints'" i18n="@@label--logout-endpoints">Logout Endpoints</ng-container>
+    <ng-container *ngSwitchCase="'key-info'" i18n="@@label--security-info">Security Information</ng-container>
+    <ng-container *ngSwitchCase="'assertion'" i18n="@@label--assertion-consumer-services">Assertion Consumer Service</ng-container>
+    <ng-container *ngSwitchCase="'relying-party'" i18n="@@label--relying-party-overrides">Relying Party Overrides</ng-container>
+    <ng-container *ngSwitchCase="'attribute'" i18n="@@label--attribute-release">Attribute Release</ng-container>
+    <ng-container *ngSwitchCase="'sp-org-info'" i18n="@@label--sp-org-info">SP/Organization Information</ng-container>
+    <ng-container *ngSwitchCase="'org-info'" i18n="@@label--org-info">Organization Information</ng-container>
+    <ng-container *ngSwitchCase="'finish'" i18n="@@label--finished">Finished!</ng-container>
+    <!-- certificate types -->
+    <ng-container *ngSwitchCase="'signing'" i18n="@@label--signing">Signing</ng-container>
+    <ng-container *ngSwitchCase="'encryption'" i18n="@@label--encryption">Encryption</ng-container>
+    <ng-container *ngSwitchCase="'both'" i18n="@@label--both">Both</ng-container>
+</ng-container>

@@ -1,0 +1,6 @@
+<div class="alert"
+    [ngClass]="types[notification.type.toString()]"
+    role="alert"
+    (click)="clear.emit(notification)">
+    <p>{{ notification.body }}</p>
+</div>

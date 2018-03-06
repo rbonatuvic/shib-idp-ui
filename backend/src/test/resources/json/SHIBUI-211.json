@@ -1,0 +1,38 @@
+{
+  "id": "",
+  "entityId": "SHIBUI-211",
+  "serviceProviderName": "SHIBUI-211",
+  "organization": {
+    "name": null,
+    "displayName": null,
+    "url": null
+  },
+  "contacts": [],
+  "mdui": {
+    "displayName": "display name",
+    "informationUrl": "http://example.org",
+    "privacyStatementUrl": "http://example.org/privacy",
+    "description": "this is a description",
+    "logoUrl": "http://example.org/logo.png",
+    "logoHeight": 100,
+    "logoWidth": 100
+  },
+  "securityInfo": {
+    "x509CertificateAvailable": false,
+    "authenticationRequestsSigned": false,
+    "wantAssertionsSigned": false,
+    "x509Certificates": []
+  },
+  "assertionConsumerServices": [],
+  "serviceProviderSsoDescriptor": {
+    "protocolSupportEnum": null,
+    "nameIdFormats": []
+  },
+  "logoutEndpoints": [],
+  "serviceEnabled": false,
+  "relyingPartyOverrides": {
+    "nameIdFormats": [],
+    "authenticationMethods": []
+  },
+  "attributeRelease": []
+}

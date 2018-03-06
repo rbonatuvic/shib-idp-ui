@@ -1,0 +1,39 @@
+<div id="{{ id }}-container" class="dropdown form-group" (keydown)="handleKeyDown($event)" role='combobox' [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'">
+    <input
+        #inputField
+        [formControl]="input"
+        id="{{ id }}__input"
+        class="form-control"
+        autoComplete="off"
+        type="text"
+        role="textbox"
+        [attr.aria-activedescendant]="activeDescendant"
+        attr.aria-owns="{{ id }}__listbox"
+        (focus)="handleInputFocus($event)"
+        (blur)="handleInputBlur($event)"
+    />
+    <ul class="dropdown-menu"
+        id="{{ id }}__listbox"
+        role="listbox"
+        [class.show]="(menuIsVisible$ | async) && !disabled">
+        <li *ngFor="let option of state.currentState.matches; let i = index;"
+            #matchElement
+            class="dropdown-item"
+            [class.active]="state.currentState.selected === i"
+            [class.focused]="state.currentState.focused === i"
+            id="{{ id }}__option--{{ i }}"
+            (focusout)="handleOptionBlur($event, i)"
+            (click)="handleOptionClick($event, i)"
+            (mousedown)="handleOptionMouseDown($event)"
+            (mouseenter)="handleOptionMouseEnter(i)"
+            (mouseout)="handleOptionMouseOut()"
+            role="option"
+            tabIndex="-1"
+            [attr.aria-selected]="state.currentState.focused === i">
+            {{ option }}
+        </li>
+        <li class="dropdown-item dropdown-item-noresults" *ngIf="state.currentState.matches.length === 0">
+            {{ noneFoundText }}
+        </li>
+    </ul>
+</div>

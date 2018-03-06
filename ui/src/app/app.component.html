@@ -1,0 +1,53 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<nav class="navbar navbar-expand-md fixed-top">
+    <a class="navbar-brand" href="https://www.shibboleth.net/" target="_blank">
+        <img src="/assets/shibboleth_icon_color_130x130.png" width="30" height="30" class="d-inline-block align-top" alt="Shibboleth Logo - Click to be directed to www.shibboleth.net">
+        <span class="d-lg-inline d-none">Shibboleth</span>
+    </a>
+    <span class="navbar-text" i18n="@@label--app">Metadata Provider Management</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" aria-label="Service provider dashboard">
+                    <i class="fa fa-th" aria-hidden="true"></i>
+                    <ng-container i18n="@@action--manage-providers">Manage Providers</ng-container>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/new" routerLinkActive="active" aria-label="Launch wizard to add a new provider">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <ng-container i18n="@@action--add-provider">Add new provider</ng-container>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="/logout" target="_self" aria-label="Log out of Shibboleth UI">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    <ng-container i18n="@@action--logout">Logout</ng-container>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<router-outlet></router-outlet>
+<notification-list></notification-list>
+<footer>
+    <div class="row">
+        <div class="col-md-8 copyright">
+            <ul class="list-inline">
+                <li class="list-inline-item" i18n="@@link--links-to-shibboleth-resources">Links to Shibboleth resources:</li>
+                <li class="list-inline-item"><a href="https://www.shibboleth.net/" target="_blank" i18n="@@link--home-page" aria-label="Shibboleth.net open-source community home page">Home Page</a></li>
+                <li class="list-inline-item"><a href="https://wiki.shibboleth.net/" target="_blank" i18n="@@link--wiki" aria-label="Shibboleth.net open-source community wiki">Wiki</a></li>
+                <li class="list-inline-item"><a href="https://issues.shibboleth.net/" target="_blank" i18n="@@link--issue-tracker" aria-label="Shibboleth.net open-source community issue tracker">Issue Tracker</a></li>
+                <li class="list-inline-item"><a href="https://www.shibboleth.net/community/lists/" target="_blank" i18n="@@link--mailing-list" aria-label="Shibboleth.net open-source community mailing list">Mailing List</a></li>
+            </ul>
+            <p><ng-container i18n="@@label--copyright">Copyright</ng-container> &copy; 2017 Internet2</p>
+        </div>
+        <div class="col-md-4 logo">
+            <a href="https://www.shibboleth.net/" target="_blank"><img src="/assets/shibboleth_logowordmark_color.png" class="img-fluid float-right" alt="Shibboleth Logo - Click to be directed to www.shibboleth.net"></a>
+        </div>
+    </div>
+</footer>

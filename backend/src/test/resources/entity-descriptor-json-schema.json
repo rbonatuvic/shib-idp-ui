@@ -1,0 +1,272 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Entity Descriptor Representation",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "serviceProviderName": {
+      "type": "string"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "organization": {
+      "$ref": "#/definitions/OrganizationRepresentation"
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ContactRepresentation"
+      }
+    },
+    "mdui": {
+      "$ref": "#/definitions/MduiRepresentation"
+    },
+    "serviceProviderSsoDescriptor": {
+      "$ref": "#/definitions/ServiceProviderSsoDescriptorRepresentation"
+    },
+    "logoutEndpoints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LogoutEndpointRepresentation"
+      }
+    },
+    "securityInfo": {
+      "$ref": "#/definitions/SecurityInfoRepresentation"
+    },
+    "assertionConsumerServices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/AssertionConsumerServiceRepresentation"
+      }
+    },
+    "serviceEnabled": {
+      "type": "boolean"
+    },
+    "createdDate": {
+      "type": "string"
+    },
+    "modifiedDate": {
+      "type": "string"
+    },
+    "relyingPartyOverrides": {
+      "$ref": "#/definitions/RelyingPartyOverridesRepresentation"
+    },
+    "attributeRelease": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "serviceProviderName",
+    "entityId",
+    "serviceEnabled"
+  ],
+  "definitions": {
+    "OrganizationRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "ContactRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "MduiRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "displayName": {
+          "type": "string"
+        },
+        "informationUrl": {
+          "type": "string"
+        },
+        "privacyStatementUrl": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "logoUrl": {
+          "type": "string"
+        },
+        "logoHeight": {
+          "type": "integer"
+        },
+        "logoWidth": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "logoHeight",
+        "logoWidth"
+      ]
+    },
+    "ServiceProviderSsoDescriptorRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protocolSupportEnum": {
+          "type": "string"
+        },
+        "nameIdFormats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "LogoutEndpointRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "bindingType": {
+          "type": "string"
+        }
+      }
+    },
+    "SecurityInfoRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "x509CertificateAvailable": {
+          "type": "boolean"
+        },
+        "authenticationRequestsSigned": {
+          "type": "boolean"
+        },
+        "wantAssertionsSigned": {
+          "type": "boolean"
+        },
+        "x509Certificates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/X509CertificateRepresentation"
+          }
+        }
+      },
+      "required": [
+        "x509CertificateAvailable",
+        "authenticationRequestsSigned",
+        "wantAssertionsSigned"
+      ]
+    },
+    "X509CertificateRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "AssertionConsumerServiceRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locationUrl": {
+          "type": "string"
+        },
+        "binding": {
+          "type": "string"
+        },
+        "makeDefault": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "makeDefault"
+      ]
+    },
+    "RelyingPartyOverridesRepresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "signAssertion": {
+          "type": "boolean"
+        },
+        "dontSignResponse": {
+          "type": "boolean"
+        },
+        "turnOffEncryption": {
+          "type": "boolean"
+        },
+        "useSha": {
+          "type": "boolean"
+        },
+        "ignoreAuthenticationMethod": {
+          "type": "boolean"
+        },
+        "omitNotBefore": {
+          "type": "boolean"
+        },
+        "responderId": {
+          "type": "string"
+        },
+        "nameIdFormats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authenticationMethods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "signAssertion",
+        "dontSignResponse",
+        "turnOffEncryption",
+        "useSha",
+        "ignoreAuthenticationMethod",
+        "omitNotBefore"
+      ]
+    }
+  }
+}

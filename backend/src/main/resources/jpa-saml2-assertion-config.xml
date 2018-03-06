@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLTooling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns="http://www.opensaml.org/xmltooling-config" xsi:schemaLocation="http://www.opensaml.org/xmltooling-config ../../src/schema/xmltooling-config.xsd">
+ 
+    <!-- SAML 2.0 Assertion Object providers -->
+    <ObjectProviders>
+        
+        <!-- Attribute -->
+        <ObjectProvider qualifiedName="saml2:Attribute">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeUnmarshaller"/>
+        </ObjectProvider>
+        
+        <ObjectProvider qualifiedName="saml2:AttributeType">
+            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.AttributeUnmarshaller"/>
+        </ObjectProvider>
+        
+    </ObjectProviders>
+ </XMLTooling>

@@ -1,0 +1,65 @@
+<div class="card">
+    <div class="card-header" (click)="toggle.emit(provider)" (keydown.space)="toggle.emit(provider)" tabindex="0">
+        <div class="row">
+            <div class="col-9 clearfix">
+                <div class="w-10 pr-3 pull-left">
+                    <i class="fa fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
+                </div>
+                <div>
+                    {{ provider.serviceProviderName }}
+                    <i *ngIf="provider.createdDate" class="fa" [ngClass]="{
+                                    'fa-check-circle text-success': provider.serviceEnabled,
+                                    'fa-times-circle text-danger': !provider.serviceEnabled
+                                }"></i>
+                    <span *ngIf="!provider.createdDate" class="badge badge-warning" i18n="@@warning--incomplete-form" aria-label="Warning Badge: Incomplete Form">Incomplete Form</span>
+                    <small class="d-block">{{ provider.entityId }}</small>
+                </div>
+            </div>
+            <div class="col-3 text-right">
+                <button class="btn btn-link" (click)="preview.emit(provider)" *ngIf="provider.createdDate" aria-label="Review the XML of the selected service provider">
+                    <i class="fa fa-eye fa-2x"></i>
+                </button>
+                <button class="btn btn-link" (click)="select.emit(provider)" aria-label="Edit selected service provider">
+                    <i class="fa fa-edit fa-2x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" [ngClass]="{'show': isOpen}">
+        <div class="card-body" tabindex="0">
+            <div class="row">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col text-right font-weight-bold" i18n="@@label--service-provider">Service Provider Name:</div>
+                        <div class="col">{{ provider.serviceProviderName }}</div>
+                        <div class="col text-right font-weight-bold" i18n="@@label--created-date">Created Date:</div>
+                        <div class="col" *ngIf="provider.createdDate">{{ provider.createdDate | date:'medium' }}</div>
+                        <div class="col" *ngIf="!provider.createdDate"> &mdash; </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right font-weight-bold" i18n="@@label--service-entity-id">Service Provider Entity ID:</div>
+                        <div class="col">{{ provider.entityId }}</div>
+                        <div class="col text-right font-weight-bold" i18n="@@label--service-provider-status">Service Provider Status:</div>
+                        <div class="col" *ngIf="provider.createdDate">
+                            <i class="fa" [ngClass]="{
+                                            'fa-check-circle text-success': provider.serviceEnabled,
+                                            'fa-times-circle text-danger': !provider.serviceEnabled
+                                        }"></i>
+                            <span *ngIf="provider.serviceEnabled" i18n="@@value--enabled">Enabled</span>
+                            <span *ngIf="!provider.serviceEnabled" i18n="@@value--disabled">Disabled</span>
+                        </div>
+                        <div class="col" *ngIf="!provider.createdDate">
+                            <span class="badge badge-warning" i18n="@@warning--incomplete-form">Incomplete Form</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button *ngIf="!provider.createdDate" class="btn btn-link pull-right" (click)="delete.emit(provider)" aria-label="Delete selected service provider">
+                        <i class="fa fa-trash fa-2x text-danger"></i>
+                    </button>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>

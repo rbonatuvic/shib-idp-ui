@@ -1,0 +1,28 @@
+.modal-footer {
+    justify-content: space-between;
+}
+
+.modal.modal-xl {
+    .modal-dialog {
+        width: 1200px;
+        max-width: 98%;
+    }
+}
+
+delete-dialog {
+    .modal-body:before {
+        position: absolute;
+        font-family: 'FontAwesome';
+        top: 0;
+        left: 10px;
+        content: "\f071";
+        color: $red;
+        font-size: 3.5rem;
+    }
+
+    .modal-body {
+        padding-left: 80px;
+        color: $red;
+        font-weight: 700;
+    }
+}

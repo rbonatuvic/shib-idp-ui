@@ -1,0 +1,137 @@
+<form [formGroup]="form" role="form">
+    <div class="row" formGroupName="mdui">
+        <fieldset class="col-xl-6 form-section">
+            <div class="form-group">
+                <div class="row">
+                    <label for="displayName" class="col-sm-10">
+                        <ng-container i18n="@@label--display-name">Display Name</ng-container>
+                    </label>
+                    <span class="col-sm-2 text-right">
+                        <ng-template #tooltipMDUIDisplayName i18n="@@tooltip--mdui-display-name">Typically, the IdP Display Name field will be presented on IdP discovery service interfaces.</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipMDUIDisplayName"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </div>
+                <input id="displayName" type="text" class="form-control" placeholder="" formControlName="displayName" role="textbox" />
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label for="informationUrl" class="col-sm-10">
+                        <ng-container i18n="@@label--information-url" >Information URL</ng-container>
+                    </label>
+                    <span class="col-sm-2 text-right">
+                        <ng-template #tooltipMDUIInformationUrl i18n="@@tooltip--mdui-information-url">The IdP Information URL is a link to a comprehensive information page about the IdP. This page should expand on the content of the IdP Description field.</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipMDUIInformationUrl"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </div>
+                <input id="informationUrl" type="text" class="form-control" placeholder="" formControlName="informationUrl" role="textbox" />
+                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')">Must be a valid URL</small>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label for="description" class="col-sm-10">
+                        <ng-container i18n="@@label--description">Description</ng-container>
+                    </label>
+                    <span class="col-sm-2 text-right">
+                        <ng-template #tooltipMDUIDescription i18n="@@tooltip--mdui-description">The IdP Description is a brief description of the IdP service. On a well-designed discovery interface, the IdP Description will be presented to the user in addition to the IdP Display Name, and so the IdP Description helps disambiguate duplicate or similar IdP Display Names.</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipMDUIDescription"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </div>
+                <textarea id="description"
+                          class="form-control"
+                          placeholder=""
+                          formControlName="description"
+                          rows="5"
+                          aria-multiline="true"
+                          role="textbox"></textarea>
+                <small class="form-text text-muted">
+                    <ng-container>
+                        {{ form.get('mdui.description').value ? form.get('mdui.description').value.length : '0' }}
+                    </ng-container>
+                    /
+                    {{ descriptionMaxLength }}
+                </small>
+            </div>
+        </fieldset>
+        <fieldset class="col form-section">
+            <div class="form-group">
+                <div class="row">
+                    <label for="privacyStatementUrl" class="col-sm-10">
+                        <ng-container i18n="@@label--privacy-statement-url">Privacy Statement URL</ng-container>
+                    </label>
+                    <span class="col-sm-2 text-right">
+                        <ng-template #tooltipMDUIPrivacyStatementUrl i18n="@@tooltip--mdui-privacy-statement-url">The IdP Privacy Statement URL is a link to the IdP's Privacy Statement. The content of the Privacy Statement should be targeted at end users.</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipMDUIPrivacyStatementUrl"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </div>
+                <input id="privacyStatementUrl" type="text" class="form-control" placeholder="" formControlName="privacyStatementUrl" role="textbox" />
+                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')">Must be a valid URL</small>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <label for="logoUrl" class="col-sm-10">
+                        <ng-container i18n="@@label--logo-url">Logo URL</ng-container>
+                    </label>
+                    <span class="col-sm-2 text-right">
+                        <ng-template #tooltipMDUILogoUrl i18n="@@tooltip--mdui-logo-url">The IdP Logo URL in metadata points to an image file on a remote server. A discovery service, for example, may rely on a visual cue (i.e., a logo) instead of or in addition to the IdP Display Name.</ng-template>
+                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                           [ngbPopover]="tooltipMDUILogoUrl"
+                           i18n-aria-label="@@tooltip--instruction"
+                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </div>
+                <input id="logoUrl" type="text" class="form-control" placeholder="" formControlName="logoUrl" role="textbox" />
+                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')">Must be a valid URL</small>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="logoWidth" class="col-sm-10">
+                                <ng-container i18n="@@label--logo-width">Logo Width</ng-container>
+                            </label>
+                            <span class="col-sm-2 text-right">
+                                <ng-template #tooltipMDUILogoWidth i18n="@@tooltip--mdui-logo-width">The logo should have a minimum width of 100 pixels</ng-template>
+                                <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                   [ngbPopover]="tooltipMDUILogoUrl"
+                                   i18n-aria-label="@@tooltip--instruction"
+                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                            </span>
+                        </div>
+                        <input id="logoWidth" type="number" class="form-control" placeholder="" formControlName="logoWidth" step="1" role="textbox" />
+                        <small class="form-text text-muted" i18n="@@message--must-be-integer">Must be an integer equal to or greater than 0</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="logoHeight" class="col-sm-10">
+                                <ng-container i18n="@@label--logo-height">Logo Height</ng-container>
+                            </label>
+                            <span class="col-sm-2 text-right">
+                                <ng-template #tooltipMDUILogoHeight i18n="@@tooltip--mdui-logo-height">The logo should have a minimum height of 75 pixels and a maximum height of 150 pixels (or the application will scale it proportionally)</ng-template>
+                                <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                   [ngbPopover]="tooltipMDUILogoHeight"
+                                   i18n-aria-label="@@tooltip--instruction"
+                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                            </span>
+                        </div>
+                        <input id="logoHeight" type="number" class="form-control" placeholder="" formControlName="logoHeight" step="1" role="textbox" />
+                        <small class="form-text text-muted" i18n="@@message--must-be-integer">Must be an integer equal to or greater than 0</small>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>

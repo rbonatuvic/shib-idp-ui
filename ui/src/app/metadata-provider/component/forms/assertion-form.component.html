@@ -1,0 +1,104 @@
+<form [formGroup]="form" role="form">
+    <div class="row">
+        <fieldset class="col col-xl-6 form-section">
+            <p>
+                <span i18n="@@label--assertion-consumer-service-endpoints">Assertion Consumer Service Endpoints:</span>
+                <button class="btn btn-success btn-sm" (click)="addEndpoint()" i18n="@@action--add-endpoint" aria-label="Add assertion consumer service endpoint to accordion group" role="button">Add Endpoint</button>
+            </p>
+            <div formArrayName="assertionConsumerServices" class="bg-light border rounded p-4" *ngIf="assertionConsumerServices.length">
+                <ul class="list-group" aria-label="Assertion consumer endpoints accordion" tabindex="0" role="presentation">
+                    <li *ngFor="let endpoint of assertionConsumerServices.controls; let i=index;" [formGroupName]="i" class="list-group-item" [attr.aria-label]="'Assertion consumer service endpoint accordion item for ' + endpoint.get('locationUrl').value">
+                        <div class="clearfix">
+                            <div class="row" (click)="isHidden = !isHidden" (keydown.space)="isHidden = !isHidden" [id]="'ascAccordion' + i" aria-expanded="true" [attr.aria-controls]="'ascContent' + i" role="button">
+                                <div class="col-sm-10">
+                                    <i class="fa" [ngClass]="{'fa-chevron-right': isHidden, 'fa-chevron-down': !isHidden}"></i>
+                                    <span tabindex="0" role="heading" aria-level="3">
+                                        <ng-container *ngIf="endpoint.get('locationUrl').value">{{ endpoint.get('locationUrl').value }}</ng-container>
+                                        <ng-container *ngIf="!endpoint.get('locationUrl').value" i18n="@@label--new-endpoint">New Endpoint</ng-container>
+                                    </span>
+                                    <i class="fa fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="endpoint.get('makeDefault').value === true"></i>
+                                    <small class="sr-only" *ngIf="endpoint.get('makeDefault').value === true" i18n="@@label--default">(default)</small>
+                                </div>
+                                <div class="col-sm-2 text-right">
+                                    <button class="btn btn-link btn-sm text-danger" (click)="removeEndpoint(i)" aria-label="Delete assertion consumer service endpoint" role="button">
+                                        <i class="fa fa-trash fa-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse" [ngClass]="{'show': !isHidden}" [id]="'ascContent' + i" [attr.aria-labelledby]="'ascAccordion' + i" role="region">
+                            <hr />
+                            <div class="form-group">
+                                <div class="row">
+                                    <label [for]="'location-' + i" class="col-sm-10">
+                                        <ng-container i18n="@@label--assertion-consumer-services-location" i18n="@@label--assertion-consumer-service-locations">Assertion Consumer Service Location</ng-container>
+                                    </label>
+                                    <span class="col-sm-2 text-right">
+                                        <ng-template #tooltipAssertionConsumerServiceLocation i18n="@@tooltip--assertion-consumer-service-location">Assertion Consumer Service Location popover</ng-template>
+                                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                           [ngbPopover]="tooltipAssertionConsumerServiceLocation"
+                                           i18n-aria-label="@@tooltip--instruction"
+                                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                    </span>
+                                </div>
+                                <input [id]="'location-' + i" type="text" class="form-control" placeholder="" formControlName="locationUrl" aria-label="Assertion consumer service endpoint location" role="textbox" />
+                                <small class="form-text text-danger" *ngIf="endpoint.get('locationUrl').hasError('pattern')">
+                                    <ng-container i18n="@@message--valid-url">Must be a valid URL</ng-container>
+                                </small>
+                            </div>
+                            <div class="row">
+                                <div class="col col-8">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label [for]="'binding-' + i" class="col-sm-10">
+                                                <ng-container i18n="@@label--assertion-consumer-service-location-binding">Assertion Consumer Service Location Binding</ng-container>
+                                            </label>
+                                            <span class="col-sm-2 text-right">
+                                                <ng-template #tooltipAssertionConsumerServiceLocationBinding i18n="@@tooltip--assertion-consumer-service-location-binding">Assertion Consumer Service Location Binding</ng-template>
+                                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                               [ngbPopover]="tooltipAssertionConsumerServiceLocationBinding"
+                                               i18n-aria-label="@@tooltip--instruction"
+                                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                            </span>
+                                        </div>
+                                        <select [id]="'binding-' + i" class="form-control" formControlName="binding" role="listbox" aria-label="Assertion consumer service location binding type">
+                                            <option disabled selected [ngValue]="null" hidden i18n="@@label--select-binding" role="option">Select Binding Type</option>
+                                            <option *ngFor="let opt of bindingTypes; let i=index;" [value]="opt" [attr.aria-label]="opt" role="option">
+                                                {{ opt }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check form-check-inline">
+                                        <fieldset aria-label="Mark this assertion consumer service endpoint as the default?">
+                                            <label class="d-block">
+                                                <ng-container i18n="@@label--mark-as-default">Mark as Default</ng-container>
+                                                <ng-template #tooltipMarkAsDefault i18n="@@tooltip--mark-as-default">Mark as Default</ng-template>
+                                                <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                                   [ngbPopover]="tooltipMarkAsDefault"
+                                                   i18n-aria-label="@@tooltip--instruction"
+                                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                            </label>
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox"
+                                                       class="custom-control-input"
+                                                       (click)="markAsDefault(endpoint)"
+                                                       [checked]="endpoint.get('makeDefault').value"
+                                                       name="defaultEndpoint"
+                                                       aria-checked="false"
+                                                       role="checkbox">
+                                                <span class="custom-control-indicator"></span>
+                                                <span class="custom-control-description" i18n="@@label--yes">Yes</span>
+                                            </label>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+</form>

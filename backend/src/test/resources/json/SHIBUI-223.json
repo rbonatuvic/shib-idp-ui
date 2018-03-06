@@ -1,0 +1,44 @@
+{
+  "id": "",
+  "entityId": "test",
+  "serviceProviderName": "test",
+  "organization": {
+    "name": null,
+    "displayName": null,
+    "url": null
+  },
+  "contacts": [],
+  "mdui": {
+    "displayName": null,
+    "informationUrl": null,
+    "privacyStatementUrl": null,
+    "description": null,
+    "logoUrl": null,
+    "logoHeight": null,
+    "logoWidth": null
+  },
+  "securityInfo": {
+    "x509CertificateAvailable": true,
+    "authenticationRequestsSigned": false,
+    "wantAssertionsSigned": false,
+    "x509Certificates": [
+      {
+        "name": "test cert",
+        "type": "both",
+        "value": "testcert"
+      }
+    ]
+  },
+  "assertionConsumerServices": [],
+  "serviceProviderSsoDescriptor": {
+    "protocolSupportEnum": null,
+    "nameIdFormats": []
+  },
+  "logoutEndpoints": [],
+  "serviceEnabled": false,
+  "relyingPartyOverrides": {
+    "nameIdFormats": [],
+    "authenticationMethods": []
+  },
+  "attributeRelease": []
+}
