@@ -18,12 +18,36 @@
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="action--add-provider" datatype="html">
-        <source>Add new provider</source>
-        <target>Add new provider (es)</target>
+      <trans-unit id="action--add-new" datatype="html">
+        <source>Add New</source>
+        <target>Add New (es)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.ts</context>
           <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="action--add-provider" datatype="html">
+        <source>Metadata Provider</source>
+        <target>Metadata Provider (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="action--add-filter" datatype="html">
+        <source>Filter</source>
+        <target>Filter (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/app.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--new-filter" datatype="html">
+        <source>New Filter</source>
+        <target>New Filter (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="action--logout" datatype="html">

@@ -20,7 +20,7 @@
                     aria-expanded="false"
                     ngbDropdownToggle>
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    Add New
+                    <ng-container i18n="@@action--add-new">Add New</ng-container>
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
                     <a class="nav-link"
@@ -29,7 +29,7 @@
                         aria-label="Add a new metadata filter"
                         role="button">
                         <i class="fa fa-cubes" aria-hidden="true"></i>
-                        <ng-container i18n="@@action--add-provider">Filter</ng-container>
+                        <ng-container i18n="@@action--add-filter">Filter</ng-container>
                     </a>
                     <a class="nav-link"
                         routerLink="/new"
