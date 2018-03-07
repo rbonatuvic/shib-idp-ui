@@ -13,7 +13,7 @@ There are currently 2 ways to run the application:
 
 ### Running as an executable
 
-`java -jar shibui.jar`
+`java -jar shibui.war`
 
 For complete information on overriding default configuration, see [https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html].
 
@@ -95,5 +95,6 @@ shibui.logout-url=/dashboard
 
 spring.profiles.active=default
 
+# Password for the default user. If not set, a password will be generated at startup
 #shibui.default-password=
 ```
