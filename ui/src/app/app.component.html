@@ -11,16 +11,26 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown" ngbDropdown placement="bottom-right">
+                <button class="nav-link btn btn-primary" id="addNewDropdown" ngbDropdownToggle>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    Add New
+                </button>
+                <div ngbDropdownMenu aria-labelledby="addNewDropdown">
+                    <a class="nav-link" routerLink="/metadata-filter/new" routerLinkActive="active" aria-label="Add a new metadata filter">
+                        <i class="fa fa-cubes" aria-hidden="true"></i>
+                        <ng-container i18n="@@action--add-provider">Filter</ng-container>
+                    </a>
+                    <a class="nav-link" routerLink="/new" routerLinkActive="active" aria-label="Launch wizard to add a new provider">
+                        <i class="fa fa-cube" aria-hidden="true"></i>
+                        <ng-container i18n="@@action--add-provider">Metadata Provider</ng-container>
+                    </a>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" aria-label="Service provider dashboard">
                     <i class="fa fa-th" aria-hidden="true"></i>
                     <ng-container i18n="@@action--manage-providers">Manage Providers</ng-container>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/new" routerLinkActive="active" aria-label="Launch wizard to add a new provider">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    <ng-container i18n="@@action--add-provider">Add new provider</ng-container>
                 </a>
             </li>
             <li>
