@@ -12,6 +12,11 @@ const routes: Routes = [
         path: 'provider',
         loadChildren: './edit-provider/editor.module#EditorModule',
         canActivate: []
+    },
+    {
+        path: 'metadata-filter',
+        loadChildren: './metadata-filter/filter.module#FilterModule',
+        canActivate: []
     }
 ];
 
