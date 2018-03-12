@@ -3,7 +3,8 @@ import {
     Contact,
     SsoService,
     Certificate,
-    SecurityInfo
+    SecurityInfo,
+    LogoutEndpoint
 } from '../app/metadata-provider/model/metadata-provider';
 
 export const draft = {
@@ -40,3 +41,8 @@ export const secInfo = {
     wantAssertionsSigned: true,
     x509Certificates: []
 } as SecurityInfo;
+
+export const logoutEndpoint = {
+    url: 'foo',
+    bindingType: 'bar'
+} as LogoutEndpoint;

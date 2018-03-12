@@ -1,3 +1,4 @@
+import { ViewChild, Component } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,10 +10,32 @@ import { ListValuesService } from '../../service/list-values.service';
 import { EntityDescriptor } from '../../model/entity-descriptor';
 import { LogoutFormComponent } from './logout-form.component';
 
+import * as stubs from '../../../../testing/provider.stub';
+import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
+import { I18nTextComponent } from '../i18n-text.component';
+
+@Component({
+    template: `<logout-form [provider]="provider"></logout-form>`
+})
+class TestHostComponent {
+    provider = new EntityDescriptor({
+        ...stubs.provider,
+        logoutEndpoints: [stubs.logoutEndpoint]
+    });
+
+    @ViewChild(LogoutFormComponent)
+    public formUnderTest: LogoutFormComponent;
+
+    changeProvider(opts: any): void {
+        this.provider = Object.assign({}, this.provider, opts);
+    }
+}
+
 describe('Logout Endpoints Form Component', () => {
-    let fixture: ComponentFixture<LogoutFormComponent>;
-    let instance: LogoutFormComponent;
+    let fixture: ComponentFixture<TestHostComponent>;
+    let instance: TestHostComponent;
     let store: Store<fromProviders.ProviderState>;
+    let form: LogoutFormComponent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -31,19 +54,91 @@ describe('Logout Endpoints Form Component', () => {
                 NgbPopoverModule
             ],
             declarations: [
-                LogoutFormComponent
+                LogoutFormComponent,
+                TestHostComponent,
+                InputDefaultsDirective,
+                I18nTextComponent
             ],
         });
         store = TestBed.get(Store);
         spyOn(store, 'dispatch').and.callThrough();
 
-        fixture = TestBed.createComponent(LogoutFormComponent);
+        fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;
-        instance.provider = new EntityDescriptor({ entityId: 'foo', serviceProviderName: 'bar' });
+        form = instance.formUnderTest;
         fixture.detectChanges();
     });
 
     it('should compile', () => {
         expect(fixture).toBeDefined();
+    });
+
+    describe('ngOnInit method', () => {
+        it('should remove endpoints if there are none available', () => {
+            instance.changeProvider({
+                logoutEndpoints: []
+            });
+            fixture.detectChanges();
+            expect(form.logoutEndpoints.length).toBe(0);
+        });
+    });
+
+    describe('ngOnChanges method', () => {
+        it('should add endpoints if provided', () => {
+            instance.provider = new EntityDescriptor({
+                ...stubs.provider
+            });
+            fixture.detectChanges();
+            expect(form.logoutEndpoints.length).toBe(0);
+        });
+    });
+
+    describe('setEndpoints method', () => {
+        it('should add endpoints if provided', () => {
+            form.setEndpoints();
+            fixture.detectChanges();
+            expect(form.form.get('logoutEndpoints')).toBeDefined();
+        });
+    });
+
+    describe('removeCert method', () => {
+        it('should remove the endpoint at the given index', () => {
+            instance.changeProvider({
+                logoutEndpoints: [stubs.endpoint]
+            });
+            fixture.detectChanges();
+            form.removeEndpoint(0);
+            fixture.detectChanges();
+            expect(form.logoutEndpoints.length).toBe(0);
+        });
+    });
+
+    describe('addCert method', () => {
+        it('should remove the endpoint at the given index', () => {
+            instance.changeProvider({
+                logoutEndpoints: []
+            });
+            fixture.detectChanges();
+            form.addEndpoint();
+            fixture.detectChanges();
+            expect(form.logoutEndpoints.length).toBe(1);
+        });
+    });
+
+    describe('createGroup method', () => {
+        it('should return a FormGroup with the correct attributes', () => {
+            let group = form.createGroup();
+            expect(Object.keys(group.controls)).toEqual(['url', 'bindingType']);
+        });
+
+        it('should return a FormGroup with the provided attributes', () => {
+            let group = form.createGroup({
+                url: 'foo',
+                bindingType: 'bar'
+            });
+            let controls = group.controls;
+            expect(controls.url.value).toEqual('foo');
+            expect(controls.bindingType.value).toEqual('bar');
+        });
     });
 });

@@ -37,21 +37,25 @@ export class LogoutFormComponent extends ProviderFormFragmentComponent implement
         });
     }
 
+    createGroup(ep: LogoutEndpoint = { url: '', bindingType: null }): FormGroup {
+        return this.fb.group({
+            url: [ep.url || '', Validators.required],
+            bindingType: [ep.bindingType || null, Validators.required]
+        });
+    }
+
     get logoutEndpoints(): FormArray {
         return this.form.get('logoutEndpoints') as FormArray;
     }
 
     setEndpoints(endpoints: LogoutEndpoint[] = []): void {
-        let fgs = endpoints.map(ep => this.fb.group(ep)),
-            list = this.fb.array(fgs);
+        let fgs = endpoints.map(ep => this.createGroup(ep)),
+        list = this.fb.array(fgs);
         this.form.setControl('logoutEndpoints', list);
     }
 
     addEndpoint(): void {
-        this.logoutEndpoints.push(this.fb.group({
-            url: ['', Validators.required],
-            bindingType: [null, Validators.required]
-        }));
+        this.logoutEndpoints.push(this.createGroup());
     }
 
     removeEndpoint(index: number): void {

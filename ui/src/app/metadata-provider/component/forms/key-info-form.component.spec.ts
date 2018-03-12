@@ -119,4 +119,23 @@ describe('Security (Key) Info Form Component', () => {
             expect(form.x509Certificates.length).toBe(0);
         });
     });
+
+    describe('createGroup method', () => {
+        it('should return a FormGroup with the correct attributes', () => {
+            let group = form.createGroup();
+            expect(Object.keys(group.controls)).toEqual(['name', 'type', 'value']);
+        });
+
+        it('should return a FormGroup with the provided attributes', () => {
+            let group = form.createGroup({
+                name: 'foo',
+                type: 'signing',
+                value: 'bar'
+            });
+            let controls = group.controls;
+            expect(controls.name.value).toEqual('foo');
+            expect(controls.type.value).toEqual('signing');
+            expect(controls.value.value).toEqual('bar');
+        });
+    });
 });

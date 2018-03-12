@@ -48,19 +48,23 @@ export class KeyInfoFormComponent extends ProviderFormFragmentComponent implemen
         return this.form.get('securityInfo.x509Certificates') as FormArray;
     }
 
+    createGroup(values: Certificate = {name: '', type: 'both', value: ''}): FormGroup {
+        return this.fb.group({
+            name: [values.name || '', Validators.required],
+            type: [values.type || 'both', Validators.required],
+            value: [values.value || '', Validators.required]
+        });
+    }
+
     setCertificates(certs: Certificate[] = []): void {
-        let fgs = certs.map(ep => this.fb.group(ep)),
+        let fgs = certs.map(ep => this.createGroup(ep)),
             list = this.fb.array(fgs, Validators.minLength(1)),
             group = this.form.get('securityInfo') as FormGroup;
         group.setControl('x509Certificates', list);
     }
 
     addCert(): void {
-        this.x509Certificates.push(this.fb.group({
-            name: ['', Validators.required],
-            type: ['both', Validators.required],
-            value: ['', Validators.required]
-        }));
+        this.x509Certificates.push(this.createGroup());
     }
 
     removeCert(index: number): void {
