@@ -7,6 +7,9 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { NewFilterComponent } from './container/new-filter.component';
 import { reducers } from './reducer';
+import { ProviderFormFragmentComponent } from '../metadata-provider/component/forms/provider-form-fragment.component';
+import { ProviderEditorFormModule } from '../metadata-provider/component';
+import { FilterEffects } from './effect/filter.effect';
 
 export const routes: Routes = [
     {
@@ -26,8 +29,9 @@ export const routes: Routes = [
         RouterModule,
         ReactiveFormsModule,
         StoreModule.forFeature('metadata-filter', reducers),
-        EffectsModule.forFeature([]),
-        RouterModule.forChild(routes)
+        EffectsModule.forFeature([FilterEffects]),
+        RouterModule.forChild(routes),
+        ProviderEditorFormModule
     ],
     providers: []
 })

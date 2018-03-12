@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, SimpleChange, ElementRef } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -97,32 +97,42 @@ describe('AutoComplete Input Component', () => {
         });
     });
 
-    describe ('onChanges lifecycle event', () => {
+    describe('setValidation method', () => {
+        let mockChanges = {
+            disabled: new SimpleChange(false, true, false),
+            required: new SimpleChange(false, true, false),
+            allowCustom: new SimpleChange(false, false, true),
+            focused: new SimpleChange(
+                new ElementRef(document.createElement('input')),
+                new ElementRef(document.createElement('input')),
+                false
+            )
+        };
         it('should set disabled', () => {
             spyOn(instanceUnderTest.input, 'disable');
             instanceUnderTest.setDisabledState(true);
-            instanceUnderTest.ngOnChanges({});
+            instanceUnderTest.setValidation(mockChanges);
             expect(instanceUnderTest.input.disable).toHaveBeenCalled();
         });
 
         it('should enable', () => {
             spyOn(instanceUnderTest.input, 'enable');
             instanceUnderTest.setDisabledState(false);
-            instanceUnderTest.ngOnChanges({});
+            instanceUnderTest.setValidation(mockChanges);
             expect(instanceUnderTest.input.enable).toHaveBeenCalled();
         });
 
         it('should set required', () => {
             spyOn(instanceUnderTest.input, 'setValidators');
             instanceUnderTest.required = true;
-            instanceUnderTest.ngOnChanges({});
+            instanceUnderTest.setValidation(mockChanges);
             expect(instanceUnderTest.input.setValidators).toHaveBeenCalled();
         });
 
         it('should remove required', () => {
             spyOn(instanceUnderTest.input, 'clearValidators');
             instanceUnderTest.required = false;
-            instanceUnderTest.ngOnChanges({});
+            instanceUnderTest.setValidation(mockChanges);
             expect(instanceUnderTest.input.clearValidators).toHaveBeenCalled();
         });
 
@@ -132,6 +142,13 @@ describe('AutoComplete Input Component', () => {
             testHostInstance.configure({options: opts});
             testHostFixture.detectChanges();
             expect(instanceUnderTest.state.setState).toHaveBeenCalledWith({options: opts});
+        });
+
+        it('should set validator based on allowCustom', () => {
+            spyOn(instanceUnderTest.input, 'clearAsyncValidators');
+            instanceUnderTest.allowCustom = true;
+            instanceUnderTest.setValidation({...mockChanges, allowCustom: new SimpleChange(false, true, false)});
+            expect(instanceUnderTest.input.clearAsyncValidators).toHaveBeenCalled();
         });
     });
 

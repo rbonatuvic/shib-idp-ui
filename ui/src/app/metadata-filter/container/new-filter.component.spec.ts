@@ -1,8 +1,10 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NewFilterComponent } from './new-filter.component';
 import * as fromFilter from '../reducer';
+import { ProviderEditorFormModule } from '../../metadata-provider/component';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;
@@ -11,12 +13,17 @@ describe('New Metadata Filter Page', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [],
+            providers: [
+                ProviderStatusEmitter,
+                ProviderValueEmitter,
+                FormBuilder
+            ],
             imports: [
                 StoreModule.forRoot({
                     providers: combineReducers(fromFilter.reducers),
                 }),
-                ReactiveFormsModule
+                ReactiveFormsModule,
+                ProviderEditorFormModule
             ],
             declarations: [NewFilterComponent],
         });
@@ -32,5 +39,13 @@ describe('New Metadata Filter Page', () => {
         fixture.detectChanges();
 
         expect(fixture).toBeDefined();
+    });
+
+    describe('cancel method', () => {
+        it('should dispatch a cancel changes action', () => {
+            fixture.detectChanges();
+            instance.cancel();
+            expect(store.dispatch).toHaveBeenCalled();
+        });
     });
 });

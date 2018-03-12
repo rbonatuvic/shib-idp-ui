@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { User } from './core/model/user';
 import * as fromUser from './core/reducer/user.reducer';
 import { NotificationModule } from './notification/notification.module';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('AppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
+                NgbDropdownModule.forRoot(),
                 RouterTestingModule,
                 StoreModule.forRoot({
                     user: combineReducers(fromUser.reducer),

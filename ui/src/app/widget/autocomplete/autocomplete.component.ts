@@ -24,6 +24,7 @@ import 'rxjs/add/operator/combineLatest';
 
 import { keyCodes, isPrintableKeyCode } from '../../shared/keycodes';
 import { AutoCompleteState, AutoCompleteStateEmitter, defaultState } from './autocomplete.model';
+import * as AutoCompleteValidators from './autocomplete-validators.service';
 
 const POLL_TIMEOUT = 1000;
 const MIN_LENGTH = 2;
@@ -49,6 +50,8 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     @Input() autoSelect = false;
     @Input() allowCustom = false;
     @Input() noneFoundText = 'No Options Found';
+
+    @Output() more: EventEmitter<any> = new EventEmitter<any>();
 
     @ViewChild('inputField') inputField: ElementRef;
     @ViewChildren('matchElement', { read: ElementRef }) listItems: QueryList<ElementRef>;
@@ -96,9 +99,11 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             .valueChanges
             .subscribe((query) => {
                 let matches = [];
-                if (query && query.length >= MIN_LENGTH) {
+                if (query && query.length >= MIN_LENGTH && this.state.currentState.options) {
                     matches = this.state.currentState.options
                         .filter((option: string) => option.toLocaleLowerCase().match(query.toLocaleLowerCase()));
+                } else {
+                    matches = [];
                 }
                 this.state.setState({ matches });
             });
@@ -138,16 +143,33 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             }
         }
 
-        if (this.required) {
-            this.input.setValidators([Validators.required]);
-        } else {
-            this.input.clearValidators();
+        this.setValidation(changes);
+    }
+
+    setValidation(changes: SimpleChanges): void {
+        if (changes.required) {
+            if (this.required) {
+                this.input.setValidators([Validators.required]);
+            } else {
+                this.input.clearValidators();
+            }
         }
 
-        if (this.disabled) {
-            this.input.disable();
-        } else {
-            this.input.enable();
+        if (changes.disabled) {
+            if (this.disabled) {
+                this.input.disable();
+            } else {
+                this.input.enable();
+            }
+        }
+
+        if (changes.allowCustom || changes.options) {
+            if (!this.allowCustom) {
+                let opts$ = Observable.of(this.options);
+                this.input.setAsyncValidators([AutoCompleteValidators.existsInCollection(opts$)]);
+            } else {
+                this.input.clearAsyncValidators();
+            }
         }
     }
 
@@ -177,20 +199,19 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     handleComponentBlur(newState: any = {}): void {
-        let { selected, options } = this.state.currentState,
-            query = newState.query || this.state.currentState.query;
-        if (options[selected]) {
-            this.propagateChange(options[selected]);
-        } else if (this.allowCustom) {
-            this.propagateChange(query);
+        let { selected, options, query } = this.state.currentState,
+            change = options && options[selected] ? options[selected] : null;
+        if (!change && (this.allowCustom || this.queryOption)) {
+            change = this.queryOption;
         }
+        this.propagateChange(change);
+        this.propagateTouched(null);
         this.state.setState({
             focused: null,
             selected: null,
             menuOpen: newState.menuOpen || false,
-            query: query
+            query
         });
-        this.propagateTouched(null);
     }
 
     handleOptionBlur(event: FocusEvent, index): void {
@@ -213,12 +234,17 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         const { focused, menuOpen, options, query, selected } = this.state.currentState;
         const focusingAnOption = focused !== -1;
         const isIosDevice = this.isIosDevice();
-        if (!focusingAnOption) {
+        if (!focusingAnOption && options) {
             const keepMenuOpen = menuOpen && isIosDevice;
             const newQuery = isIosDevice ? query : options[selected];
             this.handleComponentBlur({
                 menuOpen: keepMenuOpen,
                 query: newQuery
+            });
+        } else {
+            this.handleComponentBlur({
+                menuOpen: false,
+                query
             });
         }
     }
@@ -313,11 +339,17 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     handleEnter(event: KeyboardEvent): void {
-        if (this.state.currentState.menuOpen) {
+        let { options, selected, query, menuOpen } = this.state.currentState;
+        if (menuOpen) {
             event.preventDefault();
-            const hasSelectedOption = this.state.currentState.selected >= 0;
+            let hasSelectedOption = selected >= 0;
+            if (!hasSelectedOption) {
+                const queryIndex = options.indexOf(query);
+                hasSelectedOption = queryIndex > -1;
+                selected = hasSelectedOption ? queryIndex : selected;
+            }
             if (hasSelectedOption) {
-                this.handleOptionClick(event, this.state.currentState.selected);
+                this.handleOptionClick(event, selected);
             } else {
                 this.handleComponentBlur({
                     focused: -1,
@@ -346,6 +378,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     isIosDevice() {
         return !!(navigator.userAgent.match(/(iPod|iPhone|iPad)/g) && navigator.userAgent.match(/AppleWebKit/g));
+    }
+
+    get queryOption(): string | null {
+        const { query, options } = this.state.currentState;
+        const hasQueryAndOptions = query && options && options.length;
+        return hasQueryAndOptions ? options.indexOf(query) > -1 ? query : null : null;
     }
 
     get hasAutoselect(): boolean {

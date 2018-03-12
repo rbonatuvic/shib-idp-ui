@@ -2003,6 +2003,30 @@
           <context context-type="linenumber">60</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="label--filter-name" datatype="html">
+        <source>Filter Name</source>
+        <target>Filter Name</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--dashboard-display-only" datatype="html">
+        <source>(Dashboard Display Only)</source>
+        <target>(Dashboard Display Only)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--search-entity-id" datatype="html">
+        <source>Search Entity ID</source>
+        <target>Search Entity ID</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
