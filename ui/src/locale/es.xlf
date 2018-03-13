@@ -1952,8 +1952,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="label--nameid-format-indexed" datatype="html">
-        <source>NameId Format <x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/></source>
-        <target>NameId Format <x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/> (es)</target>
+        <source>NameID Format <x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/></source>
+        <target>NameID Format <x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/> (es)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/metadata-provider/component/forms/finish-form.component.ts</context>
           <context context-type="linenumber">76</context>
@@ -1997,6 +1997,54 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/edit-provider/container/editor.component.ts</context>
           <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--filter-name" datatype="html">
+        <source>Filter Name</source>
+        <target>Filter Name (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--dashboard-display-only" datatype="html">
+        <source>(Dashboard Display Only)</source>
+        <target>(Dashboard Display Only) (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tooltip--filter-name" datatype="html">
+        <source>Filter Name</source>
+        <target>Filter Name (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--search-entity-id" datatype="html">
+        <source>Search Entity ID</source>
+        <target>Search Entity ID (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tooltip--search-entity-id" datatype="html">
+        <source>Search Entity ID</source>
+        <target>Search Entity ID (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="action--save-changes" datatype="html">
+        <source>Save Changes</source>
+        <target>Save Changes (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/new-filter.component.ts</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
     </body>

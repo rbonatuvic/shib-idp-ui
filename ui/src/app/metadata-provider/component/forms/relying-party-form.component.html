@@ -60,7 +60,7 @@
                         <button class="btn btn-success btn-sm" (click)="addFormat()" i18n="@@action--add-nameid-format" aria-label="Add nameID format" role="button">Add NameID Format</button>
                     </span>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipNameIdFormat i18n="@@tooltip--nameid-format">Add NameId Format popover</ng-template>
+                        <ng-template #tooltipNameIdFormat i18n="@@tooltip--nameid-format">Add NameID Format popover</ng-template>
                         <i class="info-icon fa fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipNameIdFormat"
                            i18n-aria-label="@@tooltip--instruction"
@@ -69,7 +69,7 @@
                 </div>
                 <div *ngIf="nameIdFormats.length" class="p-2">
                     <div class="row" *ngFor="let format of nameIdFormats.controls; let i=index; let isLast=last">
-                        <label [for]="'nameIdFormat-' + i" class="col-sm-12" i18n="@@label--nameid-format-indexed">NameId Format {{ i + 1 }}</label>
+                        <label [for]="'nameIdFormat-' + i" class="col-sm-12" i18n="@@label--nameid-format-indexed">NameID Format {{ i + 1 }}</label>
                         <auto-complete
                             [id]="'nameIdFormat-' + i"
                             [formControlName]="i"
@@ -79,7 +79,7 @@
                             class="col-sm-11">
                         </auto-complete>
                         <div class="col-sm-1 text-right">
-                            <button class="btn btn-link" (click)="removeFormat(i)" aria-label="Delete nameID format" role="button">
+                            <button class="btn btn-link" (click)="removeFormat(i)" aria-label="Delete NameID format" role="button">
                                 <i class="fa fa-trash fa-lg text-danger"></i>
                             </button>
                         </div>

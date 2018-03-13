@@ -37,7 +37,7 @@
             <div formArrayName="nameIdFormats" class="form-group" *ngIf="nameIdFormats.length">
                 <div *ngFor="let format of nameIdFormats.controls; let i=index; let isLast=last" class="row">
                     <div class="col">
-                        <label [for]="'nameIdFormat-' + i" class="sr-only">NameId Format {{ i + 1 }}</label>
+                        <label [for]="'nameIdFormat-' + i" class="sr-only">NameID Format {{ i + 1 }}</label>
                         <auto-complete
                             [id]="'nameIdFormat-' + i"
                             [formControlName]="i"

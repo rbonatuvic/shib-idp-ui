@@ -10,6 +10,7 @@ import { reducers } from './reducer';
 import { ProviderFormFragmentComponent } from '../metadata-provider/component/forms/provider-form-fragment.component';
 import { ProviderEditorFormModule } from '../metadata-provider/component';
 import { FilterEffects } from './effect/filter.effect';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 export const routes: Routes = [
     {
@@ -31,7 +32,8 @@ export const routes: Routes = [
         StoreModule.forFeature('metadata-filter', reducers),
         EffectsModule.forFeature([FilterEffects]),
         RouterModule.forChild(routes),
-        ProviderEditorFormModule
+        ProviderEditorFormModule,
+        NgbPopoverModule
     ],
     providers: []
 })
