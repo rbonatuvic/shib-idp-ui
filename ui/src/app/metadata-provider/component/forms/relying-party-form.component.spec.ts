@@ -86,7 +86,7 @@ describe('Relying Party Form Component', () => {
             fixture.detectChanges();
             form.removeFormat(0);
             fixture.detectChanges();
-            expect(form.nameIdFormats.length).toBe(0);
+            expect(form.nameIdFormatList.length).toBe(0);
         });
     });
 
@@ -94,7 +94,7 @@ describe('Relying Party Form Component', () => {
         it('should add a new nameid format', () => {
             form.addFormat();
             fixture.detectChanges();
-            expect(form.nameIdFormats.length).toBe(1);
+            expect(form.nameIdFormatList.length).toBe(1);
         });
     });
 
@@ -104,7 +104,7 @@ describe('Relying Party Form Component', () => {
             fixture.detectChanges();
             form.removeAuthenticationMethod(0);
             fixture.detectChanges();
-            expect(form.authenticationMethods.length).toBe(0);
+            expect(form.authenticationMethodList.length).toBe(0);
         });
     });
 
@@ -112,7 +112,7 @@ describe('Relying Party Form Component', () => {
         it('should add a new auth method', () => {
             form.addAuthenticationMethod();
             fixture.detectChanges();
-            expect(form.authenticationMethods.length).toBe(1);
+            expect(form.authenticationMethodList.length).toBe(1);
         });
     });
 

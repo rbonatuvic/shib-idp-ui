@@ -67,8 +67,8 @@
                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                     </span>
                 </div>
-                <div *ngIf="nameIdFormats.length" class="p-2">
-                    <div class="row" *ngFor="let format of nameIdFormats.controls; let i=index; let isLast=last">
+                <div *ngIf="nameIdFormatList.length" class="p-2">
+                    <div class="row" *ngFor="let format of nameIdFormatList.controls; let i=index; let isLast=last">
                         <label [for]="'nameIdFormat-' + i" class="col-sm-12" i18n="@@label--nameid-format-indexed">NameID Format {{ i + 1 }}</label>
                         <auto-complete
                             [id]="'nameIdFormat-' + i"
@@ -100,8 +100,8 @@
                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                     </span>
                 </div>
-                <div *ngIf="authenticationMethods.length" class="p-2">
-                    <div class="row" *ngFor="let format of authenticationMethods.controls; let i=index; let isLast=last">
+                <div *ngIf="authenticationMethodList.length" class="p-2">
+                    <div class="row" *ngFor="let format of authenticationMethodList.controls; let i=index; let isLast=last">
                         <label [for]="'authMethod-' + i" class="col-sm-12" i18n="@@label--auth-method-indexed">Authentication Method {{ i + 1 }}</label>
                         <auto-complete
                             [id]="'authMethod-' + i"

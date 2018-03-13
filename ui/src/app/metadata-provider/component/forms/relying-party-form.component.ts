@@ -22,6 +22,9 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
     nameIdFormatOptions = this.listValues.nameIdFormats;
     authenticationMethodOptions = this.listValues.authenticationMethods;
 
+    nameIdFormatList: FormArray;
+    authenticationMethodList: FormArray;
+
     constructor(
         protected fb: FormBuilder,
         protected statusEmitter: ProviderStatusEmitter,
@@ -31,7 +34,13 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
         super(fb, statusEmitter, valueEmitter);
     }
 
+    ngOnInit(): void {
+        super.ngOnInit();
+    }
+
     createForm(): void {
+        this.nameIdFormatList = this.fb.array([]);
+        this.authenticationMethodList = this.fb.array([]);
         this.form = this.fb.group({
             relyingPartyOverrides: this.fb.group({
                 signAssertion: false,
@@ -41,8 +50,8 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
                 ignoreAuthenticationMethod: false,
                 omitNotBefore: false,
                 responderId: '',
-                nameIdFormats: this.fb.array([]),
-                authenticationMethods: this.fb.array([])
+                nameIdFormats: this.nameIdFormatList,
+                authenticationMethods: this.authenticationMethodList
             })
         });
     }
@@ -50,41 +59,30 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
     getRequiredControl = (value: string): FormControl => this.fb.control(value, Validators.required);
 
     setNameIdFormats(nameIdFormats: string[] = []): void {
-        let fcs = nameIdFormats.map(this.getRequiredControl),
-            list = this.fb.array(fcs),
-            group = this.form.get('relyingPartyOverrides') as FormGroup;
-        group.setControl('nameIdFormats', list);
+        let fcs = nameIdFormats.map(this.getRequiredControl);
+        fcs.forEach(ctrl => this.nameIdFormatList.push(ctrl));
     }
 
     setAuthenticationMethods(methods: string[] = []): void {
-        let fcs = methods.map(this.getRequiredControl),
-            list = this.fb.array(fcs),
-            group = this.form.get('relyingPartyOverrides') as FormGroup;
-        group.setControl('authenticationMethods', list);
-    }
-
-    get nameIdFormats(): FormArray {
-        return this.form.get('relyingPartyOverrides.nameIdFormats') as FormArray;
-    }
-
-    get authenticationMethods(): FormArray {
-        return this.form.get('relyingPartyOverrides.authenticationMethods') as FormArray;
+        let fcs = methods.map(this.getRequiredControl);
+        fcs.forEach(ctrl => this.authenticationMethodList.push(ctrl));
     }
 
     addFormat(text: string = ''): void {
-        this.nameIdFormats.push(this.fb.control(text, Validators.required));
+        this.nameIdFormatList.push(this.getRequiredControl(text));
     }
 
     addAuthenticationMethod(text: string = ''): void {
-        this.authenticationMethods.push(this.fb.control(text, Validators.required));
+        console.log(this.authenticationMethodList as FormArray);
+        this.authenticationMethodList.push(this.getRequiredControl(text));
     }
 
     removeFormat(index: number): void {
-        this.nameIdFormats.removeAt(index);
+        this.nameIdFormatList.removeAt(index);
     }
 
     removeAuthenticationMethod(index: number): void {
-        this.authenticationMethods.removeAt(index);
+        this.authenticationMethodList.removeAt(index);
     }
 
     ngOnChanges(): void {

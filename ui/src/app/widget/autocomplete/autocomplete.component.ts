@@ -250,6 +250,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     handleInputChange(query: string): void {
+        query = query || '';
         const queryEmpty = query.length === 0;
         const queryChanged = this.state.currentState.query.length !== query.length;
         const queryLongEnough = query.length >= MIN_LENGTH;
