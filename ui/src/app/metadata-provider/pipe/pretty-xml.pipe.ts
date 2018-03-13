@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import XmlFormatter from 'xml-formatter';
+import * as XmlFormatter from 'xml-formatter';
 
 @Pipe({ name: 'prettyXml' })
 export class PretttyXml implements PipeTransform {
     transform(value: string): string {
+        console.log(XmlFormatter);
         if (!value) {
             return value;
         }
