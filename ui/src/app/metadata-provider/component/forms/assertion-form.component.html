@@ -7,7 +7,10 @@
             </p>
             <div formArrayName="assertionConsumerServices" class="bg-light border rounded p-4" *ngIf="assertionConsumerServices.length">
                 <ul class="list-group" aria-label="Assertion consumer endpoints accordion" tabindex="0" role="presentation">
-                    <li *ngFor="let endpoint of assertionConsumerServices.controls; let i=index;" [formGroupName]="i" class="list-group-item" [attr.aria-label]="'Assertion consumer service endpoint accordion item for ' + endpoint.get('locationUrl').value">
+                    <li *ngFor="let endpoint of assertionConsumerServices.controls; let i=index;"
+                        [formGroupName]="i"
+                        class="list-group-item"
+                        [attr.aria-label]="'Assertion consumer service endpoint accordion item for ' + endpoint.get('locationUrl').value">
                         <div class="clearfix">
                             <div class="row" (click)="isHidden = !isHidden" (keydown.space)="isHidden = !isHidden" [id]="'ascAccordion' + i" aria-expanded="true" [attr.aria-controls]="'ascContent' + i" role="button">
                                 <div class="col-sm-10">
@@ -15,6 +18,7 @@
                                     <span tabindex="0" role="heading" aria-level="3">
                                         <ng-container *ngIf="endpoint.get('locationUrl').value">{{ endpoint.get('locationUrl').value }}</ng-container>
                                         <ng-container *ngIf="!endpoint.get('locationUrl').value" i18n="@@label--new-endpoint">New Endpoint</ng-container>
+                                        {{ i }}
                                     </span>
                                     <i class="fa fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="endpoint.get('makeDefault').value === true"></i>
                                     <small class="sr-only" *ngIf="endpoint.get('makeDefault').value === true" i18n="@@label--default">(default)</small>
@@ -80,16 +84,15 @@
                                                    i18n-aria-label="@@tooltip--instruction"
                                                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                             </label>
-                                            <div class="custom-control custom-checkbox">
+                                            <div class="custom-control custom-checkbox custom-control-inline">
                                                 <input type="checkbox"
-                                                    id="markAsDefault"
+                                                    id="markAsDefault-{{ i }}"
                                                     class="custom-control-input"
                                                     (click)="markAsDefault(endpoint)"
                                                     [checked]="endpoint.get('makeDefault').value"
-                                                    name="defaultEndpoint"
                                                     aria-checked="false"
                                                     role="checkbox">
-                                                <label class="custom-control-label" for="markAsDefault" i18n="@@label--yes">Yes</label>
+                                                <label class="custom-control-label" for="markAsDefault-{{ i }}" i18n="@@label--yes">Yes</label>
                                             </div>
                                         </fieldset>
                                     </div>
