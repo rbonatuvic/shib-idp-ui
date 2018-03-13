@@ -133,11 +133,15 @@
             </p>
             <div formArrayName="contacts" class="bg-light border rounded p-4" *ngIf="contacts.length">
                 <ul class="list-group" id="contactAccordionGroup" aria-label="Contact information accordion group" tabindex="0" role="presentation">
-                    <li *ngFor="let contact of contacts.controls; let i=index;" [formGroupName]="i" class="list-group-item" [attr.aria-label]="'Contact information accordion item for ' + contact.get('name').value">
+                    <li *ngFor="let contact of contacts.controls; let i=index;"
+                        [formGroupName]="i"
+                        class="list-group-item"
+                        [attr.aria-label]="'Contact information accordion item for ' + contact.get('name').value"
+                        #acc>
                         <div class="clearfix">
-                            <div class="row" (click)="isHidden = !isHidden" (keydown.space)="isHidden = !isHidden" [id]="'contactAccordion' + i" aria-expanded="true" [attr.aria-controls]="'contactContent' + i" role="button">
+                            <div class="row" (click)="acc.isHidden = !acc.isHidden" (keydown.space)="acc.isHidden = !acc.isHidden" [id]="'contactAccordion' + i" aria-expanded="true" [attr.aria-controls]="'contactContent' + i" role="button">
                                 <div class="col-sm-10">
-                                    <i class="fa" [ngClass]="{'fa-chevron-right': isHidden, 'fa-chevron-down': !isHidden}"></i>
+                                    <i class="fa" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
                                     <span tabindex="0" role="heading" aria-level="3">
                                         {{ contact.get('name').value || 'New Contact' }}
                                         <small *ngIf="contact.get('type').value">({{ contact.get('type').value }})</small>
@@ -150,7 +154,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="collapse" [ngClass]="{'show': !isHidden}" [id]="'contactContent' + i" [attr.aria-labelledby]="'contactAccordion' + i" role="region">
+                        <div class="collapse" [ngClass]="{'show': !acc.isHidden}" [id]="'contactContent' + i" [attr.aria-labelledby]="'contactAccordion' + i" role="region">
                             <hr />
                             <div class="row">
                                 <div class="col col-7">

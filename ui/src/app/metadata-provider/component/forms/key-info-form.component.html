@@ -96,11 +96,12 @@
                     <li *ngFor="let cert of x509Certificates.controls; let i=index;"
                         [formGroupName]="i"
                         class="list-group-item"
-                        [attr.aria-label]="'x509 certificate information accordion item for ' + cert.get('name').value">
+                        [attr.aria-label]="'x509 certificate information accordion item for ' + cert.get('name').value"
+                        #acc>
                         <div class="clearfix">
-                            <div class="row" (click)="isHidden = !isHidden" (keydown.space)="isHidden = !isHidden" [id]="'certAccordion' + i" aria-expanded="true" [attr.aria-controls]="'certContent' + i" role="button">
+                            <div class="row" (click)="acc.isHidden = !acc.isHidden" (keydown.space)="acc.isHidden = !acc.isHidden" [id]="'certAccordion' + i" aria-expanded="true" [attr.aria-controls]="'certContent' + i" role="button">
                                 <div class="col-sm-10">
-                                    <i class="fa" [ngClass]="{'fa-chevron-right': isHidden, 'fa-chevron-down': !isHidden}"></i>
+                                    <i class="fa" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
                                     <span tabindex="0" role="heading" aria-level="3">
                                         <ng-container *ngIf="cert.get('name').value">{{ cert.get('name').value }}</ng-container>
                                         <ng-container *ngIf="!cert.get('name').value" i18n="@@label--new-cert">New Certificate</ng-container>
@@ -116,7 +117,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="collapse" [ngClass]="{'show': !isHidden}"  [id]="'certContent' + i" [attr.aria-labelledby]="'certAccordion' + i" role="region">
+                        <div class="collapse" [ngClass]="{'show': !acc.isHidden}"  [id]="'certContent' + i" [attr.aria-labelledby]="'certAccordion' + i" role="region">
                             <hr />
                             <div class="form-group">
                                 <div class="row">
