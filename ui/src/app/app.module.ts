@@ -20,6 +20,7 @@ import { CachingInterceptor } from './core/service/cache.interceptor';
 import { AuthorizedInterceptor } from './core/service/authorized.interceptor';
 import { NotificationModule } from './notification/notification.module';
 import { ErrorInterceptor } from './core/service/error.interceptor';
+import { NavigatorService } from './core/service/navigator.service';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { ErrorInterceptor } from './core/service/error.interceptor';
         NotificationModule
     ],
     providers: [
+        NavigatorService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {
             provide: HTTP_INTERCEPTORS,

@@ -1,13 +1,27 @@
-import { Component, ViewChild, SimpleChange, ElementRef } from '@angular/core';
+import { Component, ViewChild, SimpleChange, ElementRef, SimpleChanges } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { AutoCompleteComponent } from './autocomplete.component';
+import { NavigatorService } from '../../core/service/navigator.service';
+
+const iPodAgent = `Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)
+    AppleWebKit/534.46 (KHTML, like Gecko)
+    Version/5.1 Mobile/9A334 Safari/7534.48.3`;
+const regularAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3)
+    AppleWebKit/537.36 (KHTML, like Gecko)
+    Chrome/64.0.3282.186 Safari/537.36`;
 
 @Component({
-    template: `<auto-complete [id]="config.id" [autoSelect]="config.autoSelect" [options]="config.options"></auto-complete>`
+    template: `
+        <auto-complete [id]="config.id"
+            [autoSelect]="config.autoSelect"
+            [options]="config.options"
+            [allowCustom]="config.allowCustom">
+        </auto-complete>
+    `
 })
 class TestHostComponent {
     config: any = {
@@ -16,7 +30,7 @@ class TestHostComponent {
         required: true,
         defaultValue: '',
         id: 'foo',
-        allowCustom: true,
+        allowCustom: false,
         noneFoundText: 'None Found'
     };
 
@@ -32,10 +46,13 @@ describe('AutoComplete Input Component', () => {
     let testHostInstance: TestHostComponent;
     let testHostFixture: ComponentFixture<TestHostComponent>;
     let instanceUnderTest: AutoCompleteComponent;
+    let navigatorInstance: NavigatorService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [],
+            providers: [
+                NavigatorService
+            ],
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule
@@ -51,6 +68,7 @@ describe('AutoComplete Input Component', () => {
         testHostFixture = TestBed.createComponent(TestHostComponent);
         testHostInstance = testHostFixture.componentInstance;
         instanceUnderTest = testHostInstance.autoCompleteUnderTest;
+        navigatorInstance = TestBed.get(NavigatorService);
         testHostFixture.detectChanges();
     });
 
@@ -94,6 +112,29 @@ describe('AutoComplete Input Component', () => {
                 instanceUnderTest.setDisabledState();
                 expect(instanceUnderTest.disabled).toBe(false);
             });
+        });
+    });
+
+    describe('ngOnChanges lifecycle event', () => {
+        const opts = ['foo', 'bar', 'baz'];
+        it('should add options to state if provided', () => {
+            spyOn(instanceUnderTest.state, 'setState');
+            testHostInstance.configure({
+                options: opts
+            });
+            testHostFixture.detectChanges();
+            expect(instanceUnderTest.state.setState).toHaveBeenCalledWith({
+                options: opts
+            });
+        });
+
+        it('should not set the state if no options were provided', () => {
+            spyOn(instanceUnderTest.state, 'setState');
+            testHostInstance.configure({
+                focused: null
+            });
+            testHostFixture.detectChanges();
+            expect(instanceUnderTest.state.setState).not.toHaveBeenCalled();
         });
     });
 
@@ -189,8 +230,130 @@ describe('AutoComplete Input Component', () => {
         });
     });
 
-    xdescribe('handleEnter handler', () => {
+    describe('handleComponentBlur handler', () => {
+        const opts = ['foo', 'bar', 'baz'];
+        it('should set a new state', () => {
+            instanceUnderTest.state.setState({options: opts, selected: 0, query: 'foo'});
+            spyOn(instanceUnderTest.state, 'setState');
+            instanceUnderTest.handleComponentBlur({menuOpen: true});
+            expect(instanceUnderTest.state.setState).toHaveBeenCalledWith({
+                focused: null,
+                selected: null,
+                menuOpen: true,
+                query: 'foo'
+            });
+        });
 
+        it('should set the menuOpen state to false if not provided', () => {
+            instanceUnderTest.state.setState({ options: opts, selected: 0, query: 'foo' });
+            spyOn(instanceUnderTest.state, 'setState');
+            instanceUnderTest.handleComponentBlur();
+            expect(instanceUnderTest.state.setState).toHaveBeenCalledWith({
+                focused: null,
+                selected: null,
+                menuOpen: false,
+                query: 'foo'
+            });
+        });
+
+        it('should allow custom values when the property is set', () => {
+            testHostInstance.configure({allowCustom: true});
+            instanceUnderTest.state.setState({ options: opts, selected: -1, query: 'hi' });
+            testHostFixture.detectChanges();
+            spyOn(instanceUnderTest, 'propagateChange');
+            instanceUnderTest.handleComponentBlur();
+            expect(instanceUnderTest.propagateChange).toHaveBeenCalledWith('hi');
+        });
+
+        it('should detect if query is in current options', () => {
+            instanceUnderTest.state.setState({ options: opts, selected: -1, query: 'foo' });
+            testHostFixture.detectChanges();
+            spyOn(instanceUnderTest, 'propagateChange');
+            instanceUnderTest.handleComponentBlur();
+            expect(instanceUnderTest.propagateChange).toHaveBeenCalledWith('foo');
+        });
+    });
+
+    describe('handleEnter handler', () => {
+        const opts = ['foo', 'bar', 'baz'];
+        it('should call preventDefault on the provided event if the menu is currently open', () => {
+            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            instanceUnderTest.state.setState({options: opts, menuOpen: true});
+            instanceUnderTest.handleEnter(ev);
+            expect(ev.preventDefault).toHaveBeenCalled();
+        });
+        it('should NOT call preventDefault on the provided event if the menu is not open', () => {
+            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            instanceUnderTest.state.setState({ options: opts, menuOpen: false });
+            instanceUnderTest.handleEnter(ev);
+            expect(ev.preventDefault).not.toHaveBeenCalled();
+        });
+
+        it('should call componentBlur if there is no selected option and the query is not in the options', () => {
+            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            spyOn(instanceUnderTest, 'handleComponentBlur');
+            instanceUnderTest.state.setState({ options: opts, menuOpen: true, query: 'hi', selected: -1 });
+            instanceUnderTest.handleEnter(ev);
+            expect(instanceUnderTest.handleComponentBlur).toHaveBeenCalledWith({
+                focused: -1,
+                selected: -1,
+                menuOpen: false
+            });
+        });
+
+        it('should call handleOptionClick if there is no selected option but the query is in the options', () => {
+            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            spyOn(instanceUnderTest, 'handleOptionClick');
+            instanceUnderTest.state.setState({ options: opts, menuOpen: true, query: 'foo', selected: -1 });
+            instanceUnderTest.handleEnter(ev);
+            expect(instanceUnderTest.handleOptionClick).toHaveBeenCalledWith(0);
+        });
+    });
+
+    describe('handleInputFocus handler', () => {
+        it('should set the state focused attribute to the input fields index', () => {
+            spyOn(instanceUnderTest.state, 'setState');
+            instanceUnderTest.handleInputFocus();
+            expect(instanceUnderTest.state.setState).toHaveBeenCalledWith({focused: -1});
+        });
+    });
+
+    describe('handleOptionFocus handler', () => {
+        it('should set the state focused attribute to the focused option', () => {
+            spyOn(instanceUnderTest.state, 'setState');
+            instanceUnderTest.handleOptionFocus(1);
+            expect(instanceUnderTest.state.setState).toHaveBeenCalledWith({focused: 1, selected: 1});
+        });
+    });
+
+    describe('handleOptionClick handler', () => {
+        const expected = {
+            menuOpen: false,
+            focused: -1,
+            selected: -1,
+            query: 'bar'
+        };
+        it('should set the state to menuOpen: false, focused to -1, selected to -1, and the query to the selected option', () => {
+            spyOnProperty(instanceUnderTest.state, 'currentState', 'get').and.returnValue({
+                matches: ['foo', 'bar'],
+                options: ['foo', 'bar', 'baz'],
+                query: 'bar'
+            });
+            spyOn(instanceUnderTest.state, 'setState');
+            instanceUnderTest.handleOptionClick(1);
+            expect(instanceUnderTest.state.setState).toHaveBeenCalledWith(expected);
+        });
+
+        it('should not call propagateChange if the selected option is not in the list of matches', () => {
+            spyOnProperty(instanceUnderTest.state, 'currentState', 'get').and.returnValue({
+                matches: ['foo', 'bar'],
+                options: ['foo', 'bar', 'baz'],
+                query: 'bar'
+            });
+            spyOn(instanceUnderTest, 'propagateChange');
+            instanceUnderTest.handleOptionClick(4);
+            expect(instanceUnderTest.propagateChange).not.toHaveBeenCalled();
+        });
     });
 
     describe('handleOptionMouseDown method', () => {
@@ -252,6 +415,40 @@ describe('AutoComplete Input Component', () => {
             spyOnProperty(instanceUnderTest.state, 'currentState', 'get').and.returnValue({focused, matches});
             testHostFixture.detectChanges();
             expect(instanceUnderTest.activeDescendant).toBe(`${id}__option--${focused}`);
+        });
+    });
+
+    describe('isIosDevice method', () => {
+        it('should return true if navigator.userAgent is an ipad', () => {
+            spyOnProperty(navigatorInstance, 'native', 'get').and.returnValue({ userAgent: iPodAgent });
+            expect(instanceUnderTest.isIosDevice()).toBe(true);
+        });
+        it('should return false if navigator.userAgent is not an ios device', () => {
+            spyOnProperty(navigatorInstance, 'native', 'get').and.returnValue({ userAgent: regularAgent });
+            expect(instanceUnderTest.isIosDevice()).toBe(false);
+        });
+    });
+
+    describe('queryOption getter', () => {
+        it('should return the query if the query exists in the collection', () => {
+            instanceUnderTest.state.setState({query: 'foo', options: ['foo', 'bar']});
+            expect(instanceUnderTest.queryOption).toBe('foo');
+        });
+        it('should return null if the query does not in the collection', () => {
+            instanceUnderTest.state.setState({ query: 'foo', options: ['bar', 'baz'] });
+            expect(instanceUnderTest.queryOption).toBe(null);
+        });
+        it('should return null if the query is undefined/null', () => {
+            instanceUnderTest.state.setState({ query: null, options: ['bar', 'baz'] });
+            expect(instanceUnderTest.queryOption).toBe(null);
+        });
+        it('should return null if the options are undefined/null', () => {
+            instanceUnderTest.state.setState({ query: 'foo', options: null });
+            expect(instanceUnderTest.queryOption).toBe(null);
+        });
+        it('should return null if the options list is empty', () => {
+            instanceUnderTest.state.setState({ query: 'foo', options: [] });
+            expect(instanceUnderTest.queryOption).toBe(null);
         });
     });
 });

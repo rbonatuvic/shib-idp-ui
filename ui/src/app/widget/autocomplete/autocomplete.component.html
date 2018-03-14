@@ -9,7 +9,7 @@
         role="textbox"
         [attr.aria-activedescendant]="activeDescendant"
         attr.aria-owns="{{ id }}__listbox"
-        (focus)="handleInputFocus($event)"
+        (focus)="handleInputFocus()"
         (blur)="handleInputBlur($event)"
     />
     <ul class="dropdown-menu"
@@ -23,7 +23,7 @@
             [class.focused]="state.currentState.focused === i"
             id="{{ id }}__option--{{ i }}"
             (focusout)="handleOptionBlur($event, i)"
-            (click)="handleOptionClick($event, i)"
+            (click)="handleOptionClick(i)"
             (mousedown)="handleOptionMouseDown($event)"
             (mouseenter)="handleOptionMouseEnter(i)"
             (mouseout)="handleOptionMouseOut()"

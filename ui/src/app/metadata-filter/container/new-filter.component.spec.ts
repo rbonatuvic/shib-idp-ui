@@ -5,6 +5,8 @@ import { NewFilterComponent } from './new-filter.component';
 import * as fromFilter from '../reducer';
 import { ProviderEditorFormModule } from '../../metadata-provider/component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
+import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NavigatorService } from '../../core/service/navigator.service';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;
@@ -16,14 +18,17 @@ describe('New Metadata Filter Page', () => {
             providers: [
                 ProviderStatusEmitter,
                 ProviderValueEmitter,
-                FormBuilder
+                FormBuilder,
+                NgbPopoverConfig,
+                NavigatorService
             ],
             imports: [
                 StoreModule.forRoot({
                     providers: combineReducers(fromFilter.reducers),
                 }),
                 ReactiveFormsModule,
-                ProviderEditorFormModule
+                ProviderEditorFormModule,
+                NgbPopoverModule
             ],
             declarations: [NewFilterComponent],
         });

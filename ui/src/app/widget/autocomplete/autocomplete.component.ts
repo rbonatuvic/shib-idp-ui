@@ -25,6 +25,7 @@ import 'rxjs/add/operator/combineLatest';
 import { keyCodes, isPrintableKeyCode } from '../../shared/keycodes';
 import { AutoCompleteState, AutoCompleteStateEmitter, defaultState } from './autocomplete.model';
 import * as AutoCompleteValidators from './autocomplete-validators.service';
+import { NavigatorService } from '../../core/service/navigator.service';
 
 const POLL_TIMEOUT = 1000;
 const MIN_LENGTH = 2;
@@ -81,7 +82,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     propagateChange = (_: any | null) => { };
     propagateTouched = (_: any | null) => { };
 
-    constructor() {}
+    constructor(private navigator: NavigatorService) {}
 
     ngOnInit(): void {
         this.$pollInput = Observable.interval(POLL_TIMEOUT);
@@ -127,22 +128,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         if (changes.options) {
             this.state.setState({options: this.options});
         }
-        const focusedChanged = !!changes.focused;
-        if (focusedChanged) {
-            const componentLostFocus = changes.focused.currentValue === null;
-            const focusDifferentElement = focusedChanged && !componentLostFocus;
-            if (focusDifferentElement) {
-                this.elementReferences[this.focused].nativeElement.focus();
-            }
-            const focusedInput = this.focused === INPUT_FIELD_INDEX;
-            const componentGainedFocus = focusedChanged && changes.focused.previousValue === null;
-            const selectAllText = focusedInput && componentGainedFocus;
-            if (selectAllText) {
-                let inputElement = this.inputField.nativeElement;
-                inputElement.setSelectionRange(0, inputElement.value.length);
-            }
-        }
-
         this.setValidation(changes);
     }
 
@@ -201,8 +186,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     handleComponentBlur(newState: any = {}): void {
         let { selected, options, query } = this.state.currentState,
             change = options && options[selected] ? options[selected] : null;
-        if (!change && (this.allowCustom || this.queryOption)) {
-            change = this.queryOption;
+        if (!change) {
+            if (this.allowCustom) {
+                change = query;
+            } else {
+                change = this.queryOption;
+            }
         }
         this.propagateChange(change);
         this.propagateTouched(null);
@@ -267,7 +256,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         }
     }
 
-    handleInputFocus(event: FocusEvent): void {
+    handleInputFocus(): void {
         this.state.setState({
             focused: INPUT_FIELD_INDEX
         });
@@ -278,7 +267,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             selected: index
         });
     }
-    handleOptionClick(event: MouseEvent | KeyboardEvent, index: number): void {
+    handleOptionClick(index: number): void {
         let { matches, options } = this.state.currentState;
         const selectedOption = matches[index];
         if (selectedOption) {
@@ -335,11 +324,11 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         event.preventDefault();
         const focusIsOnOption = this.state.currentState.focused !== -1;
         if (focusIsOnOption) {
-            this.handleOptionClick(event, this.state.currentState.focused);
+            this.handleOptionClick(this.state.currentState.focused);
         }
     }
 
-    handleEnter(event: KeyboardEvent): void {
+    handleEnter(event: KeyboardEvent | { preventDefault: () => {} }): void {
         let { options, selected, query, menuOpen } = this.state.currentState;
         if (menuOpen) {
             event.preventDefault();
@@ -350,7 +339,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
                 selected = hasSelectedOption ? queryIndex : selected;
             }
             if (hasSelectedOption) {
-                this.handleOptionClick(event, selected);
+                this.handleOptionClick(selected);
             } else {
                 this.handleComponentBlur({
                     focused: -1,
@@ -378,7 +367,8 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     isIosDevice() {
-        return !!(navigator.userAgent.match(/(iPod|iPhone|iPad)/g) && navigator.userAgent.match(/AppleWebKit/g));
+        let agent = this.navigator.native.userAgent;
+        return !!(agent.match(/(iPod|iPhone|iPad)/g) && agent.match(/AppleWebKit/g));
     }
 
     get queryOption(): string | null {

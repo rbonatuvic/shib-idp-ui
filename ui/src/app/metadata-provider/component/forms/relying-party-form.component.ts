@@ -73,7 +73,6 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
     }
 
     addAuthenticationMethod(text: string = ''): void {
-        console.log(this.authenticationMethodList as FormArray);
         this.authenticationMethodList.push(this.getRequiredControl(text));
     }
 
