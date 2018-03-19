@@ -6,7 +6,11 @@ plugins {
 node {
     version = '8.9.1'
     npmVersion = '5.5.1'
-    download = true
+    if (project.hasProperty('download-node')) {
+        download = Boolean.valueOf(project.'download-node')
+    } else {
+        download = true
+    }
 }
 
 npm_run_build {
