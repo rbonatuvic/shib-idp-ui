@@ -70,13 +70,13 @@
                 <div *ngIf="nameIdFormatList.length" class="p-2">
                     <div class="row" *ngFor="let format of nameIdFormatList.controls; let i=index; let isLast=last">
                         <label [for]="'nameIdFormat-' + i" class="col-sm-12" i18n="@@label--nameid-format-indexed">NameID Format {{ i + 1 }}</label>
-                        <auto-complete
+                        <auto-complete class="col-sm-11"
                             [id]="'nameIdFormat-' + i"
                             [formControlName]="i"
                             [options]="nameIdFormatOptions | async"
                             [required]="true"
                             [allowCustom]="true"
-                            class="col-sm-11">
+                            aria-label="Name ID Format (type for auto-complete)">
                         </auto-complete>
                         <div class="col-sm-1 text-right">
                             <button class="btn btn-link" (click)="removeFormat(i)" aria-label="Delete NameID format" role="button">
@@ -103,13 +103,13 @@
                 <div *ngIf="authenticationMethodList.length" class="p-2">
                     <div class="row" *ngFor="let format of authenticationMethodList.controls; let i=index; let isLast=last">
                         <label [for]="'authMethod-' + i" class="col-sm-12" i18n="@@label--auth-method-indexed">Authentication Method {{ i + 1 }}</label>
-                        <auto-complete
+                        <auto-complete class="col-sm-11"
                             [id]="'authMethod-' + i"
                             [formControlName]="i"
                             [options]="authenticationMethodOptions | async"
                             [required]="true"
                             [allowCustom]="true"
-                            class="col-sm-11">
+                            aria-label="Authentication method (type for auto-complete)">
                         </auto-complete>
                         <div class="col-sm-1 text-right">
                             <button class="btn btn-link" (click)="removeAuthenticationMethod(i)" aria-label="Delete authentication method" role="button">
