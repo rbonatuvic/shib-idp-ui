@@ -41,9 +41,10 @@
                         <auto-complete
                             [id]="'nameIdFormat-' + i"
                             [formControlName]="i"
-                            [options]="nameIdFormatOptions | async"
+                            [matches]="nameIds$ | async"
                             [required]="true"
                             [allowCustom]="true"
+                            (onChange)="updateOptions($event)"
                             role="textbox"
                             aria-label="Name ID Format (type for auto-complete)">
                         </auto-complete>

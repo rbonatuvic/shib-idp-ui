@@ -19,8 +19,8 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
     @Input() provider: MetadataProvider;
 
     form: FormGroup;
-    nameIdFormatOptions = this.listValues.nameIdFormats;
-    authenticationMethodOptions = this.listValues.authenticationMethods;
+    nameIds$: Observable<string[]> = Observable.of([]);
+    authenticationMethods$: Observable<string[]> = Observable.of([]);
 
     nameIdFormatList: FormArray;
     authenticationMethodList: FormArray;
@@ -91,5 +91,13 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
         });
         this.setNameIdFormats(overrides.nameIdFormats);
         this.setAuthenticationMethods(overrides.authenticationMethods);
+    }
+
+    searchNameIds(query: string): void {
+        this.nameIds$ = this.listValues.searchFormats(Observable.of(query));
+    }
+
+    searchAuthMethods(query: string): void {
+        this.authenticationMethods$ = this.listValues.searchAuthenticationMethods(Observable.of(query));
     }
 } /* istanbul ignore next */

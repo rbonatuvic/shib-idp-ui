@@ -7,7 +7,11 @@ import 'rxjs/add/observable/of';
 import * as fromFilter from '../reducer';
 import { ProviderFormFragmentComponent } from '../../metadata-provider/component/forms/provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
-import { CancelCreateFilter } from '../action/collection.action';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SearchDialogComponent } from '../component/search-dialog.component';
+import { ViewMoreIds, CancelCreateFilter, LoadEntityIds } from '../action/filter.action';
+import { EntityValidators } from '../../metadata-provider/service/entity-validators.service';
+
 
 @Component({
     selector: 'new-filter-page',
@@ -16,6 +20,11 @@ import { CancelCreateFilter } from '../action/collection.action';
 export class NewFilterComponent extends ProviderFormFragmentComponent implements OnInit, OnChanges, OnDestroy {
 
     entityIds$: Observable<string[]>;
+    ids: string[];
+
+    showMore$: Observable<boolean>;
+    selected$: Observable<string>;
+    loading$: Observable<boolean>;
 
     constructor(
         private store: Store<fromFilter.State>,
@@ -24,31 +33,55 @@ export class NewFilterComponent extends ProviderFormFragmentComponent implements
         protected fb: FormBuilder
     ) {
         super(fb, statusEmitter, valueEmitter);
+
+        // this.form.statusChanges.subscribe(status => console.log(status));
+
+        this.showMore$ = this.store.select(fromFilter.getViewingMore);
+        this.selected$ = this.store.select(fromFilter.getSelected);
+        this.entityIds$ = this.store.select(fromFilter.getEntityCollection);
+        this.loading$ = this.store.select(fromFilter.getIsLoading);
+
+        this.entityIds$.subscribe(ids => this.ids = ids);
+
+        this.selected$.subscribe(s => {
+            this.form.patchValue({
+                entityId: s
+            });
+        });
     }
 
     createForm(): void {
         this.form = this.fb.group({
-            entityId: ['', Validators.required],
-            filterName: ['', Validators.required]
+            entityId: ['', [Validators.required]],
+            filterName: ['', [Validators.required]]
         });
     }
 
     ngOnInit(): void {
         super.ngOnInit();
-        this.entityIds$ = Observable.of(['foo', 'bar', 'baz']);
+
+        this.form.get('entityId').setAsyncValidators([EntityValidators.existsInCollection(this.entityIds$)]);
     }
 
     ngOnChanges(): void {}
 
     ngOnDestroy(): void {}
 
-    onViewMore($event): void {}
+    searchEntityIds(query: string): void {
+        if (query.length >= 4) {
+            this.store.dispatch(new LoadEntityIds(query));
+        }
+    }
+
+    onViewMore(): void {
+        this.store.dispatch(new ViewMoreIds(this.ids));
+    }
 
     save(): void {
         console.log('Save!');
     }
 
     cancel(): void {
-        this.store.dispatch(new CancelCreateFilter(true));
+        this.store.dispatch(new CancelCreateFilter());
     }
 }

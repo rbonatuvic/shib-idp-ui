@@ -24,7 +24,7 @@ describe('New Metadata Filter Page', () => {
             ],
             imports: [
                 StoreModule.forRoot({
-                    providers: combineReducers(fromFilter.reducers),
+                    'metadata-filter': combineReducers(fromFilter.reducers),
                 }),
                 ReactiveFormsModule,
                 ProviderEditorFormModule,
@@ -50,6 +50,28 @@ describe('New Metadata Filter Page', () => {
         it('should dispatch a cancel changes action', () => {
             fixture.detectChanges();
             instance.cancel();
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
+
+    describe('searchEntityIds method', () => {
+        it('should NOT dispatch a loadEntityIds action until there are 4 or more characters', () => {
+            fixture.detectChanges();
+            instance.searchEntityIds('foo');
+            expect(store.dispatch).not.toHaveBeenCalled();
+        });
+
+        it('should dispatch a loadEntityIds action', () => {
+            fixture.detectChanges();
+            instance.searchEntityIds('foo-');
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
+
+    describe('onViewMore method', () => {
+        it('should dispatch a viewMoreEntityIds action', () => {
+            fixture.detectChanges();
+            instance.onViewMore();
             expect(store.dispatch).toHaveBeenCalled();
         });
     });

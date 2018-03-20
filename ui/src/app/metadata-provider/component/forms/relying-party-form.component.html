@@ -73,9 +73,10 @@
                         <auto-complete class="col-sm-11"
                             [id]="'nameIdFormat-' + i"
                             [formControlName]="i"
-                            [options]="nameIdFormatOptions | async"
+                            [matches]="nameIds$ | async"
                             [required]="true"
                             [allowCustom]="true"
+                            (onChange)="searchNameIds($event)"
                             aria-label="Name ID Format (type for auto-complete)">
                         </auto-complete>
                         <div class="col-sm-1 text-right">
@@ -106,9 +107,10 @@
                         <auto-complete class="col-sm-11"
                             [id]="'authMethod-' + i"
                             [formControlName]="i"
-                            [options]="authenticationMethodOptions | async"
+                            [matches]="authenticationMethods$ | async"
                             [required]="true"
                             [allowCustom]="true"
+                            (onChange)="searchAuthMethods($event)"
                             aria-label="Authentication method (type for auto-complete)">
                         </auto-complete>
                         <div class="col-sm-1 text-right">

@@ -49,6 +49,7 @@
                                         <span>
                                             <ng-container i18n="@@label--search-entity-id">Search Entity ID</ng-container>
                                             <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                            <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading$ | async"></i>
                                         </span>
                                     </label>
                                     <span class="text-right col-sm-2">
@@ -61,10 +62,14 @@
                                 </div>
                                 <auto-complete
                                     id="entityId"
+                                    class="component-control"
                                     formControlName="entityId"
-                                    [options]="entityIds$ | async"
+                                    [matches]="entityIds$ | async"
                                     [required]="true"
-                                    (more)="onViewMore($event)">
+                                    limit="10"
+                                    [processing]="loading$ | async"
+                                    (onChange)="searchEntityIds($event)"
+                                    (more)="onViewMore()">
                                 </auto-complete>
                                 <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
                                     <small class="form-text text-danger" *ngIf="form.get('entityId').hasError('required')">
@@ -91,10 +96,18 @@
                     <div class="col-12">
                         <hr />
                         <h2>TESTING: </h2>
-                        Test Options:
-                        <pre>{{ entityIds$ | async | json }}</pre>
-                        Current Form Values:
-                        <pre>{{ form.value | json }}</pre>
+                        <div *ngIf="form.errors">
+                            Form Errors:
+                            <pre>{{ form.errors | json }}</pre>
+                        </div>
+                        <div>
+                            Test Options:
+                            <pre>{{ entityIds$ | async | json }}</pre>
+                        </div>
+                        <div>
+                            Current Form Values:
+                            <pre>{{ form.value | json }}</pre>
+                        </div>
                             <!--<relying-party-form [provider]="latest$ | async"></relying-party-form>
                             <attribute-release-form [provider]="latest$ | async"></attribute-release-form>-->
                     </div>

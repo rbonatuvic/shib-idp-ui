@@ -12,6 +12,7 @@ import { RelyingPartyFormComponent } from './relying-party-form.component';
 import { AutoCompleteComponent } from '../../../widget/autocomplete/autocomplete.component';
 
 import * as stubs from '../../../../testing/provider.stub';
+import { ValidationClassDirective } from '../../../widget/validation/validation-class.directive';
 
 @Component({
     template: `<relying-party-form [provider]="provider"></relying-party-form>`
@@ -63,7 +64,8 @@ describe('Relying Party Form Component', () => {
             declarations: [
                 RelyingPartyFormComponent,
                 AutoCompleteComponent,
-                TestHostComponent
+                TestHostComponent,
+                ValidationClassDirective
             ],
         });
         store = TestBed.get(Store);
@@ -96,6 +98,12 @@ describe('Relying Party Form Component', () => {
             fixture.detectChanges();
             expect(form.nameIdFormatList.length).toBe(1);
         });
+
+        it('should add a new nameid format with a value supplied', () => {
+            form.addFormat('foo');
+            fixture.detectChanges();
+            expect(form.nameIdFormatList.length).toBe(1);
+        });
     });
 
     describe('removeAuthenticationMethod method', () => {
@@ -111,6 +119,12 @@ describe('Relying Party Form Component', () => {
     describe('addAuthenticationMethod method', () => {
         it('should add a new auth method', () => {
             form.addAuthenticationMethod();
+            fixture.detectChanges();
+            expect(form.authenticationMethodList.length).toBe(1);
+        });
+
+        it('should add a new auth method with provided value', () => {
+            form.addAuthenticationMethod('foo');
             fixture.detectChanges();
             expect(form.authenticationMethodList.length).toBe(1);
         });

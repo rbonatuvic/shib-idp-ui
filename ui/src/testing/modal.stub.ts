@@ -10,3 +10,9 @@ export class NgbModalStub {
         };
     }
 }
+
+@Injectable()
+export class NgbActiveModalStub {
+    close = (result: any): void => {};
+    dismiss = (reason: any): void => {};
+}

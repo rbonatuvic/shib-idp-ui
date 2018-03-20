@@ -12,6 +12,7 @@ import { DescriptorInfoFormComponent } from './descriptor-info-form.component';
 import { AutoCompleteComponent } from '../../../widget/autocomplete/autocomplete.component';
 
 import * as stubs from '../../../../testing/provider.stub';
+import { ValidationClassDirective } from '../../../widget/validation/validation-class.directive';
 
 @Component({
     template: `<descriptor-info-form [provider]="provider"></descriptor-info-form>`
@@ -63,7 +64,8 @@ describe('Descriptor Info Form Component', () => {
             declarations: [
                 DescriptorInfoFormComponent,
                 AutoCompleteComponent,
-                TestHostComponent
+                TestHostComponent,
+                ValidationClassDirective
             ],
         });
         store = TestBed.get(Store);

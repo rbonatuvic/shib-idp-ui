@@ -2,6 +2,7 @@
     <input
         #inputField
         [formControl]="input"
+        [disableValidation]="true"
         id="{{ id }}__input"
         class="form-control"
         autoComplete="off"
@@ -10,13 +11,13 @@
         [attr.aria-activedescendant]="activeDescendant"
         attr.aria-owns="{{ id }}__listbox"
         (focus)="handleInputFocus()"
-        (blur)="handleInputBlur($event)"
+        (blur)="handleInputBlur()"
     />
     <ul class="dropdown-menu"
         id="{{ id }}__listbox"
         role="listbox"
-        [class.show]="(menuIsVisible$ | async) && !disabled">
-        <li *ngFor="let option of state.currentState.matches; let i = index;"
+        [class.show]="(menuIsVisible$ | async) && !processing">
+        <li *ngFor="let option of matches; let i = index;"
             #matchElement
             class="dropdown-item"
             [class.active]="state.currentState.selected === i"
@@ -32,8 +33,11 @@
             [attr.aria-selected]="state.currentState.focused === i">
             {{ option }}
         </li>
-        <li class="dropdown-item dropdown-item-noresults" *ngIf="state.currentState.matches.length === 0">
+        <li class="dropdown-item dropdown-item-noresults" *ngIf="matches.length === 0 && !processing">
             {{ noneFoundText }}
+        </li>
+        <li class="dropdown-item dropdown-item-noresults" *ngIf="!!limit && matches.length >= limit">
+            <a href="" (click)="handleViewMore($event)" (mousedown)="handleViewMore($event)">{{ showMoreText }}</a>
         </li>
     </ul>
 </div>

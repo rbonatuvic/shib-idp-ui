@@ -14,12 +14,6 @@ export class UpdateStatus implements Action {
     constructor(public payload: { [key: string]: string }) { }
 }
 
-export class UpdateSaved implements Action {
-    readonly type = UPDATE_SAVED;
-
-    constructor(public payload: boolean) { }
-}
-
 export class UpdateChanges implements Action {
     readonly type = UPDATE_CHANGES;
 
@@ -28,8 +22,6 @@ export class UpdateChanges implements Action {
 
 export class CancelChanges implements Action {
     readonly type = CANCEL_CHANGES;
-
-    constructor(public payload: boolean = true) { }
 }
 
 export class SaveChanges implements Action {
@@ -46,7 +38,6 @@ export class ResetChanges implements Action {
 
 export type Actions =
     | UpdateStatus
-    | UpdateSaved
     | UpdateChanges
     | CancelChanges
     | SaveChanges

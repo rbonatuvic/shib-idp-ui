@@ -13,8 +13,8 @@ export class EditorEffects {
     @Effect({dispatch: false})
     cancelChanges$ = this.actions$
         .ofType<editor.CancelChanges>(editor.CANCEL_CHANGES)
-        .map(action => action.payload)
         .switchMap(() => this.router.navigate(['/dashboard']));
+
     @Effect()
     updateProviderSuccessRedirect$ = this.actions$
         .ofType<provider.UpdateProviderSuccess>(provider.UPDATE_PROVIDER_SUCCESS)

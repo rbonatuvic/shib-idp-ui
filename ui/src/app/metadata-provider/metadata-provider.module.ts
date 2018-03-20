@@ -21,6 +21,7 @@ import { EntityDraftService } from './service/entity-draft.service';
 import { PretttyXml } from './pipe/pretty-xml.pipe';
 import { UploadProviderComponent } from './container/upload-provider.component';
 import { BlankProviderComponent } from './container/blank-provider.component';
+import { EntityIdService } from './service/entity-id.service';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ export class MetadataProviderModule {
         return {
             ngModule: RootProviderModule,
             providers: [
+                EntityIdService,
                 EntityDescriptorService,
                 EntityDraftService,
                 ProviderStatusEmitter,

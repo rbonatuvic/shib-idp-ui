@@ -1,14 +1,11 @@
 import { ElementRef } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
-export const defaultState = {
+export const defaultState: AutoCompleteState = {
     focused: null,
     selected: null,
     hovered: null,
-    menuOpen: false,
-    query: '',
-    options: [],
-    matches: []
+    menuOpen: false
 };
 
 export interface AutoCompleteState {
@@ -16,9 +13,6 @@ export interface AutoCompleteState {
     selected: number | null;
     hovered: number | null;
     menuOpen: boolean;
-    query: string;
-    options: string[];
-    matches: string[];
 }
 
 export class AutoCompleteStateEmitter {
@@ -29,7 +23,7 @@ export class AutoCompleteStateEmitter {
     changes$ = this.subj.asObservable();
 
     constructor(
-        private defaults: AutoCompleteState = defaultState
+        public defaults: AutoCompleteState = defaultState
     ) {
         this.state = {...defaults};
     }

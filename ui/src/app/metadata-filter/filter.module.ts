@@ -10,7 +10,8 @@ import { reducers } from './reducer';
 import { ProviderFormFragmentComponent } from '../metadata-provider/component/forms/provider-form-fragment.component';
 import { ProviderEditorFormModule } from '../metadata-provider/component';
 import { FilterEffects } from './effect/filter.effect';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { SearchDialogComponent } from './component/search-dialog.component';
 
 export const routes: Routes = [
     {
@@ -22,9 +23,12 @@ export const routes: Routes = [
 
 @NgModule({
     declarations: [
-        NewFilterComponent
+        NewFilterComponent,
+        SearchDialogComponent
     ],
-    entryComponents: [],
+    entryComponents: [
+        SearchDialogComponent
+    ],
     imports: [
         CommonModule,
         RouterModule,
@@ -33,7 +37,8 @@ export const routes: Routes = [
         EffectsModule.forFeature([FilterEffects]),
         RouterModule.forChild(routes),
         ProviderEditorFormModule,
-        NgbPopoverModule
+        NgbPopoverModule,
+        NgbModalModule
     ],
     providers: []
 })

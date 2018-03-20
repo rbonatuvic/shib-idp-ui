@@ -89,4 +89,24 @@ describe(`EntityDescriptorService`, () => {
             });
         })));
     });
+
+    describe('createUniqueIdValidator', () => {
+        it('should detect that a provided id is in the collection', async(inject([FormBuilder], (fb) => {
+            let obs = Observable.of(ids),
+                validator = EntityValidators.existsInCollection(obs),
+                ctrl = fb.control('foo');
+            validator(ctrl).subscribe(next => {
+                expect(next).toBeNull();
+            });
+        })));
+
+        it('should detect that a provided id is not in the collection', async(inject([FormBuilder], (fb) => {
+            let obs = Observable.of(ids),
+                validator = EntityValidators.existsInCollection(obs),
+                ctrl = fb.control('hi');
+            validator(ctrl).subscribe(next => {
+                expect(next).toBeTruthy();
+            });
+        })));
+    });
 });

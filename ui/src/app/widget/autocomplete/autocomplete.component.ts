@@ -5,14 +5,14 @@ import {
     EventEmitter,
     OnInit,
     OnDestroy,
-    OnChanges,
     AfterViewInit,
     ViewChild,
     ViewChildren,
     QueryList,
     ElementRef,
     SimpleChanges,
-    forwardRef
+    forwardRef,
+    ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -24,7 +24,6 @@ import 'rxjs/add/operator/combineLatest';
 
 import { keyCodes, isPrintableKeyCode } from '../../shared/keycodes';
 import { AutoCompleteState, AutoCompleteStateEmitter, defaultState } from './autocomplete.model';
-import * as AutoCompleteValidators from './autocomplete-validators.service';
 import { NavigatorService } from '../../core/service/navigator.service';
 
 const POLL_TIMEOUT = 1000;
@@ -32,6 +31,7 @@ const MIN_LENGTH = 2;
 const INPUT_FIELD_INDEX = -1;
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'auto-complete',
     templateUrl: './autocomplete.component.html',
     styleUrls: ['./autocomplete.component.scss'],
@@ -43,23 +43,25 @@ const INPUT_FIELD_INDEX = -1;
         }
     ]
 })
-export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
-    @Input() required: boolean | null = true;
+export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor {
     @Input() defaultValue = '';
-    @Input() options: string[] = [];
+    @Input() matches: string[] = [];
     @Input() id: string;
     @Input() autoSelect = false;
     @Input() allowCustom = false;
     @Input() noneFoundText = 'No Options Found';
+    @Input() showMoreText = 'Show More...';
+    @Input() limit = 0;
+    @Input() processing = false;
 
     @Output() more: EventEmitter<any> = new EventEmitter<any>();
+    @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
 
     @ViewChild('inputField') inputField: ElementRef;
     @ViewChildren('matchElement', { read: ElementRef }) listItems: QueryList<ElementRef>;
 
     focused: number;
     selected: number;
-    disabled = false;
 
     isMenuOpen$: Observable<boolean>;
     query$: Observable<string>;
@@ -99,14 +101,9 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         this.input
             .valueChanges
             .subscribe((query) => {
-                let matches = [];
-                if (query && query.length >= MIN_LENGTH && this.state.currentState.options) {
-                    matches = this.state.currentState.options
-                        .filter((option: string) => option.toLocaleLowerCase().match(query.toLocaleLowerCase()));
-                } else {
-                    matches = [];
+                if (query && query.length >= MIN_LENGTH) {
+                    this.onChange.emit(query);
                 }
-                this.state.setState({ matches });
             });
         this.input.valueChanges.subscribe(newValue => this.handleInputChange(newValue));
         this.input.setValue(this.defaultValue);
@@ -124,40 +121,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         this.listItems.changes.subscribe((changes) => this.setElementReferences(changes));
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.options) {
-            this.state.setState({options: this.options});
-        }
-        this.setValidation(changes);
-    }
-
-    setValidation(changes: SimpleChanges): void {
-        if (changes.required) {
-            if (this.required) {
-                this.input.setValidators([Validators.required]);
-            } else {
-                this.input.clearValidators();
-            }
-        }
-
-        if (changes.disabled) {
-            if (this.disabled) {
-                this.input.disable();
-            } else {
-                this.input.enable();
-            }
-        }
-
-        if (changes.allowCustom || changes.options) {
-            if (!this.allowCustom) {
-                let opts$ = Observable.of(this.options);
-                this.input.setAsyncValidators([AutoCompleteValidators.existsInCollection(opts$)]);
-            } else {
-                this.input.clearAsyncValidators();
-            }
-        }
-    }
-
     writeValue(value: any): void {
         this.input.setValue(value);
     }
@@ -171,7 +134,11 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     setDisabledState(isDisabled: boolean = false): void {
-        this.disabled = isDisabled;
+        if (isDisabled) {
+            this.input.disable();
+        } else {
+            this.input.enable();
+        }
     }
 
     setElementReferences(changes): void {
@@ -183,9 +150,18 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         });
     }
 
+    handleViewMore($event: MouseEvent): void {
+        $event.preventDefault();
+        $event.stopPropagation();
+        this.handleInputBlur();
+        this.input.markAsTouched();
+        this.more.emit();
+    }
+
     handleComponentBlur(newState: any = {}): void {
-        let { selected, options, query } = this.state.currentState,
-            change = options && options[selected] ? options[selected] : null;
+        let { selected } = this.state.currentState,
+            query = this.input.value,
+            change = this.matches && this.matches[selected] ? this.matches[selected] : null;
         if (!change) {
             if (this.allowCustom) {
                 change = query;
@@ -198,14 +174,13 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         this.state.setState({
             focused: null,
             selected: null,
-            menuOpen: newState.menuOpen || false,
-            query
+            menuOpen: newState.menuOpen || false
         });
     }
 
     handleOptionBlur(event: FocusEvent, index): void {
         const elm = event.relatedTarget as HTMLElement;
-        const { focused, menuOpen, options, selected } = this.state.currentState;
+        const { focused, menuOpen, selected } = this.state.currentState;
         const focusingOutsideComponent = event.relatedTarget === null;
         const focusingInput = elm.id === this.elementReferences[-1].nativeElement.id;
         const focusingAnotherOption = focused !== index && focused !== -1;
@@ -214,18 +189,19 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             const keepMenuOpen = menuOpen && this.isIosDevice();
             this.handleComponentBlur({
                 menuOpen: keepMenuOpen,
-                query: options[selected]
+                query: this.matches[selected]
             });
         }
     }
 
-    handleInputBlur(event: FocusEvent): void {
-        const { focused, menuOpen, options, query, selected } = this.state.currentState;
+    handleInputBlur(): void {
+        const { focused, menuOpen, selected } = this.state.currentState;
+        const query = this.input.value;
         const focusingAnOption = focused !== -1;
         const isIosDevice = this.isIosDevice();
-        if (!focusingAnOption && options) {
+        if (!focusingAnOption && this.matches) {
             const keepMenuOpen = menuOpen && isIosDevice;
-            const newQuery = isIosDevice ? query : options[selected];
+            const newQuery = isIosDevice ? query : this.matches[selected];
             this.handleComponentBlur({
                 menuOpen: keepMenuOpen,
                 query: newQuery
@@ -241,15 +217,13 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     handleInputChange(query: string): void {
         query = query || '';
         const queryEmpty = query.length === 0;
-        const queryChanged = this.state.currentState.query.length !== query.length;
         const queryLongEnough = query.length >= MIN_LENGTH;
         const autoselect = this.hasAutoselect;
-        const optionsAvailable = this.state.currentState.matches.length > 0;
-        const searchForOptions = (!queryEmpty && queryChanged && queryLongEnough);
+        const optionsAvailable = this.matches.length > 0;
+        const searchForOptions = (!queryEmpty && queryLongEnough);
         this.state.setState({
             menuOpen: searchForOptions,
-            selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null,
-            query
+            selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null
         });
         if (this.allowCustom) {
             this.propagateChange(query);
@@ -268,8 +242,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         });
     }
     handleOptionClick(index: number): void {
-        let { matches, options } = this.state.currentState;
-        const selectedOption = matches[index];
+        const selectedOption = this.matches[index];
         if (selectedOption) {
             this.propagateChange(selectedOption);
         }
@@ -277,8 +250,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         this.state.setState({
             focused: -1,
             selected: -1,
-            menuOpen: false,
-            query: selectedOption
+            menuOpen: false
         });
     }
 
@@ -313,7 +285,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     handleDownArrow(event: KeyboardEvent): void {
         event.preventDefault();
-        const isNotAtBottom = this.state.currentState.selected !== this.state.currentState.matches.length - 1;
+        const isNotAtBottom = this.state.currentState.selected !== this.matches.length - 1;
         const allowMoveDown = isNotAtBottom && this.state.currentState.menuOpen;
         if (allowMoveDown) {
             this.handleOptionFocus(this.state.currentState.selected + 1);
@@ -329,12 +301,13 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     handleEnter(event: KeyboardEvent | { preventDefault: () => {} }): void {
-        let { options, selected, query, menuOpen } = this.state.currentState;
+        let { selected, menuOpen } = this.state.currentState,
+            query = this.input.value;
         if (menuOpen) {
             event.preventDefault();
             let hasSelectedOption = selected >= 0;
             if (!hasSelectedOption) {
-                const queryIndex = options.indexOf(query);
+                const queryIndex = this.matches.indexOf(query);
                 hasSelectedOption = queryIndex > -1;
                 selected = hasSelectedOption ? queryIndex : selected;
             }
@@ -372,9 +345,14 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     get queryOption(): string | null {
-        const { query, options } = this.state.currentState;
-        const hasQueryAndOptions = query && options && options.length;
-        return hasQueryAndOptions ? options.indexOf(query) > -1 ? query : null : null;
+        const query = this.input.value;
+        if (!query) {
+            return null;
+        }
+        if (!this.matches) {
+            return null;
+        }
+        return this.matches.indexOf(query) > -1 ? query : null;
     }
 
     get hasAutoselect(): boolean {
@@ -390,8 +368,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     get displayState(): any {
         return {
-            ...this.state.currentState,
-            options: []
+            ...this.state.currentState
         };
     }
 } /* istanbul ignore next */

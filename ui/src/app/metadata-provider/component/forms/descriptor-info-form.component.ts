@@ -25,6 +25,8 @@ export class DescriptorInfoFormComponent extends ProviderFormFragmentComponent i
         'SAML 1.1'
     ];
 
+    nameIds$: Observable<string[]> = Observable.of([]);
+
     constructor(
         protected fb: FormBuilder,
         protected statusEmitter: ProviderStatusEmitter,
@@ -71,4 +73,9 @@ export class DescriptorInfoFormComponent extends ProviderFormFragmentComponent i
     removeFormat(index: number): void {
         this.nameIdFormats.removeAt(index);
     }
+
+    updateOptions(query: string): void {
+        this.nameIds$ = this.listValues.searchFormats(Observable.of(query));
+    }
+
 } /* istanbul ignore next */

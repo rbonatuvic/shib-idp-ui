@@ -1,5 +1,6 @@
 @import './_palette';
 @import './_variables';
+@import './_mixins';
 
 .form-section {
     padding-left: $grid-gutter-width;
@@ -42,6 +43,11 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
+}
+
+.component-control {
+    @include component-validation-state("valid", $form-feedback-valid-color);
+    @include component-validation-state("invalid", $form-feedback-invalid-color);
 }
 
 @media only screen and (max-width: 1200px) {
