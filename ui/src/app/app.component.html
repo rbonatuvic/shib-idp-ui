@@ -68,7 +68,13 @@
                 <li class="list-inline-item"><a href="https://issues.shibboleth.net/" target="_blank" i18n="@@link--issue-tracker" aria-label="Shibboleth.net open-source community issue tracker">Issue Tracker</a></li>
                 <li class="list-inline-item"><a href="https://www.shibboleth.net/community/lists/" target="_blank" i18n="@@link--mailing-list" aria-label="Shibboleth.net open-source community mailing list">Mailing List</a></li>
             </ul>
-            <p><ng-container i18n="@@label--copyright">Copyright</ng-container> &copy; 2017 Internet2</p>
+            <p>
+                <ng-container *ngIf="version$ | async">
+                {{ version }}
+                &nbsp;|&nbsp;
+                </ng-container>
+                <ng-container i18n="@@label--copyright">Copyright</ng-container> &copy; {{ today | date:'yyyy' }} Internet2
+            </p>
         </div>
         <div class="col-md-4 logo">
             <a href="https://www.shibboleth.net/" target="_blank"><img src="/assets/shibboleth_logowordmark_color.png" class="img-fluid float-right" alt="Shibboleth Logo - Click to be directed to www.shibboleth.net"></a>

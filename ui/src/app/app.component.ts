@@ -1,10 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
+import 'rxjs/add/operator/takeWhile';
 
-import * as fromUser from './core/reducer/user.reducer';
+import * as fromRoot from './core/reducer';
+import { VersionInfo } from './core/model/version';
 import { LoadProviderRequest } from './metadata-provider/action/provider.action';
 import { LoadDraftRequest } from './metadata-provider/action/draft.action';
+import { VersionInfoLoadRequestAction } from './core/action/version.action';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -12,11 +15,23 @@ import { LoadDraftRequest } from './metadata-provider/action/draft.action';
 })
 export class AppComponent implements OnInit {
     title = 'Shib UI';
+    version$: Observable<VersionInfo>;
+    version: string;
+    today = new Date();
 
-    constructor(private store: Store<fromUser.UserState>) { }
+    constructor(private store: Store<fromRoot.State>) {
+        this.version$ = this.store.select(fromRoot.getVersionInfo);
+    }
 
     ngOnInit(): void {
         this.store.dispatch(new LoadProviderRequest());
         this.store.dispatch(new LoadDraftRequest());
+        this.store.dispatch(new VersionInfoLoadRequestAction());
+
+        this.version$.subscribe(v => {
+            if (v && v.build) {
+                this.version = `${v.build.version}-${v.git.commit.id}`;
+            }
+        });
     }
 }

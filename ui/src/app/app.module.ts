@@ -12,27 +12,26 @@ import { AppComponent } from './app.component';
 
 import { CoreModule } from './core/core.module';
 import { MetadataProviderModule } from './metadata-provider/metadata-provider.module';
-import { reducers } from './core/reducer';
+import { reducers, metaReducers } from './app.reducer';
 import { CustomRouterStateSerializer } from './shared/util';
 
-import { UserEffects } from './core/effect/user.effect';
 import { CachingInterceptor } from './core/service/cache.interceptor';
 import { AuthorizedInterceptor } from './core/service/authorized.interceptor';
 import { NotificationModule } from './notification/notification.module';
 import { ErrorInterceptor } from './core/service/error.interceptor';
 import { NavigatorService } from './core/service/navigator.service';
 
+import { environment } from '../environments/environment';
+
 @NgModule({
     declarations: [
         AppComponent
     ],
     imports: [
-        StoreModule.forRoot({
-            ...reducers
+        StoreModule.forRoot(reducers, {
+            metaReducers
         }),
-        EffectsModule.forRoot([
-            UserEffects
-        ]),
+        EffectsModule.forRoot([]),
         BrowserModule,
         AppRoutingModule,
         CoreModule.forRoot(),

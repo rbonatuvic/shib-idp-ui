@@ -1,7 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromProvider from './provider.reducer';
 import * as fromDraft from './draft.reducer';
-import * as fromRoot from '../../core/reducer';
+import * as fromRoot from '../../app.reducer';
 import { DraftState } from './draft.reducer';
 
 export interface ProviderState {
@@ -32,6 +32,7 @@ export const getSelectedProviderId = createSelector(getProviderEntityState, from
 export const getSelectedProvider = createSelector(getProviderEntities, getSelectedProviderId, getInCollectionFn);
 export const getProviderIds = createSelector(getProviderEntityState, fromProvider.getIds);
 export const getProviderCollection = createSelector(getProviderEntityState, getProviderIds, fromProvider.getAll);
+
 export const getDraftState = createFeatureSelector<ProviderState>('providers');
 export const getDraftEntityState = createSelector(getDraftState, getDraftsFromStateFn);
 export const getDraftEntities = createSelector(getDraftEntityState, fromDraft.getEntities);
