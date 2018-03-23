@@ -5,7 +5,7 @@ import { MetadataProvider } from '../../metadata-provider/model/metadata-provide
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
 import * as FileSaver from 'file-saver';
 import { Subscription } from 'rxjs/Subscription';
-import XmlFormatter from 'xml-formatter';
+import * as XmlFormatter from 'xml-formatter';
 
 @Component({
     selector: 'preview-provider-xml',
@@ -20,7 +20,7 @@ export class PreviewProviderDialogComponent implements OnInit, OnDestroy {
     constructor(
         public activeModal: NgbActiveModal,
         private entityService: EntityDescriptorService
-    ) { }
+    ) {}
 
     preview(xml): void {
         const blob = new Blob([XmlFormatter(xml)], { type: 'text/xml;charset=utf-8' });
