@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Entity Ids Search Result Representation",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entityIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

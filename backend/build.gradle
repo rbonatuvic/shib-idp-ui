@@ -14,6 +14,7 @@ targetCompatibility = 1.8
 repositories {
     maven { url 'https://build.shibboleth.net/nexus/content/groups/public' }
     mavenCentral()
+    jcenter()
 }
 
 processResources.dependsOn(':ui:npm_run_buildProd')
@@ -61,6 +62,9 @@ dependencies {
     compile "org.liquibase:liquibase-core"
     compile group: 'org.jadira.usertype', name: 'usertype.core', version: '6.0.1.GA'
 
+    //For easy data mocking capabilities
+    compile 'net.andreinc.mockneat:mockneat:0.1.4'
+
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
 
@@ -76,7 +80,7 @@ dependencies {
     testRuntime 'cglib:cglib-nodep:3.2.5'
 
     //JSON schema generator
-    testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.28'
+    testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.29'
     testCompile 'javax.validation:validation-api:2.0.1.Final'
 }
 
