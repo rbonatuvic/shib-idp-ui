@@ -3,13 +3,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/takeWhile';
 
 import * as fromFilter from '../reducer';
 import { ProviderFormFragmentComponent } from '../../metadata-provider/component/forms/provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from '../component/search-dialog.component';
-import { ViewMoreIds, CancelCreateFilter, LoadEntityIds } from '../action/filter.action';
+import { ViewMoreIds, CancelCreateFilter, QueryEntityIds } from '../action/filter.action';
 import { EntityValidators } from '../../metadata-provider/service/entity-validators.service';
 
 
@@ -19,12 +20,12 @@ import { EntityValidators } from '../../metadata-provider/service/entity-validat
 })
 export class NewFilterComponent extends ProviderFormFragmentComponent implements OnInit, OnChanges, OnDestroy {
 
-    entityIds$: Observable<string[]>;
     ids: string[];
-
+    entityIds$: Observable<string[]>;
     showMore$: Observable<boolean>;
     selected$: Observable<string>;
     loading$: Observable<boolean>;
+    processing$: Observable<boolean>;
 
     constructor(
         private store: Store<fromFilter.State>,
@@ -34,12 +35,11 @@ export class NewFilterComponent extends ProviderFormFragmentComponent implements
     ) {
         super(fb, statusEmitter, valueEmitter);
 
-        // this.form.statusChanges.subscribe(status => console.log(status));
-
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);
         this.entityIds$ = this.store.select(fromFilter.getEntityCollection);
         this.loading$ = this.store.select(fromFilter.getIsLoading);
+        this.processing$ = this.loading$.withLatestFrom(this.showMore$, (l, s) => !s && l);
 
         this.entityIds$.subscribe(ids => this.ids = ids);
 
@@ -67,14 +67,17 @@ export class NewFilterComponent extends ProviderFormFragmentComponent implements
 
     ngOnDestroy(): void {}
 
-    searchEntityIds(query: string): void {
-        if (query.length >= 4) {
-            this.store.dispatch(new LoadEntityIds(query));
+    searchEntityIds(term: string): void {
+        if (term.length >= 4 && this.ids.indexOf(term) < 0) {
+            this.store.dispatch(new QueryEntityIds({
+                term,
+                limit: 10
+            }));
         }
     }
 
-    onViewMore(): void {
-        this.store.dispatch(new ViewMoreIds(this.ids));
+    onViewMore(query: string): void {
+        this.store.dispatch(new ViewMoreIds(query));
     }
 
     save(): void {

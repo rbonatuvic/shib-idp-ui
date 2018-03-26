@@ -155,7 +155,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         $event.stopPropagation();
         this.handleInputBlur();
         this.input.markAsTouched();
-        this.more.emit();
+        this.more.emit(this.input.value);
     }
 
     handleComponentBlur(newState: any = {}): void {
@@ -163,11 +163,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
             query = this.input.value,
             change = this.matches && this.matches[selected] ? this.matches[selected] : null;
         if (!change) {
-            if (this.allowCustom) {
-                change = query;
-            } else {
-                change = this.queryOption;
-            }
+            change = this.allowCustom ? query : this.queryOption;
         }
         this.propagateChange(change);
         this.propagateTouched(null);
@@ -222,7 +218,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         const optionsAvailable = this.matches.length > 0;
         const searchForOptions = (!queryEmpty && queryLongEnough);
         this.state.setState({
-            menuOpen: searchForOptions,
+            menuOpen: searchForOptions && !this.matches.some(m => m === query),
             selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null
         });
         if (this.allowCustom) {

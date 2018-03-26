@@ -7,7 +7,8 @@ const snapshot: fromFilter.FilterState = {
     selected: null,
     viewMore: false,
     loading: false,
-    error: null
+    error: null,
+    term: ''
 };
 
 describe('Filter Reducer', () => {
@@ -21,7 +22,7 @@ describe('Filter Reducer', () => {
 
     describe(`${ actions.VIEW_MORE_IDS } action`, () => {
         it('should set viewMore property to true', () => {
-            const result = reducer(snapshot, new actions.ViewMoreIds([]));
+            const result = reducer(snapshot, new actions.ViewMoreIds('foo'));
 
             expect(result.viewMore).toBe(true);
         });
@@ -45,9 +46,9 @@ describe('Filter Reducer', () => {
         });
     });
 
-    describe(`${actions.LOAD_ENTITY_IDS} action`, () => {
+    describe(`${actions.QUERY_ENTITY_IDS} action`, () => {
         it('should set loading property to true', () => {
-            const result = reducer(snapshot, new actions.LoadEntityIds('foo'));
+            const result = reducer(snapshot, new actions.QueryEntityIds({ term: 'foo' }));
 
             expect(result.loading).toBe(true);
         });

@@ -49,7 +49,7 @@
                                         <span>
                                             <ng-container i18n="@@label--search-entity-id">Search Entity ID</ng-container>
                                             <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
-                                            <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading$ | async"></i>
+                                            <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="processing$ | async"></i>
                                         </span>
                                     </label>
                                     <span class="text-right col-sm-2">
@@ -67,9 +67,9 @@
                                     [matches]="entityIds$ | async"
                                     [required]="true"
                                     limit="10"
-                                    [processing]="loading$ | async"
+                                    [processing]="(processing$ | async)"
                                     (onChange)="searchEntityIds($event)"
-                                    (more)="onViewMore()">
+                                    (more)="onViewMore($event)">
                                 </auto-complete>
                                 <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
                                     <small class="form-text text-danger" *ngIf="form.get('entityId').hasError('required')">
@@ -99,10 +99,6 @@
                         <div *ngIf="form.errors">
                             Form Errors:
                             <pre>{{ form.errors | json }}</pre>
-                        </div>
-                        <div>
-                            Test Options:
-                            <pre>{{ entityIds$ | async | json }}</pre>
                         </div>
                         <div>
                             Current Form Values:

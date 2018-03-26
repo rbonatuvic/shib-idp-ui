@@ -9,6 +9,7 @@ export interface FilterState {
     loading: boolean;
     error: Error | null;
     selected: string | null;
+    term: string;
 }
 
 export const initialState: FilterState = {
@@ -16,7 +17,8 @@ export const initialState: FilterState = {
     selected: null,
     viewMore: false,
     loading: false,
-    error: null
+    error: null,
+    term: ''
 };
 
 export function reducer(state = initialState, action: filter.Actions): FilterState {
@@ -40,10 +42,16 @@ export function reducer(state = initialState, action: filter.Actions): FilterSta
                 viewMore: false
             };
         }
-        case filter.LOAD_ENTITY_IDS: {
+        case filter.CANCEL_CREATE_FILTER: {
+            return {
+                ...initialState
+            };
+        }
+        case filter.QUERY_ENTITY_IDS: {
             return {
                 ...state,
-                loading: true
+                loading: true,
+                term: action.payload.term
             };
         }
         case filter.LOAD_ENTITY_IDS_SUCCESS: {
@@ -72,3 +80,4 @@ export const getSelected = (state: FilterState) => state.selected;
 export const getEntityIds = (state: FilterState) => state.entityIds;
 export const getError = (state: FilterState) => state.error;
 export const getLoading = (state: FilterState) => state.loading;
+export const getTerm = (state: FilterState) => state.term;

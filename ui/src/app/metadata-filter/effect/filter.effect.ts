@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/withLatestFrom';
 
 import * as filter from '../action/filter.action';
+import * as fromFilter from '../reducer';
 
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../metadata-provider/service/entity-id.service';
 
@@ -21,7 +24,7 @@ export class FilterEffects {
 
     @Effect()
     loadEntityIds$ = this.actions$
-        .ofType<filter.LoadEntityIds>(filter.LOAD_ENTITY_IDS)
+        .ofType<filter.QueryEntityIds>(filter.QUERY_ENTITY_IDS)
         .map(action => action.payload)
         .debounceTime(this.dbounce)
         .switchMap(query =>
@@ -40,17 +43,33 @@ export class FilterEffects {
     viewMore$ = this.actions$
         .ofType<filter.ViewMoreIds>(filter.VIEW_MORE_IDS)
         .map(action => action.payload)
-        .switchMap(() =>
-            Observable
-                .fromPromise(this.modalService.open(SearchDialogComponent).result)
+        .switchMap(q => {
+            const modal = this.modalService.open(SearchDialogComponent) as NgbModalRef;
+            const res = modal.result;
+            modal.componentInstance.term = q;
+            return Observable
+                .fromPromise(res)
                 .map(id => new filter.SelectId(id))
-                .catch(() => Observable.of(new filter.CancelViewMore()))
+                .catch(() => Observable.of(new filter.CancelViewMore()));
+        });
+    /*
+    @Effect()
+    viewMoreQuery$ = this.actions$
+        .ofType<filter.ViewMoreIds>(filter.VIEW_MORE_IDS)
+        .map(action => action.payload)
+        .switchMap(query =>
+            this.idService
+                .query(query)
+                .map(ids => new filter.LoadEntityIdsSuccess(ids))
+                .catch(error => Observable.of(new filter.LoadEntityIdsError(error)))
         );
+    */
 
     constructor(
         private actions$: Actions,
         private router: Router,
         private modalService: NgbModal,
-        private idService: EntityIdService
+        private idService: EntityIdService,
+        private store: Store<fromFilter.State>
     ) { }
 }

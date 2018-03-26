@@ -71,7 +71,7 @@ describe('New Metadata Filter Page', () => {
     describe('onViewMore method', () => {
         it('should dispatch a viewMoreEntityIds action', () => {
             fixture.detectChanges();
-            instance.onViewMore();
+            instance.onViewMore('foo');
             expect(store.dispatch).toHaveBeenCalled();
         });
     });

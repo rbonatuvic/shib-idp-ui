@@ -24,3 +24,4 @@ export const getSelected = createSelector(getFilterFromState, fromFilter.getSele
 export const getEntityCollection = createSelector(getFilterFromState, fromFilter.getEntityIds);
 export const getIsLoading = createSelector(getFilterFromState, fromFilter.getLoading);
 export const getError = createSelector(getFilterFromState, fromFilter.getError);
+export const getTerm = createSelector(getFilterFromState, fromFilter.getTerm);

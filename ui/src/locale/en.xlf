@@ -2051,6 +2051,22 @@
           <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="action--select-id" datatype="html">
+        <source>Select ID</source>
+        <target>Select ID</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/search-dialog.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--search-entity-id" datatype="html">
+        <source>Search Entity Id (<x id="INTERPOLATION" equiv-text="{{ source }}"/>)</source>
+        <target>Search Entity Id (<x id="INTERPOLATION" equiv-text="{{ source }}"/>)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/search-dialog.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

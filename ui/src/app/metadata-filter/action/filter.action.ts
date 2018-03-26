@@ -1,19 +1,19 @@
 import { Action } from '@ngrx/store';
 
+import { QueryParams } from '../../core/model/query';
+
 export const QUERY_ENTITY_IDS = '[Filter] Query Entity Ids';
 export const VIEW_MORE_IDS = '[Filter] View More Ids Modal';
 export const CANCEL_VIEW_MORE = '[Filter] Cancel View More';
 export const SELECT_ID = '[Filter] Select Entity ID';
 export const CANCEL_CREATE_FILTER = '[Filter] Cancel Create Filter';
-
-export const LOAD_ENTITY_IDS = '[Entity ID Collection] Load Entity Ids';
 export const LOAD_ENTITY_IDS_SUCCESS = '[Entity ID Collection] Load Entity Ids Success';
 export const LOAD_ENTITY_IDS_ERROR = '[Entity ID Collection] Load Entity Ids Error';
 
 export class QueryEntityIds implements Action {
     readonly type = QUERY_ENTITY_IDS;
 
-    constructor(public payload: string[]) { }
+    constructor(public payload: QueryParams) { }
 }
 
 export class CancelCreateFilter implements Action {
@@ -23,7 +23,7 @@ export class CancelCreateFilter implements Action {
 export class ViewMoreIds implements Action {
     readonly type = VIEW_MORE_IDS;
 
-    constructor(public payload: string[]) {}
+    constructor(public payload: string) {  }
 }
 
 export class CancelViewMore implements Action {
@@ -32,12 +32,6 @@ export class CancelViewMore implements Action {
 
 export class SelectId implements Action {
     readonly type = SELECT_ID;
-
-    constructor(public payload: string) { }
-}
-
-export class LoadEntityIds implements Action {
-    readonly type = LOAD_ENTITY_IDS;
 
     constructor(public payload: string) { }
 }
@@ -59,7 +53,6 @@ export type Actions =
     | CancelViewMore
     | CancelCreateFilter
     | SelectId
-    | LoadEntityIds
     | LoadEntityIdsSuccess
     | LoadEntityIdsError
     | QueryEntityIds;
