@@ -5,6 +5,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { SearchDialogComponent } from './search-dialog.component';
 import { NgbActiveModalStub } from '../../../testing/modal.stub';
 import * as fromFilter from '../reducer';
+import { SharedModule } from '../../shared/shared.module';
 
 describe('Search Dialog', () => {
     let fixture: ComponentFixture<SearchDialogComponent>;
@@ -21,6 +22,7 @@ describe('Search Dialog', () => {
                 StoreModule.forRoot({
                     'metadata-filter': combineReducers(fromFilter.reducers),
                 }),
+                SharedModule
             ],
             declarations: [
                 SearchDialogComponent

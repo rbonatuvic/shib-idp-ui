@@ -7,6 +7,7 @@ import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/p
 import { AutoCompleteComponent } from './autocomplete.component';
 import { NavigatorService } from '../../core/service/navigator.service';
 import { ValidationClassDirective } from '../validation/validation-class.directive';
+import { HighlightPipe } from '../pipe/highlight.pipe';
 
 const iPodAgent = `Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)
     AppleWebKit/534.46 (KHTML, like Gecko)
@@ -75,7 +76,8 @@ describe('AutoComplete Input Component', () => {
             declarations: [
                 AutoCompleteComponent,
                 TestHostComponent,
-                ValidationClassDirective
+                ValidationClassDirective,
+                HighlightPipe
             ],
         }).compileComponents();
     });

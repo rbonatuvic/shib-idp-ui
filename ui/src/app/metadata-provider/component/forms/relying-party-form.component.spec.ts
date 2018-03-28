@@ -9,10 +9,9 @@ import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/p
 import { ListValuesService } from '../../service/list-values.service';
 import { EntityDescriptor } from '../../model/entity-descriptor';
 import { RelyingPartyFormComponent } from './relying-party-form.component';
-import { AutoCompleteComponent } from '../../../widget/autocomplete/autocomplete.component';
 
 import * as stubs from '../../../../testing/provider.stub';
-import { ValidationClassDirective } from '../../../widget/validation/validation-class.directive';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
     template: `<relying-party-form [provider]="provider"></relying-party-form>`
@@ -59,13 +58,12 @@ describe('Relying Party Form Component', () => {
                 StoreModule.forRoot({
                     'providers': combineReducers(fromProviders.reducers),
                 }),
-                NgbPopoverModule
+                NgbPopoverModule,
+                SharedModule
             ],
             declarations: [
                 RelyingPartyFormComponent,
-                AutoCompleteComponent,
-                TestHostComponent,
-                ValidationClassDirective
+                TestHostComponent
             ],
         });
         store = TestBed.get(Store);

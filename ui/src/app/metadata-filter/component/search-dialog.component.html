@@ -32,7 +32,8 @@
                 class="list-group-item list-group-item-action p-1"
                 [class.active]="item === selected"
                 (click)="select($event, item)"
-                role="menuitem">{{ item }}</a>
+                role="menuitem"
+                [innerHTML]="item | highlight:this.form.get('search').value"></a>
         </div>
     </div>
     <div class="modal-footer">

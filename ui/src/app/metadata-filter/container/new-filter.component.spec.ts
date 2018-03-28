@@ -7,6 +7,7 @@ import { ProviderEditorFormModule } from '../../metadata-provider/component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NavigatorService } from '../../core/service/navigator.service';
+import { SharedModule } from '../../shared/shared.module';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;
@@ -28,7 +29,8 @@ describe('New Metadata Filter Page', () => {
                 }),
                 ReactiveFormsModule,
                 ProviderEditorFormModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                SharedModule
             ],
             declarations: [NewFilterComponent],
         });

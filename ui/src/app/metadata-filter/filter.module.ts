@@ -12,6 +12,7 @@ import { ProviderEditorFormModule } from '../metadata-provider/component';
 import { FilterEffects } from './effect/filter.effect';
 import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from './component/search-dialog.component';
+import { SharedModule } from '../shared/shared.module';
 
 export const routes: Routes = [
     {
@@ -38,7 +39,8 @@ export const routes: Routes = [
         RouterModule.forChild(routes),
         ProviderEditorFormModule,
         NgbPopoverModule,
-        NgbModalModule
+        NgbModalModule,
+        SharedModule
     ],
     providers: []
 })

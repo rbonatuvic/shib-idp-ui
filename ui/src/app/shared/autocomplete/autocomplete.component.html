@@ -30,9 +30,8 @@
             (mouseout)="handleOptionMouseOut()"
             role="option"
             tabIndex="-1"
-            [attr.aria-selected]="state.currentState.focused === i">
-            {{ option }}
-        </li>
+            [attr.aria-selected]="state.currentState.focused === i"
+            [innerHTML]="option | highlight:this.input.value"></li>
         <li class="dropdown-item dropdown-item-noresults" *ngIf="matches.length === 0 && !processing">
             {{ noneFoundText }}
         </li>

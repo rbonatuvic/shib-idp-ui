@@ -21,6 +21,7 @@ import { WizardNavComponent } from './component/wizard-nav.component';
 import { WizardEffects } from './effect/wizard.effect';
 import { EditorEffects } from './effect/editor.effect';
 import { ValidFormIconComponent } from './component/valid-form-icon.component';
+import { SharedModule } from '../shared/shared.module';
 
 export const routes: Routes = [
     {
@@ -73,7 +74,8 @@ export const routes: Routes = [
         NgbDropdownModule,
         StoreModule.forFeature('edit-provider', reducers),
         EffectsModule.forFeature([WizardEffects, EditorEffects]),
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        SharedModule
     ],
     providers: []
 })

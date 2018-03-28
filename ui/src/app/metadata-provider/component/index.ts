@@ -20,11 +20,7 @@ import { ProviderFormFragmentComponent } from './forms/provider-form-fragment.co
 import { InfoLabelDirective } from '../directive/info-label.directive';
 import { InputDefaultsDirective } from '../directive/input-defaults.directive';
 import { I18nTextComponent } from './i18n-text.component';
-
-import { ValidationClassDirective } from '../../widget/validation/validation-class.directive';
-import { AutoCompleteComponent } from '../../widget/autocomplete/autocomplete.component';
-
-
+import { SharedModule } from '../../shared/shared.module';
 
 export const COMPONENTS = [
     AdvancedInfoFormComponent,
@@ -37,28 +33,29 @@ export const COMPONENTS = [
     RelyingPartyFormComponent,
     AttributeReleaseFormComponent,
     FinishFormComponent,
-    ProviderFormFragmentComponent,
-    AutoCompleteComponent
+    ProviderFormFragmentComponent
 ];
 
 export const declarations = [
     ...COMPONENTS,
     InfoLabelDirective,
     InputDefaultsDirective,
-    ValidationClassDirective,
     I18nTextComponent
 ];
 
 @NgModule({
     declarations: declarations,
     entryComponents: COMPONENTS,
-    exports: declarations,
+    exports: [
+        ...declarations
+    ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         RouterModule,
         NgbPopoverModule,
-        NgbModalModule
+        NgbModalModule,
+        SharedModule
     ],
     providers: []
 })
