@@ -1,41 +1,45 @@
-<div class="modal-header">
-    <h4 class="modal-title">
-        <ng-container i18n="@@label--search-entity-id">Search Entity Id ({{ source }})</ng-container>
-        
-    </h4>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="modal-body">
-    <form [formGroup]="form">
-        <div class="form-row">
-            <div class="form-group col-9">
-                <input type="text"
-                    formControlName="search"
-                    class="form-control"
-                />
-            </div>
-            <div class="form-group col-3">
-                <button class="btn btn-primary btn-block">
-                    <i class="fa fa-search"></i>
-                    <ng-container i18n="@@action--search">Search</ng-container>
-                </button>
-            </div>
-        </div>
-    </form>
-    <div class="list-group list-group-flush scrolled my-2" id="list-tab" role="tablist">
-        <a href=""
-            *ngFor="let item of matches$ | async"
-            class="list-group-item list-group-item-action p-1"
-            [class.active]="item === selected"
-            (click)="select($event, item)">{{ item }}</a>
+<section role="dialog" aria-label="Search filter modal" tabindex="0">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <ng-container i18n="@@label--search-entity-id">Search Entity Id ({{ source }})</ng-container>
+            
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close modal" (click)="activeModal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="activeModal.close(selected)">
-        <i class="fa fa-save"></i>
-        <ng-container i18n="@@action--select-id">Select ID</ng-container>
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@action--cancel">Cancel</button>
-</div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="form-row">
+                <div class="form-group col-9">
+                    <input type="text"
+                        formControlName="search"
+                        class="form-control"
+                        aria-label="Entity ID search text box"
+                    />
+                </div>
+                <div class="form-group col-3">
+                    <button class="btn btn-primary btn-block" aria-label="Search Entity ID">
+                        <i class="fa fa-search"></i>
+                        <ng-container i18n="@@action--search">Search</ng-container>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="list-group list-group-flush scrolled my-2" id="list-tab" role="tablist" tabindex="0">
+            <a href=""
+                *ngFor="let item of matches$ | async"
+                class="list-group-item list-group-item-action p-1"
+                [class.active]="item === selected"
+                (click)="select($event, item)"
+                role="menuitem">{{ item }}</a>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="activeModal.close(selected)">
+            <i class="fa fa-save"></i>
+            <ng-container i18n="@@action--select-id">Select ID</ng-container>
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@action--cancel">Cancel</button>
+    </div>
+</section>
