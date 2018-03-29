@@ -8,7 +8,8 @@ const snapshot: fromFilter.FilterState = {
     viewMore: false,
     loading: false,
     error: null,
-    term: ''
+    term: '',
+    filter: null
 };
 
 describe('Filter Reducer', () => {

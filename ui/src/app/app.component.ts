@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/map';
 
 import * as fromRoot from './core/reducer';
 import { VersionInfo } from './core/model/version';
@@ -17,21 +17,17 @@ export class AppComponent implements OnInit {
     title = 'Shib UI';
     version$: Observable<VersionInfo>;
     version: string;
+    formatted$: Observable<string>;
     today = new Date();
 
     constructor(private store: Store<fromRoot.State>) {
         this.version$ = this.store.select(fromRoot.getVersionInfo);
+        this.formatted$ = this.version$.map(v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : '');
     }
 
     ngOnInit(): void {
         this.store.dispatch(new LoadProviderRequest());
         this.store.dispatch(new LoadDraftRequest());
         this.store.dispatch(new VersionInfoLoadRequestAction());
-
-        this.version$.subscribe(v => {
-            if (v && v.build) {
-                this.version = `${v.build.version}-${v.git.commit.id}`;
-            }
-        });
     }
 }

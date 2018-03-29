@@ -88,8 +88,12 @@
                         <logout-form *ngSwitchCase="5" [provider]="latest$ | async"></logout-form>
                         <key-info-form *ngSwitchCase="6" [provider]="latest$ | async"></key-info-form>
                         <assertion-form *ngSwitchCase="7" [provider]="latest$ | async"></assertion-form>
-                        <relying-party-form *ngSwitchCase="8" [provider]="latest$ | async"></relying-party-form>
-                        <attribute-release-form *ngSwitchCase="9" [provider]="latest$ | async"></attribute-release-form>
+                        <div class="row" *ngSwitchCase="8">
+                            <relying-party-form [provider]="latest$ | async" class="form-section col-xl-6"></relying-party-form>
+                        </div>
+                        <div class="row" *ngSwitchCase="9">
+                            <attribute-release-form [provider]="latest$ | async" class="form-section col-xl-6"></attribute-release-form>
+                        </div>
                     </div>
                 </div>
             </div>

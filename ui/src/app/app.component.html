@@ -70,7 +70,7 @@
             </ul>
             <p>
                 <ng-container *ngIf="version$ | async">
-                {{ version }}
+                {{ formatted$ | async }}
                 &nbsp;|&nbsp;
                 </ng-container>
                 <ng-container i18n="@@label--copyright">Copyright</ng-container> &copy; {{ today | date:'yyyy' }} Internet2

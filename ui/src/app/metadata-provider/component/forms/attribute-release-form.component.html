@@ -1,6 +1,6 @@
 <form [formGroup]="form" role="form">
-    <div class="row" *ngIf="form.get('attributeRelease')" formArrayName="attributeRelease">
-        <fieldset class="col col-xl-6 form-section" aria-label="Attribute release table - select the attributes you want to release (default unchecked)" tabindex="0">
+    <ng-container *ngIf="form.get('attributeRelease')" formArrayName="attributeRelease">
+        <fieldset aria-label="Attribute release table - select the attributes you want to release (default unchecked)" tabindex="0">
             <table class="table table-striped table-sm">
                 <thead>
                 <tr class="table-secondary">
@@ -9,27 +9,43 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let attr of listOfAttributes$ | async; let i=index;">
-                    <td scope="col">{{ attr.label }}</td>
-                    <td scope="col">
-                        <fieldset>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox"
-                                    class="custom-control-input"
-                                    (change)="onCheck($event, attr.key)"
-                                    [checked]="isChecked(attr.key)"
-                                    id="input-{{ i }}"
-                                    [attr.name]="attr.label"
-                                    [attr.aria-label]="attr.label"
-                                    role="checkbox"
-                                    aria-checked="false"/>
-                                <label class="custom-control-label" for="input-{{ i }}"></label>
-                            </div>
-                        </fieldset>
-                    </td>
-                </tr>
+                    <tr *ngFor="let attr of listOfAttributes$ | async; let i=index;">
+                        <td scope="col">{{ attr.label }}</td>
+                        <td scope="col">
+                            <fieldset>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox"
+                                        class="custom-control-input"
+                                        (change)="onCheck($event, attr.key)"
+                                        [checked]="isChecked(attr.key)"
+                                        id="input-{{ i }}"
+                                        [attr.name]="attr.label"
+                                        [attr.aria-label]="attr.label"
+                                        role="checkbox"
+                                        aria-checked="false"/>
+                                    <label class="custom-control-label" for="input-{{ i }}"></label>
+                                </div>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Check All Attributes</td>
+                        <td scope="col">
+                            <button class="btn btn-text text-success btn-sm" (click)="onCheckAll()">
+                                <i class="fa fa-check"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Clear All Attributes</td>
+                        <td scope="col">
+                            <button class="btn btn-text text-danger btn-sm" (click)="onCheckNone()">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </fieldset>
-    </div>
+    </ng-container>
 </form>

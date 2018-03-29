@@ -2,6 +2,13 @@
 @import './_variables';
 @import '~bootstrap/scss/_mixins';
 
+.btn.btn-text {
+    display: inline;
+    padding: 0px;
+    margin: 0px;
+    background: none;
+}
+
 .nav.nav-wizard {
     .nav-item {
         margin-right: $custom-control-spacer-x * 3;

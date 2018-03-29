@@ -27,8 +27,10 @@ export const reducers = {
 };
 
 export const getCoreFeature = createFeatureSelector<CoreState>('core');
+export const getUserStateFn = (state: CoreState) => state.user;
+export const getVersionStateFn = (state: CoreState) => state.version;
 
-export const getUserState = createSelector(getCoreFeature, (state: CoreState) => state.user);
+export const getUserState = createSelector(getCoreFeature, getUserStateFn);
 export const getUser = createSelector(getUserState, fromUser.getUser);
 export const isFetching = createSelector(getUserState, fromUser.isFetching);
 export const getUserError = createSelector(getUserState, fromUser.getError);

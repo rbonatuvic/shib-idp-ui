@@ -12,7 +12,8 @@ import {
     ElementRef,
     SimpleChanges,
     forwardRef,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    OnChanges
 } from '@angular/core';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -27,7 +28,6 @@ import { AutoCompleteState, AutoCompleteStateEmitter, defaultState } from './aut
 import { NavigatorService } from '../../core/service/navigator.service';
 
 const POLL_TIMEOUT = 1000;
-const MIN_LENGTH = 2;
 const INPUT_FIELD_INDEX = -1;
 
 @Component({
@@ -43,12 +43,11 @@ const INPUT_FIELD_INDEX = -1;
         }
     ]
 })
-export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor {
+export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
     @Input() defaultValue = '';
     @Input() matches: string[] = [];
     @Input() id: string;
     @Input() autoSelect = false;
-    @Input() allowCustom = false;
     @Input() noneFoundText = 'No Options Found';
     @Input() showMoreText = 'Show More...';
     @Input() limit = 0;
@@ -69,6 +68,8 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     $pollInput: Observable<number>;
     $checkInputValue: Observable<any>;
     $pollSubscription: Subscription;
+
+    showMoreAvailable: boolean;
 
     matches$: Observable<string[]>;
     numMatches: number;
@@ -98,13 +99,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
             }
         });
 
-        this.input
-            .valueChanges
-            .subscribe((query) => {
-                if (query && query.length >= MIN_LENGTH) {
-                    this.onChange.emit(query);
-                }
-            });
+        this.input.valueChanges.subscribe(query => this.onChange.emit(query));
         this.input.valueChanges.subscribe(newValue => this.handleInputChange(newValue));
         this.input.setValue(this.defaultValue);
 
@@ -119,6 +114,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
 
     ngAfterViewInit(): void {
         this.listItems.changes.subscribe((changes) => this.setElementReferences(changes));
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.matches) {
+            this.showMoreAvailable = !!this.limit && this.matches && this.matches.length >= this.limit;
+        }
     }
 
     writeValue(value: any): void {
@@ -161,10 +162,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     handleComponentBlur(newState: any = {}): void {
         let { selected } = this.state.currentState,
             query = this.input.value,
-            change = this.matches && this.matches[selected] ? this.matches[selected] : null;
-        if (!change) {
-            change = this.allowCustom ? query : this.queryOption;
-        }
+            change = this.matches && this.matches[selected] ? this.matches[selected] : query;
         this.propagateChange(change);
         this.propagateTouched(null);
         this.state.setState({
@@ -213,17 +211,14 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     handleInputChange(query: string): void {
         query = query || '';
         const queryEmpty = query.length === 0;
-        const queryLongEnough = query.length >= MIN_LENGTH;
         const autoselect = this.hasAutoselect;
         const optionsAvailable = this.matches.length > 0;
-        const searchForOptions = (!queryEmpty && queryLongEnough);
+        const searchForOptions = !queryEmpty;
         this.state.setState({
             menuOpen: searchForOptions && !this.matches.some(m => m === query),
             selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null
         });
-        if (this.allowCustom) {
-            this.propagateChange(query);
-        }
+        this.propagateChange(query);
     }
 
     handleInputFocus(): void {
@@ -239,9 +234,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
     handleOptionClick(index: number): void {
         const selectedOption = this.matches[index];
-        if (selectedOption) {
-            this.propagateChange(selectedOption);
-        }
+        this.propagateChange(selectedOption);
         this.input.setValue(selectedOption);
         this.state.setState({
             focused: -1,
@@ -283,7 +276,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         event.preventDefault();
         const isNotAtBottom = this.state.currentState.selected !== this.matches.length - 1;
         const allowMoveDown = isNotAtBottom && this.state.currentState.menuOpen;
-        if (allowMoveDown) {
+        if (allowMoveDown || this.showMoreAvailable) {
             this.handleOptionFocus(this.state.currentState.selected + 1);
         }
     }
@@ -338,17 +331,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     isIosDevice() {
         let agent = this.navigator.native.userAgent;
         return !!(agent.match(/(iPod|iPhone|iPad)/g) && agent.match(/AppleWebKit/g));
-    }
-
-    get queryOption(): string | null {
-        const query = this.input.value;
-        if (!query) {
-            return null;
-        }
-        if (!this.matches) {
-            return null;
-        }
-        return this.matches.indexOf(query) > -1 ? query : null;
     }
 
     get hasAutoselect(): boolean {

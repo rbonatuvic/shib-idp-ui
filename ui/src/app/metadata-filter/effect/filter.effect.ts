@@ -16,6 +16,8 @@ import * as fromFilter from '../reducer';
 
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../metadata-provider/service/entity-id.service';
+import { MetadataFilterService } from '../service/filter.service';
+import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
 
 @Injectable()
 export class FilterEffects {
@@ -52,24 +54,29 @@ export class FilterEffects {
                 .map(id => new filter.SelectId(id))
                 .catch(() => Observable.of(new filter.CancelViewMore()));
         });
-    /*
+
     @Effect()
-    viewMoreQuery$ = this.actions$
-        .ofType<filter.ViewMoreIds>(filter.VIEW_MORE_IDS)
+    saveFilter$ = this.actions$
+        .ofType<filter.SaveFilter>(filter.SAVE_FILTER)
         .map(action => action.payload)
-        .switchMap(query =>
-            this.idService
-                .query(query)
-                .map(ids => new filter.LoadEntityIdsSuccess(ids))
-                .catch(error => Observable.of(new filter.LoadEntityIdsError(error)))
+        .switchMap(unsaved =>
+            this.filterService
+                .save(unsaved as MetadataProvider)
+                .map(saved => new filter.SaveFilterSuccess(saved))
+                .catch(error => Observable.of(new filter.SaveFilterError(error)))
         );
-    */
+
+    @Effect({ dispatch: false })
+    saveFilterSuccess$ = this.actions$
+        .ofType<filter.SaveFilterSuccess>(filter.SAVE_FILTER_SUCCESS)
+        .switchMap(() => this.router.navigate(['/dashboard']));
 
     constructor(
         private actions$: Actions,
         private router: Router,
         private modalService: NgbModal,
         private idService: EntityIdService,
+        private filterService: MetadataFilterService,
         private store: Store<fromFilter.State>
     ) { }
 }

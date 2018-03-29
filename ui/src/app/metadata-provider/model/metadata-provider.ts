@@ -9,7 +9,7 @@ export interface MetadataProvider {
     assertionConsumerServices?: SsoService[];
     serviceProviderSsoDescriptor?: IdpSsoDescriptor;
 
-    logoutEndpoints: LogoutEndpoint[];
+    logoutEndpoints?: LogoutEndpoint[];
 
     serviceEnabled?: boolean;
 

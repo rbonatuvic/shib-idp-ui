@@ -19,8 +19,12 @@
                     />
                 </div>
                 <div class="form-group col-3">
-                    <button class="btn btn-primary btn-block" aria-label="Search Entity ID">
-                        <i class="fa fa-search"></i>
+                    <button class="btn btn-primary btn-block"
+                        (click)="search(form.get('search').value)"
+                        aria-label="Search Entity ID"
+                        [ngSwitch]="loading$ | async">
+                        <i class="fa fa-search" *ngSwitchDefault></i>
+                        <i class="fa fa-spinner fa-pulse fa-fw" *ngSwitchCase="true"></i>
                         <ng-container i18n="@@action--search">Search</ng-container>
                     </button>
                 </div>
@@ -31,7 +35,7 @@
                 *ngFor="let item of matches$ | async"
                 class="list-group-item list-group-item-action p-1"
                 [class.active]="item === selected"
-                (click)="select($event, item)"
+                (click)="$event.preventDefault(); selected = item;"
                 role="menuitem"
                 [innerHTML]="item | highlight:this.form.get('search').value"></a>
         </div>

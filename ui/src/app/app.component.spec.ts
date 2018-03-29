@@ -4,25 +4,27 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { AppComponent } from './app.component';
 
 import { User } from './core/model/user';
-import * as fromUser from './core/reducer/user.reducer';
+import * as fromRoot from './core/reducer';
 import { NotificationModule } from './notification/notification.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('AppComponent', () => {
+    let store: Store<fromRoot.State>;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule.forRoot(),
                 RouterTestingModule,
-                StoreModule.forRoot({
-                    user: combineReducers(fromUser.reducer),
-                }),
+                StoreModule.forRoot({}),
                 NotificationModule
             ],
             declarations: [
                 AppComponent
             ],
         }).compileComponents();
+
+        store = TestBed.get(Store);
+        spyOn(store, 'dispatch');
     }));
 
     it('should create the app', async(() => {

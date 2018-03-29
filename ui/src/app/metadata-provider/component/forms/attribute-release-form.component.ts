@@ -1,6 +1,8 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/last';
+
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../model/metadata-provider';
@@ -49,7 +51,7 @@ export class AttributeReleaseFormComponent extends ProviderFormFragmentComponent
     }
 
     isChecked(attr): boolean {
-        return this.provider.attributeRelease.indexOf(attr) > -1;
+        return this.attributeRelease.controls.findIndex(control => control.value === attr) > -1;
     }
 
     setAttributes(list: string[] = []): void {
@@ -59,13 +61,27 @@ export class AttributeReleaseFormComponent extends ProviderFormFragmentComponent
     }
 
     onCheck($event, attr: string): void {
-        const checked = $event.target.checked;
+        const checked = $event ? $event.target.checked : true;
         if (checked) {
             this.attributeRelease.push(this.fb.control(attr));
         } else {
             const index = this.attributeRelease.controls.findIndex(control => control.value === attr);
             this.attributeRelease.removeAt(index);
         }
-        this.attributeRelease.updateValueAndValidity();
+    }
+
+    onCheckAll(): void {
+        this.onCheckNone();
+        this.listOfAttributes$.last().subscribe(attrs => {
+            attrs.forEach(attr => this.onCheck(null, attr.key));
+        });
+    }
+    onCheckNone(event: Event | null = null): void {
+        if (event) {
+            event.preventDefault();
+        }
+        while (this.attributeRelease.controls.length !== 0) {
+            this.attributeRelease.removeAt(0);
+        }
     }
 } /* istanbul ignore next */

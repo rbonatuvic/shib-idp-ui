@@ -9,6 +9,7 @@ import { SharedModule } from '../../shared/shared.module';
 
 describe('Search Dialog', () => {
     let fixture: ComponentFixture<SearchDialogComponent>;
+    let store: Store<fromFilter.State>;
     let instance: SearchDialogComponent;
 
     beforeEach(() => {
@@ -31,11 +32,29 @@ describe('Search Dialog', () => {
 
         fixture = TestBed.createComponent(SearchDialogComponent);
         instance = fixture.componentInstance;
+
+        store = TestBed.get(Store);
+
+        spyOn(store, 'dispatch').and.callThrough();
     });
 
     it('should compile', () => {
         fixture.detectChanges();
 
         expect(fixture).toBeDefined();
+    });
+
+    describe('search method', () => {
+        it('should dispatch a search action', () => {
+            fixture.detectChanges();
+            instance.search('foo');
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+
+        it('should dispatch a search action with the default string if not provided', () => {
+            fixture.detectChanges();
+            instance.search();
+            expect(store.dispatch).toHaveBeenCalled();
+        });
     });
 });

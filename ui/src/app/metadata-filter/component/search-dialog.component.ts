@@ -18,6 +18,7 @@ export class SearchDialogComponent implements OnInit, AfterViewInit {
     @Input() source = 'InCommon';
 
     matches$: Observable<string[]>;
+    loading$: Observable<boolean>;
 
     selected: string;
 
@@ -34,21 +35,12 @@ export class SearchDialogComponent implements OnInit, AfterViewInit {
         private store: Store<fromFilter.State>,
         private fb: FormBuilder
     ) {
-        // this.query$ = this.store.select(fromFilter.getQuery);
         this.matches$ = this.store.select(fromFilter.getEntityCollection);
     }
 
     ngOnInit(): void {
         let search = this.form.get('search');
         search.setValue(this.term);
-
-        search.valueChanges
-            .debounceTime(this.dbounce)
-            .subscribe(val =>
-                this.store.dispatch(
-                    new QueryEntityIds({ term: val, limit: this.limit })
-                )
-            );
     }
 
     ngAfterViewInit(): void {
@@ -56,8 +48,7 @@ export class SearchDialogComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new QueryEntityIds({ term, limit }));
     }
 
-    select($event: MouseEvent, id: string): void {
-        $event.preventDefault();
-        this.selected = id;
+    search(term: string = ''): void {
+        this.store.dispatch(new QueryEntityIds({ term, limit: this.limit }));
     }
 } /* istanbul ignore next */

@@ -23,7 +23,6 @@ const regularAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3)
                 [id]="config.id"
                 [autoSelect]="config.autoSelect"
                 [matches]="config.options"
-                [allowCustom]="config.allowCustom"
                 formControlName="search"
                 (onChange)="search($event)">
             </auto-complete>
@@ -297,16 +296,6 @@ describe('AutoComplete Input Component', () => {
             expect(instanceUnderTest.state.setState).toHaveBeenCalledWith(expected);
         });
 
-        it('should not call propagateChange if the selected option is not in the list of matches', () => {
-            const val = 'hi';
-            instanceUnderTest.input.setValue(val);
-            testHostInstance.configure({ options: ['foo', 'bar', 'baz'] });
-            testHostFixture.detectChanges();
-            spyOn(instanceUnderTest, 'propagateChange');
-            instanceUnderTest.handleOptionClick(4);
-            expect(instanceUnderTest.propagateChange).not.toHaveBeenCalled();
-        });
-
         it('should call propagateChange if the selected option is in the list of matches', () => {
             const val = 'foo';
             instanceUnderTest.input.setValue(val);
@@ -387,39 +376,6 @@ describe('AutoComplete Input Component', () => {
         it('should return false if navigator.userAgent is not an ios device', () => {
             spyOnProperty(navigatorInstance, 'native', 'get').and.returnValue({ userAgent: regularAgent });
             expect(instanceUnderTest.isIosDevice()).toBe(false);
-        });
-    });
-
-    describe('queryOption getter', () => {
-        it('should return the query if the query exists in the collection', () => {
-            testHostInstance.configure({ options: ['foo', 'bar'] });
-            instanceUnderTest.input.setValue('foo');
-            testHostFixture.detectChanges();
-            expect(instanceUnderTest.queryOption).toBe('foo');
-        });
-        it('should return null if the query does not exist in the collection', () => {
-            testHostInstance.configure({ options: ['bar', 'baz'] });
-            instanceUnderTest.input.setValue('foo');
-            testHostFixture.detectChanges();
-            expect(instanceUnderTest.queryOption).toBeNull();
-        });
-        it('should return null if the query is undefined/null', () => {
-            testHostInstance.configure({ options: ['bar', 'baz'] });
-            instanceUnderTest.input.setValue('foo');
-            testHostFixture.detectChanges();
-            expect(instanceUnderTest.queryOption).toBeNull();
-        });
-        xit('should return null if the options are undefined/null', () => {
-            testHostInstance.configure({ options: null });
-            instanceUnderTest.input.setValue('foo');
-            testHostFixture.detectChanges();
-            expect(instanceUnderTest.queryOption).toBeNull();
-        });
-        it('should return null if the options list is empty', () => {
-            testHostInstance.configure({ options: [] });
-            instanceUnderTest.input.setValue('foo');
-            testHostFixture.detectChanges();
-            expect(instanceUnderTest.queryOption).toBeNull();
         });
     });
 });

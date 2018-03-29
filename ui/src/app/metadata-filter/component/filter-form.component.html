@@ -1,0 +1,143 @@
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-lg-6 col-xs-9 ">
+            <fieldset class="">
+                <div class="form-group">
+                    <div class="row">
+                        <label for="filterName" class="col-sm-10">
+                            <span>
+                                <ng-container i18n="@@label--filter-name">
+                                    Filter Name
+                                </ng-container>
+                                <ng-container i18n="@@label--dashboard-display-only">
+                                    (Dashboard Display Only)
+                                </ng-container>
+                                <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                            </span>
+                        </label>
+                        <span class="text-right col-sm-2">
+                            <ng-template #tooltipFilterName i18n="@@tooltip--filter-name">Filter Name</ng-template>
+                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                [ngbPopover]="tooltipFilterName"
+                                i18n-aria-label="@@tooltip--instruction"
+                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                        </span>
+                    </div>
+                    <input id="filterName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
+                    <ng-container *ngIf="form.get('serviceProviderName').touched && form.get('serviceProviderName').invalid">
+                        <small class="form-text text-danger" *ngIf="form.get('serviceProviderName').hasError('required')">
+                            <ng-container i18n="@@message--service-provider-name-required">Filter Name is required</ng-container>
+                        </small>
+                    </ng-container>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label for="entityId" class="col-sm-10">
+                            <span>
+                                <ng-container i18n="@@label--search-entity-id">Search Entity ID</ng-container>
+                                <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="processing$ | async"></i>
+                            </span>
+                        </label>
+                        <span class="text-right col-sm-2">
+                            <ng-template #tooltipFilterEntityId i18n="@@tooltip--search-entity-id">Search Entity ID</ng-template>
+                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                [ngbPopover]="tooltipFilterEntityId"
+                                i18n-aria-label="@@tooltip--instruction"
+                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                        </span>
+                    </div>
+                    <auto-complete
+                        id="entityId"
+                        class="component-control"
+                        formControlName="entityId"
+                        limit="10"
+                        [matches]="entityIds$ | async"
+                        [required]="true"
+                        [processing]="(processing$ | async)"
+                        (more)="onViewMore($event)">
+                    </auto-complete>
+                    <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
+                        <small class="form-text text-danger">
+                            <ng-container *ngIf="form.get('entityId').hasError('required')" i18n="@@message--entity-id-required">Entity ID is required</ng-container>
+                            <ng-container *ngIf="form.get('entityId').hasError('exists')" i18n="@@message--entity-id-not-found">Entity ID not found</ng-container>
+                        </small>
+                    </ng-container>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-lg-6 col-xs-3 text-right">
+            <!--
+                <button (click)="onPreview.emit()" type="submit" class="btn btn-success">
+                    <i class="fa fa-eye fa-lg"></i>
+                    <ng-container i18n="@@action--save-changes">Preview XML</ng-container>
+                </button>
+            -->
+            <button (click)="onSave.emit(provider)" type="submit" class="btn btn-primary" [disabled]="form.invalid">
+                <i class="fa fa-save fa-lg"></i>
+                <ng-container i18n="@@action--save-changes">Save Changes</ng-container>
+            </button>
+            <button (click)="onCancel.emit()" type="reset" class="btn btn-secondary">
+                <ng-container i18n="@@action--cancel">Cancel</ng-container>
+            </button>
+        </div>
+    </div>
+    <section *ngIf="form.valid">
+        <hr />
+        <div class="row">
+            <fieldset class="col-lg-6">
+                <div class="form-group">
+                    <div class="row">
+                        <label for="filterName" class="col-sm-10">
+                            <span>
+                                <ng-container i18n="@@label--xml-preview">
+                                    Entity ID XML Preview (read-only)
+                                </ng-container>
+                            </span>
+                        </label>
+                        <span class="text-right col-sm-2">
+                            <ng-template #tooltipFilterName i18n="@@tooltip--xml-preview">XML Preview</ng-template>
+                            <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
+                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                        </span>
+                    </div>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" readonly></textarea>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse" for="filterEnabled">
+                        <input disableValidation="true"
+                            class="custom-control-input"
+                            type="checkbox"
+                            formControlName="filterEnabled"
+                            id="filterEnabled"
+                            name="filterEnabled"
+                            role="checkbox">
+                        <label class="custom-control-label"
+                            i18n="@@label--enable-this-filter"
+                            for="filterEnabled"
+                            aria-label="Enable this filter?">
+                            Enable this filter?
+                        </label>
+                    </div>
+                    <ng-template #tooltipEnableThisFilterUponSaving i18n="@@tooltip--enable-this-filter-upon-saving">Enable this filter upon saving popover</ng-template>
+                    <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                       [ngbPopover]="tooltipEnableThisFilterUponSaving"
+                       i18n-aria-label="@@tooltip--instruction"
+                       role="tooltip"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <relying-party-form [provider]="provider"></relying-party-form>
+            </div>
+            <div class="col-lg-6">
+                <attribute-release-form [provider]="provider"></attribute-release-form>
+            </div>
+        </div>
+    </section>
+</form>

@@ -32,10 +32,10 @@
             tabIndex="-1"
             [attr.aria-selected]="state.currentState.focused === i"
             [innerHTML]="option | highlight:this.input.value"></li>
-        <li class="dropdown-item dropdown-item-noresults" *ngIf="matches.length === 0 && !processing">
+        <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
             {{ noneFoundText }}
         </li>
-        <li class="dropdown-item dropdown-item-noresults" *ngIf="!!limit && matches.length >= limit">
+        <li class="dropdown-item" *ngIf="showMoreAvailable">
             <a href="" (click)="handleViewMore($event)" (mousedown)="handleViewMore($event)">{{ showMoreText }}</a>
         </li>
     </ul>

@@ -12,7 +12,10 @@ import { ProviderEditorFormModule } from '../metadata-provider/component';
 import { FilterEffects } from './effect/filter.effect';
 import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from './component/search-dialog.component';
+import { FilterFormComponent } from './component/filter-form.component';
 import { SharedModule } from '../shared/shared.module';
+import { PreviewFilterComponent } from './component/preview-filter.component';
+import { MetadataFilterService } from './service/filter.service';
 
 export const routes: Routes = [
     {
@@ -25,10 +28,13 @@ export const routes: Routes = [
 @NgModule({
     declarations: [
         NewFilterComponent,
-        SearchDialogComponent
+        FilterFormComponent,
+        SearchDialogComponent,
+        PreviewFilterComponent
     ],
     entryComponents: [
-        SearchDialogComponent
+        SearchDialogComponent,
+        PreviewFilterComponent
     ],
     imports: [
         CommonModule,
@@ -42,6 +48,8 @@ export const routes: Routes = [
         NgbModalModule,
         SharedModule
     ],
-    providers: []
+    providers: [
+        MetadataFilterService
+    ]
 })
 export class FilterModule { }
