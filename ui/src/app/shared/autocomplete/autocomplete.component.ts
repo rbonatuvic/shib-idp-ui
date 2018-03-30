@@ -151,7 +151,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         });
     }
 
-    handleViewMore($event: MouseEvent): void {
+    handleViewMore($event: MouseEvent | KeyboardEvent | Event): void {
         $event.preventDefault();
         $event.stopPropagation();
         this.handleInputBlur();
@@ -274,9 +274,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     handleDownArrow(event: KeyboardEvent): void {
         event.preventDefault();
-        const isNotAtBottom = this.state.currentState.selected !== this.matches.length - 1;
+        let isNotAtBottom = this.state.currentState.selected !== this.matches.length - 1;
+        if (this.showMoreAvailable) {
+            isNotAtBottom = this.state.currentState.selected !== this.matches.length;
+        }
         const allowMoveDown = isNotAtBottom && this.state.currentState.menuOpen;
-        if (allowMoveDown || this.showMoreAvailable) {
+        if (allowMoveDown) {
             this.handleOptionFocus(this.state.currentState.selected + 1);
         }
     }
@@ -289,7 +292,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         }
     }
 
-    handleEnter(event: KeyboardEvent | { preventDefault: () => {} }): void {
+    handleEnter(event: KeyboardEvent): void {
         let { selected, menuOpen } = this.state.currentState,
             query = this.input.value;
         if (menuOpen) {
@@ -300,8 +303,10 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
                 hasSelectedOption = queryIndex > -1;
                 selected = hasSelectedOption ? queryIndex : selected;
             }
-            if (hasSelectedOption) {
+            if (hasSelectedOption && selected < this.matches.length) {
                 this.handleOptionClick(selected);
+            } else if (hasSelectedOption && selected === this.matches.length) {
+                this.handleViewMore(event as KeyboardEvent);
             } else {
                 this.handleComponentBlur({
                     focused: -1,
@@ -333,15 +338,18 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         return !!(agent.match(/(iPod|iPhone|iPad)/g) && agent.match(/AppleWebKit/g));
     }
 
+    getOptionId(index): string {
+        return `${this.id}__option--${index}`;
+    }
+
     get hasAutoselect(): boolean {
         return this.isIosDevice() ? false : this.autoSelect;
     }
 
     get activeDescendant (): string {
-        let state = this.state.currentState,
-            focused = state.focused,
+        let { focused } = this.state.currentState,
             optionFocused = focused !== -1 && focused !== null;
-        return optionFocused ? `${ this.id }__option--${ focused }` : 'false';
+        return optionFocused ? this.getOptionId(focused) : null;
     }
 
     get displayState(): any {
