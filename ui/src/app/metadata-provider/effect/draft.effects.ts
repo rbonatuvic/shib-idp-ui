@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import * as draftActions from '../action/draft.action';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDraftService } from '../service/entity-draft.service';
 
 @Injectable()

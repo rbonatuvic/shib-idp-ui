@@ -5,7 +5,7 @@ import 'rxjs/add/operator/last';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
-import { MetadataProvider, Organization, Contact } from '../../model/metadata-provider';
+import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 import { ListValuesService } from '../../service/list-values.service';
 import { FormArray } from '@angular/forms/src/model';
 

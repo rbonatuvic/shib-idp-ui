@@ -24,7 +24,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/distinctUntilChanged';
 
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as fromProviders from '../../metadata-provider/reducer';
 import { UpdateProviderRequest } from '../../metadata-provider/action/provider.action';
 import * as fromEditor from '../reducer';

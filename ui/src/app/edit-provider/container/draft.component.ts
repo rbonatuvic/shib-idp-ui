@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { SelectDraft } from '../../metadata-provider/action/draft.action';
 import * as fromProviders from '../../metadata-provider/reducer';
 @Component({

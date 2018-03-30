@@ -1,6 +1,7 @@
-import { EntityDescriptor } from './entity-descriptor';
-import { MetadataProvider } from './metadata-provider';
-describe('Entity Desctiptor construct', () => {
+import { Provider } from './provider';
+import { MetadataProvider } from '../model/metadata-provider';
+
+describe('Provider construct', () => {
 
     const config: MetadataProvider = {
         id: 'foo',
@@ -83,7 +84,7 @@ describe('Entity Desctiptor construct', () => {
             'mail'
         ]
     };
-    const entity = new EntityDescriptor(config);
+    const entity = new Provider(config);
 
     it('should populate its own values', () => {
         Object.keys(config).forEach(key => {

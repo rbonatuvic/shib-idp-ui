@@ -23,7 +23,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/takeLast';
 import 'rxjs/add/operator/skipWhile';
 
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as fromProviders from '../../metadata-provider/reducer';
 import * as draftActions from '../../metadata-provider/action/draft.action';
 import { AddProviderRequest, RemoveProviderRequest } from '../../metadata-provider/action/provider.action';

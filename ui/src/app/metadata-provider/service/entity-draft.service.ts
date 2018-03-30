@@ -4,7 +4,7 @@ import 'rxjs/add/operator/switchMap';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { MOCK_DESCRIPTORS } from '../../../data/descriptors.mock';
 import { Storage } from '../../shared/storage';
 

@@ -3,7 +3,7 @@ import { Effect, Actions } from '@ngrx/effects';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import * as dashboardActions from '../action/dashboard.action';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { PreviewProviderDialogComponent } from '../../metadata-provider/component/preview-provider-dialog.component';
 
 @Injectable()

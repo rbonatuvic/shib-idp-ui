@@ -1,7 +1,7 @@
 import { reducer } from './draft.reducer';
 import * as fromDrafts from './draft.reducer';
 import * as draftActions from '../action/draft.action';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 let drafts: MetadataProvider[] = [
         { entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider,

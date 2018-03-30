@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as searchActions from '../action/search.action';
 import * as providerActions from '../../metadata-provider/action/provider.action';
 import * as draftActions from '../../metadata-provider/action/draft.action';

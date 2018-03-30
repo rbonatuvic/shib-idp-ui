@@ -6,7 +6,7 @@ import { ProviderFormFragmentComponent } from './provider-form-fragment.componen
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
 import { ListValuesService } from '../../service/list-values.service';
-import { MetadataProvider, Organization, Contact } from '../../model/metadata-provider';
+import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 
 import { URL_REGEX } from '../../../shared/regex';
 

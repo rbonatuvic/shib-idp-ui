@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as providerAction from '../action/provider.action';
 import * as draftAction from '../action/draft.action';
 

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import * as providerSearch from '../action/search.action';
 import * as fromProviders from '../../metadata-provider/reducer';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../metadata-provider/service/entity-descriptor.service';
 
 @Injectable()

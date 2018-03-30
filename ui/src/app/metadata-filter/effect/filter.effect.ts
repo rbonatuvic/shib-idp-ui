@@ -17,7 +17,7 @@ import * as fromFilter from '../reducer';
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../metadata-provider/service/entity-id.service';
 import { MetadataFilterService } from '../service/filter.service';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 @Injectable()
 export class FilterEffects {

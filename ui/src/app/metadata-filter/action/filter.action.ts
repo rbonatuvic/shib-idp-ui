@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { QueryParams } from '../../core/model/query';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 export const QUERY_ENTITY_IDS = '[Filter] Query Entity Ids';
 export const VIEW_MORE_IDS = '[Filter] View More Ids Modal';

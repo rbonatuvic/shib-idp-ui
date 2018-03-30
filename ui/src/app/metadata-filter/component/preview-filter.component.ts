@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import * as fromFilter from '../reducer';
 import { QueryEntityIds } from '../action/filter.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 @Component({
     selector: 'preview-filter',

@@ -1,5 +1,5 @@
 import * as searchActions from '../action/search.action';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 export interface SearchState {
     entities: MetadataProvider[];

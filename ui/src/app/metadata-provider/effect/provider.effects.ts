@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import * as providerActions from '../action/provider.action';
 import * as draftActions from '../action/draft.action';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
 
 @Injectable()

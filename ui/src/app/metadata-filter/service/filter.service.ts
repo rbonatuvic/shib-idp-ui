@@ -3,7 +3,7 @@ import 'rxjs/add/operator/concat';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 @Injectable()
 export class MetadataFilterService {

@@ -12,7 +12,7 @@ import { ProviderItemComponent } from '../component/provider-item.component';
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RouterStub } from '../../../testing/router.stub';
 import { NgbModalStub } from '../../../testing/modal.stub';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 
 describe('Dashboard Page', () => {

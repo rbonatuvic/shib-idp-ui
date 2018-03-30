@@ -16,8 +16,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 
-import { MetadataProvider } from '../model/metadata-provider';
-import { EntityDescriptor } from '../model/entity-descriptor';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { Provider } from '../../domain/entity/provider';
 import { AddDraftRequest } from '../action/draft.action';
 import { AddProviderRequest, UploadProviderRequest, CreateProviderFromUrlRequest } from '../action/provider.action';
 import * as fromProviders from '../reducer';
@@ -56,7 +56,7 @@ export class NewProviderComponent implements OnInit {
     }
 
     next(provider: { entityId: string, serviceProviderName: string }): void {
-        const val: MetadataProvider = new EntityDescriptor(provider);
+        const val: MetadataProvider = new Provider(provider);
         this.store.dispatch(new AddDraftRequest(val));
     }
 } /* istanbul ignore next */

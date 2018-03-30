@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 
 @Component({

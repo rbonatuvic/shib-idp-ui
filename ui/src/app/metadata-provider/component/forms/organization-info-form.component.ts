@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/startWith';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
-import { MetadataProvider, Organization, Contact } from '../../model/metadata-provider';
+import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { EntityValidators } from '../../service/entity-validators.service';
 import * as patterns from '../../../shared/regex';

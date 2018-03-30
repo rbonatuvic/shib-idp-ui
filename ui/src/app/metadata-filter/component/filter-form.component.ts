@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { ViewMoreIds, CancelCreateFilter, QueryEntityIds } from '../action/filter.action';
 import { EntityValidators } from '../../metadata-provider/service/entity-validators.service';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 @Component({
     selector: 'filter-form',

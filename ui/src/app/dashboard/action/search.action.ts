@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 export const PROVIDER_SEARCH = '[Metadata Provider Search] Provider Search';
 export const PROVIDER_SEARCH_COMPLETE = '[Metadata Provider Search] Provider Search COMPLETE';

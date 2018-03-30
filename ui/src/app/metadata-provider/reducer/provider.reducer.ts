@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as provider from '../action/provider.action';
 
 export interface ProviderState {

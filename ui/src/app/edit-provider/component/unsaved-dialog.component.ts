@@ -4,7 +4,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store, Action } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as fromEditor from '../reducer';
 import { UpdateDraftRequest } from '../../metadata-provider/action/draft.action';
 import { EntityDescriptorService } from '../../metadata-provider/service/entity-descriptor.service';

@@ -2,8 +2,7 @@ import { reducer } from './editor.reducer';
 import * as fromEditor from './editor.reducer';
 import * as actions from '../action/editor.action';
 import * as providerActions from '../../metadata-provider/action/provider.action';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
-import { EntityDescriptor } from '../../metadata-provider/model/entity-descriptor';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 describe('Editor Reducer', () => {
     const initialState: fromEditor.EditorState = {

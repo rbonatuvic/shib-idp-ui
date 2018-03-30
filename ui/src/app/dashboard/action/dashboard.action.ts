@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 export const TOGGLE_PROVIDER_DISPLAY = '[Dashboard] Display Provider';
 export const PREVIEW_PROVIDER = '[Dashboard] Preview Provider';

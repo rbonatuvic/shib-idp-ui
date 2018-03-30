@@ -1,7 +1,7 @@
 import { reducer } from './provider.reducer';
 import * as fromProvider from './provider.reducer';
 import * as providerActions from '../action/provider.action';
-import { MetadataProvider } from '../model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 let providers: MetadataProvider[] = [
         { id: '1', entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider,

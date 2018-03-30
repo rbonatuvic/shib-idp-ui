@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { MetadataProvider } from '../../metadata-provider/model/metadata-provider';
+import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as filter from '../action/filter.action';
 import * as fromRoot from '../../core/reducer';
 

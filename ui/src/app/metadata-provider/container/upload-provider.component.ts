@@ -7,8 +7,6 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { MetadataProvider } from '../model/metadata-provider';
-import { EntityDescriptor } from '../model/entity-descriptor';
 import { EntityValidators } from '../service/entity-validators.service';
 import { FileService } from '../../core/service/file.service';
 

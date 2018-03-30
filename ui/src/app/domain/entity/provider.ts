@@ -7,11 +7,15 @@ import {
     SecurityInfo,
     Certificate,
     SsoService,
-    IdpSsoDescriptor
-} from './metadata-provider';
+    IdpSsoDescriptor,
+    RelyingPartyOverrides
+} from '../model/metadata-provider';
 
-export class EntityDescriptor implements MetadataProvider {
+export class Provider implements MetadataProvider {
     id = '';
+    createdDate?: string;
+    modifiedDate?: string;
+
     entityId = '';
     serviceProviderName = '';
     organization = {} as Organization;
@@ -34,13 +38,10 @@ export class EntityDescriptor implements MetadataProvider {
 
     serviceEnabled = false;
 
-    createdDate?: string;
-    modifiedDate?: string;
-
     relyingPartyOverrides = {
         nameIdFormats: [] as string[],
         authenticationMethods: [] as string[]
-    };
+    } as RelyingPartyOverrides;
 
     attributeRelease = [] as string[];
 

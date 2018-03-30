@@ -7,7 +7,7 @@ import { ProviderValueEmitter, ProviderStatusEmitter } from '../../service/provi
 import * as fromProviders from '../../reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../service/list-values.service';
-import { EntityDescriptor } from '../../model/entity-descriptor';
+import { Provider } from '../../../domain/entity/Provider';
 import { DescriptorInfoFormComponent } from './descriptor-info-form.component';
 
 import * as stubs from '../../../../testing/provider.stub';
@@ -17,7 +17,7 @@ import { SharedModule } from '../../../shared/shared.module';
     template: `<descriptor-info-form [provider]="provider"></descriptor-info-form>`
 })
 class TestHostComponent {
-    provider = new EntityDescriptor({
+    provider = new Provider({
         ...stubs.provider,
         serviceProviderSsoDescriptor: {
             protocolSupportEnum: 'foo',

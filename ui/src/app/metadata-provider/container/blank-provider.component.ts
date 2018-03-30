@@ -14,8 +14,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 
-import { MetadataProvider } from '../model/metadata-provider';
-import { EntityDescriptor } from '../model/entity-descriptor';
 import { AddDraftRequest } from '../action/draft.action';
 import { AddProviderRequest, UploadProviderRequest } from '../action/provider.action';
 import * as fromProviders from '../reducer';

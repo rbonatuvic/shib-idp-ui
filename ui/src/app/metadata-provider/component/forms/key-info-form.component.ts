@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
-import { MetadataProvider, Certificate } from '../../model/metadata-provider';
+import { MetadataProvider, Certificate } from '../../../domain/model/metadata-provider';
 
 @Component({
     selector: 'key-info-form',
