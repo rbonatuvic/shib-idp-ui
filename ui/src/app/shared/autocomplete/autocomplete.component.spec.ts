@@ -226,20 +226,23 @@ describe('AutoComplete Input Component', () => {
     describe('handleEnter handler', () => {
         const opts = ['foo', 'bar', 'baz'];
         it('should call preventDefault on the provided event if the menu is currently open', () => {
-            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            const ev = { preventDefault: () => {} } as KeyboardEvent;
+            spyOn(ev, 'preventDefault');
             instanceUnderTest.state.setState({ menuOpen: true});
             instanceUnderTest.handleEnter(ev);
             expect(ev.preventDefault).toHaveBeenCalled();
         });
         it('should NOT call preventDefault on the provided event if the menu is not open', () => {
-            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            const ev = { preventDefault: () => { } } as KeyboardEvent;
+            spyOn(ev, 'preventDefault');
             instanceUnderTest.state.setState({ menuOpen: false });
             instanceUnderTest.handleEnter(ev);
             expect(ev.preventDefault).not.toHaveBeenCalled();
         });
 
         it('should call componentBlur if there is no selected option and the query is not in the options', () => {
-            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            const ev = { preventDefault: () => { } } as KeyboardEvent;
+            spyOn(ev, 'preventDefault');
             spyOn(instanceUnderTest, 'handleComponentBlur');
             instanceUnderTest.state.setState({ menuOpen: true, selected: -1 });
             instanceUnderTest.handleEnter(ev);
@@ -253,7 +256,8 @@ describe('AutoComplete Input Component', () => {
         it('should call handleOptionClick if there is no selected option but the query is in the options', () => {
             const i = 0;
             const val = opts[i];
-            const ev = { preventDefault: jasmine.createSpy('preventDefault') };
+            const ev = { preventDefault: () => { } } as KeyboardEvent;
+            spyOn(ev, 'preventDefault');
             testHostInstance.configure({ options: opts });
             instanceUnderTest.input.setValue(val);
             testHostFixture.detectChanges();

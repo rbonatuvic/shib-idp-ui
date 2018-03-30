@@ -22,7 +22,7 @@
             class="dropdown-item"
             [class.active]="state.currentState.selected === i"
             [class.focused]="state.currentState.focused === i"
-            id="{{ id }}__option--{{ i }}"
+            [id]="this.getOptionId(i)"
             (focusout)="handleOptionBlur($event, i)"
             (click)="handleOptionClick(i)"
             (mousedown)="handleOptionMouseDown($event)"
@@ -35,8 +35,15 @@
         <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
             {{ noneFoundText }}
         </li>
-        <li class="dropdown-item" *ngIf="showMoreAvailable">
-            <a href="" (click)="handleViewMore($event)" (mousedown)="handleViewMore($event)">{{ showMoreText }}</a>
+        <li class="dropdown-item"
+            *ngIf="showMoreAvailable && matches"
+            [class.active]="state.currentState.selected === matches.length"
+            [class.focused]="state.currentState.focused === matches.length"
+            (click)="handleViewMore($event)"
+            (mousedown)="handleViewMore($event)"
+            (keydown.enter)="handleViewMore($event)"
+            [id]="this.getOptionId(matches.length)">
+            {{ showMoreText }}
         </li>
     </ul>
 </div>
