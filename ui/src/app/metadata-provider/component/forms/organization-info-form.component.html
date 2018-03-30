@@ -121,6 +121,7 @@
                                             </span>
                                         </div>
                                         <select [id]="'type-' + i" class="form-control" formControlName="type" aria-label="Contact type dropdown" role="listbox">
+                                            <option disabled hidden i18n="@@label--select-contact-type" value>Select Contact Type</option>
                                             <option *ngFor="let opt of contactTypes; let i=index;" [value]="opt" [attr.aria-label]="opt" role="option">
                                                 {{ opt }}
                                             </option>
