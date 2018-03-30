@@ -89,7 +89,7 @@
         <fieldset class="col form-section">
             <p>
                 <ng-container i18n="@@label--x509-certificates">X509 Certificates:</ng-container>
-                <button class="btn btn-success btn-sm" (click)="addCert()" [disabled]="!(hasCert$ | async)" i18n="@@action--add-certificate" tabindex="1" aria-label="Add certificate to accordion group" role="button">Add Certificate</button>
+                <button class="btn btn-success btn-sm" (click)="addCert()" [disabled]="!(hasCert$ | async)" i18n="@@action--add-certificate" aria-label="Add certificate to accordion group" role="button">Add Certificate</button>
             </p>
             <div formArrayName="x509Certificates" class="bg-light border rounded p-4" *ngIf="x509Certificates.length">
                 <ul class="list-group" aria-label="x509 Certificates accordion"  tabindex="0" role="presentation">
