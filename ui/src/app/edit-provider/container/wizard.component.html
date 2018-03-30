@@ -1,6 +1,6 @@
 <div class="container-fluid p-3" role="main">
     <section class="section" *ngIf="provider$ | async" tabindex="0" [attr.aria-label]="'Add a new metadata provider wizard form - ' + (currentPage$ | async).label + ' ' + (provider$ | async).serviceProviderName">
-        <div class="section-header bg-info p-2 text-light">
+        <div class="section-header bg-info p-2 text-white">
             <div class="row justify-content-between">
                 <div class="col-md-12">
                     <span class="display-6" role="heading" aria-level="1">

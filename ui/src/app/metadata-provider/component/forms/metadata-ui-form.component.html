@@ -52,7 +52,7 @@
                           rows="5"
                           aria-multiline="true"
                           role="textbox"></textarea>
-                <small class="form-text text-muted">
+                <small class="form-text text-secondary">
                     <ng-container>
                         {{ form.get('mdui.description').value ? form.get('mdui.description').value.length : '0' }}
                     </ng-container>
@@ -110,7 +110,7 @@
                             </span>
                         </div>
                         <input id="logoWidth" type="number" class="form-control" placeholder="" formControlName="logoWidth" step="1" role="textbox" />
-                        <small class="form-text text-muted" i18n="@@message--must-be-integer">Must be an integer equal to or greater than 0</small>
+                        <small class="form-text text-secondary" i18n="@@message--must-be-integer">Must be an integer equal to or greater than 0</small>
                     </div>
                 </div>
                 <div class="col">
@@ -128,7 +128,7 @@
                             </span>
                         </div>
                         <input id="logoHeight" type="number" class="form-control" placeholder="" formControlName="logoHeight" step="1" role="textbox" />
-                        <small class="form-text text-muted" i18n="@@message--must-be-integer">Must be an integer equal to or greater than 0</small>
+                        <small class="form-text text-secondary" i18n="@@message--must-be-integer">Must be an integer equal to or greater than 0</small>
                     </div>
                 </div>
             </div>
