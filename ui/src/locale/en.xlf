@@ -2059,14 +2059,55 @@
           <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="label--search-entity-id" datatype="html">
-        <source>Search Entity Id (<x id="INTERPOLATION" equiv-text="{{ source }}"/>)</source>
-        <target>Search Entity Id (<x id="INTERPOLATION" equiv-text="{{ source }}"/>)</target>
+      <trans-unit id="message--entity-id-not-found" datatype="html">
+        <source>Entity ID not found</source>
+        <target>Entity ID not found</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/metadata-filter/component/search-dialog.component.ts</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="label--xml-preview" datatype="html">
+        <source>Entity ID XML Preview (read-only)</source>
+        <target>Entity ID XML Preview (read-only)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tooltip--xml-preview" datatype="html">
+        <source>XML Preview</source>
+        <target>XML Preview</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
+          <context context-type="linenumber">99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--enable-this-filter" datatype="html">
+        <source>Enable this filter?</source>
+        <target>Enable this filter?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tooltip--enable-this-filter-upon-saving" datatype="html">
+        <source>Enable this filter upon saving popover</source>
+        <target>Enable this filter upon saving popover</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
+          <context context-type="linenumber">126</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--preview-filter" datatype="html">
+        <source>Preview Filter XML</source>
+        <target>Preview Filter XML</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/component/preview-filter.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      
     </body>
   </file>
 </xliff>
