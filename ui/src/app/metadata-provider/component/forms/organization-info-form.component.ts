@@ -86,8 +86,8 @@ export class OrganizationInfoFormComponent extends ProviderFormFragmentComponent
 
     getContact(contact: Contact = {} as Contact): FormGroup {
         return this.fb.group({
-            type: [contact.type || null, Validators.required],
-            name: [contact.name || null, Validators.required],
+            type: [contact.type || '', Validators.required],
+            name: [contact.name || '', Validators.required],
             emailAddress: [contact.emailAddress || null, [Validators.required, Validators.email]]
         });
     }

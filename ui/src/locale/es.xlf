@@ -2127,6 +2127,14 @@
           <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="label--select-contact-type" datatype="html">
+        <source>Select Contact Type</source>
+        <target>Select Contact Type (es)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/component/forms/organization-info-form.component.ts</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
