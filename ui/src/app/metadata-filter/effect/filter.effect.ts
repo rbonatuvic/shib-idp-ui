@@ -15,7 +15,7 @@ import * as filter from '../action/filter.action';
 import * as fromFilter from '../reducer';
 
 import { SearchDialogComponent } from '../component/search-dialog.component';
-import { EntityIdService } from '../../metadata-provider/service/entity-id.service';
+import { EntityIdService } from '../../domain/service/entity-id.service';
 import { MetadataFilterService } from '../service/filter.service';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 

@@ -4,11 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { ProviderValueEmitter, ProviderStatusEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 import * as fromProviders from '../../reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
-import { ListValuesService } from '../../service/list-values.service';
-import { EntityDescriptor } from '../../model/entity-descriptor';
+import { ListValuesService } from '../../../domain/service/list-values.service';
 import { FinishFormComponent } from './finish-form.component';
 import { RouterStub, RouterLinkStubDirective } from '../../../../testing/router.stub';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
@@ -16,12 +15,13 @@ import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import * as stubs from '../../../../testing/provider.stub';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
 import { I18nTextComponent } from '../i18n-text.component';
+import { Provider } from '../../../domain/entity/provider';
 
 @Component({
     template: `<finish-form [provider]="provider"></finish-form>`
 })
 class TestHostComponent {
-    provider = new EntityDescriptor({
+    provider = new Provider({
         ...stubs.provider
     });
 

@@ -3,21 +3,21 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { ProviderValueEmitter, ProviderStatusEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 import * as fromProviders from '../../reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
-import { ListValuesService } from '../../service/list-values.service';
-import { EntityDescriptor } from '../../model/entity-descriptor';
+import { ListValuesService } from '../../../domain/service/list-values.service';
 import { RelyingPartyFormComponent } from './relying-party-form.component';
-
+import { Provider } from '../../../domain/entity/provider';
 import * as stubs from '../../../../testing/provider.stub';
 import { SharedModule } from '../../../shared/shared.module';
+
 
 @Component({
     template: `<relying-party-form [provider]="provider"></relying-party-form>`
 })
 class TestHostComponent {
-    provider = new EntityDescriptor({
+    provider = new Provider({
         ...stubs.provider,
         relyingPartyOverrides: {
             nameIdFormats: [],

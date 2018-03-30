@@ -2,7 +2,7 @@ import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, C
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 import * as patterns from '../../../shared/regex';
 

@@ -2,11 +2,10 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { ProviderValueEmitter, ProviderStatusEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 import * as fromProviders from '../../reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
-import { ListValuesService } from '../../service/list-values.service';
-import { EntityDescriptor } from '../../model/entity-descriptor';
+import { ListValuesService } from '../../../domain/service/list-values.service';
 import { OrganizationInfoFormComponent } from './organization-info-form.component';
 import * as stubs from '../../../../testing/provider.stub';
 

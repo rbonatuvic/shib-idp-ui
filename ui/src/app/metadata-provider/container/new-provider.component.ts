@@ -21,7 +21,7 @@ import { Provider } from '../../domain/entity/provider';
 import { AddDraftRequest } from '../action/draft.action';
 import { AddProviderRequest, UploadProviderRequest, CreateProviderFromUrlRequest } from '../action/provider.action';
 import * as fromProviders from '../reducer';
-import { EntityValidators } from '../service/entity-validators.service';
+import { EntityValidators } from '../../domain/service/entity-validators.service';
 
 @Component({
     selector: 'new-provider-page',

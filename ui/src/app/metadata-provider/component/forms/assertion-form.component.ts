@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, SsoService } from '../../../domain/model/metadata-provider';
 import * as patterns from '../../../shared/regex';
 

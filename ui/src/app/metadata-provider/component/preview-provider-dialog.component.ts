@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { EntityDescriptorService } from '../service/entity-descriptor.service';
+import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 import * as FileSaver from 'file-saver';
 import { Subscription } from 'rxjs/Subscription';
 import * as XmlFormatter from 'xml-formatter';

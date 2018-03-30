@@ -11,7 +11,9 @@ import { AppRoutingModule } from './routing.module';
 import { AppComponent } from './app.component';
 
 import { CoreModule } from './core/core.module';
+import { DomainModule } from './domain/domain.module';
 import { MetadataProviderModule } from './metadata-provider/metadata-provider.module';
+
 import { reducers, metaReducers } from './app.reducer';
 import { CustomRouterStateSerializer } from './shared/util';
 
@@ -36,6 +38,7 @@ import { environment } from '../environments/environment';
         AppRoutingModule,
         CoreModule.forRoot(),
         MetadataProviderModule.forRoot(),
+        DomainModule.forRoot(),
         StoreRouterConnectingModule,
         NgbDropdownModule.forRoot(),
         NgbModalModule.forRoot(),

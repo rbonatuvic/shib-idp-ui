@@ -29,7 +29,7 @@ import * as fromProviders from '../../metadata-provider/reducer';
 import { UpdateProviderRequest } from '../../metadata-provider/action/provider.action';
 import * as fromEditor from '../reducer';
 
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { UpdateStatus, UpdateChanges, CancelChanges } from '../action/editor.action';
 import { EDITOR as EditorDef, EditorFlowDefinition } from '../editor-definition.const';
 import { UnsavedDialogComponent } from '../component/unsaved-dialog.component';

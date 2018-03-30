@@ -5,7 +5,7 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/form
 import 'rxjs/add/observable/of';
 import { ProviderStatusEmitter, ProviderValueEmitter } from './provider-change-emitter.service';
 
-describe(`EntityDescriptorService`, () => {
+describe(`Provider Change emitter service`, () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({

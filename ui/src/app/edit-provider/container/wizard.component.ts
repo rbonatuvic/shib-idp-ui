@@ -29,7 +29,7 @@ import * as draftActions from '../../metadata-provider/action/draft.action';
 import { AddProviderRequest, RemoveProviderRequest } from '../../metadata-provider/action/provider.action';
 import * as fromEditor from '../reducer';
 
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { UpdateStatus, UpdateChanges, SaveChanges } from '../action/editor.action';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
 import { CanComponentDeactivate } from '../../core/service/can-deactivate.guard';

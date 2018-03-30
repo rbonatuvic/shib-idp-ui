@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/last';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
-import { ListValuesService } from '../../service/list-values.service';
+import { ListValuesService } from '../../../domain/service/list-values.service';
 import { FormArray } from '@angular/forms/src/model';
 
 @Component({

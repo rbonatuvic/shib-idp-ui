@@ -6,7 +6,7 @@ import 'rxjs/add/observable/of';
 
 let ids = ['foo', 'bar', 'baz'];
 
-describe(`EntityDescriptorService`, () => {
+describe(`Entity Validators service`, () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({

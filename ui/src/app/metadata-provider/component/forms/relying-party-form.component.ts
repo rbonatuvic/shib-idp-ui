@@ -3,9 +3,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 import { Observable } from 'rxjs/Observable';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
-
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
-import { ListValuesService } from '../../service/list-values.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
+import { ListValuesService } from '../../../domain/service/list-values.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 
 import { URL_REGEX } from '../../../shared/regex';

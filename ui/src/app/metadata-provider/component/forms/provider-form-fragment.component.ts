@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/startWith';
 
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 import * as fromProviders from '../../reducer';
 

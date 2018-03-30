@@ -4,7 +4,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { FilterFormComponent } from './filter-form.component';
 import * as fromFilter from '../reducer';
 import { ProviderEditorFormModule } from '../../metadata-provider/component';
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavigatorService } from '../../core/service/navigator.service';
 import { SharedModule } from '../../shared/shared.module';

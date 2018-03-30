@@ -4,7 +4,7 @@ import { Effect, Actions } from '@ngrx/effects';
 import * as editor from '../action/editor.action';
 import * as provider from '../../metadata-provider/action/provider.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { EntityDescriptorService } from '../../metadata-provider/service/entity-descriptor.service';
+import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 import { Router } from '@angular/router';
 
 @Injectable()

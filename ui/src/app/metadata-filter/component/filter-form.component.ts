@@ -7,11 +7,11 @@ import 'rxjs/add/operator/takeWhile';
 
 import * as fromFilter from '../reducer';
 import { ProviderFormFragmentComponent } from '../../metadata-provider/component/forms/provider-form-fragment.component';
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../metadata-provider/service/provider-change-emitter.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { ViewMoreIds, CancelCreateFilter, QueryEntityIds } from '../action/filter.action';
-import { EntityValidators } from '../../metadata-provider/service/entity-validators.service';
+import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 @Component({

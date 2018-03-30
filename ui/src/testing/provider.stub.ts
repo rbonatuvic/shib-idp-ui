@@ -5,7 +5,7 @@ import {
     Certificate,
     SecurityInfo,
     LogoutEndpoint
-} from '../app/metadata-provider/model/metadata-provider';
+} from '../app/domain/model/metadata-provider';
 
 export const draft = {
     entityId: 'foo',
