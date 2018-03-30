@@ -2107,7 +2107,30 @@
           <context context-type="linenumber">3</context>
         </context-group>
       </trans-unit>
-      
+      <trans-unit id="label--check-all-attributes" datatype="html">
+        <source>Check All Attributes</source>
+        <target>Check All Attributes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/component/forms/attribute-release-form.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/component/forms/attribute-release-form.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--clear-all-attributes" datatype="html">
+        <source>Clear All Attributes</source>
+        <target>Clear All Attributes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/component/forms/attribute-release-form.component.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/component/forms/attribute-release-form.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

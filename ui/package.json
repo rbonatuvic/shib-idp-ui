@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "startProd": "ng serve --proxy-config proxy.conf.json --i18nFile=./src/locale/en.xlf --i18nFormat=xlf --locale=en --aot --environment=prod",
+    "start:en": "ng serve --proxy-config proxy.conf.json --i18nFile=./src/locale/en.xlf --i18nFormat=xlf --locale=en --aot",
+    "start:es": "ng serve --proxy-config proxy.conf.json --i18nFile=./src/locale/es.xlf --i18nFormat=xlf --locale=es --aot",
+    "start:prod": "ng serve --proxy-config proxy.conf.json --i18nFile=./src/locale/en.xlf --i18nFormat=xlf --locale=en --aot --environment=prod",
     "build": "ng build",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
