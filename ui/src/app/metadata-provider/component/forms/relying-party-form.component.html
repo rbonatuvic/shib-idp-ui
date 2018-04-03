@@ -63,7 +63,7 @@
             </div>
             <div *ngIf="nameIdFormatList.length" class="p-2">
                 <div class="row" *ngFor="let format of nameIdFormatList.controls; let i=index; let isLast=last">
-                    <label [for]="'nameIdFormat-' + i" class="col-sm-12" i18n="@@label--nameid-format-indexed">NameID Format {{ i + 1 }}</label>
+                    <label [for]="'nameIdFormat-' + i" class="sr-only" i18n="@@label--nameid-format-indexed">NameID Format {{ i + 1 }}</label>
                     <auto-complete
                         class="col-sm-11"
                         [id]="'nameIdFormat-' + i"
@@ -96,7 +96,7 @@
             </div>
             <div *ngIf="authenticationMethodList.length" class="p-2">
                 <div class="row" *ngFor="let format of authenticationMethodList.controls; let i=index; let isLast=last">
-                    <label [for]="'authMethod-' + i" class="col-sm-12" i18n="@@label--auth-method-indexed">Authentication Method {{ i + 1 }}</label>
+                    <label [for]="'authMethod-' + i" class="sr-only" i18n="@@label--auth-method-indexed">Authentication Method {{ i + 1 }}</label>
                     <auto-complete
                         class="col-sm-11"
                         [id]="'authMethod-' + i"

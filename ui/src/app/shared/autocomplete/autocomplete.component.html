@@ -1,4 +1,5 @@
 <div id="{{ id }}-container" class="dropdown form-group" (keydown)="handleKeyDown($event)" role='combobox' [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'">
+    <label for="{{ id }}__input" attr.aria-labelledby="{{ id }}__input" class="sr-only"></label>
     <input
         #inputField
         [formControl]="input"
