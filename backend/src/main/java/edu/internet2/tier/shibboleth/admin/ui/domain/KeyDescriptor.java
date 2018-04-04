@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import com.google.common.collect.Lists;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -22,7 +21,7 @@ public class KeyDescriptor extends AbstractXMLObject implements org.opensaml.sam
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "keydesc_encryptionmethod_id")
-    private List<EncryptionMethod> encryptionMethods;
+    private List<EncryptionMethod> encryptionMethods = new ArrayList<>();
 
     @Override
     public UsageType getUse() {
@@ -61,7 +60,7 @@ public class KeyDescriptor extends AbstractXMLObject implements org.opensaml.sam
 
     @Override
     public List<org.opensaml.saml.saml2.metadata.EncryptionMethod> getEncryptionMethods() {
-        return Lists.newArrayList(encryptionMethods);
+        return (List<org.opensaml.saml.saml2.metadata.EncryptionMethod>)(List<? extends org.opensaml.saml.saml2.metadata.EncryptionMethod>) encryptionMethods;
     }
 
     public void setEncryptionMethods(List<EncryptionMethod> encryptionMethods) {

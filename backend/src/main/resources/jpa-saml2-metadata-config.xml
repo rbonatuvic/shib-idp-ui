@@ -161,19 +161,17 @@
         </ObjectProvider>
         
         <!-- EntitiesDescriptor -->
-        <!--
         <ObjectProvider qualifiedName="saml2md:EntitiesDescriptor">
-            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.EntitiesDescriptorBuilder"/>
+            <BuilderClass className="org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorBuilder"/>
             <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorMarshaller"/>
             <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorUnmarshaller"/>
         </ObjectProvider>
         
         <ObjectProvider qualifiedName="saml2md:EntitiesDescriptorType">
-            <BuilderClass className="edu.internet2.tier.shibboleth.admin.ui.domain.EntitiesDescriptorBuilder"/>
+            <BuilderClass className="org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorBuilder"/>
             <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorMarshaller"/>
             <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorUnmarshaller"/>
         </ObjectProvider>
-        -->
 
         <!-- EntityDescriptor -->
         <ObjectProvider qualifiedName="saml2md:EntityDescriptor">

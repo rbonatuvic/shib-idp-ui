@@ -58,7 +58,13 @@ dependencies {
     ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools'].each {
         compile "org.springframework.boot:spring-boot-${it}"
     }
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    // TODO: figure out what this should really be
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // lucene deps
+    ['core', 'analyzers-common', 'queryparser'].each {
+        compile "org.apache.lucene:lucene-${it}:${project.'lucene.version'}"
+    }
 
     compile "org.liquibase:liquibase-core"
     compile group: 'org.jadira.usertype', name: 'usertype.core', version: '6.0.1.GA'
