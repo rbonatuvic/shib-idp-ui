@@ -112,18 +112,20 @@ task generateSources {
         println "generating Builders"
 
         def processLine = { dest, template ->
-            def token = dest.split('\\.')[-1].replace('Builder', '')
-            def infile = file(template)
-            def outfile = file("${generatedSrcDir}/${dest.replaceAll('\\.', '/')}.java")
-            def outdir = file(outfile.parent)
-            if (!outdir.exists()) {
-                outdir.mkdirs()
-            }
-            if (!outfile.exists()) {
-                println "creating class ${dest}"
-                outfile.withWriter { writer ->
-                    infile.eachLine { line ->
-                        writer.println(line.replaceAll('\\{\\{TOKEN}}', token))
+            if (!dest.startsWith("org.opensaml")) {
+                def token = dest.split('\\.')[-1].replace('Builder', '')
+                def infile = file(template)
+                def outfile = file("${generatedSrcDir}/${dest.replaceAll('\\.', '/')}.java")
+                def outdir = file(outfile.parent)
+                if (!outdir.exists()) {
+                    outdir.mkdirs()
+                }
+                if (!outfile.exists()) {
+                    println "creating class ${dest}"
+                    outfile.withWriter { writer ->
+                        infile.eachLine { line ->
+                            writer.println(line.replaceAll('\\{\\{TOKEN}}', token))
+                        }
                     }
                 }
             }
