@@ -1,20 +1,22 @@
-<ng-container  [ngSwitch]="message">
-<div class="modal-header">
-    <h4 class="modal-title" i18n="@@message--unsaved-dialog-title">Save your information?</h4>
-</div>
-<div class="modal-body">
-    <p *ngSwitchDefault i18n="@@message--unsaved-default">
-        You have not completed the wizard! Do you wish to save this information? You can finish the wizard later by clicking the
-        "Edit"
-        <i class="fa fa-edit"></i> icon on the dashboard.
-    </p>
-    <p *ngSwitchCase="'editor'" i18n="@@message--unsaved-editor">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="this.close()">
-        <span *ngSwitchDefault i18n="@@action--finish-later">Finish Later</span>
-        <span *ngSwitchCase="'editor'" i18n="@@action--discard-changes">Discard Changes</span>
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="this.dismiss()" i18n="@@action--cancel">Cancel</button>
-</div>
+<ng-container [ngSwitch]="message">
+    <div aria-label="Save your information? modal" role="region" tabindex="0">
+        <div class="modal-header">
+            <h4 class="modal-title" i18n="@@message--unsaved-dialog-title">Save your information?</h4>
+        </div>
+        <div class="modal-body">
+            <p *ngSwitchDefault i18n="@@message--unsaved-default">
+                You have not completed the wizard! Do you wish to save this information? You can finish the wizard later by clicking the
+                "Edit"
+                <i class="fa fa-edit"></i> icon on the dashboard.
+            </p>
+            <p *ngSwitchCase="'editor'" i18n="@@message--unsaved-editor">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="this.close()">
+                <span *ngSwitchDefault i18n="@@action--finish-later" aria-label="Finish changes later, go back to dashboard">Finish Later</span>
+                <span *ngSwitchCase="'editor'" i18n="@@action--discard-changes" aria-label="Discard changes, go back to dashboard">Discard Changes</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="this.dismiss()" i18n="@@action--cancel" aria-label="Close modal and go back to editing">Cancel</button>
+        </div>
+    </div>
 </ng-container>
