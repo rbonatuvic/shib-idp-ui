@@ -10,4 +10,8 @@ export interface MetadataBase {
     id?: string;
     createdDate?: string;
     modifiedDate?: string;
+
+    name: string;
+    enabled: boolean;
+    type: string;
 }

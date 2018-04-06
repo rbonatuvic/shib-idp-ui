@@ -1,17 +1,18 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import * as filter from '../action/filter.action';
+import * as filter from '../action/filter-collection.action';
 import * as fromRoot from '../../core/reducer';
+import { MetadataFilter } from '../domain.type';
 
-export interface CollectionState {
-    filters: MetadataProvider[];
+export interface FilterCollectionState {
+    filters: MetadataFilter[];
 }
 
-export const initialState: CollectionState = {
+export const initialState: FilterCollectionState = {
     filters: []
 };
 
-export function reducer(state = initialState, action: filter.Actions): CollectionState {
+export function reducer(state = initialState, action: filter.Actions): FilterCollectionState {
     switch (action.type) {
         case filter.SAVE_FILTER_SUCCESS: {
             return {
@@ -27,4 +28,4 @@ export function reducer(state = initialState, action: filter.Actions): Collectio
     }
 }
 
-export const getFilters = (state: CollectionState) => state.filters;
+export const getFilters = (state: FilterCollectionState) => state.filters;

@@ -5,8 +5,8 @@ import 'rxjs/add/operator/map';
 
 import * as fromRoot from './core/reducer';
 import { VersionInfo } from './core/model/version';
-import { LoadProviderRequest } from './metadata-provider/action/provider.action';
-import { LoadDraftRequest } from './metadata-provider/action/draft.action';
+import { LoadProviderRequest } from './domain/action/provider-collection.action';
+import { LoadDraftRequest } from './domain/action/draft-collection.action';
 import { VersionInfoLoadRequestAction } from './core/action/version.action';
 @Component({
     selector: 'app-root',

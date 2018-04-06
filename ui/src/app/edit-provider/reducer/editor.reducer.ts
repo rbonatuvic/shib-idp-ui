@@ -1,7 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as editor from '../action/editor.action';
-import * as provider from '../../metadata-provider/action/provider.action';
+import * as provider from '../../domain/action/provider-collection.action';
 import * as fromRoot from '../../core/reducer';
 
 export interface EditorState {

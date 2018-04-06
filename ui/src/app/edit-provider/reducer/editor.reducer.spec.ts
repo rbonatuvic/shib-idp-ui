@@ -1,7 +1,7 @@
 import { reducer } from './editor.reducer';
 import * as fromEditor from './editor.reducer';
 import * as actions from '../action/editor.action';
-import * as providerActions from '../../metadata-provider/action/provider.action';
+import * as collectionActions from '../../domain/action/provider-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 describe('Editor Reducer', () => {
@@ -25,7 +25,7 @@ describe('Editor Reducer', () => {
 
     describe('Editor Add Provider', () => {
         it('should update the status when a provider is saved', () => {
-            const action = new providerActions.AddProviderRequest(changes);
+            const action = new collectionActions.AddProviderRequest(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -35,7 +35,7 @@ describe('Editor Reducer', () => {
         });
 
         it('should update the status on success', () => {
-            const action = new providerActions.AddProviderSuccess(changes);
+            const action = new collectionActions.AddProviderSuccess(changes);
             const result = reducer({...initialState, changes: {...changes, organization: {name: 'foo'}}}, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -46,7 +46,7 @@ describe('Editor Reducer', () => {
         });
 
         it('should update the status on success', () => {
-            const action = new providerActions.AddProviderFail(changes);
+            const action = new collectionActions.AddProviderFail(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {

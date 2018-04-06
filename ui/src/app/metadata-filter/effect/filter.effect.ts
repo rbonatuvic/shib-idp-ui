@@ -13,10 +13,11 @@ import 'rxjs/add/operator/withLatestFrom';
 
 import * as filter from '../action/filter.action';
 import * as fromFilter from '../reducer';
+import * as collection from '../../domain/action/filter-collection.action';
 
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../domain/service/entity-id.service';
-import { MetadataFilterService } from '../service/filter.service';
+import { MetadataFilterService } from '../../domain/service/filter.service';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 @Injectable()
@@ -55,20 +56,9 @@ export class FilterEffects {
                 .catch(() => Observable.of(new filter.CancelViewMore()));
         });
 
-    @Effect()
-    saveFilter$ = this.actions$
-        .ofType<filter.SaveFilter>(filter.SAVE_FILTER)
-        .map(action => action.payload)
-        .switchMap(unsaved =>
-            this.filterService
-                .save(unsaved as MetadataProvider)
-                .map(saved => new filter.SaveFilterSuccess(saved))
-                .catch(error => Observable.of(new filter.SaveFilterError(error)))
-        );
-
     @Effect({ dispatch: false })
     saveFilterSuccess$ = this.actions$
-        .ofType<filter.SaveFilterSuccess>(filter.SAVE_FILTER_SUCCESS)
+        .ofType<collection.SaveFilterSuccess>(collection.SAVE_FILTER_SUCCESS)
         .switchMap(() => this.router.navigate(['/dashboard']));
 
     constructor(

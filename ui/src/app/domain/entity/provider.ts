@@ -10,6 +10,7 @@ import {
     IdpSsoDescriptor,
     RelyingPartyOverrides
 } from '../model/metadata-provider';
+import { DomainTypes } from '../domain.type';
 
 export class Provider implements MetadataProvider {
     id = '';
@@ -47,5 +48,17 @@ export class Provider implements MetadataProvider {
 
     constructor(descriptor?: Partial<MetadataProvider>) {
         Object.assign(this, descriptor);
+    }
+
+    get name(): string {
+        return this.serviceProviderName;
+    }
+
+    get enabled(): boolean {
+        return this.serviceEnabled;
+    }
+
+    get type(): string {
+        return DomainTypes.provider;
     }
 }

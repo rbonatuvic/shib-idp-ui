@@ -1,13 +1,13 @@
-import { reducer } from './provider.reducer';
-import * as fromProvider from './provider.reducer';
-import * as providerActions from '../action/provider.action';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { reducer } from './provider-collection.reducer';
+import * as fromProvider from './provider-collection.reducer';
+import * as providerActions from '../action/provider-collection.action';
+import { MetadataProvider } from '../model/metadata-provider';
 
 let providers: MetadataProvider[] = [
-        { id: '1', entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider,
-        { id: '2', entityId: 'baz', serviceProviderName: 'fin' } as MetadataProvider
-    ],
-    snapshot: fromProvider.ProviderState = {
+    { id: '1', entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider,
+    { id: '2', entityId: 'baz', serviceProviderName: 'fin' } as MetadataProvider
+],
+    snapshot: fromProvider.ProviderCollectionState = {
         ids: [providers[0].id, providers[1].id],
         entities: {
             [providers[0].id]: providers[0],
@@ -17,7 +17,7 @@ let providers: MetadataProvider[] = [
     };
 
 describe('Provider Reducer', () => {
-    const initialState: fromProvider.ProviderState = {
+    const initialState: fromProvider.ProviderCollectionState = {
         ids: [],
         entities: {},
         selectedProviderId: null,
@@ -98,7 +98,7 @@ describe('Provider Reducer', () => {
         it('should not update state if the provider id does not exist', () => {
             let id = providers[0].id,
                 expected = snapshot;
-            const action = new providerActions.SelectProviderSuccess({...providers[0], id: 'foo'});
+            const action = new providerActions.SelectProviderSuccess({ ...providers[0], id: 'foo' });
             const result = reducer({ ...snapshot }, action);
 
             expect(result).toEqual(

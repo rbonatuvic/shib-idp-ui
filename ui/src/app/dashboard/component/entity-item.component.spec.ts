@@ -1,11 +1,11 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ProviderItemComponent } from './provider-item.component';
+import { EntityItemComponent } from './entity-item.component';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 describe('Provider List item', () => {
-    let fixture: ComponentFixture<ProviderItemComponent>;
-    let instance: ProviderItemComponent;
+    let fixture: ComponentFixture<EntityItemComponent>;
+    let instance: EntityItemComponent;
 
     let provider = { entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider;
 
@@ -15,12 +15,12 @@ describe('Provider List item', () => {
             imports: [
                 NoopAnimationsModule
             ],
-            declarations: [ProviderItemComponent],
+            declarations: [EntityItemComponent],
         });
 
-        fixture = TestBed.createComponent(ProviderItemComponent);
+        fixture = TestBed.createComponent(EntityItemComponent);
         instance = fixture.componentInstance;
-        instance.provider = provider;
+        instance.entity = provider;
     });
 
     it('should compile', () => {

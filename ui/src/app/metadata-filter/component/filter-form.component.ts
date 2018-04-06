@@ -13,6 +13,7 @@ import { SearchDialogComponent } from '../component/search-dialog.component';
 import { ViewMoreIds, CancelCreateFilter, QueryEntityIds } from '../action/filter.action';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataFilter } from '../../domain/domain.type';
 
 @Component({
     selector: 'filter-form',
@@ -20,7 +21,7 @@ import { MetadataProvider } from '../../domain/model/metadata-provider';
 })
 export class FilterFormComponent extends ProviderFormFragmentComponent implements OnInit, OnDestroy {
 
-    @Input() provider: MetadataProvider;
+    @Input() entity: MetadataFilter;
 
     @Output() onSave: EventEmitter<MetadataProvider> = new EventEmitter<MetadataProvider>();
     @Output() onCancel: EventEmitter<MetadataProvider> = new EventEmitter<MetadataProvider>();
@@ -62,7 +63,7 @@ export class FilterFormComponent extends ProviderFormFragmentComponent implement
     createForm(): void {
         this.form = this.fb.group({
             entityId: ['', [Validators.required]],
-            serviceProviderName: ['', [Validators.required]],
+            filterName: ['', [Validators.required]],
             filterEnabled: [false]
         });
     }

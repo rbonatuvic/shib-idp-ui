@@ -23,9 +23,9 @@
                                 aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                         </span>
                     </div>
-                    <input id="filterName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
-                    <ng-container *ngIf="form.get('serviceProviderName').touched && form.get('serviceProviderName').invalid">
-                        <small class="form-text text-danger" *ngIf="form.get('serviceProviderName').hasError('required')">
+                    <input id="filterName" type="text" class="form-control" placeholder="" formControlName="filterName" />
+                    <ng-container *ngIf="form.get('filterName').touched && form.get('filterName').invalid">
+                        <small class="form-text text-danger" *ngIf="form.get('filterName').hasError('required')">
                             <ng-container i18n="@@message--service-provider-name-required">Filter Name is required</ng-container>
                         </small>
                     </ng-container>

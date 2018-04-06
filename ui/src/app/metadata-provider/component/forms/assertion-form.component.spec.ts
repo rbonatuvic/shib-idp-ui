@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromProviders from '../../reducer';
+import * as fromCollections from '../../../domain/reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { AssertionFormComponent } from './assertion-form.component';
 import * as stubs from '../../../../testing/provider.stub';
@@ -11,7 +11,7 @@ import * as stubs from '../../../../testing/provider.stub';
 describe('Assertion Form Component', () => {
     let fixture: ComponentFixture<AssertionFormComponent>;
     let instance: AssertionFormComponent;
-    let store: Store<fromProviders.ProviderState>;
+    let store: Store<fromCollections.CollectionState>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ describe('Assertion Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'providers': combineReducers(fromProviders.reducers),
+                    'collections': combineReducers(fromCollections.reducers),
                 }),
                 NgbPopoverModule
             ],

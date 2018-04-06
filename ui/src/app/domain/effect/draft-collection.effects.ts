@@ -4,12 +4,12 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import * as draftActions from '../action/draft.action';
+import * as draftActions from '../action/draft-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDraftService } from '../../domain/service/entity-draft.service';
 
 @Injectable()
-export class DraftEffects {
+export class DraftCollectionEffects {
 
     @Effect()
     loadDrafts$ = this.actions$

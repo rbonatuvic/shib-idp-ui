@@ -1,21 +1,21 @@
 import { createSelector } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import * as providerAction from '../action/provider.action';
-import * as draftAction from '../action/draft.action';
+import * as providerAction from '../action/provider-collection.action';
+import * as draftAction from '../action/draft-collection.action';
 
-export interface DraftState {
+export interface DraftCollectionState {
     ids: string[];
     drafts: { [id: string]: MetadataProvider };
     selectedDraftId: string | null;
 }
 
-export const initialState: DraftState = {
+export const initialState: DraftCollectionState = {
     ids: [],
     drafts: {},
     selectedDraftId: null,
 };
 
-export function reducer(state = initialState, action: draftAction.Actions): DraftState {
+export function reducer(state = initialState, action: draftAction.Actions): DraftCollectionState {
     switch (action.type) {
         case draftAction.LOAD_DRAFT_SUCCESS: {
             const providers = action.payload;
@@ -72,9 +72,9 @@ export function reducer(state = initialState, action: draftAction.Actions): Draf
     }
 }
 
-export const getEntities = (state: DraftState) => state.drafts;
-export const getIds = (state: DraftState) => state.ids;
-export const getSelectedId = (state: DraftState) => state.selectedDraftId;
+export const getEntities = (state: DraftCollectionState) => state.drafts;
+export const getIds = (state: DraftCollectionState) => state.ids;
+export const getSelectedId = (state: DraftCollectionState) => state.selectedDraftId;
 export const getSelected = createSelector(
     getEntities,
     getSelectedId,

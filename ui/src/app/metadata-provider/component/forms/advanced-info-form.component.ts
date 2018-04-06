@@ -8,7 +8,7 @@ import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/startWith';
 
-import * as fromProviders from '../../reducer';
+import * as fromCollection from '../../../domain/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
@@ -42,14 +42,14 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
         protected fb: FormBuilder,
         protected statusEmitter: ProviderStatusEmitter,
         protected valueEmitter: ProviderValueEmitter,
-        protected store: Store<fromProviders.ProviderState>
+        protected store: Store<fromCollection.CollectionState>
     ) {
         super(fb, statusEmitter, valueEmitter);
 
         this.ids$ = this.store
-            .select(fromProviders.getAllEntityIds)
+            .select(fromCollection.getAllEntityIds)
             .takeUntil(this.ngUnsubscribe)
-            .combineLatest(this.store.select(fromProviders.getSelectedProvider), (ids: string[], provider: MetadataProvider) => {
+            .combineLatest(this.store.select(fromCollection.getSelectedProvider), (ids: string[], provider: MetadataProvider) => {
                 return ids.filter(id => provider.entityId !== id);
             });
     }

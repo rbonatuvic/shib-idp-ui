@@ -1384,12 +1384,56 @@
         </context-group>
       </trans-unit>
       <trans-unit id="label--service-provider" datatype="html">
-        <source>Service Provider Name:</source>
-        <target>Service Provider Name:</target>
+        <source><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Name:</source>
+        <target><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Name:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
           <context context-type="linenumber">33</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="label--service-entity-id" datatype="html">
+        <source><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Entity ID:</source>
+        <target><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Entity ID:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--service-provider-status" datatype="html">
+        <source><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Status:</source>
+        <target><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Status:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7838ac28b2111c50b9bd35f5fae95cff8e2c725b" datatype="html">
+        <source>{VAR_SELECT, select, filter {Filter} provider {Service Provider} other {} }</source>
+        <target>{VAR_SELECT, select, filter {Filter} provider {Service Provider} other {} }</target>
+      </trans-unit>
+      <trans-unit id="label--select-filter-option" datatype="html">
+        <source><x id="ICU" equiv-text="{option, select, filter {...} provider {...} other {...}}"/></source>
+        <target><x id="ICU" equiv-text="{option, select, filter {...} provider {...} other {...}}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/dashboard/container/dashboard.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="784f4450d46e0e96b84d5cd551ca4f86b0d71987" datatype="html">
+        <source>{VAR_SELECT, select, filter {Show Filters} provider {Show Sources} other {Show All} }</source>
+        <target>{VAR_SELECT, select, filter {Show Filter} provider {Show Sources} other {Show All} }</target>
+      </trans-unit>
+      <trans-unit id="label--selected-filter-option" datatype="html">
+        <source><x id="ICU" equiv-text="{filtering, select, filter {...} provider {...} other {...}}"/></source>
+        <target><x id="ICU" equiv-text="{filtering, select, filter {...} provider {...} other {...}}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/dashboard/container/dashboard.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="c95498f4a20605d99c5fb4c66593fb70a9959c58" datatype="html">
+        <source>{VAR_SELECT, select, filter {Show Filters} provider {Show Sources} other {Show All} }</source>
+        <target>{VAR_SELECT, select, filter {Show Filter} provider {Show Sources} other {Show All} }</target>
       </trans-unit>
       <trans-unit id="label--created-date" datatype="html">
         <source>Created Date:</source>
@@ -1397,22 +1441,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
           <context context-type="linenumber">35</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="label--service-entity-id" datatype="html">
-        <source>Service Provider Entity ID:</source>
-        <target>Service Provider Entity ID:</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="label--service-provider-status" datatype="html">
-        <source>Service Provider Status:</source>
-        <target>Service Provider Status:</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
-          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="value--enabled" datatype="html">

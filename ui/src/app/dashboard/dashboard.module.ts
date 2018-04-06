@@ -7,18 +7,19 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { DashboardComponent } from './container/dashboard.component';
-import { ProviderItemComponent } from './component/provider-item.component';
+import { EntityItemComponent } from './component/entity-item.component';
 import { ProviderSearchComponent } from './component/provider-search.component';
 import { reducers } from './reducer';
 import { DashboardEffects } from './effect/dashboard.effect';
 import { SearchEffects } from './effect/search.effects';
 import { DeleteDialogComponent } from './component/delete-dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
         DashboardComponent,
-        ProviderItemComponent,
+        EntityItemComponent,
         ProviderSearchComponent,
         DeleteDialogComponent
     ],
@@ -34,7 +35,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
         CommonModule,
         ReactiveFormsModule,
         NgbPaginationModule,
-        NgbModalModule
+        NgbModalModule,
+        NgbDropdownModule
     ],
     providers: []
 })

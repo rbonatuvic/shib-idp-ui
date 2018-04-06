@@ -1,24 +1,33 @@
 import { Action } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataFilter } from '../../domain/model/metadata-filter';
 
-export const PROVIDER_SEARCH = '[Metadata Provider Search] Provider Search';
-export const PROVIDER_SEARCH_COMPLETE = '[Metadata Provider Search] Provider Search COMPLETE';
+export const ENTITY_SEARCH = '[Metadata Entity Search] Entity Search';
+export const ENTITY_FILTER = '[Metadata Entity Filter] Entity Filter';
+export const ENTITY_SEARCH_COMPLETE = '[Metadata Entity Search] Entity Search COMPLETE';
 
 /**
  * Add Provider to Collection Actions
  */
 export class SearchAction implements Action {
-    readonly type = PROVIDER_SEARCH;
+    readonly type = ENTITY_SEARCH;
 
-    constructor(public payload) { }
+    constructor(public payload: string) { }
+}
+
+export class FilterAction implements Action {
+    readonly type = ENTITY_FILTER;
+
+    constructor(public payload: string) { }
 }
 
 export class SearchCompleteAction implements Action {
-    readonly type = PROVIDER_SEARCH_COMPLETE;
+    readonly type = ENTITY_SEARCH_COMPLETE;
 
-    constructor(public payload: MetadataProvider[]) { }
+    constructor(public payload: Array<MetadataProvider | MetadataFilter>) { }
 }
 
 export type Actions =
     | SearchAction
+    | FilterAction
     | SearchCompleteAction;

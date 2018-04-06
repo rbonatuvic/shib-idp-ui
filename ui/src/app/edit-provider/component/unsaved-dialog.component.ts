@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as fromEditor from '../reducer';
-import { UpdateDraftRequest } from '../../metadata-provider/action/draft.action';
+import { UpdateDraftRequest } from '../../domain/action/draft-collection.action';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 import { SaveChanges, CancelChanges } from '../action/editor.action';
 

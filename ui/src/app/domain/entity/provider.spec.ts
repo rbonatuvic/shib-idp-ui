@@ -3,7 +3,7 @@ import { MetadataProvider } from '../model/metadata-provider';
 
 describe('Provider construct', () => {
 
-    const config: MetadataProvider = {
+    const config = {
         id: 'foo',
         entityId: 'string',
         serviceProviderName: 'string',

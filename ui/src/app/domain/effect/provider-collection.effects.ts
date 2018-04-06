@@ -4,13 +4,13 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import * as providerActions from '../action/provider.action';
-import * as draftActions from '../action/draft.action';
+import * as providerActions from '../action/provider-collection.action';
+import * as draftActions from '../action/draft-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 
 @Injectable()
-export class ProviderEffects {
+export class ProviderCollectionEffects {
 
     @Effect()
     loadProviders$ = this.actions$

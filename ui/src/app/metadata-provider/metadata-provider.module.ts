@@ -6,12 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { DraftEffects } from './effect/draft.effects';
-import { ProviderEffects } from './effect/provider.effects';
-import { reducers } from './reducer';
-
 import { NewProviderComponent } from './container/new-provider.component';
-
 
 import { ProviderEditorFormModule } from './component';
 import { PreviewProviderDialogComponent } from './component/preview-provider-dialog.component';
@@ -56,8 +51,6 @@ export class MetadataProviderModule {
 @NgModule({
     imports: [
         MetadataProviderModule,
-        StoreModule.forFeature('providers', reducers),
-        EffectsModule.forFeature([DraftEffects, ProviderEffects]),
         RouterModule.forChild([
             { path: 'new', component: NewProviderComponent }
         ]),

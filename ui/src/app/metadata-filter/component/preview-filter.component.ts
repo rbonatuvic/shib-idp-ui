@@ -6,14 +6,14 @@ import { Store } from '@ngrx/store';
 import * as fromFilter from '../reducer';
 import { QueryEntityIds } from '../action/filter.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataFilter } from '../../domain/domain.type';
 
 @Component({
     selector: 'preview-filter',
     templateUrl: './preview-filter.component.html'
 })
 export class PreviewFilterComponent {
-    filter$: Observable<MetadataProvider>;
+    filter$: Observable<MetadataFilter>;
     constructor(
         public activeModal: NgbActiveModal,
         private store: Store<fromFilter.State>

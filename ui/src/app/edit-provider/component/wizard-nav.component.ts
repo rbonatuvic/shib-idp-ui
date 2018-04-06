@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 
-import * as fromProviders from '../../metadata-provider/reducer';
 import * as fromEditor from '../reducer';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
 

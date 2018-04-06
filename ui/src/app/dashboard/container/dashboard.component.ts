@@ -4,32 +4,37 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
-import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataEntity, MetadataProvider, DomainTypes } from '../../domain/domain.type';
+import { Provider } from '../../domain/entity/provider';
 import * as searchActions from '../action/search.action';
-import * as providerActions from '../../metadata-provider/action/provider.action';
-import * as draftActions from '../../metadata-provider/action/draft.action';
-import * as fromProviders from '../../metadata-provider/reducer';
+import * as providerActions from '../../domain/action/provider-collection.action';
+import * as draftActions from '../../domain/action/draft-collection.action';
 import * as fromDashboard from '../reducer';
-import { ToggleProviderDisplay, PreviewProvider } from '../action/dashboard.action';
+import { ToggleEntityDisplay, PreviewEntity } from '../action/dashboard.action';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 
 @Component({
     selector: 'dashboard-page',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './dashboard.component.html'
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
     searchQuery$: Observable<string>;
-    providers$: Observable<MetadataProvider[]>;
+    providers$: Observable<MetadataEntity[]>;
     loading$: Observable<boolean>;
 
     total$: Observable<number>;
     page = 1;
     limit = 8;
-    limited$: Observable<MetadataProvider[]>;
+    limited$: Observable<MetadataEntity[]>;
 
-    providersOpen$: Observable<{[key: string]: boolean}>;
+    entitiesOpen$: Observable<{[key: string]: boolean}>;
+
+    filterOptions = ['all', 'filter', 'provider'];
+    filtering$: Observable<string>;
+    filtering = 'all';
 
     constructor(
         private store: Store<fromDashboard.DashboardState>,
@@ -39,7 +44,9 @@ export class DashboardComponent implements OnInit {
         this.providers$ = store.select(fromDashboard.getSearchResults);
         this.searchQuery$ = store.select(fromDashboard.getSearchQuery);
         this.loading$ = store.select(fromDashboard.getSearchLoading);
-        this.providersOpen$ = store.select(fromDashboard.getOpenProviders);
+        this.entitiesOpen$ = store.select(fromDashboard.getOpenProviders);
+        this.filtering$ = store.select(fromDashboard.getFilterType);
+        this.filtering$.subscribe(f => this.filtering = f);
 
         this.total$ = this.providers$.map(list => list.length);
 
@@ -48,14 +55,19 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit (): void {
         this.search();
+        this.changeFilter('all');
     }
 
-    getPagedProviders(page: number, list$: Observable<MetadataProvider[]>): Observable<MetadataProvider[]> {
-        return list$.map((providers: MetadataProvider[]) => {
+    getPagedProviders(page: number, list$: Observable<MetadataEntity[]>): Observable<MetadataEntity[]> {
+        return list$.map((providers: MetadataEntity[]) => {
             let maxIndex = (page * this.limit) - 1,
                 minIndex = ((page - 1) * this.limit);
-            return providers.filter((provider: MetadataProvider, index: number) =>  (maxIndex >= index && index >= minIndex) );
+            return providers.filter((provider: MetadataEntity, index: number) =>  (maxIndex >= index && index >= minIndex) );
         });
+    }
+
+    changeFilter(type: string): void {
+        this.store.dispatch(new searchActions.FilterAction(type));
     }
 
     changePage(index: number): void {
@@ -68,27 +80,31 @@ export class DashboardComponent implements OnInit {
         this.page = 1;
     }
 
-    edit(provider: MetadataProvider): void {
-        let path = provider.id ? 'edit' : 'wizard',
-            id = provider.id ? provider.id : provider.entityId;
-        this.router.navigate(['provider', id, path]);
+    edit(entity: MetadataEntity): void {
+        if (entity.type === DomainTypes.provider) {
+            let path = entity.id ? 'edit' : 'wizard',
+                id = entity.id ? entity.id : entity.entityId;
+            this.router.navigate(['provider', id, path]);
+        }
     }
 
-    toggleProvider(provider: MetadataProvider): void {
-        this.store.dispatch(new ToggleProviderDisplay(provider.entityId));
+    toggleProvider(entity: MetadataEntity): void {
+        this.store.dispatch(new ToggleEntityDisplay(entity.entityId));
     }
 
-    openPreviewDialog(provider: MetadataProvider): void {
-        this.store.dispatch(new PreviewProvider(provider));
+    openPreviewDialog(entity: MetadataEntity): void {
+        if (entity.type === DomainTypes.provider) {
+            this.store.dispatch(new PreviewEntity(entity));
+        }
     }
 
-    deleteProvider(provider: MetadataProvider): void {
+    deleteProvider(entity: MetadataProvider): void {
         this.modalService
             .open(DeleteDialogComponent)
             .result
             .then(
                 success => {
-                    this.store.dispatch(new draftActions.RemoveDraftRequest(provider));
+                    this.store.dispatch(new draftActions.RemoveDraftRequest(entity));
                 },
                 err => {
                     console.log('Cancelled');

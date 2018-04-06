@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromProviders from '../../reducer';
+import * as fromCollections from '../../../domain/reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { Provider } from '../../../domain/entity/provider';
@@ -40,7 +40,7 @@ class TestHostComponent {
 describe('Descriptor Info Form Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let store: Store<fromProviders.ProviderState>;
+    let store: Store<fromCollections.CollectionState>;
     let form: DescriptorInfoFormComponent;
     let fb: FormBuilder;
 
@@ -56,7 +56,7 @@ describe('Descriptor Info Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'providers': combineReducers(fromProviders.reducers),
+                    'collections': combineReducers(fromCollections.reducers),
                 }),
                 NgbPopoverModule,
                 SharedModule

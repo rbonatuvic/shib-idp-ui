@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 
 import * as editorActions from '../action/editor.action';
-import * as draft from '../../metadata-provider/action/draft.action';
-import * as provider from '../../metadata-provider/action/provider.action';
+import * as draft from '../../domain/action/draft-collection.action';
+import * as provider from '../../domain/action/provider-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDraftService } from '../../domain/service/entity-draft.service';
 

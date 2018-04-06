@@ -24,9 +24,9 @@ import 'rxjs/add/operator/takeLast';
 import 'rxjs/add/operator/skipWhile';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import * as fromProviders from '../../metadata-provider/reducer';
-import * as draftActions from '../../metadata-provider/action/draft.action';
-import { AddProviderRequest, RemoveProviderRequest } from '../../metadata-provider/action/provider.action';
+import * as fromCollections from '../../domain/reducer';
+import * as draftActions from '../../domain/action/draft-collection.action';
+import { AddProviderRequest, RemoveProviderRequest } from '../../domain/action/provider-collection.action';
 import * as fromEditor from '../reducer';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
@@ -60,14 +60,14 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
     saving: boolean;
 
     constructor(
-        private store: Store<fromProviders.State>,
+        private store: Store<fromCollections.State>,
         private route: ActivatedRoute,
         private router: Router,
         private statusEmitter: ProviderStatusEmitter,
         private valueEmitter: ProviderValueEmitter,
         private modalService: NgbModal
     ) {
-        this.provider$ = this.store.select(fromProviders.getSelectedDraft);
+        this.provider$ = this.store.select(fromCollections.getSelectedDraft);
         this.providerName$ = this.provider$.map(p => p.serviceProviderName);
         this.changes$ = this.store.select(fromEditor.getEditorChanges);
 

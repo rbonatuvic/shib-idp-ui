@@ -14,9 +14,9 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Store } from '@ngrx/store';
 
-import { AddDraftRequest } from '../action/draft.action';
-import { AddProviderRequest, UploadProviderRequest } from '../action/provider.action';
-import * as fromProviders from '../reducer';
+import { AddDraftRequest } from '../../domain/action/draft-collection.action';
+import { AddProviderRequest, UploadProviderRequest } from '../../domain/action/provider-collection.action';
+import * as fromCollections from '../../domain/reducer';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 
 @Component({
@@ -30,10 +30,10 @@ export class BlankProviderComponent implements OnInit {
     ids$: Observable<string[]>;
 
     constructor(
-        private store: Store<fromProviders.ProviderState>,
+        private store: Store<fromCollections.CollectionState>,
         private fb: FormBuilder
     ) {
-        this.ids$ = this.store.select(fromProviders.getAllEntityIds);
+        this.ids$ = this.store.select(fromCollections.getAllEntityIds);
     }
 
     ngOnInit(): void {

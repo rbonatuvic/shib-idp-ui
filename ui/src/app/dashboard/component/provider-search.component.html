@@ -1,6 +1,6 @@
 <form [formGroup]="searchForm">
+    <label for="search" class="sr-only" i18n="@@action--search">Search</label>
     <div class="input-group">
-        <label for="search" class="sr-only" i18n="@@action--search">Search</label>
         <input
             id="search"
             type="text"
@@ -11,14 +11,13 @@
             aria-label="To search for a service provider, enter name then press enter"
             formControlName="search"
             (keyup)="search.emit($event.target.value)">
-        <span class="input-group-btn">
+        <div class="input-group-append">
             <button class="btn btn-light"
                 type="button"
                 tabindex="0"
                 aria-label="Clear search text field"
                 (click)="search.emit('')"
-                [disabled]="!query.length"
                 i18n="@@action--clear">Clear</button>
-        </span>
+        </div>
     </div>
 </form>

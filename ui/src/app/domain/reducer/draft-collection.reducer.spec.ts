@@ -1,13 +1,13 @@
-import { reducer } from './draft.reducer';
-import * as fromDrafts from './draft.reducer';
-import * as draftActions from '../action/draft.action';
+import { reducer } from './draft-collection.reducer';
+import * as fromDrafts from './draft-collection.reducer';
+import * as draftActions from '../action/draft-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 let drafts: MetadataProvider[] = [
-        { entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider,
-        { entityId: 'baz', serviceProviderName: 'fin' } as MetadataProvider
-    ],
-    snapshot: fromDrafts.DraftState = {
+    { entityId: 'foo', serviceProviderName: 'bar' } as MetadataProvider,
+    { entityId: 'baz', serviceProviderName: 'fin' } as MetadataProvider
+],
+    snapshot: fromDrafts.DraftCollectionState = {
         ids: [drafts[0].entityId, drafts[1].entityId],
         drafts: {
             [drafts[0].entityId]: drafts[0],
@@ -17,7 +17,7 @@ let drafts: MetadataProvider[] = [
     };
 
 describe('Draft Reducer', () => {
-    const initialState: fromDrafts.DraftState = {
+    const initialState: fromDrafts.DraftCollectionState = {
         ids: [],
         drafts: {},
         selectedDraftId: null
@@ -54,7 +54,7 @@ describe('Draft Reducer', () => {
                     selectedDraftId: null
                 };
             const action = new draftActions.UpdateDraftSuccess(changes);
-            const result = reducer({...snapshot}, action);
+            const result = reducer({ ...snapshot }, action);
 
             expect(result).toEqual(
                 Object.assign({}, initialState, expected)
@@ -107,7 +107,7 @@ describe('Draft Reducer', () => {
                 drafts: {},
                 selectedDraftId: null,
             })).toBeNull();
-            expect(fromDrafts.getSelectedId(Object.assign({}, snapshot, {selectedDraftId: 'foo'}))).toEqual('foo');
+            expect(fromDrafts.getSelectedId(Object.assign({}, snapshot, { selectedDraftId: 'foo' }))).toEqual('foo');
         });
 
         it('getSelected should return the selected entity by id', () => {

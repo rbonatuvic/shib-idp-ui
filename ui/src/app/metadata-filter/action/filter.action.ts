@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { QueryParams } from '../../core/model/query';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataFilter } from '../../domain/model/metadata-filter';
 
 export const QUERY_ENTITY_IDS = '[Filter] Query Entity Ids';
 export const VIEW_MORE_IDS = '[Filter] View More Ids Modal';
@@ -12,9 +12,6 @@ export const LOAD_ENTITY_IDS_ERROR = '[Entity ID Collection] Load Entity Ids Err
 
 export const CREATE_FILTER = '[Filter] Create Filter';
 export const UPDATE_FILTER = '[Filter] Update Filter';
-export const SAVE_FILTER = '[Filter] Save Filter';
-export const SAVE_FILTER_SUCCESS = '[Filter] Save Filter Success';
-export const SAVE_FILTER_ERROR = '[Filter] Save Filter Error';
 export const CANCEL_CREATE_FILTER = '[Filter] Cancel Create Filter';
 
 export class QueryEntityIds implements Action {
@@ -54,31 +51,13 @@ export class LoadEntityIdsError implements Action {
 export class CreateFilter implements Action {
     readonly type = CREATE_FILTER;
 
-    constructor(public payload: MetadataProvider) { }
+    constructor(public payload: MetadataFilter) { }
 }
 
 export class UpdateFilter implements Action {
     readonly type = UPDATE_FILTER;
 
-    constructor(public payload: Partial<MetadataProvider>) { }
-}
-
-export class SaveFilter implements Action {
-    readonly type = SAVE_FILTER;
-
-    constructor(public payload: Partial<MetadataProvider>) { }
-}
-
-export class SaveFilterSuccess implements Action {
-    readonly type = SAVE_FILTER_SUCCESS;
-
-    constructor(public payload: MetadataProvider) { }
-}
-
-export class SaveFilterError implements Action {
-    readonly type = SAVE_FILTER_ERROR;
-
-    constructor(public payload: Error) { }
+    constructor(public payload: Partial<MetadataFilter>) { }
 }
 
 export class CancelCreateFilter implements Action {
@@ -94,7 +73,4 @@ export type Actions =
     | QueryEntityIds
     | CreateFilter
     | UpdateFilter
-    | SaveFilter
-    | SaveFilterSuccess
-    | SaveFilterError
     | CancelCreateFilter;

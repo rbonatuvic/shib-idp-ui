@@ -7,8 +7,8 @@ import { Store } from '@ngrx/store';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { SelectDraft } from '../../metadata-provider/action/draft.action';
-import * as fromProviders from '../../metadata-provider/reducer';
+import { SelectDraft } from '../../domain/action/draft-collection.action';
+import * as fromCollection from '../../domain/reducer';
 @Component({
     selector: 'provider-page',
     templateUrl: './provider.component.html',
@@ -19,7 +19,7 @@ export class DraftComponent implements OnDestroy {
     actionsSubscription: Subscription;
 
     constructor(
-        store: Store<fromProviders.State>,
+        store: Store<fromCollection.CollectionState>,
         route: ActivatedRoute
     ) {
         this.actionsSubscription = route.params

@@ -18,9 +18,9 @@ import { Store } from '@ngrx/store';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { Provider } from '../../domain/entity/provider';
-import { AddDraftRequest } from '../action/draft.action';
-import { AddProviderRequest, UploadProviderRequest, CreateProviderFromUrlRequest } from '../action/provider.action';
-import * as fromProviders from '../reducer';
+import { AddDraftRequest } from '../../domain/action/draft-collection.action';
+import { AddProviderRequest, UploadProviderRequest, CreateProviderFromUrlRequest } from '../../domain/action/provider-collection.action';
+import * as fromCollections from '../../domain/reducer';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class NewProviderComponent implements OnInit {
     type: Symbol = this.BLANK;
 
     constructor(
-        private store: Store<fromProviders.ProviderState>
+        private store: Store<fromCollections.CollectionState>
     ) { }
 
     ngOnInit(): void {

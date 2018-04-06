@@ -8,11 +8,12 @@ import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal
 import { DashboardComponent } from './dashboard.component';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
-import { ProviderItemComponent } from '../component/provider-item.component';
+import { EntityItemComponent } from '../component/entity-item.component';
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RouterStub } from '../../../testing/router.stub';
 import { NgbModalStub } from '../../../testing/modal.stub';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { Provider } from '../../domain/entity/provider';
 
 
 describe('Dashboard Page', () => {
@@ -22,14 +23,14 @@ describe('Dashboard Page', () => {
     let modal: NgbModal;
     let instance: DashboardComponent;
 
-    let draft = {
+    let draft = new Provider({
             entityId: 'foo',
             serviceProviderName: 'bar'
-        } as MetadataProvider,
-        provider = {
+        }),
+        provider = new Provider({
             ...draft,
             id: '1'
-        } as MetadataProvider;
+        });
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -49,7 +50,7 @@ describe('Dashboard Page', () => {
             declarations: [
                 DashboardComponent,
                 ProviderSearchComponent,
-                ProviderItemComponent,
+                EntityItemComponent,
                 DeleteDialogComponent
             ],
         });

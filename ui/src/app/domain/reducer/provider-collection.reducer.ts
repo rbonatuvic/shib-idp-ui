@@ -1,20 +1,20 @@
 import { createSelector } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import * as provider from '../action/provider.action';
+import * as provider from '../action/provider-collection.action';
 
-export interface ProviderState {
+export interface ProviderCollectionState {
     ids: string[];
     entities: { [id: string]: MetadataProvider };
     selectedProviderId: string | null;
 }
 
-export const initialState: ProviderState = {
+export const initialState: ProviderCollectionState = {
     ids: [],
     entities: {},
     selectedProviderId: null
 };
 
-export function reducer(state = initialState, action: provider.Actions): ProviderState {
+export function reducer(state = initialState, action: provider.Actions): ProviderCollectionState {
     switch (action.type) {
         case provider.LOAD_PROVIDER_SUCCESS: {
             const providers = action.payload;
@@ -84,9 +84,9 @@ export function reducer(state = initialState, action: provider.Actions): Provide
     }
 }
 
-export const getEntities = (state: ProviderState) => state.entities;
-export const getIds = (state: ProviderState) => state.ids;
-export const getSelectedId = (state: ProviderState) => state.selectedProviderId;
+export const getEntities = (state: ProviderCollectionState) => state.entities;
+export const getIds = (state: ProviderCollectionState) => state.ids;
+export const getSelectedId = (state: ProviderCollectionState) => state.selectedProviderId;
 export const getSelected = createSelector(
     getEntities,
     getSelectedId,

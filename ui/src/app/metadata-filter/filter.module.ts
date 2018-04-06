@@ -15,7 +15,6 @@ import { SearchDialogComponent } from './component/search-dialog.component';
 import { FilterFormComponent } from './component/filter-form.component';
 import { SharedModule } from '../shared/shared.module';
 import { PreviewFilterComponent } from './component/preview-filter.component';
-import { MetadataFilterService } from './service/filter.service';
 
 export const routes: Routes = [
     {
@@ -48,8 +47,6 @@ export const routes: Routes = [
         NgbModalModule,
         SharedModule
     ],
-    providers: [
-        MetadataFilterService
-    ]
+    providers: []
 })
 export class FilterModule { }

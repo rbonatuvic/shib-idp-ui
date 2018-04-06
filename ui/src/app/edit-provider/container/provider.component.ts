@@ -7,8 +7,8 @@ import { Store } from '@ngrx/store';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { SelectProvider } from '../../metadata-provider/action/provider.action';
-import * as fromProviders from '../../metadata-provider/reducer';
+import { SelectProvider } from '../../domain/action/provider-collection.action';
+import * as fromProviders from '../../domain/reducer';
 @Component({
     selector: 'provider-page',
     templateUrl: './provider.component.html',

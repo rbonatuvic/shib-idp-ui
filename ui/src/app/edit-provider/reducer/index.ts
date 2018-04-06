@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromRoot from '../../core/reducer';
+import * as fromRoot from '../../app.reducer';
 import * as fromEditor from './editor.reducer';
 
 export interface EditProviderState {

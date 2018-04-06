@@ -3,7 +3,7 @@ import 'rxjs/add/operator/concat';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataFilter } from '../../domain/model/metadata-filter';
 
 @Injectable()
 export class MetadataFilterService {
@@ -11,8 +11,13 @@ export class MetadataFilterService {
     constructor(
         private http: HttpClient
     ) { }
-    save(provider: MetadataProvider): Observable<MetadataProvider> {
-        const saved = { ...provider, id: Date.now() + '_' + Math.random().toString(36).substr(2, 9) };
+    save(provider: MetadataFilter): Observable<MetadataFilter> {
+        const saved = {
+            ...provider,
+            id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+            createdDate: '2018-04-05T09:07:13.730',
+            updatedDate: '2018-04-05T09:07:13.730'
+        };
         return Observable.of(saved);
     }
 }

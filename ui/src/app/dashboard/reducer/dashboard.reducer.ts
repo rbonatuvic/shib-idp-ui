@@ -1,7 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as dashboard from '../action/dashboard.action';
-import * as provider from '../../metadata-provider/action/provider.action';
 import * as fromRoot from '../../core/reducer';
 
 export interface State {
@@ -14,7 +13,7 @@ export const initialState: State = {
 
 export function reducer(state = initialState, action: dashboard.Actions): State {
     switch (action.type) {
-        case dashboard.TOGGLE_PROVIDER_DISPLAY: {
+        case dashboard.TOGGLE_ENTITY_DISPLAY: {
             return Object.assign({}, state, {
                 providersOpen: {
                     ...state.providersOpen,

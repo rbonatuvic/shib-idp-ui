@@ -11,10 +11,12 @@ import { ProviderFormFragmentComponent } from '../../metadata-provider/component
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from '../component/search-dialog.component';
-import { ViewMoreIds, CancelCreateFilter, QueryEntityIds, CreateFilter, UpdateFilter, SaveFilter } from '../action/filter.action';
+import { ViewMoreIds, CancelCreateFilter, QueryEntityIds, CreateFilter, UpdateFilter } from '../action/filter.action';
+import { SaveFilter } from '../../domain/action/filter-collection.action';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
+import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { PreviewFilterComponent } from '../component/preview-filter.component';
+import { Filter } from '../../domain/entity/filter';
 
 
 @Component({
@@ -23,11 +25,11 @@ import { PreviewFilterComponent } from '../component/preview-filter.component';
 })
 export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
 
-    changes$: Observable<MetadataProvider>;
-    changes: MetadataProvider;
-    filter: MetadataProvider = {
+    changes$: Observable<MetadataFilter>;
+    changes: MetadataFilter;
+    filter: MetadataFilter = new Filter({
         entityId: '',
-        serviceProviderName: '',
+        filterName: '',
         relyingPartyOverrides: {
             signAssertion: false,
             dontSignResponse: false,
@@ -40,7 +42,7 @@ export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
             authenticationMethods: []
         },
         attributeRelease: []
-    };
+    });
 
     constructor(
         private store: Store<fromFilter.State>,

@@ -1,7 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as filter from '../action/filter.action';
 import * as fromRoot from '../../core/reducer';
+import { MetadataFilter } from '../../domain/domain.type';
 
 export interface FilterState {
     entityIds: string[];
@@ -10,7 +10,7 @@ export interface FilterState {
     error: Error | null;
     selected: string | null;
     term: string;
-    filter: MetadataProvider | null;
+    filter: MetadataFilter | null;
 }
 
 export const initialState: FilterState = {

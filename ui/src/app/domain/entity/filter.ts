@@ -1,4 +1,5 @@
 import { MetadataFilter, RelyingPartyOverrides } from '../model/metadata-filter';
+import { DomainTypes } from '../domain.type';
 
 export class Filter implements MetadataFilter {
     id = '';
@@ -18,5 +19,17 @@ export class Filter implements MetadataFilter {
 
     constructor(obj?: Partial<MetadataFilter>) {
         Object.assign(this, obj);
+    }
+
+    get name(): string {
+        return this.filterName;
+    }
+
+    get enabled(): boolean {
+        return this.filterEnabled;
+    }
+
+    get type(): string {
+        return DomainTypes.filter;
     }
 }
