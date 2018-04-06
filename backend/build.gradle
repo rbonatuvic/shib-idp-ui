@@ -28,7 +28,8 @@ bootWar {
        attributes("Manifest-Version" : "1.0", "Implementation-Version" : "${project.version}")
    }
    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        into '/'
+        // into '/'
+        into '/public'
     }
     archiveName = "${baseName}.war"
 }
