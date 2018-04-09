@@ -285,9 +285,9 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     handleSpace(event: KeyboardEvent): void {
-        event.preventDefault();
         const focusIsOnOption = this.state.currentState.focused !== -1;
         if (focusIsOnOption) {
+            event.preventDefault();
             this.handleOptionClick(this.state.currentState.focused);
         }
     }
