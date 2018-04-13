@@ -40,7 +40,6 @@ export class SearchEffects {
             this.store.select(fromCollections.getAllProviders),
             this.store.select(fromCollections.getAllFilters),
             (o: any[], p: MetadataProvider[], f: MetadataFilter[]): Array<MetadataEntity> => {
-                console.log(o, p, f);
                 return o.concat(
                     f.map(filter => new Filter(filter)),
                     p.map(provider => new Provider(provider))
