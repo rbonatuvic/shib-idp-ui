@@ -39,7 +39,7 @@ export class EntityDescriptorService {
 
     save(provider: MetadataProvider): Observable<MetadataProvider> {
         if (!environment.production) {
-            console.log(JSON.stringify(provider));
+            // console.log(JSON.stringify(provider));
         }
         return this.http.post<MetadataProvider>(`${this.base}${this.endpoint}`, provider);
     }
