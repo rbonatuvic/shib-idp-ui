@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/combineLatest';
 
 import * as entitySearch from '../action/search.action';
@@ -36,13 +36,16 @@ export class SearchEffects {
     ) { }
 
     private performSearch(): Observable<entitySearch.Actions> {
-        return combineLatest(
+        return of([]).combineLatest(
             this.store.select(fromCollections.getAllProviders),
             this.store.select(fromCollections.getAllFilters),
-            (p: MetadataProvider[], f: MetadataFilter[]): Array<MetadataEntity> => [].concat(
-                f.map(filter => new Filter(filter)),
-                p.map(provider => new Provider(provider))
-            )
+            (o: any[], p: MetadataProvider[], f: MetadataFilter[]): Array<MetadataEntity> => {
+                console.log(o, p, f);
+                return o.concat(
+                    f.map(filter => new Filter(filter)),
+                    p.map(provider => new Provider(provider))
+                );
+            }
         )
         .combineLatest(
             this.store.select(fromDashboard.getFilterType),
@@ -54,6 +57,6 @@ export class SearchEffects {
                 e => this.matcher(e.name, term) || this.matcher(e.entityId, term)
             )
         )
-        .map(providers => new entitySearch.SearchCompleteAction(providers));
+        .map(entities => new entitySearch.SearchCompleteAction(entities));
     }
 } /* istanbul ignore next */
