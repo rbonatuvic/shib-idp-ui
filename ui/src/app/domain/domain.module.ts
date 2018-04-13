@@ -7,12 +7,12 @@ import { ListValuesService } from './service/list-values.service';
 import { ProviderStatusEmitter, ProviderValueEmitter } from './service/provider-change-emitter.service';
 import { EntityIdService } from './service/entity-id.service';
 import { EntityDraftService } from './service/entity-draft.service';
-import { MetadataFilterService } from './service/filter.service';
 
 import { reducers } from './reducer';
 import { DraftCollectionEffects } from './effect/draft-collection.effects';
 import { ProviderCollectionEffects } from './effect/provider-collection.effects';
 import { FilterCollectionEffects } from './effect/filter-collection.effect';
+import { MetadataResolverService } from './service/metadata-resolver.service';
 
 @NgModule({
     declarations: [],
@@ -32,7 +32,7 @@ export class DomainModule {
                 ListValuesService,
                 ProviderStatusEmitter,
                 ProviderValueEmitter,
-                MetadataFilterService
+                MetadataResolverService
             ]
         };
     }

@@ -12,7 +12,7 @@ import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 import { Provider } from '../../domain/entity/provider';
 import { Filter } from '../../domain/entity/filter';
-import { MetadataEntity, DomainTypes } from '../../domain/domain.type';
+import { MetadataEntity, DomainTypes, MetadataFilter } from '../../domain/domain.type';
 
 @Injectable()
 export class SearchEffects {
@@ -39,7 +39,7 @@ export class SearchEffects {
         return combineLatest(
             this.store.select(fromCollections.getAllProviders),
             this.store.select(fromCollections.getAllFilters),
-            (p, f): MetadataEntity[] => [].concat(
+            (p: MetadataProvider[], f: MetadataFilter[]): Array<MetadataEntity> => [].concat(
                 f.map(filter => new Filter(filter)),
                 p.map(provider => new Provider(provider))
             )

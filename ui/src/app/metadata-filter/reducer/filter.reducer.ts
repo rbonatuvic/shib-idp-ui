@@ -1,86 +1,44 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as filter from '../action/filter.action';
+import * as collection from '../../domain/action/filter-collection.action';
 import * as fromRoot from '../../core/reducer';
 import { MetadataFilter } from '../../domain/domain.type';
 
 export interface FilterState {
-    entityIds: string[];
-    viewMore: boolean;
-    loading: boolean;
-    error: Error | null;
     selected: string | null;
-    term: string;
-    filter: MetadataFilter | null;
+    changes: MetadataFilter | null;
 }
 
 export const initialState: FilterState = {
-    entityIds: [],
     selected: null,
-    viewMore: false,
-    loading: false,
-    error: null,
-    term: '',
-    filter: null
+    changes: null
 };
 
-export function reducer(state = initialState, action: filter.Actions): FilterState {
+export function reducer(state = initialState, action: filter.Actions | collection.Actions): FilterState {
     switch (action.type) {
-        case filter.VIEW_MORE_IDS: {
-            return {
-                ...state,
-                viewMore: true
-            };
-        }
         case filter.SELECT_ID: {
             return {
                 ...state,
-                selected: action.payload,
-                viewMore: false
-            };
-        }
-        case filter.CANCEL_VIEW_MORE: {
-            return {
-                ...state,
-                viewMore: false
-            };
-        }
-        case filter.QUERY_ENTITY_IDS: {
-            return {
-                ...state,
-                loading: true,
-                term: action.payload.term
-            };
-        }
-        case filter.LOAD_ENTITY_IDS_SUCCESS: {
-            return {
-                ...state,
-                loading: false,
-                error: null,
-                entityIds: action.payload
-            };
-        }
-        case filter.LOAD_ENTITY_IDS_ERROR: {
-            return {
-                ...state,
-                loading: false,
-                error: action.payload
+                selected: action.payload
             };
         }
         case filter.CREATE_FILTER: {
             return {
                 ...state,
-                filter: action.payload
+                changes: action.payload
             };
         }
         case filter.UPDATE_FILTER: {
             return {
                 ...state,
-                filter: {
-                    ...state.filter,
+                changes: {
+                    ...state.changes,
                     ...action.payload
                 }
             };
         }
+        case collection.ADD_FILTER_SUCCESS:
+        case collection.UPDATE_FILTER_SUCCESS:
         case filter.CANCEL_CREATE_FILTER: {
             return {
                 ...initialState
@@ -92,10 +50,5 @@ export function reducer(state = initialState, action: filter.Actions): FilterSta
     }
 }
 
-export const getViewMore = (state: FilterState) => state.viewMore;
 export const getSelected = (state: FilterState) => state.selected;
-export const getEntityIds = (state: FilterState) => state.entityIds;
-export const getError = (state: FilterState) => state.error;
-export const getLoading = (state: FilterState) => state.loading;
-export const getTerm = (state: FilterState) => state.term;
-export const getFilter = (state: FilterState) => state.filter;
+export const getFilterChanges = (state: FilterState) => state.changes;

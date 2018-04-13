@@ -12,22 +12,38 @@ import { ProviderEditorFormModule } from '../metadata-provider/component';
 import { FilterEffects } from './effect/filter.effect';
 import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from './component/search-dialog.component';
-import { FilterFormComponent } from './component/filter-form.component';
 import { SharedModule } from '../shared/shared.module';
 import { PreviewFilterComponent } from './component/preview-filter.component';
+import { EditFilterComponent } from './container/edit-filter.component';
+import { FilterComponent } from './container/filter.component';
+import { SearchIdEffects } from './effect/search.effect';
+import { FilterExistsGuard } from '../domain/guard/filter-exists.guard';
 
 export const routes: Routes = [
     {
         path: 'new',
         component: NewFilterComponent,
         canActivate: []
+    },
+    {
+        path: ':id',
+        component: FilterComponent,
+        canActivate: [FilterExistsGuard],
+        children: [
+            {
+                path: 'edit',
+                component: EditFilterComponent,
+                canDeactivate: []
+            }
+        ]
     }
 ];
 
 @NgModule({
     declarations: [
         NewFilterComponent,
-        FilterFormComponent,
+        EditFilterComponent,
+        FilterComponent,
         SearchDialogComponent,
         PreviewFilterComponent
     ],
@@ -40,13 +56,15 @@ export const routes: Routes = [
         RouterModule,
         ReactiveFormsModule,
         StoreModule.forFeature('metadata-filter', reducers),
-        EffectsModule.forFeature([FilterEffects]),
+        EffectsModule.forFeature([FilterEffects, SearchIdEffects]),
         RouterModule.forChild(routes),
         ProviderEditorFormModule,
         NgbPopoverModule,
         NgbModalModule,
         SharedModule
     ],
-    providers: []
+    providers: [
+        FilterExistsGuard
+    ]
 })
 export class FilterModule { }

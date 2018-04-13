@@ -8,7 +8,6 @@ import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/servic
 import { NgbPopoverModule, NgbPopoverConfig, NgbModalModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NavigatorService } from '../../core/service/navigator.service';
 import { SharedModule } from '../../shared/shared.module';
-import { FilterFormComponent } from '../component/filter-form.component';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;
@@ -34,8 +33,7 @@ describe('New Metadata Filter Page', () => {
                 SharedModule
             ],
             declarations: [
-                NewFilterComponent,
-                FilterFormComponent
+                NewFilterComponent
             ],
         });
 

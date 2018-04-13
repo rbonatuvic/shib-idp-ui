@@ -15,29 +15,94 @@ import * as actions from '../action/filter-collection.action';
 import * as fromFilter from '../reducer';
 
 import { EntityIdService } from '../../domain/service/entity-id.service';
-import { MetadataFilterService } from '../service/filter.service';
+import { MetadataResolverService } from '../service/metadata-resolver.service';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
+import { removeNulls } from '../../shared/util';
 
 @Injectable()
 export class FilterCollectionEffects {
 
     @Effect()
-    saveFilter$ = this.actions$
-        .ofType<actions.SaveFilter>(actions.SAVE_FILTER)
-        .map(action => action.payload)
-        .switchMap(unsaved =>
-            this.filterService
-                .save(unsaved as MetadataFilter)
-                .map(saved => new actions.SaveFilterSuccess(saved))
-                .catch(error => Observable.of(new actions.SaveFilterError(error)))
+    loadFilters$ = this.actions$
+        .ofType<actions.LoadFilterRequest>(actions.LOAD_FILTER_REQUEST)
+        .switchMap(() =>
+            this.resolverService
+                .query()
+                .map(filters => new actions.LoadFilterSuccess(filters))
+                .catch(error => Observable.of(new actions.LoadFilterError(error)))
         );
+    @Effect()
+    selectFilterRequest$ = this.actions$
+        .ofType<actions.SelectFilter>(actions.SELECT)
+        .map(action => action.payload)
+        .switchMap(id =>
+            this.resolverService
+                .find(id)
+                .map(p => new actions.SelectFilterSuccess(p))
+                .catch(error => Observable.of(new actions.SelectFilterFail(error)))
+        );
+
+    @Effect()
+    addFilter$ = this.actions$
+        .ofType<actions.AddFilterRequest>(actions.ADD_FILTER)
+        .map(action => action.payload)
+        .map(filter => {
+            return {
+                ...filter,
+                relyingPartyOverrides: removeNulls(filter.relyingPartyOverrides)
+            };
+        })
+        .switchMap(unsaved =>
+            this.resolverService
+                .save(unsaved as MetadataFilter)
+                .map(saved => new actions.AddFilterSuccess(saved))
+                .catch(error => Observable.of(new actions.AddFilterFail(error)))
+        );
+    @Effect({ dispatch: false })
+    addFilterSuccessRedirect$ = this.actions$
+        .ofType<actions.AddFilterSuccess>(actions.ADD_FILTER_SUCCESS)
+        .map(action => action.payload)
+        .do(filter => {
+            this.router.navigate(['/dashboard']);
+        });
+
+    @Effect()
+    addFilterSuccessReload$ = this.actions$
+        .ofType<actions.AddFilterSuccess>(actions.ADD_FILTER_SUCCESS)
+        .map(action => action.payload)
+        .map(filter => new actions.LoadFilterRequest());
+
+    @Effect()
+    updateFilter$ = this.actions$
+        .ofType<actions.UpdateFilterRequest>(actions.UPDATE_FILTER_REQUEST)
+        .map(action => action.payload)
+        .switchMap(filter => {
+            delete filter.modifiedDate;
+            delete filter.createdDate;
+            return this.resolverService
+                .update(filter)
+                .map(p => new actions.UpdateFilterSuccess(p))
+                .catch(err => Observable.of(new actions.UpdateFilterFail(err)));
+        });
+    @Effect({ dispatch: false })
+    updateFilterSuccessRedirect$ = this.actions$
+        .ofType<actions.UpdateFilterSuccess>(actions.UPDATE_FILTER_SUCCESS)
+        .map(action => action.payload)
+        .do(filter => {
+            this.router.navigate(['/dashboard']);
+        });
+    @Effect()
+    updateFilterSuccessReload$ = this.actions$
+        .ofType<actions.UpdateFilterSuccess>(actions.UPDATE_FILTER_SUCCESS)
+        .map(action => action.payload)
+        .map(filter => new actions.LoadFilterRequest());
 
     constructor(
         private actions$: Actions,
         private router: Router,
         private modalService: NgbModal,
         private idService: EntityIdService,
-        private filterService: MetadataFilterService,
+        private resolverService: MetadataResolverService,
         private store: Store<fromFilter.State>
     ) { }
 }

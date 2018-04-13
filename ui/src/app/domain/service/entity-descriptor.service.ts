@@ -71,14 +71,4 @@ export class EntityDescriptorService {
             responseType: 'text'
         });
     }
-
-    removeNulls(attribute): any {
-        if (!attribute) { return {}; }
-        return Object.keys(attribute).reduce((coll, val, index) => {
-            if (attribute[val]) {
-                coll[val] = attribute[val];
-            }
-            return coll;
-        }, {});
-    }
 }

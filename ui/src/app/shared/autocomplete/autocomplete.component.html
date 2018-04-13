@@ -17,7 +17,7 @@
     <ul class="dropdown-menu"
         id="{{ id }}__listbox"
         role="listbox"
-        [class.show]="(menuIsVisible$ | async) && !processing">
+        [class.show]="(menuIsVisible$ | async) && !processing && !input.disabled">
         <li *ngFor="let option of matches; let i = index;"
             #matchElement
             class="dropdown-item"

@@ -89,21 +89,4 @@ describe(`EntityDescriptorService`, () => {
             }
         )));
     });
-
-    describe('removeNulls', () => {
-        let obj = {
-                foo: null,
-                bar: 'baz'
-            },
-            expected = {
-                bar: 'baz'
-            };
-        it(`should remove null values from the object provided`, inject([EntityDescriptorService], (service) => {
-            expect(service.removeNulls(obj)).toEqual(expected);
-        }));
-
-        it(`should return an empty object if passed a falsy value`, inject([EntityDescriptorService], (service) => {
-            expect(service.removeNulls(undefined)).toEqual({});
-        }));
-    });
 });

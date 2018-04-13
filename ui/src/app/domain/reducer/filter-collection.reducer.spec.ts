@@ -3,7 +3,10 @@ import * as fromFilter from './filter-collection.reducer';
 import * as actions from '../action/filter-collection.action';
 
 const snapshot: fromFilter.FilterCollectionState = {
-    filters: []
+    ids: [],
+    entities: {},
+    selectedId: null,
+    loaded: false
 };
 
 describe('Filter Reducer', () => {

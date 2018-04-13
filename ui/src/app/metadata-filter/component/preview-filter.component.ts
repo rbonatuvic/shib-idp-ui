@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 
 import * as fromFilter from '../reducer';
-import { QueryEntityIds } from '../action/filter.action';
+import { QueryEntityIds } from '../action/search.action';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MetadataFilter } from '../../domain/domain.type';
 

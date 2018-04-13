@@ -8,6 +8,7 @@ import * as providerActions from '../action/provider-collection.action';
 import * as draftActions from '../action/draft-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
+import { removeNulls } from '../../shared/util';
 
 @Injectable()
 export class ProviderCollectionEffects {
@@ -64,7 +65,7 @@ export class ProviderCollectionEffects {
         .map(provider => {
             return {
                 ...provider,
-                relyingPartyOverrides: this.descriptorService.removeNulls(provider.relyingPartyOverrides)
+                relyingPartyOverrides: removeNulls(provider.relyingPartyOverrides)
             };
         })
         .switchMap(provider =>

@@ -1,12 +1,12 @@
 import { MetadataFilter, RelyingPartyOverrides } from '../model/metadata-filter';
 import { DomainTypes } from '../domain.type';
+import { FilterTarget } from '../model/filter-target';
 
 export class Filter implements MetadataFilter {
     id = '';
     createdDate?: string;
     modifiedDate?: string;
 
-    entityId = '';
     filterName = '';
     filterEnabled = false;
 
@@ -17,8 +17,13 @@ export class Filter implements MetadataFilter {
 
     attributeRelease = [] as string[];
 
+    filterTarget: FilterTarget = {
+        type: 'entity',
+        value: ''
+    };
+
     constructor(obj?: Partial<MetadataFilter>) {
-        Object.assign(this, obj);
+        Object.assign(this, obj || {});
     }
 
     get name(): string {
@@ -31,5 +36,13 @@ export class Filter implements MetadataFilter {
 
     get type(): string {
         return DomainTypes.filter;
+    }
+
+    get entityId(): string {
+        return this.filterTarget.value;
+    }
+
+    set entityId(val: string) {
+        this.filterTarget.value = val;
     }
 }

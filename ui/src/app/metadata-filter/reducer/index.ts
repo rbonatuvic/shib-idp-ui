@@ -1,13 +1,16 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../core/reducer';
 import * as fromFilter from './filter.reducer';
+import * as fromSearch from './search.reducer';
 
 export interface FilterState {
     filter: fromFilter.FilterState;
+    search: fromSearch.SearchState;
 }
 
 export const reducers = {
     filter: fromFilter.reducer,
+    search: fromSearch.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -15,13 +18,16 @@ export interface State extends fromRoot.State {
 }
 
 export const getFiltersFromStateFn = (state: FilterState) => state.filter;
+export const getSearchFromStateFn = (state: FilterState) => state.search;
 export const getFilterState = createFeatureSelector<FilterState>('metadata-filter');
 
 export const getFilterFromState = createSelector(getFilterState, getFiltersFromStateFn);
-export const getViewingMore = createSelector(getFilterFromState, fromFilter.getViewMore);
 export const getSelected = createSelector(getFilterFromState, fromFilter.getSelected);
-export const getEntityCollection = createSelector(getFilterFromState, fromFilter.getEntityIds);
-export const getIsLoading = createSelector(getFilterFromState, fromFilter.getLoading);
-export const getError = createSelector(getFilterFromState, fromFilter.getError);
-export const getTerm = createSelector(getFilterFromState, fromFilter.getTerm);
-export const getFilter = createSelector(getFilterFromState, fromFilter.getFilter);
+export const getFilter = createSelector(getFilterFromState, fromFilter.getFilterChanges);
+
+export const getSearchFromState = createSelector(getFilterState, getSearchFromStateFn);
+export const getEntityCollection = createSelector(getSearchFromState, fromSearch.getEntityIds);
+export const getIsLoading = createSelector(getSearchFromState, fromSearch.getLoading);
+export const getError = createSelector(getSearchFromState, fromSearch.getError);
+export const getTerm = createSelector(getSearchFromState, fromSearch.getTerm);
+export const getViewingMore = createSelector(getSearchFromState, fromSearch.getViewMore);

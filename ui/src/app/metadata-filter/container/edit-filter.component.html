@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <span class="display-6">
                         <i class="fa fa-gears"></i>
-                        <ng-container i18n="@@label--new-filter">New Filter</ng-container>
+                        <ng-container i18n="@@label--edit-filter">Edit Filter - {{ (filter$ | async).filterName }}</ng-container>
                     </span>
                 </div>
             </div>
@@ -57,9 +57,34 @@
                                     </span>
                                 </div>
                                 <label for="entityId" class="sr-only">Search Entity ID</label>
-                                <auto-complete id="entityId" class="component-control" formControlName="entityId" limit="10" [matches]="entityIds$ | async"
-                                    [required]="true" [processing]="(processing$ | async)" (more)="onViewMore($event)">
-                                </auto-complete>
+                                <div class="row">
+                                    <auto-complete id="entityId"
+                                        #entityInput
+                                        class="component-control col-10"
+                                        formControlName="entityId"
+                                        limit="10"
+                                        [matches]="entityIds$ | async"
+                                        [required]="true"
+                                        [processing]="(processing$ | async)"
+                                        (more)="onViewMore($event)">
+                                    </auto-complete>
+                                    <div class="col-2">
+                                        <button
+                                            *ngIf="form.get('entityId').disabled"
+                                            class="btn btn-block btn-secondary"
+                                            type="button"
+                                            (click)="onChangeId()">
+                                            Change ID
+                                        </button>
+                                        <button
+                                            *ngIf="form.get('entityId').enabled"
+                                            class="btn btn-block btn-outline-secondary"
+                                            type="button"
+                                            (click)="onCancelChangeId()">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
                                 <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
                                     <small class="form-text text-danger">
                                         <ng-container *ngIf="form.get('entityId').hasError('required')" i18n="@@message--entity-id-required">Entity ID is required</ng-container>
@@ -70,6 +95,10 @@
                         </fieldset>
                     </div>
                     <div class="col-lg-6 col-xs-3 text-right">
+                        <button (click)="this.preview()" type="submit" class="btn btn-success">
+                            <i class="fa fa-eye fa-lg"></i>
+                            <ng-container i18n="@@action--save-changes">Preview XML</ng-container>
+                        </button>
                         <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="form.invalid">
                             <i class="fa fa-save fa-lg"></i>
                             <ng-container i18n="@@action--save-changes">Save Changes</ng-container>
@@ -79,7 +108,7 @@
                         </button>
                     </div>
                 </div>
-                <section *ngIf="form.get('entityId').valid">
+                <section>
                     <hr />
                     <div class="row">
                         <fieldset class="col-lg-6">
@@ -98,7 +127,7 @@
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" readonly></textarea>
+                                <textarea class="form-control" id="xmlPreview" rows="4" readonly></textarea>
                             </div>
                         </fieldset>
                     </div>
@@ -118,12 +147,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="filter$ | async">
                         <div class="col-lg-6">
-                            <relying-party-form [provider]="filter"></relying-party-form>
+                            <relying-party-form [provider]="filter$ | async"></relying-party-form>
                         </div>
                         <div class="col-lg-6">
-                            <attribute-release-form [provider]="filter"></attribute-release-form>
+                            <attribute-release-form [provider]="filter$ | async"></attribute-release-form>
                         </div>
                     </div>
                 </section>

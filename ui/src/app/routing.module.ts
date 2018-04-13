@@ -14,7 +14,7 @@ const routes: Routes = [
         canActivate: []
     },
     {
-        path: 'metadata-filter',
+        path: 'filter',
         loadChildren: './metadata-filter/filter.module#FilterModule',
         canActivate: []
     }

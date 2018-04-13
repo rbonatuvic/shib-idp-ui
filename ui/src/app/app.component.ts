@@ -8,6 +8,7 @@ import { VersionInfo } from './core/model/version';
 import { LoadProviderRequest } from './domain/action/provider-collection.action';
 import { LoadDraftRequest } from './domain/action/draft-collection.action';
 import { VersionInfoLoadRequestAction } from './core/action/version.action';
+import { LoadFilterRequest } from './domain/action/filter-collection.action';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(new LoadProviderRequest());
+        this.store.dispatch(new LoadFilterRequest());
         this.store.dispatch(new LoadDraftRequest());
         this.store.dispatch(new VersionInfoLoadRequestAction());
     }

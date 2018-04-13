@@ -81,11 +81,9 @@ export class DashboardComponent implements OnInit {
     }
 
     edit(entity: MetadataEntity): void {
-        if (entity.type === DomainTypes.provider) {
-            let path = entity.id ? 'edit' : 'wizard',
-                id = entity.id ? entity.id : entity.entityId;
-            this.router.navigate(['provider', id, path]);
-        }
+        let path = entity.id ? 'edit' : 'wizard',
+            id = entity.id ? entity.id : entity.entityId;
+        this.router.navigate([entity.type, id, path]);
     }
 
     toggleProvider(entity: MetadataEntity): void {

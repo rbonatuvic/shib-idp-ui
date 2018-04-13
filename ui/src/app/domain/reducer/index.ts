@@ -68,7 +68,12 @@ export const isSelectedDraftInCollection = createSelector(getDraftIds, getSelect
  *   Select pieces of Filter Collection
 */
 
-export const getAllFilters = createSelector(getFilterEntityState, fromFilter.getFilters);
+export const getAllFilters = createSelector(getFilterEntityState, fromFilter.getAll);
+export const getFilterEntities = createSelector(getFilterEntityState, fromFilter.getEntities);
+export const getSelectedFilterId = createSelector(getFilterEntityState, fromFilter.getSelectedId);
+export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, getInCollectionFn);
+export const getFilterIds = createSelector(getFilterEntityState, fromFilter.getIds);
+export const getFilterCollectionLoaded = createSelector(getFilterEntityState, fromFilter.getLoaded);
 
 /*
  *   Combine pieces of Collection State
