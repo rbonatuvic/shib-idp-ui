@@ -18,12 +18,12 @@ export class Filter implements MetadataFilter {
     attributeRelease = [] as string[];
 
     filterTarget: FilterTarget = {
-        type: 'entity',
-        value: ''
+        type: 'ENTITY',
+        value: ['']
     };
 
     constructor(obj?: Partial<MetadataFilter>) {
-        Object.assign(this, obj || {});
+        Object.assign(this, { ...obj });
     }
 
     get name(): string {
@@ -39,10 +39,20 @@ export class Filter implements MetadataFilter {
     }
 
     get entityId(): string {
-        return this.filterTarget.value;
+        return this.filterTarget.value[0];
     }
 
     set entityId(val: string) {
-        this.filterTarget.value = val;
+        this.filterTarget.value[0] = val;
+    }
+
+    serialize(): any {
+        return {
+            attributeRelease: this.attributeRelease,
+            relyingPartyOverrides: this.relyingPartyOverrides,
+            filterTarget: { ...this.filterTarget },
+            filterEnabled: this.filterEnabled,
+            filterName: this.filterName
+        };
     }
 }

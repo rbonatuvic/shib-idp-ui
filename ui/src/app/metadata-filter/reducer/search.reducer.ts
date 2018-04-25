@@ -1,7 +1,9 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as search from '../action/search.action';
+import * as filter from '../action/filter.action';
 import * as fromRoot from '../../core/reducer';
 import { MetadataFilter } from '../../domain/domain.type';
+import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../../domain/action/filter-collection.action';
 
 export interface SearchState {
     entityIds: string[];
@@ -19,7 +21,7 @@ export const initialState: SearchState = {
     term: '',
 };
 
-export function reducer(state = initialState, action: search.Actions): SearchState {
+export function reducer(state = initialState, action: search.Actions | filter.Actions | FilterCollectionActionsUnion): SearchState {
     switch (action.type) {
         case search.VIEW_MORE_IDS: {
             return {
@@ -53,6 +55,14 @@ export function reducer(state = initialState, action: search.Actions): SearchSta
                 ...state,
                 loading: false,
                 error: action.payload
+            };
+        }
+        case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
+        case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS:
+        case search.CLEAR_SEARCH:
+        case filter.CANCEL_CREATE_FILTER: {
+            return {
+                ...initialState
             };
         }
         default: {

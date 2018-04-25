@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { NgbDropdownModule, NgbModalModule, NgbPopoverModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -44,7 +44,8 @@ import { environment } from '../environments/environment';
         NgbModalModule.forRoot(),
         NgbPopoverModule.forRoot(),
         NgbPaginationModule.forRoot(),
-        NotificationModule
+        NotificationModule,
+        HttpClientModule
     ],
     providers: [
         NavigatorService,

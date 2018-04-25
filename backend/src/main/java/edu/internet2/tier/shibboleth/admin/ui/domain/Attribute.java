@@ -75,4 +75,14 @@ public class Attribute extends AbstractAttributeExtensibleXMLObject implements o
 
         return Collections.unmodifiableList(children);
     }
+
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "name='" + name + "\'\n" +
+                ", nameFormat='" + nameFormat + "\'\n" +
+                ", friendlyName='" + friendlyName + "\'\n" +
+                ", attributeValues=" + attributeValues +
+                "\n}";
+    }
 }

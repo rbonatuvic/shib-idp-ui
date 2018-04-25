@@ -5,7 +5,7 @@ import * as actions from '../action/filter-collection.action';
 const snapshot: fromFilter.FilterCollectionState = {
     ids: [],
     entities: {},
-    selectedId: null,
+    selectedFilterId: null,
     loaded: false
 };
 

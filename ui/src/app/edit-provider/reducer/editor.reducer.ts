@@ -2,6 +2,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as editor from '../action/editor.action';
 import * as provider from '../../domain/action/provider-collection.action';
+import { ProviderCollectionActionTypes, ProviderCollectionActionsUnion } from '../../domain/action/provider-collection.action';
 import * as fromRoot from '../../core/reducer';
 
 export interface EditorState {
@@ -16,21 +17,21 @@ export const initialState: EditorState = {
     changes: {} as MetadataProvider
 };
 
-export function reducer(state = initialState, action: editor.Actions | provider.Actions): EditorState {
+export function reducer(state = initialState, action: editor.Actions | ProviderCollectionActionsUnion): EditorState {
     switch (action.type) {
-        case provider.ADD_PROVIDER: {
+        case ProviderCollectionActionTypes.ADD_PROVIDER: {
             return {
                 ...state,
                 saving: true,
             };
         }
-        case provider.ADD_PROVIDER_FAIL: {
+        case ProviderCollectionActionTypes.ADD_PROVIDER_FAIL: {
             return {
                 ...state,
                 saving: false
             };
         }
-        case provider.ADD_PROVIDER_SUCCESS: {
+        case ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS: {
             return {
                 ...state,
                 changes: { ...initialState.changes },

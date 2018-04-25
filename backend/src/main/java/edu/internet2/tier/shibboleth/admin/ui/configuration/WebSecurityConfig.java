@@ -5,11 +5,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Web security configuration.
+ *
+ * Workaround for slashes in URL from [https://stackoverflow.com/questions/48453980/spring-5-0-3-requestrejectedexception-the-request-was-rejected-because-the-url]
+ */
 @EnableWebSecurity
 public class WebSecurityConfig {
 
@@ -18,6 +26,13 @@ public class WebSecurityConfig {
 
     @Value("${shibui.default-password:}")
     private String defaultPassword;
+
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowUrlEncodedSlash(true);
+        return firewall;
+    }
 
     @Bean
     @Profile("default")
@@ -48,6 +63,12 @@ public class WebSecurityConfig {
                     super.configure(auth);
                 }
             }
+
+            @Override
+            public void configure(WebSecurity web) throws Exception {
+                super.configure(web);
+                web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+            }
         };
     }
 
@@ -59,6 +80,12 @@ public class WebSecurityConfig {
             protected void configure(HttpSecurity http) throws Exception {
                 http.csrf().disable();
                 http.headers().frameOptions().disable();
+            }
+
+            @Override
+            public void configure(WebSecurity web) throws Exception {
+                super.configure(web);
+                web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
             }
         };
     }

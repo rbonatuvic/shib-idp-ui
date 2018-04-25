@@ -29,4 +29,11 @@ public class XSBoolean extends AbstractXMLObject implements org.opensaml.core.xm
     public void setStoredValue(String storedValue) {
         this.storedValue = storedValue;
     }
+
+    @Override
+    public String toString() {
+        return "XSBoolean{" +
+                "storedValue='" + storedValue + '\'' +
+                '}';
+    }
 }

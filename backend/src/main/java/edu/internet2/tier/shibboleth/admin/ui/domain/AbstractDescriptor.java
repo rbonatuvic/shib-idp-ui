@@ -17,9 +17,6 @@ import java.util.List;
 
 @MappedSuperclass
 public abstract class AbstractDescriptor extends AbstractAttributeExtensibleXMLObject implements CacheableSAMLObject, TimeBoundSAMLObject, SignableXMLObject {
-
-    private boolean isValid;
-
     private Long cacheDuration;
 
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
@@ -34,11 +31,10 @@ public abstract class AbstractDescriptor extends AbstractAttributeExtensibleXMLO
 
     @Override
     public boolean isValid() {
-        return isValid;
-    }
-
-    public void setIsValid(boolean isValid) {
-        this.isValid = isValid;
+        if (null == validUntil) {
+            return true;
+        }
+        return new DateTime().isBefore(this.validUntil);
     }
 
     @Override

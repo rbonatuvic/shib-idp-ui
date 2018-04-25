@@ -1,108 +1,110 @@
 import { Action } from '@ngrx/store';
+import { Update } from '@ngrx/entity/entity';
 import { MetadataProvider } from '../model/metadata-provider';
 
-export const FIND = '[Metadata Draft] Find';
-export const SELECT = '[Metadata Draft] Select';
+export enum DraftCollectionActionTypes {
+    FIND = '[Metadata Draft] Find',
+    SELECT = '[Metadata Draft] Select',
+    UPDATE_DRAFT_REQUEST = '[Metadata Draft] Update Request',
+    UPDATE_DRAFT_SUCCESS = '[Metadata Draft] Update Success',
+    UPDATE_DRAFT_FAIL = '[Metadata Draft] Update Fail',
+    LOAD_DRAFT_REQUEST = '[Metadata Draft Collection] Draft REQUEST',
+    LOAD_DRAFT_SUCCESS = '[Metadata Draft Collection] Draft SUCCESS',
+    LOAD_DRAFT_ERROR = '[Metadata Draft Collection] Draft ERROR',
+    ADD_DRAFT = '[Metadata Draft Collection] Add Draft',
+    ADD_DRAFT_SUCCESS = '[Metadata Draft Collection] Add Draft Success',
+    ADD_DRAFT_FAIL = '[Metadata Draft Collection] Add Draft Fail',
+    REMOVE_DRAFT = '[Metadata Draft Collection] Remove Draft',
+    REMOVE_DRAFT_SUCCESS = '[Metadata Draft Collection] Remove Draft Success',
+    REMOVE_DRAFT_FAIL = '[Metadata Draft Collection] Remove Draft Fail'
+}
 
-export const UPDATE_DRAFT_REQUEST = '[Metadata Draft] Update Request';
-export const UPDATE_DRAFT_SUCCESS = '[Metadata Draft] Update Success';
-export const UPDATE_DRAFT_FAIL = '[Metadata Draft] Update Fail';
-
-export const LOAD_DRAFT_REQUEST = '[Metadata Draft Collection] Draft REQUEST';
-export const LOAD_DRAFT_SUCCESS = '[Metadata Draft Collection] Draft SUCCESS';
-export const LOAD_DRAFT_ERROR = '[Metadata Draft Collection] Draft ERROR';
-export const ADD_DRAFT = '[Metadata Draft Collection] Add Draft';
-export const ADD_DRAFT_SUCCESS = '[Metadata Draft Collection] Add Draft Success';
-export const ADD_DRAFT_FAIL = '[Metadata Draft Collection] Add Draft Fail';
-export const REMOVE_DRAFT = '[Metadata Draft Collection] Remove Draft';
-export const REMOVE_DRAFT_SUCCESS = '[Metadata Draft Collection] Remove Draft Success';
-export const REMOVE_DRAFT_FAIL = '[Metadata Draft Collection] Remove Draft Fail';
 
 export class FindDraft implements Action {
-    readonly type = FIND;
+    readonly type = DraftCollectionActionTypes.FIND;
 
     constructor(public payload: string) { }
 }
 
 export class SelectDraft implements Action {
-    readonly type = SELECT;
+    readonly type = DraftCollectionActionTypes.SELECT;
 
     constructor(public payload: string) { }
 }
 
 export class UpdateDraftRequest implements Action {
-    readonly type = UPDATE_DRAFT_REQUEST;
+    readonly type = DraftCollectionActionTypes.UPDATE_DRAFT_REQUEST;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class UpdateDraftSuccess implements Action {
-    readonly type = UPDATE_DRAFT_SUCCESS;
+    readonly type = DraftCollectionActionTypes.UPDATE_DRAFT_SUCCESS;
 
-    constructor(public payload: MetadataProvider) { }
+    constructor(public payload: Update<MetadataProvider>) { }
 }
 
 export class UpdateDraftFail implements Action {
-    readonly type = UPDATE_DRAFT_FAIL;
+    readonly type = DraftCollectionActionTypes.UPDATE_DRAFT_FAIL;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class AddDraftRequest implements Action {
-    readonly type = ADD_DRAFT;
+    readonly type = DraftCollectionActionTypes.ADD_DRAFT;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class AddDraftSuccess implements Action {
-    readonly type = ADD_DRAFT_SUCCESS;
+    readonly type = DraftCollectionActionTypes.ADD_DRAFT_SUCCESS;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class AddDraftFail implements Action {
-    readonly type = ADD_DRAFT_FAIL;
+    readonly type = DraftCollectionActionTypes.ADD_DRAFT_FAIL;
 
     constructor(public payload: any) { }
 }
 
 export class RemoveDraftRequest implements Action {
-    readonly type = REMOVE_DRAFT;
+    readonly type = DraftCollectionActionTypes.REMOVE_DRAFT;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class RemoveDraftSuccess implements Action {
-    readonly type = REMOVE_DRAFT_SUCCESS;
+    readonly type = DraftCollectionActionTypes.REMOVE_DRAFT_SUCCESS;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class RemoveDraftFail implements Action {
-    readonly type = REMOVE_DRAFT_FAIL;
+    readonly type = DraftCollectionActionTypes.REMOVE_DRAFT_FAIL;
 
     constructor(public payload: MetadataProvider) { }
 }
 
 export class LoadDraftRequest implements Action {
-    readonly type = LOAD_DRAFT_REQUEST;
+    readonly type = DraftCollectionActionTypes.LOAD_DRAFT_REQUEST;
 
     constructor() { }
 }
 
 export class LoadDraftSuccess implements Action {
-    readonly type = LOAD_DRAFT_SUCCESS;
+    readonly type = DraftCollectionActionTypes.LOAD_DRAFT_SUCCESS;
 
     constructor(public payload: MetadataProvider[]) { }
 }
 
 export class LoadDraftError implements Action {
-    readonly type = LOAD_DRAFT_ERROR;
+    readonly type = DraftCollectionActionTypes.LOAD_DRAFT_ERROR;
 
     constructor(public payload: any) { }
 }
 
-export type Actions =
+export type DraftCollectionActionsUnion =
     | LoadDraftRequest
     | LoadDraftSuccess
     | LoadDraftError

@@ -16,11 +16,14 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.annotation.PostConstruct;
 import javax.xml.namespace.QName;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -31,6 +34,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 
 public class OpenSamlObjects {
+    Logger logger = LoggerFactory.getLogger(OpenSamlObjects.class);
 
     private XMLObjectBuilderFactory builderFactory;
 
@@ -88,10 +92,12 @@ public class OpenSamlObjects {
         if (marshaller != null) {
             try (StringWriter writer = new StringWriter()) {
                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
                 transformer.transform(new DOMSource(marshaller.marshall(ed)), new StreamResult(writer));
                 entityDescriptorXmlString = writer.toString();
             } catch (TransformerException | IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 

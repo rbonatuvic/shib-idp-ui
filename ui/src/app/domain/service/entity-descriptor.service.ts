@@ -7,6 +7,7 @@ import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { MOCK_DESCRIPTORS } from '../../../data/descriptors.mock';
 import { Storage } from '../../shared/storage';
 import { environment } from '../../../environments/environment';
+import { MetadataEntity } from '../domain.type';
 
 @Injectable()
 export class EntityDescriptorService {
@@ -63,8 +64,8 @@ export class EntityDescriptorService {
         });
     }
 
-    preview(provider: MetadataProvider): Observable<string> {
-        return this.http.get(`${this.base}${this.endpoint}/${provider.id}`, {
+    preview(id: string): Observable<string> {
+        return this.http.get(`${this.base}${this.endpoint}/${id}`, {
             headers: new HttpHeaders({
                 'Accept': 'application/xml'
             }),

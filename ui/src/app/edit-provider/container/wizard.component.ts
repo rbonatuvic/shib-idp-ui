@@ -113,7 +113,7 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
         this.changes$
             .takeUntil(this.ngUnsubscribe)
             .skipWhile(() => this.saving)
-            .combineLatest(this.provider$, (changes, base) => Object.assign({}, base, changes))
+            .combineLatest(this.provider$, (changes, base) => ({ ...base, ...changes }))
             .subscribe(latest => this.latest = latest);
 
         this.valueEmitter

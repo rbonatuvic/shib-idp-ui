@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import * as providerActions from '../action/provider-collection.action';
 import * as draftActions from '../action/draft-collection.action';
+import { ProviderCollectionActionsUnion, ProviderCollectionActionTypes } from '../action/provider-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 import { removeNulls } from '../../shared/util';
@@ -15,7 +16,7 @@ export class ProviderCollectionEffects {
 
     @Effect()
     loadProviders$ = this.actions$
-        .ofType<providerActions.LoadProviderRequest>(providerActions.LOAD_PROVIDER_REQUEST)
+        .ofType<providerActions.LoadProviderRequest>(ProviderCollectionActionTypes.LOAD_PROVIDER_REQUEST)
         .switchMap(() =>
             this.descriptorService
                 .query()
@@ -25,32 +26,35 @@ export class ProviderCollectionEffects {
 
     @Effect()
     updateProvider$ = this.actions$
-        .ofType<providerActions.UpdateProviderRequest>(providerActions.UPDATE_PROVIDER_REQUEST)
+        .ofType<providerActions.UpdateProviderRequest>(ProviderCollectionActionTypes.UPDATE_PROVIDER_REQUEST)
         .map(action => action.payload)
         .switchMap(provider => {
             delete provider.modifiedDate;
             delete provider.createdDate;
             return this.descriptorService
                 .update(provider)
-                .map(p => new providerActions.UpdateProviderSuccess(p))
+                .map(p => new providerActions.UpdateProviderSuccess({
+                    id: p.id,
+                    changes: p
+                }))
                 .catch(err => Observable.of(new providerActions.UpdateProviderFail(err)));
         });
     @Effect({ dispatch: false })
     updateProviderSuccessRedirect$ = this.actions$
-        .ofType<providerActions.UpdateProviderSuccess>(providerActions.UPDATE_PROVIDER_SUCCESS)
+        .ofType<providerActions.UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .do(provider => {
             this.router.navigate(['/dashboard']);
         });
     @Effect()
     updateProviderSuccessReload$ = this.actions$
-        .ofType<providerActions.UpdateProviderSuccess>(providerActions.UPDATE_PROVIDER_SUCCESS)
+        .ofType<providerActions.UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .map(provider => new providerActions.LoadProviderRequest());
 
     @Effect()
     selectProvider$ = this.actions$
-        .ofType<providerActions.SelectProvider>(providerActions.SELECT)
+        .ofType<providerActions.SelectProvider>(ProviderCollectionActionTypes.SELECT)
         .map(action => action.payload)
         .switchMap(id =>
             this.descriptorService
@@ -60,7 +64,7 @@ export class ProviderCollectionEffects {
 
     @Effect()
     addProviderRequest$ = this.actions$
-        .ofType<providerActions.AddProviderRequest>(providerActions.ADD_PROVIDER)
+        .ofType<providerActions.AddProviderRequest>(ProviderCollectionActionTypes.ADD_PROVIDER)
         .map(action => action.payload)
         .map(provider => {
             return {
@@ -77,26 +81,26 @@ export class ProviderCollectionEffects {
 
     @Effect({ dispatch: false })
     addProviderSuccessRedirect$ = this.actions$
-        .ofType<providerActions.AddProviderSuccess>(providerActions.ADD_PROVIDER_SUCCESS)
+        .ofType<providerActions.AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .do(provider => {
             this.router.navigate(['/dashboard']);
         });
     @Effect()
     addProviderSuccessReload$ = this.actions$
-        .ofType<providerActions.AddProviderSuccess>(providerActions.ADD_PROVIDER_SUCCESS)
+        .ofType<providerActions.AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .map(provider => new providerActions.LoadProviderRequest());
 
     @Effect()
     addProviderSuccessRemoveDraft$ = this.actions$
-        .ofType<providerActions.AddProviderSuccess>(providerActions.ADD_PROVIDER_SUCCESS)
+        .ofType<providerActions.AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .map(provider => new draftActions.RemoveDraftRequest(provider));
 
     @Effect()
     uploadProviderRequest$ = this.actions$
-        .ofType<providerActions.UploadProviderRequest>(providerActions.UPLOAD_PROVIDER_REQUEST)
+            .ofType<providerActions.UploadProviderRequest>(ProviderCollectionActionTypes.UPLOAD_PROVIDER_REQUEST)
         .map(action => action.payload)
         .switchMap(file =>
             this.descriptorService
@@ -107,7 +111,7 @@ export class ProviderCollectionEffects {
 
     @Effect()
     createProviderFromUrlRequest$ = this.actions$
-        .ofType<providerActions.CreateProviderFromUrlRequest>(providerActions.CREATE_PROVIDER_FROM_URL_REQUEST)
+        .ofType<providerActions.CreateProviderFromUrlRequest>(ProviderCollectionActionTypes.CREATE_PROVIDER_FROM_URL_REQUEST)
         .map(action => action.payload)
         .switchMap(file =>
             this.descriptorService

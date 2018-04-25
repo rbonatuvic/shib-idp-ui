@@ -1,0 +1,28 @@
+package edu.internet2.tier.shibboleth.admin.ui.service;
+
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
+
+/**
+ * Main backend facade API that defines operations pertaining to manipulating <code>{@link EntityAttributesFilter}</code> objects.
+ *
+ * @since 1.0
+ */
+public interface FilterService {
+
+    /**
+     * Map from front-end data representation of attributes filter entity attributes filter model
+     *
+     * @param representation of attributes filter coming from front end layer
+     * @return EntityAttributesFilter
+     */
+    EntityAttributesFilter createFilterFromRepresentation(final FilterRepresentation representation);
+
+    /**
+     * Map from opensaml implementation of entity descriptor model to front-end data representation of entity descriptor
+     *
+     * @param entityAttributesFilter
+     * @return FilterRepresentation front end representation
+     */
+    FilterRepresentation createRepresentationFromFilter(final EntityAttributesFilter entityAttributesFilter);
+}

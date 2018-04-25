@@ -1,7 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+
+import java.util.List;
 
 /**
  * Main backend facade API that defines operations pertaining to manipulating <code>{@link EntityDescriptor}</code> state.
@@ -33,4 +37,21 @@ public interface EntityDescriptorService {
      * @param representation   front end representation to use to update
      */
     void updateDescriptorFromRepresentation(final EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
+
+    /**
+     * Given a list of attributes, generate an AttributeReleaseList
+     *
+     * @param attributeList the list of attributes to convert
+     * @return an AttributeRelease list
+     */
+    List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList);
+
+    /**
+     * Given a list of attributes, generate a RelyingPartyOverridesRepresentation
+     *
+     * @param attributeList the list of attributes to generate from
+     * @return a RelyingPartyOverridesRepresentation based on the given list of attributes
+     */
+    RelyingPartyOverridesRepresentation getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
+
 }

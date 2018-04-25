@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import spock.lang.Subject
@@ -30,7 +31,7 @@ class EntityDescriptorControllerTests extends Specification {
     def controller = new EntityDescriptorController (
             entityDescriptorRepository: entityDescriptorRepository,
             openSamlObjects: openSamlObjects,
-            entityDescriptorService: new JPAEntityDescriptorServiceImpl(openSamlObjects)
+            entityDescriptorService: new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
     )
 
 

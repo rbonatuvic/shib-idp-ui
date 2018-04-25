@@ -1,4 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -13,11 +14,16 @@ import { DraftCollectionEffects } from './effect/draft-collection.effects';
 import { ProviderCollectionEffects } from './effect/provider-collection.effects';
 import { FilterCollectionEffects } from './effect/filter-collection.effect';
 import { MetadataResolverService } from './service/metadata-resolver.service';
+import { EntityEffects } from './effect/entity.effect';
+import { PreviewDialogModule } from '../shared/preview/preview-dialog.module';
 
 @NgModule({
     declarations: [],
     entryComponents: [],
-    imports: [],
+    imports: [
+        HttpModule,
+        PreviewDialogModule
+    ],
     exports: [],
     providers: []
 })
@@ -42,7 +48,12 @@ export class DomainModule {
     imports: [
         DomainModule,
         StoreModule.forFeature('collections', reducers),
-        EffectsModule.forFeature([FilterCollectionEffects, DraftCollectionEffects, ProviderCollectionEffects])
+        EffectsModule.forFeature([
+            FilterCollectionEffects,
+            DraftCollectionEffects,
+            ProviderCollectionEffects,
+            EntityEffects
+        ])
     ],
 })
 export class RootDomainModule { }

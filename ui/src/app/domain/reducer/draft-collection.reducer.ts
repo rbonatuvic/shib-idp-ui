@@ -1,67 +1,47 @@
 import { createSelector } from '@ngrx/store';
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as providerAction from '../action/provider-collection.action';
-import * as draftAction from '../action/draft-collection.action';
+import { DraftCollectionActionsUnion, DraftCollectionActionTypes } from '../action/draft-collection.action';
 
-export interface DraftCollectionState {
-    ids: string[];
-    drafts: { [id: string]: MetadataProvider };
+export interface DraftCollectionState extends EntityState<MetadataProvider> {
     selectedDraftId: string | null;
 }
 
-export const initialState: DraftCollectionState = {
-    ids: [],
-    drafts: {},
+export function sortByName(a: MetadataProvider, b: MetadataProvider): number {
+    return a.serviceProviderName.localeCompare(b.serviceProviderName);
+}
+
+export const adapter: EntityAdapter<MetadataProvider> = createEntityAdapter<MetadataProvider>({
+    sortComparer: sortByName,
+    selectId: (model: MetadataProvider) => model.entityId
+});
+
+export const initialState: DraftCollectionState = adapter.getInitialState({
     selectedDraftId: null,
-};
+});
 
-export function reducer(state = initialState, action: draftAction.Actions): DraftCollectionState {
+export function reducer(state = initialState, action: DraftCollectionActionsUnion): DraftCollectionState {
     switch (action.type) {
-        case draftAction.LOAD_DRAFT_SUCCESS: {
-            const providers = action.payload;
-
-            const providerIds = providers.map(provider => provider.entityId);
-            const entities = providers.reduce(
-                (e: { [id: string]: MetadataProvider }, provider: MetadataProvider) => {
-                    return Object.assign(e, {
-                        [provider.entityId]: provider,
-                    });
-                },
-                {}
-            );
-
-            return {
-                ids: [...providerIds],
-                drafts: Object.assign(entities),
+        case DraftCollectionActionTypes.LOAD_DRAFT_SUCCESS: {
+            return adapter.addMany(action.payload, {
+                ...state,
                 selectedDraftId: state.selectedDraftId,
-            };
+            });
         }
 
-        case draftAction.UPDATE_DRAFT_SUCCESS: {
-            const draft = action.payload;
-
-            if (state.ids.indexOf(draft.entityId) < 0) {
-                return state;
-            }
-
-            const original = state.drafts[draft.entityId],
-                updated = Object.assign({},
-                    { ...original },
-                    { ...draft }
-                );
-            return {
-                ids: state.ids,
-                drafts: Object.assign({ ...state.drafts }, {
-                    [draft.entityId]: updated,
-                }),
-                selectedDraftId: state.selectedDraftId,
-            };
+        case DraftCollectionActionTypes.UPDATE_DRAFT_SUCCESS: {
+            return adapter.updateOne(action.payload, state);
         }
 
-        case draftAction.SELECT: {
+        case DraftCollectionActionTypes.REMOVE_DRAFT_SUCCESS: {
+            return adapter.removeOne(action.payload.entityId, state);
+        }
+
+        case DraftCollectionActionTypes.SELECT: {
             return {
-                ids: state.ids,
-                drafts: state.drafts,
+                ...state,
                 selectedDraftId: action.payload,
             };
         }
@@ -72,16 +52,10 @@ export function reducer(state = initialState, action: draftAction.Actions): Draf
     }
 }
 
-export const getEntities = (state: DraftCollectionState) => state.drafts;
-export const getIds = (state: DraftCollectionState) => state.ids;
-export const getSelectedId = (state: DraftCollectionState) => state.selectedDraftId;
-export const getSelected = createSelector(
-    getEntities,
-    getSelectedId,
-    (entities, selectedId) => {
-        return entities[selectedId];
-    }
-);
-export const getAll = createSelector(getEntities, getIds, (entities, ids) => {
-    return ids.map(id => entities[id]);
-});
+export const getSelectedDraftId = (state: DraftCollectionState) => state.selectedDraftId;
+export const {
+    selectIds: selectDraftIds,
+    selectEntities: selectDraftEntities,
+    selectAll: selectAllDrafts,
+    selectTotal: selectDraftTotal
+} = adapter.getSelectors();

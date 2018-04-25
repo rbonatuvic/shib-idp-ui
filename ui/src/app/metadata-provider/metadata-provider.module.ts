@@ -9,8 +9,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { NewProviderComponent } from './container/new-provider.component';
 
 import { ProviderEditorFormModule } from './component';
-import { PreviewProviderDialogComponent } from './component/preview-provider-dialog.component';
-import { PretttyXml } from './pipe/pretty-xml.pipe';
+import { PrettyXml } from './pipe/pretty-xml.pipe';
 import { UploadProviderComponent } from './container/upload-provider.component';
 import { BlankProviderComponent } from './container/blank-provider.component';
 
@@ -20,12 +19,9 @@ import { BlankProviderComponent } from './container/blank-provider.component';
         NewProviderComponent,
         UploadProviderComponent,
         BlankProviderComponent,
-        PreviewProviderDialogComponent,
-        PretttyXml,
+        PrettyXml,
     ],
-    entryComponents: [
-        PreviewProviderDialogComponent
-    ],
+    entryComponents: [],
     imports: [
         HttpClientModule,
         CommonModule,

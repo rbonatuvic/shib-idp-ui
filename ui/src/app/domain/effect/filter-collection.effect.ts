@@ -12,6 +12,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom';
 
 import * as actions from '../action/filter-collection.action';
+import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/filter-collection.action';
 import * as fromFilter from '../reducer';
 
 import { EntityIdService } from '../../domain/service/entity-id.service';
@@ -24,7 +25,7 @@ export class FilterCollectionEffects {
 
     @Effect()
     loadFilters$ = this.actions$
-        .ofType<actions.LoadFilterRequest>(actions.LOAD_FILTER_REQUEST)
+        .ofType<actions.LoadFilterRequest>(FilterCollectionActionTypes.LOAD_FILTER_REQUEST)
         .switchMap(() =>
             this.resolverService
                 .query()
@@ -33,7 +34,7 @@ export class FilterCollectionEffects {
         );
     @Effect()
     selectFilterRequest$ = this.actions$
-        .ofType<actions.SelectFilter>(actions.SELECT)
+        .ofType<actions.SelectFilter>(FilterCollectionActionTypes.SELECT)
         .map(action => action.payload)
         .switchMap(id =>
             this.resolverService
@@ -44,7 +45,7 @@ export class FilterCollectionEffects {
 
     @Effect()
     addFilter$ = this.actions$
-        .ofType<actions.AddFilterRequest>(actions.ADD_FILTER)
+        .ofType<actions.AddFilterRequest>(FilterCollectionActionTypes.ADD_FILTER)
         .map(action => action.payload)
         .map(filter => {
             return {
@@ -60,7 +61,7 @@ export class FilterCollectionEffects {
         );
     @Effect({ dispatch: false })
     addFilterSuccessRedirect$ = this.actions$
-        .ofType<actions.AddFilterSuccess>(actions.ADD_FILTER_SUCCESS)
+        .ofType<actions.AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS)
         .map(action => action.payload)
         .do(filter => {
             this.router.navigate(['/dashboard']);
@@ -68,32 +69,35 @@ export class FilterCollectionEffects {
 
     @Effect()
     addFilterSuccessReload$ = this.actions$
-        .ofType<actions.AddFilterSuccess>(actions.ADD_FILTER_SUCCESS)
+        .ofType<actions.AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS)
         .map(action => action.payload)
         .map(filter => new actions.LoadFilterRequest());
 
     @Effect()
     updateFilter$ = this.actions$
-        .ofType<actions.UpdateFilterRequest>(actions.UPDATE_FILTER_REQUEST)
+        .ofType<actions.UpdateFilterRequest>(FilterCollectionActionTypes.UPDATE_FILTER_REQUEST)
         .map(action => action.payload)
         .switchMap(filter => {
             delete filter.modifiedDate;
             delete filter.createdDate;
             return this.resolverService
                 .update(filter)
-                .map(p => new actions.UpdateFilterSuccess(p))
+                .map(p => new actions.UpdateFilterSuccess({
+                    id: p.id,
+                    changes: p
+                }))
                 .catch(err => Observable.of(new actions.UpdateFilterFail(err)));
         });
     @Effect({ dispatch: false })
     updateFilterSuccessRedirect$ = this.actions$
-        .ofType<actions.UpdateFilterSuccess>(actions.UPDATE_FILTER_SUCCESS)
+        .ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS)
         .map(action => action.payload)
         .do(filter => {
             this.router.navigate(['/dashboard']);
         });
     @Effect()
     updateFilterSuccessReload$ = this.actions$
-        .ofType<actions.UpdateFilterSuccess>(actions.UPDATE_FILTER_SUCCESS)
+        .ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS)
         .map(action => action.payload)
         .map(filter => new actions.LoadFilterRequest());
 

@@ -18,8 +18,11 @@ import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Filter } from '../../domain/entity/filter';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { SearchDialogComponent } from '../component/search-dialog.component';
-import { QueryEntityIds, ViewMoreIds } from '../action/search.action';
+import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.action';
 import { AutoCompleteComponent } from '../../shared/autocomplete/autocomplete.component';
+import { MDUI } from '../../domain/model/mdui';
+import { PreviewEntity } from '../../domain/action/entity.action';
+import { MetadataEntity } from '../../domain/domain.type';
 
 @Component({
     selector: 'edit-filter-page',
@@ -43,6 +46,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     filter$: Observable<MetadataFilter>;
     loading$: Observable<boolean>;
     processing$: Observable<boolean>;
+    preview$: Observable<MDUI>;
 
     form: FormGroup = this.fb.group({
         entityId: ['', [Validators.required]],
@@ -60,7 +64,9 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         private fb: FormBuilder
     ) {
         this.changes$ = this.store.select(fromFilter.getFilter);
-        this.changes$.subscribe(c => this.changes = c);
+        this.changes$.subscribe(c => {
+            this.changes = new Filter(c);
+        });
 
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);
@@ -68,21 +74,26 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         this.entityIds$ = this.store.select(fromFilter.getEntityCollection);
         this.loading$ = this.store.select(fromFilter.getIsLoading);
         this.processing$ = this.loading$.withLatestFrom(this.showMore$, (l, s) => !s && l);
+        this.preview$ = this.store.select(fromFilter.getPreview);
 
         this.entityIds$.subscribe(ids => this.ids = ids);
 
         this.filter$.subscribe(filter => {
-            let { entityId, filterName, filterEnabled } = filter;
+            let { entityId, filterName, filterEnabled } = new Filter(filter);
             this.form.reset({
                 entityId,
                 filterName,
                 filterEnabled
             });
             this.filter = filter;
+
+            this.store.dispatch(new SelectId(entityId));
         });
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new ClearSearch());
+
         let id = this.form.get('entityId');
         id.valueChanges
             .distinctUntilChanged()
@@ -100,6 +111,15 @@ export class EditFilterComponent implements OnInit, OnDestroy {
             .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
 
         this.form.get('entityId').disable();
+
+        id
+        .valueChanges
+        .distinctUntilChanged()
+        .subscribe(entityId => {
+            if (id.valid) {
+                this.store.dispatch(new SelectId(entityId));
+            }
+        });
     }
 
     ngOnDestroy(): void {
@@ -123,7 +143,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     }
 
     searchEntityIds(term: string): void {
-        if (term.length >= 4 && this.ids.indexOf(term) < 0) {
+        if (term && term.length >= 4 && this.ids.indexOf(term) < 0) {
             this.store.dispatch(new QueryEntityIds({
                 term,
                 limit: 10
@@ -140,14 +160,14 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     }
 
     save(): void {
-        this.store.dispatch(new UpdateFilterRequest({...this.filter, ...this.changes}));
+        this.store.dispatch(new UpdateFilterRequest({...this.filter, ...this.changes.serialize()}));
     }
 
     cancel(): void {
         this.store.dispatch(new CancelCreateFilter());
     }
 
-    preview(): void {
-        console.log('preview XML');
+    preview(entity: MetadataEntity): void {
+        this.store.dispatch(new PreviewEntity(new Filter(entity)));
     }
 }

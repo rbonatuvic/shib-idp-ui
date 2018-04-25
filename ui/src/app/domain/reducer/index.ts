@@ -39,28 +39,31 @@ export const getDraftEntityState = createSelector(getCollectionState, getDraftsS
 
 export const combineAllFn = (d, p) => [...p, ...d];
 export const doesExistFn = (ids, selected) => ids.indexOf(selected) > -1;
-export const getInCollectionFn = (entities, selectedId) => selectedId && entities[selectedId];
+export const getInCollectionFn = (entities, selectedId) => {
+    return selectedId && entities[selectedId];
+};
 export const getEntityIdsFn = list => list.map(entity => entity.entityId);
 
 /*
  *   Select pieces of Provider Collection
 */
 
-export const getProviderEntities = createSelector(getProviderEntityState, fromProvider.getEntities);
-export const getSelectedProviderId = createSelector(getProviderEntityState, fromProvider.getSelectedId);
+export const getProviderEntities = createSelector(getProviderEntityState, fromProvider.selectProviderEntities);
+export const getSelectedProviderId = createSelector(getProviderEntityState, fromProvider.getSelectedProviderId);
 export const getSelectedProvider = createSelector(getProviderEntities, getSelectedProviderId, getInCollectionFn);
-export const getProviderIds = createSelector(getProviderEntityState, fromProvider.getIds);
-export const getProviderCollection = createSelector(getProviderEntityState, getProviderIds, fromProvider.getAll);
+export const getProviderIds = createSelector(getProviderEntityState, fromProvider.selectProviderIds);
+export const getProviderCollection = createSelector(getProviderEntityState, getProviderIds, fromProvider.selectAllProviders);
 
 /*
  *   Select pieces of Draft Collection
 */
 
-export const getDraftEntities = createSelector(getDraftEntityState, fromDraft.getEntities);
-export const getSelectedDraftId = createSelector(getDraftEntityState, fromDraft.getSelectedId);
+export const getDraftEntities = createSelector(getDraftEntityState, fromDraft.selectDraftEntities);
+export const getDraftIds = createSelector(getDraftEntityState, fromDraft.selectDraftIds);
+export const getDraftCollection = createSelector(getDraftEntityState, getDraftIds, fromDraft.selectAllDrafts);
+
+export const getSelectedDraftId = createSelector(getDraftEntityState, fromDraft.getSelectedDraftId);
 export const getSelectedDraft = createSelector(getDraftEntities, getSelectedDraftId, getInCollectionFn);
-export const getDraftIds = createSelector(getDraftEntityState, fromDraft.getIds);
-export const getDraftCollection = createSelector(getDraftEntityState, getDraftIds, fromDraft.getAll);
 export const isSelectedProviderInCollection = createSelector(getProviderIds, getSelectedProviderId, doesExistFn);
 export const isSelectedDraftInCollection = createSelector(getDraftIds, getSelectedDraftId, doesExistFn);
 
@@ -68,12 +71,12 @@ export const isSelectedDraftInCollection = createSelector(getDraftIds, getSelect
  *   Select pieces of Filter Collection
 */
 
-export const getAllFilters = createSelector(getFilterEntityState, fromFilter.getAll);
-export const getFilterEntities = createSelector(getFilterEntityState, fromFilter.getEntities);
-export const getSelectedFilterId = createSelector(getFilterEntityState, fromFilter.getSelectedId);
+export const getAllFilters = createSelector(getFilterEntityState, fromFilter.selectAllFilters);
+export const getFilterEntities = createSelector(getFilterEntityState, fromFilter.selectFilterEntities);
+export const getSelectedFilterId = createSelector(getFilterEntityState, fromFilter.getSelectedFilterId);
 export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, getInCollectionFn);
-export const getFilterIds = createSelector(getFilterEntityState, fromFilter.getIds);
-export const getFilterCollectionLoaded = createSelector(getFilterEntityState, fromFilter.getLoaded);
+export const getFilterIds = createSelector(getFilterEntityState, fromFilter.selectFilterIds);
+export const getFilterCollectionIsLoaded = createSelector(getFilterEntityState, fromFilter.getIsLoaded);
 
 /*
  *   Combine pieces of Collection State

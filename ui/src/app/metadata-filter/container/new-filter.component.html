@@ -81,25 +81,27 @@
                 </div>
                 <section *ngIf="form.get('entityId').valid">
                     <hr />
-                    <div class="row">
+                    <div class="row" *ngIf="preview$ | async">
                         <fieldset class="col-lg-6">
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="filterName" class="col-sm-10">
-                                        <span>
-                                            <ng-container i18n="@@label--xml-preview">
-                                                Entity ID XML Preview (read-only)
-                                            </ng-container>
-                                        </span>
+                                    <label for="filterName" class="col-sm-10" i18n="@@label--entity-preview">
+                                        Entity ID Preview (read-only)
                                     </label>
                                     <span class="text-right col-sm-2">
-                                        <ng-template #tooltipFilterName i18n="@@tooltip--xml-preview">XML Preview</ng-template>
+                                        <ng-template #tooltipFilterName i18n="@@tooltip--entity-preview">Entity Preview</ng-template>
                                         <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" readonly></textarea>
+                                <dl>
+                                    <dt class="text-primary" i18n="@@label--display-name">Display Name</dt>
+                                    <dd class="value">{{ (preview$ | async).displayName }}</dd>
+                                    <dt class="text-primary" i18n="@@label--description">Description</dt>
+                                    <dd class="value">{{ (preview$ | async).description || '&mdash;' }}</dd>
+                                </dl>
                             </div>
+                            <hr />
                         </fieldset>
                     </div>
                     <div class="row">

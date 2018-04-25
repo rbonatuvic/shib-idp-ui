@@ -5,6 +5,7 @@ import { QueryParams } from '../../core/model/query';
 export const QUERY_ENTITY_IDS = '[Filter] Query Entity Ids';
 export const VIEW_MORE_IDS = '[Filter] View More Ids Modal';
 export const CANCEL_VIEW_MORE = '[Filter] Cancel View More';
+export const CLEAR_SEARCH = '[Filter] Clear Search';
 export const LOAD_ENTITY_IDS_SUCCESS = '[Entity ID Collection] Load Entity Ids Success';
 export const LOAD_ENTITY_IDS_ERROR = '[Entity ID Collection] Load Entity Ids Error';
 
@@ -18,6 +19,10 @@ export class ViewMoreIds implements Action {
     readonly type = VIEW_MORE_IDS;
 
     constructor(public payload: string) { }
+}
+
+export class ClearSearch implements Action {
+    readonly type = CLEAR_SEARCH;
 }
 
 export class CancelViewMore implements Action {
@@ -39,6 +44,7 @@ export class LoadEntityIdsError implements Action {
 export type Actions =
     | ViewMoreIds
     | CancelViewMore
+    | ClearSearch
     | LoadEntityIdsSuccess
     | LoadEntityIdsError
     | QueryEntityIds;

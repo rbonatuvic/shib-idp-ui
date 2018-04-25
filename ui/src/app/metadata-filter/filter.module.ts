@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,11 +14,12 @@ import { FilterEffects } from './effect/filter.effect';
 import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from './component/search-dialog.component';
 import { SharedModule } from '../shared/shared.module';
-import { PreviewFilterComponent } from './component/preview-filter.component';
 import { EditFilterComponent } from './container/edit-filter.component';
 import { FilterComponent } from './container/filter.component';
 import { SearchIdEffects } from './effect/search.effect';
 import { FilterExistsGuard } from '../domain/guard/filter-exists.guard';
+import { PreviewDialogModule } from '../shared/preview/preview-dialog.module';
+
 
 export const routes: Routes = [
     {
@@ -44,24 +46,23 @@ export const routes: Routes = [
         NewFilterComponent,
         EditFilterComponent,
         FilterComponent,
-        SearchDialogComponent,
-        PreviewFilterComponent
+        SearchDialogComponent
     ],
     entryComponents: [
-        SearchDialogComponent,
-        PreviewFilterComponent
+        SearchDialogComponent
     ],
     imports: [
-        CommonModule,
-        RouterModule,
-        ReactiveFormsModule,
+        RouterModule.forChild(routes),
         StoreModule.forFeature('metadata-filter', reducers),
         EffectsModule.forFeature([FilterEffects, SearchIdEffects]),
-        RouterModule.forChild(routes),
+        CommonModule,
+        ReactiveFormsModule,
         ProviderEditorFormModule,
         NgbPopoverModule,
         NgbModalModule,
-        SharedModule
+        SharedModule,
+        PreviewDialogModule,
+        HttpClientModule
     ],
     providers: [
         FilterExistsGuard

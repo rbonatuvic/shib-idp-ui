@@ -1,84 +1,46 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import * as filter from '../action/filter-collection.action';
-import * as fromRoot from '../../core/reducer';
+import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/filter-collection.action';
 import { MetadataFilter } from '../domain.type';
 
-export interface FilterCollectionState {
-    ids: string[];
-    entities: { [id: string]: MetadataFilter };
-    selectedId: string | null;
+export interface FilterCollectionState extends EntityState<MetadataFilter> {
+    selectedFilterId: string | null;
     loaded: boolean;
 }
 
-export const initialState: FilterCollectionState = {
-    ids: [],
-    entities: {},
-    selectedId: null,
+export function sortByDate(a: MetadataFilter, b: MetadataFilter): number {
+    return a.createdDate.localeCompare(b.createdDate);
+}
+
+export const adapter: EntityAdapter<MetadataFilter> = createEntityAdapter<MetadataFilter>({
+    sortComparer: sortByDate,
+    selectId: (model: MetadataFilter) => model.id
+});
+
+export const initialState: FilterCollectionState = adapter.getInitialState({
+    selectedFilterId: null,
     loaded: false
-};
+});
 
-export function reducer(state = initialState, action: filter.Actions): FilterCollectionState {
+export function reducer(state = initialState, action: FilterCollectionActionsUnion): FilterCollectionState {
     switch (action.type) {
-        case filter.LOAD_FILTER_SUCCESS: {
-            const filters = action.payload;
-
-            const filterIds = filters.map(provider => provider.id);
-            const entities = filters.reduce(
-                (e: { [id: string]: MetadataFilter }, provider: MetadataFilter) => {
-                    return Object.assign(e, {
-                        [provider.id]: provider,
-                    });
-                },
-                {}
-            );
-
-            return {
+        case FilterCollectionActionTypes.LOAD_FILTER_SUCCESS: {
+            return adapter.addMany(action.payload, {
                 ...state,
-                ids: [...filterIds],
-                entities: { ...state.entities, ...entities },
+                selectedFilterId: state.selectedFilterId,
                 loaded: true
-            };
+            });
         }
 
-        case filter.SELECT_FILTER_SUCCESS: {
-            const filter = action.payload;
-            if (!filter || state.ids.indexOf(filter.id) < 0) {
-                return state;
-            }
-            return {
-                ...state,
-                ids: [...state.ids.filter(id => id !== filter.id), filter.id],
-                entities: Object.assign({ ...state.entities }, {
-                    [filter.id]: filter,
-                }),
-                selectedId: filter.id
-            };
+        case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS: {
+            return adapter.updateOne(action.payload, state);
         }
 
-        case filter.UPDATE_FILTER_SUCCESS: {
-            const provider = action.payload;
-
-            if (state.ids.indexOf(provider.id) < 0) {
-                return state;
-            }
-            const original = state.entities[provider.id],
-                updated = Object.assign({},
-                    { ...original },
-                    { ...provider }
-                );
+        case FilterCollectionActionTypes.SELECT: {
             return {
                 ...state,
-                ids: [...state.ids.filter(id => id !== provider.id), provider.id],
-                entities: Object.assign({ ...state.entities }, {
-                    [provider.id]: provider,
-                })
-            };
-        }
-
-        case filter.SELECT: {
-            return {
-                ...state,
-                selectedId: action.payload,
+                selectedFilterId: action.payload,
             };
         }
 
@@ -88,21 +50,11 @@ export function reducer(state = initialState, action: filter.Actions): FilterCol
     }
 }
 
-export const getFilters = (state: FilterCollectionState) => state.entities;
-
-export const getEntities = (state: FilterCollectionState) => state.entities;
-export const getIds = (state: FilterCollectionState) => state.ids;
-export const getSelectedId = (state: FilterCollectionState) => state.selectedId;
-export const getLoaded = (state: FilterCollectionState) => state.loaded;
-
-export const getSelected = createSelector(
-    getEntities,
-    getSelectedId,
-    (entities, selectedId) => {
-        return entities[selectedId];
-    }
-);
-
-export const getAll = createSelector(getEntities, getIds, (entities, ids) => {
-    return ids.map(id => entities[id]).filter(entity => entity);
-});
+export const getSelectedFilterId = (state: FilterCollectionState) => state.selectedFilterId;
+export const getIsLoaded = (state: FilterCollectionState) => state.loaded;
+export const {
+    selectIds: selectFilterIds,
+    selectEntities: selectFilterEntities,
+    selectAll: selectAllFilters,
+    selectTotal: selectFilterTotal
+} = adapter.getSelectors();

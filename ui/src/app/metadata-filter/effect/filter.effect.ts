@@ -10,6 +10,7 @@ import 'rxjs/add/operator/switchMap';
 import * as filter from '../action/filter.action';
 import * as fromFilter from '../reducer';
 import * as collection from '../../domain/action/filter-collection.action';
+import { FilterCollectionActionTypes } from '../../domain/action/filter-collection.action';
 
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../domain/service/entity-id.service';
@@ -17,9 +18,21 @@ import { MetadataResolverService } from '../../domain/service/metadata-resolver.
 
 @Injectable()
 export class FilterEffects {
+
+    @Effect()
+    loadEntityMdui$ = this.actions$
+        .ofType<filter.SelectId>(filter.SELECT_ID)
+        .map(action => action.payload)
+        .switchMap(query =>
+            this.idService
+                .findEntityById(query)
+                .map(data => new filter.LoadEntityPreviewSuccess(data))
+                .catch(error => Observable.of(new filter.LoadEntityPreviewError(error)))
+        );
+
     @Effect({ dispatch: false })
     saveFilterSuccess$ = this.actions$
-        .ofType<collection.AddFilterSuccess>(collection.ADD_FILTER_SUCCESS)
+        .ofType<collection.AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS)
         .switchMap(() => this.router.navigate(['/dashboard']));
 
     @Effect({ dispatch: false })

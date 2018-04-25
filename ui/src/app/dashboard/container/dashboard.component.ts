@@ -10,7 +10,8 @@ import * as searchActions from '../action/search.action';
 import * as providerActions from '../../domain/action/provider-collection.action';
 import * as draftActions from '../../domain/action/draft-collection.action';
 import * as fromDashboard from '../reducer';
-import { ToggleEntityDisplay, PreviewEntity } from '../action/dashboard.action';
+import { ToggleEntityDisplay } from '../action/dashboard.action';
+import { PreviewEntity } from '../../domain/action/entity.action';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 
@@ -91,9 +92,7 @@ export class DashboardComponent implements OnInit {
     }
 
     openPreviewDialog(entity: MetadataEntity): void {
-        if (entity.type === DomainTypes.provider) {
-            this.store.dispatch(new PreviewEntity(entity));
-        }
+        this.store.dispatch(new PreviewEntity(entity));
     }
 
     deleteProvider(entity: MetadataProvider): void {

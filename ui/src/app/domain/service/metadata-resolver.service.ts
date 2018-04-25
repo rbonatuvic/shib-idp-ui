@@ -46,50 +46,26 @@ export class MetadataResolverService {
         private http: HttpClient
     ) {}
     query(): Observable<MetadataFilter[]> {
-        /*
         return this.http
             .get<MetadataFilter[]>(`${this.base}${this.endpoint}s`)
             .catch(err => {
                 console.log('ERROR LOADING PROVIDERS:', err);
                 return Observable.of([] as MetadataFilter[]);
             });
-        */
-       return of(this.filters);
     }
 
     find(id: string): Observable<MetadataFilter> {
-        /*
         return this
             .http
             .get<MetadataFilter>(`${this.base}${this.endpoint}/${id}`)
             .catch(err => Observable.throw(err));
-        */
-        let filter = this.filters.find(f => f.id === id);
-        if (!filter) {
-            return Observable.throw('Not Found!');
-        }
-        return of(filter);
     }
 
     update(filter: MetadataFilter): Observable<MetadataFilter> {
-        /*
-        return this.http.put<MetadataFilter>(`${this.base}${this.endpoint}/${provider.id}`, provider);
-        */
-        let original = this.filters.find(f => f.id === filter.id);
-        Object.assign(original, filter);
-        return of(original);
+        return this.http.put<MetadataFilter>(`${this.base}${this.endpoint}/${filter.id}`, filter);
     }
 
     save(filter: MetadataFilter): Observable<MetadataFilter> {
-        // return this.http.post<MetadataFilter>(`${this.base}${this.endpoint}`, provider);
-        const saved = {
-            ...filter,
-            id: `${filter.filterName}-${Date.now()}`,
-            createdDate: '2018-04-05T09:07:13.730',
-            modifiedDate: '2018-04-05T09:07:13.730'
-        };
-        console.log(saved);
-        this.filters.push(saved);
-        return Observable.of(saved);
+        return this.http.post<MetadataFilter>(`${this.base}${this.endpoint}`, filter);
     }
 }

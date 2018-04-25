@@ -4,6 +4,7 @@ import { Effect, Actions } from '@ngrx/effects';
 import * as editorActions from '../action/editor.action';
 import * as draft from '../../domain/action/draft-collection.action';
 import * as provider from '../../domain/action/provider-collection.action';
+import { ProviderCollectionActionTypes } from '../../domain/action/provider-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDraftService } from '../../domain/service/entity-draft.service';
 
@@ -19,7 +20,7 @@ export class WizardEffects {
         });
     @Effect()
     addProviderSuccessDiscard$ = this.actions$
-        .ofType<provider.AddProviderSuccess>(provider.ADD_PROVIDER_SUCCESS)
+        .ofType<provider.AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .map(provider => {
             return new editorActions.ResetChanges();

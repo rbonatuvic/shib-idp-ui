@@ -3,6 +3,7 @@ import { Effect, Actions } from '@ngrx/effects';
 
 import * as editor from '../action/editor.action';
 import * as provider from '../../domain/action/provider-collection.action';
+import { ProviderCollectionActionTypes } from '../../domain/action/provider-collection.action';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
 import { Router } from '@angular/router';
@@ -17,7 +18,7 @@ export class EditorEffects {
 
     @Effect()
     updateProviderSuccessRedirect$ = this.actions$
-        .ofType<provider.UpdateProviderSuccess>(provider.UPDATE_PROVIDER_SUCCESS)
+        .ofType<provider.UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS)
         .map(action => action.payload)
         .map(p => new editor.ResetChanges());
 

@@ -1,77 +1,41 @@
 import { createSelector } from '@ngrx/store';
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as provider from '../action/provider-collection.action';
+import { ProviderCollectionActionsUnion, ProviderCollectionActionTypes } from '../action/provider-collection.action';
 
-export interface ProviderCollectionState {
-    ids: string[];
-    entities: { [id: string]: MetadataProvider };
+export interface ProviderCollectionState extends EntityState<MetadataProvider> {
     selectedProviderId: string | null;
 }
 
-export const initialState: ProviderCollectionState = {
-    ids: [],
-    entities: {},
+export function sortByDate(a: MetadataProvider, b: MetadataProvider): number {
+    return a.createdDate.localeCompare(b.createdDate);
+}
+
+export const adapter: EntityAdapter<MetadataProvider> = createEntityAdapter<MetadataProvider>({
+    sortComparer: sortByDate,
+    selectId: (model: MetadataProvider) => model.id
+});
+
+export const initialState: ProviderCollectionState = adapter.getInitialState({
     selectedProviderId: null
-};
+});
 
-export function reducer(state = initialState, action: provider.Actions): ProviderCollectionState {
+export function reducer(state = initialState, action: provider.ProviderCollectionActionsUnion): ProviderCollectionState {
     switch (action.type) {
-        case provider.LOAD_PROVIDER_SUCCESS: {
-            const providers = action.payload;
-
-            const providerIds = providers.map(provider => provider.id);
-            const entities = providers.reduce(
-                (e: { [id: string]: MetadataProvider }, provider: MetadataProvider) => {
-                    return Object.assign(e, {
-                        [provider.id]: provider,
-                    });
-                },
-                {}
-            );
-
-            return {
+        case ProviderCollectionActionTypes.LOAD_PROVIDER_SUCCESS: {
+            return adapter.addMany(action.payload, {
                 ...state,
-                ids: [...providerIds],
-                entities: Object.assign(entities)
-            };
+                selectedProviderId: state.selectedProviderId
+            });
         }
 
-        case provider.SELECT_SUCCESS: {
-            const provider = action.payload;
-
-            if (state.ids.indexOf(provider.id) < 0) {
-                return state;
-            }
-            return {
-                ids: [...state.ids.filter(id => id !== provider.id), provider.id],
-                entities: Object.assign({ ...state.entities }, {
-                    [provider.id]: provider,
-                }),
-                selectedProviderId: provider.id
-            };
+        case ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS: {
+            return adapter.updateOne(action.payload, state);
         }
 
-        case provider.UPDATE_PROVIDER_SUCCESS: {
-            const provider = action.payload;
-
-            if (state.ids.indexOf(provider.id) < 0) {
-                return state;
-            }
-            const original = state.entities[provider.id],
-                updated = Object.assign({},
-                    { ...original },
-                    { ...provider }
-                );
-            return {
-                ...state,
-                ids: [...state.ids.filter(id => id !== provider.id), provider.id],
-                entities: Object.assign({ ...state.entities }, {
-                    [provider.id]: provider,
-                })
-            };
-        }
-
-        case provider.SELECT: {
+        case ProviderCollectionActionTypes.SELECT: {
             return {
                 ...state,
                 selectedProviderId: action.payload,
@@ -84,16 +48,10 @@ export function reducer(state = initialState, action: provider.Actions): Provide
     }
 }
 
-export const getEntities = (state: ProviderCollectionState) => state.entities;
-export const getIds = (state: ProviderCollectionState) => state.ids;
-export const getSelectedId = (state: ProviderCollectionState) => state.selectedProviderId;
-export const getSelected = createSelector(
-    getEntities,
-    getSelectedId,
-    (entities, selectedId) => {
-        return entities[selectedId];
-    }
-);
-export const getAll = createSelector(getEntities, getIds, (entities, ids) => {
-    return ids.map(id => entities[id]).filter(entity => entity);
-});
+export const getSelectedProviderId = (state: ProviderCollectionState) => state.selectedProviderId;
+export const {
+    selectIds: selectProviderIds,
+    selectEntities: selectProviderEntities,
+    selectAll: selectAllProviders,
+    selectTotal: selectProviderTotal
+} = adapter.getSelectors();

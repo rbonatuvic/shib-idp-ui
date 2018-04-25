@@ -4,9 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityIdsSearchRes
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.*;
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -22,7 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.util.UrlPathHelper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +43,33 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
+    public EntityService jpaEntityService() {
+        return new JPAEntityServiceImpl(openSamlObjects());
+    }
+
+    @Bean
     public EntityDescriptorService jpaEntityDescriptorService() {
-        return new JPAEntityDescriptorServiceImpl(openSamlObjects());
+        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService());
+    }
+
+    @Bean
+    public FilterService jpaFilterService() {
+        return new JPAFilterServiceImpl();
+    }
+
+    @Bean
+    public FilterTargetService jpaFilterTargetService() {
+        return new JPAFilterTargetServiceImpl();
+    }
+
+    @Bean
+    public MetadataResolverService metadataResolverService() {
+        return new JPAMetadataResolverServiceImpl();
+    }
+
+    @Bean
+    public AttributeUtility attributeUtility() {
+        return new AttributeUtility();
     }
 
     @Autowired
@@ -63,7 +91,7 @@ public class CoreShibUiConfiguration {
             try {
                 IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(directory));
                 QueryParser parser = new QueryParser("content", fullTokenAnalyzer);
-                TopDocs topDocs = searcher.search(parser.parse(term), limit);
+                TopDocs topDocs = searcher.search(parser.parse(term.trim()), limit);
                 for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                     Document document = searcher.doc(scoreDoc.doc);
                     entityIds.add(document.get("id"));
@@ -72,6 +100,45 @@ public class CoreShibUiConfiguration {
                 logger.error(e.getMessage(), e);
             }
             return new EntityIdsSearchResultRepresentation(entityIds);
+        };
+    }
+
+    /**
+     * A WebMvcConfigurer that won't mangle the path for the entities endpoint.
+     *
+     * inspired by [ https://stackoverflow.com/questions/13482020/encoded-slash-2f-with-spring-requestmapping-path-param-gives-http-400 ]
+     *
+     * @return configurer
+     */
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void configurePathMatch(PathMatchConfigurer configurer) {
+                UrlPathHelper helper = new UrlPathHelper() {
+                    @Override
+                    public String getServletPath(HttpServletRequest request) {
+                        String servletPath = getOriginatingServletPath(request);
+                        if (servletPath.startsWith("/api/entities")) {
+                            return servletPath;
+                        } else {
+                            return super.getOriginatingServletPath(request);
+                        }
+                    }
+
+                    @Override
+                    public String getOriginatingServletPath(HttpServletRequest request) {
+                        String servletPath = request.getRequestURI().substring(request.getContextPath().length());
+                        if (servletPath.startsWith("/api/entities")) {
+                            return servletPath;
+                        } else {
+                            return super.getOriginatingServletPath(request);
+                        }
+                    }
+                };
+                helper.setUrlDecode(false);
+                configurer.setUrlPathHelper(helper);
+            }
         };
     }
 }

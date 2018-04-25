@@ -2095,17 +2095,17 @@
           <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="label--xml-preview" datatype="html">
-        <source>Entity ID XML Preview (read-only)</source>
-        <target>Entity ID XML Preview (read-only)</target>
+      <trans-unit id="label--entity-preview" datatype="html">
+        <source>Entity Preview (read-only)</source>
+        <target>Entity Preview (read-only)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
           <context context-type="linenumber">93</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="tooltip--xml-preview" datatype="html">
-        <source>XML Preview</source>
-        <target>XML Preview</target>
+      <trans-unit id="tooltip--entity-preview" datatype="html">
+        <source>Entity Preview</source>
+        <target>Entity Preview</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/metadata-filter/component/filter-form.component.ts</context>
           <context context-type="linenumber">99</context>

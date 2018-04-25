@@ -6,16 +6,17 @@ import { EntityDescriptorService } from '../../domain/service/entity-descriptor.
 import * as FileSaver from 'file-saver';
 import { Subscription } from 'rxjs/Subscription';
 import * as XmlFormatter from 'xml-formatter';
+import { MetadataEntity } from '../../domain/domain.type';
 
 @Component({
-    selector: 'preview-provider-xml',
-    templateUrl: './preview-provider-dialog.component.html'
+    selector: 'preview-dialog',
+    templateUrl: './preview-dialog.component.html'
 })
-export class PreviewProviderDialogComponent implements OnInit, OnDestroy {
-    @Input() provider: MetadataProvider;
+export class PreviewDialogComponent {
+    @Input() entity: MetadataEntity;
+    @Input() xml: string;
 
     sub: Subscription;
-    xml: string;
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -23,18 +24,7 @@ export class PreviewProviderDialogComponent implements OnInit, OnDestroy {
     ) {}
 
     preview(xml): void {
-        const blob = new Blob([XmlFormatter(xml)], { type: 'text/xml;charset=utf-8' });
-        FileSaver.saveAs(blob, `${ this.provider.serviceProviderName }.xml`);
-    }
-
-    ngOnInit(): void {
-        let xml$ = this.entityService.preview(this.provider);
-        this.sub = xml$.subscribe(xml => this.xml = xml);
-    }
-
-    ngOnDestroy(): void {
-        if (this.sub) {
-            this.sub.unsubscribe();
-        }
+        const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
+        FileSaver.saveAs(blob, `${ this.entity.name }.xml`);
     }
 } /* istanbul ignore next */

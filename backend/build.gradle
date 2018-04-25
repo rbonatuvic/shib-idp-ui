@@ -56,7 +56,7 @@ dependencies {
     }
 
     // spring boot auto-config starters
-    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools'].each {
+    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux'].each {
         compile "org.springframework.boot:spring-boot-${it}"
     }
     // TODO: figure out what this should really be
@@ -86,6 +86,8 @@ dependencies {
     testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
     testCompile "org.xmlunit:xmlunit-core:2.5.1"
     testRuntime 'cglib:cglib-nodep:3.2.5'
+
+    testCompile "net.shibboleth.ext:spring-extensions:5.4.0-SNAPSHOT"
 
     //JSON schema generator
     testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.29'

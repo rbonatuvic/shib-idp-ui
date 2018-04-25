@@ -14,4 +14,6 @@ export interface MetadataBase {
     name: string;
     enabled: boolean;
     type: string;
+
+    serialize(): any;
 }

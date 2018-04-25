@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -17,17 +17,16 @@ import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Filter } from '../../domain/entity/filter';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { SearchDialogComponent } from '../component/search-dialog.component';
-import { QueryEntityIds, ViewMoreIds } from '../action/search.action';
+import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.action';
+import { MDUI } from '../../domain/model/mdui';
 
 @Component({
     selector: 'new-filter-page',
     templateUrl: './new-filter.component.html'
 })
-export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
+export class NewFilterComponent implements OnInit, OnDestroy {
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
-    private valueEmitSubscription: Subscription;
-    private statusEmitSubscription: Subscription;
 
     changes$: Observable<MetadataFilter>;
     changes: MetadataFilter;
@@ -54,6 +53,7 @@ export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
     selected$: Observable<string>;
     loading$: Observable<boolean>;
     processing$: Observable<boolean>;
+    preview$: Observable<MDUI>;
 
     form: FormGroup = this.fb.group({
         entityId: ['', [Validators.required], [
@@ -71,32 +71,27 @@ export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
         private fb: FormBuilder
     ) {
         this.changes$ = this.store.select(fromFilter.getFilter);
-        this.changes$.subscribe(c => this.changes = c);
+        this.changes$.subscribe(c => this.changes = new Filter(c));
 
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);
         this.entityIds$ = this.store.select(fromFilter.getEntityCollection);
         this.loading$ = this.store.select(fromFilter.getIsLoading);
         this.processing$ = this.loading$.withLatestFrom(this.showMore$, (l, s) => !s && l);
+        this.preview$ = this.store.select(fromFilter.getPreview);
 
         this.entityIds$.subscribe(ids => this.ids = ids);
-
-        this.selected$.subscribe(s => {
-            this.form.patchValue({
-                entityId: s
-            });
-        });
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new CreateFilter(this.filter));
+        this.store.dispatch(new ClearSearch());
 
         let id = this.form.get('entityId');
         id.valueChanges
             .distinctUntilChanged()
             .subscribe(query => this.searchEntityIds(query));
 
-        this.valueEmitSubscription = this.form
+        this.form
             .valueChanges
             .takeUntil(this.ngUnsubscribe)
             .startWith(this.form.value)
@@ -112,22 +107,16 @@ export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
             .takeUntil(this.ngUnsubscribe)
             .startWith(this.form.status)
             .subscribe(status => this.onStatusChange.emit(status));*/
-    }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.entity) {
-            let { entityId, filterName, filterEnabled } = this.filter;
-            this.form.reset({
-                entityId,
-                filterName,
-                filterEnabled
+
+            id
+            .valueChanges
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                if (id.valid) {
+                    this.store.dispatch(new SelectId(entityId));
+                }
             });
-            this.form.updateValueAndValidity();
-            if (changes.entity.firstChange && this.filter.entityId) {
-                this.store.dispatch(new SelectId(this.filter.entityId));
-                this.searchEntityIds(this.filter.entityId);
-            }
-        }
     }
 
     ngOnDestroy(): void {
@@ -153,7 +142,7 @@ export class NewFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     save(): void {
-        this.store.dispatch(new AddFilterRequest(this.changes));
+        this.store.dispatch(new AddFilterRequest(this.changes.serialize()));
     }
 
     cancel(): void {

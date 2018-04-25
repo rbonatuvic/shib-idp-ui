@@ -9,6 +9,8 @@ export interface MetadataFilter extends MetadataBase {
     relyingPartyOverrides: RelyingPartyOverrides;
     attributeRelease: string[];
     filterTarget: FilterTarget;
+
+    serialize(): any;
 }
 
 export * from './relying-party-overrides';

@@ -22,23 +22,14 @@ export class FilterExistsGuard implements CanActivate {
         private router: Router
     ) { }
 
-    /**
-     * This method creates an observable that waits for the `loaded` property
-     * of the collection state to turn `true`, emitting one time once loading
-     * has finished.
-     */
     waitForCollectionToLoad(): Observable<boolean> {
         return this.store.pipe(
-            select(fromCollection.getFilterCollectionLoaded),
+            select(fromCollection.getFilterCollectionIsLoaded),
             filter(loaded => loaded),
             take(1)
         );
     }
 
-    /**
-     * This method checks if a filter with the given ID is already registered
-     * in the Store
-     */
     hasFilterInStore(id: string): Observable<boolean> {
         return this.store.pipe(
             select(fromCollection.getFilterEntities),
@@ -47,10 +38,6 @@ export class FilterExistsGuard implements CanActivate {
         );
     }
 
-    /**
-     * This method loads a filter with the given ID from the API and caches
-     * it in the store, returning `true` or `false` if it was found.
-     */
     hasFilterInApi(id: string): Observable<boolean> {
         return this.mdResolverService.find(id).pipe(
             map(filterEntity => new FilterActions.LoadFilterSuccess([filterEntity])),
@@ -63,11 +50,6 @@ export class FilterExistsGuard implements CanActivate {
         );
     }
 
-    /**
-     * `hasFilter` composes `hasFilterInStore` and `hasFilterInApi`. It first checks
-     * if the filter is in store, and if not it then checks if it is in the
-     * API.
-     */
     hasFilter(id: string): Observable<boolean> {
         return this.hasFilterInStore(id).pipe(
             switchMap(inStore => {
@@ -79,20 +61,6 @@ export class FilterExistsGuard implements CanActivate {
             })
         );
     }
-
-    /**
-     * This is the actual method the router will call when our guard is run.
-     *
-     * Our guard waits for the collection to load, then it checks if we need
-     * to request a filter from the API or if we already have it in our cache.
-     * If it finds it in the cache or in the API, it returns an Observable
-     * of `true` and the route is rendered successfully.
-     *
-     * If it was unable to find it in our cache or in the API, this guard
-     * will return an Observable of `false`, causing the router to move
-     * on to the next candidate route. In this case, it will move on
-     * to the 404 page.
-     */
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
         return this.waitForCollectionToLoad().pipe(
             switchMap(() => this.hasFilter(route.params['id']))

@@ -3,8 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import org.assertj.core.api.Assertions
-import org.opensaml.security.credential.UsageType
 import org.springframework.boot.test.json.JacksonTester
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -18,7 +16,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         it
     }
 
-    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects)
+    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 

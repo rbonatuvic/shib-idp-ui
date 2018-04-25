@@ -1,0 +1,14 @@
+{
+  "id": "",
+  "filterName": "test",
+  "filterEnabled": false,
+  "relyingPartyOverrides": {
+    "nameIdFormats": [],
+    "authenticationMethods": []
+  },
+  "attributeRelease": [],
+  "filterTarget": {
+    "type": "entity",
+    "value": "https://test/sp"
+  }
+}

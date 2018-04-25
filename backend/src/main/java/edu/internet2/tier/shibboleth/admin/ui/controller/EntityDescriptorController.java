@@ -83,7 +83,7 @@ public class EntityDescriptorController {
             return handleUploadingEntityDescriptorXml(xmlContents, spName);
         } catch (Throwable e) {
             LOGGER.error("Error fetching XML metadata from the provided URL: [{}]. The error is: {}", metadataUrl, e);
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             return ResponseEntity
                     .badRequest()
                     .body(String.format("Error fetching XML metadata from the provided URL. Error: %s", e.getMessage()));

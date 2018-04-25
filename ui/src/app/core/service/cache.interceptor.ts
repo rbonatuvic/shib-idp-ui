@@ -8,7 +8,7 @@ class HttpCache {
         this.store = {};
     }
     private generateKey(request: HttpRequest<any>): string {
-        return `${request.method}.${request.urlWithParams}`;
+        return `${request.method}.${request.urlWithParams}.${request.responseType}`;
     }
     get(req: HttpRequest<any>): HttpResponse<any> | null {
         return this.store[this.generateKey(req)];

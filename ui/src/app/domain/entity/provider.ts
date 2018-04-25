@@ -61,4 +61,8 @@ export class Provider implements MetadataProvider {
     get type(): string {
         return DomainTypes.provider;
     }
+
+    serialize(): any {
+        return this;
+    }
 }
