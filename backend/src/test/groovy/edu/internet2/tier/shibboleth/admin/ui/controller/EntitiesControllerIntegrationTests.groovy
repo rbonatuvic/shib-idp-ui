@@ -9,8 +9,9 @@ import spock.lang.Specification
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("no-auth")
+// TODO: implement
+// @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// @ActiveProfiles("no-auth")
 class EntitiesControllerIntegrationTests extends Specification {
 
     @Autowired
