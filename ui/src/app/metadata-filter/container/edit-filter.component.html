@@ -60,7 +60,7 @@
                                 <div class="row">
                                     <auto-complete id="entityId"
                                         #entityInput
-                                        class="component-control col-10"
+                                        class="component-control col-9"
                                         formControlName="entityId"
                                         limit="10"
                                         [matches]="entityIds$ | async"
@@ -68,7 +68,7 @@
                                         [processing]="(processing$ | async)"
                                         (more)="onViewMore($event)">
                                     </auto-complete>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <button
                                             *ngIf="form.get('entityId').disabled"
                                             class="btn btn-block btn-secondary"
