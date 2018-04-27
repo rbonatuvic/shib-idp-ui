@@ -19,6 +19,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.w3c.dom.Document
 import spock.lang.Specification
 
 import static org.hamcrest.CoreMatchers.containsString
@@ -65,6 +66,11 @@ class FilterControllerTests extends Specification {
                     @Override
                     void reloadFilters(String metadataResolverName) {
                         // we do nothing 'cause we're lazy
+                    }
+
+                    @Override
+                    Document generateConfiguration() {
+                        return null
                     }
                 }
         )
