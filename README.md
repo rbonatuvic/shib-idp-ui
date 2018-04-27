@@ -18,6 +18,17 @@ allowed with:
 -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true
 ```
 
+In Apache HTTPD, you'll need something like:
+
+```
+<VirtualHost *:80>
+    AllowEncodedSlashes NoDecode
+    ServerName shibui.unicon.net
+    ProxyPass / http://localhost:8080/ nocanon
+    ProxyPassReverse / http://localhost:8080/
+</VirtualHost>
+```
+
 ### Running as an executable
 
 `java -jar shibui.war`
