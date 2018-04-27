@@ -58,16 +58,27 @@
                                 </div>
                                 <label for="entityId" class="sr-only">Search Entity ID</label>
                                 <div class="row">
-                                    <auto-complete id="entityId"
-                                        #entityInput
-                                        class="component-control col-9"
-                                        formControlName="entityId"
-                                        limit="10"
-                                        [matches]="entityIds$ | async"
-                                        [required]="true"
-                                        [processing]="(processing$ | async)"
-                                        (more)="onViewMore($event)">
-                                    </auto-complete>
+                                    <div class="col-9">
+                                        <auto-complete id="entityId"
+                                            #entityInput
+                                            class="component-control"
+                                            formControlName="entityId"
+                                            limit="10"
+                                            [matches]="entityIds$ | async"
+                                            [required]="true"
+                                            [processing]="(processing$ | async)"
+                                            (more)="onViewMore($event)">
+                                        </auto-complete>
+                                        <small class="form-text text-muted" i18n="@@label--min-4-chars">
+                                            Minimum 4 characters.
+                                        </small>
+                                        <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
+                                            <small class="form-text text-danger">
+                                                <ng-container *ngIf="form.get('entityId').hasError('required')" i18n="@@message--entity-id-required">Entity ID is required</ng-container>
+                                                <ng-container *ngIf="form.get('entityId').hasError('exists')" i18n="@@message--entity-id-not-found">Entity ID not found</ng-container>
+                                            </small>
+                                        </ng-container>
+                                    </div>
                                     <div class="col-3">
                                         <button
                                             *ngIf="form.get('entityId').disabled"
@@ -85,12 +96,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
-                                    <small class="form-text text-danger">
-                                        <ng-container *ngIf="form.get('entityId').hasError('required')" i18n="@@message--entity-id-required">Entity ID is required</ng-container>
-                                        <ng-container *ngIf="form.get('entityId').hasError('exists')" i18n="@@message--entity-id-not-found">Entity ID not found</ng-container>
-                                    </small>
-                                </ng-container>
                             </div>
                         </fieldset>
                     </div>
@@ -99,11 +104,24 @@
                             <i class="fa fa-eye fa-lg"></i>
                             <ng-container i18n="@@action--save-changes">Preview XML</ng-container>
                         </button>
-                        <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="form.invalid">
-                            <i class="fa fa-save fa-lg"></i>
+                        <button
+                            (click)="this.save()"
+                            type="submit"
+                            class="btn btn-primary"
+                            [disabled]="form.invalid || (isSaving$ | async)">
+                            <i class="fa fa-lg"
+                                [ngClass]="{
+                                    'fa-save': !(isSaving$ | async),
+                                    'fa-spinner': (isSaving$ | async),
+                                    'fa-pulse': (isSaving$ | async)
+                                }"></i>
                             <ng-container i18n="@@action--save-changes">Save Changes</ng-container>
                         </button>
-                        <button (click)="this.cancel()" type="reset" class="btn btn-secondary">
+                        <button
+                            (click)="this.cancel()"
+                            type="reset"
+                            class="btn btn-secondary"
+                            [disabled]="isSaving$ | async   ">
                             <ng-container i18n="@@action--cancel">Cancel</ng-container>
                         </button>
                     </div>

@@ -9,12 +9,14 @@ export interface FilterState {
     selected: string | null;
     changes: MetadataFilter | null;
     preview: MDUI | null;
+    saving: boolean;
 }
 
 export const initialState: FilterState = {
     selected: null,
     changes: null,
-    preview: null
+    preview: null,
+    saving: false
 };
 
 export function reducer(state = initialState, action: filter.Actions | FilterCollectionActionsUnion): FilterState {
@@ -46,6 +48,13 @@ export function reducer(state = initialState, action: filter.Actions | FilterCol
                 }
             };
         }
+        case FilterCollectionActionTypes.ADD_FILTER:
+        case FilterCollectionActionTypes.UPDATE_FILTER_REQUEST: {
+            return {
+                ...initialState,
+                saving: true
+            };
+        }
         case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
         case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS:
         case filter.CANCEL_CREATE_FILTER: {
@@ -62,3 +71,4 @@ export function reducer(state = initialState, action: filter.Actions | FilterCol
 export const getSelected = (state: FilterState) => state.selected;
 export const getFilterChanges = (state: FilterState) => state.changes;
 export const getPreview = (state: FilterState) => state.preview;
+export const getSaving = (state: FilterState) => state.saving;

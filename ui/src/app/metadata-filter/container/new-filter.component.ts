@@ -54,6 +54,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
     loading$: Observable<boolean>;
     processing$: Observable<boolean>;
     preview$: Observable<MDUI>;
+    isSaving$: Observable<boolean>;
 
     form: FormGroup = this.fb.group({
         entityId: ['', [Validators.required], [
@@ -79,6 +80,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
         this.loading$ = this.store.select(fromFilter.getIsLoading);
         this.processing$ = this.loading$.withLatestFrom(this.showMore$, (l, s) => !s && l);
         this.preview$ = this.store.select(fromFilter.getPreview);
+        this.isSaving$ = this.store.select(fromFilter.getSaving);
 
         this.entityIds$.subscribe(ids => this.ids = ids);
     }

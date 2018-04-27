@@ -5,7 +5,8 @@ import * as actions from '../action/filter.action';
 const snapshot: fromFilter.FilterState = {
     selected: null,
     changes: null,
-    preview: null
+    preview: null,
+    saving: false
 };
 
 describe('Filter Reducer', () => {

@@ -25,6 +25,7 @@ export const getFilterFromState = createSelector(getFilterState, getFiltersFromS
 export const getSelected = createSelector(getFilterFromState, fromFilter.getSelected);
 export const getFilter = createSelector(getFilterFromState, fromFilter.getFilterChanges);
 export const getPreview = createSelector(getFilterFromState, fromFilter.getPreview);
+export const getSaving = createSelector(getFilterFromState, fromFilter.getSaving);
 
 export const getSearchFromState = createSelector(getFilterState, getSearchFromStateFn);
 export const getEntityCollection = createSelector(getSearchFromState, fromSearch.getEntityIds);
