@@ -50,7 +50,10 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     isSaving$: Observable<boolean>;
 
     form: FormGroup = this.fb.group({
-        entityId: ['', [Validators.required]],
+        entityId: [
+            '',
+            [Validators.required]
+        ],
         filterName: ['', [Validators.required]],
         filterEnabled: [false]
     });
@@ -81,18 +84,20 @@ export class EditFilterComponent implements OnInit, OnDestroy {
 
         this.entityIds$.subscribe(ids => this.ids = ids);
 
-        this.filter$.subscribe(filter => {
-            let { entityId, filterName, filterEnabled } = new Filter(filter);
-            this.form.reset({
-                entityId,
-                filterName,
-                filterEnabled
-            });
-            this.filter = filter;
-            this.filterEntity = new Filter(filter);
+        this.filter$
+            .withLatestFrom(this.isSaving$)
+            .subscribe(([filter, saving]) => {
+                let { entityId, filterName, filterEnabled } = new Filter(filter);
+                this.form.reset({
+                    entityId,
+                    filterName,
+                    filterEnabled
+                });
+                this.filter = filter;
+                this.filterEntity = new Filter(filter);
 
-            this.store.dispatch(new SelectId(entityId));
-        });
+                this.store.dispatch(new SelectId(entityId));
+            });
     }
 
     ngOnInit(): void {
@@ -116,14 +121,19 @@ export class EditFilterComponent implements OnInit, OnDestroy {
 
         this.form.get('entityId').disable();
 
-        id
-        .valueChanges
-        .distinctUntilChanged()
-        .subscribe(entityId => {
-            if (id.valid) {
-                this.store.dispatch(new SelectId(entityId));
-            }
-        });
+        id.valueChanges
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                if (id.valid) {
+                    this.store.dispatch(new SelectId(entityId));
+                }
+            });
+
+        this.selected$
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                id.setValue(entityId);
+            });
     }
 
     ngOnDestroy(): void {
@@ -163,7 +173,8 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         this.isValid = status === 'VALID';
     }
 
-    save(): void {
+    save($event): void {
+        $event.preventDefault();
         this.store.dispatch(new UpdateFilterRequest({...this.filter, ...this.changes.serialize()}));
     }
 

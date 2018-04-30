@@ -51,7 +51,7 @@ export function reducer(state = initialState, action: filter.Actions | FilterCol
         case FilterCollectionActionTypes.ADD_FILTER:
         case FilterCollectionActionTypes.UPDATE_FILTER_REQUEST: {
             return {
-                ...initialState,
+                ...state,
                 saving: true
             };
         }

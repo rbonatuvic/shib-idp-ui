@@ -88,7 +88,8 @@ export class DashboardComponent implements OnInit {
     }
 
     toggleProvider(entity: MetadataEntity): void {
-        this.store.dispatch(new ToggleEntityDisplay(entity.entityId));
+        let id = entity.id ? entity.id : entity.entityId;
+        this.store.dispatch(new ToggleEntityDisplay(id));
     }
 
     openPreviewDialog(entity: MetadataEntity): void {

@@ -104,20 +104,17 @@ export class NewFilterComponent implements OnInit, OnDestroy {
             .startWith(this.form.value)
             .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
 
-        /*this.statusEmitSubscription = this.form
-            .statusChanges
-            .takeUntil(this.ngUnsubscribe)
-            .startWith(this.form.status)
-            .subscribe(status => this.onStatusChange.emit(status));*/
-
-
-            id
-            .valueChanges
+        id.valueChanges
             .distinctUntilChanged()
             .subscribe(entityId => {
                 if (id.valid) {
                     this.store.dispatch(new SelectId(entityId));
                 }
+            });
+        this.selected$
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                id.setValue(entityId);
             });
     }
 
@@ -127,7 +124,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
     }
 
     searchEntityIds(term: string): void {
-        if (term.length >= 4 && this.ids.indexOf(term) < 0) {
+        if (term && term.length >= 4 && this.ids.indexOf(term) < 0) {
             this.store.dispatch(new QueryEntityIds({
                 term,
                 limit: 10

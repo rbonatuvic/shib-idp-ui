@@ -105,7 +105,7 @@
                             <ng-container i18n="@@action--save-changes">Preview XML</ng-container>
                         </button>
                         <button
-                            (click)="this.save()"
+                            (click)="this.save($event)"
                             type="submit"
                             class="btn btn-primary"
                             [disabled]="form.invalid || (isSaving$ | async)">
