@@ -47,6 +47,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     loading$: Observable<boolean>;
     processing$: Observable<boolean>;
     preview$: Observable<MDUI>;
+    isSaving$: Observable<boolean>;
 
     form: FormGroup = this.fb.group({
         entityId: ['', [Validators.required]],
@@ -55,6 +56,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     });
 
     filter: MetadataFilter;
+    filterEntity: Filter;
 
     isValid = false;
 
@@ -75,6 +77,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         this.loading$ = this.store.select(fromFilter.getIsLoading);
         this.processing$ = this.loading$.withLatestFrom(this.showMore$, (l, s) => !s && l);
         this.preview$ = this.store.select(fromFilter.getPreview);
+        this.isSaving$ = this.store.select(fromFilter.getSaving);
 
         this.entityIds$.subscribe(ids => this.ids = ids);
 
@@ -86,6 +89,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
                 filterEnabled
             });
             this.filter = filter;
+            this.filterEntity = new Filter(filter);
 
             this.store.dispatch(new SelectId(entityId));
         });
@@ -139,7 +143,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         const input = this.form.get('entityId');
         input.disable();
         input.clearAsyncValidators();
-        input.reset(this.filter.entityId);
+        input.setValue(this.filterEntity.entityId);
     }
 
     searchEntityIds(term: string): void {
