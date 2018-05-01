@@ -11,7 +11,7 @@ import 'rxjs/add/observable/fromPromise';
 import * as fromFilter from '../reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CancelCreateFilter, SelectId, CreateFilter, UpdateFilterChanges } from '../action/filter.action';
+import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
 import { AddFilterRequest } from '../../domain/action/filter-collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Filter } from '../../domain/entity/filter';
@@ -71,6 +71,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
         private valueEmitter: ProviderValueEmitter,
         private fb: FormBuilder
     ) {
+        this.store.dispatch(new ClearSearch());
         this.changes$ = this.store.select(fromFilter.getFilter);
         this.changes$.subscribe(c => this.changes = new Filter(c));
 
@@ -86,8 +87,6 @@ export class NewFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new ClearSearch());
-
         let id = this.form.get('entityId');
         id.valueChanges
             .distinctUntilChanged()
@@ -114,6 +113,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
         this.selected$
             .distinctUntilChanged()
             .subscribe(entityId => {
+                console.log(entityId);
                 id.setValue(entityId);
             });
     }

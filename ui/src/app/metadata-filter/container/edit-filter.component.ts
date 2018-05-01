@@ -12,7 +12,7 @@ import * as fromFilter from '../reducer';
 import * as fromCollection from '../../domain/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CancelCreateFilter, SelectId, CreateFilter, UpdateFilterChanges } from '../action/filter.action';
+import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
 import { AddFilterRequest, UpdateFilterRequest } from '../../domain/action/filter-collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Filter } from '../../domain/entity/filter';
@@ -101,8 +101,6 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new ClearSearch());
-
         let id = this.form.get('entityId');
         id.valueChanges
             .distinctUntilChanged()
