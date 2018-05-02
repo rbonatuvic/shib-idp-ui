@@ -47,7 +47,7 @@
                 <li *ngFor="let entity of limited$ | async; index as i" [ngClass]="{'mt-2': i > 0}" aria-label="Provider Item Accordion. Press Spacebar to open">
                     <entity-item
                         [entity]="entity"
-                        [isOpen]="(entitiesOpen$ | async)[entity.entityId]"
+                        [isOpen]="(entitiesOpen$ | async)[entity.id || entity.entityId]"
                         (select)="edit(entity)"
                         (toggle)="toggleProvider(entity)"
                         (preview)="openPreviewDialog(entity)"

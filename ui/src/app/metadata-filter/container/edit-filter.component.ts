@@ -12,7 +12,7 @@ import * as fromFilter from '../reducer';
 import * as fromCollection from '../../domain/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CancelCreateFilter, SelectId, CreateFilter, UpdateFilterChanges } from '../action/filter.action';
+import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
 import { AddFilterRequest, UpdateFilterRequest } from '../../domain/action/filter-collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Filter } from '../../domain/entity/filter';
@@ -50,7 +50,10 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     isSaving$: Observable<boolean>;
 
     form: FormGroup = this.fb.group({
-        entityId: ['', [Validators.required]],
+        entityId: [
+            '',
+            [Validators.required]
+        ],
         filterName: ['', [Validators.required]],
         filterEnabled: [false]
     });
@@ -81,23 +84,23 @@ export class EditFilterComponent implements OnInit, OnDestroy {
 
         this.entityIds$.subscribe(ids => this.ids = ids);
 
-        this.filter$.subscribe(filter => {
-            let { entityId, filterName, filterEnabled } = new Filter(filter);
-            this.form.reset({
-                entityId,
-                filterName,
-                filterEnabled
-            });
-            this.filter = filter;
-            this.filterEntity = new Filter(filter);
+        this.filter$
+            .withLatestFrom(this.isSaving$)
+            .subscribe(([filter, saving]) => {
+                let { entityId, filterName, filterEnabled } = new Filter(filter);
+                this.form.reset({
+                    entityId,
+                    filterName,
+                    filterEnabled
+                });
+                this.filter = filter;
+                this.filterEntity = new Filter(filter);
 
-            this.store.dispatch(new SelectId(entityId));
-        });
+                this.store.dispatch(new SelectId(entityId));
+            });
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new ClearSearch());
-
         let id = this.form.get('entityId');
         id.valueChanges
             .distinctUntilChanged()
@@ -116,14 +119,19 @@ export class EditFilterComponent implements OnInit, OnDestroy {
 
         this.form.get('entityId').disable();
 
-        id
-        .valueChanges
-        .distinctUntilChanged()
-        .subscribe(entityId => {
-            if (id.valid) {
-                this.store.dispatch(new SelectId(entityId));
-            }
-        });
+        id.valueChanges
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                if (id.valid) {
+                    this.store.dispatch(new SelectId(entityId));
+                }
+            });
+
+        this.selected$
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                id.setValue(entityId);
+            });
     }
 
     ngOnDestroy(): void {
@@ -163,7 +171,8 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         this.isValid = status === 'VALID';
     }
 
-    save(): void {
+    save($event): void {
+        $event.preventDefault();
         this.store.dispatch(new UpdateFilterRequest({...this.filter, ...this.changes.serialize()}));
     }
 
