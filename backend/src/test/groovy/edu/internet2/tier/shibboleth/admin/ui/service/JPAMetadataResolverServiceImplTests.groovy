@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -33,6 +34,7 @@ import spock.lang.Specification
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class JPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
