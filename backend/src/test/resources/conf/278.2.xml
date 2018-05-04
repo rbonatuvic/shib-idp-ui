@@ -21,6 +21,12 @@
         <MetadataFilter xsi:type="EntityRoleWhiteList">
             <RetainedRole>md:SPSSODescriptor</RetainedRole>
         </MetadataFilter>
+        <MetadataFilter xsi:type="EntityAttributes">
+            <saml:Attribute Name="here">
+                <saml:AttributeValue>there</saml:AttributeValue>
+            </saml:Attribute>
+            <Entity>https://sp1.example.org</Entity>
+        </MetadataFilter>
     </MetadataProvider>
 
 </MetadataProvider>

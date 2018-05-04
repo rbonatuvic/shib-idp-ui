@@ -2,8 +2,12 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.apache.http.impl.client.HttpClients
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -26,17 +30,50 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class IncommonJPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverService metadataResolverService
 
-    def 'test generation of metadata-providers.xml'() {
+    @Autowired
+    MetadataResolverRepository metadataResolverRepository
+
+    @Autowired
+    AttributeUtility attributeUtility
+
+    def 'simple test generation of metadata-providers.xml'() {
         when:
         def output = metadataResolverService.generateConfiguration()
 
         then:
         assert !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/conf/278.xml'))).withTest(Input.fromDocument(output)).ignoreComments().ignoreWhitespace().build().hasDifferences()
+    }
+
+    def 'test generation of metadata-providers.xml with filters'() {
+        when:
+        //TODO: this might break later
+        def mr = metadataResolverRepository.findAll().iterator().next()
+        mr.metadataFilters.add(new EntityAttributesFilter().with {
+            it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
+                it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+                it.value = ['https://sp1.example.org']
+                it
+            }
+            def attribute = attributeUtility.createAttributeWithArbitraryValues('here', null, 'there')
+            attribute.nameFormat = null
+            attribute.namespacePrefix = 'saml'
+            attribute.attributeValues.each { val ->
+                val.namespacePrefix = 'saml'
+            }
+            it.attributes = [attribute]
+            it
+        })
+        metadataResolverRepository.save(mr)
+
+        def output = metadataResolverService.generateConfiguration()
+
+        then:
+        assert !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/conf/278.2.xml'))).withTest(Input.fromDocument(output)).ignoreComments().ignoreWhitespace().build().hasDifferences()
     }
 
     //TODO: check that this configuration is sufficient

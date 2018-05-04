@@ -86,7 +86,7 @@ public class OpenSamlObjects {
         this.unmarshallerFactory = registry.getUnmarshallerFactory();
     }
 
-    public String marshalToXmlString(XMLObject ed) throws MarshallingException {
+    public String marshalToXmlString(XMLObject ed, boolean includeXMLDeclaration) throws MarshallingException {
         Marshaller marshaller = this.marshallerFactory.getMarshaller(ed);
         String entityDescriptorXmlString = null;
         if (marshaller != null) {
@@ -94,6 +94,9 @@ public class OpenSamlObjects {
                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+                if (!includeXMLDeclaration) {
+                    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+                }
                 transformer.transform(new DOMSource(marshaller.marshall(ed)), new StreamResult(writer));
                 entityDescriptorXmlString = writer.toString();
             } catch (TransformerException | IOException e) {
@@ -106,6 +109,10 @@ public class OpenSamlObjects {
             throw new RuntimeException("Unable to marshal EntityDescriptor");
         }
         return entityDescriptorXmlString;
+    }
+
+    public String marshalToXmlString(XMLObject ed) throws MarshallingException {
+        return this.marshalToXmlString(ed, true);
     }
 
     public EntityDescriptor unmarshalFromXml(byte[] entityDescriptorXml) throws Exception {

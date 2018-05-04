@@ -75,6 +75,8 @@ dependencies {
     //For easy data mocking capabilities
     compile 'net.andreinc.mockneat:mockneat:0.1.4'
 
+    compile 'org.codehaus.groovy:groovy-all:2.4.15'
+
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
 
