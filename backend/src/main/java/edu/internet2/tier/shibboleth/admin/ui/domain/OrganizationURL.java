@@ -1,9 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class OrganizationURL extends AbstractXMLObject implements org.opensaml.saml.saml2.metadata.OrganizationURL {
 
     private String xMLLang;

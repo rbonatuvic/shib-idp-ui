@@ -1,13 +1,19 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.AdditionalMetadataLocation
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
+import org.opensaml.saml.saml2.metadata.Organization
+import org.w3c.dom.Element
+
+import java.time.LocalDateTime
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -129,5 +135,38 @@ class TestObjectGenerator {
 
     EntityAttributesFilterTarget.EntityAttributesFilterTargetType randomFilterTargetType() {
         EntityAttributesFilterTarget.EntityAttributesFilterTargetType.values()[generator.randomInt(0, 2)]
+    }
+
+    EntityDescriptor buildEntityDescriptor() {
+        EntityDescriptor entityDescriptor = new EntityDescriptor()
+
+        entityDescriptor.setID(generator.randomId())
+        entityDescriptor.setEntityID(generator.randomId())
+        entityDescriptor.setServiceProviderName(generator.randomString(20))
+        entityDescriptor.setServiceEnabled(generator.randomBoolean())
+        entityDescriptor.setResourceId(generator.randomId())
+        entityDescriptor.setOrganization(buildOrganization())
+        //TODO Finish adding the rest of the setters here.
+
+        //TODO: Implement these if we ever start setting them elsewhere
+        //entityDescriptor.setRoleDescriptors(buildRoleDescriptors())
+        //entityDescriptor.setAdditionalMetadataLocations(buildAdditionalMetadataLocations())
+        //entityDescriptor.setAuthnAuthorityDescriptor(buildAuthnAuthorityDescriptor())
+        //entityDescriptor.setAttributeAuthorityDescriptor(buildAttributeAuthorityDescriptor())
+        //entityDescriptor.setPdpDescriptor(buildPdpDescriptor())
+        //entityDescriptor.setAffiliationDescriptor(buildAffiliationDescriptor())
+
+        entityDescriptor.setCreatedBy(generator.randomString(10))
+        entityDescriptor.setCreatedDate(generator.randomLocalDateTime())
+
+        return entityDescriptor
+    }
+
+    Organization buildOrganization() {
+        Organization organization = new edu.internet2.tier.shibboleth.admin.ui.domain.Organization()
+
+        //TODO Fill this out based on what gets used in the Organization domain object
+
+        return organization
     }
 }

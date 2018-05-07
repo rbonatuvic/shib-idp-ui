@@ -10,6 +10,7 @@ import java.util.List;
 public class FilterTargetRepresentation {
     private String type;
     private List<String> value;
+    private int version;
 
     public FilterTargetRepresentation() {
 
@@ -47,5 +48,9 @@ public class FilterTargetRepresentation {
 
     public void setValue(List<String> listValue) {
         this.value = listValue;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

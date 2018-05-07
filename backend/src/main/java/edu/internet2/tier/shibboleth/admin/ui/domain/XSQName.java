@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import javax.annotation.Nullable;
@@ -8,6 +9,7 @@ import javax.xml.namespace.QName;
 import java.beans.Transient;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class XSQName extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSQName {
     @Nullable
     @Override

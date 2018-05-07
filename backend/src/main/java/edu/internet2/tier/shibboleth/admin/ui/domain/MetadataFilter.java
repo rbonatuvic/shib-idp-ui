@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.UUID;
@@ -8,6 +10,7 @@ import java.util.UUID;
  * Domain class to store information about {@link org.opensaml.saml.metadata.resolver.filter.MetadataFilter}
  */
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class MetadataFilter extends AbstractAuditable {
     private String name;
     @Column(unique=true)

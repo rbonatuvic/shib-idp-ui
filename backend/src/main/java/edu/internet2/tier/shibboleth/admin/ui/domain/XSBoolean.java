@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
 import javax.annotation.Nullable;
@@ -7,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class XSBoolean extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSBoolean {
     private String storedValue;
 

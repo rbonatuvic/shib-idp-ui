@@ -1,10 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Description extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.Description {
 
     @Column(name = "descriptionXMLLang")

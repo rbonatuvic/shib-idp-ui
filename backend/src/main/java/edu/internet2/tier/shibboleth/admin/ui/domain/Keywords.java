@@ -1,11 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.annotation.Nullable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Keywords extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.Keywords {
     @ElementCollection
     private List<String> keywords;
