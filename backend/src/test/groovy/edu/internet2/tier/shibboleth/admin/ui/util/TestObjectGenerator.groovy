@@ -1,19 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.AdditionalMetadataLocation
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
-import org.w3c.dom.Element
-
-import java.time.LocalDateTime
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -146,7 +147,7 @@ class TestObjectGenerator {
         entityDescriptor.setServiceEnabled(generator.randomBoolean())
         entityDescriptor.setResourceId(generator.randomId())
         entityDescriptor.setOrganization(buildOrganization())
-        //TODO Finish adding the rest of the setters here.
+        entityDescriptor.addContactPerson(buildContactPerson())
 
         //TODO: Implement these if we ever start setting them elsewhere
         //entityDescriptor.setRoleDescriptors(buildRoleDescriptors())
@@ -165,8 +166,50 @@ class TestObjectGenerator {
     Organization buildOrganization() {
         Organization organization = new edu.internet2.tier.shibboleth.admin.ui.domain.Organization()
 
-        //TODO Fill this out based on what gets used in the Organization domain object
+        organization.setNamespaceURI(generator.randomString(20))
+        organization.setElementLocalName(generator.randomString(20))
+        organization.setNamespacePrefix(generator.randomString(5))
+
+        organization.setOrganizationNames(buildListOfTypeWithValues(OrganizationName.class, generator.randomInt(1, 10)))
+        organization.setOrganizationDisplayNames(buildListOfTypeWithValues(OrganizationDisplayName.class, generator.randomInt(1, 10)))
+        organization.setOrganizationURLs(buildListOfTypeWithValues(OrganizationURL.class, generator.randomInt(1, 10)))
+
+        //TODO: Implement these if we ever start setting them elsewhere
+        //organization.setExtensions(buildExtensions())
 
         return organization
+    }
+
+    ContactPerson buildContactPerson() {
+        ContactPerson contactPerson = new ContactPerson();
+
+        contactPerson.setNamespaceURI(generator.randomString(20))
+        contactPerson.setElementLocalName(generator.randomString(20))
+        contactPerson.setNamespacePrefix(generator.randomString(5))
+
+        return contactPerson
+    }
+
+    /**
+     * This method takes a type and a size and builds a List of that size containing objects of that type. This is
+     * intended to be used with things that extend LocalizedName such as {@link OrganizationName}, {@link OrganizationDisplayName},
+     * or with {@link OrganizationURL}s (really, a class that has a setValue() method).
+     *
+     * @param type the type of list to generate
+     * @param listSize the number of instances of that type to generate and add to the list
+     * @return a list of the specified size containing objects of the specified type
+     */
+    private <T> List<T> buildListOfTypeWithValues(Class<T> type, int listSize) {
+        List<T> list = []
+        listSize.times {
+            T newItemOfType = type.newInstance()
+            if (newItemOfType instanceof LocalizedName) {
+                newItemOfType.value = generator.randomString(10)
+            } else if (newItemOfType instanceof OrganizationURL) {
+                newItemOfType.value = generator.randomString(10)
+            }
+            list.add(newItemOfType)
+        }
+        return list
     }
 }

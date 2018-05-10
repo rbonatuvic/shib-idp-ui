@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import org.springframework.boot.test.json.JacksonTester
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -11,6 +12,9 @@ import org.xmlunit.diff.ElementSelectors
 import spock.lang.Specification
 
 class JPAEntityDescriptorServiceImplTests extends Specification {
+
+    def testObjectGenerator
+
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         init()
         it
@@ -22,6 +26,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
     def setup() {
         JacksonTester.initFields(this, new ObjectMapper())
+        testObjectGenerator = new TestObjectGenerator()
     }
 
 
@@ -588,5 +593,18 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors().size() == 1
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors()[0].getUse() == null
+    }
+
+    def "createRepresentationFromDescriptor creates a representation containing a version that is a hash of the original object"() {
+        given:
+        def entityDescriptor = testObjectGenerator.buildEntityDescriptor()
+        def expectedVersion = entityDescriptor.hashCode()
+
+        when:
+        def representation = service.createRepresentationFromDescriptor(entityDescriptor)
+
+        then:
+        def actualVersion = representation.version
+        expectedVersion == actualVersion
     }
 }
