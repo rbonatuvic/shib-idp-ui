@@ -96,6 +96,12 @@ public class EntityDescriptorController {
         if (existingEd == null) {
             return ResponseEntity.notFound().build();
         }
+
+        // Verify we're the only one attempting to update the EntityDescriptor
+        if (edRepresentation.getVersion() != existingEd.hashCode()) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+
         EntityDescriptor updatedEd =
                 EntityDescriptor.class.cast(entityDescriptorService.createDescriptorFromRepresentation(edRepresentation));
 

@@ -12,6 +12,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -160,8 +162,10 @@ class FilterControllerTests extends Specification {
         def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
         def updatedFilter = testObjectGenerator.buildEntityAttributesFilter()
         updatedFilter.resourceId = randomFilter.resourceId
-        def postedJsonBody = mapper.writeValueAsString(
+        def postedJsonBodyWithoutVersion = mapper.writeValueAsString(
                 filterService.createRepresentationFromFilter(updatedFilter))
+        def postedJsonBodyWithVersion = new JsonSlurper().parseText(postedJsonBodyWithoutVersion)
+        postedJsonBodyWithVersion << [version: randomFilter.hashCode()]
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId(randomGenerator.randomId())
@@ -181,11 +185,11 @@ class FilterControllerTests extends Specification {
         def result = mockMvc.perform(
                 put("/api/MetadataResolver/foo/Filter/$filterUUID")
                         .contentType(APPLICATION_JSON_UTF8)
-                        .content(postedJsonBody))
+                        .content(JsonOutput.toJson(postedJsonBodyWithVersion)))
 
         then:
         result.andExpect(status().isOk())
-                .andExpect(content().json(postedJsonBody, true))
+                .andExpect(content().json(postedJsonBodyWithoutVersion, true))
     }
 
     EntityAttributesFilter chooseRandomFilterFromList(List<EntityAttributesFilter> filters) {

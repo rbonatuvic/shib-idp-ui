@@ -59,9 +59,10 @@ class EntityDescriptorControllerTests extends Specification {
     def 'GET /EntityDescriptors with 1 record in repository'() {
         given:
         def expectedCreationDate = '2017-10-23T11:11:11'
-        def oneRecordFromRepository =
-                [new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true,
-                        createdDate: LocalDateTime.parse(expectedCreationDate))].stream()
+        def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true,
+                createdDate: LocalDateTime.parse(expectedCreationDate))
+        def oneRecordFromRepository = [entityDescriptor].stream()
+        def version = entityDescriptor.hashCode()
         def expectedOneRecordListResponseBody = """
             [
               {
@@ -79,7 +80,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-	            "attributeRelease": null
+	            "attributeRelease": null,
+	            "version": $version
               }
             ]    
         """
@@ -102,12 +104,15 @@ class EntityDescriptorControllerTests extends Specification {
     def 'GET /EntityDescriptors with 2 records in repository'() {
         given:
         def expectedCreationDate = '2017-10-23T11:11:11'
-        def twoRecordsFromRepository = [new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
                 serviceEnabled: true,
-                createdDate: LocalDateTime.parse(expectedCreationDate)),
-                                        new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2',
-                                                serviceEnabled: false,
-                                                createdDate: LocalDateTime.parse(expectedCreationDate))].stream()
+                createdDate: LocalDateTime.parse(expectedCreationDate))
+        def versionOne = entityDescriptorOne.hashCode()
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2',
+                serviceEnabled: false,
+                createdDate: LocalDateTime.parse(expectedCreationDate))
+        def versionTwo = entityDescriptorTwo.hashCode()
+        def twoRecordsFromRepository = [entityDescriptorOne, entityDescriptorTwo].stream()
         def expectedTwoRecordsListResponseBody = """
            [
               {
@@ -125,7 +130,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-                "attributeRelease": null
+                "attributeRelease": null,
+                "version": $versionOne
               },
               {
 	            "id": "uuid-2",
@@ -142,7 +148,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-                "attributeRelease": null
+                "attributeRelease": null,
+                "version": $versionTwo
               }              
            ]    
         """
@@ -170,6 +177,10 @@ class EntityDescriptorControllerTests extends Specification {
         def expectedUUID = 'uuid-1'
         def expectedResponseHeader = 'Location'
         def expectedResponseHeaderValue = "/api/EntityDescriptor/$expectedUUID"
+        def entityDescriptor = new EntityDescriptor(resourceId: expectedUUID, entityID: expectedEntityId, serviceProviderName: expectedSpName,
+                serviceEnabled: true,
+                createdDate: LocalDateTime.parse(expectedCreationDate))
+        def version = entityDescriptor.hashCode()
 
         def postedJsonBody = """            
               {	            
@@ -208,7 +219,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-                "attributeRelease": null
+                "attributeRelease": null,
+                "version": $version
               }                
         """
 
@@ -227,9 +239,7 @@ class EntityDescriptorControllerTests extends Specification {
             it.entityID == expectedEntityId &&
             it.serviceProviderName == expectedSpName &&
             it.serviceEnabled == true
-        }) >> new EntityDescriptor(resourceId: expectedUUID, entityID: expectedEntityId, serviceProviderName: expectedSpName,
-                serviceEnabled: true,
-                createdDate: LocalDateTime.parse(expectedCreationDate))
+        }) >> entityDescriptor
 
         result.andExpect(status().isCreated())
                 .andExpect(content().json(expectedJsonBody, true))
@@ -292,6 +302,11 @@ class EntityDescriptorControllerTests extends Specification {
         def expectedSpName = 'sp1'
         def expectedEntityId = 'eid1'
 
+        def entityDescriptor = new EntityDescriptor(resourceId: providedResourceId, entityID: expectedEntityId, serviceProviderName: expectedSpName,
+                serviceEnabled: true,
+                createdDate: LocalDateTime.parse(expectedCreationDate))
+        def version = entityDescriptor.hashCode()
+
         def expectedJsonBody = """            
               {
 	            "id": "${providedResourceId}",
@@ -309,7 +324,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-                "attributeRelease": null
+                "attributeRelease": null,
+                "version": $version
               }                
         """
 
@@ -318,10 +334,8 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         //EntityDescriptor found
-        1 * entityDescriptorRepository.findByResourceId(providedResourceId) >>
-                new EntityDescriptor(resourceId: providedResourceId, entityID: expectedEntityId, serviceProviderName: expectedSpName,
-                        serviceEnabled: true,
-                        createdDate: LocalDateTime.parse(expectedCreationDate))
+        1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> entityDescriptor
+
 
         result.andExpect(status().isOk())
                 .andExpect(content().json(expectedJsonBody, true))
