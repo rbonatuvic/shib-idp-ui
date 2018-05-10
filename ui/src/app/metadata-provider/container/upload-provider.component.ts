@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormControlName, Validators, AbstractControl } from '@angular/forms';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/take';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Store } from '@ngrx/store';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { FileService } from '../../core/service/file.service';
+import * as fromCollections from '../../domain/reducer';
+import { UploadProviderRequest, CreateProviderFromUrlRequest } from '../../domain/action/provider-collection.action';
 
 @Component({
     selector: 'upload-provider-form',
@@ -27,7 +25,8 @@ export class UploadProviderComponent implements OnInit, OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        private fileService: FileService
+        private fileService: FileService,
+        private store: Store<fromCollections.CollectionState>
     ) {}
 
     ngOnInit(): void {
@@ -66,18 +65,18 @@ export class UploadProviderComponent implements OnInit, OnDestroy {
 
     saveFromFile(file: File, name: string): void {
         this.fileService.readAsText(file).subscribe(txt => {
-            this.upload.emit({
+            this.store.dispatch(new UploadProviderRequest({
                 name: name,
-                body: txt
-            });
+                body: txt as string
+            }));
         });
     }
 
     saveFromUrl(values: {serviceProviderName: string, url: string}): void {
-        this.fromUrl.emit({
+        this.store.dispatch(new CreateProviderFromUrlRequest({
             name: values.serviceProviderName,
             url: values.url
-        });
+        }));
     }
 
     fileChange($event): void {

@@ -21,9 +21,11 @@ export class AppComponent implements OnInit {
     formatted$: Observable<string>;
     today = new Date();
 
+    formatter = v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : '';
+
     constructor(private store: Store<fromRoot.State>) {
         this.version$ = this.store.select(fromRoot.getVersionInfo);
-        this.formatted$ = this.version$.map(v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : '');
+        this.formatted$ = this.version$.map(this.formatter);
     }
 
     ngOnInit(): void {

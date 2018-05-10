@@ -1,10 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { StoreModule, Store, combineReducers } from '@ngrx/store';
+
 import { UploadProviderComponent } from './upload-provider.component';
 import { FileService } from '../../core/service/file.service';
 import { FileServiceStub } from '../../../testing/file.service.stub';
-import { Observable } from 'rxjs/Observable';
+import * as fromProvider from '../reducer';
+import * as fromCollections from '../../domain/reducer';
 
 @Component({
     template: `<upload-provider-form
@@ -39,6 +43,10 @@ describe('Upload Provider Page', () => {
             ],
             imports: [
                 ReactiveFormsModule,
+                StoreModule.forRoot({
+                    collections: combineReducers(fromCollections.reducers),
+                    provider: combineReducers(fromProvider.reducers)
+                }),
             ],
             declarations: [
                 UploadProviderComponent,

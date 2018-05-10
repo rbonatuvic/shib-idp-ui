@@ -11,29 +11,52 @@
             <h3 i18n="@@label--how-are-you-adding-the-metadata-information">How are you adding the metadata information?</h3>
             <br />
             <div class="row">
-                <div class="col col-lg-2">
-                    <button type="button" class="btn btn-lg" [ngClass]="type !== BLANK ? 'btn-success' : 'btn-secondary'" (click)="toggle(UPLOAD)" aria-label="Upload local provider metadata file or use a metadata URL" role="button">
-                        <ng-container i18n="@@label--upload-url">Upload/URL</ng-container>
-                        <i class="fa fa-link fa-2x d-block"></i>
-                    </button>
-                </div>
-                <div class="col col-lg-1 text-center">
-                    <span class="display-4">&nbsp;or&nbsp;</span>
-                </div>
-                <div class="col col-lg-2 text-right">
-                    <button type="button" class="btn btn-lg" [ngClass]="type !== UPLOAD ? 'btn-info' : 'btn-secondary'" (click)="toggle(BLANK)" aria-label="Create metadata source file using the wizard" role="button">
-                        <ng-container i18n="@@action--create-file">Create File</ng-container>
-                        <i class="fa fa-plus-square fa-2x d-block"></i>
-                    </button>
-                </div>
-            </div>
-            <hr />
-            <div class="row">
-                <div [ngSwitch]="type" class="col col-lg-8">
-                    <blank-provider-form *ngSwitchDefault (save)="next($event)"></blank-provider-form>
-                    <upload-provider-form *ngSwitchCase="UPLOAD"
-                        (upload)="upload($event)"
-                        (fromUrl)="createFromUrl($event)"></upload-provider-form>
+                <div class="col col-xl-6 col-lg-9 col-xs-12">
+                    <div class="d-flex justify-content-between">
+                        <div class="provider-nav-option">
+                            <button type="button"
+                                class="btn btn-lg btn-block btn-secondary"
+                                aria-label="Upload local provider metadata file or use a metadata URL"
+                                role="button"
+                                routerLink="upload"
+                                routerLinkActive="btn-success">
+                                <ng-container i18n="@@label--upload-url">Upload/URL</ng-container>
+                                <i class="fa fa-link fa-2x d-block"></i>
+                            </button>
+                        </div>
+                        <div class="">
+                            <span class="subheading-1">&nbsp;<ng-container i18n="@@label--or">or</ng-container>&nbsp;</span>
+                        </div>
+                        <div class="provider-nav-option">
+                            <button type="button"
+                                class="btn btn-lg btn-block btn-secondary"
+                                aria-label="Create metadata source using the wizard"
+                                role="button"
+                                routerLink="blank"
+                                routerLinkActive="btn-info">
+                                <ng-container i18n="@@action--create">Create</ng-container>
+                                <i class="fa fa-plus-square fa-2x d-block"></i>
+                            </button>
+                        </div>
+                        <div class="">
+                            <span class="subheading-1">&nbsp;<ng-container i18n="@@label--or">or</ng-container>&nbsp;</span>
+                        </div>
+                        <div class="provider-nav-option">
+                            <button type="button"
+                                class="btn btn-lg btn-block btn-secondary"
+                                aria-label="Copy a metadata source"
+                                role="button"
+                                routerLink="copy"
+                                routerLinkActive="btn-warning">
+                                <ng-container i18n="@@action--copy">Copy</ng-container>
+                                <i class="fa fa-copy fa-2x d-block"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <router-outlet></router-outlet>
+                    </div>
                 </div>
             </div>
         </div>

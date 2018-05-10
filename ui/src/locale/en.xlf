@@ -2175,6 +2175,82 @@
           <context context-type="linenumber">124</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="action--copy" datatype="html">
+        <source>Copy</source>
+        <target>Copy</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/new-provider.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--finish-validate" datatype="html">
+        <source>FINISH AND VALIDATE</source>
+        <target>FINISH AND VALIDATE</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--select-entity-id-to-copy" datatype="html">
+        <source>Select the Entity ID to copy</source>
+        <target>Select the Entity ID to copy</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--metadata-source-name-dashboard-display-only" datatype="html">
+        <source>Metadata Source Name (Dashboard Display Only)</source>
+        <target>Metadata Source Name (Dashboard Display Only)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--add-a-new-metadata-source" datatype="html">
+        <source>Add a new metadata source - Finish Summary</source>
+        <target>Add a new metadata source - Finish Summary</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/confirm-copy.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--edit-filter" datatype="html">
+        <source>Edit Filter - <x id="INTERPOLATION" equiv-text="{{ (filter$ | async).filterName }}"/></source>
+        <target>Edit Filter - <x id="INTERPOLATION" equiv-text="{{ (filter$ | async).filterName }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/edit-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--min-chars" datatype="html">
+        <source>Minimum 4 characters.</source>
+        <target>Minimum 4 characters.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/edit-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="action--create" datatype="html">
+        <source>Create</source>
+        <target>Create</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/new-provider.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="message--filter-name-required" datatype="html">
+        <source>Filter Name is required</source>
+        <target>Filter Name is required</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/edit-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
