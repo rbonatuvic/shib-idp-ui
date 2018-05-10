@@ -1,10 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import spock.lang.Subject
@@ -15,10 +19,14 @@ import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class EntityDescriptorControllerTests extends Specification {
 
+    def generator
+    def mapper
+    def service
 
     def entityDescriptorRepository = Mock(EntityDescriptorRepository)
 
@@ -27,15 +35,25 @@ class EntityDescriptorControllerTests extends Specification {
         it
     }
 
+    def mockMvc
+
     @Subject
-    def controller = new EntityDescriptorController (
-            entityDescriptorRepository: entityDescriptorRepository,
-            openSamlObjects: openSamlObjects,
-            entityDescriptorService: new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
-    )
+    def controller
 
+    def setup() {
+        generator = new TestObjectGenerator()
+        mapper = new ObjectMapper()
+        service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
-    def mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+        controller = new EntityDescriptorController (
+                entityDescriptorRepository: entityDescriptorRepository,
+                openSamlObjects: openSamlObjects,
+                entityDescriptorService: service
+        )
+
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+    }
+
 
     def 'GET /EntityDescriptors with empty repository'() {
         given:
@@ -339,5 +357,54 @@ class EntityDescriptorControllerTests extends Specification {
 
         result.andExpect(status().isOk())
                 .andExpect(content().json(expectedJsonBody, true))
+    }
+
+    def "PUT /EntityDescriptor updates entity descriptors properly"() {
+        given:
+        def entityDescriptor = generator.buildEntityDescriptor()
+        def updatedEntityDescriptor = generator.buildEntityDescriptor()
+        updatedEntityDescriptor.resourceId = entityDescriptor.resourceId
+        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(updatedEntityDescriptor)
+        updatedEntityDescriptorRepresentation.version = entityDescriptor.hashCode()
+        def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
+
+        def resourceId = entityDescriptor.resourceId
+
+        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
+        1 * entityDescriptorRepository.save(_) >> updatedEntityDescriptor
+
+        when:
+        def result = mockMvc.perform(
+                put("/api/EntityDescriptor/$resourceId")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(postedJsonBody))
+
+        then:
+        def expectedJson = new JsonSlurper().parseText(postedJsonBody)
+        expectedJson << [version: updatedEntityDescriptor.hashCode()]
+        result.andExpect(status().isOk())
+                .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
+    }
+
+    def "PUT /EntityDescriptor 409's if the version numbers don't match"() {
+        given:
+        def entityDescriptor = generator.buildEntityDescriptor()
+        def updatedEntityDescriptor = generator.buildEntityDescriptor()
+        updatedEntityDescriptor.resourceId = entityDescriptor.resourceId
+        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(updatedEntityDescriptor)
+        def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
+
+        def resourceId = entityDescriptor.resourceId
+
+        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
+
+        when:
+        def result = mockMvc.perform(
+                put("/api/EntityDescriptor/$resourceId")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(postedJsonBody))
+
+        then:
+        result.andExpect(status().is(409))
     }
 }
