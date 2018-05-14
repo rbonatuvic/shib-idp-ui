@@ -6,6 +6,7 @@ export class Filter implements MetadataFilter {
     id = '';
     createdDate?: string;
     modifiedDate?: string;
+    version: string;
 
     filterName = '';
     filterEnabled = false;
