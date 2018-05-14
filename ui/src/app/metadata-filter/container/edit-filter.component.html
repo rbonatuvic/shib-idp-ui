@@ -102,7 +102,7 @@
                     <div class="col-lg-6 col-xs-3 text-right">
                         <button (click)="this.preview(filter)" type="submit" class="btn btn-success">
                             <i class="fa fa-eye fa-lg"></i>
-                            <ng-container i18n="@@action--save-changes">Preview XML</ng-container>
+                            <ng-container i18n="@@action--save">Preview XML</ng-container>
                         </button>
                         <button
                             (click)="this.save($event)"
@@ -115,7 +115,7 @@
                                     'fa-spinner': (isSaving$ | async),
                                     'fa-pulse': (isSaving$ | async)
                                 }"></i>
-                            <ng-container i18n="@@action--save-changes">Save Changes</ng-container>
+                            <ng-container i18n="@@action--save">Save</ng-container>
                         </button>
                         <button
                             (click)="this.cancel()"
