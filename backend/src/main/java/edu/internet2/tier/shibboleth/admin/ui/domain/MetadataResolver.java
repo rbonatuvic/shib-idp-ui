@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class MetadataResolver extends AbstractAuditable {
     private String name;
     private String resourceId = UUID.randomUUID().toString();

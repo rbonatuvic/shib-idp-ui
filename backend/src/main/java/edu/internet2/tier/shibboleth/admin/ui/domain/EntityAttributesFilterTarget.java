@@ -1,22 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.internet2.tier.shibboleth.admin.ui.controller.FilterController;
+import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class EntityAttributesFilterTarget extends AbstractAuditable {
     public enum EntityAttributesFilterTargetType {
         ENTITY, CONDITION_SCRIPT, CONDITION_REF

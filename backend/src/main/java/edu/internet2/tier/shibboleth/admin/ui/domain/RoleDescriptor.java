@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.RoleDescriptor {
 
     @ElementCollection

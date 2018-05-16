@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import com.google.common.collect.Lists;
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 
 import javax.annotation.Nullable;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class SSODescriptor extends RoleDescriptor implements org.opensaml.saml.saml2.metadata.SSODescriptor {
 
     @OneToMany(cascade = CascadeType.ALL)

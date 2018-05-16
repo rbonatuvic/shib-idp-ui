@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 import javax.persistence.Entity;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class RoleDescriptorResolver extends AbstractAuditable implements org.opensaml.saml.metadata.resolver.RoleDescriptorResolver {
     private String localId;
 

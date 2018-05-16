@@ -72,6 +72,7 @@ class JPAFilterServiceImplTests extends Specification {
         result.id == filter.resourceId
         result.filterName == filter.name
         result.filterEnabled == filter.filterEnabled
+        result.version == filter.hashCode()
 
         //TODO? See note above, same question.
         determineCountOfAttributesFromRelyingPartyOverrides(result) == filter.getAttributes().size()

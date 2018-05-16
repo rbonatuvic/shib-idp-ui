@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -98,6 +99,12 @@ public class FilterController {
         }
 
         EntityAttributesFilter eaf = filters.get(0);
+
+        // Verify we're the only one attempting to update the filter
+        if (filterRepresentation.getVersion() != eaf.hashCode()) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+
         // convert our representation so we can get the attributes more easily...
         EntityAttributesFilter updatedFilter = filterService.createFilterFromRepresentation(filterRepresentation);
         eaf.setName(updatedFilter.getName());

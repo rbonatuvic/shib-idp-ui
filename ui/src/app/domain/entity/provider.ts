@@ -16,6 +16,7 @@ export class Provider implements MetadataProvider {
     id = '';
     createdDate?: string;
     modifiedDate?: string;
+    version: string;
 
     entityId = '';
     serviceProviderName = '';

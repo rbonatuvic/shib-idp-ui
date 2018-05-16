@@ -62,6 +62,8 @@ public class JPAFilterServiceImpl implements FilterService {
                 entityDescriptorService.getRelyingPartyOverridesRepresentationFromAttributeList(entityAttributesFilter.getAttributes()));
 
         representation.setFilterTarget(filterTargetService.createRepresentationFromFilterTarget(entityAttributesFilter.getEntityAttributesFilterTarget()));
+
+        representation.setVersion(entityAttributesFilter.hashCode());
         return representation;
     }
 }

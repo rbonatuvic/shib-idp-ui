@@ -2,6 +2,9 @@ package edu.internet2.tier.shibboleth.admin.ui.util
 
 import org.apache.commons.lang3.RandomStringUtils
 
+import java.time.LocalDateTime
+import java.time.ZoneId
+
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
@@ -39,6 +42,10 @@ class RandomGenerator {
         }
     }
 
+    int randomInt() {
+        return rand.nextInt()
+    }
+
     Date randomDate() {
         return randomDate(randomBoolean())
     }
@@ -53,6 +60,11 @@ class RandomGenerator {
         def incr = Math.abs(rand.nextLong()) % 10000000 * (beforeOrAfter ? -1 : 1)
         def time = now + incr
         return new Date(time)
+    }
+
+    LocalDateTime randomLocalDateTime() {
+        def date = randomDate()
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
     }
 
     boolean randomBoolean() {
