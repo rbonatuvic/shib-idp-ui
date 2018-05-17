@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface EntityService {
     List<Attribute> getAttributeListFromEntityRepresentation(EntityDescriptorRepresentation entityDescriptorRepresentation);
+    edu.internet2.tier.shibboleth.admin.ui.domain.Attribute getAttributeFromAttributeReleaseList(List<String> attributeReleaseList);
     List<Attribute> getAttributeListFromAttributeReleaseList(List<String> attributeReleaseList);
     List<Attribute> getAttributeListFromRelyingPartyOverridesRepresentation(RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation);
 }

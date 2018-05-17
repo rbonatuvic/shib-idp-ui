@@ -13,6 +13,7 @@ public class FilterRepresentation implements Serializable {
     private List<String> attributeRelease;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+    private int version;
 
     public FilterRepresentation() {
 
@@ -86,5 +87,13 @@ public class FilterRepresentation implements Serializable {
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

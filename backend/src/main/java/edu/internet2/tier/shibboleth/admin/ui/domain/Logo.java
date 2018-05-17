@@ -1,10 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
+
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Logo extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.Logo {
     @Column(name = "logUrl")
     private String url;

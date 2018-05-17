@@ -5,6 +5,7 @@ plugins {
     id 'org.springframework.boot' version '2.0.0.RELEASE'
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
     id 'net.researchgate.release' version '2.6.0'
+    id 'io.franzbecker.gradle-lombok' version '1.13'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -17,6 +18,12 @@ repositories {
     maven {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
         artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.cryptacular:cryptacular:1.1.3'
     }
 }
 
@@ -39,6 +46,11 @@ bootWar {
 springBoot {
     mainClassName = 'edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication'
     buildInfo()
+}
+
+lombok {
+    version = "1.16.20"
+    sha256 = "c5178b18caaa1a15e17b99ba5e4023d2de2ebc18b58cde0f5a04ca4b31c10e6d"
 }
 
 dependencies {

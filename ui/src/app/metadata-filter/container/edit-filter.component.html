@@ -37,7 +37,7 @@
                                 <input id="filterName" type="text" class="form-control" placeholder="" formControlName="filterName" />
                                 <ng-container *ngIf="form.get('filterName').touched && form.get('filterName').invalid">
                                     <small class="form-text text-danger" *ngIf="form.get('filterName').hasError('required')">
-                                        <ng-container i18n="@@message--service-provider-name-required">Filter Name is required</ng-container>
+                                        <ng-container i18n="@@message--filter-name-required">Filter Name is required</ng-container>
                                     </small>
                                 </ng-container>
                             </div>
@@ -56,7 +56,7 @@
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
-                                <label for="entityId" class="sr-only">Search Entity ID</label>
+                                <label for="entityId" class="sr-only" i18n="@@label--search-entity-id">Search Entity ID</label>
                                 <div class="row">
                                     <div class="col-9">
                                         <auto-complete id="entityId"
@@ -69,7 +69,7 @@
                                             [processing]="(processing$ | async)"
                                             (more)="onViewMore($event)">
                                         </auto-complete>
-                                        <small class="form-text text-muted" i18n="@@label--min-4-chars">
+                                        <small class="form-text text-muted" i18n="@@label--min-chars">
                                             Minimum 4 characters.
                                         </small>
                                         <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
@@ -102,7 +102,7 @@
                     <div class="col-lg-6 col-xs-3 text-right">
                         <button (click)="this.preview(filter)" type="submit" class="btn btn-success">
                             <i class="fa fa-eye fa-lg"></i>
-                            <ng-container i18n="@@action--save-changes">Preview XML</ng-container>
+                            <ng-container i18n="@@action--save">Preview XML</ng-container>
                         </button>
                         <button
                             (click)="this.save($event)"
@@ -115,7 +115,7 @@
                                     'fa-spinner': (isSaving$ | async),
                                     'fa-pulse': (isSaving$ | async)
                                 }"></i>
-                            <ng-container i18n="@@action--save-changes">Save Changes</ng-container>
+                            <ng-container i18n="@@action--save">Save</ng-container>
                         </button>
                         <button
                             (click)="this.cancel()"

@@ -24,6 +24,7 @@ public class JPAFilterTargetServiceImpl implements FilterTargetService {
 
         representation.setValue(entityAttributesFilterTarget.getValue());
         representation.setType(entityAttributesFilterTarget.getEntityAttributesFilterTargetType().name());
+        representation.setVersion(entityAttributesFilterTarget.hashCode());
 
         return representation;
     }

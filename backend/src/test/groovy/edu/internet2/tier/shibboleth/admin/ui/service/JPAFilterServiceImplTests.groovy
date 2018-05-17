@@ -3,12 +3,10 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import org.apache.commons.lang.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -55,7 +53,9 @@ class JPAFilterServiceImplTests extends Specification {
         //complicated test. Testing size is fairly useful, but it forces us to assume that the attributes are what they
         //should be. Maybe testing that the attributes are what they should be should be done in a unit test for the
         //actual method that builds the attributes list?
-        result.getAttributes().size() == determineCountOfAttributesFromRelyingPartyOverrides(representation)
+        result.getAttributes().size() ==
+                representation.getAttributeRelease().size() +
+                TestHelpers.determineCountOfAttributesFromRelyingPartyOverrides(representation.getRelyingPartyOverrides())
 
         result.entityAttributesFilterTarget.value == representation.filterTarget.value
         result.entityAttributesFilterTarget.entityAttributesFilterTargetType.toString() == representation.filterTarget.type
@@ -72,29 +72,14 @@ class JPAFilterServiceImplTests extends Specification {
         result.id == filter.resourceId
         result.filterName == filter.name
         result.filterEnabled == filter.filterEnabled
+        result.version == filter.hashCode()
 
         //TODO? See note above, same question.
-        determineCountOfAttributesFromRelyingPartyOverrides(result) == filter.getAttributes().size()
+        result.getAttributeRelease().size() +
+                TestHelpers.determineCountOfAttributesFromRelyingPartyOverrides(result.getRelyingPartyOverrides()) ==
+                filter.getAttributes().size()
 
         result.filterTarget.type == filter.entityAttributesFilterTarget.entityAttributesFilterTargetType.toString()
         result.filterTarget.value == filter.entityAttributesFilterTarget.value
-    }
-
-    int determineCountOfAttributesFromRelyingPartyOverrides(FilterRepresentation representation) {
-        int count = 0
-
-        count += representation.getAttributeRelease().size()
-        RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation =  representation.getRelyingPartyOverrides()
-        count += relyingPartyOverridesRepresentation.authenticationMethods.size() != 0 ? 1 : 0
-        count += relyingPartyOverridesRepresentation.dontSignResponse ? 1 : 0
-        count += relyingPartyOverridesRepresentation.ignoreAuthenticationMethod ? 1 : 0
-        count += relyingPartyOverridesRepresentation.nameIdFormats.size() != 0 ? 1 : 0
-        count += relyingPartyOverridesRepresentation.omitNotBefore ? 1 : 0
-        count += relyingPartyOverridesRepresentation.signAssertion ? 1 : 0
-        count += relyingPartyOverridesRepresentation.turnOffEncryption ? 1 : 0
-        count += relyingPartyOverridesRepresentation.useSha ? 1 : 0
-        count += StringUtils.isNotBlank(relyingPartyOverridesRepresentation.responderId) ? 1 : 0
-
-        return count
     }
 }

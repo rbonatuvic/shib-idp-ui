@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor {
     private String localId;
 

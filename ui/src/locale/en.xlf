@@ -3,16 +3,16 @@
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="label--app" datatype="html">
-        <source>Metadata Provider Management</source>
-        <target>Metadata Provider Management</target>
+        <source>Metadata Source Management</source>
+        <target>Metadata Source Management</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.ts</context>
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="action--manage-providers" datatype="html">
-        <source>Manage Providers</source>
-        <target>Manage Providers</target>
+      <trans-unit id="action--manage-sources" datatype="html">
+        <source>Manage Sources</source>
+        <target>Manage Sources</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.ts</context>
           <context context-type="linenumber">17</context>
@@ -26,9 +26,9 @@
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="action--add-provider" datatype="html">
-        <source>Metadata Provider</source>
-        <target>Metadata Provider</target>
+      <trans-unit id="action--add-source" datatype="html">
+        <source>Metadata Source</source>
+        <target>Metadata Source</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/app.component.ts</context>
           <context context-type="linenumber">40</context>
@@ -1131,9 +1131,9 @@
           <context context-type="linenumber">248</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="label--add-a-new-metadata-provider" datatype="html">
-        <source>Add a new metadata provider</source>
-        <target>Add a new metadata provider</target>
+      <trans-unit id="label--add-a-new-metadata-source" datatype="html">
+        <source>Add a new metadata source</source>
+        <target>Add a new metadata source</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/metadata-provider/container/new-provider.component.ts</context>
           <context context-type="linenumber">6</context>
@@ -1171,12 +1171,12 @@
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="action--save-metadata-provider" datatype="html">
+      <trans-unit id="action--save-metadata-source" datatype="html">
         <source>
-                    Save Metadata Provider
+                    Save Metadata Source
                 </source>
         <target>
-                    Save Metadata Provider
+                    Save Metadata Source
                 </target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/metadata-provider/container/upload-provider.component.ts</context>
@@ -1339,17 +1339,17 @@
           <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="message--delete-provider-title" datatype="html">
-        <source>Delete Metadata Provider?</source>
-        <target>Delete Metadata Provider?</target>
+      <trans-unit id="message--delete-source-title" datatype="html">
+        <source>Delete Metadata Source?</source>
+        <target>Delete Metadata Source?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/delete-dialog.component.ts</context>
           <context context-type="linenumber">2</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="message--delete-provider-body" datatype="html">
-        <source>You are deleting a metadata provider. This cannot be undone. Continue?</source>
-        <target>You are deleting a metadata provider. This cannot be undone. Continue?</target>
+      <trans-unit id="message--delete-source-body" datatype="html">
+        <source>You are deleting a metadata source. This cannot be undone. Continue?</source>
+        <target>You are deleting a metadata source. This cannot be undone. Continue?</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/delete-dialog.component.ts</context>
           <context context-type="linenumber">5</context>
@@ -1523,9 +1523,9 @@
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="message--add-new-md-provider" datatype="html">
-        <source>Add a new metadata provider</source>
-        <target>Add a new metadata provider</target>
+      <trans-unit id="message--add-new-md-source" datatype="html">
+        <source>Add a new metadata source</source>
+        <target>Add a new metadata source</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/edit-provider/container/wizard.component.ts</context>
           <context context-type="linenumber">8</context>
@@ -2173,6 +2173,82 @@
         <context-group purpose="location">
           <context context-type="sourcefile">app/metadata-provider/component/forms/organization-info-form.component.ts</context>
           <context context-type="linenumber">124</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="action--copy" datatype="html">
+        <source>Copy</source>
+        <target>Copy</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/new-provider.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--finish-validate" datatype="html">
+        <source>FINISH AND VALIDATE</source>
+        <target>FINISH AND VALIDATE</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--select-entity-id-to-copy" datatype="html">
+        <source>Select the Entity ID to copy</source>
+        <target>Select the Entity ID to copy</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--metadata-source-name-dashboard-display-only" datatype="html">
+        <source>Metadata Source Name (Dashboard Display Only)</source>
+        <target>Metadata Source Name (Dashboard Display Only)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/copy-provider.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--add-a-new-metadata-source" datatype="html">
+        <source>Add a new metadata source - Finish Summary</source>
+        <target>Add a new metadata source - Finish Summary</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/confirm-copy.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--edit-filter" datatype="html">
+        <source>Edit Filter - <x id="INTERPOLATION" equiv-text="{{ (filter$ | async).filterName }}"/></source>
+        <target>Edit Filter - <x id="INTERPOLATION" equiv-text="{{ (filter$ | async).filterName }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/edit-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="label--min-chars" datatype="html">
+        <source>Minimum 4 characters.</source>
+        <target>Minimum 4 characters.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/edit-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="action--create" datatype="html">
+        <source>Create</source>
+        <target>Create</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-provider/container/new-provider.component.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="message--filter-name-required" datatype="html">
+        <source>Filter Name is required</source>
+        <target>Filter Name is required</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/metadata-filter/container/edit-filter.component.ts</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
     </body>

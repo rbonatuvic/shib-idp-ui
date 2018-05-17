@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import java.util.List;
 
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class AttributeConsumingService extends AbstractXMLObject implements org.opensaml.saml.saml2.metadata.AttributeConsumingService {
 
     private int acsIndex;

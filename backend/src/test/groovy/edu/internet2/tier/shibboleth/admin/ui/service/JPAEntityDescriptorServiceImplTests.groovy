@@ -1,8 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import org.springframework.boot.test.json.JacksonTester
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -11,6 +23,9 @@ import org.xmlunit.diff.ElementSelectors
 import spock.lang.Specification
 
 class JPAEntityDescriptorServiceImplTests extends Specification {
+
+    def testObjectGenerator
+
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         init()
         it
@@ -20,8 +35,12 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
+    RandomGenerator generator
+
     def setup() {
         JacksonTester.initFields(this, new ObjectMapper())
+        generator = new RandomGenerator()
+        testObjectGenerator = new TestObjectGenerator()
     }
 
 
@@ -588,5 +607,130 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors().size() == 1
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors()[0].getUse() == null
+    }
+
+    def "createAttributeWithBooleanValue properly adds booleans to attributes"() {
+        given:
+        def expectedName = "someName"
+        def expectedFriendlyName = "someFriendlyName"
+        def randomBoolean = generator.randomBoolean()
+
+        when:
+        def attribute = service.createAttributeWithBooleanValue(expectedName, expectedFriendlyName, randomBoolean)
+
+        then:
+        expectedName == attribute.getName()
+        expectedFriendlyName == attribute.getFriendlyName()
+        attribute.getAttributeValues().size() == 1
+        attribute.getAttributeValues().get(0) instanceof XSBoolean
+        Boolean.parseBoolean(((XSBoolean)attribute.getAttributeValues().get(0)).getStoredValue()) == randomBoolean
+
+        where:
+        i << (1..5)
+    }
+
+    def "createAttributeWithArbitraryValues properly adds additional attributes"() {
+        given:
+        def expectedName = "someName"
+        def expectedFriendlyName = "someFriendlyName"
+        def attributesArray = []
+        for (int index = 0; index < testRunIndex; index++) {
+            attributesArray.add("additionalAttributes" + index)
+        }
+
+
+        when:
+        def attribute = service.createAttributeWithArbitraryValues(expectedName,
+                expectedFriendlyName,
+                attributesArray)
+
+        then:
+        expectedName == attribute.getName()
+        expectedFriendlyName == attribute.getFriendlyName()
+        attribute.getAttributeValues().size() == testRunIndex
+        for (int index = 0; index < testRunIndex; index++) {
+            attribute.getAttributeValues().get(index) instanceof XSAny
+            ((XSAny)attribute.getAttributeValues().get(index)).getTextContent() == "additionalAttributes" + index
+        }
+
+        where:
+        testRunIndex << (1..5)
+    }
+
+    def "createAttributeWithArbitraryValues adds no attributes when passed no attributes"() {
+        given:
+        def expectedName = "someName"
+        def expectedFriendlyName = "someFriendlyName"
+
+        when:
+        def attribute = service.createAttributeWithArbitraryValues(expectedName, expectedFriendlyName)
+
+        then:
+        expectedName == attribute.getName()
+        expectedFriendlyName == attribute.getFriendlyName()
+        attribute.getAttributeValues().size() == 0
+    }
+
+    def "createAttributeWithArbitraryValues doesn't explode when passed a list of strings"() {
+        given:
+        def expectedName = "someName"
+        def expectedFriendlyName = "someFriendlyName"
+        List<String> attributesList = new ArrayList<String>()
+        for (int index = 0; index < testRunIndex; index++) {
+            attributesList.add("additionalAttributes" + index)
+        }
+
+        when:
+        def attribute = service.createAttributeWithArbitraryValues(expectedName,
+                expectedFriendlyName,
+                attributesList)
+
+        then:
+        expectedName == attribute.getName()
+        expectedFriendlyName == attribute.getFriendlyName()
+        attribute.getAttributeValues().size() == testRunIndex
+        for (int index = 0; index < testRunIndex; index++) {
+            attribute.getAttributeValues().get(index) instanceof XSAny
+            ((XSAny)attribute.getAttributeValues().get(index)).getTextContent() == "additionalAttributes" + index
+        }
+
+        where:
+        testRunIndex << (1..5)
+    }
+
+    def "updateDescriptorFromRepresentation throws expected exception"() {
+        given:
+        def randomEntityDescriptor = generateRandomEntityDescriptor()
+        def entityDescriptorRepresentation = service.createRepresentationFromDescriptor(randomEntityDescriptor)
+
+        when:
+        service.updateDescriptorFromRepresentation(randomEntityDescriptor, entityDescriptorRepresentation)
+
+        then:
+        thrown UnsupportedOperationException
+    }
+
+    def "createRepresentationFromDescriptor creates a representation containing a version that is a hash of the original object"() {
+        given:
+        def entityDescriptor = testObjectGenerator.buildEntityDescriptor()
+        def expectedVersion = entityDescriptor.hashCode()
+
+        when:
+        def representation = service.createRepresentationFromDescriptor(entityDescriptor)
+
+        then:
+        def actualVersion = representation.version
+        expectedVersion == actualVersion
+    }
+
+    EntityDescriptor generateRandomEntityDescriptor() {
+        EntityDescriptor ed = new EntityDescriptor()
+
+        ed.setEntityID(generator.randomId())
+        ed.setServiceProviderName(generator.randomString(10))
+        ed.setServiceEnabled(generator.randomBoolean())
+        ed.setResourceId(generator.randomId())
+
+        return ed
     }
 }

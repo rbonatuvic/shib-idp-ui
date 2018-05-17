@@ -12,6 +12,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -166,8 +168,9 @@ class FilterControllerTests extends Specification {
         def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
         def updatedFilter = testObjectGenerator.buildEntityAttributesFilter()
         updatedFilter.resourceId = randomFilter.resourceId
-        def postedJsonBody = mapper.writeValueAsString(
-                filterService.createRepresentationFromFilter(updatedFilter))
+        def updatedFilterRepresentation = filterService.createRepresentationFromFilter(updatedFilter)
+        updatedFilterRepresentation.setVersion(randomFilter.hashCode())
+        def postedJsonBody = mapper.writeValueAsString(updatedFilterRepresentation)
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId(randomGenerator.randomId())
@@ -190,8 +193,37 @@ class FilterControllerTests extends Specification {
                         .content(postedJsonBody))
 
         then:
+        def expectedJson = new JsonSlurper().parseText(postedJsonBody)
+        expectedJson << [version: updatedFilter.hashCode()]
         result.andExpect(status().isOk())
-                .andExpect(content().json(postedJsonBody, true))
+                .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
+    }
+
+    def "FilterController.update 409's if the version numbers don't match"() {
+        given:
+        def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
+        def updatedFilter = testObjectGenerator.buildEntityAttributesFilter()
+        updatedFilter.resourceId = randomFilter.resourceId
+        def postedJsonBody = mapper.writeValueAsString(
+                filterService.createRepresentationFromFilter(updatedFilter))
+
+        def originalMetadataResolver = new MetadataResolver()
+        originalMetadataResolver.setResourceId(randomGenerator.randomId())
+        originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildFilterList())
+        originalMetadataResolver.getMetadataFilters().add(randomFilter)
+
+        1 * metadataResolverRepository.findAll() >> [originalMetadataResolver]
+
+        def filterUUID = randomFilter.getResourceId()
+
+        when:
+        def result = mockMvc.perform(
+                put("/api/MetadataResolver/foo/Filter/$filterUUID")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(postedJsonBody))
+
+        then:
+        result.andExpect(status().is(409))
     }
 
     EntityAttributesFilter chooseRandomFilterFromList(List<EntityAttributesFilter> filters) {

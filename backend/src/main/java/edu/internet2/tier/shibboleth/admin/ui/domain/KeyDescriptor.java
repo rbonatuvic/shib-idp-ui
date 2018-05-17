@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class KeyDescriptor extends AbstractXMLObject implements org.opensaml.saml.saml2.metadata.KeyDescriptor {
 
     @Column(name = "keyDescriptorName")

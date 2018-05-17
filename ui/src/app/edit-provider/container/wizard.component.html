@@ -1,11 +1,11 @@
 <div class="container-fluid p-3" role="main">
-    <section class="section" *ngIf="provider$ | async" tabindex="0" [attr.aria-label]="'Add a new metadata provider wizard form - ' + (currentPage$ | async).label + ' ' + (provider$ | async).serviceProviderName">
+    <section class="section" *ngIf="provider$ | async" tabindex="0" [attr.aria-label]="'Add a new metadata source wizard form - ' + (currentPage$ | async).label + ' ' + (provider$ | async).serviceProviderName">
         <div class="section-header bg-info p-2 text-white">
             <div class="row justify-content-between">
                 <div class="col-md-12">
                     <span class="display-6" role="heading" aria-level="1">
                         <i class="fa fa-plus-square"></i>
-                        <ng-container i18n="@@message--add-new-md-provider">Add a new metadata provider</ng-container>
+                        <ng-container i18n="@@message--add-new-md-provider">Add a new metadata source</ng-container>
                         &ndash; {{ (currentPage$ | async).label }} ({{ (provider$ | async).serviceProviderName }})
                         <span class="pull-right">
                             (<ng-container i18n="@@message--wizard-status">Step {{ wizardIndex$ | async }} of {{ wizard.length + 1 }}</ng-container>)

@@ -18,6 +18,8 @@ import { AddDraftRequest } from '../../domain/action/draft-collection.action';
 import { AddProviderRequest, UploadProviderRequest } from '../../domain/action/provider-collection.action';
 import * as fromCollections from '../../domain/reducer';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
+import { MetadataProvider } from '../../domain/domain.type';
+import { Provider } from '../../domain/entity/provider';
 
 @Component({
     selector: 'blank-provider-form',
@@ -44,9 +46,10 @@ export class BlankProviderComponent implements OnInit {
     }
 
     next(): void {
-        this.save.emit({
+        const val: MetadataProvider = new Provider({
             entityId: this.providerForm.get('entityId').value,
             serviceProviderName: this.providerForm.get('serviceProviderName').value
         });
+        this.store.dispatch(new AddDraftRequest(val));
     }
 } /* istanbul ignore next */

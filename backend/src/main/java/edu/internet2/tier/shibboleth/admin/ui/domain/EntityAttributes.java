@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Assertion;
 
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class EntityAttributes extends AbstractElementExtensibleXMLObject implements org.opensaml.saml.ext.saml2mdattr.EntityAttributes {
 
     @OneToMany(cascade = CascadeType.ALL)

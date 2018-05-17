@@ -22,9 +22,7 @@ describe('Blank Provider Page', () => {
                 ReactiveFormsModule,
             ],
             declarations: [
-                NewProviderComponent,
-                BlankProviderComponent,
-                UploadProviderComponent
+                BlankProviderComponent
             ],
         });
 

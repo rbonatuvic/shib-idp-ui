@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.opensaml.core.xml.XMLObject;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class UIInfo extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.UIInfo {
     @OneToMany
     @Cascade(CascadeType.ALL)

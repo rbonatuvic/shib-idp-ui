@@ -42,5 +42,6 @@ class JPAFilterTargetServiceImplTests extends Specification {
         then:
         results.value == filterTarget.value
         results.type == filterTarget.entityAttributesFilterTargetType.toString()
+        results.version == filterTarget.hashCode()
     }
 }

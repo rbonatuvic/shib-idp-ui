@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class X509Data extends AbstractXMLObject implements org.opensaml.xmlsec.signature.X509Data {
     @OneToMany(cascade = CascadeType.ALL)
     List<AbstractXMLObject> xmlObjects = new ArrayList<>();

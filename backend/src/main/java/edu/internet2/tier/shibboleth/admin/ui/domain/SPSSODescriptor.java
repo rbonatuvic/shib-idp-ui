@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import com.google.common.collect.Lists;
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class SPSSODescriptor extends SSODescriptor implements org.opensaml.saml.saml2.metadata.SPSSODescriptor {
 
     private Boolean isAuthnRequestsSigned;

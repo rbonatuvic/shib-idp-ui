@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
-import com.google.common.collect.Lists;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import java.util.List;
 
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class AttributeAuthorityDescriptor extends RoleDescriptor implements org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor {
 
     @OneToMany(cascade = CascadeType.ALL)

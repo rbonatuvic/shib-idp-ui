@@ -9,6 +9,8 @@ import java.util.List;
 public class EntityDescriptorRepresentation implements Serializable {
 
 
+    private int version;
+
     public EntityDescriptorRepresentation() {
     }
 
@@ -192,5 +194,13 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     public void setAttributeRelease(List<String> attributeRelease) {
         this.attributeRelease = attributeRelease;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
