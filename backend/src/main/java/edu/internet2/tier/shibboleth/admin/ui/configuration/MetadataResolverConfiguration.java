@@ -51,7 +51,7 @@ public class MetadataResolverConfiguration {
         List<MetadataResolver> resolvers = new ArrayList<>();
 
         // TODO: remove this later when we allow for creation of arbitrary metadata resolvers
-        FileBackedHTTPMetadataResolver incommonMR = new FileBackedHTTPMetadataResolver(HttpClients.createMinimal(), "http://md.incommon.org/InCommon/InCommon-metadata.xml", "/tmp/incommon.xml"){
+        FileBackedHTTPMetadataResolver incommonMR = new FileBackedHTTPMetadataResolver(HttpClients.createMinimal(), "http://md.incommon.org/InCommon/InCommon-metadata.xml", "/tmp/incommonmd.xml"){
             @Override
             protected void initMetadataResolver() throws ComponentInitializationException {
                 super.initMetadataResolver();

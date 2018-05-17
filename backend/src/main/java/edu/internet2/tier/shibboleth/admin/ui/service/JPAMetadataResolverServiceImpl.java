@@ -16,6 +16,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.w3c.dom.Document;
 
 import java.util.*;
 
@@ -67,5 +68,11 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 logger.warn("error refreshing metadataResolver " + metadataResolverName, e);
             }
         }
+    }
+
+    @Override
+    public Document generateConfiguration() {
+        //TODO: implement
+        return null;
     }
 }
