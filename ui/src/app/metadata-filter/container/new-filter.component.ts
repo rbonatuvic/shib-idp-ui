@@ -11,7 +11,7 @@ import 'rxjs/add/observable/fromPromise';
 import * as fromFilter from '../reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { CancelCreateFilter, SelectId, CreateFilter, UpdateFilterChanges } from '../action/filter.action';
+import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
 import { AddFilterRequest } from '../../domain/action/filter-collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Filter } from '../../domain/entity/filter';
@@ -71,6 +71,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
         private valueEmitter: ProviderValueEmitter,
         private fb: FormBuilder
     ) {
+        this.store.dispatch(new ClearSearch());
         this.changes$ = this.store.select(fromFilter.getFilter);
         this.changes$.subscribe(c => this.changes = new Filter(c));
 
@@ -86,8 +87,6 @@ export class NewFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new ClearSearch());
-
         let id = this.form.get('entityId');
         id.valueChanges
             .distinctUntilChanged()
@@ -104,20 +103,18 @@ export class NewFilterComponent implements OnInit, OnDestroy {
             .startWith(this.form.value)
             .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
 
-        /*this.statusEmitSubscription = this.form
-            .statusChanges
-            .takeUntil(this.ngUnsubscribe)
-            .startWith(this.form.status)
-            .subscribe(status => this.onStatusChange.emit(status));*/
-
-
-            id
-            .valueChanges
+        id.valueChanges
             .distinctUntilChanged()
             .subscribe(entityId => {
                 if (id.valid) {
                     this.store.dispatch(new SelectId(entityId));
                 }
+            });
+        this.selected$
+            .distinctUntilChanged()
+            .subscribe(entityId => {
+                console.log(entityId);
+                id.setValue(entityId);
             });
     }
 
@@ -127,7 +124,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
     }
 
     searchEntityIds(term: string): void {
-        if (term.length >= 4 && this.ids.indexOf(term) < 0) {
+        if (term && term.length >= 4 && this.ids.indexOf(term) < 0) {
             this.store.dispatch(new QueryEntityIds({
                 term,
                 limit: 10

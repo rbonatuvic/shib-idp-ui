@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -13,6 +14,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,15 +73,24 @@ public class MetadataResolverConfiguration {
                 }
             }
 
+            // TODO: this is probably not the best way to do this
             @Nullable
             @Override
             public DateTime getLastRefresh() {
                 return null;
             }
+
+            // TODO: this is probably not the best way to do this
+            @Override
+            protected void processConditionalRetrievalHeaders(HttpResponse response) {
+                // let's do nothing 'cause we want to allow a refresh
+            }
         };
         incommonMR.setId("incommonmd");
         incommonMR.setParserPool(openSamlObjects.getParserPool());
+        incommonMR.setMetadataFilter(new MetadataFilterChain());
         incommonMR.initialize();
+
 
         resolvers.add(incommonMR);
 
