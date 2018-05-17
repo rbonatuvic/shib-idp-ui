@@ -6,29 +6,32 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDateTime
 
 import static org.hamcrest.CoreMatchers.containsString
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.http.MediaType.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class EntityDescriptorControllerTests extends Specification {
 
-    def generator
+    RandomGenerator randomGenerator
+    TestObjectGenerator generator
+
     def mapper
     def service
 
     def entityDescriptorRepository = Mock(EntityDescriptorRepository)
+    def mockRestTemplate = Mock(RestTemplate)
 
     def openSamlObjects = new OpenSamlObjects().with {
         init()
@@ -42,18 +45,18 @@ class EntityDescriptorControllerTests extends Specification {
 
     def setup() {
         generator = new TestObjectGenerator()
+        randomGenerator = new RandomGenerator()
         mapper = new ObjectMapper()
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
-        controller = new EntityDescriptorController (
+        controller = new EntityDescriptorController(
                 entityDescriptorRepository: entityDescriptorRepository,
                 openSamlObjects: openSamlObjects,
                 entityDescriptorService: service
         )
-
+        controller.restTemplate = mockRestTemplate
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
     }
-
 
     def 'GET /EntityDescriptors with empty repository'() {
         given:
@@ -357,6 +360,250 @@ class EntityDescriptorControllerTests extends Specification {
 
         result.andExpect(status().isOk())
                 .andExpect(content().json(expectedJsonBody, true))
+    }
+
+    def 'GET /EntityDescriptor/{resourceId} existing (xml)'() {
+        given:
+        def expectedCreationDate = '2017-10-23T11:11:11'
+        def providedResourceId = 'uuid-1'
+        def expectedSpName = 'sp1'
+        def expectedEntityId = 'eid1'
+
+        def entityDescriptor = new EntityDescriptor(resourceId: providedResourceId, entityID: expectedEntityId, serviceProviderName: expectedSpName,
+                serviceEnabled: true,
+                createdDate: LocalDateTime.parse(expectedCreationDate))
+        entityDescriptor.setElementLocalName("EntityDescriptor")
+        entityDescriptor.setNamespacePrefix("md")
+        entityDescriptor.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
+
+        def expectedXML = """<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor
+	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="$expectedEntityId"/>"""
+
+        when:
+        def result = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId")
+                .accept(APPLICATION_XML))
+
+        then:
+        //EntityDescriptor found
+        1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> entityDescriptor
+
+
+        result.andExpect(status().isOk())
+            .andExpect(content().xml(expectedXML))
+    }
+
+    def "POST /EntityDescriptor handles XML happily"() {
+        given:
+        def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
+  <md:Extensions>
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://scaldingspoon.org/realm" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>internal</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>givenName</saml:AttributeValue>
+        <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+      </saml:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.scaldingspoon.org/test1/acs" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
+'''
+        def spName = randomGenerator.randomString()
+
+        def expectedEntityDescriptor = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(postedBody.bytes))
+
+        1 * entityDescriptorRepository.findByEntityID(_) >> null
+        1 * entityDescriptorRepository.save(_) >> expectedEntityDescriptor
+
+        def expectedJson = """
+{
+	"version": ${expectedEntityDescriptor.hashCode()},
+	"id": "${expectedEntityDescriptor.resourceId}",
+	"serviceProviderName": null,
+	"entityId": "http://test.scaldingspoon.org/test1",
+	"organization": null,
+	"contacts": null,
+	"mdui": null,
+	"serviceProviderSsoDescriptor": {
+		"protocolSupportEnum": "SAML 2",
+		"nameIdFormats": [
+			"urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+		]
+	},
+	"logoutEndpoints": null,
+	"securityInfo": null,
+	"assertionConsumerServices": [
+		{
+			"locationUrl": "https://test.scaldingspoon.org/test1/acs",
+			"binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+			"makeDefault": false
+		}
+	],
+	"serviceEnabled": false,
+	"createdDate": null,
+	"modifiedDate": null,
+	"relyingPartyOverrides": {
+		"signAssertion": false,
+		"dontSignResponse": false,
+		"turnOffEncryption": false,
+		"useSha": false,
+		"ignoreAuthenticationMethod": false,
+		"omitNotBefore": false,
+		"responderId": null,
+		"nameIdFormats": [],
+		"authenticationMethods": []
+	},
+	"attributeRelease": [
+		"givenName",
+		"employeeNumber"
+	]
+}
+"""
+
+        when:
+        def result = mockMvc.perform(post("/api/EntityDescriptor")
+                .contentType(APPLICATION_XML)
+                .content(postedBody)
+                .param("spName", spName))
+
+
+        then:
+        result.andExpect(status().isCreated())
+            .andExpect(content().json(expectedJson, true))
+    }
+
+    def "POST /EntityDescriptor returns error for duplicate entity id"() {
+        given:
+        def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
+  <md:Extensions>
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://scaldingspoon.org/realm" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>internal</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>givenName</saml:AttributeValue>
+        <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+      </saml:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.scaldingspoon.org/test1/acs" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
+'''
+        def spName = randomGenerator.randomString()
+
+        def expectedEntityDescriptor = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(postedBody.bytes))
+
+        1 * entityDescriptorRepository.findByEntityID(expectedEntityDescriptor.entityID) >> expectedEntityDescriptor
+        0 * entityDescriptorRepository.save(_)
+
+        when:
+        def result = mockMvc.perform(post("/api/EntityDescriptor")
+                .contentType(APPLICATION_XML)
+                .content(postedBody)
+                .param("spName", spName))
+
+
+        then:
+        result.andExpect(status().isConflict())
+                .andExpect(content().string("The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists."))
+    }
+
+    def "POST /EntityDescriptor handles x-www-form-urlencoded happily"() {
+        given:
+        def postedMetadataUrl = "http://test.scaldingspoon.org/test1"
+        def restXml = '''<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
+  <md:Extensions>
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://scaldingspoon.org/realm" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>internal</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>givenName</saml:AttributeValue>
+        <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+      </saml:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.scaldingspoon.org/test1/acs" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
+'''
+
+        def spName = randomGenerator.randomString()
+
+        def expectedEntityDescriptor = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(restXml.bytes))
+
+        1 * mockRestTemplate.getForObject(_, _) >> restXml.bytes
+        1 * entityDescriptorRepository.findByEntityID(_) >> null
+        1 * entityDescriptorRepository.save(_) >> expectedEntityDescriptor
+
+        def expectedJson = """
+{
+	"version": ${expectedEntityDescriptor.hashCode()},
+	"id": "${expectedEntityDescriptor.resourceId}",
+	"serviceProviderName": null,
+	"entityId": "http://test.scaldingspoon.org/test1",
+	"organization": null,
+	"contacts": null,
+	"mdui": null,
+	"serviceProviderSsoDescriptor": {
+		"protocolSupportEnum": "SAML 2",
+		"nameIdFormats": [
+			"urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+		]
+	},
+	"logoutEndpoints": null,
+	"securityInfo": null,
+	"assertionConsumerServices": [
+		{
+			"locationUrl": "https://test.scaldingspoon.org/test1/acs",
+			"binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
+			"makeDefault": false
+		}
+	],
+	"serviceEnabled": false,
+	"createdDate": null,
+	"modifiedDate": null,
+	"relyingPartyOverrides": {
+		"signAssertion": false,
+		"dontSignResponse": false,
+		"turnOffEncryption": false,
+		"useSha": false,
+		"ignoreAuthenticationMethod": false,
+		"omitNotBefore": false,
+		"responderId": null,
+		"nameIdFormats": [],
+		"authenticationMethods": []
+	},
+	"attributeRelease": [
+		"givenName",
+		"employeeNumber"
+	]
+}
+"""
+
+        when:
+        def result = mockMvc.perform(post("/api/EntityDescriptor")
+                .contentType(APPLICATION_FORM_URLENCODED)
+                .param("metadataUrl", postedMetadataUrl)
+                .param("spName", spName))
+
+
+        then:
+        result.andExpect(status().isCreated())
+                .andExpect(content().json(expectedJson, true))
     }
 
     def "PUT /EntityDescriptor updates entity descriptors properly"() {

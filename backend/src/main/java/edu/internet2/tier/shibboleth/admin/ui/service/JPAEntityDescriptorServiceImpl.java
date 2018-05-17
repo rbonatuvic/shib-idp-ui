@@ -71,9 +71,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     private EntityService entityService;
 
-    public JPAEntityDescriptorServiceImpl() {
-    }
-
     public JPAEntityDescriptorServiceImpl(OpenSamlObjects openSamlObjects, EntityService entityService) {
         this.openSamlObjects = openSamlObjects;
         this.entityService = entityService;
