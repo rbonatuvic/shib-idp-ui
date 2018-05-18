@@ -31,22 +31,27 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
         when:
         def mdr = new FileBackedHttpMetadataResolver().with {
             it.name = "FileBackedHttpMetadata"
-            it.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes()
-            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes()
 
-            it.httpMetadataResolverAttributes.connectionRequestTimeout = "PT05"
-            it.httpMetadataResolverAttributes.disregardTLSCertificate = true
-            it.httpMetadataResolverAttributes.httpCaching = memory
-            it.reloadableMetadataResolverAttributes.indexesRef = "indexesSpringBeanId"
+            it.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes().with {
+                it.connectionRequestTimeout = "PT05"
+                it.disregardTLSCertificate = true
+                it.httpCaching = memory
+                it
+            }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.indexesRef = "indexesSpringBeanId"
+                it
+            }
+
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = ENTITY
                     it.setValue(["hola"])
-                    return it
+                    it
                 }
-                return it
+                it
             })
-            return it
+            it
         }
         repositoryUnderTest.save(mdr)
 
