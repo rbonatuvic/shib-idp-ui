@@ -41,7 +41,7 @@ public class HttpMetadataResolverAttributes {
     private String proxyPassword;
 
     @Enumerated(STRING)
-    @Column(length = 5)
+    @Column(length = 6)
     private HttpCachingType httpCaching;
 
     private String httpCacheDirectory;
