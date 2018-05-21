@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -27,8 +28,10 @@ import java.util.UUID;
 @ToString
 public class MetadataResolver extends AbstractAuditable {
 
+    @Column(unique=true)
     private String name;
 
+    @Column(unique=true)
     private String resourceId = UUID.randomUUID().toString();
 
     private Boolean requireValidMetadata;

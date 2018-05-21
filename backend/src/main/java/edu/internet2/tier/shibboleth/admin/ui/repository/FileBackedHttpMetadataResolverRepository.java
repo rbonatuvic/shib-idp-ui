@@ -9,4 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface FileBackedHttpMetadataResolverRepository extends CrudRepository<FileBackedHttpMetadataResolver, Long> {
 
     FileBackedHttpMetadataResolver findByName(String name);
+    boolean deleteByResourceId(String resourceId);
+    FileBackedHttpMetadataResolver findByResourceId(String resourceId);
 }
