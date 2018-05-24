@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="Service Provider Entity ID XML Test UPLOAD">
+    <md:Extensions>
+        <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="securityConfiguration" Name="http://shibboleth.net/ns/profiles/securityConfiguration" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue>
+                    shibboleth.SecurityConfiguration.SHA1
+                </saml2:AttributeValue>
+            </saml2:Attribute>
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="includeConditionsNotBefore" Name="http://shibboleth.net/ns/profiles/includeConditionsNotBefore" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:boolean">
+                    false
+                </saml2:AttributeValue>
+            </saml2:Attribute>
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="responderId" Name="http://shibboleth.net/ns/profiles/responderId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue>
+                    ResponderID_EDIT
+                </saml2:AttributeValue>
+            </saml2:Attribute>
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="nameIDFormatPrecedence" Name="http://shibboleth.net/ns/profiles/nameIDFormatPrecedence" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue>
+                    urn:oasis:names:tc:SAML:2.0:nameid-format:transient_EDIT
+                </saml2:AttributeValue>
+                <saml2:AttributeValue>
+                    NameIDFormatToSend_EDIT
+                </saml2:AttributeValue>
+                <saml2:AttributeValue>
+                    _EDIT
+                </saml2:AttributeValue>
+            </saml2:Attribute>
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="defaultAuthenticationMethods" Name="http://shibboleth.net/ns/profiles/defaultAuthenticationMethods" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml2:AttributeValue>
+                    Authentication Methods to Use_EDIT
+                </saml2:AttributeValue>
+                <saml2:AttributeValue>
+                    _EDIT
+                </saml2:AttributeValue>
+            </saml2:Attribute>
+            <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues">
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">
+                    eduPersonPrincipalName
+                </saml2:AttributeValue>
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">
+                    givenName
+                </saml2:AttributeValue>
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">
+                    eduPersonAffiliation
+                </saml2:AttributeValue>
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">
+                    eduPersonPrimaryAffiliation
+                </saml2:AttributeValue>
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">
+                    eduPersonAssurance
+                </saml2:AttributeValue>
+                <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">
+                    employeeNumber
+                </saml2:AttributeValue>
+            </saml2:Attribute>
+        </mdattr:EntityAttributes>
+    </md:Extensions>
+    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        Certificate Both_EDIT
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        Certificate Both_EDIT
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        CERT ENCRYPTION_EDIT
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        CERT SIGNING_EDIT
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        _EDIT
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        _EDIT
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="LogoutEndpointPOST_EDIT.edu"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="LogoutEndpointREDIRECT_EDIT.edu"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="_EDIT"/>
+        <md:NameIDFormat>
+            urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+        </md:NameIDFormat>
+        <md:NameIDFormat>
+            _EDIT
+        </md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="AssertionConsumerServiceLocationURLPOST_EDIT.edu"/>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="AssertionConsumerServiceLocationURLredirect_EDITnowDEFAULT.edu"/>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="AssertionConsumerServiceLocationURLPOST_Nolongerdefault_EDIT.edu"/>
+    </md:SPSSODescriptor>
+    <md:Organization>
+        <md:OrganizationName xml:lang="en">
+            Organization Name_EDIT
+        </md:OrganizationName>
+        <md:OrganizationDisplayName xml:lang="en">
+            Organization Display Name _EDIT
+        </md:OrganizationDisplayName>
+        <md:OrganizationURL xml:lang="en">
+            Organization URL _EDIT
+        </md:OrganizationURL>
+    </md:Organization>
+    <md:ContactPerson contactType="administrative">
+        <md:GivenName>
+            New Contact_EDIT
+        </md:GivenName>
+        <md:EmailAddress>
+            newcontact@email_EDIT.com
+        </md:EmailAddress>
+    </md:ContactPerson>
+    <md:ContactPerson contactType="other">
+        <md:GivenName>
+            _EDIT
+        </md:GivenName>
+        <md:EmailAddress>
+            _EDIT@email.com
+        </md:EmailAddress>
+    </md:ContactPerson>
+</md:EntityDescriptor>

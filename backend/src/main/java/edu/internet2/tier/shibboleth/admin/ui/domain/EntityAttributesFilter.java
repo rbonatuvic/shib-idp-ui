@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class EntityAttributesFilter extends MetadataFilter {
     private EntityAttributesFilterTarget entityAttributesFilterTarget;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<Attribute> attributes = new ArrayList<>();
 
     public EntityAttributesFilterTarget getEntityAttributesFilterTarget() {

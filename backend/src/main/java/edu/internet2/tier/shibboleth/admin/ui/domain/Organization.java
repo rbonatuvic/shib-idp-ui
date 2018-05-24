@@ -18,14 +18,17 @@ public class Organization extends AbstractAttributeExtensibleXMLObject implement
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "org_orgname_id")
+    @OrderColumn
     private List<OrganizationName> organizationNames = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "org_orgdisplayname_id")
+    @OrderColumn
     private List<OrganizationDisplayName> organizationDisplayNames = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "org_orgurl_id")
+    @OrderColumn
     private List<OrganizationURL> organizationURLs = new ArrayList<>();
 
     @Override

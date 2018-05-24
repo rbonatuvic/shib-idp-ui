@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.List;
 
 
@@ -16,14 +17,17 @@ public class PDPDescriptor extends RoleDescriptor implements org.opensaml.saml.s
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pdpdesc_authzserv_id")
+    @OrderColumn
     private List<AuthzService> authzServices;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pdpdesc_assertidreqserv_id")
+    @OrderColumn
     private List<AssertionIDRequestService> assertionIDRequestServices;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pdpdesc_nameidfmt_id")
+    @OrderColumn
     private List<NameIDFormat> nameIDFormats;
 
     @Override

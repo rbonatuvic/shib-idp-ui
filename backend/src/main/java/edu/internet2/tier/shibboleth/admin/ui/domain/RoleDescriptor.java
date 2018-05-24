@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 import javax.persistence.ElementCollection;
 import javax.persistence.JoinColumn;
@@ -23,14 +24,16 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude={"unknownAttributes"})
 public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.RoleDescriptor {
 
     @ElementCollection
+    @OrderColumn
     private List<String> supportedProtocols = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "roledesc_keydesc_id")
+    @OrderColumn
     private List<KeyDescriptor> keyDescriptors = new ArrayList<>(); // TODO: implement
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -38,10 +41,12 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "roledesc_contactperson_id")
+    @OrderColumn
     private List<ContactPerson> contactPersons = new ArrayList<>(); // TODO: implement
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "roledesc_endpoint_id")
+    @OrderColumn
     private List<Endpoint> endpoints = new ArrayList<>();
 
     private boolean isSupportedProtocol;

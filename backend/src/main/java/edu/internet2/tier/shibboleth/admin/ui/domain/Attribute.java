@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Attribute extends AbstractAttributeExtensibleXMLObject implements o
     private String friendlyName;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<AbstractXMLObject> attributeValues = new ArrayList<>();
 
     @Override

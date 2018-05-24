@@ -5,12 +5,14 @@ import lombok.EqualsAndHashCode;
 import javax.annotation.Nullable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OrderColumn;
 import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Keywords extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.Keywords {
     @ElementCollection
+    @OrderColumn
     private List<String> keywords;
     private String xmlLang;
 

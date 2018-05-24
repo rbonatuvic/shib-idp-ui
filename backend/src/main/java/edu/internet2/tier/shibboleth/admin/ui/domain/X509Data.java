@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 public class X509Data extends AbstractXMLObject implements org.opensaml.xmlsec.signature.X509Data {
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     List<AbstractXMLObject> xmlObjects = new ArrayList<>();
 
     @Nonnull

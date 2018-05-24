@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ public class MetadataResolver extends AbstractAuditable {
     private String resourceId = UUID.randomUUID().toString();
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
 
     public String getName() {

@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,22 +20,27 @@ public class IDPSSODescriptor extends SSODescriptor implements org.opensaml.saml
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idpssodesc_ssoserv_id")
+    @OrderColumn
     private List<SingleSignOnService> singleSignOnServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idpssodesc_nameidmapserv_id")
+    @OrderColumn
     private List<NameIDMappingService> nameIDMappingServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idpssodesc_asseridreqserv_id")
+    @OrderColumn
     private List<AssertionIDRequestService> assertionIDRequestServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idpssodesc_attribprofile_id")
+    @OrderColumn
     private List<AttributeProfile> attributeProfiles = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idpssodesc_attrib_id")
+    @OrderColumn
     private List<Attribute> attributes = new ArrayList<>();
 
     @Override
