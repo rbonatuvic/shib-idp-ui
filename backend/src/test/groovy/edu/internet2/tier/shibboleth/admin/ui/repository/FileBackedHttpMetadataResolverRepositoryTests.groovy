@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
@@ -12,20 +13,27 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.*
+import javax.persistence.EntityManager
+
+import static edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.memory
 
 @DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, MetadataResolverConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
 
     @Autowired
     FileBackedHttpMetadataResolverRepository repositoryUnderTest
+
+    @Autowired
+    EntityManager entityManager
 
     def "file backed http metadata resolver instances persist OK"() {
         when:
@@ -68,5 +76,52 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
         item.httpMetadataResolverAttributes.disregardTLSCertificate
         item.httpMetadataResolverAttributes.httpCaching == memory
         item.reloadableMetadataResolverAttributes.indexesRef == "indexesSpringBeanId"
+    }
+
+    def "FileBackedHttpMetadataResolver hashcode works as desired"() {
+        given:
+        // TODO: Ask JJ why an empty reloadableMetadataResolverAttributes object results in a null object for item2 below
+        def resolverJson = '''{
+	"name": "name",
+	"requireValidMetadata": true,
+	"failFastInitialization": true,
+	"sortKey": 7,
+	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
+	"useDefaultPredicateRegistry": true,
+	"satisfyAnyPredicates": true,
+	"metadataFilters": [],
+	"reloadableMetadataResolverAttributes": {
+	},
+	"httpMetadataResolverAttributes": {
+		"httpClientRef": "httpClientRef",
+		"connectionRequestTimeout": "connectionRequestTimeout",
+		"requestTimeout": "requestTimeout",
+		"socketTimeout": "socketTimeout",
+		"disregardTLSCertificate": true,
+		"tlsTrustEngineRef": "tlsTrustEngineRef",
+		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
+		"proxyHost": "proxyHost",
+		"proxyPort": "proxyPort",
+		"proxyUser": "proxyUser",
+		"proxyPassword": "proxyPassword",
+		"httpCaching": "none",
+		"httpCacheDirectory": "httpCacheDirectory",
+	    "httpMaxCacheEntries": 1,
+		"httpMaxCacheEntrySize": 2
+	}
+}'''
+
+        when:
+        def resolver = new ObjectMapper().readValue(resolverJson.bytes, FileBackedHttpMetadataResolver)
+        def persistedResolver = repositoryUnderTest.save(resolver)
+        entityManager.flush()
+
+        then:
+        entityManager.clear()
+        def item1 = repositoryUnderTest.findByResourceId(persistedResolver.resourceId)
+        entityManager.clear()
+        def item2 = repositoryUnderTest.findByResourceId(persistedResolver.resourceId)
+
+        item1.hashCode() == item2.hashCode()
     }
 }

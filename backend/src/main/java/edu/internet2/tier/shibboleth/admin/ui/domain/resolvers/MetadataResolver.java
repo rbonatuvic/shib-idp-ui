@@ -15,13 +15,15 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude={"version"})
 @NoArgsConstructor
 @Getter
 @Setter
@@ -47,5 +49,9 @@ public class MetadataResolver extends AbstractAuditable {
     private Boolean satisfyAnyPredicates;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
+
+    @Transient
+    private int version;
 }
