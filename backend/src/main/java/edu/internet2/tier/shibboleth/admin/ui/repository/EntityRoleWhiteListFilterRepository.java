@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter;
 import org.springframework.data.repository.CrudRepository;
 
 /**
