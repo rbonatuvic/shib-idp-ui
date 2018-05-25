@@ -7,7 +7,6 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.FileBackedHttpMetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
-import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -30,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class FileBackedHttpMetadataProviderControllerTests extends Specification {
-    TestObjectGenerator testObjectGenerator
     RandomGenerator randomGenerator
     ObjectMapper mapper
 
@@ -40,7 +38,6 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def setup() {
         randomGenerator = new RandomGenerator()
-        //testObjectGenerator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
 
         controller = new FileBackedHttpMetadataProviderController (
