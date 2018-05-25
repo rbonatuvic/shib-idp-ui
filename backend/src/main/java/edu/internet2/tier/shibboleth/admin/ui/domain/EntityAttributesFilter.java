@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.CascadeType;

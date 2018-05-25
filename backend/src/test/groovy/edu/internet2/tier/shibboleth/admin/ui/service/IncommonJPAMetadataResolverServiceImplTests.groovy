@@ -4,14 +4,11 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import org.apache.http.impl.client.HttpClients
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
-import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest

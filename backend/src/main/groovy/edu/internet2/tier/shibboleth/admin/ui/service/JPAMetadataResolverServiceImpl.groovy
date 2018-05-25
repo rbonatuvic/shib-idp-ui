@@ -47,7 +47,7 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
             List<MetadataFilter> metadataFilters = new ArrayList<>();
 
-            for (edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter metadataFilter : jpaMetadataResolver.getMetadataFilters()) {
+            for (edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter metadataFilter : jpaMetadataResolver.getMetadataFilters()) {
                 if (metadataFilter instanceof EntityAttributesFilter) {
                     EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter) metadataFilter;
 
@@ -112,7 +112,7 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                             RetainedRole('md:SPSSODescriptor')
                         }
                         //TODO: enhance
-                        mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter filter ->
+                        mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
                             if (filter instanceof EntityAttributesFilter) {
                                 EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter)filter
                                 MetadataFilter('xsi:type': 'EntityAttributes') {

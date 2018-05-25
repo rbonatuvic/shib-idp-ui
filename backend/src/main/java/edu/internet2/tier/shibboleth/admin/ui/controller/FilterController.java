@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter;
-import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
