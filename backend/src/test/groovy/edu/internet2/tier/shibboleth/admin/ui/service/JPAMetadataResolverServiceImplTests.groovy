@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
@@ -75,7 +74,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
   </md:SPSSODescriptor>
 </md:EntityDescriptor>'''
         when:
-        def mdr = new edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver().with {
+        def mdr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver().with {
             it.name = "testme"
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {

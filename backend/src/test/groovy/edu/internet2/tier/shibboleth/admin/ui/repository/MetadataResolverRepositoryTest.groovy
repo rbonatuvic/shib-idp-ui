@@ -5,7 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConf
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl

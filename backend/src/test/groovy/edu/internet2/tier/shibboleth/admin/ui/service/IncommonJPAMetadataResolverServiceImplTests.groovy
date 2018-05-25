@@ -97,7 +97,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
             }
 
             if (!metadataResolverRepository.findAll().iterator().hasNext()) {
-                edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver mr = new edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver()
+                edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver()
                 mr.setName("incommonmd")
                 metadataResolverRepository.save(mr)
             }

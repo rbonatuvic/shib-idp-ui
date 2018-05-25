@@ -40,7 +40,7 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
         // MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().stream().filter(r -> r.getId().equals(metadataResolverName)).findFirst().get();
         MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverName }
-        edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName);
+        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName);
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
             MetadataFilterChain metadataFilterChain = (MetadataFilterChain)targetMetadataResolver.getMetadataFilter();
@@ -88,7 +88,7 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:type': 'ChainingMetadataProvider',
                     'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
             ) {
-                metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver mr ->
+                metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
                     MetadataProvider(id: 'HTTPMetadata',
                             'xsi:type': 'FileBackedHTTPMetadataProvider',
                             backingFile: '%{idp.home}/metadata/incommonmd.xml',
