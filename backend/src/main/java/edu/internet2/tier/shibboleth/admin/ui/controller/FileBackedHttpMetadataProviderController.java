@@ -43,7 +43,7 @@ public class FileBackedHttpMetadataProviderController {
     @GetMapping("/name/{metadataProviderName}")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getOneByName(@PathVariable String metadataProviderName) {
-        FileBackedHttpMetadataResolver resolver = repository.findByResourceId(metadataProviderName);
+        FileBackedHttpMetadataResolver resolver = repository.findByName(metadataProviderName);
         if (resolver == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -95,6 +95,7 @@ public class FileBackedHttpMetadataProviderController {
         //TODO: Do we need to set anything else? dates?
 
         FileBackedHttpMetadataResolver updatedResolver = repository.save(resolver);
+        updatedResolver.setVersion(updatedResolver.hashCode());
 
         return ResponseEntity.ok(updatedResolver);
     }

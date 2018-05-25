@@ -80,7 +80,8 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
 
     def "FileBackedHttpMetadataResolver hashcode works as desired"() {
         given:
-        // TODO: Ask JJ why an empty reloadableMetadataResolverAttributes object results in a null object for item2 below
+        // TODO: There is weirdness here if reloadableMetadataResolverAttributes is empty.
+        // I suspect similar weirdness if httpMetadataResolverAttributes is an empty object, too.
         def resolverJson = '''{
 	"name": "name",
 	"requireValidMetadata": true,
@@ -91,6 +92,7 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
 	"satisfyAnyPredicates": true,
 	"metadataFilters": [],
 	"reloadableMetadataResolverAttributes": {
+	    "parserPoolRef": "parserPoolRef"
 	},
 	"httpMetadataResolverAttributes": {
 		"httpClientRef": "httpClientRef",
@@ -117,7 +119,6 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
         entityManager.flush()
 
         then:
-        entityManager.clear()
         def item1 = repositoryUnderTest.findByResourceId(persistedResolver.resourceId)
         entityManager.clear()
         def item2 = repositoryUnderTest.findByResourceId(persistedResolver.resourceId)
