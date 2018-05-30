@@ -60,7 +60,7 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                      xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-                     entityID="http://test.example.org/test1-FAILED">
+                     entityID="http://test.example.org/test1-FAILED1">
   <md:Organization>
     <md:OrganizationName xml:lang="en">name</md:OrganizationName>
     <md:OrganizationDisplayName xml:lang="en">display name</md:OrganizationDisplayName>
