@@ -61,7 +61,7 @@ class FilterControllerTests extends Specification {
         testObjectGenerator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
 
-        controller = new FilterController (
+        controller = new EntityAttributesFilterController (
                 repository: metadataResolverRepository,
                 filterService: filterService,
                 metadataResolverService: new MetadataResolverService() {

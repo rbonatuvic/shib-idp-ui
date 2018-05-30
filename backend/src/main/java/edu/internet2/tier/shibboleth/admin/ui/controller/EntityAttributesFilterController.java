@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/MetadataResolver/{metadataResolverId}")
-public class FilterController {
+public class EntityAttributesFilterController {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(FilterController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(EntityAttributesFilterController.class);
 
     @Autowired
     private MetadataResolverRepository repository;
