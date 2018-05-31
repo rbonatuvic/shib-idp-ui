@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +20,7 @@ public class EntityAttributesFilter extends MetadataFilter {
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
+    @JsonIgnore
     private List<Attribute> attributes = new ArrayList<>();
 
     public EntityAttributesFilterTarget getEntityAttributesFilterTarget() {

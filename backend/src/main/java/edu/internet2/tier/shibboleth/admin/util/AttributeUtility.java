@@ -18,6 +18,10 @@ public class AttributeUtility {
     @Autowired
     private OpenSamlObjects openSamlObjects;
 
+    public void setOpenSamlObjects(OpenSamlObjects openSamlObjects) {
+        this.openSamlObjects = openSamlObjects;
+    }
+
     public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithBooleanValue(String name, String friendlyName, Boolean value) {
         edu.internet2.tier.shibboleth.admin.ui.domain.Attribute attribute = ((edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder) openSamlObjects.getBuilderFactory().getBuilder(edu.internet2.tier.shibboleth.admin.ui.domain.Attribute.DEFAULT_ELEMENT_NAME)).buildObject();
         attribute.setName(name);

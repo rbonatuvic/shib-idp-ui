@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,8 @@ import java.util.UUID;
 @Setter
 @ToString
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList")})
+@JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList"),
+        @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributesFilter")})
 public class MetadataFilter extends AbstractAuditable {
 
     private String name;
