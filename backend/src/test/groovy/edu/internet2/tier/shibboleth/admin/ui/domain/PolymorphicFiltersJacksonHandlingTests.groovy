@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -65,16 +66,26 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     def "Correct polymorphic serialization of EntityAttributesFilter"() {
         given:
-        def filter = testObjectGenerator.buildEntityAttributesFilter()
+        def simulatedPersistentFilter = testObjectGenerator.buildEntityAttributesFilter()
+        simulatedPersistentFilter.intoTransientRepresentation()
 
-        filter.intoTransientRepresentation()
+        def simulatedPrePersistentFilter = new EntityAttributesFilter()
+        simulatedPrePersistentFilter.attributeRelease = simulatedPersistentFilter.attributeRelease
+        simulatedPrePersistentFilter.relyingPartyOverrides = simulatedPersistentFilter.relyingPartyOverrides
+        simulatedPrePersistentFilter.fromTransientRepresentation()
 
         when:
-        def json = mapper.writeValueAsString(filter)
-        println(json)
+        def jsonFromPersistentFilter = mapper.writeValueAsString(simulatedPersistentFilter)
+        def jsonFromPrePersistentFilter = mapper.writeValueAsString(simulatedPrePersistentFilter)
+        println("JSON from persistent filter -> $jsonFromPersistentFilter")
+        println("JSON from PRE persistent filter -> $jsonFromPrePersistentFilter")
+        println("Attributes from persistent filter -> $simulatedPersistentFilter.attributes")
+        println("Attributes from PRE persistent filter -> $simulatedPrePersistentFilter.attributes")
+
 
         then:
-        json
+        simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
+
 
     }
 
