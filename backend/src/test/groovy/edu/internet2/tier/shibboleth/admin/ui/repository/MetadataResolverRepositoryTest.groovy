@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -34,10 +35,10 @@ class MetadataResolverRepositoryTest extends Specification {
     @Autowired
     EntityManager entityManager
 
-    OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
-        init()
-        it
-    }
+    @Autowired
+    OpenSamlObjects openSamlObjects
+
+    AttributeUtility attributeUtility
 
     def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
@@ -90,4 +91,5 @@ class MetadataResolverRepositoryTest extends Specification {
         then:
         item1.hashCode() == item2.hashCode()
     }
+
 }

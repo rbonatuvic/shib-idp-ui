@@ -21,14 +21,10 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
 
-        attributeUtility = new AttributeUtility().with {
-            it.openSamlObjects = new OpenSamlObjects().with {
-                it.init()
-                it
-            }
+        attributeUtility = new AttributeUtility(new OpenSamlObjects().with {
+            it.init()
             it
-        }
-
+        })
         testObjectGenerator = new TestObjectGenerator(attributeUtility)
     }
 
@@ -81,4 +77,5 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         json
 
     }
+
 }

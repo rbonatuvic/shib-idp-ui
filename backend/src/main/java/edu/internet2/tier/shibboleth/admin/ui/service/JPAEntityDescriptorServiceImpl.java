@@ -30,7 +30,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
+
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
@@ -42,7 +42,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
-import org.opensaml.core.xml.XMLObject;
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
@@ -540,54 +541,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
-        return getAttributeReleaseListFromAttributeList(attributeList);
+        return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
     }
 
     @Override
     public RelyingPartyOverridesRepresentation getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
-        RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation = new RelyingPartyOverridesRepresentation();
-
-        for (org.opensaml.saml.saml2.core.Attribute attribute : attributeList) {
-            Attribute jpaAttribute = (Attribute) attribute;
-            // TODO: this is going to get real ugly real quick. clean it up, future Jj!
-            switch (jpaAttribute.getName()) {
-                case MDDCConstants.SIGN_ASSERTIONS:
-                    relyingPartyOverridesRepresentation.setSignAssertion(getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.SIGN_RESPONSES:
-                    relyingPartyOverridesRepresentation.setDontSignResponse(!getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.ENCRYPT_ASSERTIONS:
-                    relyingPartyOverridesRepresentation.setTurnOffEncryption(!getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.SECURITY_CONFIGURATION:
-                    if (getStringListValueOfAttribute(jpaAttribute).contains("shibboleth.SecurityConfiguration.SHA1")) {
-                        relyingPartyOverridesRepresentation.setUseSha(true);
-                    }
-                    break;
-                case MDDCConstants.DISALLOWED_FEATURES:
-                    if ((Integer.decode(getStringListValueOfAttribute(jpaAttribute).get(0)) & 0x1) == 0x1) {
-                        relyingPartyOverridesRepresentation.setIgnoreAuthenticationMethod(true);
-                    }
-                    break;
-                case MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE:
-                    relyingPartyOverridesRepresentation.setOmitNotBefore(!getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.RESPONDER_ID:
-                    relyingPartyOverridesRepresentation.setResponderId(getStringListValueOfAttribute(jpaAttribute).get(0));
-                    break;
-                case MDDCConstants.NAME_ID_FORMAT_PRECEDENCE:
-                    relyingPartyOverridesRepresentation.setNameIdFormats(getStringListValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.DEFAULT_AUTHENTICATION_METHODS:
-                    relyingPartyOverridesRepresentation.setAuthenticationMethods(getStringListValueOfAttribute(jpaAttribute));
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return relyingPartyOverridesRepresentation;
+        return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
     }
 
 

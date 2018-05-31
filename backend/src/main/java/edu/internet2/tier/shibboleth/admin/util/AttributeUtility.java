@@ -15,10 +15,9 @@ import java.util.List;
  */
 public class AttributeUtility {
 
-    @Autowired
     private OpenSamlObjects openSamlObjects;
 
-    public void setOpenSamlObjects(OpenSamlObjects openSamlObjects) {
+    public AttributeUtility(OpenSamlObjects openSamlObjects) {
         this.openSamlObjects = openSamlObjects;
     }
 
