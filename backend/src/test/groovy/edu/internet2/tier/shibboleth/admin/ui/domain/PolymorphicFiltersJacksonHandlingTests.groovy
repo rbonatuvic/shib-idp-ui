@@ -2,21 +2,20 @@ package edu.internet2.tier.shibboleth.admin.ui.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import spock.lang.Specification
-
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
 
 class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     ObjectMapper mapper
 
     AttributeUtility attributeUtility
+
+    TestObjectGenerator testObjectGenerator
 
     def setup() {
         mapper = new ObjectMapper()
@@ -29,6 +28,8 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
             }
             it
         }
+
+        testObjectGenerator = new TestObjectGenerator(attributeUtility)
     }
 
     def "Correct polymorphic serialization of EntityRoleWhiteListFilter"() {
@@ -68,16 +69,9 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     def "Correct polymorphic serialization of EntityAttributesFilter"() {
         given:
-        def filter = new EntityAttributesFilter().with {
-            it.name = 'EntityAttributesFilter'
-            it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
-                it.entityAttributesFilterTargetType = ENTITY
-                it.value = ['value1']
-                it
-            }
-            it.attributes = [attributeUtility.createAttributeWithBooleanValue('myattr', 'myattrFriendy', true)]
-            it
-        }
+        def filter = testObjectGenerator.buildEntityAttributesFilter()
+
+        filter.intoTransientRepresentation()
 
         when:
         def json = mapper.writeValueAsString(filter)
