@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, MetadataResolverConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class EntityAttributesFilterControllerTests extends Specification {
+class MetadataFiltersControllerTests extends Specification {
 
     @Autowired
     AttributeUtility attributeUtility
@@ -61,7 +61,7 @@ class EntityAttributesFilterControllerTests extends Specification {
         testObjectGenerator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
 
-        controller = new EntityAttributesFilterController (
+        controller = new MetadataFiltersController (
                 repository: metadataResolverRepository,
                 filterService: filterService,
                 metadataResolverService: new MetadataResolverService() {

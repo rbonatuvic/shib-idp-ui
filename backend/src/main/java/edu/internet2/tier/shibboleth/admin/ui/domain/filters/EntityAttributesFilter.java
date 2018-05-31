@@ -63,7 +63,7 @@ public class EntityAttributesFilter extends MetadataFilter {
         List<org.opensaml.saml.saml2.core.Attribute> attributeList = new ArrayList<>();
         attributeList.addAll(getAttributeListFromAttributeReleaseList(this.attributeRelease));
         attributeList.addAll(getAttributeListFromRelyingPartyOverridesRepresentation(this.relyingPartyOverrides));
-        this.attributes =
-                (List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>)(List<? extends org.opensaml.saml.saml2.core.Attribute>)attributeList;
+
+        this.attributes.addAll((List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>)(List<? extends org.opensaml.saml.saml2.core.Attribute>)attributeList);
     }
 }
