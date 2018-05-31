@@ -1,7 +1,7 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain;
+package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.CascadeType;

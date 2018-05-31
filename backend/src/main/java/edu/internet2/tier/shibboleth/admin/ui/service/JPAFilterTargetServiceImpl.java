@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation;
 
 /**

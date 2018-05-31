@@ -2,14 +2,15 @@ package edu.internet2.tier.shibboleth.admin.ui.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import spock.lang.Specification
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
 
 class PolymorphicFiltersJacksonHandlingTests extends Specification {
 

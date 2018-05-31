@@ -2,8 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName

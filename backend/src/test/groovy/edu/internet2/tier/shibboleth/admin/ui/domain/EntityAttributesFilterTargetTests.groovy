@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import spock.lang.Specification
 
 /**

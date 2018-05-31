@@ -3,8 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.repository
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl

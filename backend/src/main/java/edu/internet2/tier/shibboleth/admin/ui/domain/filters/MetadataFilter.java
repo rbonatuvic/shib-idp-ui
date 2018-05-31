@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
