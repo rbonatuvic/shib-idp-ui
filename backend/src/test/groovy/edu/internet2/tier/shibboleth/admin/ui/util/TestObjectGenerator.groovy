@@ -44,6 +44,7 @@ class TestObjectGenerator {
 
     EntityRoleWhiteListFilter entityRoleWhitelistFilter() {
         new EntityRoleWhiteListFilter().with {
+            it.name = 'EntityRoleWhiteList'
             it.retainedRoles = ['role1', 'role2']
             it.removeRolelessEntityDescriptors = true
             it
@@ -52,6 +53,7 @@ class TestObjectGenerator {
 
     EntityAttributesFilter entityAttributesFilter() {
         new EntityAttributesFilter().with {
+            it.name = 'EntityAttributes'
             it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
             it.setAttributes(buildAttributesList())
             it.intoTransientRepresentation()
@@ -61,7 +63,6 @@ class TestObjectGenerator {
 
     MetadataFilter buildFilter(Supplier<? extends MetadataFilter> filterSupplier) {
         MetadataFilter filter = filterSupplier.get()
-        filter.setName(generator.randomString(10))
         filter.setFilterEnabled(generator.randomBoolean())
         filter.setResourceId(generator.randomId())
         return filter

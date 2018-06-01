@@ -1,6 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
@@ -21,15 +24,19 @@ import java.util.UUID;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EqualsAndHashCode(callSuper = true, exclude={"version"})
+@EqualsAndHashCode(callSuper = true, exclude={"version", "type"})
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-/*@JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList"),
-        @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributesFilter")})*/
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@type", visible = true)
+@JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList"),
+       @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributes")})
 public class MetadataFilter extends AbstractAuditable {
+
+    //@JsonTypeId
+    @JsonProperty("@type")
+    transient String type;
 
     private String name;
 

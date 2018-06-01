@@ -32,13 +32,13 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
     def "Correct polymorphic serialization of EntityRoleWhiteListFilter"() {
         given:
         def givenFilterJson = """
-            {
-                "type" : "EntityRoleWhiteList",
+            {                                                
+                "@type" : "EntityRoleWhiteList",
                 "createdDate" : null,
                 "modifiedDate" : null,
                 "createdBy" : null,
                 "modifiedBy" : null,
-                "name" : "EntityRoleWhiteListFilter",
+                "name" : "EntityRoleWhiteList",
                 "resourceId" : "r1",
                 "filterEnabled" : false,
                 "version" : 0,
