@@ -1,17 +1,15 @@
 import { Component, Input, Output, OnInit, OnDestroy, AfterViewInit,
     ChangeDetectionStrategy, EventEmitter, ElementRef, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, FormControlName, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
 
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/startWith';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil, startWith } from 'rxjs/operators';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 
 import * as constants from '../../../shared/constant';
+import { removeNulls } from '../../../shared/util';
 
 @Component({
     selector: 'provider-form-fragment',
@@ -44,17 +42,15 @@ export class ProviderFormFragmentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.valueEmitSubscription = this.form
-            .valueChanges
-            .takeUntil(this.ngUnsubscribe)
-            .startWith(this.form.value)
-            .subscribe(changes => this.valueEmitter.emit(changes));
+        this.valueEmitSubscription = this.form.valueChanges.pipe(
+            takeUntil(this.ngUnsubscribe),
+            startWith(this.form.value)
+        ).subscribe(changes => this.valueEmitter.emit(removeNulls(changes, true)));
 
-        this.statusEmitSubscription = this.form
-            .statusChanges
-            .takeUntil(this.ngUnsubscribe)
-            .startWith(this.form.status)
-            .subscribe(status => this.statusEmitter.emit(status));
+        this.statusEmitSubscription = this.form.statusChanges.pipe(
+            takeUntil(this.ngUnsubscribe),
+            startWith(this.form.status)
+        ).subscribe(status => this.statusEmitter.emit(status));
     }
 
     ngOnDestroy(): void {

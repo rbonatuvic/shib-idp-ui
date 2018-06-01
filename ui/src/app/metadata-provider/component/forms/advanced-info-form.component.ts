@@ -1,12 +1,9 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
+import { Observable, Subscription, of } from 'rxjs';
+import { takeUntil, combineLatest, switchMap, map, startWith } from 'rxjs/operators';
 
-import 'rxjs/add/operator/throttleTime';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/startWith';
+import { Store } from '@ngrx/store';
 
 import * as fromCollection from '../../../domain/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
@@ -34,7 +31,7 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
 
     hasValue$: Observable<boolean>;
     totalValue$: Observable<string>;
-    ids$: Observable<string[]> = Observable.of([]);
+    ids$: Observable<string[]> = of([]);
 
     private validationSubscription: Subscription;
 
@@ -48,16 +45,19 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
 
         this.ids$ = this.store
             .select(fromCollection.getAllEntityIds)
-            .takeUntil(this.ngUnsubscribe)
-            .combineLatest(this.store.select(fromCollection.getSelectedProvider), (ids: string[], provider: MetadataProvider) => {
-                return ids.filter(id => provider.entityId !== id);
-            });
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                combineLatest(this.store.select(fromCollection.getSelectedProvider), (ids: string[], provider: MetadataProvider) => {
+                    return ids.filter(id => provider.entityId !== id);
+                })
+            );
     }
 
     createForm(): void {
-        let orgEmitter$ = this.valueEmitter.changeEmitted$
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(changes => Observable.of(changes.organization));
+        let orgEmitter$ = this.valueEmitter.changeEmitted$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            switchMap(changes => of(changes.organization))
+        );
         this.form = this.fb.group({
             entityId: ['', Validators.required],
             serviceProviderName: ['', Validators.required],
@@ -76,10 +76,11 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
 
         this.hasValue$ = this.form
             .get('organization')
-            .valueChanges
-            .startWith(this.form.get('organization').value)
-            .map(values => Object.keys(values).reduce((coll, key) => coll + (values[key] || ''), ''))
-            .map(value => !!value);
+            .valueChanges.pipe(
+                startWith(this.form.get('organization').value),
+                map(values => Object.keys(values).reduce((coll, key) => coll + (values[key] || ''), '')),
+                map(value => !!value)
+            );
 
         this.form
             .get('entityId')

@@ -1,9 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
+import { Store } from '@ngrx/store';
 
 import * as fromEditor from '../reducer';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
@@ -41,6 +40,6 @@ export class WizardNavComponent implements OnChanges {
         this.wizard = WizardDef;
 
         this.wizardIsValid$ = this.store.select(fromEditor.getEditorIsValid);
-        this.wizardIsInvalid$ = this.wizardIsValid$.map(valid => !valid);
+        this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
     }
 } /* istanbul ignore next */

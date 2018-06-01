@@ -16,12 +16,8 @@ import {
     OnChanges
 } from '@angular/core';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/operator/combineLatest';
+import { Observable, Subject, Subscription, interval } from 'rxjs';
+import { takeUntil, combineLatest, map } from 'rxjs/operators';
 
 import { keyCodes, isPrintableKeyCode } from '../../shared/keycodes';
 import { AutoCompleteState, AutoCompleteStateEmitter, defaultState } from './autocomplete.model';
@@ -88,8 +84,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     constructor(private navigator: NavigatorService) {}
 
     ngOnInit(): void {
-        this.$pollInput = Observable.interval(POLL_TIMEOUT);
-        this.$checkInputValue = this.$pollInput.takeUntil(this.ngUnsubscribe).combineLatest(this.input.valueChanges);
+        this.$pollInput = interval(POLL_TIMEOUT);
+        this.$checkInputValue = this.$pollInput
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                combineLatest(this.input.valueChanges)
+            );
         this.$pollSubscription = this.$checkInputValue.subscribe(([polled, value]) => {
             const inputReference = this.inputField.nativeElement;
             const queryHasChanged = inputReference && inputReference.value !== value;
@@ -103,7 +103,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         this.input.valueChanges.subscribe(newValue => this.handleInputChange(newValue));
         this.input.setValue(this.defaultValue);
 
-        this.menuIsVisible$ = this.state.changes$.map(state => state.menuOpen);
+        this.menuIsVisible$ = this.state.changes$.pipe(map(state => state.menuOpen));
     }
 
     ngOnDestroy(): void {

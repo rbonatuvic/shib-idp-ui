@@ -10,7 +10,7 @@
                             for="serviceEnabled">Enable this service upon saving?</label>
                     </div>
                     <ng-template #tooltipEnableThisServiceUponSaving i18n="@@tooltip--enable-this-service-upon-saving">Enable this service upon saving popover</ng-template>
-                    <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                        [ngbPopover]="tooltipEnableThisServiceUponSaving"
                        i18n-aria-label="@@tooltip--instruction"
                        role="tooltip"></i>
@@ -251,10 +251,10 @@
                     <tr *ngFor="let attr of attributesToRelease$ | async">
                         <td>{{ attr.label }}</td>
                         <td>
-                            <i class="fa fa-check" *ngIf="provider.attributeRelease.indexOf(attr.key) > -1"></i>
+                            <i class="fa fa-fw fa-check" *ngIf="provider.attributeRelease.indexOf(attr.key) > -1"></i>
                         </td>
                         <td>
-                            <i class="fa fa-check" *ngIf="!(provider.attributeRelease.indexOf(attr.key) > -1)"></i>
+                            <i class="fa fa-fw fa-check" *ngIf="!(provider.attributeRelease.indexOf(attr.key) > -1)"></i>
                         </td>
                     </tr>
                     </tbody>

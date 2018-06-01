@@ -12,6 +12,8 @@ import { reducers } from './reducer';
 import { VersionEffects } from './effect/version.effect';
 import { UserEffects } from './effect/user.effect';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalService } from './service/modal.service';
+import { DifferentialService } from './service/differential.service';
 
 export const COMPONENTS = [];
 
@@ -32,6 +34,8 @@ export class CoreModule {
             providers: [
                 UserService,
                 FileService,
+                ModalService,
+                DifferentialService,
                 CanDeactivateGuard
             ]
         };

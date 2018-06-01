@@ -1,9 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { EntityValidators } from './entity-validators.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { ListValuesService } from './list-values.service';
-
-import 'rxjs/add/observable/of';
 
 describe(`ListValuesService`, () => {
     let service: ListValuesService;
@@ -19,8 +17,8 @@ describe(`ListValuesService`, () => {
 
     describe(`searchStringList method`, () => {
         it('should match values', (done: DoneFn) => {
-            let list = Observable.of(['foo', 'bar', 'baz']),
-                query = Observable.of('foo');
+            let list = of(['foo', 'bar', 'baz']),
+                query = of('foo');
             service.searchStringList(list)(query).subscribe((matches) => {
                 expect(matches.length).toBe(1);
                 done();
@@ -30,7 +28,7 @@ describe(`ListValuesService`, () => {
 
     describe(`searchFormats method`, () => {
         it('should match the nameid formats', (done: DoneFn) => {
-            let query = Observable.of('unspecified');
+            let query = of('unspecified');
             service.searchFormats(query).subscribe((matches) => {
                 expect(matches.length).toBe(1);
                 done();
@@ -40,7 +38,7 @@ describe(`ListValuesService`, () => {
 
     describe(`searchAuthenticationMethods method`, () => {
         it('should match the nameid formats', (done: DoneFn) => {
-            let query = Observable.of('TimeSyncToken');
+            let query = of('TimeSyncToken');
             service.searchAuthenticationMethods(query).subscribe((matches) => {
                 expect(matches.length).toBe(1);
                 done();

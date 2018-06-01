@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
 import { UploadProviderComponent } from './upload-provider.component';
@@ -87,7 +87,7 @@ describe('Upload Provider Page', () => {
     describe('saveFromFile method', () => {
         it('should retrieve the file text from a service and call the provided upload emitter', async((done) => {
             fixture.detectChanges();
-            spyOn(fileService, 'readAsText').and.callFake(() => Observable.of('foo'));
+            spyOn(fileService, 'readAsText').and.callFake(() => of('foo'));
             form.providerForm.setValue({ serviceProviderName: 'foo', file: '', url: '' });
             form.saveFromFile(getFakeFile('foo'), 'foo');
             form.upload.subscribe(v => {

@@ -15,9 +15,11 @@ export enum FilterCollectionActionTypes {
     LOAD_FILTER_REQUEST = '[Metadata Filter Collection] Filter REQUEST',
     LOAD_FILTER_SUCCESS = '[Metadata Filter Collection] Filter SUCCESS',
     LOAD_FILTER_ERROR = '[Metadata Filter Collection] Filter ERROR',
+
     ADD_FILTER = '[Metadata Filter Collection] Add Filter',
     ADD_FILTER_SUCCESS = '[Metadata Filter Collection] Add Filter Success',
     ADD_FILTER_FAIL = '[Metadata Filter Collection] Add Filter Fail',
+
     REMOVE_FILTER = '[Metadata Filter Collection] Remove Filter',
     REMOVE_FILTER_SUCCESS = '[Metadata Filter Collection] Remove Filter Success',
     REMOVE_FILTER_FAIL = '[Metadata Filter Collection] Remove Filter Fail'
@@ -81,7 +83,7 @@ export class UpdateFilterSuccess implements Action {
 export class UpdateFilterFail implements Action {
     readonly type = FilterCollectionActionTypes.UPDATE_FILTER_FAIL;
 
-    constructor(public err: any) { }
+    constructor(public payload: MetadataFilter) { }
 }
 
 export class AddFilterRequest implements Action {

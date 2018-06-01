@@ -6,7 +6,7 @@ import {
     RouterStateSnapshot
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import * as fromProvider from '../reducer';

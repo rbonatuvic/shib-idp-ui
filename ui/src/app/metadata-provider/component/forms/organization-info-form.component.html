@@ -6,12 +6,12 @@
                     <label for="name" class=col-sm-10>
                         <span>
                             <ng-container i18n="@@label--organization-name">Organization Name</ng-container>
-                            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
+                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipOrganizationName i18n="@@tooltip--organization-name">Organization Name Popover</ng-template>
-                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipOrganizationName"
                            i18n-aria-label="@@tooltip--instruction"
                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -24,12 +24,12 @@
                     <label for="displayName" class="col-sm-10">
                         <span>
                             <ng-container i18n="@@label--organization-display-name">Organization Display Name</ng-container>
-                            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
+                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipOrganizationDisplayName i18n="@@tooltip--organization-display-name">Organization Display Name Popover</ng-template>
-                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipOrganizationDisplayName"
                             i18n-aria-label="@@tooltip--instruction"
                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -42,12 +42,12 @@
                     <label for="url" class="col-sm-10">
                         <span>
                             <ng-container i18n="@@label--organization-url">Organization URL</ng-container>
-                            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
+                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipOrganizationUrl i18n="@@tooltip--organization-url">Organization Url Popover</ng-template>
-                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipOrganizationUrl"
                             i18n-aria-label="@@tooltip--instruction"
                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -60,7 +60,7 @@
         </fieldset>
         <fieldset class="form-section col">
             <p>
-                <ng-container i18n="@@label--contact-information">Contact Information:</ng-container>
+                <ng-container i18n="@@label--contact-information">Contact Information: </ng-container>
                 <button class="btn btn-success btn-sm" (click)="addContact()" i18n="@@action--add-contact" aria-label="Add contact to accordion group" role="button">Add Contact</button>
             </p>
             <div formArrayName="contacts" class="bg-light border rounded p-4" *ngIf="contacts.length">
@@ -73,7 +73,7 @@
                         <div class="clearfix">
                             <div class="row" (click)="acc.isHidden = !acc.isHidden" (keydown.space)="acc.isHidden = !acc.isHidden" [id]="'contactAccordion' + i" [attr.aria-controls]="'contactContent' + i" role="button">
                                 <div class="col-sm-10">
-                                    <i class="fa" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
+                                    <i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
                                     {{ contact.get('name').value || 'New Contact' }}
                                     <span tabindex="0" role="heading" aria-level="3">
                                     <small *ngIf="contact.get('type').value">({{ contact.get('type').value }})</small>
@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="col-sm-2 text-right">
                                     <button class="btn btn-link btn-sm text-danger" (click)="removeContact(i)" aria-label="Delete contact button" role="button">
-                                        <i class="fa fa-trash fa-lg"></i>
+                                        <i class="fa fa-fw fa-trash fa-lg"></i>
                                     </button>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                             </label>
                                             <span class="col-sm-3 text-right">
                                                  <ng-template #tooltipContactName i18n="@@tooltip--contact-name">Contact Name Popover</ng-template>
-                                                <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                    [ngbPopover]="tooltipContactName"
                                                    i18n-aria-label="@@tooltip--instruction"
                                                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -114,7 +114,7 @@
                                             </label>
                                             <span class="col-sm-2 text-right">
                                                 <ng-template #tooltipContactType i18n="@@tooltip--contact-type">Contact Type Popover</ng-template>
-                                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                [ngbPopover]="tooltipContactType"
                                                i18n-aria-label="@@tooltip--instruction"
                                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -138,7 +138,7 @@
                                             </label>
                                             <span class="col-sm-2 text-right">
                                                 <ng-template #tooltipContactEmail i18n="@@tooltip--contact-email">Contact Email Popover</ng-template>
-                                                <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                    [ngbPopover]="tooltipContactEmail"
                                                    i18n-aria-label="@@tooltip--instruction"
                                                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>

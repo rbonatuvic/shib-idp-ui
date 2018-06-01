@@ -26,7 +26,7 @@ export const initialState: FilterCollectionState = adapter.getInitialState({
 export function reducer(state = initialState, action: FilterCollectionActionsUnion): FilterCollectionState {
     switch (action.type) {
         case FilterCollectionActionTypes.LOAD_FILTER_SUCCESS: {
-            return adapter.addMany(action.payload, {
+            return adapter.addAll(action.payload, {
                 ...state,
                 selectedFilterId: state.selectedFilterId,
                 loaded: true

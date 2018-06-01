@@ -1,12 +1,12 @@
 import { Component, AfterViewInit, Input, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+
 import { Store } from '@ngrx/store';
 
 import * as fromFilter from '../reducer';
 import { QueryEntityIds } from '../action/search.action';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'search-dialog',

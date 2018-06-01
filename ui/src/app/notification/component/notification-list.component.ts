@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
 
 import * as fromNotifications from '../reducer';
 import { ClearNotification } from '../action/notification.action';
@@ -24,8 +22,10 @@ export class NotificationListComponent {
     ) {
         this.notifications$ = this.store
             .select(fromNotifications.getNotifications)
-            .map(notifications => notifications.sort(this.sorter))
-            .map(notifications => notifications.filter(this.filter));
+            .pipe(
+                map(notifications => notifications.sort(this.sorter)),
+                map(notifications => notifications.filter(this.filter))
+            );
     }
 
     sorter(a: Notification, b: Notification): number {

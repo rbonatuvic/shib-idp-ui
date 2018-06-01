@@ -1,0 +1,12 @@
+@import '../../../theme/_palette';
+
+:host {
+    .table {
+        tr th {
+            background: $gray-200;
+        }
+        tr td {
+            background: $gray-100; 
+        }
+    }
+}

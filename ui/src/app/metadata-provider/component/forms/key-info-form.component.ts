@@ -1,6 +1,7 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
@@ -72,14 +73,15 @@ export class KeyInfoFormComponent extends ProviderFormFragmentComponent implemen
 
     ngOnInit(): void {
         super.ngOnInit();
-        this.hasCert$ = this.form.valueChanges
-            .distinctUntilChanged()
-            .map(values => values.securityInfo.x509CertificateAvailable);
+        this.hasCert$ = this.form.valueChanges.pipe(
+            distinctUntilChanged(),
+            map(values => values.securityInfo.x509CertificateAvailable)
+        );
 
-        this.hasCert$
-            .takeUntil(this.ngUnsubscribe)
-            .distinctUntilChanged()
-            .subscribe(hasCert => {
+        this.hasCert$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            distinctUntilChanged()
+        ).subscribe(hasCert => {
                 if (hasCert && !this.x509Certificates.length) {
                     this.addCert();
                     this.x509Certificates.setValidators(Validators.minLength(1));

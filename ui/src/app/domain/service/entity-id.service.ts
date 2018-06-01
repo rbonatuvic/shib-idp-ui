@@ -1,24 +1,25 @@
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/concat';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+
+import * as XmlFormatter from 'xml-formatter';
+
+import { Observable, Subject, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 import { IDS } from '../../../data/ids.mock';
 import { Storage } from '../../shared/storage';
 import { environment } from '../../../environments/environment';
 import { QueryParams } from '../../core/model/query';
 import { MDUI } from '../model/mdui';
-import * as XmlFormatter from 'xml-formatter';
 
 const MOCK_INTERVAL = 500;
 
 @Injectable()
 export class EntityIdService {
 
-    private searchEndpoint = '/EntityIds/search';
-    private entitiesEndpoint = '/entities';
-    private base = '/api';
+    readonly searchEndpoint = '/EntityIds/search';
+    readonly entitiesEndpoint = '/entities';
+    readonly base = '/api';
 
     private subj: Subject<string[]> = new Subject();
 
@@ -32,11 +33,10 @@ export class EntityIdService {
         const opts = { params: params };
         return this.http
             .get<any>(`${this.base}${this.searchEndpoint}`, opts)
-            .map(resp => resp.entityIds)
-            .catch(err => {
-                console.log('ERROR LOADING IDS:', err);
-                return Observable.of([] as string[]);
-            });
+            .pipe(
+                map(resp => resp.entityIds),
+                catchError(err => throwError([]))
+            );
     }
 
     preview(id: string): Observable<any> {
@@ -52,6 +52,8 @@ export class EntityIdService {
     findEntityById(id: string): Observable<MDUI> {
         return this.http
             .get<any>(`${this.base}${this.entitiesEndpoint}/${encodeURIComponent(id)}`)
-            .map(entity => entity.mdui as MDUI);
+            .pipe(
+                map(entity => entity.mdui as MDUI)
+            );
     }
 }
