@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterService
@@ -82,10 +83,10 @@ class MetadataFiltersControllerTests extends Specification {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
     }
 
-    def "FilterController.getAll gets all filters"() {
+    def "FilterController.getAll gets all available types of filters"() {
         given:
         def metadataResolver = new MetadataResolver()
-        def expectedContent = testObjectGenerator.buildFilterList()
+        List<MetadataFilter> expectedContent = testObjectGenerator.buildAllTypesOfFilterList()
         metadataResolver.setMetadataFilters(expectedContent)
         List<MetadataResolver> metadataResolverList = [metadataResolver]
         1 * metadataResolverRepository.findAll() >> metadataResolverList
@@ -106,7 +107,7 @@ class MetadataFiltersControllerTests extends Specification {
     def "FilterController.getOne gets the desired filter"() {
         given:
         def metadataResolver = new MetadataResolver()
-        metadataResolver.setMetadataFilters(testObjectGenerator.buildFilterList())
+        metadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
         List<MetadataResolver> metadataResolverList = [metadataResolver]
         1 * metadataResolverRepository.findAll() >> metadataResolverList
 
@@ -133,7 +134,7 @@ class MetadataFiltersControllerTests extends Specification {
         def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
         def metadataResolver = new MetadataResolver()
         metadataResolver.setResourceId(randomGenerator.randomId())
-        metadataResolver.setMetadataFilters(testObjectGenerator.buildFilterList())
+        metadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
         def metadataResolverWithFilter = new MetadataResolver()
         metadataResolverWithFilter.resourceId = metadataResolver.resourceId
         metadataResolverWithFilter.metadataFilters = metadataResolver.metadataFilters.collect()
@@ -174,7 +175,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId(randomGenerator.randomId())
-        originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildFilterList())
+        originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
         def updatedMetadataResolver = new MetadataResolver()
         updatedMetadataResolver.setResourceId(originalMetadataResolver.getResourceId())
         updatedMetadataResolver.setMetadataFilters(originalMetadataResolver.getMetadataFilters().collect())
@@ -209,7 +210,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId(randomGenerator.randomId())
-        originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildFilterList())
+        originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
         originalMetadataResolver.getMetadataFilters().add(randomFilter)
 
         1 * metadataResolverRepository.findAll() >> [originalMetadataResolver]

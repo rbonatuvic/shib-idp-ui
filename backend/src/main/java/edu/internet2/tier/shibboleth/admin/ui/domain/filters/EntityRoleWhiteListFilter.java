@@ -1,5 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +24,9 @@ import java.util.List;
 @Setter
 @ToString
 public class EntityRoleWhiteListFilter extends MetadataFilter {
+
+    @JsonProperty("@type")
+    private final transient String type = "EntityRoleWhiteList";
 
     private Boolean removeRolelessEntityDescriptors = true;
 

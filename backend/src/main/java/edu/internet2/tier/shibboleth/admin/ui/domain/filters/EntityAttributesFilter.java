@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
@@ -36,6 +37,9 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 @Setter
 @ToString
 public class EntityAttributesFilter extends MetadataFilter {
+
+    @JsonProperty("@type")
+    private final transient String type = "EntityAttributesFilter";
 
     @OneToOne(cascade = CascadeType.ALL)
     private EntityAttributesFilterTarget entityAttributesFilterTarget;

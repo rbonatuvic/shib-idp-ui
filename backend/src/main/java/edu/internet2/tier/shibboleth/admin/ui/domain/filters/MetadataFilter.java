@@ -26,9 +26,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList"),
-        @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributesFilter")})
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+/*@JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList"),
+        @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributesFilter")})*/
 public class MetadataFilter extends AbstractAuditable {
 
     private String name;

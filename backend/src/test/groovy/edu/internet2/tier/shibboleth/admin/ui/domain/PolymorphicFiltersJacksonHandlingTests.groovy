@@ -66,7 +66,7 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     def "Correct polymorphic serialization of EntityAttributesFilter"() {
         given:
-        def simulatedPersistentFilter = testObjectGenerator.buildEntityAttributesFilter()
+        def simulatedPersistentFilter = testObjectGenerator.entityAttributesFilter()
         simulatedPersistentFilter.intoTransientRepresentation()
 
         def simulatedPrePersistentFilter = new EntityAttributesFilter()
@@ -85,7 +85,18 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
         then:
         simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
+    }
 
+    def "List of filters with correct types"() {
+        given:
+        def filters = [testObjectGenerator.entityRoleWhitelistFilter()]
+
+        when:
+        def json = mapper.writeValueAsString(filters)
+        println(json)
+
+        then:
+        json
 
     }
 

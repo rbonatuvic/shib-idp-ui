@@ -9,12 +9,16 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
+
+import java.util.function.Supplier
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -29,23 +33,37 @@ class TestObjectGenerator {
         this.attributeUtility = attributeUtility
     }
 
-    List<EntityAttributesFilter> buildFilterList() {
-        List<EntityAttributesFilter> filterList = new ArrayList<>()
+    List<MetadataFilter> buildAllTypesOfFilterList() {
+        List<MetadataFilter> filterList = new ArrayList<>()
         (1..generator.randomInt(4, 10)).each {
-            filterList.add(buildEntityAttributesFilter())
+            filterList.add(buildFilter { entityAttributesFilter() })
+            filterList.add(buildFilter { entityRoleWhitelistFilter() })
         }
         return filterList
     }
 
-    EntityAttributesFilter buildEntityAttributesFilter() {
-        EntityAttributesFilter filter = new EntityAttributesFilter()
+    EntityRoleWhiteListFilter entityRoleWhitelistFilter() {
+        new EntityRoleWhiteListFilter().with {
+            it.retainedRoles = ['role1', 'role2']
+            it.removeRolelessEntityDescriptors = true
+            it
+        }
+    }
 
+    EntityAttributesFilter entityAttributesFilter() {
+        new EntityAttributesFilter().with {
+            it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
+            it.setAttributes(buildAttributesList())
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    MetadataFilter buildFilter(Supplier<? extends MetadataFilter> filterSupplier) {
+        MetadataFilter filter = filterSupplier.get()
         filter.setName(generator.randomString(10))
         filter.setFilterEnabled(generator.randomBoolean())
         filter.setResourceId(generator.randomId())
-        filter.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
-        filter.setAttributes(buildAttributesList())
-
         return filter
     }
 
