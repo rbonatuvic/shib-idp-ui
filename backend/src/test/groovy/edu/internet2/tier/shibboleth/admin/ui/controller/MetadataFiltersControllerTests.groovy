@@ -131,7 +131,7 @@ class MetadataFiltersControllerTests extends Specification {
         given:
         controller.filterService = mockFilterService // so we can control ids
 
-        def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
+        def randomFilter = testObjectGenerator.entityAttributesFilter()
         def metadataResolver = new MetadataResolver()
         metadataResolver.setResourceId(randomGenerator.randomId())
         metadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
@@ -166,8 +166,8 @@ class MetadataFiltersControllerTests extends Specification {
 
     def "FilterController.update updates the target filter as desired"() {
         given:
-        def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
-        def updatedFilter = testObjectGenerator.buildEntityAttributesFilter()
+        def randomFilter = testObjectGenerator.entityAttributesFilter()
+        def updatedFilter = testObjectGenerator.entityAttributesFilter()
         updatedFilter.resourceId = randomFilter.resourceId
         def updatedFilterRepresentation = filterService.createRepresentationFromFilter(updatedFilter)
         updatedFilterRepresentation.setVersion(randomFilter.hashCode())
@@ -202,8 +202,8 @@ class MetadataFiltersControllerTests extends Specification {
 
     def "FilterController.update 409's if the version numbers don't match"() {
         given:
-        def randomFilter = testObjectGenerator.buildEntityAttributesFilter()
-        def updatedFilter = testObjectGenerator.buildEntityAttributesFilter()
+        def randomFilter = testObjectGenerator.entityAttributesFilter()
+        def updatedFilter = testObjectGenerator.entityAttributesFilter()
         updatedFilter.resourceId = randomFilter.resourceId
         def postedJsonBody = mapper.writeValueAsString(
                 filterService.createRepresentationFromFilter(updatedFilter))
@@ -227,7 +227,7 @@ class MetadataFiltersControllerTests extends Specification {
         result.andExpect(status().is(409))
     }
 
-    EntityAttributesFilter chooseRandomFilterFromList(List<EntityAttributesFilter> filters) {
+    EntityAttributesFilter chooseRandomFilterFromList(List<MetadataFilter> filters) {
         filters.get(randomGenerator.randomInt(0, filters.size() - 1))
     }
 }

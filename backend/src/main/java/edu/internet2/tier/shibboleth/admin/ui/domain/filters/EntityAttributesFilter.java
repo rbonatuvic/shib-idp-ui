@@ -1,17 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
-import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
-import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.opensaml.core.xml.XMLObject;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

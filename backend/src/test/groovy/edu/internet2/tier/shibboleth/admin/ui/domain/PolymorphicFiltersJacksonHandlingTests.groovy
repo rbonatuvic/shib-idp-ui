@@ -82,7 +82,6 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         println("Attributes from persistent filter -> $simulatedPersistentFilter.attributes")
         println("Attributes from PRE persistent filter -> $simulatedPrePersistentFilter.attributes")
 
-
         then:
         simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
     }
