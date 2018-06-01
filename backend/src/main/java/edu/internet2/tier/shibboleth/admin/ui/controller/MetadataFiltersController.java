@@ -43,11 +43,9 @@ public class MetadataFiltersController {
 
     @GetMapping("/Filters")
     @Transactional(readOnly = true)
-    public Iterable<FilterRepresentation> getAll(@PathVariable String metadataResolverId) {
+    public Iterable<MetadataFilter> getAll(@PathVariable String metadataResolverId) {
         // TODO: implement lookup based on metadataResolverId once we have more than one
-        return repository.findAll().iterator().next().getMetadataFilters().stream()
-                .map(eaf -> filterService.createRepresentationFromFilter((EntityAttributesFilter) eaf))
-                .collect(Collectors.toList());
+        return repository.findAll().iterator().next().getMetadataFilters();
     }
 
     @GetMapping("/Filter/{resourceId}")

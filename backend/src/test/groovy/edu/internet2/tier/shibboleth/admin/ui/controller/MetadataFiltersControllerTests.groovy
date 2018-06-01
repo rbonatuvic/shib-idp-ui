@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
@@ -60,6 +61,7 @@ class MetadataFiltersControllerTests extends Specification {
         randomGenerator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
 
         controller = new MetadataFiltersController (
                 repository: metadataResolverRepository,
@@ -83,19 +85,17 @@ class MetadataFiltersControllerTests extends Specification {
     def "FilterController.getAll gets all filters"() {
         given:
         def metadataResolver = new MetadataResolver()
-        metadataResolver.setMetadataFilters(testObjectGenerator.buildFilterList())
+        def expectedContent = testObjectGenerator.buildFilterList()
+        metadataResolver.setMetadataFilters(expectedContent)
         List<MetadataResolver> metadataResolverList = [metadataResolver]
         1 * metadataResolverRepository.findAll() >> metadataResolverList
 
-        def expectedContent = []
-        metadataResolver.getMetadataFilters().each {
-            expectedContent.add(filterService.createRepresentationFromFilter(it))
-        }
         def expectedHttpResponseStatus = status().isOk()
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
         def result = mockMvc.perform(get('/api/MetadataResolver/foo/Filters'))
+        println(mapper.writeValueAsString(expectedContent))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
