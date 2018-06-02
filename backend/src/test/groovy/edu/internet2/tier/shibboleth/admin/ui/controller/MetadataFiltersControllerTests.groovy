@@ -107,18 +107,16 @@ class MetadataFiltersControllerTests extends Specification {
     def "FilterController.getOne gets the desired filter"() {
         given:
         def metadataResolver = new MetadataResolver()
-        metadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
-        List<MetadataResolver> metadataResolverList = [metadataResolver]
-        1 * metadataResolverRepository.findAll() >> metadataResolverList
+        def expectedFilter = testObjectGenerator.entityAttributesFilter()
+        metadataResolver.metadataFilters = [expectedFilter]
+        1 * metadataResolverRepository.findAll() >> [metadataResolver]
 
-        def expectedFilter = filterService.createRepresentationFromFilter(
-                chooseRandomFilterFromList(metadataResolver.metadataFilters))
-        def expectedFilterId = expectedFilter.id
+        def expectedResourceId = expectedFilter.resourceId
         def expectedHttpResponseStatus = status().isOk()
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
-        def result = mockMvc.perform(get("/api/MetadataResolver/foo/Filter/$expectedFilterId"))
+        def result = mockMvc.perform(get("/api/MetadataResolver/foo/Filter/$expectedResourceId"))
 
         then:
         result.andExpect(expectedHttpResponseStatus)

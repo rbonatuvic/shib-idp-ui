@@ -54,7 +54,6 @@ public class MetadataFiltersController {
         // TODO: should we check that we found exactly one filter (as in the update method below)? If not, error?
         return ResponseEntity.ok(repository.findAll().iterator().next().getMetadataFilters().stream()
                 .filter(eaf -> eaf.getResourceId().equals(resourceId))
-                .map(eaf -> filterService.createRepresentationFromFilter((EntityAttributesFilter) eaf))
                 .collect(Collectors.toList()).get(0));
     }
 
