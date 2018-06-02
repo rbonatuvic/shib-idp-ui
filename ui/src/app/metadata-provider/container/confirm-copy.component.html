@@ -12,7 +12,7 @@
                 <li class="nav-item">
                     <button class="nav-link previous btn clearfix" role="button" routerLink="/new/copy">
                         <span class="direction pull-left">
-                            <i class="fa fa-arrow-circle-left d-block fa-2x"></i>
+                            <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
                             <ng-container i18n="@@action--back">Back</ng-container>
                         </span>
                         <span class="label pull-right" i18n="@@label--name-and-entityid">
@@ -22,7 +22,7 @@
                 </li>
                 <li class="nav-item">
                     <h3 class="tag tag-primary">
-                        <span class="index"><i class="fa fa-check fa-lg"></i></span>
+                        <span class="index"><i class="fa fa-fw fa-check fa-lg"></i></span>
                         <ng-container i18n="@@label--finish-summary-validation">FINISH SUMMARY AND VALIDATION</ng-container>
                     </h3>
                 </li>
@@ -30,7 +30,7 @@
                     <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave(provider)" [disabled]="saving$ | async">
                         <span class="label pull-left" i18n="@@action--save">Save</span>
                         <span class="direction pull-right">
-                            <i class="fa fa-save next d-block fa-2x"></i>
+                            <i class="fa fa-fw fa-save next d-block fa-2x"></i>
                             <ng-container i18n="@@action--save">Save</ng-container>
                         </span>
                     </button>

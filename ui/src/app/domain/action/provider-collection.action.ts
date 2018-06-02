@@ -76,7 +76,7 @@ export class UpdateProviderSuccess implements Action {
 export class UpdateProviderFail implements Action {
     readonly type = ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL;
 
-    constructor(public err: any) { }
+    constructor(public payload: MetadataProvider) { }
 }
 
 export class AddProviderRequest implements Action {

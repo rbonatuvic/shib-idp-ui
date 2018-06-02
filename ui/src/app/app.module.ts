@@ -24,6 +24,7 @@ import { ErrorInterceptor } from './core/service/error.interceptor';
 import { NavigatorService } from './core/service/navigator.service';
 
 import { environment } from '../environments/environment';
+import { ContentionModule } from './contention/contention.module';
 
 @NgModule({
     declarations: [
@@ -45,16 +46,17 @@ import { environment } from '../environments/environment';
         NgbPopoverModule.forRoot(),
         NgbPaginationModule.forRoot(),
         NotificationModule,
+        ContentionModule,
         HttpClientModule
     ],
     providers: [
         NavigatorService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
-        {
+        /*{
             provide: HTTP_INTERCEPTORS,
             useClass: CachingInterceptor,
             multi: true
-        },
+        },*/
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthorizedInterceptor,

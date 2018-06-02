@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { MetadataEntity, DomainTypes } from '../../domain/domain.type';
 

@@ -1,8 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { EntityValidators } from './entity-validators.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import 'rxjs/add/observable/of';
 
 let ids = ['foo', 'bar', 'baz'];
 
@@ -21,7 +20,7 @@ describe(`Entity Validators service`, () => {
 
     describe('createUniqueIdValidator', () => {
         it('should detect that a provided id is already used', async(inject([FormBuilder], (fb) => {
-            let obs = Observable.of(ids),
+            let obs = of(ids),
                 validator = EntityValidators.createUniqueIdValidator(obs),
                 ctrl = fb.control('foo');
             validator(ctrl).subscribe(next => {
@@ -30,7 +29,7 @@ describe(`Entity Validators service`, () => {
         })));
 
         it('should detect that a provided id is NOT already used', async(inject([FormBuilder], (fb) => {
-            let obs = Observable.of(ids),
+            let obs = of(ids),
                 validator = EntityValidators.createUniqueIdValidator(obs),
                 ctrl = fb.control('hi');
             validator(ctrl).subscribe(next => {
@@ -92,7 +91,7 @@ describe(`Entity Validators service`, () => {
 
     describe('createUniqueIdValidator', () => {
         it('should detect that a provided id is in the collection', async(inject([FormBuilder], (fb) => {
-            let obs = Observable.of(ids),
+            let obs = of(ids),
                 validator = EntityValidators.existsInCollection(obs),
                 ctrl = fb.control('foo');
             validator(ctrl).subscribe(next => {
@@ -101,7 +100,7 @@ describe(`Entity Validators service`, () => {
         })));
 
         it('should detect that a provided id is not in the collection', async(inject([FormBuilder], (fb) => {
-            let obs = Observable.of(ids),
+            let obs = of(ids),
                 validator = EntityValidators.existsInCollection(obs),
                 ctrl = fb.control('hi');
             validator(ctrl).subscribe(next => {

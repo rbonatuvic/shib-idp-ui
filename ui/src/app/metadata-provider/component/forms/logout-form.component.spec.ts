@@ -11,7 +11,7 @@ import { LogoutFormComponent } from './logout-form.component';
 
 import * as stubs from '../../../../testing/provider.stub';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
-import { I18nTextComponent } from '../i18n-text.component';
+import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
 import { Provider } from '../../../domain/entity/provider';
 
 @Component({

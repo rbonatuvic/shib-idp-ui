@@ -27,8 +27,8 @@
                         aria-label="Search Entity ID"
                         [ngSwitch]="loading$ | async"
                         [disabled]="form.get('search').invalid">
-                        <i class="fa fa-search" *ngSwitchDefault></i>
-                        <i class="fa fa-spinner fa-pulse fa-fw" *ngSwitchCase="true"></i>
+                        <i class="fa fa-fw fa-search" *ngSwitchDefault></i>
+                        <i class="fa fa-fw fa-spinner fa-pulse fa-fw" *ngSwitchCase="true"></i>
                         <ng-container i18n="@@action--search">Search</ng-container>
                     </button>
                 </div>
@@ -46,7 +46,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="activeModal.close(selected)">
-            <i class="fa fa-save"></i>
+            <i class="fa fa-fw fa-save"></i>
             <ng-container i18n="@@action--select-id">Select ID</ng-container>
         </button>
         <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@action--cancel">Cancel</button>

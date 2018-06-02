@@ -13,7 +13,7 @@
                     FINISH AND VALIDATE
                 </span>
                 <span class="direction pull-right">
-                    <i class="fa fa-arrow-circle-right d-block fa-2x"></i>
+                    <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
                     <ng-container i18n="@@action--next">Next</ng-container>
                 </span>
             </button>
@@ -23,7 +23,7 @@
         <div class="form-group">
             <label for="serviceProviderName">
                 <ng-container i18n="@@label--select-entity-id-to-copy">Select the Entity ID to copy</ng-container>
-                <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
             </label>
             <auto-complete
                 id="target"
@@ -43,7 +43,7 @@
         <div class="form-group">
             <label for="serviceProviderName">
                 <ng-container i18n="@@label--metadata-source-name-dashboard-display-only">Metadata Source Name (Dashboard Display Only)</ng-container>
-                <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
             </label>
             <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
             <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
@@ -55,7 +55,7 @@
         <div class="form-group">
             <label for="entityId">
                 <ng-container i18n="@@label--service-provider-entity-id">New Entity ID</ng-container>
-                <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
             </label>
             <input id="entityId" type="text" class="form-control" placeholder="" formControlName="entityId" />
             <ng-container *ngIf="providerForm.get('entityId').touched && providerForm.get('entityId').invalid">
@@ -69,7 +69,7 @@
         </div>
         <button type="submit" class="btn btn-primary sr-only" [disabled]="providerForm.invalid">
             <ng-container i18n="@@action--next">Next</ng-container>
-            <i class="fa fa-arrow-circle-right fa-lg"></i>
+            <i class="fa fa-fw fa-arrow-circle-right fa-lg"></i>
         </button>
     </fieldset>
 </form>

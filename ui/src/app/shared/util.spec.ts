@@ -1,4 +1,4 @@
-import { removeNulls } from './util';
+import { removeNulls, checkByType } from './util';
 
 describe('removeNulls', () => {
     let obj = {
@@ -14,5 +14,17 @@ describe('removeNulls', () => {
 
     it(`should return an empty object if passed a falsy value`, () => {
         expect(removeNulls(undefined)).toEqual({});
+    });
+});
+
+describe('checkByType', () => {
+    it('should return false for an empty object', () => {
+        expect(checkByType({})).toBe(false);
+    });
+    it('should return for a populated object', () => {
+        expect(checkByType({foo: 'bar'})).toBe(true);
+    });
+    it('should return true for non-object types', () => {
+        expect(checkByType('foo')).toBe(true);
     });
 });

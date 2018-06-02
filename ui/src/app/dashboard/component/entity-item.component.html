@@ -3,17 +3,17 @@
         <div class="row">
             <div class="col-9 clearfix">
                 <div class="w-10 pr-3 pull-left">
-                    <i class="fa fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
+                    <i class="fa fa-fw fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
                     &nbsp;
                     <span class="label-icon sr-hidden" [ngSwitch]="entity.type">
-                        <i class="fa fa-3x text-info fa-cubes" *ngSwitchCase="types.filter"></i>
-                        <i class="fa fa-3x text-info fa-cube" *ngSwitchCase="types.provider"></i>
-                        <i class="fa fa-3x text-info fa-" *ngSwitchDefault></i>
+                        <i class="fa fa-fw fa-3x text-info fa-cubes" *ngSwitchCase="types.filter"></i>
+                        <i class="fa fa-fw fa-3x text-info fa-cube" *ngSwitchCase="types.provider"></i>
+                        <i class="fa fa-fw fa-3x text-info fa-" *ngSwitchDefault></i>
                     </span>
                 </div>
                 <div>
                     {{ entity.name }}
-                    <i *ngIf="entity.createdDate" class="fa" [ngClass]="{
+                    <i *ngIf="entity.createdDate" class="fa fa-fw" [ngClass]="{
                                     'fa-check-circle text-success': entity.enabled,
                                     'fa-times-circle text-danger': !entity.enabled
                                 }"></i>
@@ -23,10 +23,10 @@
             </div>
             <div class="col-3 text-right">
                 <button class="btn btn-link" (click)="preview.emit(entity)" *ngIf="entity.createdDate" aria-label="Review the XML of the selected service provider">
-                    <i class="fa fa-eye fa-2x"></i>
+                    <i class="fa fa-fw fa-eye fa-2x"></i>
                 </button>
                 <button class="btn btn-link" (click)="select.emit(entity)" aria-label="Edit selected service provider">
-                    <i class="fa fa-edit fa-2x"></i>
+                    <i class="fa fa-fw fa-edit fa-2x"></i>
                 </button>
             </div>
         </div>
@@ -53,7 +53,7 @@
                             {entity.type, select, filter {Filter} provider {Service Provider} other {other}} Status:
                         </div>
                         <div class="col" *ngIf="entity.createdDate">
-                            <i class="fa" [ngClass]="{
+                            <i class="fa fa-fw" [ngClass]="{
                                 'fa-check-circle text-success': entity.enabled,
                                 'fa-times-circle text-danger': !entity.enabled
                             }"></i>
@@ -70,7 +70,7 @@
                         class="btn btn-link pull-right"
                         (click)="delete.emit(entity)"
                         aria-label="Delete selected service provider">
-                        <i class="fa fa-trash fa-2x text-danger"></i>
+                        <i class="fa fa-fw fa-trash fa-2x text-danger"></i>
                     </button>
                 </div>
             </div>

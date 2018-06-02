@@ -8,7 +8,7 @@
                     <label class="custom-control-label" i18n="@@label--sign-the-assertion" for="signAssertion">Sign the Assertion</label>
                 </div>
                 <ng-template #tooltipSignAssertion i18n="@@tooltip--sign-assertion">Sign Assertion popover</ng-template>
-                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipSignAssertion" i18n-aria-label="@@tooltip--instruction"
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipSignAssertion" i18n-aria-label="@@tooltip--instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </fieldset>
         </div>
@@ -20,7 +20,7 @@
                     <label class="custom-control-label" i18n="@@label--dont-sign-the-response" for="dontSignResponse">Don't Sign the Response</label>
                 </div>
                 <ng-template #tooltipDontSignResponse i18n="@@tooltip--dont-sign-response">Don't Sign Response popover</ng-template>
-                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipDontSignResponse" i18n-aria-label="@@tooltip--instruction"
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipDontSignResponse" i18n-aria-label="@@tooltip--instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </fieldset>
         </div>
@@ -32,7 +32,7 @@
                     <label class="custom-control-label" i18n="@@label--turn-off-encryption-of-response" for="turnOffEncryption">Turn Off Encryption of Response</label>
                 </div>
                 <ng-template #tooltipTurnOffEncryption i18n="@@tooltip--turn-off-encryption">Turn Off Encryption of Response popover</ng-template>
-                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipTurnOffEncryption" i18n-aria-label="@@tooltip--instruction"
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipTurnOffEncryption" i18n-aria-label="@@tooltip--instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </fieldset>
         </div>
@@ -44,7 +44,7 @@
                     <label class="custom-control-label" i18n="@@label--use-sha1-signing-algorithm" for="useSha">Use SHA1 Signing Algorithm</label>
                 </div>
                 <ng-template #tooltipUseShaAlgorithm i18n="@@tooltip--usa-sha-algorithm">Use SHA1 Signing Algorithm popover</ng-template>
-                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipUseShaAlgorithm" i18n-aria-label="@@tooltip--instruction"
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipUseShaAlgorithm" i18n-aria-label="@@tooltip--instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </fieldset>
         </div>
@@ -52,12 +52,13 @@
             <div class="row">
                 <span class="col-sm-10">
                     <ng-container i18n="@@label--nameid-format-to-send">NameID Format to Send</ng-container>
+                    &nbsp;
                     <button class="btn btn-success btn-sm" (click)="addFormat()" i18n="@@action--add-nameid-format" aria-label="Add nameID format"
                         role="button">Add NameID Format</button>
                 </span>
                 <span class="col-sm-2 text-right">
                     <ng-template #tooltipNameIdFormat i18n="@@tooltip--nameid-format">Add NameID Format popover</ng-template>
-                    <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipNameIdFormat" i18n-aria-label="@@tooltip--instruction"
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipNameIdFormat" i18n-aria-label="@@tooltip--instruction"
                         aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                 </span>
             </div>
@@ -75,7 +76,7 @@
                     </auto-complete>
                     <div class="col-sm-1 text-right">
                         <button class="btn btn-link" (click)="removeFormat(i)" aria-label="Delete NameID format" role="button">
-                            <i class="fa fa-trash fa-lg text-danger"></i>
+                            <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
                         </button>
                     </div>
                 </div>
@@ -85,12 +86,13 @@
             <div class="row">
                 <span class="col-sm-10">
                     <ng-container i18n="@@label--authentication-methods-to-use">Authentication Methods to Use</ng-container>
+                     &nbsp;
                     <button class="btn btn-success btn-sm" (click)="addAuthenticationMethod()" i18n="@@action--add-athentication-method" aria-label="Add authentication method"
                         role="button">Add Authentication Method</button>
                 </span>
                 <span class="col-sm-2 text-right">
                     <ng-template #tooltipAuthMethod i18n="@@tooltip--authentication-methods-to-use">Authentication Methods to Use popover</ng-template>
-                    <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipAuthMethod" i18n-aria-label="@@tooltip--instruction"
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipAuthMethod" i18n-aria-label="@@tooltip--instruction"
                         aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                 </span>
             </div>
@@ -108,7 +110,7 @@
                     </auto-complete>
                     <div class="col-sm-1 text-right">
                         <button class="btn btn-link" (click)="removeAuthenticationMethod(i)" aria-label="Delete authentication method" role="button">
-                            <i class="fa fa-trash fa-lg text-danger"></i>
+                            <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
                         </button>
                     </div>
                 </div>
@@ -122,7 +124,7 @@
                     <label class="custom-control-label" i18n="@@label--ignore-any-sp-requested-authentication-method" for="ignoreAuthenticationMethod">Ignore any SP-Requested Authentication Method</label>
                 </div>
                 <ng-template #tooltipIgnoreAuthMethod i18n="@@tooltip--ignore-auth-method">Ignore any SP-Requested Authentication Method popover</ng-template>
-                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipIgnoreAuthMethod" i18n-aria-label="@@tooltip--instruction"
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipIgnoreAuthMethod" i18n-aria-label="@@tooltip--instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </fieldset>
         </div>
@@ -134,7 +136,7 @@
                     <label class="custom-control-label" i18n="@@label--omit-not-before-condition" for="omitNotBefore">Omit Not Before Condition</label>
                 </div>
                 <ng-template #tooltipOmitNotBeforeCondition i18n="@@tooltip--omit-not-before-condition">Omit Not Before Condition popover</ng-template>
-                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipOmitNotBeforeCondition" i18n-aria-label="@@tooltip--instruction"
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipOmitNotBeforeCondition" i18n-aria-label="@@tooltip--instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </fieldset>
         </div>
@@ -145,7 +147,7 @@
                 </label>
                 <span class="col-sm-2 text-right">
                     <ng-template #tooltipResponderId i18n="@@tooltip--responder-id">ResponderId popover</ng-template>
-                    <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipResponderId" i18n-aria-label="@@tooltip--instruction"
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipResponderId" i18n-aria-label="@@tooltip--instruction"
                         aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                 </span>
             </div>

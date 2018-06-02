@@ -37,14 +37,14 @@ describe('Filter Reducer', () => {
 
     describe(`${FilterCollectionActionTypes.LOAD_FILTER_SUCCESS}`, () => {
         it('should add the loaded filters to the collection', () => {
-            spyOn(fromFilter.adapter, 'addMany').and.callThrough();
+            spyOn(fromFilter.adapter, 'addAll').and.callThrough();
             const filters = [
                 new Filter({ id: 'foo', createdDate: new Date().toLocaleDateString() }),
                 new Filter({ id: 'bar', createdDate: new Date().toLocaleDateString() })
             ];
             const action = new LoadFilterSuccess(filters);
             const result = reducer(snapshot, action);
-            expect(fromFilter.adapter.addMany).toHaveBeenCalled();
+            expect(fromFilter.adapter.addAll).toHaveBeenCalled();
         });
     });
 

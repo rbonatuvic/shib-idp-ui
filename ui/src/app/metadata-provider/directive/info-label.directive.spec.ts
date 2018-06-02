@@ -9,7 +9,7 @@ import * as utility from '../../../testing/utility';
 
 
 @Component({
-    template: `<i class="info-icon fa fa-info-circle text-primary fa-lg"
+    template: `<i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltipName"></i>`
 })
 class TestComponent {

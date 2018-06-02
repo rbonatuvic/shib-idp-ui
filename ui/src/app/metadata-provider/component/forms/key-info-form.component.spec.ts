@@ -11,7 +11,7 @@ import { KeyInfoFormComponent } from './key-info-form.component';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
 
 import * as stubs from '../../../../testing/provider.stub';
-import { I18nTextComponent } from '../i18n-text.component';
+import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
 import { Provider } from '../../../domain/entity/provider';
 
 @Component({

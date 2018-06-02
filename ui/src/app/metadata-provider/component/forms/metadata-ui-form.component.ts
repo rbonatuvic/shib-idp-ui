@@ -1,6 +1,6 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';

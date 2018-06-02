@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { fromPromise } from 'rxjs/observable/fromPromise';
 
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
 import { MetadataResolverService } from '../service/metadata-resolver.service';
@@ -18,12 +17,11 @@ import * as entityActions from '../action/entity.action';
 export class EntityEffects {
 
     @Effect({ dispatch: false })
-    previewEntityXml$ = this.actions$
-        .ofType<entityActions.PreviewEntity>(entityActions.PREVIEW_ENTITY)
-        .pipe(
-            map(action => action.payload),
-            tap(entity => this.openModal(entity))
-        );
+    previewEntityXml$ = this.actions$.pipe(
+        ofType<entityActions.PreviewEntity>(entityActions.PREVIEW_ENTITY),
+        map(action => action.payload),
+        tap(entity => this.openModal(entity))
+    );
 
     constructor(
         private actions$: Actions,

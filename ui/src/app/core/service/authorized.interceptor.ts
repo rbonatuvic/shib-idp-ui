@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
 import { HttpRequest, HttpResponse, HttpErrorResponse, HttpInterceptor, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Store } from '@ngrx/store';
+
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import * as fromUser from '../reducer/user.reducer';
 import { UserRedirect } from '../action/user.action';
 
@@ -13,11 +15,13 @@ export class AuthorizedInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next
             .handle(req)
-            .catch((error) => {
-                if (!error.url.match(req.url)) {
-                    this.store.dispatch(new UserRedirect(error.url));
-                }
-                return Observable.throw(error);
-            });
+            .pipe(
+                catchError((error) => {
+                    if (!error.url.match(req.url)) {
+                        this.store.dispatch(new UserRedirect(error.url));
+                    }
+                    return throwError(error);
+                })
+            );
     }
 } /* istanbul ignore next */

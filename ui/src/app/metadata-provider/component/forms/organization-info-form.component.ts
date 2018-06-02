@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/startWith';
+import { Observable, Subscription } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
@@ -53,12 +52,11 @@ export class OrganizationInfoFormComponent extends ProviderFormFragmentComponent
 
     ngOnInit(): void {
         super.ngOnInit();
-        this.hasValue$ = this.form
-            .get('organization')
-            .valueChanges
-            .startWith(this.form.get('organization').value)
-            .map(values => Object.keys(values).reduce((coll, key) => coll + (values[key] || ''), ''))
-            .map(value => !!value);
+        this.hasValue$ = this.form.get('organization').valueChanges.pipe(
+            startWith(this.form.get('organization').value),
+            map(values => Object.keys(values).reduce((coll, key) => coll + (values[key] || ''), '')),
+            map(value => !!value)
+        );
     }
 
     ngOnChanges(): void {

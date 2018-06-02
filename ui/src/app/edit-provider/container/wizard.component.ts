@@ -13,15 +13,11 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, of } from 'rxjs';
+import { map, takeUntil, skipWhile, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/operator/takeLast';
-import 'rxjs/add/operator/skipWhile';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as fromCollections from '../../domain/reducer';
@@ -33,8 +29,9 @@ import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/servic
 import { UpdateStatus, UpdateChanges, SaveChanges } from '../action/editor.action';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
 import { CanComponentDeactivate } from '../../core/service/can-deactivate.guard';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
+
 import { UnsavedDialogComponent } from '../component/unsaved-dialog.component';
+
 
 @Component({
     selector: 'wizard-page',
@@ -68,16 +65,18 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
         private modalService: NgbModal
     ) {
         this.provider$ = this.store.select(fromCollections.getSelectedDraft);
-        this.providerName$ = this.provider$.map(p => p.serviceProviderName);
+        this.providerName$ = this.provider$.pipe(
+            map(p => p.serviceProviderName)
+        );
         this.changes$ = this.store.select(fromEditor.getEditorChanges);
 
-        this.wizardIndex$ = this.route.params.map(params => Number(params.index));
-        this.currentPage$ = this.wizardIndex$.map(index => WizardDef.find(r => r.index === index));
+        this.wizardIndex$ = this.route.params.pipe(map(params => Number(params.index)));
+        this.currentPage$ = this.wizardIndex$.pipe(map(index => WizardDef.find(r => r.index === index)));
         this.wizard = WizardDef;
 
         this.saved$ = this.store.select(fromEditor.getEditorIsSaved);
 
-        this.store.select(fromEditor.getEditorIsSaving).takeUntil(this.ngUnsubscribe).subscribe(saving => this.saving = saving);
+        this.store.select(fromEditor.getEditorIsSaving).pipe(takeUntil(this.ngUnsubscribe)).subscribe(saving => this.saving = saving);
     }
 
     save(): void {
@@ -102,37 +101,35 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
 
     subscribe(): void {
-        this.provider$
-            .takeUntil(this.ngUnsubscribe)
-            .skipWhile(() => this.saving)
-            .subscribe(provider => this.provider = provider);
-        this.changes$
-            .takeUntil(this.ngUnsubscribe)
-            .skipWhile(() => this.saving)
-            .subscribe(changes => this.changes = changes);
-        this.changes$
-            .takeUntil(this.ngUnsubscribe)
-            .skipWhile(() => this.saving)
-            .combineLatest(this.provider$, (changes, base) => ({ ...base, ...changes }))
-            .subscribe(latest => this.latest = latest);
+        this.provider$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            skipWhile(() => this.saving)
+        ).subscribe(provider => this.provider = provider);
+        this.changes$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            skipWhile(() => this.saving)
+        ).subscribe(changes => this.changes = changes);
+        this.changes$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            skipWhile(() => this.saving),
+            combineLatest(this.provider$, (changes, base) => ({ ...base, ...changes }))
+        ).subscribe(latest => this.latest = latest);
 
         this.valueEmitter
             .changeEmitted$
-            .takeUntil(this.ngUnsubscribe)
-            .skipWhile(() => this.saving)
-            .subscribe(changes => {
-                this.store.dispatch(new UpdateChanges(changes));
-            });
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                skipWhile(() => this.saving)
+            ).subscribe(changes => this.store.dispatch(new UpdateChanges(changes)));
         this.statusEmitter
             .changeEmitted$
-            .takeUntil(this.ngUnsubscribe)
-            .skipWhile(() => this.saving)
-            .combineLatest(this.currentPage$, (status: string, page: any) => {
-                return { [page.path]: status };
-            })
-            .subscribe(status => {
-                this.store.dispatch(new UpdateStatus(status));
-            });
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                skipWhile(() => this.saving),
+                combineLatest(this.currentPage$, (status: string, page: any) => {
+                    return { [page.path]: status };
+                })
+            ).subscribe(status => this.store.dispatch(new UpdateStatus(status)));
     }
 
     ngOnDestroy(): void {
@@ -145,7 +142,7 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        if (nextState.url.match('wizard')) { return Observable.of(true); }
+        if (nextState.url.match('wizard')) { return of(true); }
         if (Object.keys(this.changes).length > 0) {
             let modal = this.modalService.open(UnsavedDialogComponent);
             modal.componentInstance.action = new SaveChanges(this.latest);

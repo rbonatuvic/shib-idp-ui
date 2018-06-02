@@ -29,6 +29,7 @@
         padding-left: 0;
 
         & > .custom-control-label {
+            position: static;
             &::after, &::before {
                 right: 0px;
                 left: auto;

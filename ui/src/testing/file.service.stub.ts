@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class FileServiceStub {
     readAsText(): Observable<string | Blob> {

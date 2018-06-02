@@ -5,8 +5,7 @@ import {
     EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormControlName, Validators, AbstractControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { startWith, take } from 'rxjs/operators';

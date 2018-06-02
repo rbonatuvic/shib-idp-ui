@@ -1,13 +1,14 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/last';
+import { Observable } from 'rxjs';
+import { last } from 'rxjs/operators';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataProvider, Organization, Contact } from '../../../domain/model/metadata-provider';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { FormArray } from '@angular/forms/src/model';
+
 
 @Component({
     selector: 'attribute-release-form',
@@ -72,7 +73,7 @@ export class AttributeReleaseFormComponent extends ProviderFormFragmentComponent
 
     onCheckAll(): void {
         this.onCheckNone();
-        this.listOfAttributes$.last().subscribe(attrs => {
+        this.listOfAttributes$.pipe(last()).subscribe(attrs => {
             attrs.forEach(attr => this.onCheck(null, attr.key));
         });
     }

@@ -1,11 +1,9 @@
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import { of } from 'rxjs/observable/of';
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Location } from '@angular/common';
+
+import { of } from 'rxjs';
+import { map, tap, catchError, switchMap } from 'rxjs/operators';
 
 import * as user from '../action/user.action';
 import { User } from '../model/user';
@@ -15,24 +13,27 @@ import { UserService } from '../service/user.service';
 export class UserEffects {
 
     @Effect()
-    loadUser$ = this.actions$
-        .ofType(user.USER_LOAD_REQUEST)
-        .switchMap(() =>
-            this.userService
-                .get()
-                .map(u => new user.UserLoadSuccessAction({ ...u }))
-                .catch(error => of(new user.UserLoadErrorAction(error)))
-        );
+    loadUser$ = this.actions$.pipe(
+        ofType(user.USER_LOAD_REQUEST),
+        switchMap(() =>
+            this.userService.get()
+                .pipe(
+                    map(u => new user.UserLoadSuccessAction({ ...u })),
+                    catchError(error => of(new user.UserLoadErrorAction(error)))
+                )
+        )
+    );
     @Effect({dispatch: false})
-    redirect$ = this.actions$
-        .ofType(user.REDIRECT)
-        .map((action: user.UserRedirect) => action.payload)
-        .do(path => {
+    redirect$ = this.actions$.pipe(
+        ofType(user.REDIRECT),
+        map((action: user.UserRedirect) => action.payload),
+        tap(path => {
             window.location.href = path;
-        });
+        })
+    );
 
     constructor(
         private userService: UserService,
         private actions$: Actions
     ) { }
-}  /* istanbul ignore next */
+} 
