@@ -53,20 +53,16 @@ public class MetadataFiltersController {
         // TODO: implement lookup based on metadataResolverId once we have more than one
         // TODO: should we check that we found exactly one filter (as in the update method below)? If not, error?
         return ResponseEntity.ok(repository.findAll().iterator().next().getMetadataFilters().stream()
-                .filter(eaf -> eaf.getResourceId().equals(resourceId))
+                .filter(f -> f.getResourceId().equals(resourceId))
                 .collect(Collectors.toList()).get(0));
     }
 
     @PostMapping("/Filter")
-    public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody FilterRepresentation filterRepresentation) {
+    public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
         //TODO: replace with get by metadataResolverId once we have more than one
         MetadataResolver metadataResolver = repository.findAll().iterator().next();
+        metadataResolver.getMetadataFilters().add(createdFilter);
 
-        List<EntityAttributesFilter> filterList = (List<EntityAttributesFilter>)(List<?>) metadataResolver.getMetadataFilters(); // bleh. casting.
-        EntityAttributesFilter createdFilter = filterService.createFilterFromRepresentation(filterRepresentation);
-        filterList.add(createdFilter);
-
-        metadataResolver.setMetadataFilters((List<MetadataFilter>)(List<?>) filterList);
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
@@ -74,15 +70,12 @@ public class MetadataFiltersController {
 
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
-                .body(filterService.createRepresentationFromFilter(
-                        (EntityAttributesFilter)
-                        persistedMr.getMetadataFilters()
+                .body(persistedMr.getMetadataFilters()
                                 .stream()
                                 .filter(filter -> filter.getResourceId().equals(createdFilter.getResourceId()))
                                 .collect(Collectors.toList())
-                                .get(0) // "There can be only one!!!"
-                        )
-                );
+                                .get(0)); // "There can be only one!!!"
+
     }
 
     @PutMapping("/Filter/{resourceId}")
