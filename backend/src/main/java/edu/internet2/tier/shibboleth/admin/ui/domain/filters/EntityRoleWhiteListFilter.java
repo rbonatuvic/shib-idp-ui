@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,5 +32,6 @@ public class EntityRoleWhiteListFilter extends MetadataFilter {
     @ElementCollection
     @CollectionTable(name="RETAINED_ROLES", joinColumns=@JoinColumn(name="ENTITY_ROLE_WHITELIST_FILTER_ID"))
     @Column(name="RETAINED_ROLE")
+    @OrderColumn
     private List<String> retainedRoles = new ArrayList<>();
 }
