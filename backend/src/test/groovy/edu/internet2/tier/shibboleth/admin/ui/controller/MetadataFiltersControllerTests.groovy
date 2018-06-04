@@ -165,26 +165,25 @@ class MetadataFiltersControllerTests extends Specification {
 
     def "FilterController.update updates the target EntityAttributes filter as desired"() {
         given:
-        def randomFilter = testObjectGenerator.entityAttributesFilter()
-        def updatedFilter = testObjectGenerator.entityAttributesFilter()
-        updatedFilter.resourceId = randomFilter.resourceId
-        updatedFilter.version = randomFilter.hashCode()
-
+        def originalFilter = testObjectGenerator.entityAttributesFilter()
+        def updatedFilter = testObjectGenerator.copyOf(originalFilter)
+        updatedFilter.name = 'Updated Filter'
         def postedJsonBody = mapper.writeValueAsString(updatedFilter)
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId(randomGenerator.randomId())
         originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
+        originalMetadataResolver.metadataFilters.add(originalFilter)
+
         def updatedMetadataResolver = new MetadataResolver()
         updatedMetadataResolver.setResourceId(originalMetadataResolver.getResourceId())
         updatedMetadataResolver.setMetadataFilters(originalMetadataResolver.getMetadataFilters().collect())
-        originalMetadataResolver.getMetadataFilters().add(randomFilter)
         updatedMetadataResolver.getMetadataFilters().add(updatedFilter)
 
         1 * metadataResolverRepository.findAll() >> [originalMetadataResolver]
         1 * metadataResolverRepository.save(_) >> updatedMetadataResolver
 
-        def filterUUID = randomFilter.getResourceId()
+        def filterUUID = updatedFilter.getResourceId()
 
         when:
         def result = mockMvc.perform(

@@ -87,7 +87,7 @@ public class MetadataFiltersController {
                 metadataResolver.getMetadataFilters().stream()
                 .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
                 .collect(Collectors.toList());
-        if (filters.size() != 1) {
+        if (filters.size() > 1) {
             // TODO: I don't think this should ever happen, but... if it does...
             // do something? throw exception, return error?
             LOGGER.warn("More than one filter was found for id {}! This is probably a bad thing.\n" +

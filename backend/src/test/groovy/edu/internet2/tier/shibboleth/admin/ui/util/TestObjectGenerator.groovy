@@ -61,6 +61,17 @@ class TestObjectGenerator {
         }
     }
 
+    EntityAttributesFilter copyOf(EntityAttributesFilter entityAttributesFilter) {
+        new EntityAttributesFilter().with {
+            it.name = entityAttributesFilter.name
+            it.resourceId = entityAttributesFilter.resourceId
+            it.setEntityAttributesFilterTarget(entityAttributesFilter.entityAttributesFilterTarget)
+            it.setAttributes(new ArrayList<Attribute>(entityAttributesFilter.attributes))
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
     MetadataFilter buildFilter(Supplier<? extends MetadataFilter> filterSupplier) {
         MetadataFilter filter = filterSupplier.get()
         filter.setFilterEnabled(generator.randomBoolean())
