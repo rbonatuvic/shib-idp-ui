@@ -103,7 +103,9 @@ public class MetadataFiltersController {
         filter.setName(updatedFilter.getName());
         filter.setFilterEnabled(updatedFilter.isFilterEnabled());
         filter.setEntityAttributesFilterTarget(updatedFilter.getEntityAttributesFilterTarget());
-        filter.setAttributes(updatedFilter.getAttributes());
+        filter.setRelyingPartyOverrides(updatedFilter.getRelyingPartyOverrides());
+        filter.setAttributeRelease(updatedFilter.getAttributeRelease());
+        filter.intoTransientRepresentation();
 
         MetadataResolver persistedMr = repository.save(metadataResolver);
 

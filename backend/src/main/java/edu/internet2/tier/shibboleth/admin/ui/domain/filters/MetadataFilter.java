@@ -33,7 +33,8 @@ import java.util.UUID;
 public class MetadataFilter extends AbstractAuditable {
 
     @JsonProperty("@type")
-    transient String type;
+    @Transient
+    String type;
 
     private String name;
 

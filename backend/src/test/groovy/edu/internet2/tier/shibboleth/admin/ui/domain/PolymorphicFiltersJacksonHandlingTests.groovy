@@ -88,7 +88,7 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     def "List of filters with correct types"() {
         given:
-        def filters = [testObjectGenerator.entityRoleWhitelistFilter()]
+        def filters = testObjectGenerator.buildAllTypesOfFilterList();
 
         when:
         def json = mapper.writeValueAsString(filters)
