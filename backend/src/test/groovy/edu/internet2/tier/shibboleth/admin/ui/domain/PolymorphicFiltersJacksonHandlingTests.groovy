@@ -99,4 +99,50 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     }
 
+    def "Deserialization of EntityAttributes filter"() {
+        given:
+        def filterJson = """
+        {
+            "createdDate" : null,
+            "modifiedDate" : null,
+            "createdBy" : null,
+            "modifiedBy" : null,
+            "name" : "EntityAttributes",
+            "resourceId" : "ab3fec19-8544-45d8-9700-289155b42edf",
+            "filterEnabled" : false,
+            "version" : 0,
+            "entityAttributesFilterTarget" : {
+                "createdDate" : null,
+                "modifiedDate" : null,
+                "createdBy" : null,
+                "modifiedBy" : null,
+                "entityAttributesFilterTargetType" : "ENTITY",
+                "value" : [ "GATCCLk32V" ],
+                "audId" : null
+            },
+            "attributeRelease" : [ ],
+            "relyingPartyOverrides" : {
+                "signAssertion" : true,
+                "dontSignResponse" : false,
+                "turnOffEncryption" : false,
+                "useSha" : false,
+                "ignoreAuthenticationMethod" : true,
+                "omitNotBefore" : false,
+                "responderId" : null,
+                "nameIdFormats" : [ "wEPdpaov4a" ],
+                "authenticationMethods" : [ "FlCgvd4Z60" ]
+            },
+            "audId" : null,
+            "@type" : "EntityAttributes"
+        }"""
+
+        when:
+        def filter = mapper.readValue(filterJson, MetadataFilter)
+
+        then:
+        filter instanceof EntityAttributesFilter
+        filter.resourceId == 'ab3fec19-8544-45d8-9700-289155b42edf'
+        EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.entityAttributesFilterTargetType.name() == 'ENTITY'
+        EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.value == ['GATCCLk32V']
+    }
 }

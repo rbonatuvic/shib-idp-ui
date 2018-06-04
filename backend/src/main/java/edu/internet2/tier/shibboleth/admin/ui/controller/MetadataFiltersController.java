@@ -48,7 +48,7 @@ public class MetadataFiltersController {
         return repository.findAll().iterator().next().getMetadataFilters();
     }
 
-    @GetMapping("/Filter/{resourceId}")
+    @GetMapping("/Filters/{resourceId}")
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
         // TODO: implement lookup based on metadataResolverId once we have more than one
         // TODO: should we check that we found exactly one filter (as in the update method below)? If not, error?
@@ -57,7 +57,7 @@ public class MetadataFiltersController {
                 .collect(Collectors.toList()).get(0));
     }
 
-    @PostMapping("/Filter")
+    @PostMapping("/Filters")
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
         //TODO: replace with get by metadataResolverId once we have more than one
         MetadataResolver metadataResolver = repository.findAll().iterator().next();
@@ -78,51 +78,48 @@ public class MetadataFiltersController {
 
     }
 
-    @PutMapping("/Filter/{resourceId}")
-    public ResponseEntity<?> update(@PathVariable String metadataResolverId, @RequestBody FilterRepresentation filterRepresentation) {
+    @PutMapping("/Filters/EntityAttributes/{resourceId}")
+    public ResponseEntity<?> update(@PathVariable String metadataResolverId, @RequestBody EntityAttributesFilter updatedFilter) {
         //TODO: replace with get by metadataResolverId once we have more than one
         MetadataResolver metadataResolver = repository.findAll().iterator().next();
 
-        List<EntityAttributesFilter> filters = (List<EntityAttributesFilter>)(List<?>)
+        List<MetadataFilter> filters =
                 metadataResolver.getMetadataFilters().stream()
-                .filter(eaf -> eaf.getResourceId().equals(filterRepresentation.getId()))
+                .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
                 .collect(Collectors.toList());
         if (filters.size() != 1) {
             // TODO: I don't think this should ever happen, but... if it does...
             // do something? throw exception, return error?
             LOGGER.warn("More than one filter was found for id {}! This is probably a bad thing.\n" +
-                    "We're going to go ahead and use the first one, but .. look in to this!", filterRepresentation.getId());
+                    "We're going to go ahead and use the first one, but .. look in to this!", updatedFilter.getResourceId());
         }
 
-        EntityAttributesFilter eaf = filters.get(0);
-
+        EntityAttributesFilter filter = EntityAttributesFilter.class.cast(filters.get(0));
         // Verify we're the only one attempting to update the filter
-        if (filterRepresentation.getVersion() != eaf.hashCode()) {
+        if (updatedFilter.getVersion() != filter.hashCode()) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
-        // convert our representation so we can get the attributes more easily...
-        EntityAttributesFilter updatedFilter = filterService.createFilterFromRepresentation(filterRepresentation);
-        eaf.setName(updatedFilter.getName());
-        eaf.setFilterEnabled(updatedFilter.isFilterEnabled());
-        eaf.setEntityAttributesFilterTarget(updatedFilter.getEntityAttributesFilterTarget());
-        eaf.setAttributes(updatedFilter.getAttributes());
+        filter.setName(updatedFilter.getName());
+        filter.setFilterEnabled(updatedFilter.isFilterEnabled());
+        filter.setEntityAttributesFilterTarget(updatedFilter.getEntityAttributesFilterTarget());
+        filter.setAttributes(updatedFilter.getAttributes());
 
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         metadataResolverService.reloadFilters(persistedMr.getName());
 
         return ResponseEntity.ok()
-                .body(filterService.createRepresentationFromFilter((EntityAttributesFilter)persistedMr.getMetadataFilters().stream()
-                .filter(filter -> filter.getResourceId().equals(filterRepresentation.getId()))
-                .collect(Collectors.toList()).get(0)));
+                .body(persistedMr.getMetadataFilters().stream()
+                .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
+                .collect(Collectors.toList()).get(0));
     }
 
     private static URI getResourceUriFor(MetadataResolver mr, String filterResourceId) {
         return ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/api/MetadataResolver/")
                 .pathSegment(mr.getResourceId())
-                .pathSegment("Filter")
+                .pathSegment("Filters")
                 .pathSegment(filterResourceId)
                 .build()
                 .toUri();

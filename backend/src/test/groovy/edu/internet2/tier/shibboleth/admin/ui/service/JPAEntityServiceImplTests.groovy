@@ -80,7 +80,7 @@ class JPAEntityServiceImplTests extends Specification {
         result.name == expectedAttributeName
         result.attributeValues.size == listOfStrings.size
         result.attributeValues.each {
-            listOfStrings.contains(it.value)
+            listOfStrings.contains(it.setSingleValue)
             it.namespaceURI == expectedNamespaceURI
             it.elementLocalName == expectedElementLocalName
             it.namespacePrefix == expectedNamespacePrefix
