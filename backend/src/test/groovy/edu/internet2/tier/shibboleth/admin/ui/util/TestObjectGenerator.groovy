@@ -138,7 +138,7 @@ class TestObjectGenerator {
     EntityAttributesFilterTarget buildEntityAttributesFilterTarget() {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
 
-        entityAttributesFilterTarget.setValue(generator.randomStringList())
+        entityAttributesFilterTarget.setSingleValue(generator.randomStringList())
         entityAttributesFilterTarget.setEntityAttributesFilterTargetType(randomFilterTargetType())
 
         return entityAttributesFilterTarget
@@ -212,7 +212,7 @@ class TestObjectGenerator {
     /**
      * This method takes a type and a size and builds a List of that size containing objects of that type. This is
      * intended to be used with things that extend LocalizedName such as {@link OrganizationName}, {@link OrganizationDisplayName},
-     * or with {@link OrganizationURL}s (really, a class that has a setValue() method).
+     * or with {@link OrganizationURL}s (really, a class that has a setSingleValue() method).
      *
      * @param type the type of list to generate
      * @param listSize the number of instances of that type to generate and add to the list

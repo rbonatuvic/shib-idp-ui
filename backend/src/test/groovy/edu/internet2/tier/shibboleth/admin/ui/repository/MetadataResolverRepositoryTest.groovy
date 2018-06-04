@@ -49,7 +49,7 @@ class MetadataResolverRepositoryTest extends Specification {
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.setValue(["hola"])
+                    it.setSingleValue(["hola"])
                     return it
                 }
                 return it
@@ -64,8 +64,8 @@ class MetadataResolverRepositoryTest extends Specification {
         item.name == "testme"
         item.metadataFilters.size() == 1
         item.metadataFilters.get(0).entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-        item.metadataFilters.get(0).entityAttributesFilterTarget.value.size() == 1
-        item.metadataFilters.get(0).entityAttributesFilterTarget.value.get(0) == "hola"
+        item.metadataFilters.get(0).entityAttributesFilterTarget.setSingleValue.size() == 1
+        item.metadataFilters.get(0).entityAttributesFilterTarget.setSingleValue.get(0) == "hola"
     }
 
     def "SHIBUI-553"() {
@@ -75,7 +75,7 @@ class MetadataResolverRepositoryTest extends Specification {
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.setValue(["hola"])
+                    it.setSingleValue(["hola"])
                     return it
                 }
                 return it

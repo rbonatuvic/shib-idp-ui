@@ -79,7 +79,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.setValue(['http://test.scaldingspoon.org/test1'])
+                    it.setSingleValue(['http://test.scaldingspoon.org/test1'])
                     return it
                 }
                 it.attributes = entityService.getAttributeListFromAttributeReleaseList(['testme'])

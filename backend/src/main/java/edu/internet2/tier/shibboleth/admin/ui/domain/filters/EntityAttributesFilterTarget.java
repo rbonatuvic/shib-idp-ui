@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setSingleValue(String value) {
         List<String> values = new ArrayList<>();
         values.add(value);
         this.value = values;

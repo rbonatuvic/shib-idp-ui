@@ -53,7 +53,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         mr.metadataFilters.add(new EntityAttributesFilter().with {
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                 it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                it.value = ['https://sp1.example.org']
+                it.singleValue = ['https://sp1.example.org']
                 it
             }
             def attribute = attributeUtility.createAttributeWithArbitraryValues('here', null, 'there')
