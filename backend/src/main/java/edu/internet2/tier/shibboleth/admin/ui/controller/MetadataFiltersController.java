@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
@@ -78,8 +79,8 @@ public class MetadataFiltersController {
 
     }
 
-    @PutMapping("/Filters/EntityAttributes/{resourceId}")
-    public ResponseEntity<?> update(@PathVariable String metadataResolverId, @RequestBody EntityAttributesFilter updatedFilter) {
+    @PutMapping("/Filters/{resourceId}")
+    public ResponseEntity<?> update(@PathVariable String metadataResolverId, @RequestBody MetadataFilter updatedFilter) {
         //TODO: replace with get by metadataResolverId once we have more than one
         MetadataResolver metadataResolver = repository.findAll().iterator().next();
 
@@ -94,18 +95,15 @@ public class MetadataFiltersController {
                     "We're going to go ahead and use the first one, but .. look in to this!", updatedFilter.getResourceId());
         }
 
-        EntityAttributesFilter filter = EntityAttributesFilter.class.cast(filters.get(0));
+        MetadataFilter filterTobeUpdated = filters.get(0);
         // Verify we're the only one attempting to update the filter
-        if (updatedFilter.getVersion() != filter.hashCode()) {
+        if (updatedFilter.getVersion() != filterTobeUpdated.hashCode()) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
-        filter.setName(updatedFilter.getName());
-        filter.setFilterEnabled(updatedFilter.isFilterEnabled());
-        filter.setEntityAttributesFilterTarget(updatedFilter.getEntityAttributesFilterTarget());
-        filter.setRelyingPartyOverrides(updatedFilter.getRelyingPartyOverrides());
-        filter.setAttributeRelease(updatedFilter.getAttributeRelease());
-        filter.intoTransientRepresentation();
+        filterTobeUpdated.setName(updatedFilter.getName());
+        filterTobeUpdated.setFilterEnabled(updatedFilter.isFilterEnabled());
+        updateConcreteFilterTypeData(filterTobeUpdated, updatedFilter);
 
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
@@ -115,6 +113,29 @@ public class MetadataFiltersController {
                 .body(persistedMr.getMetadataFilters().stream()
                 .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
                 .collect(Collectors.toList()).get(0));
+    }
+
+    /**
+     *
+     * Add else if instanceof block here for each concrete filter types we add in the future
+     */
+    private void updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated, MetadataFilter filterWithUpdatedData) {
+        if(filterWithUpdatedData instanceof EntityAttributesFilter) {
+            EntityAttributesFilter toFilter = EntityAttributesFilter.class.cast(filterToBeUpdated);
+            EntityAttributesFilter fromFilter = EntityAttributesFilter.class.cast(filterWithUpdatedData);
+            toFilter.setEntityAttributesFilterTarget(fromFilter.getEntityAttributesFilterTarget());
+            toFilter.setRelyingPartyOverrides(fromFilter.getRelyingPartyOverrides());
+            toFilter.setAttributeRelease(fromFilter.getAttributeRelease());
+            toFilter.intoTransientRepresentation();
+        }
+        else if(filterWithUpdatedData instanceof EntityRoleWhiteListFilter) {
+            EntityRoleWhiteListFilter toFilter = EntityRoleWhiteListFilter.class.cast(filterToBeUpdated);
+            EntityRoleWhiteListFilter fromFilter = EntityRoleWhiteListFilter.class.cast(filterWithUpdatedData);
+            toFilter.setRemoveEmptyEntitiesDescriptors(fromFilter.getRemoveEmptyEntitiesDescriptors());
+            toFilter.setRemoveRolelessEntityDescriptors(fromFilter.getRemoveRolelessEntityDescriptors());
+            toFilter.setRetainedRoles(fromFilter.getRetainedRoles());
+        }
+        //TODO: add other types of concrete filters update here
     }
 
     private static URI getResourceUriFor(MetadataResolver mr, String filterResourceId) {

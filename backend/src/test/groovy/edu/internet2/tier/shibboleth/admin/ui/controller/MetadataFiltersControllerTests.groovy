@@ -187,7 +187,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                put("/api/MetadataResolver/foo/Filters/EntityAttributes/$filterUUID")
+                put("/api/MetadataResolver/foo/Filters/$filterUUID")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -198,7 +198,7 @@ class MetadataFiltersControllerTests extends Specification {
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
     }
 
-    def "FilterController.update EntityAttributes filter 409's if the version numbers don't match"() {
+    def "FilterController.update filter 409's if the version numbers don't match"() {
         given:
         def randomFilter = testObjectGenerator.entityAttributesFilter()
         def updatedFilter = testObjectGenerator.entityAttributesFilter()
@@ -216,7 +216,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                put("/api/MetadataResolver/foo/Filters/EntityAttributes/$filterUUID")
+                put("/api/MetadataResolver/foo/Filters/$filterUUID")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
