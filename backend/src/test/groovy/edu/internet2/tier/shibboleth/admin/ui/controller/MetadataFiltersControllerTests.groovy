@@ -223,8 +223,4 @@ class MetadataFiltersControllerTests extends Specification {
         then:
         result.andExpect(status().is(409))
     }
-
-    EntityAttributesFilter chooseRandomEentityAttributesFilterFromList(List<MetadataFilter> filters) {
-        filters.get(randomGenerator.randomInt(0, filters.size() - 1))
-    }
 }
