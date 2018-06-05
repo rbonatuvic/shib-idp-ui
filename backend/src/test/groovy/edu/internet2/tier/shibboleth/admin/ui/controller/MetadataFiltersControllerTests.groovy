@@ -203,8 +203,7 @@ class MetadataFiltersControllerTests extends Specification {
         def randomFilter = testObjectGenerator.entityAttributesFilter()
         def updatedFilter = testObjectGenerator.entityAttributesFilter()
         updatedFilter.resourceId = randomFilter.resourceId
-        def postedJsonBody = mapper.writeValueAsString(
-                filterService.createRepresentationFromFilter(updatedFilter))
+        def postedJsonBody = mapper.writeValueAsString(updatedFilter)
 
         def originalMetadataResolver = new MetadataResolver()
         originalMetadataResolver.setResourceId(randomGenerator.randomId())

@@ -14,7 +14,7 @@ class EntityAttributesFilterTargetTests extends Specification {
         def stringsList = ["one", "two", "three"]
 
         when:
-        filterTarget.setSingleValue(stringsList)
+        filterTarget.setValue(stringsList)
 
         then:
         filterTarget.value == stringsList

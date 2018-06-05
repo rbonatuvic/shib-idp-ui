@@ -70,8 +70,8 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
         item.name == "FileBackedHttpMetadata"
         item.metadataFilters.size() == 1
         item.metadataFilters[0].entityAttributesFilterTarget.entityAttributesFilterTargetType == ENTITY
-        item.metadataFilters[0].entityAttributesFilterTarget.setSingleValue.size() == 1
-        item.metadataFilters[0].entityAttributesFilterTarget.setSingleValue.get(0) == "hola"
+        item.metadataFilters[0].entityAttributesFilterTarget.value.size() == 1
+        item.metadataFilters[0].entityAttributesFilterTarget.value.get(0) == "hola"
         item.httpMetadataResolverAttributes.connectionRequestTimeout == "PT05"
         item.httpMetadataResolverAttributes.disregardTLSCertificate
         item.httpMetadataResolverAttributes.httpCaching == memory
