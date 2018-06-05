@@ -17,6 +17,12 @@ import javax.persistence.Entity;
 @ToString
 public class LocalDynamicMetadataResolver extends MetadataResolver {
 
+    private String sourceDirectory;
+
+    private String sourceManagerRef;
+
+    private String sourceKeyGeneratorRef;
+
     @Embedded
     private DynamicMetadataResolverAttributes dynamicMetadataResolverAttributes;
 
