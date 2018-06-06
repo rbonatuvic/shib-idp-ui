@@ -14,6 +14,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
@@ -31,6 +33,46 @@ class TestObjectGenerator {
 
     TestObjectGenerator(AttributeUtility attributeUtility) {
         this.attributeUtility = attributeUtility
+    }
+
+    LocalDynamicMetadataResolver buildLocalDynamicMetadataResolver() {
+        def resolver = new LocalDynamicMetadataResolver().with {
+            it.dynamicMetadataResolverAttributes = buildDynamicMetadataResolverAttributes()
+            it.sourceDirectory = generator.randomString(10)
+            it.sourceKeyGeneratorRef = generator.randomString(10)
+            it.sourceManagerRef = generator.randomString(10)
+            it.failFastInitialization = generator.randomBoolean()
+            it.name = generator.randomString(10)
+            it.requireValidMetadata = generator.randomBoolean()
+            it.useDefaultPredicateRegistry = generator.randomBoolean()
+            it.criterionPredicateRegistryRef = generator.randomString(10)
+            it.satisfyAnyPredicates = generator.randomBoolean()
+            it.sortKey = generator.randomInt(1, 10)
+            it.metadataFilters = buildAllTypesOfFilterList()
+            it
+        }
+        return resolver
+    }
+
+    DynamicMetadataResolverAttributes buildDynamicMetadataResolverAttributes() {
+        def attributes = new DynamicMetadataResolverAttributes().with {
+            it.backgroundInitializationFromCacheDelay = generator.randomString(10)
+            it.cleanupTaskInterval = generator.randomString(10)
+            it.initializationFromCachePredicateRef = generator.randomString(10)
+            it.initializeFromPersistentCacheInBackground = generator.randomBoolean()
+            it.maxCacheDuration = generator.randomString(5)
+            it.maxIdleEntityData = generator.randomString(5)
+            it.minCacheDuration = generator.randomString(5)
+            it.parserPoolRef = generator.randomString(10)
+            it.persistentCacheKeyGeneratorRef = generator.randomString(10)
+            it.persistentCacheManagerDirectory = generator.randomString(10)
+            it.persistentCacheManagerRef = generator.randomString(10)
+            it.refreshDelayFactor = generator.randomInt(1, 5)
+            it.removeIdleEntityData = generator.randomBoolean()
+            it.taskTimerRef = generator.randomString()
+            it
+        }
+        attributes
     }
 
     List<MetadataFilter> buildAllTypesOfFilterList() {
