@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
 import org.joda.time.DateTime
@@ -96,6 +97,28 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         def resultString = openSamlObjects.marshalToXmlString(ed)
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
+    }
+
+    def 'test generating filter xml snippet'() {
+        given:
+        def xml = new MarkupBuilder()
+
+        when:
+        xml.MetadataResolver {
+            genXmlSnippet(delegate)
+        }
+        println xml.toString()
+
+        then:
+        xml
+    }
+
+    private genXmlSnippet(xmlDelegate) {
+        xmlDelegate.MetadataFilter(
+                'xsi:type': 'EntityRoleWhiteList'
+        ) {
+            RetainedRole('md:SPSSODescriptor')
+        }
     }
 
     @TestConfiguration
