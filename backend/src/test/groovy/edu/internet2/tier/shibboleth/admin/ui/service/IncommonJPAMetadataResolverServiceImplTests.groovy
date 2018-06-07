@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -21,6 +22,8 @@ import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Specification
+
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 
 @SpringBootTest
 @DataJpaTest
@@ -43,7 +46,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         def output = metadataResolverService.generateConfiguration()
 
         then:
-        assert !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/conf/278.xml'))).withTest(Input.fromDocument(output)).ignoreComments().ignoreWhitespace().build().hasDifferences()
+        assert generatedXmlTheSameAsExpectedXml('/conf/278.xml', output)
     }
 
     def 'test generation of metadata-providers.xml with filters'() {
@@ -70,7 +73,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         def output = metadataResolverService.generateConfiguration()
 
         then:
-        assert !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/conf/278.2.xml'))).withTest(Input.fromDocument(output)).ignoreComments().ignoreWhitespace().build().hasDifferences()
+        assert generatedXmlTheSameAsExpectedXml('/conf/278.2.xml', output)
     }
 
     //TODO: check that this configuration is sufficient

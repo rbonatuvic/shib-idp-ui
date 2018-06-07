@@ -105,11 +105,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                 'xsi:type': 'RequiredValidUntil',
                                 'maxValidityInterval': 'P14D'
                         )
-                        MetadataFilter(
-                                'xsi:type': 'EntityRoleWhiteList'
-                        ) {
-                            RetainedRole('md:SPSSODescriptor')
-                        }
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
                             constructFilterXmlNode(filter, delegate)

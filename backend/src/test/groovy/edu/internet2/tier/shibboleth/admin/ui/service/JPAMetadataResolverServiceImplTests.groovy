@@ -111,43 +111,27 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         !diff.hasDifferences()
     }
 
-    def 'test generating filter xml snippet'() {
+    def 'test generating EntityRoleWhitelistFilter xml snippet'() {
         given:
         def xml = new MarkupBuilder()
         def filter = testObjectGenerator.entityRoleWhitelistFilter()
 
         when:
-        xml.MetadataProvider(id: 'ShibbolethMetadata',
-                xmlns: 'urn:mace:shibboleth:2.0:metadata',
-                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                'xsi:type': 'ChainingMetadataProvider',
-                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
-        ) {
-            MetadataProvider(id: 'HTTPMetadata',
-                    'xsi:type': 'FileBackedHTTPMetadataProvider',
-                    backingFile: '%{idp.home}/metadata/incommonmd.xml',
-                    metadataURL: 'http://md.incommon.org/InCommon/InCommon-metadata.xml',
-                    minRefreshDelay: 'PT5M',
-                    maxRefreshDelay: 'PT1H',
-                    refreshDelayFactor: '0.75'
-            ) {
-                genXmlSnippet(filter, delegate)
-            }
-        }
+        genXmlSnippet(xml) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructFilterXmlNode(filter, it) }
         println xml.toString()
 
         then:
         xml
     }
 
-    private genXmlSnippet(EntityRoleWhiteListFilter filter, xmlDelegate) {
-        xmlDelegate.MetadataFilter(
-                'xsi:type': 'EntityRoleWhiteList',
-                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
+    static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
+        xml.MetadataProvider(id: 'ShibbolethMetadata',
+                xmlns: 'urn:mace:shibboleth:2.0:metadata',
+                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                'xsi:type': 'ChainingMetadataProvider',
+                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
         ) {
-            filter.retainedRoles.each {
-                xmlDelegate.RetainedRole(it)
-            }
+            xmlNodeGenerator(delegate)
         }
     }
 
