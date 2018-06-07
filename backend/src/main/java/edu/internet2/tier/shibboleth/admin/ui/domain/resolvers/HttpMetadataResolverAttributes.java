@@ -52,7 +52,7 @@ public class HttpMetadataResolverAttributes {
 
     private Integer httpMaxCacheEntrySize;
 
-    private enum HttpCachingType {
+    public enum HttpCachingType {
         none,file,memory
     }
 }

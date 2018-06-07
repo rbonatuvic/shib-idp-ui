@@ -14,7 +14,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
@@ -33,6 +35,52 @@ class TestObjectGenerator {
 
     TestObjectGenerator(AttributeUtility attributeUtility) {
         this.attributeUtility = attributeUtility
+    }
+
+    DynamicHttpMetadataResolver buildDynamicHttpMetadataResolver() {
+        def resolver = new DynamicHttpMetadataResolver().with {
+            it.dynamicMetadataResolverAttributes = buildDynamicMetadataResolverAttributes()
+            it.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
+            it.maxConnectionsPerRoute = generator.randomInt(1, 100)
+            it.maxConnectionsTotal = generator.randomInt(1, 100)
+            it.supportedContentTypes = generator.randomStringList()
+            it.name = generator.randomString(10)
+            it.requireValidMetadata = generator.randomBoolean()
+            it.failFastInitialization = generator.randomBoolean()
+            it.sortKey = generator.randomInt(1, 10)
+            it.criterionPredicateRegistryRef = generator.randomString(10)
+            it.useDefaultPredicateRegistry = generator.randomBoolean()
+            it.satisfyAnyPredicates = generator.randomBoolean()
+            it.metadataFilters = buildAllTypesOfFilterList()
+            it
+        }
+        return resolver
+    }
+
+    HttpMetadataResolverAttributes buildHttpMetadataResolverAttributes() {
+        def attributes = new HttpMetadataResolverAttributes().with {
+            it.disregardTLSCertificate = generator.randomBoolean()
+            it.connectionRequestTimeout = generator.randomString(10)
+            it.httpClientRef = generator.randomString(10)
+            it.httpCacheDirectory = generator.randomString(10)
+            it.httpCaching = randomHttpCachingType()
+            it.httpClientSecurityParametersRef = generator.randomString(10)
+            it.httpMaxCacheEntries = generator.randomInt(1, 10)
+            it.httpMaxCacheEntrySize = generator.randomInt(100, 10000)
+            it.proxyHost = generator.randomString(10)
+            it.proxyPassword = generator.randomString(10)
+            it.proxyPort = generator.randomString(5)
+            it.proxyUser = generator.randomString(10)
+            it.requestTimeout = generator.randomString(10)
+            it.socketTimeout = generator.randomString(10)
+            it.tlsTrustEngineRef = generator.randomString(10)
+            it
+        }
+        return attributes
+    }
+
+    HttpMetadataResolverAttributes.HttpCachingType randomHttpCachingType() {
+        HttpMetadataResolverAttributes.HttpCachingType.values()[generator.randomInt(0, 2)]
     }
 
     LocalDynamicMetadataResolver buildLocalDynamicMetadataResolver() {
