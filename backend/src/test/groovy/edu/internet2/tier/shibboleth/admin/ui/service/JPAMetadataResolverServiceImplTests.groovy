@@ -4,11 +4,11 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
@@ -31,6 +31,8 @@ import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Specification
+
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 
 @SpringBootTest
 @DataJpaTest
@@ -59,8 +61,21 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
     TestObjectGenerator testObjectGenerator
 
+    DOMBuilder domBuilder
+
+    StringWriter writer
+
+    MarkupBuilder markupBuilder
+
     def setup() {
         testObjectGenerator = new TestObjectGenerator(attributeUtility)
+        domBuilder = DOMBuilder.newInstance()
+        writer = new StringWriter()
+        markupBuilder = new MarkupBuilder(writer)
+    }
+
+    def cleanup() {
+        writer.close()
     }
 
     def 'test adding a filter'() {
@@ -113,15 +128,13 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
     def 'test generating EntityRoleWhitelistFilter xml snippet'() {
         given:
-        def xml = new MarkupBuilder()
         def filter = testObjectGenerator.entityRoleWhitelistFilter()
 
         when:
-        genXmlSnippet(xml) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructFilterXmlNode(filter, it) }
-        println xml.toString()
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructFilterXmlNode(filter, it) }
 
         then:
-        xml
+        assert generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {

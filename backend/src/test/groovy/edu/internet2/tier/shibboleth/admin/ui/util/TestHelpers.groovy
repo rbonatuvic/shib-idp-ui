@@ -26,7 +26,7 @@ class TestHelpers {
         return count
     }
 
-    static generatedXmlTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {
+    static generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {
         !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream(expectedXmlResource))).withTest(Input.fromDocument(generatedXml)).ignoreComments().ignoreWhitespace().build().hasDifferences()
     }
 }
