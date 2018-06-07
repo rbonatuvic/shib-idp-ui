@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
@@ -111,26 +112,39 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         }
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                            if (filter instanceof EntityAttributesFilter) {
-                                EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter)filter
-                                MetadataFilter('xsi:type': 'EntityAttributes') {
-                                    // TODO: enhance. currently this does weird things with namespaces
-                                    entityAttributesFilter.attributes.each { attribute ->
-                                        mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
-                                    }
-                                    if (entityAttributesFilter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY) {
-                                        entityAttributesFilter.entityAttributesFilterTarget.value.each {
-                                            Entity(it)
-                                        }
-                                    }
-                                }
-                            }
+                            constructFilterXmlNode(filter, delegate)
                         }
                     }
                 }
             }
 
             return DOMBuilder.newInstance().parseText(writer.toString())
+        }
+    }
+
+    void constructFilterXmlNode(EntityAttributesFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
+            // TODO: enhance. currently this does weird things with namespaces
+            filter.attributes.each { attribute ->
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
+            }
+            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
+                    .EntityAttributesFilterTargetType.ENTITY) {
+                filter.entityAttributesFilterTarget.value.each {
+                    Entity(it)
+                }
+            }
+        }
+    }
+
+    void constructFilterXmlNode(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'EntityRoleWhiteList',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
+        ) {
+            filter.retainedRoles.each {
+                markupBuilderDelegate.RetainedRole(it)
+            }
         }
     }
 }
