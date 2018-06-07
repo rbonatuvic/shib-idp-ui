@@ -107,7 +107,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         )
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                            constructFilterXmlNode(filter, delegate)
+                            constructXmlNodeFor(filter, delegate)
                         }
                     }
                 }
@@ -117,7 +117,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-    void constructFilterXmlNode(EntityAttributesFilter filter, def markupBuilderDelegate) {
+    void constructXmlNodeFor(EntityAttributesFilter filter, def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             // TODO: enhance. currently this does weird things with namespaces
             filter.attributes.each { attribute ->
@@ -132,7 +132,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-    void constructFilterXmlNode(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+    void constructXmlNodeFor(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter(
                 'xsi:type': 'EntityRoleWhiteList',
                 'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'

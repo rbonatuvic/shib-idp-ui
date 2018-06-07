@@ -131,7 +131,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         def filter = testObjectGenerator.entityRoleWhitelistFilter()
 
         when:
-        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructFilterXmlNode(filter, it) }
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeFor(filter, it) }
 
         then:
         assert generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
