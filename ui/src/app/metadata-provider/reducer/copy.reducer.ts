@@ -10,6 +10,7 @@ export interface CopyState {
     entityId: string;
     provider: MetadataProvider;
     saving: boolean;
+    sections: string[];
 }
 
 export const initialState: CopyState = {
@@ -17,11 +18,20 @@ export const initialState: CopyState = {
     serviceProviderName: null,
     entityId: null,
     provider: null,
-    saving: false
+    saving: false,
+    sections: []
 };
 
 export function reducer(state = initialState, action: CopySourceActionUnion | ProviderCollectionActionsUnion): CopyState {
     switch (action.type) {
+        case CopySourceActionTypes.UPDATE_PROVIDER_COPY_SECTIONS: {
+            return {
+                ...state,
+                sections: [
+                    ...action.payload
+                ]
+            };
+        }
         case CopySourceActionTypes.CREATE_PROVIDER_COPY_REQUEST: {
             return {
                 ...state,
@@ -70,4 +80,5 @@ export const getCopyAttributes = (state: CopyState) => ({
     serviceProviderName: state.serviceProviderName,
     target: state.target
 });
+export const getCopySections = (state: CopyState) => state.sections;
 export const getSaving = (state: CopyState) => state.saving;

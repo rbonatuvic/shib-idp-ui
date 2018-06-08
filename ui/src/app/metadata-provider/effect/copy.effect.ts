@@ -25,17 +25,19 @@ export class CopyProviderEffects {
     copyRequest$ = this.actions$.pipe(
         ofType<CreateProviderCopyRequest>(CopySourceActionTypes.CREATE_PROVIDER_COPY_REQUEST),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromCollection.getProviderCollection)),
-        switchMap(([attrs, providers]) => {
+        withLatestFrom(
+            this.store.select(fromCollection.getProviderCollection),
+            this.store.select(fromProvider.getSectionsToCopy)
+        ),
+        switchMap(([attrs, providers, sections]) => {
             const { serviceProviderName, entityId } = attrs;
             const provider = providers.find(p => p.entityId === attrs.target);
-            const { attributeRelease, relyingPartyOverrides } = provider;
+            const copied = sections.reduce((c, section) => ({ ...c, ...{[section]: provider[section] } }), {});
             const action = provider ?
                 new CreateProviderCopySuccess(new Provider({
                     serviceProviderName,
                     entityId,
-                    attributeRelease,
-                    relyingPartyOverrides
+                    ...copied
                 })) :
                 new CreateProviderCopyError(new Error('Not found'));
             return of(action);
