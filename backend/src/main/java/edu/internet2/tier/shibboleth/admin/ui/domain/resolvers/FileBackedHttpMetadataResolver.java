@@ -21,7 +21,7 @@ public class FileBackedHttpMetadataResolver extends MetadataResolver {
 
     private String backingFile;
 
-    private Boolean initializeFromBackupFile;
+    private Boolean initializeFromBackupFile = true;
 
     private String backupFileInitNextRefreshDelay;
 
