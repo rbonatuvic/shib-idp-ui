@@ -30,7 +30,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetada
 class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
 
     @Autowired
-    FileBackedHttpMetadataResolverRepository repositoryUnderTest
+    MetadataResolverRepository repositoryUnderTest
 
     @Autowired
     EntityManager entityManager
@@ -119,9 +119,9 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
         entityManager.flush()
 
         then:
-        def item1 = repositoryUnderTest.findByResourceId(persistedResolver.resourceId)
+        def item1 = repositoryUnderTest.findByName(persistedResolver.name)
         entityManager.clear()
-        def item2 = repositoryUnderTest.findByResourceId(persistedResolver.resourceId)
+        def item2 = repositoryUnderTest.findByName(persistedResolver.name)
 
         item1.hashCode() == item2.hashCode()
     }

@@ -12,9 +12,15 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
+
+import static edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.memory
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -188,6 +194,22 @@ class TestObjectGenerator {
         contactPerson.setNamespacePrefix(generator.randomString(5))
 
         return contactPerson
+    }
+
+    FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
+        new FileBackedHttpMetadataResolver().with {
+            it.name = 'HTTPMetadata'
+            it.backingFile = '%{idp.home}/metadata/incommonmd.xml'
+            it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.minRefreshDelay = 'PT5M'
+                it.maxRefreshDelay = 'PT1H'
+                it.refreshDelayFactor = 0.75
+                it
+            }
+            it
+        }
     }
 
     /**

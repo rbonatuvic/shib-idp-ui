@@ -1,28 +1,29 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import com.google.common.base.Predicate;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter;
+import com.google.common.base.Predicate
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
-import groovy.xml.MarkupBuilder;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import org.opensaml.saml.common.profile.logic.EntityIdPredicate;
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
-import org.opensaml.saml.metadata.resolver.MetadataResolver;
-import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
-import org.opensaml.saml.saml2.core.Attribute;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.w3c.dom.Document;
+import groovy.xml.MarkupBuilder
+import net.shibboleth.utilities.java.support.resolver.ResolverException
+import org.opensaml.saml.common.profile.logic.EntityIdPredicate
+import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
+import org.opensaml.saml.metadata.resolver.MetadataResolver
+import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
+import org.opensaml.saml.saml2.core.Attribute
+import org.opensaml.saml.saml2.metadata.EntityDescriptor
 
-public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
-    private static final Logger logger = LoggerFactory.getLogger(JPAMetadataResolverServiceImpl.class);
+import org.springframework.beans.factory.annotation.Autowired
+import org.w3c.dom.Document
+
+@Slf4j
+class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     @Autowired
     private MetadataResolver metadataResolver
@@ -35,52 +36,52 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     // TODO: enhance
     @Override
-    public void reloadFilters(String metadataResolverName) {
-        ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver)metadataResolver;
-
-        // MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().stream().filter(r -> r.getId().equals(metadataResolverName)).findFirst().get();
+    void reloadFilters(String metadataResolverName) {
+        ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver)metadataResolver
         MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverName }
-        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName);
+        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
-            MetadataFilterChain metadataFilterChain = (MetadataFilterChain)targetMetadataResolver.getMetadataFilter();
+            MetadataFilterChain metadataFilterChain = (MetadataFilterChain)targetMetadataResolver.getMetadataFilter()
 
-            List<MetadataFilter> metadataFilters = new ArrayList<>();
+            List<MetadataFilter> metadataFilters = new ArrayList<>()
 
             for (edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter metadataFilter : jpaMetadataResolver.getMetadataFilters()) {
                 if (metadataFilter instanceof EntityAttributesFilter) {
-                    EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter) metadataFilter;
+                    EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter) metadataFilter
 
-                    org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter();
-                    Map<Predicate<EntityDescriptor>, Collection<Attribute>> rules = new HashMap<>();
+                    org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
+                    Map<Predicate<EntityDescriptor>, Collection<Attribute>> rules = new HashMap<>()
                     if (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType() == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY) {
                         rules.put(
                                 new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
                                 (List<Attribute>)(List<? extends Attribute>)entityAttributesFilter.getAttributes()
-                        );
+                        )
                     }
-                    target.setRules(rules);
-                    metadataFilters.add(target);
+                    target.setRules(rules)
+                    metadataFilters.add(target)
                 }
             }
-            metadataFilterChain.setFilters(metadataFilters);
+            metadataFilterChain.setFilters(metadataFilters)
         }
 
         if (metadataResolver instanceof RefreshableMetadataResolver) {
             try {
-                ((RefreshableMetadataResolver)metadataResolver).refresh();
+                ((RefreshableMetadataResolver)metadataResolver).refresh()
             } catch (ResolverException e) {
-                logger.warn("error refreshing metadataResolver " + metadataResolverName, e);
+                log.warn("error refreshing metadataResolver " + metadataResolverName, e)
             }
         }
     }
 
     // TODO: enhance
     @Override
-    public Document generateConfiguration() {
+    Document generateConfiguration() {
         // TODO: this can probably be a better writer
         new StringWriter().withCloseable { writer ->
             def xml = new MarkupBuilder(writer)
+            xml.omitEmptyAttributes = true
+            xml.omitNullAttributes = true
 
             xml.MetadataProvider(id: 'ShibbolethMetadata',
                     xmlns: 'urn:mace:shibboleth:2.0:metadata',
@@ -135,4 +136,17 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             return DOMBuilder.newInstance().parseText(writer.toString())
         }
     }
+
+    void constructXmlNodeFor(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate) {
+        def attributes = [id: "${resolver.name}",
+                      'xsi:type': 'FileBackedHTTPMetadataProvider',
+                      backingFile: resolver.backingFile,
+                      metadataURL: resolver.metadataURL,
+                      minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
+                      maxRefreshDelay: resolver.reloadableMetadataResolverAttributes?.maxRefreshDelay,
+                      refreshDelayFactor: resolver.reloadableMetadataResolverAttributes?.refreshDelayFactor]
+
+        markupBuilderDelegate.MetadataProvider(attributes)
+    }
+
 }

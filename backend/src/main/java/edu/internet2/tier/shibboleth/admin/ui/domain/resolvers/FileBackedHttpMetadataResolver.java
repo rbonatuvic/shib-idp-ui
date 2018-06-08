@@ -17,6 +17,15 @@ import javax.persistence.Entity;
 @ToString
 public class FileBackedHttpMetadataResolver extends MetadataResolver {
 
+    private String metadataURL;
+
+    private String backingFile;
+
+    private Boolean initializeFromBackupFile;
+
+    private String backupFileInitNextRefreshDelay;
+
+
     @Embedded
     private ReloadableMetadataResolverAttributes reloadableMetadataResolverAttributes;
 
