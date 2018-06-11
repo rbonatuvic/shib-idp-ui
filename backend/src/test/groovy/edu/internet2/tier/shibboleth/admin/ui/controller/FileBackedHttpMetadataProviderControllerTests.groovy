@@ -272,48 +272,11 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "GET by resolver name returns the desired persisted resolver"() {
         given:
-        def randomResolverName = randomGenerator.randomString(10)
-        def resolverJson = """{
-	"name": "$randomResolverName",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
+        def randomResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        def randomResolverName = randomResolver.name
+        def resolverJson = mapper.writeValueAsString(randomResolver)
 
-        def resolver = new ObjectMapper().readValue(resolverJson.bytes, FileBackedHttpMetadataResolver)
-
-        1 * repository.findByName(randomResolverName) >> resolver
+        1 * repository.findByName(randomResolverName) >> randomResolver
 
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 

@@ -49,9 +49,9 @@ class TestObjectGenerator {
             it.proxyPassword = generator.randomString(10)
             it.proxyPort = generator.randomString(5)
             it.proxyUser = generator.randomString(10)
-            it.requestTimeout = generator.randomString(10)
             it.socketTimeout = generator.randomString(10)
             it.tlsTrustEngineRef = generator.randomString(10)
+            it.connectionTimeout = generator.randomString(10)
             it
         }
         return attributes
@@ -260,6 +260,10 @@ class TestObjectGenerator {
         attributes.resolveViaPredicatesOnly = generator.randomBoolean()
         attributes.expirationWarningThreshold = generator.randomString(10)
         return attributes
+    }
+
+    HttpMetadataResolverAttributes.HttpCachingType randomHttpCachingType() {
+        HttpMetadataResolverAttributes.HttpCachingType.values()[generator.randomInt(0, 2)]
     }
 
     /**
