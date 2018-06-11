@@ -134,7 +134,9 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         def resolver = testObjectGenerator.fileBackedHttpMetadataResolver()
 
         when:
-        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeFor(resolver, it) }
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
 
         then:
         assert generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))

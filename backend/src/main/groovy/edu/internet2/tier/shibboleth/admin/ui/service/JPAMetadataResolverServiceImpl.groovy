@@ -90,14 +90,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
             ) {
                 metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                    MetadataProvider(id: 'HTTPMetadata',
-                            'xsi:type': 'FileBackedHTTPMetadataProvider',
-                            backingFile: '%{idp.home}/metadata/incommonmd.xml',
-                            metadataURL: 'http://md.incommon.org/InCommon/InCommon-metadata.xml',
-                            minRefreshDelay: 'PT5M',
-                            maxRefreshDelay: 'PT1H',
-                            refreshDelayFactor: '0.75'
-                    ) {
+                    constructXmlNodeForResolver(mr, delegate) {
                         MetadataFilter(
                                 'xsi:type': 'SignatureValidation',
                                 'requireSignedRoot': 'true',
@@ -115,7 +108,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter filter ->
                             if (filter instanceof EntityAttributesFilter) {
-                                EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter)filter
+                                EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter) filter
                                 MetadataFilter('xsi:type': 'EntityAttributes') {
                                     // TODO: enhance. currently this does weird things with namespaces
                                     entityAttributesFilter.attributes.each { attribute ->
@@ -132,12 +125,11 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     }
                 }
             }
-
             return DOMBuilder.newInstance().parseText(writer.toString())
         }
     }
 
-    void constructXmlNodeFor(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate) {
+    void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.name,
                 'xsi:type': 'FileBackedHTTPMetadataProvider',
                 backingFile: resolver.backingFile,
@@ -172,7 +164,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
                 httpCacheDirectory: resolver.httpMetadataResolverAttributes?.httpCacheDirectory,
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
-                httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize)
+                httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
+
+            childNodes()
+        }
     }
 
 }
