@@ -35,6 +35,28 @@ class TestObjectGenerator {
         this.attributeUtility = attributeUtility
     }
 
+    HttpMetadataResolverAttributes buildHttpMetadataResolverAttributes() {
+        def attributes = new HttpMetadataResolverAttributes().with {
+            it.disregardTLSCertificate = generator.randomBoolean()
+            it.connectionRequestTimeout = generator.randomString(10)
+            it.httpClientRef = generator.randomString(10)
+            it.httpCacheDirectory = generator.randomString(10)
+            it.httpCaching = randomHttpCachingType()
+            it.httpClientSecurityParametersRef = generator.randomString(10)
+            it.httpMaxCacheEntries = generator.randomInt(1, 10)
+            it.httpMaxCacheEntrySize = generator.randomInt(100, 10000)
+            it.proxyHost = generator.randomString(10)
+            it.proxyPassword = generator.randomString(10)
+            it.proxyPort = generator.randomString(5)
+            it.proxyUser = generator.randomString(10)
+            it.requestTimeout = generator.randomString(10)
+            it.socketTimeout = generator.randomString(10)
+            it.tlsTrustEngineRef = generator.randomString(10)
+            it
+        }
+        return attributes
+    }
+
     List<EntityAttributesFilter> buildFilterList() {
         List<EntityAttributesFilter> filterList = new ArrayList<>()
         (1..generator.randomInt(4, 10)).each {
@@ -210,6 +232,34 @@ class TestObjectGenerator {
             }
             it
         }
+    }
+
+    FileBackedHttpMetadataResolver buildFileBackedHttpMetadataResolver() {
+        def resolver = new FileBackedHttpMetadataResolver()
+        resolver.name = generator.randomString(10)
+        resolver.requireValidMetadata = generator.randomBoolean()
+        resolver.failFastInitialization = generator.randomBoolean()
+        resolver.sortKey = generator.randomInt(0, 10)
+        resolver.criterionPredicateRegistryRef = generator.randomString(10)
+        resolver.useDefaultPredicateRegistry = generator.randomBoolean()
+        resolver.satisfyAnyPredicates = generator.randomBoolean()
+        resolver.metadataFilters = buildFilterList()
+        resolver.reloadableMetadataResolverAttributes = buildReloadableMetadataResolverAttributes()
+        resolver.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
+        return resolver
+    }
+
+    ReloadableMetadataResolverAttributes buildReloadableMetadataResolverAttributes() {
+        def attributes = new ReloadableMetadataResolverAttributes()
+        attributes.parserPoolRef = generator.randomString(10)
+        attributes.taskTimerRef = generator.randomString(10)
+        attributes.minRefreshDelay = generator.randomString(5)
+        attributes.maxRefreshDelay = generator.randomString(5)
+        attributes.refreshDelayFactor = generator.randomInt(0, 5)
+        attributes.indexesRef = generator.randomString(10)
+        attributes.resolveViaPredicatesOnly = generator.randomBoolean()
+        attributes.expirationWarningThreshold = generator.randomString(10)
+        return attributes
     }
 
     /**
