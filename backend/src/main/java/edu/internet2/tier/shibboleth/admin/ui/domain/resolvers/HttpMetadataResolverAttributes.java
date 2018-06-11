@@ -24,7 +24,7 @@ public class HttpMetadataResolverAttributes {
 
     private String connectionRequestTimeout;
 
-    private String requestTimeout;
+    private String connectionTimeout;
 
     private String socketTimeout;
 

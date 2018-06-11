@@ -35,15 +35,15 @@ public class MetadataResolver extends AbstractAuditable {
     @Column(unique=true)
     private String resourceId = UUID.randomUUID().toString();
 
-    private Boolean requireValidMetadata;
+    private Boolean requireValidMetadata = true;
 
-    private Boolean failFastInitialization;
+    private Boolean failFastInitialization = true;
 
     private Integer sortKey;
 
     private String criterionPredicateRegistryRef;
 
-    private Boolean useDefaultPredicateRegistry;
+    private Boolean useDefaultPredicateRegistry = true;
 
     private Boolean satisfyAnyPredicates;
 

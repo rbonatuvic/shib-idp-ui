@@ -1,23 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
-import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
@@ -71,9 +62,9 @@ class TestObjectGenerator {
             it.proxyPassword = generator.randomString(10)
             it.proxyPort = generator.randomString(5)
             it.proxyUser = generator.randomString(10)
-            it.requestTimeout = generator.randomString(10)
             it.socketTimeout = generator.randomString(10)
             it.tlsTrustEngineRef = generator.randomString(10)
+            it.connectionTimeout = generator.randomString(10)
             it
         }
         return attributes
@@ -308,6 +299,50 @@ class TestObjectGenerator {
         contactPerson.setNamespacePrefix(generator.randomString(5))
 
         return contactPerson
+    }
+
+    FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
+        new FileBackedHttpMetadataResolver().with {
+            it.name = 'HTTPMetadata'
+            it.backingFile = '%{idp.home}/metadata/incommonmd.xml'
+            it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.minRefreshDelay = 'PT5M'
+                it.maxRefreshDelay = 'PT1H'
+                it.refreshDelayFactor = 0.75
+                it
+            }
+            it
+        }
+    }
+
+    FileBackedHttpMetadataResolver buildFileBackedHttpMetadataResolver() {
+        def resolver = new FileBackedHttpMetadataResolver()
+        resolver.name = generator.randomString(10)
+        resolver.requireValidMetadata = generator.randomBoolean()
+        resolver.failFastInitialization = generator.randomBoolean()
+        resolver.sortKey = generator.randomInt(0, 10)
+        resolver.criterionPredicateRegistryRef = generator.randomString(10)
+        resolver.useDefaultPredicateRegistry = generator.randomBoolean()
+        resolver.satisfyAnyPredicates = generator.randomBoolean()
+        resolver.metadataFilters = []
+        resolver.reloadableMetadataResolverAttributes = buildReloadableMetadataResolverAttributes()
+        resolver.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
+        return resolver
+    }
+
+    ReloadableMetadataResolverAttributes buildReloadableMetadataResolverAttributes() {
+        def attributes = new ReloadableMetadataResolverAttributes()
+        attributes.parserPoolRef = generator.randomString(10)
+        attributes.taskTimerRef = generator.randomString(10)
+        attributes.minRefreshDelay = generator.randomString(5)
+        attributes.maxRefreshDelay = generator.randomString(5)
+        attributes.refreshDelayFactor = generator.randomInt(0, 5)
+        attributes.indexesRef = generator.randomString(10)
+        attributes.resolveViaPredicatesOnly = generator.randomBoolean()
+        attributes.expirationWarningThreshold = generator.randomString(10)
+        return attributes
     }
 
     /**
