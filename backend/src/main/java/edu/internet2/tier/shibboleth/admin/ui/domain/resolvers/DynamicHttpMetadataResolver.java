@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -17,11 +16,12 @@ import java.util.List;
  */
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class DynamicHttpMetadataResolver extends MetadataResolver {
+
+    public static final String DEFAULT_TIMEOUT = "PT5S";
 
     @Embedded
     private DynamicMetadataResolverAttributes dynamicMetadataResolverAttributes;
@@ -29,11 +29,19 @@ public class DynamicHttpMetadataResolver extends MetadataResolver {
     @Embedded
     private HttpMetadataResolverAttributes httpMetadataResolverAttributes;
 
-    private int maxConnectionsTotal;
+    private Integer maxConnectionsTotal = 100;
 
-    private int maxConnectionsPerRoute;
+    private Integer maxConnectionsPerRoute = 100;
 
     @ElementCollection
     @OrderColumn
     private List<String> supportedContentTypes;
+
+    public DynamicHttpMetadataResolver() {
+        this.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes();
+        this.httpMetadataResolverAttributes.setConnectionRequestTimeout(DEFAULT_TIMEOUT);
+        this.httpMetadataResolverAttributes.setConnectionTimeout(DEFAULT_TIMEOUT);
+        this.httpMetadataResolverAttributes.setSocketTimeout(DEFAULT_TIMEOUT);
+        this.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes();
+    }
 }
