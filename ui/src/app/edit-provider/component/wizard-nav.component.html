@@ -3,7 +3,7 @@
         <li class="nav-item" *ngIf="!isFirstPage">
             <button class="nav-link previous btn clearfix" (click)="onPrevious.emit(previousPage.index)" [disabled]="wizardIsInvalid$ | async" [attr.aria-label]="previousPage.path" role="button">
                 <span class="direction pull-left">
-                    <i class="fa fa-arrow-circle-left d-block fa-2x"></i>
+                    <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
                     <ng-container i18n="@@action--back">Back</ng-container>
                 </span>
                 <span class="label pull-right">
@@ -23,7 +23,7 @@
                     {{ nextPage.index }}. <i18n-text [key]="nextPage.path"></i18n-text>
                 </span>
                 <span class="direction pull-right">
-                    <i class="fa fa-arrow-circle-right d-block fa-2x"></i>
+                    <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
                     <ng-container i18n="@@action--next">Next</ng-container>
                 </span>
             </button>
@@ -32,7 +32,7 @@
             <button class="nav-link save btn" (click)="onSave.emit()" aria-label="Save" role="button">
                 <span class="label pull-left" i18n="@@action--save">Save</span>
                 <span class="direction pull-right">
-                    <i class="fa fa-save next d-block fa-2x"></i>
+                    <i class="fa fa-fw fa-save next d-block fa-2x"></i>
                     <ng-container i18n="@@action--save">Save</ng-container>
                 </span>
             </button>

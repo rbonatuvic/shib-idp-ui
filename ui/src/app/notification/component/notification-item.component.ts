@@ -1,9 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
 
 import * as fromNotifications from '../reducer';
 import { Notification } from '../model/notification';

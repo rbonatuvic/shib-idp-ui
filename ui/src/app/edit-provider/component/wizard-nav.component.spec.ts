@@ -6,6 +6,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { WizardNavComponent } from './wizard-nav.component';
 import * as fromEditor from '../reducer';
 import { ProviderEditorFormModule } from '../../metadata-provider/component/index';
+import { DomainModule } from '../../domain/domain.module';
 
 @Component({
     template:
@@ -47,6 +48,7 @@ describe('Wizard Nav Component', () => {
                     'edit-provider': combineReducers(fromEditor.reducers),
                 }),
                 ReactiveFormsModule,
+                DomainModule,
                 ProviderEditorFormModule
             ],
             declarations: [TestHostComponent, WizardNavComponent],

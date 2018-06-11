@@ -12,7 +12,7 @@ import { MetadataUiFormComponent } from './metadata-ui-form.component';
 
 import * as stubs from '../../../../testing/provider.stub';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
-import { I18nTextComponent } from '../i18n-text.component';
+import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
 
 @Component({
     template: `<metadata-ui-form [provider]="provider"></metadata-ui-form>`

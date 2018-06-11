@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.List;
 
 
@@ -19,10 +20,12 @@ public class AffiliationDescriptor extends AbstractDescriptor implements org.ope
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "affildesc_affilmemb_id")
+    @OrderColumn
     private List<AffiliateMember> affiliateMembers;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "affildesc_keydesc_id")
+    @OrderColumn
     private List<KeyDescriptor> keyDescriptors;
 
     @Override

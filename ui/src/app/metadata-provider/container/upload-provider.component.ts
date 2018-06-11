@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormControlName, Validators, AbstractControl } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { FileService } from '../../core/service/file.service';
@@ -40,18 +40,16 @@ export class UploadProviderComponent implements OnInit, OnDestroy {
             this.formValue = changes;
         });
 
-        this.providerForm
-            .get('file')
-            .valueChanges
-            .takeUntil(this.ngUnsubscribe)
-            .debounceTime(100)
-            .subscribe(changes => {
-                let url = this.providerForm.get('url');
-                url[changes ? 'disable' : 'enable']();
-                if (!!url.value) {
-                    url.setValue(null);
-                }
-            });
+        this.providerForm.get('file').valueChanges.pipe(
+            takeUntil(this.ngUnsubscribe),
+            debounceTime(100)
+        ).subscribe(changes => {
+            let url = this.providerForm.get('url');
+            url[changes ? 'disable' : 'enable']();
+            if (!!url.value) {
+                url.setValue(null);
+            }
+        });
     }
 
     save(): void {

@@ -19,8 +19,8 @@ import { ProviderFormFragmentComponent } from './forms/provider-form-fragment.co
 
 import { InfoLabelDirective } from '../directive/info-label.directive';
 import { InputDefaultsDirective } from '../directive/input-defaults.directive';
-import { I18nTextComponent } from './i18n-text.component';
 import { SharedModule } from '../../shared/shared.module';
+import { DomainModule } from '../../domain/domain.module';
 
 export const COMPONENTS = [
     AdvancedInfoFormComponent,
@@ -39,8 +39,7 @@ export const COMPONENTS = [
 export const declarations = [
     ...COMPONENTS,
     InfoLabelDirective,
-    InputDefaultsDirective,
-    I18nTextComponent
+    InputDefaultsDirective
 ];
 
 @NgModule({
@@ -51,6 +50,7 @@ export const declarations = [
     ],
     imports: [
         CommonModule,
+        DomainModule,
         ReactiveFormsModule,
         RouterModule,
         NgbPopoverModule,

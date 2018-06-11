@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,17 @@ public class AttributeConsumingService extends AbstractXMLObject implements org.
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribconsserv_servicename_id")
+    @OrderColumn
     private List<ServiceName> serviceNames = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribconsserv_servicedesc_id")
+    @OrderColumn
     private List<ServiceDescription> serviceDescriptions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribconsserv_requestedattrib_id")
+    @OrderColumn
     private List<RequestedAttribute> requestedAttributes = new ArrayList<>();
 
     @Override

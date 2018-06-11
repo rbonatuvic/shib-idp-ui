@@ -1,30 +1,28 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
+import { map, take, startWith } from 'rxjs/operators';
+
 import { AbstractControl, FormGroup } from '@angular/forms';
-import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
 
 export class EntityValidators {
     static createUniqueIdValidator(ids$: Observable<string[]>) {
         return (control: AbstractControl) => {
-            return ids$
-                .map(ids => ids.filter(id => id === control.value))
-                .map(ids => !!ids.length)
-                .map((isTaken: boolean) => {
-                    return isTaken ? { unique: true } : null;
-                })
-                .take(1);
+            return ids$.pipe(
+                map(ids => ids.filter(id => id === control.value)),
+                map(ids => !!ids.length),
+                map((isTaken: boolean) => isTaken ? { unique: true } : null),
+                take(1)
+            );
         };
     }
 
     static createOrgValidator() {
         return (control: AbstractControl) => {
             if (!control || !control.valueChanges) {
-                return Observable.of(null);
+                return of(null);
             }
-            return control.valueChanges
-                .startWith(control.value)
-                .map(values => {
+            return control.valueChanges.pipe(
+                startWith(control.value),
+                map(values => {
                     let keys = Object.keys(values),
                         hasValue = keys.reduce((val, key) => val + (values[key] ? values[key] : ''), ''),
                         allHaveValue = keys.reduce((val, key) => {
@@ -35,23 +33,23 @@ export class EntityValidators {
                     } else {
                         return allHaveValue;
                     }
-                })
-                .map(isValid => {
+                }),
+                map(isValid => {
                     return !isValid ? { org: true } : null;
-                })
-                .take(1);
+                }),
+                take(1)
+            );
         };
     }
 
     static existsInCollection(ids$: Observable<string[]>) {
         return (control: AbstractControl) => {
-            return ids$
-                .map(ids => ids.find(id => id === control.value))
-                .map(ids => ids && !!ids.length)
-                .map((exists: boolean) => {
-                    return exists ? null : { exists: true };
-                })
-                .take(1);
+            return ids$.pipe(
+                map(ids => ids.find(id => id === control.value)),
+                map(ids => ids && !!ids.length),
+                map((exists: boolean) => exists ? null : { exists: true }),
+                take(1)
+            );
         };
     }
 }

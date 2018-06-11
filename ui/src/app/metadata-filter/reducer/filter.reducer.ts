@@ -51,6 +51,13 @@ export function reducer(state = initialState, action: filter.Actions | search.Ac
                 saving: true
             };
         }
+        case FilterCollectionActionTypes.ADD_FILTER_FAIL:
+        case FilterCollectionActionTypes.UPDATE_FILTER_FAIL: {
+            return {
+                ...state,
+                saving: false
+            };
+        }
         case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
         case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS:
         case search.CLEAR_SEARCH:

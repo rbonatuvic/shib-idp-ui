@@ -1,8 +1,10 @@
-import 'rxjs/add/operator/take';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MetadataEntity, MetadataProvider, DomainTypes } from '../../domain/domain.type';
 import { Provider } from '../../domain/entity/provider';
@@ -12,7 +14,7 @@ import * as draftActions from '../../domain/action/draft-collection.action';
 import * as fromDashboard from '../reducer';
 import { ToggleEntityDisplay } from '../action/dashboard.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 
 @Component({
@@ -49,7 +51,7 @@ export class DashboardComponent implements OnInit {
         this.filtering$ = store.select(fromDashboard.getFilterType);
         this.filtering$.subscribe(f => this.filtering = f);
 
-        this.total$ = this.providers$.map(list => list.length);
+        this.total$ = this.providers$.pipe(map(list => list.length));
 
         this.limited$ = this.getPagedProviders(this.page, this.providers$);
     }
@@ -60,11 +62,13 @@ export class DashboardComponent implements OnInit {
     }
 
     getPagedProviders(page: number, list$: Observable<MetadataEntity[]>): Observable<MetadataEntity[]> {
-        return list$.map((providers: MetadataEntity[]) => {
-            let maxIndex = (page * this.limit) - 1,
-                minIndex = ((page - 1) * this.limit);
-            return providers.filter((provider: MetadataEntity, index: number) =>  (maxIndex >= index && index >= minIndex) );
-        });
+        return list$.pipe(
+            map((providers: MetadataEntity[]) => {
+                let maxIndex = (page * this.limit) - 1,
+                    minIndex = ((page - 1) * this.limit);
+                return providers.filter((provider: MetadataEntity, index: number) =>  (maxIndex >= index && index >= minIndex) );
+            })
+        );
     }
 
     changeFilter(type: string): void {

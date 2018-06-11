@@ -30,10 +30,12 @@ public class ContactPerson extends AbstractAttributeExtensibleXMLObject implemen
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "contactpersn_emailaddr_id")
+    @OrderColumn
     private List<EmailAddress> emailAddresses = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "contactpersn_telenmbr_id")
+    @OrderColumn
     private List<TelephoneNumber> telephoneNumbers = new ArrayList<>();
 
     @Override

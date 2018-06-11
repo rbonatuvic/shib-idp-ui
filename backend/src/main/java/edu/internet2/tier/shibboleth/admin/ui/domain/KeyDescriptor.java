@@ -23,6 +23,7 @@ public class KeyDescriptor extends AbstractXMLObject implements org.opensaml.sam
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "keydesc_encryptionmethod_id")
+    @OrderColumn
     private List<EncryptionMethod> encryptionMethods = new ArrayList<>();
 
     @Override

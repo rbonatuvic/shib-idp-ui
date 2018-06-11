@@ -14,15 +14,11 @@ import {
     RouterStateSnapshot
 } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators, NgModel } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, of } from 'rxjs';
+import { combineLatest, map, takeUntil, withLatestFrom, debounceTime, skipWhile, distinctUntilChanged } from 'rxjs/operators';
+
 import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
-
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import * as fromProviders from '../../domain/reducer';
@@ -33,6 +29,7 @@ import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/servic
 import { UpdateStatus, UpdateChanges, CancelChanges } from '../action/editor.action';
 import { EDITOR as EditorDef, EditorFlowDefinition } from '../editor-definition.const';
 import { UnsavedDialogComponent } from '../component/unsaved-dialog.component';
+
 
 @Component({
     selector: 'editor-page',
@@ -78,18 +75,21 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.provider$ = this.store.select(fromProviders.getSelectedProvider);
         this.changes$ = this.store.select(fromEditor.getEditorChanges);
 
-        this.latest$ = this.provider$
-            .combineLatest(this.changes$, (base, changes) => Object.assign({}, base, changes));
+        this.latest$ = this.provider$.pipe(
+            combineLatest(this.changes$, (base, changes) => Object.assign({}, base, changes))
+        );
 
-        this.providerName$ = this.provider$.map(p => p.serviceProviderName);
+        this.providerName$ = this.provider$.pipe(map(p => p.serviceProviderName));
         this.changes$ = this.store.select(fromEditor.getEditorChanges);
-        this.editorIndex$ = this.route.params.map(params => Number(params.index));
-        this.currentPage$ = this.editorIndex$.map(index => EditorDef.find(r => r.index === index));
+        this.editorIndex$ = this.route.params.pipe(map(params => Number(params.index)));
+        this.currentPage$ = this.editorIndex$.pipe(map(index => EditorDef.find(r => r.index === index)));
         this.editor = EditorDef;
-        this.store.select(fromEditor.getEditorIsSaving).takeUntil(this.ngUnsubscribe).subscribe(saving => this.saving = saving);
+        this.store.select(fromEditor.getEditorIsSaving).pipe(
+            takeUntil(this.ngUnsubscribe)
+        ).subscribe(saving => this.saving = saving);
 
         this.wizardIsValid$ = this.store.select(fromEditor.getEditorIsValid);
-        this.wizardIsInvalid$ = this.wizardIsValid$.map(valid => !valid);
+        this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
     }
 
     save(): void {
@@ -113,49 +113,48 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.provider$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(provider => this.provider = provider);
-        this.changes$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(changes => this.changes = changes);
+        this.provider$.pipe(
+            takeUntil(this.ngUnsubscribe)
+        ).subscribe(provider => this.provider = provider);
+        this.changes$.pipe(
+            takeUntil(this.ngUnsubscribe)
+        ).subscribe(changes => this.changes = changes);
 
         this.valueEmitter
             .changeEmitted$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(updates => {
-                this.updates = updates;
-            });
+            .pipe(
+                takeUntil(this.ngUnsubscribe)
+            )
+            .subscribe(updates => this.updates = updates);
 
         this.statusEmitter
             .changeEmitted$
-            .debounceTime(1)
-            .takeUntil(this.ngUnsubscribe)
-            .withLatestFrom(this.currentPage$, (status: string, page: any) => {
-                return { [page.path]: status };
-            })
-            .subscribe(status => {
-                this.store.dispatch(new UpdateStatus(status));
-            });
+            .pipe(
+                debounceTime(1),
+                takeUntil(this.ngUnsubscribe),
+                withLatestFrom(this.currentPage$, (status: string, page: any) => {
+                    return { [page.path]: status };
+                })
+            )
+            .subscribe(status => this.store.dispatch(new UpdateStatus(status)));
 
-        this.latest$
-            .takeUntil(this.ngUnsubscribe)
-            .skipWhile(() => this.saving)
-            .subscribe(latest => this.latest = latest);
+        this.latest$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            skipWhile(() => this.saving)
+        ).subscribe(latest => this.latest = latest);
 
         this.invalidForms$ = this.store.select(fromEditor.getInvalidEditorForms);
 
-        this.invalidForms$
-            .distinctUntilChanged()
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(forms => {
-                this.invalidForms = forms;
-            });
+        this.invalidForms$.pipe(
+            distinctUntilChanged(),
+            takeUntil(this.ngUnsubscribe)
+        ).subscribe(forms => this.invalidForms = forms);
 
-        this.otherPageInvalid$ = this.invalidForms$
-            .distinctUntilChanged()
-            .withLatestFrom(this.currentPage$, (invalid, current) => invalid.filter(key => key !== current.path))
-            .map(otherInvalid => !!otherInvalid.length);
+        this.otherPageInvalid$ = this.invalidForms$.pipe(
+            distinctUntilChanged(),
+            withLatestFrom(this.currentPage$, (invalid, current) => invalid.filter(key => key !== current.path)),
+            map(otherInvalid => !!otherInvalid.length)
+        );
     }
 
     ngOnDestroy(): void {
@@ -168,7 +167,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        if (nextState.url.match('edit')) { return Observable.of(true); }
+        if (nextState.url.match('edit')) { return of(true); }
         if (Object.keys({ ...this.changes }).length > 0) {
             let modal = this.modalService.open(UnsavedDialogComponent);
             modal.componentInstance.provider = this.latest;

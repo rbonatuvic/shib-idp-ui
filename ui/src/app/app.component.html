@@ -19,7 +19,7 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                     ngbDropdownToggle>
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <i class="fa fa-plus-circle fa-fw" aria-hidden="true"></i>
                     <ng-container i18n="@@action--add-new">Add New</ng-container>
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
@@ -28,7 +28,8 @@
                         routerLinkActive="active"
                         aria-label="Add a new metadata filter"
                         role="button">
-                        <i class="fa fa-cubes" aria-hidden="true"></i>
+                        <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
+                        &nbsp;
                         <ng-container i18n="@@action--add-filter">Filter</ng-container>
                     </a>
                     <a class="nav-link"
@@ -36,20 +37,21 @@
                         routerLinkActive="active"
                         aria-label="Launch wizard to add a new provider"
                         role="button">
-                        <i class="fa fa-cube" aria-hidden="true"></i>
+                        <i class="fa fa-cube fa-fw" aria-hidden="true"></i>
+                        &nbsp;
                         <ng-container i18n="@@action--add-source">Metadata Source</ng-container>
                     </a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" aria-label="Metadata sources dashboard">
-                    <i class="fa fa-th" aria-hidden="true"></i>
+                    <i class="fa fa-th fa-fw" aria-hidden="true"></i>
                     <ng-container i18n="@@action--manage-sources">Manage Sources</ng-container>
                 </a>
             </li>
             <li>
                 <a class="nav-link" href="/logout" target="_self" aria-label="Log out of Shibboleth UI">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
                     <ng-container i18n="@@action--logout">Logout</ng-container>
                 </a>
             </li>

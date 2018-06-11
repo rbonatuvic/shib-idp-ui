@@ -21,10 +21,12 @@ public class SPSSODescriptor extends SSODescriptor implements org.opensaml.saml.
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "spssodesc_attribconsserv_id")
+    @OrderColumn
     private List<AttributeConsumingService> attributeConsumingServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "spssodesc_assertconsserv_id")
+    @OrderColumn
     private List<AssertionConsumerService> assertionConsumerServices = new ArrayList<>();
 
 

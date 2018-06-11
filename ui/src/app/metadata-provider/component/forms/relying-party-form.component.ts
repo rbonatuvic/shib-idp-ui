@@ -1,6 +1,6 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
@@ -18,8 +18,8 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
     @Input() provider: MetadataProvider;
 
     form: FormGroup;
-    nameIds$: Observable<string[]> = Observable.of([]);
-    authenticationMethods$: Observable<string[]> = Observable.of([]);
+    nameIds$: Observable<string[]> = of([]);
+    authenticationMethods$: Observable<string[]> = of([]);
 
     nameIdFormatList: FormArray;
     authenticationMethodList: FormArray;
@@ -93,10 +93,10 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
     }
 
     searchNameIds(query: string): void {
-        this.nameIds$ = this.listValues.searchFormats(Observable.of(query));
+        this.nameIds$ = this.listValues.searchFormats(of(query));
     }
 
     searchAuthMethods(query: string): void {
-        this.authenticationMethods$ = this.listValues.searchAuthenticationMethods(Observable.of(query));
+        this.authenticationMethods$ = this.listValues.searchAuthenticationMethods(of(query));
     }
 } /* istanbul ignore next */

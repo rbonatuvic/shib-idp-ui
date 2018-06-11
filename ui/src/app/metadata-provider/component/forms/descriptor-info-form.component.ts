@@ -1,6 +1,6 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 
@@ -25,7 +25,7 @@ export class DescriptorInfoFormComponent extends ProviderFormFragmentComponent i
         'SAML 1.1'
     ];
 
-    nameIds$: Observable<string[]> = Observable.of([]);
+    nameIds$: Observable<string[]> = of([]);
 
     constructor(
         protected fb: FormBuilder,
@@ -75,7 +75,7 @@ export class DescriptorInfoFormComponent extends ProviderFormFragmentComponent i
     }
 
     updateOptions(query: string): void {
-        this.nameIds$ = this.listValues.searchFormats(Observable.of(query));
+        this.nameIds$ = this.listValues.searchFormats(of(query));
     }
 
 } /* istanbul ignore next */

@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/map';
 
 import * as fromRoot from './core/reducer';
 import { VersionInfo } from './core/model/version';
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
 
     constructor(private store: Store<fromRoot.State>) {
         this.version$ = this.store.select(fromRoot.getVersionInfo);
-        this.formatted$ = this.version$.map(this.formatter);
+        this.formatted$ = this.version$.pipe(map(this.formatter));
     }
 
     ngOnInit(): void {

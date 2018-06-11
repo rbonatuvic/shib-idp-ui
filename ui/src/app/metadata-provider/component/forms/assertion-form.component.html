@@ -2,7 +2,7 @@
     <div class="row">
         <fieldset class="col col-xl-6 form-section">
             <p>
-                <span i18n="@@label--assertion-consumer-service-endpoints">Assertion Consumer Service Endpoints:</span>
+                <span i18n="@@label--assertion-consumer-service-endpoints">Assertion Consumer Service Endpoints: </span>
                 <button class="btn btn-success btn-sm" (click)="addEndpoint()" i18n="@@action--add-endpoint" aria-label="Add assertion consumer service endpoint to accordion group" role="button">Add Endpoint</button>
             </p>
             <div formArrayName="assertionConsumerServices" class="bg-light border rounded p-4" *ngIf="assertionConsumerServices.length">
@@ -15,18 +15,18 @@
                         <div class="clearfix">
                             <div class="row" (click)="acc.isHidden = !acc.isHidden" (keydown.space)="acc.isHidden = !acc.isHidden" [id]="'ascAccordion' + i" aria-expanded="true" [attr.aria-controls]="'ascContent' + i" role="button">
                                 <div class="col-sm-10">
-                                    <i class="fa" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
+                                    <i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
                                     <span tabindex="0" role="heading" aria-level="3">
                                         <ng-container *ngIf="endpoint.get('locationUrl').value">{{ endpoint.get('locationUrl').value }}</ng-container>
                                         <ng-container *ngIf="!endpoint.get('locationUrl').value" i18n="@@label--new-endpoint">New Endpoint</ng-container>
                                         {{ i }}
                                     </span>
-                                    <i class="fa fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="endpoint.get('makeDefault').value === true"></i>
+                                    <i class="fa fa-fw fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="endpoint.get('makeDefault').value === true"></i>
                                     <small class="sr-only" *ngIf="endpoint.get('makeDefault').value === true" i18n="@@label--default">(default)</small>
                                 </div>
                                 <div class="col-sm-2 text-right">
                                     <button class="btn btn-link btn-sm text-danger" (click)="removeEndpoint(i)" aria-label="Delete assertion consumer service endpoint" role="button">
-                                        <i class="fa fa-trash fa-lg"></i>
+                                        <i class="fa fa-fw fa-trash fa-lg"></i>
                                     </button>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                                     </label>
                                     <span class="col-sm-2 text-right">
                                         <ng-template #tooltipAssertionConsumerServiceLocation i18n="@@tooltip--assertion-consumer-service-location">Assertion Consumer Service Location popover</ng-template>
-                                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                            [ngbPopover]="tooltipAssertionConsumerServiceLocation"
                                            i18n-aria-label="@@tooltip--instruction"
                                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -60,7 +60,7 @@
                                             </label>
                                             <span class="col-sm-2 text-right">
                                                 <ng-template #tooltipAssertionConsumerServiceLocationBinding i18n="@@tooltip--assertion-consumer-service-location-binding">Assertion Consumer Service Location Binding</ng-template>
-                                            <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                [ngbPopover]="tooltipAssertionConsumerServiceLocationBinding"
                                                i18n-aria-label="@@tooltip--instruction"
                                                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -80,7 +80,7 @@
                                             <label class="d-block">
                                                 <ng-container i18n="@@label--mark-as-default">Mark as Default</ng-container>
                                                 <ng-template #tooltipMarkAsDefault i18n="@@tooltip--mark-as-default">Mark as Default</ng-template>
-                                                <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                    [ngbPopover]="tooltipMarkAsDefault"
                                                    i18n-aria-label="@@tooltip--instruction"
                                                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>

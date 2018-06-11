@@ -19,6 +19,7 @@ import * as fromProvider from './reducer';
 import { ConfirmCopyComponent } from './container/confirm-copy.component';
 import { CopyIsSetGuard } from './guard/copy-isset.guard';
 import { CopyProviderEffects } from './effect/copy.effect';
+import { DomainModule } from '../domain/domain.module';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { CopyProviderEffects } from './effect/copy.effect';
     ],
     entryComponents: [],
     imports: [
+        DomainModule,
         SharedModule,
         HttpClientModule,
         CommonModule,

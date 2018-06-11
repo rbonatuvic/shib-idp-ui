@@ -1,12 +1,8 @@
 import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/takeWhile';
-import 'rxjs/add/observable/fromPromise';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { withLatestFrom, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators';
 
 import * as fromFilter from '../reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
@@ -79,7 +75,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
         this.selected$ = this.store.select(fromFilter.getSelected);
         this.entityIds$ = this.store.select(fromFilter.getEntityCollection);
         this.loading$ = this.store.select(fromFilter.getIsLoading);
-        this.processing$ = this.loading$.withLatestFrom(this.showMore$, (l, s) => !s && l);
+        this.processing$ = this.loading$.pipe(withLatestFrom(this.showMore$, (l, s) => !s && l));
         this.preview$ = this.store.select(fromFilter.getPreview);
         this.isSaving$ = this.store.select(fromFilter.getSaving);
 
@@ -88,34 +84,25 @@ export class NewFilterComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         let id = this.form.get('entityId');
-        id.valueChanges
-            .distinctUntilChanged()
+        id.valueChanges.pipe(distinctUntilChanged())
             .subscribe(query => this.searchEntityIds(query));
 
-        this.form
-            .valueChanges
-            .takeUntil(this.ngUnsubscribe)
-            .startWith(this.form.value)
-            .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
+        this.form.valueChanges.pipe(
+            takeUntil(this.ngUnsubscribe),
+            startWith(this.form.value)
+        ).subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
         this.valueEmitter
             .changeEmitted$
-            .takeUntil(this.ngUnsubscribe)
-            .startWith(this.form.value)
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                startWith(this.form.value)
+            )
             .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
 
-        id.valueChanges
-            .distinctUntilChanged()
-            .subscribe(entityId => {
-                if (id.valid) {
-                    this.store.dispatch(new SelectId(entityId));
-                }
-            });
-        this.selected$
-            .distinctUntilChanged()
-            .subscribe(entityId => {
-                console.log(entityId);
-                id.setValue(entityId);
-            });
+        id.valueChanges.pipe(distinctUntilChanged())
+            .subscribe(entityId => id.valid ? this.store.dispatch(new SelectId(entityId)) : null);
+        this.selected$.pipe(distinctUntilChanged())
+            .subscribe(entityId => id.setValue(entityId));
     }
 
     ngOnDestroy(): void {

@@ -1,0 +1,41 @@
+<div class="d-flex w-100 justify-content-between">
+    <h5 class="mb-1"><i18n-text [key]="item.label"></i18n-text></h5>
+    <small *ngIf="item.conflict">
+        <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
+        <span class="sr-only">Conflict</span>
+    </small>
+</div>
+<ng-container [ngSwitch]="type">
+    <ng-container *ngSwitchCase="types.array">
+        <table class="table table-sm table-bordered">
+            <thead *ngIf="display.type === types.object">
+                <tr>
+                    <th *ngFor="let heading of display.headings">
+                        <i18n-text [key]="heading"></i18n-text>
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="display.type === types.object">
+                <tr *ngFor="let obj of display.values">
+                    <td *ngFor="let key of display.headings">{{ obj[key] }}</td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="display.type === types.string">
+                <tr *ngFor="let val of display.values">
+                    <td>{{ val }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+    <ng-container *ngSwitchCase="types.object">
+        <dl class="px-1">
+            <ng-container *ngFor="let item of display">
+                <dt><i18n-text [key]="item.label"></i18n-text></dt>
+                <dd>{{ item.value }}</dd>
+            </ng-container>
+        </dl>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        <p class="mb-1" *ngIf="!isList"><i18n-text [key]="display"></i18n-text></p>
+    </ng-container>
+</ng-container>

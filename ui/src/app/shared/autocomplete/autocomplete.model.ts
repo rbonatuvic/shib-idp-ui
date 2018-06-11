@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 export const defaultState: AutoCompleteState = {
     focused: null,

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import java.util.List;
 public class EntityAttributes extends AbstractElementExtensibleXMLObject implements org.opensaml.saml.ext.saml2mdattr.EntityAttributes {
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<Attribute> attributes = new ArrayList<>();
 
     @Transient // TODO: check to make sure this won't ever be used

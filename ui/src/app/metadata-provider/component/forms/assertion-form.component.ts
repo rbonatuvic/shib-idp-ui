@@ -1,6 +1,5 @@
 import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 

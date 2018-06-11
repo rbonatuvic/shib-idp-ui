@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,18 +21,22 @@ public class SSODescriptor extends RoleDescriptor implements org.opensaml.saml.s
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ssodesc_artifctresserv_id")
+    @OrderColumn
     private List<ArtifactResolutionService> artifactResolutionServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ssodesc_singlelogoutserv_id")
+    @OrderColumn
     private List<SingleLogoutService> singleLogoutServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ssodesc_managenameidserv_id")
+    @OrderColumn
     private List<ManageNameIDService> manageNameIDServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ssodesc_nameidfmt_id")
+    @OrderColumn
     private List<NameIDFormat> nameIDFormats = new ArrayList<>();
 
     @Override

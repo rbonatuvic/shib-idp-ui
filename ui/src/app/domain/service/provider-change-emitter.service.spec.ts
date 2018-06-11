@@ -1,8 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { EntityValidators } from './entity-validators.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import 'rxjs/add/observable/of';
 import { ProviderStatusEmitter, ProviderValueEmitter } from './provider-change-emitter.service';
 
 describe(`Provider Change emitter service`, () => {

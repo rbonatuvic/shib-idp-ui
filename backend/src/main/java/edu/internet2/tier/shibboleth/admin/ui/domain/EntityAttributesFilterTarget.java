@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
     private EntityAttributesFilterTargetType entityAttributesFilterTargetType;
 
     @ElementCollection
+    @OrderColumn
     private List<String> value;
 
     public EntityAttributesFilterTargetType getEntityAttributesFilterTargetType() {

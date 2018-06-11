@@ -14,6 +14,7 @@ import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class UIInfo extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.UIInfo {
     @OneToMany
     @Cascade(CascadeType.ALL)
+    @OrderColumn
     private List<AbstractXMLObject> xmlObjects = new ArrayList<>();
 
     @Override

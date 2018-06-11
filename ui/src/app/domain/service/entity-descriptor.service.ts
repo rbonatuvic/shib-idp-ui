@@ -1,13 +1,15 @@
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/concat';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { MOCK_DESCRIPTORS } from '../../../data/descriptors.mock';
 import { Storage } from '../../shared/storage';
 import { environment } from '../../../environments/environment';
 import { MetadataEntity } from '../domain.type';
+
 
 @Injectable()
 export class EntityDescriptorService {
@@ -18,20 +20,19 @@ export class EntityDescriptorService {
     constructor(
         private http: HttpClient
     ) {}
+
     query(): Observable<MetadataProvider[]> {
-        return this.http
-            .get<MetadataProvider[]>(`${ this.base }${ this.endpoint }s`)
-            .catch(err => {
-                console.log('ERROR LOADING PROVIDERS:', err);
-                return Observable.of([] as MetadataProvider[]);
-            });
+        return this.http.get<MetadataProvider[]>(`${ this.base }${ this.endpoint }s`, {})
+            .pipe(
+                catchError(err => throwError([]))
+            );
     }
 
     find(id: string): Observable<MetadataProvider> {
-        return this
-            .http
-            .get<MetadataProvider>(`${ this.base }${ this.endpoint }/${ id }`)
-            .catch(err => Observable.throw(err));
+        return this.http.get<MetadataProvider>(`${ this.base }${ this.endpoint }/${ id }`)
+            .pipe(
+                catchError(err => throwError(err))
+            );
     }
 
     update(provider: MetadataProvider): Observable<MetadataProvider> {

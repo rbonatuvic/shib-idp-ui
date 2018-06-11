@@ -4,7 +4,7 @@
             <div class="row justify-content-between">
                 <div class="col-md-12">
                     <span class="display-6">
-                        <i class="fa fa-gears"></i>
+                        <i class="fa fa-fw fa-gears"></i>
                         <ng-container i18n="@@label--new-filter">New Filter</ng-container>
                     </span>
                 </div>
@@ -25,12 +25,12 @@
                                             <ng-container i18n="@@label--dashboard-display-only">
                                                 (Dashboard Display Only)
                                             </ng-container>
-                                            <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                                         </span>
                                     </label>
                                     <span class="text-right col-sm-2">
                                         <ng-template #tooltipFilterName i18n="@@tooltip--filter-name">Filter Name</ng-template>
-                                        <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
+                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
@@ -46,13 +46,13 @@
                                     <label for="entityId" class="col-sm-10">
                                         <span>
                                             <ng-container i18n="@@label--search-entity-id">Search Entity ID</ng-container>
-                                            <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
-                                            <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="processing$ | async"></i>
+                                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
+                                            <i class="fa fa-fw fa-spinner fa-pulse fa-fw" *ngIf="processing$ | async"></i>
                                         </span>
                                     </label>
                                     <span class="text-right col-sm-2">
                                         <ng-template #tooltipFilterEntityId i18n="@@tooltip--search-entity-id">Search Entity ID</ng-template>
-                                        <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterEntityId" i18n-aria-label="@@tooltip--instruction"
+                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterEntityId" i18n-aria-label="@@tooltip--instruction"
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
@@ -77,7 +77,7 @@
                             type="submit"
                             class="btn btn-primary"
                             [disabled]="form.invalid || (isSaving$ | async)">
-                            <i class="fa fa-lg"
+                            <i class="fa fa-fw fa-lg"
                                 [ngClass]="{
                                     'fa-save': !(isSaving$ | async),
                                     'fa-spinner': (isSaving$ | async),
@@ -85,6 +85,7 @@
                                 }"></i>
                             <ng-container i18n="@@action--save">Save</ng-container>
                         </button>
+                         &nbsp;
                         <button (click)="this.cancel()"
                             type="reset"
                             class="btn btn-secondary"
@@ -104,7 +105,7 @@
                                     </label>
                                     <span class="text-right col-sm-2">
                                         <ng-template #tooltipFilterName i18n="@@tooltip--entity-preview">Entity Preview</ng-template>
-                                        <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
+                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
@@ -129,7 +130,7 @@
                                     </label>
                                 </div>
                                 <ng-template #tooltipEnableThisFilterUponSaving i18n="@@tooltip--enable-this-filter-upon-saving">Enable this filter upon saving popover</ng-template>
-                                <i class="info-icon fa fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipEnableThisFilterUponSaving" i18n-aria-label="@@tooltip--instruction"
+                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipEnableThisFilterUponSaving" i18n-aria-label="@@tooltip--instruction"
                                     role="tooltip"></i>
                             </div>
                         </div>

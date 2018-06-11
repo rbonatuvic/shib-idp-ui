@@ -14,6 +14,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 
 import javax.xml.namespace.QName;
@@ -42,13 +43,16 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     private Organization organization;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<ContactPerson> contactPersons = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<RoleDescriptor> roleDescriptors;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entitydesc_addlmetdatlocations_id")
+    @OrderColumn
     private List<AdditionalMetadataLocation> additionalMetadataLocations = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)

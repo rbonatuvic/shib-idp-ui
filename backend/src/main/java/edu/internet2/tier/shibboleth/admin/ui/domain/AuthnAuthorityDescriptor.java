@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.List;
 
 
@@ -16,14 +17,17 @@ public class AuthnAuthorityDescriptor extends RoleDescriptor implements org.open
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "authnauthdesc_authnqueryserv_id")
+    @OrderColumn
     private List<AuthnQueryService> authnQueryServices;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "authnauthdesc_assertidreqserv_id")
+    @OrderColumn
     private List<AssertionIDRequestService> assertionIDRequestServices;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "authnauthdesc_nameidfmt_id")
+    @OrderColumn
     private List<NameIDFormat> nameIDFormats;
 
     @Override

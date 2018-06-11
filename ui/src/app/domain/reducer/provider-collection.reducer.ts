@@ -25,7 +25,7 @@ export const initialState: ProviderCollectionState = adapter.getInitialState({
 export function reducer(state = initialState, action: provider.ProviderCollectionActionsUnion): ProviderCollectionState {
     switch (action.type) {
         case ProviderCollectionActionTypes.LOAD_PROVIDER_SUCCESS: {
-            return adapter.addMany(action.payload, {
+            return adapter.addAll(action.payload, {
                 ...state,
                 selectedProviderId: state.selectedProviderId
             });

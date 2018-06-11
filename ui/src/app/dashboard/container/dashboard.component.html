@@ -8,7 +8,7 @@
                 <div class="col-md-4 text-right">
                     <div ngbDropdown class="d-inline-block">
                         <button class="btn btn-light" id="filterDropdown" ngbDropdownToggle>
-                            <i class="fa" [ngClass]="{
+                            <i class="fa fa-fw" [ngClass]="{
                                 'fa-cube': filtering === 'provider',
                                 'fa-cubes': filtering === 'filter',
                                 'fa-dot-circle-o': filtering === 'all'
@@ -21,7 +21,7 @@
                             <button class="dropdown-item"
                                 *ngFor="let option of filterOptions; index as i"
                                 (click)="changeFilter(option)">
-                                <i class="fa" [ngClass]="{
+                                <i class="fa fa-fw" [ngClass]="{
                                     'fa-cube': option === 'provider',
                                     'fa-cubes': option === 'filter',
                                     'fa-dot-circle-o': option === 'all'

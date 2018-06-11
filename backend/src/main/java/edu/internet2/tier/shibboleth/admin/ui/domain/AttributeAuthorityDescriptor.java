@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,22 +17,27 @@ public class AttributeAuthorityDescriptor extends RoleDescriptor implements org.
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribauthdesc_attribserv_id")
+    @OrderColumn
     private List<AttributeService> attributeServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribauthdesc_assertidreqservc_id")
+    @OrderColumn
     private List<AssertionIDRequestService> assertionIDRequestServices = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribauthdesc_nameidfrmt_id")
+    @OrderColumn
     private List<NameIDFormat> nameIDFormats = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribauthdesc_attribprofile_id")
+    @OrderColumn
     private List<AttributeProfile> attributeProfiles = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "attribauthdesc_attrib_id")
+    @OrderColumn
     private List<Attribute> attributes = new ArrayList<>();
 
 

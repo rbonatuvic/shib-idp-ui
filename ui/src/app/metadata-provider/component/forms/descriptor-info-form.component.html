@@ -8,7 +8,7 @@
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipProtocolSupportEnumeration i18n="@@tooltip--protocol-support-enumeration">Protocol Support Enumeration popover</ng-template>
-                    <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                        [ngbPopover]="tooltipProtocolSupportEnumeration"
                        i18n-aria-label="@@tooltip--instruction"
                        aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -27,7 +27,7 @@
                     </span>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipNameIdFormat i18n="@@tooltip--nameid-format">Add NameID Format Popover</ng-template>
-                        <i class="info-icon fa fa-info-circle text-primary fa-lg"
+                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipNameIdFormat"
                            i18n-aria-label="@@tooltip--instruction"
                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
@@ -55,7 +55,7 @@
                                 (keydown.enter)="removeFormat(i)"
                                 aria-label="Delete NameID Format"
                                 role="button">
-                            <i class="fa fa-trash fa-lg text-danger"></i>
+                            <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
                         </button>
                     </div>
                 </div>

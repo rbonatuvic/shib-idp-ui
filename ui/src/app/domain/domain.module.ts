@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { CommonModule } from '@angular/common';
 
 import { EntityDescriptorService } from './service/entity-descriptor.service';
 import { ListValuesService } from './service/list-values.service';
@@ -16,15 +17,24 @@ import { FilterCollectionEffects } from './effect/filter-collection.effect';
 import { MetadataResolverService } from './service/metadata-resolver.service';
 import { EntityEffects } from './effect/entity.effect';
 import { PreviewDialogModule } from '../shared/preview/preview-dialog.module';
+import { I18nTextComponent } from './component/i18n-text.component';
+
+export const COMPONENTS = [];
+
+export const DECLARATIONS = [
+    ...COMPONENTS,
+    I18nTextComponent
+];
 
 @NgModule({
-    declarations: [],
-    entryComponents: [],
+    declarations: DECLARATIONS,
+    entryComponents: COMPONENTS,
     imports: [
         HttpModule,
+        CommonModule,
         PreviewDialogModule
     ],
-    exports: [],
+    exports: DECLARATIONS,
     providers: []
 })
 export class DomainModule {

@@ -16,6 +16,7 @@ import * as fromProvider from '../reducer';
 import * as fromCollections from '../../domain/reducer';
 import { RouterStub } from '../../../testing/router.stub';
 import { ActivatedRouteStub } from '../../../testing/activated-route.stub';
+import { I18nTextComponent } from '../../domain/component/i18n-text.component';
 
 describe('New Provider Page', () => {
     let fixture: ComponentFixture<NewProviderComponent>;
@@ -40,7 +41,8 @@ describe('New Provider Page', () => {
                 NewProviderComponent,
                 BlankProviderComponent,
                 UploadProviderComponent,
-                CopyProviderComponent
+                CopyProviderComponent,
+                I18nTextComponent
             ],
             providers: [
                 NavigatorService,

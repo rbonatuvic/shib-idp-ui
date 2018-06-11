@@ -22,6 +22,7 @@ import { WizardEffects } from './effect/wizard.effect';
 import { EditorEffects } from './effect/editor.effect';
 import { ValidFormIconComponent } from './component/valid-form-icon.component';
 import { SharedModule } from '../shared/shared.module';
+import { DomainModule } from '../domain/domain.module';
 
 export const routes: Routes = [
     {
@@ -66,6 +67,7 @@ export const routes: Routes = [
         UnsavedDialogComponent
     ],
     imports: [
+        DomainModule,
         CommonModule,
         RouterModule,
         ReactiveFormsModule,

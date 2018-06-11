@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObject implements ElementExtensibleXMLObject {
     @OneToMany(cascade = CascadeType.ALL)
+    @OrderColumn
     private List<AbstractXMLObject> unknownXMLObjects = new ArrayList<>();
 
     @Nonnull
