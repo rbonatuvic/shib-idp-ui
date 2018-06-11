@@ -1,11 +1,7 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as filter from '../action/filter.action';
 import * as search from '../action/search.action';
-import * as collection from '../../domain/action/filter-collection.action';
 import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../../domain/action/filter-collection.action';
-import * as fromRoot from '../../core/reducer';
 import { MetadataFilter, MDUI } from '../../domain/domain.type';
-import { SearchAction } from '../../dashboard/action/search.action';
 
 export interface FilterState {
     selected: string | null;

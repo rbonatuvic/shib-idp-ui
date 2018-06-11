@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <span class="display-6">
                         <i class="fa fa-fw fa-gears"></i>
-                        <ng-container i18n="@@label--new-filter">New Filter</ng-container>
+                        <ng-container i18n="@@label--new-filter">new EntityAttributesFilter</ng-container>
                     </span>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                         <fieldset class="">
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="filterName" class="col-sm-10">
+                                    <label for="name" class="col-sm-10">
                                         <span>
                                             <ng-container i18n="@@label--filter-name">
                                                 Filter Name
@@ -29,14 +29,14 @@
                                         </span>
                                     </label>
                                     <span class="text-right col-sm-2">
-                                        <ng-template #tooltipFilterName i18n="@@tooltip--filter-name">Filter Name</ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
+                                        <ng-template #tooltipName i18n="@@tooltip--filter-name">Filter Name</ng-template>
+                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipName" i18n-aria-label="@@tooltip--instruction"
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
-                                <input id="filterName" type="text" class="form-control" placeholder="" formControlName="filterName" />
-                                <ng-container *ngIf="form.get('filterName').touched && form.get('filterName').invalid">
-                                    <small class="form-text text-danger" *ngIf="form.get('filterName').hasError('required')">
+                                <input id="name" type="text" class="form-control" placeholder="" formControlName="name" />
+                                <ng-container *ngIf="form.get('name').touched && form.get('name').invalid">
+                                    <small class="form-text text-danger" *ngIf="form.get('name').hasError('required')">
                                         <ng-container i18n="@@message--service-provider-name-required">Filter Name is required</ng-container>
                                     </small>
                                 </ng-container>
@@ -100,12 +100,12 @@
                         <fieldset class="col-lg-6">
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="filterName" class="col-sm-10" i18n="@@label--entity-preview">
+                                    <label for="name" class="col-sm-10" i18n="@@label--entity-preview">
                                         Entity ID Preview (read-only)
                                     </label>
                                     <span class="text-right col-sm-2">
-                                        <ng-template #tooltipFilterName i18n="@@tooltip--entity-preview">Entity Preview</ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterName" i18n-aria-label="@@tooltip--instruction"
+                                        <ng-template #tooltipName i18n="@@tooltip--entity-preview">Entity Preview</ng-template>
+                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipName" i18n-aria-label="@@tooltip--instruction"
                                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>

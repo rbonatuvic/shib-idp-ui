@@ -1,23 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 import { catchError, map, debounceTime, switchMap } from 'rxjs/operators';
-
-import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import * as search from '../action/search.action';
-import * as filter from '../action/filter.action';
-import * as fromFilter from '../reducer';
-import * as collection from '../../domain/action/filter-collection.action';
 
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../domain/service/entity-id.service';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { MetadataResolverService } from '../../domain/service/metadata-resolver.service';
 import { fromPromise } from 'rxjs/internal-compatibility';
+import { SelectId } from '../action/filter.action';
 
 
 @Injectable()
@@ -46,7 +39,7 @@ export class SearchIdEffects {
             const res = modal.result;
             modal.componentInstance.term = q;
             return fromPromise(res).pipe(
-                map(id => new filter.SelectId(id)),
+                map(id => new SelectId(id)),
                 catchError(() => of(new search.CancelViewMore()))
             );
         })

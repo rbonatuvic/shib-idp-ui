@@ -1,8 +1,5 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as search from '../action/search.action';
 import * as filter from '../action/filter.action';
-import * as fromRoot from '../../core/reducer';
-import { MetadataFilter } from '../../domain/domain.type';
 import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../../domain/action/filter-collection.action';
 
 export interface SearchState {
