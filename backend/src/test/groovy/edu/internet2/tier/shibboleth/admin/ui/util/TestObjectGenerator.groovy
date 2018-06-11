@@ -243,7 +243,7 @@ class TestObjectGenerator {
         resolver.criterionPredicateRegistryRef = generator.randomString(10)
         resolver.useDefaultPredicateRegistry = generator.randomBoolean()
         resolver.satisfyAnyPredicates = generator.randomBoolean()
-        resolver.metadataFilters = buildFilterList()
+        resolver.metadataFilters = []
         resolver.reloadableMetadataResolverAttributes = buildReloadableMetadataResolverAttributes()
         resolver.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
         return resolver

@@ -97,7 +97,7 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
 	"httpMetadataResolverAttributes": {
 		"httpClientRef": "httpClientRef",
 		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
+		"connectionTimeout": "connectionTimeout",
 		"socketTimeout": "socketTimeout",
 		"disregardTLSCertificate": true,
 		"tlsTrustEngineRef": "tlsTrustEngineRef",
