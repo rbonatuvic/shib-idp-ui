@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import com.google.common.base.Predicate;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.xml.DOMBuilder
@@ -134,5 +135,43 @@ public class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
             return DOMBuilder.newInstance().parseText(writer.toString())
         }
+    }
+
+    void constructXmlNodeFor(LocalDynamicMetadataResolver resolver, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+                'xsi:type': 'LocalDynamicMetadataProvider',
+                backingFile: resolver.backingFile,
+                metadataURL: resolver.metadataURL,
+                initializeFromBackupFile: !resolver.initializeFromBackupFile ?: null,
+                backupFileInitNextRefreshDelay: resolver.backupFileInitNextRefreshDelay,
+                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                failFastInitialization: !resolver.failFastInitialization ?: null,
+                sortKey: resolver.sortKey,
+                criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
+                useDefaultPredicateRegistry: !resolver.useDefaultPredicateRegistry ?: null,
+                satisfyAnyPredicates: resolver.satisfyAnyPredicates ?: null,
+
+                parserPoolRef: resolver.reloadableMetadataResolverAttributes?.parserPoolRef,
+                minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
+                maxRefreshDelay: resolver.reloadableMetadataResolverAttributes?.maxRefreshDelay,
+                refreshDelayFactor: resolver.reloadableMetadataResolverAttributes?.refreshDelayFactor,
+                indexesRef: resolver.reloadableMetadataResolverAttributes?.indexesRef,
+                resolveViaPredicatesOnly: resolver.reloadableMetadataResolverAttributes?.resolveViaPredicatesOnly ?: null,
+                expirationWarningThreshold: resolver.reloadableMetadataResolverAttributes?.expirationWarningThreshold,
+
+                httpClientRef: resolver.httpMetadataResolverAttributes?.httpClientRef,
+                connectionRequestTimeout: resolver.httpMetadataResolverAttributes?.connectionRequestTimeout,
+                connectionTimeout: resolver.httpMetadataResolverAttributes?.connectionTimeout,
+                socketTimeout: resolver.httpMetadataResolverAttributes?.socketTimeout,
+                disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
+                httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
+                proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
+                proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
+                httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
+                httpCacheDirectory: resolver.httpMetadataResolverAttributes?.httpCacheDirectory,
+                httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
+                httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize)
     }
 }
