@@ -4,7 +4,7 @@ import { MetadataProvider } from './model/metadata-provider';
 export * from './model/metadata-provider';
 export * from './model/metadata-filter';
 
-export enum DomainTypes {
+export enum DomainEntityKinds {
     filter = 'filter',
     provider = 'provider'
 }

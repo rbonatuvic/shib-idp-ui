@@ -1,29 +1,25 @@
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { MetadataFilter } from '../../domain/model/metadata-filter';
-import { MOCK_DESCRIPTORS } from '../../../data/descriptors.mock';
-import { Storage } from '../../shared/storage';
-import { environment } from '../../../environments/environment';
-import { Filter } from '../entity/filter';
 
 @Injectable()
 export class MetadataResolverService {
 
-    readonly endpoint = '/MetadataResolver/incommon/Filter';
+    readonly endpoint = '/MetadataResolver/incommon/Filters';
     readonly base = '/api';
 
     constructor(
         private http: HttpClient
     ) {}
     query(): Observable<MetadataFilter[]> {
-        return this.http.get<MetadataFilter[]>(`${this.base}${this.endpoint}s`, {});
+        return this.http.get<MetadataFilter[]>(`${this.base}${this.endpoint}`, {});
     }
 
     find(id: string): Observable<MetadataFilter> {
+        // console.log(id);
         return this.http.get<MetadataFilter>(`${this.base}${this.endpoint}/${id}`);
     }
 
