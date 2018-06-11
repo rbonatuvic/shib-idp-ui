@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
-import { MetadataEntity, DomainTypes } from '../../domain/domain.type';
+import { MetadataEntity, DomainEntityKinds } from '../../domain/domain.type';
 
 @Component({
     selector: 'entity-item',
@@ -10,7 +10,7 @@ import { MetadataEntity, DomainTypes } from '../../domain/domain.type';
 })
 export class EntityItemComponent {
 
-    types = DomainTypes;
+    types = DomainEntityKinds;
 
     @Input() entity: MetadataEntity;
     @Input() isOpen: boolean;
