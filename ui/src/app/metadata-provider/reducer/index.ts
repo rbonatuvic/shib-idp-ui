@@ -26,6 +26,7 @@ export const getCopyFromState = createSelector(getProviderState, getCopyFromStat
 export const getCopy = createSelector(getCopyFromState, fromCopy.getCopy);
 export const getSaving = createSelector(getCopyFromState, fromCopy.getSaving);
 export const getAttributes = createSelector(getCopyFromState, fromCopy.getCopyAttributes);
+export const getSectionsToCopy = createSelector(getCopyFromState, fromCopy.getCopySections);
 
 export const getSearchFromState = createSelector(getProviderState, getSearchFromStateFn);
 export const getSearchResults = createSelector(getSearchFromState, fromSearch.getMatches);

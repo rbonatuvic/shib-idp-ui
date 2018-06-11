@@ -8,6 +8,8 @@ export enum CopySourceActionTypes {
 
     UPDATE_PROVIDER_COPY = '[Copy Provider] Update Provider Copy Request',
 
+    UPDATE_PROVIDER_COPY_SECTIONS = '[Copy Provider] Update Provider Sections',
+
     SAVE_PROVIDER_COPY_REQUEST = '[Copy Provider] Save Provider Copy Request',
     SAVE_PROVIDER_COPY_SUCCESS = '[Copy Provider] Save Provider Copy Request',
     SAVE_PROVIDER_COPY_ERROR = '[Copy Provider] Save Provider Copy Request',
@@ -37,8 +39,15 @@ export class UpdateProviderCopy implements Action {
     constructor(public payload: Partial<MetadataProvider>) { }
 }
 
+export class UpdateProviderCopySections implements Action {
+    readonly type = CopySourceActionTypes.UPDATE_PROVIDER_COPY_SECTIONS;
+
+    constructor(public payload: string[]) { }
+}
+
 export type CopySourceActionUnion =
     | CreateProviderCopyRequest
     | CreateProviderCopySuccess
     | CreateProviderCopyError
-    | UpdateProviderCopy;
+    | UpdateProviderCopy
+    | UpdateProviderCopySections;

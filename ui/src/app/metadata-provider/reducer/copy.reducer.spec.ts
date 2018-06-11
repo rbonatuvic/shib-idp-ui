@@ -17,13 +17,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_REQUEST} action`, () => {
         it('should set properties on the state', () => {
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: null,
-                saving: false
-            };
+            const obj = { ...snapshot };
             const result = reducer(snapshot, new CreateProviderCopyRequest(obj));
 
             expect(result).toEqual(obj);
@@ -33,13 +27,7 @@ describe('Provider -> Copy Reducer', () => {
     describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_SUCCESS} action`, () => {
         it('should set properties on the state', () => {
             const p = new Provider({});
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: null,
-                saving: false
-            };
+            const obj = { ...snapshot };
             const result = reducer(snapshot, new actions.CreateProviderCopySuccess(p));
 
             expect(result.provider).toBe(p);
@@ -49,13 +37,7 @@ describe('Provider -> Copy Reducer', () => {
     describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_ERROR} action`, () => {
         it('should set properties on the state', () => {
             const p = new Provider({});
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: null,
-                saving: false
-            };
+            const obj = { ...snapshot };
             const result = reducer(snapshot, new actions.CreateProviderCopyError(new Error()));
 
             expect(result.provider).toBeNull();
@@ -64,13 +46,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${CopySourceActionTypes.UPDATE_PROVIDER_COPY} action`, () => {
         it('should set properties on the state', () => {
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: new Provider({}),
-                saving: false
-            };
+            const obj = { ...snapshot, provider: new Provider({}) };
             const result = reducer(snapshot, new actions.UpdateProviderCopy({id: 'foo'}));
 
             expect(result.provider.id).toBe('foo');
@@ -80,13 +56,7 @@ describe('Provider -> Copy Reducer', () => {
     describe(`${ fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER } action`, () => {
         it('should set properties on the state', () => {
             const p = new Provider({});
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: p,
-                saving: false
-            };
+            const obj = { ...snapshot, provider: p };
             const result = reducer(snapshot, new fromCollection.AddProviderRequest(p));
 
             expect(result.saving).toBe(true);
@@ -96,13 +66,7 @@ describe('Provider -> Copy Reducer', () => {
     describe(`${fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS} action`, () => {
         it('should set properties on the state', () => {
             const p = new Provider({});
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: p,
-                saving: false
-            };
+            const obj = { ...snapshot, provider: p };
             const result = reducer(snapshot, new fromCollection.AddProviderSuccess(p));
 
             expect(result.saving).toBe(false);
@@ -112,13 +76,7 @@ describe('Provider -> Copy Reducer', () => {
     describe(`${fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER_FAIL} action`, () => {
         it('should set properties on the state', () => {
             const p = new Provider({});
-            const obj = {
-                target: null,
-                serviceProviderName: null,
-                entityId: null,
-                provider: p,
-                saving: false
-            };
+            const obj = { ...snapshot, provider: p };
             const result = reducer(snapshot, new fromCollection.AddProviderFail(p));
 
             expect(result.saving).toBe(false);
