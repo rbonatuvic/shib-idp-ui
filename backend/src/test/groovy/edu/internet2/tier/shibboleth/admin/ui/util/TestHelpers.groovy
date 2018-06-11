@@ -2,6 +2,9 @@ package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import org.apache.commons.lang.StringUtils
+import org.w3c.dom.Document
+import org.xmlunit.builder.DiffBuilder
+import org.xmlunit.builder.Input
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -21,5 +24,10 @@ class TestHelpers {
         count += StringUtils.isNotBlank(relyingPartyOverridesRepresentation.responderId) ? 1 : 0
 
         return count
+    }
+
+    static generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {
+        !DiffBuilder.compare(Input.fromStream(this.getResourceAsStream(expectedXmlResource))).withTest(Input.fromDocument(generatedXml))
+                .ignoreComments().ignoreWhitespace().build().hasDifferences()
     }
 }

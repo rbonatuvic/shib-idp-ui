@@ -1,12 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import groovy.xml.DOMBuilder
+import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
 import org.joda.time.DateTime
@@ -29,6 +33,8 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Specification
 
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
+
 @SpringBootTest
 @DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
@@ -50,6 +56,30 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
     @Autowired
     OpenSamlObjects openSamlObjects
+
+    @Autowired
+    AttributeUtility attributeUtility
+
+    TestObjectGenerator testObjectGenerator
+
+    DOMBuilder domBuilder
+
+    StringWriter writer
+
+    MarkupBuilder markupBuilder
+
+    def setup() {
+        testObjectGenerator = new TestObjectGenerator(attributeUtility)
+        domBuilder = DOMBuilder.newInstance()
+        writer = new StringWriter()
+        markupBuilder = new MarkupBuilder(writer)
+        markupBuilder.omitNullAttributes = true
+        markupBuilder.omitEmptyAttributes = true
+    }
+
+    def cleanup() {
+        writer.close()
+    }
 
     def 'test adding a filter'() {
         given:
@@ -75,7 +105,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
   </md:SPSSODescriptor>
 </md:EntityDescriptor>'''
         when:
-        def mdr = new edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver().with {
+        def mdr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver().with {
             it.name = "testme"
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
@@ -97,6 +127,30 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         def resultString = openSamlObjects.marshalToXmlString(ed)
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
+    }
+
+    def 'test generating FileBackedHttMetadataResolver xml snippet'() {
+        given:
+        def resolver = testObjectGenerator.fileBackedHttpMetadataResolver()
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        assert generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
+        xml.MetadataProvider('id': 'ShibbolethMetadata',
+                'xmlns': 'urn:mace:shibboleth:2.0:metadata',
+                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                'xsi:type': 'ChainingMetadataProvider',
+                'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
+        ) {
+            xmlNodeGenerator(delegate)
+        }
     }
 
     @TestConfiguration

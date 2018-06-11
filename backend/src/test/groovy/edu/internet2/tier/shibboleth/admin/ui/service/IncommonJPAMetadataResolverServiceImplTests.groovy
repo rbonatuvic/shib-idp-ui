@@ -4,14 +4,12 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import org.apache.http.impl.client.HttpClients
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
-import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -85,6 +83,9 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         @Autowired
         MetadataResolverRepository metadataResolverRepository
 
+        @Autowired
+        AttributeUtility attributeUtility
+
         @Bean
         MetadataResolver metadataResolver() {
             def resolver = new ChainingMetadataResolver().with {
@@ -100,8 +101,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
             }
 
             if (!metadataResolverRepository.findAll().iterator().hasNext()) {
-                edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver mr = new edu.internet2.tier.shibboleth.admin.ui.domain.MetadataResolver()
-                mr.setName("incommonmd")
+                //Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver. Add more as
+                // we implement them
+                def mr = new TestObjectGenerator(attributeUtility).fileBackedHttpMetadataResolver()
+                mr.setName("HTTPMetadata")
                 metadataResolverRepository.save(mr)
             }
 
