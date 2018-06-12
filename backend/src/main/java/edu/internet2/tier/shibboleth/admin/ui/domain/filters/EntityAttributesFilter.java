@@ -60,6 +60,7 @@ public class EntityAttributesFilter extends MetadataFilter {
     @PrePersist
     @PreUpdate
     public void fromTransientRepresentation() {
+        this.attributes.clear();
         List<org.opensaml.saml.saml2.core.Attribute> attributeList = new ArrayList<>();
         attributeList.addAll(getAttributeListFromAttributeReleaseList(this.attributeRelease));
         attributeList.addAll(getAttributeListFromRelyingPartyOverridesRepresentation(this.relyingPartyOverrides));

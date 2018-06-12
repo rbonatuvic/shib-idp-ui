@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/MetadataResolver/{metadataResolverId}")
@@ -64,23 +65,29 @@ public class MetadataFiltersController {
         MetadataResolver metadataResolver = repository.findAll().iterator().next();
         metadataResolver.getMetadataFilters().add(createdFilter);
 
+        //convert before saving into database
+        if(createdFilter instanceof EntityAttributesFilter) {
+            EntityAttributesFilter.class.cast(createdFilter).fromTransientRepresentation();
+        }
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
         metadataResolverService.reloadFilters(persistedMr.getName());
 
+        MetadataFilter persistedFilter =
+                convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
+
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
-                .body(persistedMr.getMetadataFilters()
-                                .stream()
-                                .filter(filter -> filter.getResourceId().equals(createdFilter.getResourceId()))
-                                .collect(Collectors.toList())
-                                .get(0)); // "There can be only one!!!"
+                .body(persistedFilter);
 
     }
 
     @PutMapping("/Filters/{resourceId}")
-    public ResponseEntity<?> update(@PathVariable String metadataResolverId, @RequestBody MetadataFilter updatedFilter) {
+    public ResponseEntity<?> update(@PathVariable String metadataResolverId,
+                                    @PathVariable String resourceId,
+                                    @RequestBody MetadataFilter updatedFilter) {
+
         //TODO: replace with get by metadataResolverId once we have more than one
         MetadataResolver metadataResolver = repository.findAll().iterator().next();
 
@@ -105,14 +112,31 @@ public class MetadataFiltersController {
         filterTobeUpdated.setFilterEnabled(updatedFilter.isFilterEnabled());
         updateConcreteFilterTypeData(filterTobeUpdated, updatedFilter);
 
+        //convert before saving into database
+        if(filterTobeUpdated instanceof EntityAttributesFilter) {
+            EntityAttributesFilter.class.cast(filterTobeUpdated).fromTransientRepresentation();
+        }
+
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         metadataResolverService.reloadFilters(persistedMr.getName());
 
-        return ResponseEntity.ok()
-                .body(persistedMr.getMetadataFilters().stream()
-                .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
-                .collect(Collectors.toList()).get(0));
+        MetadataFilter persistedFilter =
+                convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), updatedFilter.getResourceId());
+
+        return ResponseEntity.ok().body(persistedFilter);
+    }
+
+    private MetadataFilter convertIntoTransientRepresentationIfNecessary(Stream<MetadataFilter> filters, final String filterResourceId) {
+        MetadataFilter persistedFilter = filters
+                .filter(f -> f.getResourceId().equals(filterResourceId))
+                .collect(Collectors.toList()).get(0);
+
+        //convert before saving into database
+        if(persistedFilter instanceof EntityAttributesFilter) {
+            EntityAttributesFilter.class.cast(persistedFilter).intoTransientRepresentation();
+        }
+        return persistedFilter;
     }
 
     /**
@@ -126,7 +150,6 @@ public class MetadataFiltersController {
             toFilter.setEntityAttributesFilterTarget(fromFilter.getEntityAttributesFilterTarget());
             toFilter.setRelyingPartyOverrides(fromFilter.getRelyingPartyOverrides());
             toFilter.setAttributeRelease(fromFilter.getAttributeRelease());
-            toFilter.intoTransientRepresentation();
         }
         else if(filterWithUpdatedData instanceof EntityRoleWhiteListFilter) {
             EntityRoleWhiteListFilter toFilter = EntityRoleWhiteListFilter.class.cast(filterToBeUpdated);
