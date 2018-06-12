@@ -24,7 +24,7 @@ public class HttpMetadataResolverAttributes {
 
     private String connectionRequestTimeout;
 
-    private String requestTimeout;
+    private String connectionTimeout;
 
     private String socketTimeout;
 
@@ -52,7 +52,7 @@ public class HttpMetadataResolverAttributes {
 
     private Integer httpMaxCacheEntrySize;
 
-    private enum HttpCachingType {
+    public enum HttpCachingType {
         none,file,memory
     }
 }

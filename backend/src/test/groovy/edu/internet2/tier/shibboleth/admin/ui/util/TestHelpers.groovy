@@ -27,6 +27,7 @@ class TestHelpers {
     }
 
     static generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {
-        !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream(expectedXmlResource))).withTest(Input.fromDocument(generatedXml)).ignoreComments().ignoreWhitespace().build().hasDifferences()
+        !DiffBuilder.compare(Input.fromStream(TestHelpers.getResourceAsStream(expectedXmlResource))).withTest(Input.fromDocument(generatedXml))
+                .ignoreComments().ignoreWhitespace().build().hasDifferences()
     }
 }

@@ -14,6 +14,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
@@ -31,6 +34,29 @@ class TestObjectGenerator {
 
     TestObjectGenerator(AttributeUtility attributeUtility) {
         this.attributeUtility = attributeUtility
+    }
+
+
+    HttpMetadataResolverAttributes buildHttpMetadataResolverAttributes() {
+        def attributes = new HttpMetadataResolverAttributes().with {
+            it.disregardTLSCertificate = generator.randomBoolean()
+            it.connectionRequestTimeout = generator.randomString(10)
+            it.httpClientRef = generator.randomString(10)
+            it.httpCacheDirectory = generator.randomString(10)
+            it.httpCaching = randomHttpCachingType()
+            it.httpClientSecurityParametersRef = generator.randomString(10)
+            it.httpMaxCacheEntries = generator.randomInt(1, 10)
+            it.httpMaxCacheEntrySize = generator.randomInt(100, 10000)
+            it.proxyHost = generator.randomString(10)
+            it.proxyPassword = generator.randomString(10)
+            it.proxyPort = generator.randomString(5)
+            it.proxyUser = generator.randomString(10)
+            it.socketTimeout = generator.randomString(10)
+            it.tlsTrustEngineRef = generator.randomString(10)
+            it.connectionTimeout = generator.randomString(10)
+            it
+        }
+        return attributes
     }
 
     List<MetadataFilter> buildAllTypesOfFilterList() {
@@ -218,6 +244,54 @@ class TestObjectGenerator {
         contactPerson.setNamespacePrefix(generator.randomString(5))
 
         return contactPerson
+    }
+
+    FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
+        new FileBackedHttpMetadataResolver().with {
+            it.name = 'HTTPMetadata'
+            it.backingFile = '%{idp.home}/metadata/incommonmd.xml'
+            it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.minRefreshDelay = 'PT5M'
+                it.maxRefreshDelay = 'PT1H'
+                it.refreshDelayFactor = 0.75
+                it
+            }
+            it
+        }
+    }
+
+    FileBackedHttpMetadataResolver buildFileBackedHttpMetadataResolver() {
+        def resolver = new FileBackedHttpMetadataResolver()
+        resolver.name = generator.randomString(10)
+        resolver.requireValidMetadata = generator.randomBoolean()
+        resolver.failFastInitialization = generator.randomBoolean()
+        resolver.sortKey = generator.randomInt(0, 10)
+        resolver.criterionPredicateRegistryRef = generator.randomString(10)
+        resolver.useDefaultPredicateRegistry = generator.randomBoolean()
+        resolver.satisfyAnyPredicates = generator.randomBoolean()
+        resolver.metadataFilters = []
+        resolver.reloadableMetadataResolverAttributes = buildReloadableMetadataResolverAttributes()
+        resolver.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
+        return resolver
+    }
+
+    ReloadableMetadataResolverAttributes buildReloadableMetadataResolverAttributes() {
+        def attributes = new ReloadableMetadataResolverAttributes()
+        attributes.parserPoolRef = generator.randomString(10)
+        attributes.taskTimerRef = generator.randomString(10)
+        attributes.minRefreshDelay = generator.randomString(5)
+        attributes.maxRefreshDelay = generator.randomString(5)
+        attributes.refreshDelayFactor = generator.randomInt(0, 5)
+        attributes.indexesRef = generator.randomString(10)
+        attributes.resolveViaPredicatesOnly = generator.randomBoolean()
+        attributes.expirationWarningThreshold = generator.randomString(10)
+        return attributes
+    }
+
+    HttpMetadataResolverAttributes.HttpCachingType randomHttpCachingType() {
+        HttpMetadataResolverAttributes.HttpCachingType.values()[generator.randomInt(0, 2)]
     }
 
     /**

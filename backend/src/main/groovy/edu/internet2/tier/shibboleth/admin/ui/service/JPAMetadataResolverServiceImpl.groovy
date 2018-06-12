@@ -4,6 +4,9 @@ import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
@@ -19,7 +22,8 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired
+
 import org.w3c.dom.Document
 
 @Slf4j
@@ -80,6 +84,8 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         // TODO: this can probably be a better writer
         new StringWriter().withCloseable { writer ->
             def xml = new MarkupBuilder(writer)
+            xml.omitEmptyAttributes = true
+            xml.omitNullAttributes = true
 
             xml.MetadataProvider(id: 'ShibbolethMetadata',
                     xmlns: 'urn:mace:shibboleth:2.0:metadata',
@@ -88,14 +94,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
             ) {
                 metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                    MetadataProvider(id: 'HTTPMetadata',
-                            'xsi:type': 'FileBackedHTTPMetadataProvider',
-                            backingFile: '%{idp.home}/metadata/incommonmd.xml',
-                            metadataURL: 'http://md.incommon.org/InCommon/InCommon-metadata.xml',
-                            minRefreshDelay: 'PT5M',
-                            maxRefreshDelay: 'PT1H',
-                            refreshDelayFactor: '0.75'
-                    ) {
+                    constructXmlNodeForResolver(mr, delegate) {
                         MetadataFilter(
                                 'xsi:type': 'SignatureValidation',
                                 'requireSignedRoot': 'true',
@@ -107,17 +106,17 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         )
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                            constructXmlNodeFor(filter, delegate)
+                            constructXmlNodeForFilter(filter, delegate)
                         }
                     }
                 }
             }
-
             return DOMBuilder.newInstance().parseText(writer.toString())
         }
     }
 
-    void constructXmlNodeFor(EntityAttributesFilter filter, def markupBuilderDelegate) {
+
+    void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             // TODO: enhance. currently this does weird things with namespaces
             filter.attributes.each { attribute ->
@@ -132,7 +131,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-    void constructXmlNodeFor(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+    void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter(
                 'xsi:type': 'EntityRoleWhiteList',
                 'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
@@ -140,6 +139,47 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             filter.retainedRoles.each {
                 markupBuilderDelegate.RetainedRole(it)
             }
+        }
+    }
+
+    void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
+        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+                'xsi:type': 'FileBackedHTTPMetadataProvider',
+                backingFile: resolver.backingFile,
+                metadataURL: resolver.metadataURL,
+                initializeFromBackupFile: !resolver.initializeFromBackupFile ?: null,
+                backupFileInitNextRefreshDelay: resolver.backupFileInitNextRefreshDelay,
+                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                failFastInitialization: !resolver.failFastInitialization ?: null,
+                sortKey: resolver.sortKey,
+                criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
+                useDefaultPredicateRegistry: !resolver.useDefaultPredicateRegistry ?: null,
+                satisfyAnyPredicates: resolver.satisfyAnyPredicates ?: null,
+
+                parserPoolRef: resolver.reloadableMetadataResolverAttributes?.parserPoolRef,
+                minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
+                maxRefreshDelay: resolver.reloadableMetadataResolverAttributes?.maxRefreshDelay,
+                refreshDelayFactor: resolver.reloadableMetadataResolverAttributes?.refreshDelayFactor,
+                indexesRef: resolver.reloadableMetadataResolverAttributes?.indexesRef,
+                resolveViaPredicatesOnly: resolver.reloadableMetadataResolverAttributes?.resolveViaPredicatesOnly ?: null,
+                expirationWarningThreshold: resolver.reloadableMetadataResolverAttributes?.expirationWarningThreshold,
+
+                httpClientRef: resolver.httpMetadataResolverAttributes?.httpClientRef,
+                connectionRequestTimeout: resolver.httpMetadataResolverAttributes?.connectionRequestTimeout,
+                connectionTimeout: resolver.httpMetadataResolverAttributes?.connectionTimeout,
+                socketTimeout: resolver.httpMetadataResolverAttributes?.socketTimeout,
+                disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
+                httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
+                proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
+                proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
+                httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
+                httpCacheDirectory: resolver.httpMetadataResolverAttributes?.httpCacheDirectory,
+                httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
+                httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
+
+            childNodes()
         }
     }
 }

@@ -3,13 +3,15 @@ package edu.internet2.tier.shibboleth.admin.ui.repository
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -37,8 +39,6 @@ class MetadataResolverRepositoryTest extends Specification {
 
     @Autowired
     OpenSamlObjects openSamlObjects
-
-    AttributeUtility attributeUtility
 
     def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 

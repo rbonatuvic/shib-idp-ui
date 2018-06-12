@@ -1,3 +1,4 @@
+import { ViewChild, Component } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,9 +9,21 @@ import * as fromProvider from '../reducer';
 import { CopyProviderComponent } from './copy-provider.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NavigatorService } from '../../core/service/navigator.service';
+import { I18nTextComponent } from '../../domain/component/i18n-text.component';
+
+@Component({
+    template: `<copy-provider-form
+                (save)="onSave($event)"></copy-provider-form>`
+})
+class TestHostComponent {
+    @ViewChild(CopyProviderComponent)
+    public formUnderTest: CopyProviderComponent;
+
+    onSave(event: any): void {}
+}
 
 describe('Copy Provider Page', () => {
-    let fixture: ComponentFixture<CopyProviderComponent>;
+    let fixture: ComponentFixture<TestHostComponent>;
     let store: Store<fromCollections.State>;
     let instance: CopyProviderComponent;
 
@@ -26,23 +39,40 @@ describe('Copy Provider Page', () => {
                 SharedModule
             ],
             declarations: [
-                CopyProviderComponent
+                CopyProviderComponent,
+                I18nTextComponent,
+                TestHostComponent
             ],
             providers: [
                 NavigatorService
             ]
         });
 
-        fixture = TestBed.createComponent(CopyProviderComponent);
-        instance = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestHostComponent);
+        instance = fixture.componentInstance.formUnderTest;
         store = TestBed.get(Store);
+        fixture.detectChanges();
 
         spyOn(store, 'dispatch').and.callThrough();
     });
 
     it('should compile', () => {
-        fixture.detectChanges();
-
         expect(fixture).toBeDefined();
+    });
+
+    describe('next method', () => {
+        it('should dispatch an action to create a copy', () => {
+            instance.next();
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
+
+    describe('onChange method', () => {
+        it('should dispatch an action to update the selected sections to copy', () => {
+            instance.onChange('relyingPartyOverrides');
+            expect(store.dispatch).toHaveBeenCalled();
+            instance.onChange('relyingPartyOverrides');
+            expect(store.dispatch).toHaveBeenCalled();
+        });
     });
 });

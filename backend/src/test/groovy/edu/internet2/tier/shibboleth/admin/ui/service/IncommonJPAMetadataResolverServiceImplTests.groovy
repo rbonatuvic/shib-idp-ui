@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -82,6 +83,9 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         @Autowired
         MetadataResolverRepository metadataResolverRepository
 
+        @Autowired
+        AttributeUtility attributeUtility
+
         @Bean
         MetadataResolver metadataResolver() {
             def resolver = new ChainingMetadataResolver().with {
@@ -97,8 +101,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
             }
 
             if (!metadataResolverRepository.findAll().iterator().hasNext()) {
-                edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver()
-                mr.setName("incommonmd")
+                //Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver. Add more as
+                // we implement them
+                def mr = new TestObjectGenerator(attributeUtility).fileBackedHttpMetadataResolver()
+                mr.setName("HTTPMetadata")
                 metadataResolverRepository.save(mr)
             }
 

@@ -7,8 +7,11 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.FileBackedHttpMetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
@@ -30,7 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class FileBackedHttpMetadataProviderControllerTests extends Specification {
     RandomGenerator randomGenerator
+    TestObjectGenerator testObjectGenerator
     ObjectMapper mapper
+
+    @Autowired
+    AttributeUtility attributeUtility
 
     def repository = Mock(FileBackedHttpMetadataResolverRepository)
     def controller
@@ -38,6 +45,7 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def setup() {
         randomGenerator = new RandomGenerator()
+        testObjectGenerator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
 
         controller = new FileBackedHttpMetadataProviderController (
@@ -77,44 +85,10 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "POST a new resolver properly persists and returns the new persisted resolver"() {
         given:
-        def postedJsonBody = '''{
-	"name": "name",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}'''
-        def resolver = new ObjectMapper().readValue(postedJsonBody.bytes, FileBackedHttpMetadataResolver)
+        def resolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        resolver.version = resolver.hashCode()
+        def postedJsonBody = mapper.writeValueAsString(resolver)
+
         1 * repository.findByName(resolver.getName()) >> null
         1 * repository.save(_) >> resolver
 
@@ -137,46 +111,13 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "POST a new resolver that has a name of a persisted resolver returns conflict"() {
         given:
-        def randomResolverName = randomGenerator.randomString(10)
-        def postedJsonBody = """{
-	"name": "$randomResolverName",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
-        def resolver = new ObjectMapper().readValue(postedJsonBody.bytes, FileBackedHttpMetadataResolver)
-        1 * repository.findByName(randomResolverName) >> resolver
+        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        def randomResolverName = existingResolver.name
+        def newResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        newResolver.name = randomResolverName
+        def postedJsonBody = mapper.writeValueAsString(newResolver)
+
+        1 * repository.findByName(randomResolverName) >> existingResolver
         0 * repository.save(_)
 
         when:
@@ -191,56 +132,18 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "GET by resourceId returns the desired persisted resolver"() {
         given:
-        def randomUUID = randomGenerator.randomId()
-        def resolverJson = """{
-	"name": "name",
-	"resourceId": "$randomUUID",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
+        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        existingResolver.version = existingResolver.hashCode()
+        def randomResourceId = existingResolver.resourceId
+        def resolverJson = mapper.writeValueAsString(existingResolver)
 
-        def resolver = new ObjectMapper().readValue(resolverJson.bytes, FileBackedHttpMetadataResolver)
-        resolver.setResourceId(randomUUID)
-
-        1 * repository.findByResourceId(randomUUID) >> resolver
+        1 * repository.findByResourceId(randomResourceId) >> existingResolver
 
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
         def result = mockMvc.perform(
-                get("/api/MetadataProvider/FileBackedHttp/$randomUUID"))
+                get("/api/MetadataProvider/FileBackedHttp/$randomResourceId"))
 
         then:
         result.andExpect(status().isOk())
@@ -264,48 +167,12 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "GET by resolver name returns the desired persisted resolver"() {
         given:
-        def randomResolverName = randomGenerator.randomString(10)
-        def resolverJson = """{
-	"name": "$randomResolverName",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
+        def randomResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        randomResolver.version = randomResolver.hashCode()
+        def randomResolverName = randomResolver.name
+        def resolverJson = mapper.writeValueAsString(randomResolver)
 
-        def resolver = new ObjectMapper().readValue(resolverJson.bytes, FileBackedHttpMetadataResolver)
-
-        1 * repository.findByName(randomResolverName) >> resolver
+        1 * repository.findByName(randomResolverName) >> randomResolver
 
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
@@ -335,89 +202,15 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "PUT allows for a successful update of an already-persisted resolver"() {
         given:
-        def randomResourceId = "resourceId"
-        def existingResolverJson = """{
-	"name": "name",
-	"resourceId": "$randomResourceId",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
-        def existingResolver = new ObjectMapper().readValue(existingResolverJson.bytes, FileBackedHttpMetadataResolver)
-        def existingResolverVersion = existingResolver.hashCode()
+        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        existingResolver.version = existingResolver.hashCode()
+        def randomResourceId = existingResolver.resourceId
+        def updatedResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        updatedResolver.version = existingResolver.version
+        updatedResolver.resourceId = existingResolver.resourceId
+        def postedJsonBody = mapper.writeValueAsString(updatedResolver)
 
-        def randomName = randomGenerator.randomString(10)
-        def postedJsonBody = """{
-	"name": "$randomName",
-	"resourceId": "$randomResourceId",
-    "version": "$existingResolverVersion",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
-        def updatedResolver = new ObjectMapper().readValue(postedJsonBody.bytes, FileBackedHttpMetadataResolver)
+
         1 * repository.findByResourceId(randomResourceId) >> existingResolver
         1 * repository.save(_) >> updatedResolver
 
@@ -439,89 +232,14 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "PUT of an updated resolver with an incorrect version returns a conflict"() {
         given:
-        def randomResourceId = "resourceId"
-        def existingResolverJson = """{
-	"name": "name",
-	"resourceId": "$randomResourceId",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
-        def existingResolver = new ObjectMapper().readValue(existingResolverJson.bytes, FileBackedHttpMetadataResolver)
-        def existingResolverVersion = existingResolver.hashCode()
+        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        existingResolver.version = existingResolver.hashCode()
+        def randomResourceId = existingResolver.resourceId
+        def updatedResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        updatedResolver.version = updatedResolver.hashCode()
+        updatedResolver.resourceId = existingResolver.resourceId
+        def postedJsonBody = mapper.writeValueAsString(updatedResolver)
 
-        def randomName = randomGenerator.randomString(10)
-        def randomVersion = randomGenerator.randomInt()
-        def postedJsonBody = """{
-	"name": "$randomName",
-	"resourceId": "$randomResourceId",
-    "version": "$randomVersion",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
         1 * repository.findByResourceId(randomResourceId) >> existingResolver
         0 * repository.save(_)
 
@@ -537,45 +255,11 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "PUT of a resolver that is not persisted returns not found"() {
         given:
-        def randomResourceId = randomGenerator.randomId()
-        def postedJsonBody = """{
-	"name": "name",
-	"resourceId": "$randomResourceId",
-	"requireValidMetadata": true,
-	"failFastInitialization": true,
-	"sortKey": 7,
-	"criterionPredicateRegistryRef": "criterionPredicateRegistryRef",
-	"useDefaultPredicateRegistry": true,
-	"satisfyAnyPredicates": true,
-	"metadataFilters": [],
-	"reloadableMetadataResolverAttributes": {
-	    "parserPoolRef": "parserPoolRef",
-        "taskTimerRef": "taskTimerRef",
-        "minRefreshDelay": "minRefreshDelay",
-        "maxRefreshDelay": "maxRefreshDelay",
-        "refreshDelayFactor": 1.0,
-        "indexesRef": "indexesRef",
-        "resolveViaPredicatesOnly": true,
-        "expirationWarningThreshold": "expirationWarningThreshold"
-	},
-	"httpMetadataResolverAttributes": {
-		"httpClientRef": "httpClientRef",
-		"connectionRequestTimeout": "connectionRequestTimeout",
-		"requestTimeout": "requestTimeout",
-		"socketTimeout": "socketTimeout",
-		"disregardTLSCertificate": true,
-		"tlsTrustEngineRef": "tlsTrustEngineRef",
-		"httpClientSecurityParametersRef": "httpClientSecurityParametersRef",
-		"proxyHost": "proxyHost",
-		"proxyPort": "proxyPort",
-		"proxyUser": "proxyUser",
-		"proxyPassword": "proxyPassword",
-		"httpCaching": "none",
-		"httpCacheDirectory": "httpCacheDirectory",
-	    "httpMaxCacheEntries": 1,
-		"httpMaxCacheEntrySize": 2
-	}
-}"""
+        def randomResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        randomResolver.version = randomResolver.hashCode()
+        def randomResourceId = randomResolver.resourceId
+        def postedJsonBody = mapper.writeValueAsString(randomResolver)
+
         1 * repository.findByResourceId(randomResourceId) >> null
         0 * repository.save(_)
 

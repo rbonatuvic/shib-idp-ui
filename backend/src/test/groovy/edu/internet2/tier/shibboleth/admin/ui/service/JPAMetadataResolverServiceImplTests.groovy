@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.xml.DOMBuilder
@@ -32,7 +33,8 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Specification
 
-import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
+
 
 @SpringBootTest
 @DataJpaTest
@@ -72,6 +74,8 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         domBuilder = DOMBuilder.newInstance()
         writer = new StringWriter()
         markupBuilder = new MarkupBuilder(writer)
+        markupBuilder.omitNullAttributes = true
+        markupBuilder.omitEmptyAttributes = true
     }
 
     def cleanup() {
@@ -131,15 +135,28 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         def filter = testObjectGenerator.entityRoleWhitelistFilter()
 
         when:
-        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeFor(filter, it) }
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
 
         then:
         assert generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
     }
 
+    def 'test generating FileBackedHttMetadataResolver xml snippet'() {
+        given:
+        def resolver = testObjectGenerator.fileBackedHttpMetadataResolver()
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        assert generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
+    }
+
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
-        xml.MetadataProvider(id: 'ShibbolethMetadata',
-                xmlns: 'urn:mace:shibboleth:2.0:metadata',
+        xml.MetadataProvider('id': 'ShibbolethMetadata',
+                'xmlns': 'urn:mace:shibboleth:2.0:metadata',
                 'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                 'xsi:type': 'ChainingMetadataProvider',
                 'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
