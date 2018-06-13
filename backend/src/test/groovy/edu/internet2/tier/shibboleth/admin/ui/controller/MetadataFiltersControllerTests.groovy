@@ -189,7 +189,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         def expectedJson = new JsonSlurper().parseText(postedJsonBody)
-        def hashcode = updatedFilter.hashCode()
+        updatedFilter.fromTransientRepresentation()
         expectedJson << [version: updatedFilter.hashCode()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
