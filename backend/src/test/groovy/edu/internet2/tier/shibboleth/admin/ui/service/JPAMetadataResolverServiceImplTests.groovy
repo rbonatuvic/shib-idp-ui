@@ -124,10 +124,8 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         assert metadataResolverRepository.findAll().size() > 0
-        def mr = metadataResolverRepository.findByName('testme')
         def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
         def resultString = openSamlObjects.marshalToXmlString(ed)
-        println resultString
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
     }
