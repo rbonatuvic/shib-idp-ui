@@ -131,11 +131,8 @@ public class MetadataFiltersController {
 
         metadataResolverService.reloadFilters(persistedMr.getName());
 
-        int version = updatedFilter.getVersion();
         MetadataFilter persistedFilter =
                 convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), updatedFilter.getResourceId());
-
-        int persitedVersion = persistedFilter.getVersion();
 
         return ResponseEntity.ok().body(persistedFilter);
     }
