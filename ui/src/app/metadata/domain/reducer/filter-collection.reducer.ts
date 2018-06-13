@@ -1,8 +1,7 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import * as filter from '../action/filter-collection.action';
+import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
 import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/filter-collection.action';
 import { MetadataFilter } from '../domain.type';
+import { UpdateChanges } from '../../edit-provider/action/editor.action';
 
 export interface FilterCollectionState extends EntityState<MetadataFilter> {
     selectedFilterId: string | null;
@@ -15,7 +14,7 @@ export function sortByDate(a: MetadataFilter, b: MetadataFilter): number {
 
 export const adapter: EntityAdapter<MetadataFilter> = createEntityAdapter<MetadataFilter>({
     sortComparer: sortByDate,
-    selectId: (model: MetadataFilter) => model.id
+    selectId: (model: MetadataFilter) => model.resourceId
 });
 
 export const initialState: FilterCollectionState = adapter.getInitialState({
@@ -26,18 +25,19 @@ export const initialState: FilterCollectionState = adapter.getInitialState({
 export function reducer(state = initialState, action: FilterCollectionActionsUnion): FilterCollectionState {
     switch (action.type) {
         case FilterCollectionActionTypes.LOAD_FILTER_SUCCESS: {
-            return adapter.addAll(action.payload, {
+            let s = adapter.addAll(action.payload, {
                 ...state,
                 selectedFilterId: state.selectedFilterId,
                 loaded: true
             });
+            return s;
         }
 
         case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS: {
             return adapter.updateOne(action.payload, state);
         }
 
-        case FilterCollectionActionTypes.SELECT: {
+        case FilterCollectionActionTypes.SELECT_FILTER: {
             return {
                 ...state,
                 selectedFilterId: action.payload,

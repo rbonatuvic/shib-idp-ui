@@ -1,16 +1,11 @@
-import {
-    MetadataBase,
-    FilterTarget,
-    RelyingPartyOverrides
-} from '../model';
+import { MetadataBase } from './metadata-base';
 
 export interface MetadataFilter extends MetadataBase {
     entityId: string;
-    filterName: string;
+    name: string;
     filterEnabled?: boolean;
-    relyingPartyOverrides: RelyingPartyOverrides;
-    attributeRelease: string[];
-    filterTarget: FilterTarget;
+    type: string;
+    resourceId: string;
 
     serialize(): any;
 }

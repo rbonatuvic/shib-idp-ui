@@ -69,7 +69,7 @@ public class CoreShibUiConfiguration {
 
     @Bean
     public AttributeUtility attributeUtility() {
-        return new AttributeUtility();
+        return new AttributeUtility(openSamlObjects());
     }
 
     @Autowired

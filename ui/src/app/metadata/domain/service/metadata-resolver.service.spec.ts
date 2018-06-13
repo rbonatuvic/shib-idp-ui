@@ -1,10 +1,9 @@
 import { TestBed, async, inject } from '@angular/core/testing';
-import { EntityValidators } from './entity-validators.service';
-import { Observable } from 'rxjs';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataResolverService } from './metadata-resolver.service';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { Filter } from '../entity/filter';
+import { EntityAttributesFilter } from '../entity/entity-attributes.filter';
+
 
 describe(`Metadata Resolver Service`, () => {
 
@@ -49,7 +48,7 @@ describe(`Metadata Resolver Service`, () => {
         it(`should send an expected PUT request`, async(inject([MetadataResolverService, HttpTestingController],
             (service: MetadataResolverService, backend: HttpTestingController) => {
                 const id = 'foo';
-                const filter = new Filter({id});
+                const filter = new EntityAttributesFilter({id});
                 service.update(filter).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
@@ -63,7 +62,7 @@ describe(`Metadata Resolver Service`, () => {
         it(`should send an expected POST request`, async(inject([MetadataResolverService, HttpTestingController],
             (service: MetadataResolverService, backend: HttpTestingController) => {
                 const id = 'foo';
-                const filter = new Filter({ id });
+                const filter = new EntityAttributesFilter({ id });
                 service.save(filter).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {

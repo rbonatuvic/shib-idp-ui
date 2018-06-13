@@ -60,8 +60,8 @@ export class Provider implements MetadataProvider, MetadataEntity {
         return this.serviceEnabled;
     }
 
-    get type(): string {
-        return MetadataTypes.PROVIDER;
+    get kind(): string {
+        return DomainEntityKinds.provider;
     }
 
     serialize(): any {

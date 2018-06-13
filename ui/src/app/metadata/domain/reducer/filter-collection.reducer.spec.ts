@@ -1,14 +1,12 @@
 import { reducer } from './filter-collection.reducer';
 import * as fromFilter from './filter-collection.reducer';
-import * as actions from '../action/filter-collection.action';
 import {
-    FilterCollectionActionsUnion,
     FilterCollectionActionTypes,
     LoadFilterSuccess,
     UpdateFilterSuccess,
     SelectFilter
 } from '../action/filter-collection.action';
-import { Filter } from '../entity/filter';
+import { EntityAttributesFilter } from '../entity/entity-attributes.filter';
 
 const snapshot: fromFilter.FilterCollectionState = {
     ids: [],
@@ -39,8 +37,8 @@ describe('Filter Reducer', () => {
         it('should add the loaded filters to the collection', () => {
             spyOn(fromFilter.adapter, 'addAll').and.callThrough();
             const filters = [
-                new Filter({ id: 'foo', createdDate: new Date().toLocaleDateString() }),
-                new Filter({ id: 'bar', createdDate: new Date().toLocaleDateString() })
+                new EntityAttributesFilter({ id: 'foo', createdDate: new Date().toLocaleDateString() }),
+                new EntityAttributesFilter({ id: 'bar', createdDate: new Date().toLocaleDateString() })
             ];
             const action = new LoadFilterSuccess(filters);
             const result = reducer(snapshot, action);
@@ -53,7 +51,7 @@ describe('Filter Reducer', () => {
             spyOn(fromFilter.adapter, 'updateOne').and.callThrough();
             const update = {
                 id: 'foo',
-                changes: new Filter({ id: 'foo', filterName: 'bar', createdDate: new Date().toLocaleDateString() }),
+                changes: new EntityAttributesFilter({ id: 'foo', name: 'bar', createdDate: new Date().toLocaleDateString() }),
             };
             const action = new UpdateFilterSuccess(update);
             const result = reducer(snapshot, action);

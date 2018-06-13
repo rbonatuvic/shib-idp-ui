@@ -5,17 +5,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { MetadataEntity, MetadataProvider, DomainTypes } from '../../domain/domain.type';
-import { Resolver } from '../../domain/entity/provider';
+import { MetadataTypes, Metadata } from '../../metadata/domain/domain.type';
 import * as searchActions from '../action/search.action';
-import * as providerActions from '../../domain/action/provider-collection.action';
 import * as draftActions from '../../domain/action/draft-collection.action';
 import * as fromDashboard from '../reducer';
 import { ToggleEntityDisplay } from '../action/dashboard.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
+import { MetadataFactory } from '@angular/compiler/src/core';
 
 @Component({
     selector: 'dashboard-page',
@@ -25,17 +23,17 @@ import { DeleteDialogComponent } from '../component/delete-dialog.component';
 })
 export class DashboardComponent implements OnInit {
     searchQuery$: Observable<string>;
-    providers$: Observable<MetadataEntity[]>;
+    providers$: Observable<Metadata[]>;
     loading$: Observable<boolean>;
 
     total$: Observable<number>;
     page = 1;
     limit = 8;
-    limited$: Observable<MetadataEntity[]>;
+    limited$: Observable<Metadata[]>;
 
     entitiesOpen$: Observable<{[key: string]: boolean}>;
 
-    filterOptions = ['all', 'filter', 'provider'];
+    filterOptions = ['all', MetadataTypes.FILTER, MetadataTypes.PROVIDER];
     filtering$: Observable<string>;
     filtering = 'all';
 
@@ -54,6 +52,8 @@ export class DashboardComponent implements OnInit {
         this.total$ = this.providers$.pipe(map(list => list.length));
 
         this.limited$ = this.getPagedProviders(this.page, this.providers$);
+
+        // this.providers$.subscribe(p => console.log(p));
     }
 
     ngOnInit (): void {
@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit {
     edit(entity: MetadataEntity): void {
         let path = entity.id ? 'edit' : 'wizard',
             id = entity.id ? entity.id : entity.entityId;
-        this.router.navigate([entity.type, id, path]);
+        this.router.navigate([entity.kind, id, path]);
     }
 
     toggleProvider(entity: MetadataEntity): void {

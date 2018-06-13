@@ -4,7 +4,7 @@ import { Update } from '@ngrx/entity';
 
 export enum FilterCollectionActionTypes {
     FIND = '[Metadata Filter] Find',
-    SELECT = '[Metadata Filter] Select',
+    SELECT_FILTER = '[Metadata Filter] Select Request',
     SELECT_FILTER_SUCCESS = '[Metadata Filter] Select Success',
     SELECT_FILTER_FAIL = '[Metadata Filter] Select Fail',
 
@@ -33,7 +33,7 @@ export class FindFilter implements Action {
 }
 
 export class SelectFilter implements Action {
-    readonly type = FilterCollectionActionTypes.SELECT;
+    readonly type = FilterCollectionActionTypes.SELECT_FILTER;
 
     constructor(public payload: string) { }
 }

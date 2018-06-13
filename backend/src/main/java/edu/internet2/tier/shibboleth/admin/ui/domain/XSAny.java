@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 @Entity
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"unknownAttributes"})
 public class XSAny extends AbstractElementExtensibleXMLObject implements org.opensaml.core.xml.schema.XSAny {
 
     private String textContext;

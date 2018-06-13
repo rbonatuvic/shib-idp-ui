@@ -6,14 +6,14 @@ export interface SearchState {
     entities: (MetadataProvider | MetadataFilter)[];
     loading: boolean;
     query: string;
-    type: string;
+    kind: string;
 }
 
 const initialState: SearchState = {
     entities: [],
     loading: false,
     query: '',
-    type: 'all'
+    kind: 'all'
 };
 
 export function reducer(state = initialState, action: searchActions.Actions): SearchState {
@@ -29,7 +29,7 @@ export function reducer(state = initialState, action: searchActions.Actions): Se
         case searchActions.ENTITY_FILTER: {
             return {
                 ...state,
-                type: action.payload,
+                kind: action.payload,
                 loading: true
             };
         }
@@ -39,7 +39,7 @@ export function reducer(state = initialState, action: searchActions.Actions): Se
                 entities: action.payload,
                 loading: false,
                 query: state.query,
-                type: state.type
+                kind: state.kind
             };
         }
 
@@ -55,4 +55,4 @@ export const getQuery = (state: SearchState) => state.query;
 
 export const getLoading = (state: SearchState) => state.loading;
 
-export const getFilter = (state: SearchState) => state.type;
+export const getFilter = (state: SearchState) => state.kind;

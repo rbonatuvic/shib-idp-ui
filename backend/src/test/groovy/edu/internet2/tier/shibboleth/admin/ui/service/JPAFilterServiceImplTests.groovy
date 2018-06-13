@@ -63,7 +63,7 @@ class JPAFilterServiceImplTests extends Specification {
 
     def "createRepresentationFromFilter properly creates a representation from a filter"() {
         given:
-        def filter = testObjectGenerator.buildEntityAttributesFilter()
+        def filter = testObjectGenerator.buildFilter { testObjectGenerator.entityAttributesFilter() }
 
         when:
         def result = service.createRepresentationFromFilter(filter)

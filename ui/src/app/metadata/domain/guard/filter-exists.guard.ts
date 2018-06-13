@@ -38,9 +38,8 @@ export class FilterExistsGuard implements CanActivate {
     }
 
     hasFilterInApi(id: string): Observable<boolean> {
-        return this.mdResolverService.find(id).pipe(
-            map(filterEntity => new FilterActions.LoadFilterSuccess([filterEntity])),
-            tap((action: FilterActions.LoadFilterSuccess) => this.store.dispatch(action)),
+        return this.store.select(fromCollection.getAllFilters).pipe(
+            map(filters => filters.find(f => f.resourceId === id)),
             map(filter => !!filter),
             catchError(() => {
                 this.router.navigate(['/dashboard']);

@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 
@@ -8,6 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 @MappedSuperclass
+@EqualsAndHashCode(callSuper = true, exclude={"unknownAttributes"})
 public abstract class AbstractAttributeExtensibleXMLObject extends AbstractXMLObject implements AttributeExtensibleXMLObject {
 
     private transient final AttributeMap unknownAttributes;

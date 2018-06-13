@@ -5,7 +5,7 @@
                 <div class="w-10 pr-3 pull-left">
                     <i class="fa fa-fw fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
                     &nbsp;
-                    <span class="label-icon sr-hidden" [ngSwitch]="entity.type">
+                    <span class="label-icon sr-hidden" [ngSwitch]="entity.kind">
                         <i class="fa fa-fw fa-3x text-info fa-cubes" *ngSwitchCase="types.filter"></i>
                         <i class="fa fa-fw fa-3x text-info fa-cube" *ngSwitchCase="types.provider"></i>
                         <i class="fa fa-fw fa-3x text-info fa-" *ngSwitchDefault></i>
@@ -37,7 +37,7 @@
                 <div class="col-10">
                     <div class="row">
                         <div class="col text-right font-weight-bold" i18n="@@label--service-provider">
-                            {entity.type, select, filter {Filter} provider {Service Provider} other {other}} Name:
+                            {entity.kind, select, filter {Filter} provider {Service Provider} other {other}} Name:
                         </div>
                         <div class="col">{{ entity.name }}</div>
                         <div class="col text-right font-weight-bold" i18n="@@label--created-date">Created Date:</div>
@@ -46,11 +46,11 @@
                     </div>
                     <div class="row">
                         <div class="col text-right font-weight-bold" i18n="@@label--service-entity-id">
-                            {entity.type, select, filter {Filter} provider {Service Provider} other {other}} Entity ID:
+                            {entity.kind, select, filter {Filter} provider {Service Provider} other {other}} Entity ID:
                         </div>
                         <div class="col">{{ entity.entityId }}</div>
                         <div class="col text-right font-weight-bold" i18n="@@label--service-provider-status">
-                            {entity.type, select, filter {Filter} provider {Service Provider} other {other}} Status:
+                            {entity.kind, select, filter {Filter} provider {Service Provider} other {other}} Status:
                         </div>
                         <div class="col" *ngIf="entity.createdDate">
                             <i class="fa fa-fw" [ngClass]="{
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <button *ngIf="!entity.createdDate && entity.type === 'provider'"
+                    <button *ngIf="!entity.createdDate && entity.kind === 'provider'"
                         class="btn btn-link pull-right"
                         (click)="delete.emit(entity)"
                         aria-label="Delete selected service provider">
