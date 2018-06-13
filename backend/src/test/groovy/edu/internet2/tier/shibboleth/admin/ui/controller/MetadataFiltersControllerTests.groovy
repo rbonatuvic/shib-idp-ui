@@ -120,7 +120,6 @@ class MetadataFiltersControllerTests extends Specification {
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(mapper.writeValueAsString(expectedFilter)))
-                .andDo(MockMvcResultHandlers.print())
     }
 
     def "FilterController.create creates the desired filter"() {
