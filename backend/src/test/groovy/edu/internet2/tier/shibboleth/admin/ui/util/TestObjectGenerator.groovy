@@ -92,7 +92,7 @@ class TestObjectGenerator {
             it.name = entityAttributesFilter.name
             it.resourceId = entityAttributesFilter.resourceId
             it.setEntityAttributesFilterTarget(entityAttributesFilter.entityAttributesFilterTarget)
-            it.setAttributes(new ArrayList<Attribute>(entityAttributesFilter.attributes))
+            it.setAttributes(entityAttributesFilter.attributes)
             it.intoTransientRepresentation()
             it
         }

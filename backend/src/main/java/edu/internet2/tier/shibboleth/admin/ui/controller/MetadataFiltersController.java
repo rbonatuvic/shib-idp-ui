@@ -38,31 +38,35 @@ public class MetadataFiltersController {
     private MetadataResolverRepository repository;
 
     @Autowired
-    private FilterService filterService;
-
-    @Autowired
     private MetadataResolverService metadataResolverService;
 
     @GetMapping("/Filters")
     @Transactional(readOnly = true)
-    public Iterable<MetadataFilter> getAll(@PathVariable String metadataResolverId) {
-        // TODO: implement lookup based on metadataResolverId once we have more than one
-        return repository.findAll().iterator().next().getMetadataFilters();
+    public ResponseEntity<?> getAll(@PathVariable String metadataResolverId) {
+        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
+        if(resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resolver.getMetadataFilters());
     }
 
     @GetMapping("/Filters/{resourceId}")
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
-        // TODO: implement lookup based on metadataResolverId once we have more than one
-        // TODO: should we check that we found exactly one filter (as in the update method below)? If not, error?
-        return ResponseEntity.ok(repository.findAll().iterator().next().getMetadataFilters().stream()
+        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
+        if(resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resolver.getMetadataFilters().stream()
                 .filter(f -> f.getResourceId().equals(resourceId))
                 .collect(Collectors.toList()).get(0));
     }
 
     @PostMapping("/Filters")
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
-        //TODO: replace with get by metadataResolverId once we have more than one
-        MetadataResolver metadataResolver = repository.findAll().iterator().next();
+        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
+        if(metadataResolver == null) {
+            return ResponseEntity.notFound().build();
+        }
         metadataResolver.getMetadataFilters().add(createdFilter);
 
         //convert before saving into database
@@ -88,8 +92,14 @@ public class MetadataFiltersController {
                                     @PathVariable String resourceId,
                                     @RequestBody MetadataFilter updatedFilter) {
 
-        //TODO: replace with get by metadataResolverId once we have more than one
-        MetadataResolver metadataResolver = repository.findAll().iterator().next();
+        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
+        if(metadataResolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!resourceId.equals(updatedFilter.getResourceId())) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
 
         List<MetadataFilter> filters =
                 metadataResolver.getMetadataFilters().stream()
@@ -121,8 +131,11 @@ public class MetadataFiltersController {
 
         metadataResolverService.reloadFilters(persistedMr.getName());
 
+        int version = updatedFilter.getVersion();
         MetadataFilter persistedFilter =
                 convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), updatedFilter.getResourceId());
+
+        int persitedVersion = persistedFilter.getVersion();
 
         return ResponseEntity.ok().body(persistedFilter);
     }
