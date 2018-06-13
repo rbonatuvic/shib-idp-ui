@@ -43,5 +43,14 @@
             <RetainedRole>md:SPSSODescriptor</RetainedRole>
         </MetadataFilter>
     </MetadataProvider>
-
+    <MetadataProvider id="LocalDynamic"
+                      initializeFromPersistentCacheInBackground="true"
+                      removeIdleEntityData="true"
+                      xsi:type="DynamicHttpMetadataProvider">
+        <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" requireSignedRoot="true" xsi:type="SignatureValidation"/>
+        <MetadataFilter maxValidityInterval="P14D" xsi:type="RequiredValidUntil"/>
+        <MetadataFilter xsi:type="EntityRoleWhiteList">
+            <RetainedRole>md:SPSSODescriptor</RetainedRole>
+        </MetadataFilter>
+    </MetadataProvider>
 </MetadataProvider>

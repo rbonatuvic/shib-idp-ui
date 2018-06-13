@@ -324,6 +324,13 @@ class TestObjectGenerator {
         }
     }
 
+    LocalDynamicMetadataResolver localDynamicMetadataResolver() {
+        new LocalDynamicMetadataResolver().with {
+            it.name = 'LocalDynamic'
+            it
+        }
+    }
+
     FileBackedHttpMetadataResolver buildFileBackedHttpMetadataResolver() {
         def resolver = new FileBackedHttpMetadataResolver()
         resolver.name = generator.randomString(10)
