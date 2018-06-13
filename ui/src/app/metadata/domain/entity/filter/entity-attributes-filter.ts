@@ -1,8 +1,8 @@
-import { MetadataFilter, RelyingPartyOverrides } from '../model/metadata-filter';
-import { DomainEntityKinds } from '../domain.type';
-import { FilterTarget } from '../model/filter-target';
+import { MetadataFilter, MetadataEntity, RelyingPartyOverrides } from '../../model';
+import { MetadataTypes } from '../../domain.type';
+import { FilterTarget } from '../../model';
 
-export class EntityAttributesFilter implements MetadataFilter {
+export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
     createdDate?: string;
     modifiedDate?: string;
     version: string;
@@ -42,7 +42,7 @@ export class EntityAttributesFilter implements MetadataFilter {
     }
 
     get kind(): string {
-        return DomainEntityKinds.filter;
+        return MetadataTypes.FILTER;
     }
 
     get entityId(): string {

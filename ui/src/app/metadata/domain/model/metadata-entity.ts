@@ -1,7 +1,7 @@
 export interface MetadataEntity {
     name: string;
     enabled: boolean;
-    type: string;
+    kind: string;
 
     serialize(): any;
 }

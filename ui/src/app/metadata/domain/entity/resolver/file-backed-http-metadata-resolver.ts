@@ -9,11 +9,11 @@ import {
     SsoService,
     IdpSsoDescriptor,
     RelyingPartyOverrides
-} from '../model';
-import { MetadataTypes } from '../domain.type';
-import { MetadataEntity } from '../model/metadata-entity';
+} from '../../model';
+import { MetadataTypes } from '../../domain.type';
+import { MetadataEntity } from '../../model/metadata-entity';
 
-export class Resolver implements MetadataProvider, MetadataEntity {
+export class FileBackedHttpMetadataResolver implements MetadataProvider, MetadataEntity {
     id = '';
     createdDate?: string;
     modifiedDate?: string;
@@ -60,7 +60,7 @@ export class Resolver implements MetadataProvider, MetadataEntity {
         return this.serviceEnabled;
     }
 
-    get type(): string {
+    get kind(): string {
         return MetadataTypes.RESOLVER;
     }
 

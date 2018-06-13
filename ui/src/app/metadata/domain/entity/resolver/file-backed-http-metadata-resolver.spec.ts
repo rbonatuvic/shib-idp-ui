@@ -1,4 +1,4 @@
-import { Resolver } from './resolver.entity';
+import { FileBackedHttpMetadataResolver } from './file-backed-http-metadata-resolver';
 
 describe('Resolver construct', () => {
 
@@ -83,7 +83,7 @@ describe('Resolver construct', () => {
             'mail'
         ]
     };
-    const entity = new Resolver(config);
+    const entity = new FileBackedHttpMetadataResolver(config);
 
     it('should populate its own values', () => {
         Object.keys(config).forEach(key => {

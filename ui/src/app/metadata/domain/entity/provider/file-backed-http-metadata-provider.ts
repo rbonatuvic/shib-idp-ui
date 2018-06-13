@@ -10,10 +10,10 @@ import {
     SsoService,
     IdpSsoDescriptor,
     RelyingPartyOverrides
-} from '../model';
-import { MetadataTypes } from '../domain.type';
+} from '../../model';
+import { MetadataTypes } from '../../domain.type';
 
-export class Provider implements MetadataProvider, MetadataEntity {
+export class FileBackedHttpMetadataProvider implements MetadataProvider, MetadataEntity {
     id = '';
     createdDate?: string;
     modifiedDate?: string;
@@ -61,7 +61,7 @@ export class Provider implements MetadataProvider, MetadataEntity {
     }
 
     get kind(): string {
-        return DomainEntityKinds.provider;
+        return MetadataTypes.PROVIDER;
     }
 
     serialize(): any {
