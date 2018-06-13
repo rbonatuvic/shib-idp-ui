@@ -47,11 +47,61 @@ public class MetadataResolverConfiguration {
     public MetadataResolver metadataResolver() throws ResolverException, ComponentInitializationException {
         ChainingMetadataResolver metadataResolver = new ChainingMetadataResolver();
         metadataResolver.setId("chain");
+
         List<MetadataResolver> resolvers = new ArrayList<>();
+
+        // TODO: remove this later when we allow for creation of arbitrary metadata resolvers
+        FileBackedHTTPMetadataResolver incommonMR = new FileBackedHTTPMetadataResolver(HttpClients.createMinimal(), "http://md.incommon.org/InCommon/InCommon-metadata.xml", "/tmp/incommonmd.xml"){
+            @Override
+            protected void initMetadataResolver() throws ComponentInitializationException {
+                super.initMetadataResolver();
+
+                for (String entityId: this.getBackingStore().getIndexedDescriptors().keySet()) {
+                    Document document = new Document();
+                    document.add(new StringField("id", entityId, Field.Store.YES));
+                    document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
+                    try {
+                        indexWriter.addDocument(document);
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+                try {
+                    indexWriter.commit();
+                } catch (IOException e) {
+                    throw new ComponentInitializationException(e);
+                }
+            }
+
+            // TODO: this is probably not the best way to do this
+            @Nullable
+            @Override
+            public DateTime getLastRefresh() {
+                return null;
+            }
+
+            // TODO: this is probably not the best way to do this
+            @Override
+            protected void processConditionalRetrievalHeaders(HttpResponse response) {
+                // let's do nothing 'cause we want to allow a refresh
+            }
+        };
+        incommonMR.setId("incommonmd");
+        incommonMR.setParserPool(openSamlObjects.getParserPool());
+        incommonMR.setMetadataFilter(new MetadataFilterChain());
+        incommonMR.initialize();
+
+
+        resolvers.add(incommonMR);
+
+        if (!metadataResolverRepository.findAll().iterator().hasNext()) {
+            edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver();
+            mr.setName("incommonmd");
+            metadataResolverRepository.save(mr);
+        }
+
         metadataResolver.setResolvers(resolvers);
-
         metadataResolver.initialize();
-
         return metadataResolver;
     }
 }
