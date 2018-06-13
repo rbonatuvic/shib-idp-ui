@@ -7,7 +7,7 @@ export const ENTITY_FILTER = '[Metadata Entity Filter] Entity Filter';
 export const ENTITY_SEARCH_COMPLETE = '[Metadata Entity Search] Entity Search COMPLETE';
 
 /**
- * Add Provider to Collection Actions
+ * Add Resolver to Collection Actions
  */
 export class SearchAction implements Action {
     readonly type = ENTITY_SEARCH;

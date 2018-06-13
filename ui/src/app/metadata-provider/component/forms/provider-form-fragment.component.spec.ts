@@ -5,7 +5,7 @@ import { ProviderFormFragmentComponent } from './provider-form-fragment.componen
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 
 
-describe('Provider Form Fragment Component', () => {
+describe('Resolver Form Fragment Component', () => {
     let fixture: ComponentFixture<ProviderFormFragmentComponent>;
     let instance: ProviderFormFragmentComponent;
 

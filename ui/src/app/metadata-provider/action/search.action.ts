@@ -2,9 +2,9 @@ import { Action } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 export enum SearchActionTypes {
-    SEARCH_IDS = '[Search Provider Ids] Request',
-    SEARCH_IDS_SUCCESS = '[Search Provider Ids] Success',
-    SEARCH_IDS_ERROR = '[Search Provider Ids] Error'
+    SEARCH_IDS = '[Search Resolver Ids] Request',
+    SEARCH_IDS_SUCCESS = '[Search Resolver Ids] Success',
+    SEARCH_IDS_ERROR = '[Search Resolver Ids] Error'
 }
 
 export class SearchIds implements Action {

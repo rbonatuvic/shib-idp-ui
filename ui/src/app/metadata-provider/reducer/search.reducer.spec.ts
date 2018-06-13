@@ -8,7 +8,7 @@ const snapshot: fromProviderSearch.SearchState = {
     searching: false
 };
 
-describe('Provider -> Search Reducer', () => {
+describe('Resolver -> Search Reducer', () => {
     describe('undefined action', () => {
         it('should return the default state', () => {
             const result = reducer(snapshot, {} as any);

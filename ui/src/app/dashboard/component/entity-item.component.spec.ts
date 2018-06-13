@@ -3,7 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EntityItemComponent } from './entity-item.component';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
-describe('Provider List item', () => {
+describe('Resolver List item', () => {
     let fixture: ComponentFixture<EntityItemComponent>;
     let instance: EntityItemComponent;
 

@@ -13,7 +13,7 @@ import { AddProviderRequest, UploadProviderRequest } from '../../domain/action/p
 import * as fromCollections from '../../domain/reducer';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { MetadataProvider } from '../../domain/domain.type';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 
 @Component({
     selector: 'blank-provider-form',
@@ -40,7 +40,7 @@ export class BlankProviderComponent implements OnInit {
     }
 
     next(): void {
-        const val: MetadataProvider = new Provider({
+        const val: MetadataProvider = new Resolver({
             entityId: this.providerForm.get('entityId').value,
             serviceProviderName: this.providerForm.get('serviceProviderName').value
         });

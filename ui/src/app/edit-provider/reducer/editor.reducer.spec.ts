@@ -23,7 +23,7 @@ describe('Editor Reducer', () => {
         });
     });
 
-    describe('Editor Add Provider', () => {
+    describe('Editor Add Resolver', () => {
         it('should update the status when a provider is saved', () => {
             const action = new collectionActions.AddProviderRequest(changes);
             const result = reducer(initialState, action);

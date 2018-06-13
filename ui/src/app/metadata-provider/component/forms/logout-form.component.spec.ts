@@ -12,13 +12,13 @@ import { LogoutFormComponent } from './logout-form.component';
 import * as stubs from '../../../../testing/provider.stub';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
 import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
-import { Provider } from '../../../domain/entity/provider';
+import { Resolver } from '../../../domain/entity/provider';
 
 @Component({
     template: `<logout-form [provider]="provider"></logout-form>`
 })
 class TestHostComponent {
-    provider = new Provider({
+    provider = new Resolver({
         ...stubs.provider,
         logoutEndpoints: [stubs.logoutEndpoint]
     });
@@ -85,7 +85,7 @@ describe('Logout Endpoints Form Component', () => {
 
     describe('ngOnChanges method', () => {
         it('should add endpoints if provided', () => {
-            instance.provider = new Provider({
+            instance.provider = new Resolver({
                 ...stubs.provider
             });
             fixture.detectChanges();

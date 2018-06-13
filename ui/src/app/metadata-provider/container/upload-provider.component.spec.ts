@@ -30,7 +30,7 @@ const getFakeFile = (str: string) => {
     return <File>blob;
 };
 
-describe('Upload Provider Page', () => {
+describe('Upload Resolver Page', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
     let form: UploadProviderComponent;

@@ -15,13 +15,13 @@ import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import * as stubs from '../../../../testing/provider.stub';
 import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
 import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
-import { Provider } from '../../../domain/entity/provider';
+import { Resolver } from '../../../domain/entity/provider';
 
 @Component({
     template: `<finish-form [provider]="provider"></finish-form>`
 })
 class TestHostComponent {
-    provider = new Provider({
+    provider = new Resolver({
         ...stubs.provider
     });
 

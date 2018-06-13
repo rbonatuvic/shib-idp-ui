@@ -9,7 +9,7 @@ import * as fromCollections from '../../domain/reducer';
 import * as fromDashboard from '../reducer';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { EntityDescriptorService } from '../../domain/service/entity-descriptor.service';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 import { Filter } from '../../domain/entity/filter';
 import { MetadataEntity, DomainTypes, MetadataFilter } from '../../domain/domain.type';
 
@@ -45,7 +45,7 @@ export class SearchEffects {
                 (o: any[], p: MetadataProvider[], f: MetadataFilter[]): Array<MetadataEntity> => {
                     return o.concat(
                         f.map(filter => new Filter(filter)),
-                        p.map(provider => new Provider(provider))
+                        p.map(provider => new Resolver(provider))
                     );
                 }
             ),

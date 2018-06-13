@@ -7,7 +7,7 @@ import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/ser
 import * as fromCollections from '../../../domain/reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
-import { Provider } from '../../../domain/entity/provider';
+import { Resolver } from '../../../domain/entity/provider';
 import { MetadataUiFormComponent } from './metadata-ui-form.component';
 
 import * as stubs from '../../../../testing/provider.stub';
@@ -18,7 +18,7 @@ import { I18nTextComponent } from '../../../domain/component/i18n-text.component
     template: `<metadata-ui-form [provider]="provider"></metadata-ui-form>`
 })
 class TestHostComponent {
-    provider = new Provider({
+    provider = new Resolver({
         ...stubs.provider
     });
 

@@ -15,7 +15,7 @@ describe('Dashboard Reducer', () => {
         });
     });
 
-    describe('Toggle Provider Display', () => {
+    describe('Toggle Resolver Display', () => {
         it('should toggle the selected providers open state', () => {
             const id = 'foo';
             const action = new ToggleEntityDisplay(id);

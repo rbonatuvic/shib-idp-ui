@@ -2,17 +2,17 @@ import { Action } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 
 export enum CopySourceActionTypes {
-    CREATE_PROVIDER_COPY_REQUEST = '[Copy Provider] Create Provider Copy Request',
-    CREATE_PROVIDER_COPY_SUCCESS = '[Copy Provider] Create Provider Copy Success',
-    CREATE_PROVIDER_COPY_ERROR = '[Copy Provider] Create Provider Copy Error',
+    CREATE_PROVIDER_COPY_REQUEST = '[Copy Resolver] Create Resolver Copy Request',
+    CREATE_PROVIDER_COPY_SUCCESS = '[Copy Resolver] Create Resolver Copy Success',
+    CREATE_PROVIDER_COPY_ERROR = '[Copy Resolver] Create Resolver Copy Error',
 
-    UPDATE_PROVIDER_COPY = '[Copy Provider] Update Provider Copy Request',
+    UPDATE_PROVIDER_COPY = '[Copy Resolver] Update Resolver Copy Request',
 
-    UPDATE_PROVIDER_COPY_SECTIONS = '[Copy Provider] Update Provider Sections',
+    UPDATE_PROVIDER_COPY_SECTIONS = '[Copy Resolver] Update Resolver Sections',
 
-    SAVE_PROVIDER_COPY_REQUEST = '[Copy Provider] Save Provider Copy Request',
-    SAVE_PROVIDER_COPY_SUCCESS = '[Copy Provider] Save Provider Copy Request',
-    SAVE_PROVIDER_COPY_ERROR = '[Copy Provider] Save Provider Copy Request',
+    SAVE_PROVIDER_COPY_REQUEST = '[Copy Resolver] Save Resolver Copy Request',
+    SAVE_PROVIDER_COPY_SUCCESS = '[Copy Resolver] Save Resolver Copy Request',
+    SAVE_PROVIDER_COPY_ERROR = '[Copy Resolver] Save Resolver Copy Request',
 }
 
 export class CreateProviderCopyRequest implements Action {

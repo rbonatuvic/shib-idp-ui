@@ -15,7 +15,7 @@ import {
     CreateProviderCopySuccess,
     CreateProviderCopyError
 } from '../action/copy.action';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 
 
 @Injectable()
@@ -34,7 +34,7 @@ export class CopyProviderEffects {
             const provider = providers.find(p => p.entityId === attrs.target);
             const copied = sections.reduce((c, section) => ({ ...c, ...{[section]: provider[section] } }), {});
             const action = provider ?
-                new CreateProviderCopySuccess(new Provider({
+                new CreateProviderCopySuccess(new Resolver({
                     serviceProviderName,
                     entityId,
                     ...copied

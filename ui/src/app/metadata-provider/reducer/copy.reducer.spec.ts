@@ -3,11 +3,11 @@ import * as fromProviderCopy from './copy.reducer';
 import * as actions from '../action/copy.action';
 import * as fromCollection from '../../domain/action/provider-collection.action';
 import { CopySourceActionTypes, CopySourceActionUnion, CreateProviderCopyRequest } from '../action/copy.action';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 
 const snapshot: fromProviderCopy.CopyState = { ...fromProviderCopy.initialState };
 
-describe('Provider -> Copy Reducer', () => {
+describe('Resolver -> Copy Reducer', () => {
     describe('undefined action', () => {
         it('should return the default state', () => {
             const result = reducer(snapshot, {} as any);
@@ -26,7 +26,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_SUCCESS} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Provider({});
+            const p = new Resolver({});
             const obj = { ...snapshot };
             const result = reducer(snapshot, new actions.CreateProviderCopySuccess(p));
 
@@ -36,7 +36,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_ERROR} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Provider({});
+            const p = new Resolver({});
             const obj = { ...snapshot };
             const result = reducer(snapshot, new actions.CreateProviderCopyError(new Error()));
 
@@ -46,7 +46,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${CopySourceActionTypes.UPDATE_PROVIDER_COPY} action`, () => {
         it('should set properties on the state', () => {
-            const obj = { ...snapshot, provider: new Provider({}) };
+            const obj = { ...snapshot, provider: new Resolver({}) };
             const result = reducer(snapshot, new actions.UpdateProviderCopy({id: 'foo'}));
 
             expect(result.provider.id).toBe('foo');
@@ -55,7 +55,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${ fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER } action`, () => {
         it('should set properties on the state', () => {
-            const p = new Provider({});
+            const p = new Resolver({});
             const obj = { ...snapshot, provider: p };
             const result = reducer(snapshot, new fromCollection.AddProviderRequest(p));
 
@@ -65,7 +65,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Provider({});
+            const p = new Resolver({});
             const obj = { ...snapshot, provider: p };
             const result = reducer(snapshot, new fromCollection.AddProviderSuccess(p));
 
@@ -75,7 +75,7 @@ describe('Provider -> Copy Reducer', () => {
 
     describe(`${fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER_FAIL} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Provider({});
+            const p = new Resolver({});
             const obj = { ...snapshot, provider: p };
             const result = reducer(snapshot, new fromCollection.AddProviderFail(p));
 

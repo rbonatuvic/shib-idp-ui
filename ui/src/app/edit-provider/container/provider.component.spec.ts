@@ -9,7 +9,7 @@ import * as fromCollections from '../../domain/reducer';
 import { ActivatedRouteStub } from '../../../testing/activated-route.stub';
 import { routes } from '../editor.module';
 
-describe('Provider Select (Editor) Page', () => {
+describe('Resolver Select (Editor) Page', () => {
     let fixture: ComponentFixture<ProviderComponent>;
     let store: Store<fromCollections.State>;
     let instance: ProviderComponent;

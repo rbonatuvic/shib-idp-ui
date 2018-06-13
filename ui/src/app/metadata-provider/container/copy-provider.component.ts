@@ -16,7 +16,7 @@ import * as fromCollections from '../../domain/reducer';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { SearchIds } from '../action/search.action';
 import * as fromProvider from '../reducer';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 import { CreateProviderCopyRequest, UpdateProviderCopySections} from '../action/copy.action';
 
 

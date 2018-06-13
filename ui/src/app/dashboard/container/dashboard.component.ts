@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { MetadataEntity, MetadataProvider, DomainTypes } from '../../domain/domain.type';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 import * as searchActions from '../action/search.action';
 import * as providerActions from '../../domain/action/provider-collection.action';
 import * as draftActions from '../../domain/action/draft-collection.action';

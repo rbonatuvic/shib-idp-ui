@@ -13,7 +13,7 @@ import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RouterStub } from '../../../testing/router.stub';
 import { NgbModalStub } from '../../../testing/modal.stub';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { Provider } from '../../domain/entity/provider';
+import { Resolver } from '../../domain/entity/provider';
 
 
 describe('Dashboard Page', () => {
@@ -23,11 +23,11 @@ describe('Dashboard Page', () => {
     let modal: NgbModal;
     let instance: DashboardComponent;
 
-    let draft = new Provider({
+    let draft = new Resolver({
             entityId: 'foo',
             serviceProviderName: 'bar'
         }),
-        provider = new Provider({
+        provider = new Resolver({
             ...draft,
             id: '1'
         });

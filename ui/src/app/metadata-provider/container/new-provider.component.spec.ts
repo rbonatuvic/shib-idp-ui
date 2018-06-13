@@ -18,7 +18,7 @@ import { RouterStub } from '../../../testing/router.stub';
 import { ActivatedRouteStub } from '../../../testing/activated-route.stub';
 import { I18nTextComponent } from '../../domain/component/i18n-text.component';
 
-describe('New Provider Page', () => {
+describe('New Resolver Page', () => {
     let fixture: ComponentFixture<NewProviderComponent>;
     let store: Store<fromCollections.State>;
     let instance: NewProviderComponent;

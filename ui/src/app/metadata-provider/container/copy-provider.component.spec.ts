@@ -22,7 +22,7 @@ class TestHostComponent {
     onSave(event: any): void {}
 }
 
-describe('Copy Provider Page', () => {
+describe('Copy Resolver Page', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let store: Store<fromCollections.State>;
     let instance: CopyProviderComponent;

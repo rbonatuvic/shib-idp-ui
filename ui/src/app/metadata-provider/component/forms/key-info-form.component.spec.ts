@@ -12,13 +12,13 @@ import { InputDefaultsDirective } from '../../directive/input-defaults.directive
 
 import * as stubs from '../../../../testing/provider.stub';
 import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
-import { Provider } from '../../../domain/entity/provider';
+import { Resolver } from '../../../domain/entity/provider';
 
 @Component({
     template: `<key-info-form [provider]="provider"></key-info-form>`
 })
 class TestHostComponent {
-    provider = new Provider({
+    provider = new Resolver({
         ...stubs.provider,
         securityInfo: {
             ...stubs.secInfo,

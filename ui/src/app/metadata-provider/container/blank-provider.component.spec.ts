@@ -7,7 +7,7 @@ import * as fromCollections from '../../domain/reducer';
 import { BlankProviderComponent } from './blank-provider.component';
 import { UploadProviderComponent } from './upload-provider.component';
 
-describe('Blank Provider Page', () => {
+describe('Blank Resolver Page', () => {
     let fixture: ComponentFixture<BlankProviderComponent>;
     let store: Store<fromCollections.State>;
     let instance: BlankProviderComponent;
