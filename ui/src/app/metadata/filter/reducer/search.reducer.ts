@@ -1,6 +1,6 @@
-import * as search from '../action/search.action';
-import * as filter from '../action/filter.action';
-import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../../domain/action/filter-collection.action';
+import { FilterActionsUnion, FilterActionTypes } from '../action/filter.action';
+import { SearchActionsUnion, SearchActionTypes } from '../action/search.action';
+import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/collection.action';
 
 export interface SearchState {
     entityIds: string[];
@@ -18,28 +18,28 @@ export const initialState: SearchState = {
     term: '',
 };
 
-export function reducer(state = initialState, action: search.Actions | filter.Actions | FilterCollectionActionsUnion): SearchState {
+export function reducer(state = initialState, action: SearchActionsUnion | FilterActionsUnion | FilterCollectionActionsUnion): SearchState {
     switch (action.type) {
-        case search.VIEW_MORE_IDS: {
+        case SearchActionTypes.VIEW_MORE_IDS: {
             return {
                 ...state,
                 viewMore: true
             };
         }
-        case search.CANCEL_VIEW_MORE: {
+        case SearchActionTypes.CANCEL_VIEW_MORE: {
             return {
                 ...state,
                 viewMore: false
             };
         }
-        case search.QUERY_ENTITY_IDS: {
+        case SearchActionTypes.QUERY_ENTITY_IDS: {
             return {
                 ...state,
                 loading: true,
                 term: action.payload.term
             };
         }
-        case search.LOAD_ENTITY_IDS_SUCCESS: {
+        case SearchActionTypes.LOAD_ENTITY_IDS_SUCCESS: {
             return {
                 ...state,
                 loading: false,
@@ -47,7 +47,7 @@ export function reducer(state = initialState, action: search.Actions | filter.Ac
                 entityIds: action.payload
             };
         }
-        case search.LOAD_ENTITY_IDS_ERROR: {
+        case SearchActionTypes.LOAD_ENTITY_IDS_ERROR: {
             return {
                 ...state,
                 loading: false,
@@ -56,8 +56,8 @@ export function reducer(state = initialState, action: search.Actions | filter.Ac
         }
         case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
         case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS:
-        case search.CLEAR_SEARCH:
-        case filter.CANCEL_CREATE_FILTER: {
+        case SearchActionTypes.CLEAR_SEARCH:
+        case FilterActionTypes.CANCEL_CREATE_FILTER: {
             return {
                 ...initialState
             };

@@ -1,6 +1,13 @@
 import { reducer } from './search.reducer';
 import * as fromFilter from './search.reducer';
-import * as actions from '../action/search.action';
+import {
+    SearchActionTypes,
+    ViewMoreIds,
+    CancelViewMore,
+    QueryEntityIds,
+    LoadEntityIdsError,
+    LoadEntityIdsSuccess
+} from '../action/search.action';
 
 const snapshot: fromFilter.SearchState = {
     entityIds: [],
@@ -19,44 +26,44 @@ describe('Filter Reducer', () => {
         });
     });
 
-    describe(`${actions.VIEW_MORE_IDS} action`, () => {
+    describe(`${SearchActionTypes.VIEW_MORE_IDS} action`, () => {
         it('should set viewMore property to true', () => {
-            const result = reducer(snapshot, new actions.ViewMoreIds('foo'));
+            const result = reducer(snapshot, new ViewMoreIds('foo'));
 
             expect(result.viewMore).toBe(true);
         });
     });
 
-    describe(`${actions.CANCEL_VIEW_MORE} action`, () => {
+    describe(`${SearchActionTypes.CANCEL_VIEW_MORE} action`, () => {
         it('should set viewMore property to false', () => {
-            const result = reducer(snapshot, new actions.CancelViewMore());
+            const result = reducer(snapshot, new CancelViewMore());
 
             expect(result.viewMore).toBe(false);
         });
     });
 
-    describe(`${actions.QUERY_ENTITY_IDS} action`, () => {
+    describe(`${SearchActionTypes.QUERY_ENTITY_IDS} action`, () => {
         it('should set loading property to true', () => {
-            const result = reducer(snapshot, new actions.QueryEntityIds({ term: 'foo' }));
+            const result = reducer(snapshot, new QueryEntityIds({ term: 'foo' }));
 
             expect(result.loading).toBe(true);
         });
     });
 
-    describe(`${actions.LOAD_ENTITY_IDS_SUCCESS} action`, () => {
+    describe(`${SearchActionTypes.LOAD_ENTITY_IDS_SUCCESS} action`, () => {
         it('should set loading property to false and the entityIds property to the provided payload', () => {
             const ids = ['foo'];
-            const result = reducer(snapshot, new actions.LoadEntityIdsSuccess(ids));
+            const result = reducer(snapshot, new LoadEntityIdsSuccess(ids));
 
             expect(result.loading).toBe(false);
             expect(result.entityIds).toBe(ids);
         });
     });
 
-    describe(`${actions.LoadEntityIdsError} action`, () => {
+    describe(`${SearchActionTypes.LOAD_ENTITY_IDS_ERROR} action`, () => {
         it('should set loading property to false and the error property to the provided payload', () => {
             const err = new Error('Foobar!');
-            const result = reducer(snapshot, new actions.LoadEntityIdsError(err));
+            const result = reducer(snapshot, new LoadEntityIdsError(err));
 
             expect(result.loading).toBe(false);
             expect(result.error).toBe(err);

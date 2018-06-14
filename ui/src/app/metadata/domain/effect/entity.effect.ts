@@ -3,12 +3,11 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
-import { MetadataResolverService } from '../service/metadata-resolver.service';
-import { PreviewDialogComponent } from '../../shared/preview/preview-dialog.component';
-import { MetadataEntity, DomainEntityKinds } from '../domain.type';
+import { PreviewDialogComponent } from '../../../shared/preview/preview-dialog.component';
+import { MetadataEntity, MetadataTypes } from '../domain.type';
 import { EntityIdService } from '../service/entity-id.service';
 import * as entityActions from '../action/entity.action';
 
@@ -31,8 +30,8 @@ export class EntityEffects {
     ) { }
 
     openModal(entity: MetadataEntity): void {
-        let request: Observable<string> = entity.kind === DomainEntityKinds.filter ?
-            this.entityService.preview(entity.entityId) : this.providerService.preview(entity.id);
+        let request: Observable<string> = entity.kind === MetadataTypes.FILTER ?
+            this.entityService.preview(entity.getId()) : this.providerService.preview(entity.getId());
         request.subscribe(xml => {
             let modal = this.modalService.open(PreviewDialogComponent, {
                 size: 'lg',

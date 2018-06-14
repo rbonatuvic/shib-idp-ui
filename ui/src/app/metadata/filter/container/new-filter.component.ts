@@ -7,12 +7,12 @@ import { withLatestFrom, distinctUntilChanged, startWith, takeUntil } from 'rxjs
 import * as fromFilter from '../reducer';
 import { ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
-import { AddFilterRequest } from '../../domain/action/filter-collection.action';
+import { AddFilterRequest } from '../action/collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.action';
-import { MDUI } from '../../domain/model/mdui';
-import { EntityAttributesFilter } from '../../domain/entity/entity-attributes.filter';
+import { MDUI } from '../../domain/model';
+import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
 
 @Component({
     selector: 'new-filter-page',

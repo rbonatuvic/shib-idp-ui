@@ -3,23 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { MetadataProvider } from '../../domain/model/provider';
-import { MOCK_DESCRIPTORS } from '../../../data/descriptors.mock';
-import { Storage } from '../../shared/storage';
+import { MetadataResolver } from '../../domain/model';
+import { Storage } from '../../../shared/storage';
 
 @Injectable()
 export class EntityDraftService {
 
-    readonly storage: Storage<MetadataProvider>;
+    readonly storage: Storage<MetadataResolver>;
 
     constructor() {
-        this.storage = new Storage<MetadataProvider>('provider_drafts');
+        this.storage = new Storage<MetadataResolver>('provider_drafts');
     }
-    query(): Observable<MetadataProvider[]> {
+    query(): Observable<MetadataResolver[]> {
         return of(this.storage.query());
     }
 
-    find(entityId: string): Observable<MetadataProvider> {
+    find(entityId: string): Observable<MetadataResolver> {
         return this.query().pipe(
             switchMap(
                 list => of(
@@ -29,17 +28,17 @@ export class EntityDraftService {
         );
     }
 
-    save(provider: MetadataProvider): Observable<MetadataProvider> {
+    save(provider: MetadataResolver): Observable<MetadataResolver> {
         this.storage.add(provider);
         return of(provider);
     }
 
-    remove(provider: MetadataProvider): Observable<MetadataProvider> {
+    remove(provider: MetadataResolver): Observable<MetadataResolver> {
         this.storage.removeByAttr(provider.entityId, 'entityId');
         return of(provider);
     }
 
-    update(provider: MetadataProvider): Observable<MetadataProvider> {
+    update(provider: MetadataResolver): Observable<MetadataResolver> {
         let stored = this.storage.findByAttr(provider.id, 'entityId');
         stored = Object.assign({}, stored, provider);
         this.storage.removeByAttr(provider.entityId, 'entityId');

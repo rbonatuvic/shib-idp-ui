@@ -1,8 +1,7 @@
 import { reducer } from './filter.reducer';
 import * as fromFilter from './filter.reducer';
-import * as actions from '../action/filter.action';
-import * as searchActions from '../action/search.action';
-import { CancelCreateFilter } from '../action/filter.action';
+import { SelectId, LoadEntityPreviewSuccess, UpdateFilterChanges, FilterActionTypes, CancelCreateFilter } from '../action/filter.action';
+import { SearchActionTypes } from '../action/search.action';
 
 import {
     ClearSearch
@@ -14,10 +13,11 @@ import {
     UpdateFilterRequest,
     AddFilterSuccess,
     UpdateFilterSuccess
-} from '../../domain/action/filter-collection.action';
-import { MDUI } from '../../domain/model/mdui';
+} from '../action/collection.action';
+import { MDUI } from '../../domain/model';
 import { MetadataFilter } from '../../domain/domain.type';
-import { EntityAttributesFilter } from '../../domain/entity/entity-attributes.filter';
+import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
+
 
 const snapshot: fromFilter.FilterState = {
     selected: null,
@@ -45,27 +45,27 @@ describe('Filter Reducer', () => {
         });
     });
 
-    describe(`${actions.SELECT_ID} action`, () => {
+    describe(`${FilterActionTypes.SELECT_ID} action`, () => {
         it('should set selected property to the provided payload', () => {
             const id = 'foo';
-            const result = reducer(snapshot, new actions.SelectId(id));
+            const result = reducer(snapshot, new SelectId(id));
             expect(result.selected).toBe(id);
         });
     });
 
-    describe(`${actions.LOAD_ENTITY_PREVIEW_SUCCESS} action`, () => {
+    describe(`${FilterActionTypes.LOAD_ENTITY_PREVIEW_SUCCESS} action`, () => {
         it('should set preview property to the provided payload', () => {
             let sampleMdui = { ...mdui };
-            const result = reducer(snapshot, new actions.LoadEntityPreviewSuccess(sampleMdui));
+            const result = reducer(snapshot, new LoadEntityPreviewSuccess(sampleMdui));
             expect(result.preview).toEqual(sampleMdui);
         });
     });
 
-    describe(`${actions.UPDATE_FILTER} action`, () => {
+    describe(`${FilterActionTypes.UPDATE_FILTER} action`, () => {
         it('should update the state of changes', () => {
             const changes = { filterEnabled: false };
             const current = { ...snapshot, changes: { filterEnabled: true } as MetadataFilter };
-            const result = reducer(current, new actions.UpdateFilterChanges(changes));
+            const result = reducer(current, new UpdateFilterChanges(changes));
             expect(result.changes.filterEnabled).toBe(false);
         });
     });
@@ -96,13 +96,13 @@ describe('Filter Reducer', () => {
             expect(result).toEqual(fromFilter.initialState);
         });
     });
-    describe(`${searchActions.CLEAR_SEARCH} action`, () => {
+    describe(`${SearchActionTypes.CLEAR_SEARCH} action`, () => {
         it('should set saving to true', () => {
             const result = reducer(snapshot, new ClearSearch());
             expect(result).toEqual(fromFilter.initialState);
         });
     });
-    describe(`${actions.CANCEL_CREATE_FILTER} action`, () => {
+    describe(`${FilterActionTypes.CANCEL_CREATE_FILTER} action`, () => {
         it('should set saving to true', () => {
             const result = reducer(snapshot, new CancelCreateFilter());
             expect(result).toEqual(fromFilter.initialState);

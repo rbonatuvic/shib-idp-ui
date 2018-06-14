@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { map, take, startWith } from 'rxjs/operators';
 
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 export class EntityValidators {
     static createUniqueIdValidator(ids$: Observable<string[]>) {

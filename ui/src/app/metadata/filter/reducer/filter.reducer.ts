@@ -1,6 +1,12 @@
-import * as filter from '../action/filter.action';
-import * as search from '../action/search.action';
-import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../../domain/action/filter-collection.action';
+import {
+    FilterActionTypes,
+    FilterActionsUnion
+} from '../action/filter.action';
+import {
+    SearchActionTypes,
+    SearchActionsUnion
+} from '../action/search.action';
+import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/collection.action';
 import { MetadataFilter, MDUI } from '../../domain/domain.type';
 
 export interface FilterState {
@@ -17,21 +23,21 @@ export const initialState: FilterState = {
     saving: false
 };
 
-export function reducer(state = initialState, action: filter.Actions | search.Actions | FilterCollectionActionsUnion): FilterState {
+export function reducer(state = initialState, action: FilterActionsUnion | SearchActionsUnion | FilterCollectionActionsUnion): FilterState {
     switch (action.type) {
-        case filter.SELECT_ID: {
+        case FilterActionTypes.SELECT_ID: {
             return {
                 ...state,
                 selected: action.payload
             };
         }
-        case filter.LOAD_ENTITY_PREVIEW_SUCCESS: {
+        case FilterActionTypes.LOAD_ENTITY_PREVIEW_SUCCESS: {
             return {
                 ...state,
                 preview: action.payload
             };
         }
-        case filter.UPDATE_FILTER: {
+        case FilterActionTypes.UPDATE_FILTER: {
             return {
                 ...state,
                 changes: {
@@ -56,8 +62,8 @@ export function reducer(state = initialState, action: filter.Actions | search.Ac
         }
         case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
         case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS:
-        case search.CLEAR_SEARCH:
-        case filter.CANCEL_CREATE_FILTER: {
+        case SearchActionTypes.CLEAR_SEARCH:
+        case FilterActionTypes.CANCEL_CREATE_FILTER: {
             return {
                 ...initialState
             };

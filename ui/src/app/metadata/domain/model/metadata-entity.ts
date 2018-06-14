@@ -3,5 +3,7 @@ export interface MetadataEntity {
     enabled: boolean;
     kind: string;
 
+    getId(): string;
+
     serialize(): any;
 }

@@ -4,21 +4,20 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { withLatestFrom, distinctUntilChanged, takeUntil, startWith, filter } from 'rxjs/operators';
 
-import * as fromRoot from '../../app.reducer';
+import * as fromRoot from '../../../app.reducer';
 import * as fromFilter from '../reducer';
-import * as fromCollection from '../../domain/reducer';
 
 import { ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
-import { UpdateFilterRequest } from '../../domain/action/filter-collection.action';
+import { UpdateFilterRequest } from '../../filter/action/collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.action';
-import { AutoCompleteComponent } from '../../shared/autocomplete/autocomplete.component';
-import { MDUI } from '../../domain/model/mdui';
+import { AutoCompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
+import { MDUI } from '../../domain/model';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { MetadataEntity } from '../../domain/domain.type';
-import { EntityAttributesFilter } from '../../domain/entity/entity-attributes.filter';
+import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
 
 @Component({
     selector: 'edit-filter-page',
@@ -73,7 +72,7 @@ export class EditFilterComponent implements OnInit, OnDestroy {
 
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);
-        this.filter$ = this.store.select(fromCollection.getSelectedFilter);
+        this.filter$ = this.store.select(fromFilter.getSelectedFilter);
         this.entityIds$ = this.store.select(fromFilter.getEntityCollection);
         this.loading$ = this.store.select(fromFilter.getIsLoading);
         this.processing$ = this.loading$.pipe(withLatestFrom(this.showMore$, (l, s) => !s && l));

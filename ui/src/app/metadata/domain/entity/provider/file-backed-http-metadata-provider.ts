@@ -52,6 +52,10 @@ export class FileBackedHttpMetadataProvider implements MetadataProvider, Metadat
         Object.assign(this, descriptor);
     }
 
+    getId(): string {
+        return this.id;
+    }
+
     get name(): string {
         return this.serviceProviderName;
     }

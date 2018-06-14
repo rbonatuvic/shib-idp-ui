@@ -1,5 +1,4 @@
 import {
-    MetadataProvider,
     Organization,
     Contact,
     MDUI,
@@ -8,12 +7,13 @@ import {
     Certificate,
     SsoService,
     IdpSsoDescriptor,
-    RelyingPartyOverrides
+    RelyingPartyOverrides,
+    MetadataResolver
 } from '../../model';
 import { MetadataTypes } from '../../domain.type';
 import { MetadataEntity } from '../../model/metadata-entity';
 
-export class FileBackedHttpMetadataResolver implements MetadataProvider, MetadataEntity {
+export class FileBackedHttpMetadataResolver implements MetadataResolver, MetadataEntity {
     id = '';
     createdDate?: string;
     modifiedDate?: string;
@@ -48,8 +48,12 @@ export class FileBackedHttpMetadataResolver implements MetadataProvider, Metadat
 
     attributeRelease = [] as string[];
 
-    constructor(descriptor?: Partial<MetadataProvider>) {
+    constructor(descriptor?: Partial<MetadataResolver>) {
         Object.assign(this, descriptor);
+    }
+
+    getId(): string {
+        return this.id;
     }
 
     get name(): string {

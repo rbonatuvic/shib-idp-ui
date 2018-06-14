@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, Input, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 
 import { Store } from '@ngrx/store';

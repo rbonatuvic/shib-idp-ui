@@ -13,7 +13,3 @@ export * from './properties/relying-party-overrides';
 export * from './properties/security-info';
 export * from './properties/sso-descriptor';
 export * from './properties/sso-service';
-
-export * from './filter.entity';
-export * from './resolver.entity';
-export * from './provider.entity';

@@ -29,6 +29,10 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         Object.assign(this, { ...obj });
     }
 
+    getId(): string {
+        return this.entityId;
+    }
+
     get id(): string {
         return this.resourceId;
     }

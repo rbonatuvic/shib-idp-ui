@@ -6,9 +6,8 @@ import { Store } from '@ngrx/store';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataFilter } from '../../domain/model/metadata-filter';
-import { SelectFilter } from '../../domain/action/filter-collection.action';
-import * as fromFilters from '../reducer';
-import * as fromCollection from '../../domain/reducer';
+import { SelectFilter } from '../action/collection.action';
+import * as fromFilter from '../reducer';
 
 
 @Component({
@@ -22,7 +21,7 @@ export class FilterComponent implements OnDestroy {
     filter$: Observable<MetadataFilter>;
 
     constructor(
-        private store: Store<fromFilters.State>,
+        private store: Store<fromFilter.State>,
         private route: ActivatedRoute
     ) {
         this.actionsSubscription = this.route.params.pipe(
@@ -32,7 +31,7 @@ export class FilterComponent implements OnDestroy {
             })
         ).subscribe(store);
 
-        this.filter$ = this.store.select(fromCollection.getSelectedFilter);
+        this.filter$ = this.store.select(fromFilter.getSelectedFilter);
     }
 
     ngOnDestroy() {

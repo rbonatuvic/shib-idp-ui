@@ -2,13 +2,13 @@ import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 
-import { TestActions, getActions } from '../../../testing/effect.util';
+import { TestActions, getActions } from '../../../../testing/effect.util';
 import { EntityEffects } from './entity.effect';
 import { EntityIdService } from '../service/entity-id.service';
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModalStub } from '../../../testing/modal.stub';
-import { EntityAttributesFilter } from '../entity/entity-attributes.filter';
+import { NgbModalStub } from '../../../../testing/modal.stub';
+import { EntityAttributesFilter } from '../entity/filter/entity-attributes-filter';
 
 describe('Entity Effects', () => {
     let effects: EntityEffects;

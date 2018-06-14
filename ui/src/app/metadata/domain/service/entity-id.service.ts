@@ -1,18 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
-import * as XmlFormatter from 'xml-formatter';
-
 import { Observable, Subject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { IDS } from '../../../data/ids.mock';
-import { Storage } from '../../shared/storage';
-import { environment } from '../../../environments/environment';
-import { QueryParams } from '../../core/model/query';
-import { MDUI } from '../model/mdui';
-
-const MOCK_INTERVAL = 500;
+import { QueryParams } from '../../../core/model/query';
+import { MDUI } from '../model';
 
 @Injectable()
 export class EntityIdService {

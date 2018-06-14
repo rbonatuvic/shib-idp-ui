@@ -1,25 +1,32 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromRoot from '../../core/reducer';
+import * as fromRoot from '../../../core/reducer';
 import * as fromFilter from './filter.reducer';
 import * as fromSearch from './search.reducer';
+import * as fromCollection from './collection.reducer';
+
+import * as fromDomain from '../../domain/reducer/index';
 
 export interface FilterState {
     filter: fromFilter.FilterState;
     search: fromSearch.SearchState;
+    collection: fromCollection.CollectionState;
 }
 
 export const reducers = {
     filter: fromFilter.reducer,
-    search: fromSearch.reducer
+    search: fromSearch.reducer,
+    collection: fromCollection.reducer
 };
 
 export interface State extends fromRoot.State {
-    'metadata-filter': FilterState;
+    'filter': FilterState;
 }
 
 export const getFiltersFromStateFn = (state: FilterState) => state.filter;
 export const getSearchFromStateFn = (state: FilterState) => state.search;
-export const getFilterState = createFeatureSelector<FilterState>('metadata-filter');
+export const getCollectionFromStateFn = (state: FilterState) => state.collection;
+
+export const getFilterState = createFeatureSelector<FilterState>('filter');
 
 export const getFilterFromState = createSelector(getFilterState, getFiltersFromStateFn);
 export const getSelected = createSelector(getFilterFromState, fromFilter.getSelected);
@@ -33,3 +40,14 @@ export const getIsLoading = createSelector(getSearchFromState, fromSearch.getLoa
 export const getError = createSelector(getSearchFromState, fromSearch.getError);
 export const getTerm = createSelector(getSearchFromState, fromSearch.getTerm);
 export const getViewingMore = createSelector(getSearchFromState, fromSearch.getViewMore);
+
+/*
+ *   Select pieces of Filter Collection
+*/
+export const getCollectionState = createSelector(getFilterState, getCollectionFromStateFn);
+export const getAllFilters = createSelector(getCollectionState, fromCollection.selectAllFilters);
+export const getFilterEntities = createSelector(getCollectionState, fromCollection.selectFilterEntities);
+export const getSelectedFilterId = createSelector(getCollectionState, fromCollection.getSelectedFilterId);
+export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, fromDomain.getInCollectionFn);
+export const getFilterIds = createSelector(getCollectionState, fromCollection.selectFilterIds);
+export const getFilterCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
