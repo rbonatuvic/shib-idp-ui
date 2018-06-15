@@ -1,12 +1,12 @@
-package edu.internet2.tier.shibboleth.admin.ui.service;
+package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
@@ -21,9 +21,7 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
-
 import org.springframework.beans.factory.annotation.Autowired
-
 import org.w3c.dom.Document
 
 @Slf4j
@@ -115,7 +113,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-
     void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             // TODO: enhance. currently this does weird things with namespaces
@@ -139,6 +136,53 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             filter.retainedRoles.each {
                 markupBuilderDelegate.RetainedRole(it)
             }
+        }
+    }
+
+    void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
+        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+                'xsi:type': 'DynamicHttpMetadataProvider',
+                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                failFastInitialization: !resolver.failFastInitialization ?: null,
+                sortKey: resolver.sortKey,
+                criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
+                useDefaultPredicateRegistry: !resolver.useDefaultPredicateRegistry ?: null,
+                satisfyAnyPredicates: resolver.satisfyAnyPredicates ?: null,
+                parserPoolRef: resolver.dynamicMetadataResolverAttributes?.parserPoolRef,
+                taskTimerRef: resolver.dynamicMetadataResolverAttributes?.taskTimerRef,
+                refreshDelayFactor: resolver.dynamicMetadataResolverAttributes?.refreshDelayFactor,
+                minCacheDuration: resolver.dynamicMetadataResolverAttributes?.minCacheDuration,
+                maxCacheDuration: resolver.dynamicMetadataResolverAttributes?.maxCacheDuration,
+                maxIdleEntityData: resolver.dynamicMetadataResolverAttributes?.maxIdleEntityData,
+                removeIdleEntityData: !resolver.dynamicMetadataResolverAttributes?.removeIdleEntityData ?: null,
+                cleanupTaskInterval: resolver.dynamicMetadataResolverAttributes?.cleanupTaskInterval,
+                persistentCacheManagerRef: resolver.dynamicMetadataResolverAttributes?.persistentCacheManagerRef,
+                persistentCacheManagerDirectory: resolver.dynamicMetadataResolverAttributes?.persistentCacheManagerDirectory,
+                persistentCacheKeyGeneratorRef: resolver.dynamicMetadataResolverAttributes?.persistentCacheKeyGeneratorRef,
+                initializeFromPersistentCacheInBackground: !resolver.dynamicMetadataResolverAttributes?.initializeFromPersistentCacheInBackground ?: null,
+                backgroundInitializationFromCacheDelay: resolver.dynamicMetadataResolverAttributes?.backgroundInitializationFromCacheDelay,
+                initializationFromCachePredicateRef: resolver.dynamicMetadataResolverAttributes?.initializationFromCachePredicateRef,
+
+                maxConnectionsTotal: resolver.maxConnectionsTotal,
+                maxConnectionsPerRoute: resolver.maxConnectionsPerRoute,
+                supportedContentTypes: resolver.supportedContentTypes?.value, //not sure this is right. maybe take off the ?.value
+
+                httpClientRef: resolver.httpMetadataResolverAttributes?.httpClientRef,
+                connectionRequestTimeout: resolver.httpMetadataResolverAttributes?.connectionRequestTimeout,
+                connectionTimeout: resolver.httpMetadataResolverAttributes?.connectionTimeout,
+                socketTimeout: resolver.httpMetadataResolverAttributes?.socketTimeout,
+                disregardTLSCertificate: resolver.httpMetadataResolverAttributes?.disregardTLSCertificate ?: null,
+                httpClientSecurityParametersRef: resolver.httpMetadataResolverAttributes?.httpClientSecurityParametersRef,
+                proxyHost: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyPort: resolver.httpMetadataResolverAttributes?.proxyHost,
+                proxyUser: resolver.httpMetadataResolverAttributes?.proxyUser,
+                proxyPassword: resolver.httpMetadataResolverAttributes?.proxyPassword,
+                httpCaching: resolver.httpMetadataResolverAttributes?.httpCaching,
+                httpCacheDirectory: resolver.httpMetadataResolverAttributes?.httpCacheDirectory,
+                httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
+                httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
+            
+            childNodes()
         }
     }
 
@@ -182,4 +226,37 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             childNodes()
         }
     }
+
+    void constructXmlNodeForResolver(LocalDynamicMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
+        markupBuilderDelegate.MetadataProvider(sourceDirectory: resolver.sourceDirectory,
+                sourceManagerRef: resolver.sourceManagerRef,
+                sourceKeyGeneratorRef: resolver.sourceKeyGeneratorRef,
+
+                id: resolver.name,
+                'xsi:type': 'DynamicHttpMetadataProvider',
+                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                failFastInitialization: !resolver.failFastInitialization ?: null,
+                sortKey: resolver.sortKey,
+                criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
+                useDefaultPredicateRegistry: !resolver.useDefaultPredicateRegistry ?: null,
+                satisfyAnyPredicates: resolver.satisfyAnyPredicates ?: null,
+                parserPoolRef: resolver.dynamicMetadataResolverAttributes?.parserPoolRef,
+                taskTimerRef: resolver.dynamicMetadataResolverAttributes?.taskTimerRef,
+                refreshDelayFactor: resolver.dynamicMetadataResolverAttributes?.refreshDelayFactor,
+                minCacheDuration: resolver.dynamicMetadataResolverAttributes?.minCacheDuration,
+                maxCacheDuration: resolver.dynamicMetadataResolverAttributes?.maxCacheDuration,
+                maxIdleEntityData: resolver.dynamicMetadataResolverAttributes?.maxIdleEntityData,
+                removeIdleEntityData: !resolver.dynamicMetadataResolverAttributes?.removeIdleEntityData ?: null,
+                cleanupTaskInterval: resolver.dynamicMetadataResolverAttributes?.cleanupTaskInterval,
+                persistentCacheManagerRef: resolver.dynamicMetadataResolverAttributes?.persistentCacheManagerRef,
+                persistentCacheManagerDirectory: resolver.dynamicMetadataResolverAttributes?.persistentCacheManagerDirectory,
+                persistentCacheKeyGeneratorRef: resolver.dynamicMetadataResolverAttributes?.persistentCacheKeyGeneratorRef,
+                initializeFromPersistentCacheInBackground: !resolver.dynamicMetadataResolverAttributes?.initializeFromPersistentCacheInBackground ?: null,
+                backgroundInitializationFromCacheDelay: resolver.dynamicMetadataResolverAttributes?.backgroundInitializationFromCacheDelay,
+                initializationFromCachePredicateRef: resolver.dynamicMetadataResolverAttributes?.initializationFromCachePredicateRef) {
+
+            childNodes()
+        }
+    }
+
 }

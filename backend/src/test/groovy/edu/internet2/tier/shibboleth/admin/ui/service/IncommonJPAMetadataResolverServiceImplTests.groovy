@@ -106,6 +106,12 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
                 def mr = new TestObjectGenerator(attributeUtility).fileBackedHttpMetadataResolver()
                 mr.setName("HTTPMetadata")
                 metadataResolverRepository.save(mr)
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver.
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).dynamicHttpMetadataResolver())
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver.
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).localDynamicMetadataResolver())
             }
 
             return resolver
