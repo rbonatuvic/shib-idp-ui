@@ -35,6 +35,7 @@ import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
+
 @SpringBootTest
 @DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
@@ -129,6 +130,17 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         !diff.hasDifferences()
     }
 
+    def 'test generating EntityRoleWhitelistFilter xml snippet'() {
+        given:
+        def filter = testObjectGenerator.entityRoleWhitelistFilter()
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
+    }
+
     def 'test generating FileBackedHttMetadataResolver xml snippet'() {
         given:
         def resolver = testObjectGenerator.fileBackedHttpMetadataResolver()
@@ -139,7 +151,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         }
 
         then:
-        assert generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
+        generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {

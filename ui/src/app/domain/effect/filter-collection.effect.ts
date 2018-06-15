@@ -3,16 +3,17 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
 
 import * as actions from '../action/filter-collection.action';
-import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/filter-collection.action';
+import { FilterCollectionActionTypes } from '../action/filter-collection.action';
 import * as fromFilter from '../reducer';
 
 import { MetadataResolverService } from '../service/metadata-resolver.service';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { removeNulls } from '../../shared/util';
+import { EntityAttributesFilter } from '../entity/entity-attributes.filter';
 
 /* istanbul ignore next */
 @Injectable()
@@ -32,15 +33,16 @@ export class FilterCollectionEffects {
     );
     @Effect()
     selectFilterRequest$ = this.actions$.pipe(
-        ofType<actions.SelectFilter>(FilterCollectionActionTypes.SELECT),
+        ofType<actions.SelectFilter>(FilterCollectionActionTypes.SELECT_FILTER),
         map(action => action.payload),
-        switchMap(id =>
-            this.resolverService
+        switchMap(id => {
+            return this.resolverService
                 .find(id)
                 .pipe(
                     map(p => new actions.SelectFilterSuccess(p)),
                     catchError(error => of(new actions.SelectFilterFail(error)))
-                )
+                );
+            }
         )
     );
 
@@ -51,7 +53,7 @@ export class FilterCollectionEffects {
         map(filter => {
             return {
                 ...filter,
-                relyingPartyOverrides: removeNulls(filter.relyingPartyOverrides)
+                relyingPartyOverrides: removeNulls(new EntityAttributesFilter(filter).relyingPartyOverrides)
             };
         }),
         switchMap(unsaved =>

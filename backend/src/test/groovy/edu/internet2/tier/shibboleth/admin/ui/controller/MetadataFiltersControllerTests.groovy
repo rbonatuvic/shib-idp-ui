@@ -66,7 +66,6 @@ class MetadataFiltersControllerTests extends Specification {
 
         controller = new MetadataFiltersController (
                 repository: metadataResolverRepository,
-                filterService: filterService,
                 metadataResolverService: new MetadataResolverService() {
                     @Override
                     void reloadFilters(String metadataResolverName) {
@@ -88,8 +87,7 @@ class MetadataFiltersControllerTests extends Specification {
         def metadataResolver = new MetadataResolver()
         List<MetadataFilter> expectedContent = testObjectGenerator.buildAllTypesOfFilterList()
         metadataResolver.setMetadataFilters(expectedContent)
-        List<MetadataResolver> metadataResolverList = [metadataResolver]
-        1 * metadataResolverRepository.findAll() >> metadataResolverList
+        1 * metadataResolverRepository.findByResourceId(_) >> metadataResolver
 
         def expectedHttpResponseStatus = status().isOk()
         def expectedResponseContentType = APPLICATION_JSON_UTF8
@@ -109,7 +107,7 @@ class MetadataFiltersControllerTests extends Specification {
         def metadataResolver = new MetadataResolver()
         def expectedFilter = testObjectGenerator.entityAttributesFilter()
         metadataResolver.metadataFilters = [expectedFilter]
-        1 * metadataResolverRepository.findAll() >> [metadataResolver]
+        1 * metadataResolverRepository.findByResourceId(_) >> metadataResolver
 
         def expectedResourceId = expectedFilter.resourceId
         def expectedHttpResponseStatus = status().isOk()
@@ -122,13 +120,10 @@ class MetadataFiltersControllerTests extends Specification {
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(mapper.writeValueAsString(expectedFilter)))
-                .andDo(MockMvcResultHandlers.print())
     }
 
     def "FilterController.create creates the desired filter"() {
         given:
-        controller.filterService = mockFilterService // so we can control ids
-
         def randomFilter = testObjectGenerator.entityAttributesFilter()
         def metadataResolver = new MetadataResolver()
         metadataResolver.setResourceId(randomGenerator.randomId())
@@ -138,7 +133,7 @@ class MetadataFiltersControllerTests extends Specification {
         metadataResolverWithFilter.metadataFilters = metadataResolver.metadataFilters.collect()
         metadataResolverWithFilter.getMetadataFilters().add(randomFilter)
 
-        1 * metadataResolverRepository.findAll() >> [metadataResolver]
+        1 * metadataResolverRepository.findByResourceId(_) >> metadataResolver
         1 * metadataResolverRepository.save(_) >> metadataResolverWithFilter
 
         def expectedMetadataResolverUUID = metadataResolver.getResourceId()
@@ -180,7 +175,7 @@ class MetadataFiltersControllerTests extends Specification {
         updatedMetadataResolver.setMetadataFilters(originalMetadataResolver.getMetadataFilters().collect())
         updatedMetadataResolver.getMetadataFilters().add(updatedFilter)
 
-        1 * metadataResolverRepository.findAll() >> [originalMetadataResolver]
+        1 * metadataResolverRepository.findByResourceId(_) >> originalMetadataResolver
         1 * metadataResolverRepository.save(_) >> updatedMetadataResolver
 
         def filterUUID = updatedFilter.getResourceId()
@@ -193,6 +188,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         def expectedJson = new JsonSlurper().parseText(postedJsonBody)
+        updatedFilter.fromTransientRepresentation()
         expectedJson << [version: updatedFilter.hashCode()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
@@ -210,7 +206,7 @@ class MetadataFiltersControllerTests extends Specification {
         originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
         originalMetadataResolver.getMetadataFilters().add(randomFilter)
 
-        1 * metadataResolverRepository.findAll() >> [originalMetadataResolver]
+        1 * metadataResolverRepository.findByResourceId(_) >> originalMetadataResolver
 
         def filterUUID = randomFilter.getResourceId()
 

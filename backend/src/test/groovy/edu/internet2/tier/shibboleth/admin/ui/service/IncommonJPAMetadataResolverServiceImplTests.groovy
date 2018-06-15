@@ -23,6 +23,8 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import spock.lang.Specification
 
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
+
 @SpringBootTest
 @DataJpaTest
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration])
@@ -43,8 +45,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         when:
         def output = metadataResolverService.generateConfiguration()
 
+        println(output.documentElement)
+
         then:
-        assert !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/conf/278.xml'))).withTest(Input.fromDocument(output)).ignoreComments().ignoreWhitespace().build().hasDifferences()
+        generatedXmlIsTheSameAsExpectedXml('/conf/278.xml', output)
     }
 
     def 'test generation of metadata-providers.xml with filters'() {
@@ -71,7 +75,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         def output = metadataResolverService.generateConfiguration()
 
         then:
-        assert !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/conf/278.2.xml'))).withTest(Input.fromDocument(output)).ignoreComments().ignoreWhitespace().build().hasDifferences()
+        generatedXmlIsTheSameAsExpectedXml('/conf/278.2.xml', output)
     }
 
     //TODO: check that this configuration is sufficient

@@ -8,7 +8,15 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetad
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 
 import com.google.common.base.Predicate
+
+import com.google.common.base.Predicate
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+
+
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
@@ -26,6 +34,7 @@ import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 
 import org.springframework.beans.factory.annotation.Autowired
+
 import org.w3c.dom.Document
 
 @Slf4j
@@ -106,27 +115,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                 'xsi:type': 'RequiredValidUntil',
                                 'maxValidityInterval': 'P14D'
                         )
-                        MetadataFilter(
-                                'xsi:type': 'EntityRoleWhiteList'
-                        ) {
-                            RetainedRole('md:SPSSODescriptor')
-                        }
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                            if (filter instanceof EntityAttributesFilter) {
-                                EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter) filter
-                                MetadataFilter('xsi:type': 'EntityAttributes') {
-                                    // TODO: enhance. currently this does weird things with namespaces
-                                    entityAttributesFilter.attributes.each { attribute ->
-                                        mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
-                                    }
-                                    if (entityAttributesFilter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY) {
-                                        entityAttributesFilter.entityAttributesFilterTarget.value.each {
-                                            Entity(it)
-                                        }
-                                    }
-                                }
-                            }
+                            constructXmlNodeForFilter(filter, delegate)
                         }
                     }
                 }
@@ -177,8 +168,34 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpCacheDirectory: resolver.httpMetadataResolverAttributes?.httpCacheDirectory,
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
                 httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
-            
+
             childNodes()
+        }
+    }
+
+    void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
+            // TODO: enhance. currently this does weird things with namespaces
+            filter.attributes.each { attribute ->
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
+            }
+            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
+                    .EntityAttributesFilterTargetType.ENTITY) {
+                filter.entityAttributesFilterTarget.value.each {
+                    Entity(it)
+                }
+            }
+        }
+    }
+
+    void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'EntityRoleWhiteList',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
+        ) {
+            filter.retainedRoles.each {
+                markupBuilderDelegate.RetainedRole(it)
+            }
         }
     }
 

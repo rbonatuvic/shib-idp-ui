@@ -18,6 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+
 import java.util.List;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromAttributeReleaseList;
@@ -64,6 +65,8 @@ public class EntityAttributesFilter extends MetadataFilter {
         attributeList.addAll(getAttributeListFromAttributeReleaseList(this.attributeRelease));
         attributeList.addAll(getAttributeListFromRelyingPartyOverridesRepresentation(this.relyingPartyOverrides));
 
-        this.attributes.addAll((List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>)(List<? extends org.opensaml.saml.saml2.core.Attribute>)attributeList);
+        if(!attributeList.isEmpty()) {
+            this.attributes = (List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) attributeList;
+        }
     }
 }

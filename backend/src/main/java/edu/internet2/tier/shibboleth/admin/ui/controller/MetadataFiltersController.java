@@ -26,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/MetadataResolver/{metadataResolverId}")
@@ -37,52 +38,68 @@ public class MetadataFiltersController {
     private MetadataResolverRepository repository;
 
     @Autowired
-    private FilterService filterService;
-
-    @Autowired
     private MetadataResolverService metadataResolverService;
 
     @GetMapping("/Filters")
     @Transactional(readOnly = true)
-    public Iterable<MetadataFilter> getAll(@PathVariable String metadataResolverId) {
-        // TODO: implement lookup based on metadataResolverId once we have more than one
-        return repository.findAll().iterator().next().getMetadataFilters();
+    public ResponseEntity<?> getAll(@PathVariable String metadataResolverId) {
+        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
+        if(resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resolver.getMetadataFilters());
     }
 
     @GetMapping("/Filters/{resourceId}")
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
-        // TODO: implement lookup based on metadataResolverId once we have more than one
-        // TODO: should we check that we found exactly one filter (as in the update method below)? If not, error?
-        return ResponseEntity.ok(repository.findAll().iterator().next().getMetadataFilters().stream()
+        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
+        if(resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resolver.getMetadataFilters().stream()
                 .filter(f -> f.getResourceId().equals(resourceId))
                 .collect(Collectors.toList()).get(0));
     }
 
     @PostMapping("/Filters")
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
-        //TODO: replace with get by metadataResolverId once we have more than one
-        MetadataResolver metadataResolver = repository.findAll().iterator().next();
+        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
+        if(metadataResolver == null) {
+            return ResponseEntity.notFound().build();
+        }
         metadataResolver.getMetadataFilters().add(createdFilter);
 
+        //convert before saving into database
+        if(createdFilter instanceof EntityAttributesFilter) {
+            EntityAttributesFilter.class.cast(createdFilter).fromTransientRepresentation();
+        }
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
         metadataResolverService.reloadFilters(persistedMr.getName());
 
+        MetadataFilter persistedFilter =
+                convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
+
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
-                .body(persistedMr.getMetadataFilters()
-                                .stream()
-                                .filter(filter -> filter.getResourceId().equals(createdFilter.getResourceId()))
-                                .collect(Collectors.toList())
-                                .get(0)); // "There can be only one!!!"
+                .body(persistedFilter);
 
     }
 
     @PutMapping("/Filters/{resourceId}")
-    public ResponseEntity<?> update(@PathVariable String metadataResolverId, @RequestBody MetadataFilter updatedFilter) {
-        //TODO: replace with get by metadataResolverId once we have more than one
-        MetadataResolver metadataResolver = repository.findAll().iterator().next();
+    public ResponseEntity<?> update(@PathVariable String metadataResolverId,
+                                    @PathVariable String resourceId,
+                                    @RequestBody MetadataFilter updatedFilter) {
+
+        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
+        if(metadataResolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!resourceId.equals(updatedFilter.getResourceId())) {
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
 
         List<MetadataFilter> filters =
                 metadataResolver.getMetadataFilters().stream()
@@ -105,14 +122,31 @@ public class MetadataFiltersController {
         filterTobeUpdated.setFilterEnabled(updatedFilter.isFilterEnabled());
         updateConcreteFilterTypeData(filterTobeUpdated, updatedFilter);
 
+        //convert before saving into database
+        if(filterTobeUpdated instanceof EntityAttributesFilter) {
+            EntityAttributesFilter.class.cast(filterTobeUpdated).fromTransientRepresentation();
+        }
+
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         metadataResolverService.reloadFilters(persistedMr.getName());
 
-        return ResponseEntity.ok()
-                .body(persistedMr.getMetadataFilters().stream()
-                .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
-                .collect(Collectors.toList()).get(0));
+        MetadataFilter persistedFilter =
+                convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), updatedFilter.getResourceId());
+
+        return ResponseEntity.ok().body(persistedFilter);
+    }
+
+    private MetadataFilter convertIntoTransientRepresentationIfNecessary(Stream<MetadataFilter> filters, final String filterResourceId) {
+        MetadataFilter persistedFilter = filters
+                .filter(f -> f.getResourceId().equals(filterResourceId))
+                .collect(Collectors.toList()).get(0);
+
+        //convert before saving into database
+        if(persistedFilter instanceof EntityAttributesFilter) {
+            EntityAttributesFilter.class.cast(persistedFilter).intoTransientRepresentation();
+        }
+        return persistedFilter;
     }
 
     /**
@@ -126,7 +160,6 @@ public class MetadataFiltersController {
             toFilter.setEntityAttributesFilterTarget(fromFilter.getEntityAttributesFilterTarget());
             toFilter.setRelyingPartyOverrides(fromFilter.getRelyingPartyOverrides());
             toFilter.setAttributeRelease(fromFilter.getAttributeRelease());
-            toFilter.intoTransientRepresentation();
         }
         else if(filterWithUpdatedData instanceof EntityRoleWhiteListFilter) {
             EntityRoleWhiteListFilter toFilter = EntityRoleWhiteListFilter.class.cast(filterToBeUpdated);

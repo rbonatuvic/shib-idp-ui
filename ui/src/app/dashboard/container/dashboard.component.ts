@@ -6,10 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { MetadataEntity, MetadataProvider, DomainTypes } from '../../domain/domain.type';
-import { Provider } from '../../domain/entity/provider';
+import { MetadataEntity, MetadataProvider, DomainEntityKinds } from '../../domain/domain.type';
 import * as searchActions from '../action/search.action';
-import * as providerActions from '../../domain/action/provider-collection.action';
 import * as draftActions from '../../domain/action/draft-collection.action';
 import * as fromDashboard from '../reducer';
 import { ToggleEntityDisplay } from '../action/dashboard.action';
@@ -35,7 +33,7 @@ export class DashboardComponent implements OnInit {
 
     entitiesOpen$: Observable<{[key: string]: boolean}>;
 
-    filterOptions = ['all', 'filter', 'provider'];
+    filterOptions = ['all', DomainEntityKinds.filter, DomainEntityKinds.provider];
     filtering$: Observable<string>;
     filtering = 'all';
 
@@ -54,6 +52,8 @@ export class DashboardComponent implements OnInit {
         this.total$ = this.providers$.pipe(map(list => list.length));
 
         this.limited$ = this.getPagedProviders(this.page, this.providers$);
+
+        // this.providers$.subscribe(p => console.log(p));
     }
 
     ngOnInit (): void {
@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit {
     edit(entity: MetadataEntity): void {
         let path = entity.id ? 'edit' : 'wizard',
             id = entity.id ? entity.id : entity.entityId;
-        this.router.navigate([entity.type, id, path]);
+        this.router.navigate([entity.kind, id, path]);
     }
 
     toggleProvider(entity: MetadataEntity): void {

@@ -5,11 +5,11 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConf
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -37,8 +37,6 @@ class MetadataResolverRepositoryTest extends Specification {
 
     @Autowired
     OpenSamlObjects openSamlObjects
-
-    AttributeUtility attributeUtility
 
     def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
@@ -90,6 +88,116 @@ class MetadataResolverRepositoryTest extends Specification {
 
         then:
         item1.hashCode() == item2.hashCode()
+    }
+
+    def "persisting and performing transformation into transient representation for EntityAttributesFilter correctly"() {
+        when:
+        def mdr = new MetadataResolver().with {
+            it.name = "testme"
+            it
+        }
+        metadataResolverRepository.save(mdr)
+
+        entityManager.flush()
+        entityManager.clear()
+
+        //Simulate adding new filter with incoming transient attribute release value as done in MetadataFiltersController
+        def filter = new EntityAttributesFilter().with {
+            it.name = 'original'
+            it.resourceId = 'new-filter-UUID'
+            it.attributeRelease = ['attr-for-release']
+            it.relyingPartyOverrides = new RelyingPartyOverridesRepresentation().with {
+                it.signAssertion = true
+                it
+            }
+            it
+        }
+        MetadataResolver metadataResolver = metadataResolverRepository.findAll().iterator().next()
+
+        //convert before saving into database
+        filter.fromTransientRepresentation()
+
+        metadataResolver.getMetadataFilters().add(filter)
+        MetadataResolver persistedMr = metadataResolverRepository.save(metadataResolver)
+
+        entityManager.flush()
+        entityManager.clear()
+
+        //This is how it's done in MetadataFiltersController POST/PUT to return the newly saved object back to UI layer
+        // We are checking here that the method responsible for converting persistent state into the
+        // transient state used by UI is performed correctly
+        EntityAttributesFilter persistedFilter = persistedMr.getMetadataFilters().find {
+            it.resourceId == filter.resourceId
+        }
+        //convert before returning to UI
+        persistedFilter.intoTransientRepresentation()
+
+        then:
+        persistedFilter.name == 'original'
+        persistedFilter.attributeRelease.find() {
+            it == 'attr-for-release'
+        }
+        persistedFilter.attributes.findAll() {
+            it.attributeValues.find() {
+                it.value == 'attr-for-release'
+            }
+        }
+        persistedFilter.relyingPartyOverrides.signAssertion
+
+        when:
+        entityManager.flush()
+        entityManager.clear()
+        //Now lets update our filter
+        filter = new EntityAttributesFilter().with {
+            it.name = 'updated'
+            it.resourceId = 'new-filter-UUID'
+            it.attributeRelease = ['attr-for-release', 'attr-for-release2']
+            it.relyingPartyOverrides = new RelyingPartyOverridesRepresentation().with {
+                it.signAssertion = false
+                it
+            }
+            it
+        }
+        metadataResolver = metadataResolverRepository.findAll().iterator().next()
+        EntityAttributesFilter filterToBeUpdated = metadataResolver.metadataFilters.find() {
+            it.resourceId == filter.resourceId
+        }
+        filterToBeUpdated.name = filter.name
+        filterToBeUpdated.entityAttributesFilterTarget = filter.entityAttributesFilterTarget
+        filterToBeUpdated.relyingPartyOverrides = filter.relyingPartyOverrides
+        filterToBeUpdated.attributeRelease = filter.attributeRelease
+
+        //convert before saving into database
+        filterToBeUpdated.fromTransientRepresentation()
+        entityManager.clear()
+        persistedMr = metadataResolverRepository.save(metadataResolver)
+
+
+        persistedFilter = persistedMr.getMetadataFilters().find {
+            it.resourceId == filter.resourceId
+        }
+        //convert before returning to UI
+        persistedFilter.intoTransientRepresentation()
+
+        then:
+        persistedFilter.name == 'updated'
+        persistedFilter.attributeRelease.find() {
+            it == 'attr-for-release'
+        }
+        persistedFilter.attributeRelease.find() {
+            it == 'attr-for-release2'
+        }
+        persistedFilter.attributes.find() {
+            it.attributeValues.findAll() {
+                it.value == 'attr-for-release'
+            }
+        }
+        persistedFilter.attributes.find() {
+            it.attributeValues.findAll() {
+                it.value == 'attr-for-release2'
+            }
+        }
+        !persistedFilter.relyingPartyOverrides.signAssertion
     }
 
 }

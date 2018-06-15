@@ -1,5 +1,4 @@
-import { Component, Output, Input, EventEmitter, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
@@ -26,9 +25,11 @@ export class FilterComponent implements OnDestroy {
         private store: Store<fromFilters.State>,
         private route: ActivatedRoute
     ) {
-        this.actionsSubscription = route.params.pipe(
+        this.actionsSubscription = this.route.params.pipe(
             distinctUntilChanged(),
-            map(params => new SelectFilter(params.id))
+            map(params => {
+                return new SelectFilter(params.id);
+            })
         ).subscribe(store);
 
         this.filter$ = this.store.select(fromCollection.getSelectedFilter);

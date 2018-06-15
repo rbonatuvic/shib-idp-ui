@@ -1384,24 +1384,24 @@
         </context-group>
       </trans-unit>
       <trans-unit id="label--service-provider" datatype="html">
-        <source><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Name:</source>
-        <target><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Name:</target>
+        <source><x id="ICU" equiv-text="{entity.kind, select, filter {...} provider {...} other {...}}"/> Name:</source>
+        <target><x id="ICU" equiv-text="{entity.kind, select, filter {...} provider {...} other {...}}"/> Name:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
           <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="label--service-entity-id" datatype="html">
-        <source><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Entity ID:</source>
-        <target><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Entity ID:</target>
+        <source><x id="ICU" equiv-text="{entity.kind, select, filter {...} provider {...} other {...}}"/> Entity ID:</source>
+        <target><x id="ICU" equiv-text="{entity.kind, select, filter {...} provider {...} other {...}}"/> Entity ID:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
           <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="label--service-provider-status" datatype="html">
-        <source><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Status:</source>
-        <target><x id="ICU" equiv-text="{entity.type, select, filter {...} provider {...} other {...}}"/> Status:</target>
+        <source><x id="ICU" equiv-text="{entity.kind, select, filter {...} provider {...} other {...}}"/> Status:</source>
+        <target><x id="ICU" equiv-text="{entity.kind, select, filter {...} provider {...} other {...}}"/> Status:</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/provider-item.component.ts</context>
           <context context-type="linenumber">42</context>

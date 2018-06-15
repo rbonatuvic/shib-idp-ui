@@ -7,5 +7,8 @@ import org.springframework.data.repository.CrudRepository;
  * Repository to manage {@link MetadataResolver} instances.
  */
 public interface MetadataResolverRepository extends CrudRepository<MetadataResolver, Long> {
+
     MetadataResolver findByName(String name);
+
+    MetadataResolver findByResourceId(String resourceId);
 }

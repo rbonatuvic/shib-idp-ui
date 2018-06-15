@@ -2,19 +2,13 @@ import { reducer } from './filter.reducer';
 import * as fromFilter from './filter.reducer';
 import * as actions from '../action/filter.action';
 import * as searchActions from '../action/search.action';
-import {
-    SelectId,
-    LoadEntityPreviewSuccess,
-    UpdateFilterChanges,
-    CancelCreateFilter
-} from '../action/filter.action';
+import { CancelCreateFilter } from '../action/filter.action';
 
 import {
     ClearSearch
 } from '../action/search.action';
 
 import {
-    FilterCollectionActionsUnion,
     FilterCollectionActionTypes,
     AddFilterRequest,
     UpdateFilterRequest,
@@ -23,7 +17,7 @@ import {
 } from '../../domain/action/filter-collection.action';
 import { MDUI } from '../../domain/model/mdui';
 import { MetadataFilter } from '../../domain/domain.type';
-import { Filter } from '../../domain/entity/filter';
+import { EntityAttributesFilter } from '../../domain/entity/entity-attributes.filter';
 
 const snapshot: fromFilter.FilterState = {
     selected: null,
@@ -78,26 +72,26 @@ describe('Filter Reducer', () => {
 
     describe(`${FilterCollectionActionTypes.ADD_FILTER} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new AddFilterRequest(new Filter()));
+            const result = reducer(snapshot, new AddFilterRequest(new EntityAttributesFilter()));
             expect(result.saving).toBe(true);
         });
     });
     describe(`${FilterCollectionActionTypes.UPDATE_FILTER_REQUEST} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new UpdateFilterRequest(new Filter()));
+            const result = reducer(snapshot, new UpdateFilterRequest(new EntityAttributesFilter()));
             expect(result.saving).toBe(true);
         });
     });
 
     describe(`${FilterCollectionActionTypes.ADD_FILTER_SUCCESS} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new AddFilterSuccess(new Filter()));
+            const result = reducer(snapshot, new AddFilterSuccess(new EntityAttributesFilter()));
             expect(result).toEqual(fromFilter.initialState);
         });
     });
     describe(`${FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS} action`, () => {
         it('should set saving to true', () => {
-            const update = {id: 'foo', changes: new Filter({id: 'foo'})};
+            const update = {id: 'foo', changes: new EntityAttributesFilter({id: 'foo'})};
             const result = reducer(snapshot, new UpdateFilterSuccess(update));
             expect(result).toEqual(fromFilter.initialState);
         });
