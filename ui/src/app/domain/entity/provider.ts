@@ -10,7 +10,7 @@ import {
     IdpSsoDescriptor,
     RelyingPartyOverrides
 } from '../model/metadata-provider';
-import { DomainTypes } from '../domain.type';
+import { DomainEntityKinds } from '../domain.type';
 
 export class Provider implements MetadataProvider {
     id = '';
@@ -59,8 +59,8 @@ export class Provider implements MetadataProvider {
         return this.serviceEnabled;
     }
 
-    get type(): string {
-        return DomainTypes.provider;
+    get kind(): string {
+        return DomainEntityKinds.provider;
     }
 
     serialize(): any {

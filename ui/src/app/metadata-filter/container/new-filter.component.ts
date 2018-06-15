@@ -1,20 +1,18 @@
-import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { withLatestFrom, distinctUntilChanged, startWith, takeUntil } from 'rxjs/operators';
 
 import * as fromFilter from '../reducer';
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
 import { AddFilterRequest } from '../../domain/action/filter-collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
-import { Filter } from '../../domain/entity/filter';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
-import { SearchDialogComponent } from '../component/search-dialog.component';
 import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.action';
 import { MDUI } from '../../domain/model/mdui';
+import { EntityAttributesFilter } from '../../domain/entity/entity-attributes.filter';
 
 @Component({
     selector: 'new-filter-page',
@@ -26,9 +24,9 @@ export class NewFilterComponent implements OnInit, OnDestroy {
 
     changes$: Observable<MetadataFilter>;
     changes: MetadataFilter;
-    filter: MetadataFilter = new Filter({
+    filter: EntityAttributesFilter = new EntityAttributesFilter({
         entityId: '',
-        filterName: '',
+        name: '',
         relyingPartyOverrides: {
             signAssertion: false,
             dontSignResponse: false,
@@ -56,7 +54,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
         entityId: ['', [Validators.required], [
             EntityValidators.existsInCollection(this.store.select(fromFilter.getEntityCollection))
         ]],
-        filterName: ['', [Validators.required]],
+        name: ['', [Validators.required]],
         filterEnabled: [false]
     });
 
@@ -69,7 +67,7 @@ export class NewFilterComponent implements OnInit, OnDestroy {
     ) {
         this.store.dispatch(new ClearSearch());
         this.changes$ = this.store.select(fromFilter.getFilter);
-        this.changes$.subscribe(c => this.changes = new Filter(c));
+        this.changes$.subscribe(c => this.changes = new EntityAttributesFilter(c));
 
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);

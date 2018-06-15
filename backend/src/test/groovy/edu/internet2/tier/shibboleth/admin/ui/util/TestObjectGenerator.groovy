@@ -2,13 +2,15 @@ package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
@@ -19,8 +21,7 @@ import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.memory
+import java.util.function.Supplier
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -34,6 +35,7 @@ class TestObjectGenerator {
     TestObjectGenerator(AttributeUtility attributeUtility) {
         this.attributeUtility = attributeUtility
     }
+
 
     HttpMetadataResolverAttributes buildHttpMetadataResolverAttributes() {
         def attributes = new HttpMetadataResolverAttributes().with {
@@ -57,23 +59,49 @@ class TestObjectGenerator {
         return attributes
     }
 
-    List<EntityAttributesFilter> buildFilterList() {
-        List<EntityAttributesFilter> filterList = new ArrayList<>()
+    List<MetadataFilter> buildAllTypesOfFilterList() {
+        List<MetadataFilter> filterList = new ArrayList<>()
         (1..generator.randomInt(4, 10)).each {
-            filterList.add(buildEntityAttributesFilter())
+            filterList.add(buildFilter { entityAttributesFilter() })
+            filterList.add(buildFilter { entityRoleWhitelistFilter() })
         }
         return filterList
     }
 
-    EntityAttributesFilter buildEntityAttributesFilter() {
-        EntityAttributesFilter filter = new EntityAttributesFilter()
+    EntityRoleWhiteListFilter entityRoleWhitelistFilter() {
+        new EntityRoleWhiteListFilter().with {
+            it.name = 'EntityRoleWhiteList'
+            it.retainedRoles = ['role1', 'role2']
+            it.removeRolelessEntityDescriptors = true
+            it
+        }
+    }
 
-        filter.setName(generator.randomString(10))
+    EntityAttributesFilter entityAttributesFilter() {
+        new EntityAttributesFilter().with {
+            it.name = 'EntityAttributes'
+            it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
+            it.setAttributes(buildAttributesList())
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    EntityAttributesFilter copyOf(EntityAttributesFilter entityAttributesFilter) {
+        new EntityAttributesFilter().with {
+            it.name = entityAttributesFilter.name
+            it.resourceId = entityAttributesFilter.resourceId
+            it.setEntityAttributesFilterTarget(entityAttributesFilter.entityAttributesFilterTarget)
+            it.setAttributes(entityAttributesFilter.attributes)
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    MetadataFilter buildFilter(Supplier<? extends MetadataFilter> filterSupplier) {
+        MetadataFilter filter = filterSupplier.get()
         filter.setFilterEnabled(generator.randomBoolean())
         filter.setResourceId(generator.randomId())
-        filter.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
-        filter.setAttributes(buildAttributesList())
-
         return filter
     }
 
@@ -147,7 +175,7 @@ class TestObjectGenerator {
     EntityAttributesFilterTarget buildEntityAttributesFilterTarget() {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
 
-        entityAttributesFilterTarget.setValue(generator.randomStringList())
+        entityAttributesFilterTarget.setSingleValue(generator.randomStringList())
         entityAttributesFilterTarget.setEntityAttributesFilterTargetType(randomFilterTargetType())
 
         return entityAttributesFilterTarget
@@ -269,7 +297,7 @@ class TestObjectGenerator {
     /**
      * This method takes a type and a size and builds a List of that size containing objects of that type. This is
      * intended to be used with things that extend LocalizedName such as {@link OrganizationName}, {@link OrganizationDisplayName},
-     * or with {@link OrganizationURL}s (really, a class that has a setValue() method).
+     * or with {@link OrganizationURL}s (really, a class that has a setSingleValue() method).
      *
      * @param type the type of list to generate
      * @param listSize the number of instances of that type to generate and add to the list

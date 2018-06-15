@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
-import edu.internet2.tier.shibboleth.admin.ui.domain.MetadataFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;

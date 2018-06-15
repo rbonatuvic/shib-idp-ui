@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.opensaml.core.xml.Namespace;
@@ -25,6 +26,7 @@ import java.util.Set;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@EqualsAndHashCode(callSuper = true)
 public abstract class AbstractXMLObject extends AbstractAuditable implements XMLObject {
 
     private String namespaceURI;

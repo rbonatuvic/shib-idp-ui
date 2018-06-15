@@ -18,9 +18,6 @@
         <MetadataFilter xsi:type="SignatureValidation" requireSignedRoot="true"
                         certificateFile="%{idp.home}/credentials/inc-md-cert.pem" />
         <MetadataFilter xsi:type="RequiredValidUntil" maxValidityInterval="P14D" />
-        <MetadataFilter xsi:type="EntityRoleWhiteList">
-            <RetainedRole>md:SPSSODescriptor</RetainedRole>
-        </MetadataFilter>
         <MetadataFilter xsi:type="EntityAttributes">
             <saml:Attribute Name="here">
                 <saml:AttributeValue>there</saml:AttributeValue>

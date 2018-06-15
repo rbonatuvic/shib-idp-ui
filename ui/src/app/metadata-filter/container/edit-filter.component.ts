@@ -1,26 +1,24 @@
 import { Component, OnInit, OnDestroy, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, distinctUntilChanged, takeUntil, startWith } from 'rxjs/operators';
+import { withLatestFrom, distinctUntilChanged, takeUntil, startWith, filter } from 'rxjs/operators';
 
 import * as fromRoot from '../../app.reducer';
 import * as fromFilter from '../reducer';
 import * as fromCollection from '../../domain/reducer';
 
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
+import { ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { CancelCreateFilter, SelectId, UpdateFilterChanges } from '../action/filter.action';
-import { AddFilterRequest, UpdateFilterRequest } from '../../domain/action/filter-collection.action';
+import { UpdateFilterRequest } from '../../domain/action/filter-collection.action';
 import { MetadataFilter } from '../../domain/model/metadata-filter';
-import { Filter } from '../../domain/entity/filter';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
-import { SearchDialogComponent } from '../component/search-dialog.component';
 import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.action';
 import { AutoCompleteComponent } from '../../shared/autocomplete/autocomplete.component';
 import { MDUI } from '../../domain/model/mdui';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { MetadataEntity } from '../../domain/domain.type';
+import { EntityAttributesFilter } from '../../domain/entity/entity-attributes.filter';
 
 @Component({
     selector: 'edit-filter-page',
@@ -52,12 +50,12 @@ export class EditFilterComponent implements OnInit, OnDestroy {
             '',
             [Validators.required]
         ],
-        filterName: ['', [Validators.required]],
+        name: ['', [Validators.required]],
         filterEnabled: [false]
     });
 
     filter: MetadataFilter;
-    filterEntity: Filter;
+    filterEntity: EntityAttributesFilter;
 
     isValid = false;
 
@@ -67,7 +65,11 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         private fb: FormBuilder
     ) {
         this.changes$ = this.store.select(fromFilter.getFilter);
-        this.changes$.subscribe(c => this.changes = new Filter(c));
+        this.changes$
+            .pipe(
+                distinctUntilChanged()
+            )
+            .subscribe(c => this.changes = new EntityAttributesFilter(c));
 
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);
@@ -80,20 +82,23 @@ export class EditFilterComponent implements OnInit, OnDestroy {
 
         this.entityIds$.subscribe(ids => this.ids = ids);
 
-        this.filter$.pipe(
-            withLatestFrom(this.isSaving$)
-        ).subscribe(([filter, saving]) => {
-            let { entityId, filterName, filterEnabled } = new Filter(filter);
-            this.form.reset({
-                entityId,
-                filterName,
-                filterEnabled
-            });
-            this.filter = filter;
-            this.filterEntity = new Filter(filter);
+        this.filter$
+            .pipe(
+                filter(f => !!f)
+            )
+            .subscribe(filter => {
+                this.filterEntity = new EntityAttributesFilter(filter);
+                let { entityId, name, filterEnabled } = this.filterEntity;
+                this.form.patchValue({
+                    entityId,
+                    name,
+                    filterEnabled
+                });
+                this.filter = filter;
+                this.store.dispatch(new SelectId(entityId));
 
-            this.store.dispatch(new SelectId(entityId));
-        });
+                this.form.get('entityId').disable();
+            });
     }
 
     ngOnInit(): void {
@@ -105,12 +110,11 @@ export class EditFilterComponent implements OnInit, OnDestroy {
             takeUntil(this.ngUnsubscribe),
             startWith(this.form.value)
         ).subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
+
         this.valueEmitter.changeEmitted$.pipe(
             takeUntil(this.ngUnsubscribe),
             startWith(this.form.value)
         ).subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes)));
-
-        this.form.get('entityId').disable();
 
         id.valueChanges
             .pipe(distinctUntilChanged())
@@ -168,6 +172,6 @@ export class EditFilterComponent implements OnInit, OnDestroy {
     }
 
     preview(entity: MetadataEntity): void {
-        this.store.dispatch(new PreviewEntity(new Filter(entity)));
+        this.store.dispatch(new PreviewEntity(new EntityAttributesFilter(entity)));
     }
 }

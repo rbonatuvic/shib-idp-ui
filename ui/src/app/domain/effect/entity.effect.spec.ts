@@ -1,16 +1,14 @@
 import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Actions } from '@ngrx/effects';
-import { cold, getTestScheduler, hot } from 'jasmine-marbles';
-import { empty, Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 import { TestActions, getActions } from '../../../testing/effect.util';
-import { PreviewEntity } from '../action/entity.action';
 import { EntityEffects } from './entity.effect';
 import { EntityIdService } from '../service/entity-id.service';
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
-import { Filter } from '../entity/filter';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStub } from '../../../testing/modal.stub';
+import { EntityAttributesFilter } from '../entity/entity-attributes.filter';
 
 describe('Entity Effects', () => {
     let effects: EntityEffects;
@@ -50,7 +48,7 @@ describe('Entity Effects', () => {
         it('should open a modal window', fakeAsync(() => {
             spyOn(modal, 'open').and.returnValue({componentInstance: <any>{}});
             spyOn(idService, 'preview').and.returnValue(of('<foo></foo>'));
-            effects.openModal(new Filter());
+            effects.openModal(new EntityAttributesFilter());
             expect(idService.preview).toHaveBeenCalled();
             tick(10);
             expect(modal.open).toHaveBeenCalled();
