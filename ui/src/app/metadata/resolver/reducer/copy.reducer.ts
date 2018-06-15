@@ -1,6 +1,6 @@
 import { CopySourceActionTypes, CopySourceActionUnion } from '../action/copy.action';
 import { MetadataResolver } from '../../domain/model';
-import { ProviderCollectionActionsUnion, ProviderCollectionActionTypes } from '../action/collection.action';
+import { ResolverCollectionActionsUnion, ResolverCollectionActionTypes } from '../action/collection.action';
 
 export interface CopyState {
     target: string;
@@ -20,9 +20,9 @@ export const initialState: CopyState = {
     sections: []
 };
 
-export function reducer(state = initialState, action: CopySourceActionUnion | ProviderCollectionActionsUnion): CopyState {
+export function reducer(state = initialState, action: CopySourceActionUnion | ResolverCollectionActionsUnion): CopyState {
     switch (action.type) {
-        case CopySourceActionTypes.UPDATE_PROVIDER_COPY_SECTIONS: {
+        case CopySourceActionTypes.UPDATE_RESOLVER_COPY_SECTIONS: {
             return {
                 ...state,
                 sections: [
@@ -30,19 +30,19 @@ export function reducer(state = initialState, action: CopySourceActionUnion | Pr
                 ]
             };
         }
-        case CopySourceActionTypes.CREATE_PROVIDER_COPY_REQUEST: {
+        case CopySourceActionTypes.CREATE_RESOLVER_COPY_REQUEST: {
             return {
                 ...state,
                 ...action.payload
             };
         }
-        case CopySourceActionTypes.CREATE_PROVIDER_COPY_SUCCESS: {
+        case CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS: {
             return {
                 ...state,
                 provider: action.payload
             };
         }
-        case CopySourceActionTypes.UPDATE_PROVIDER_COPY: {
+        case CopySourceActionTypes.UPDATE_RESOLVER_COPY: {
             return {
                 ...state,
                 provider: {
@@ -51,14 +51,14 @@ export function reducer(state = initialState, action: CopySourceActionUnion | Pr
                 }
             };
         }
-        case ProviderCollectionActionTypes.ADD_PROVIDER: {
+        case ResolverCollectionActionTypes.ADD_RESOLVER: {
             return {
                 ...state,
                 saving: true
             };
         }
-        case ProviderCollectionActionTypes.ADD_PROVIDER_FAIL:
-        case ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS: {
+        case ResolverCollectionActionTypes.ADD_RESOLVER_FAIL:
+        case ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS: {
             return {
                 ...initialState
             };

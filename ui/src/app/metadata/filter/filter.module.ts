@@ -8,17 +8,16 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { NewFilterComponent } from './container/new-filter.component';
 import { reducers } from './reducer';
-import { ProviderFormFragmentComponent } from '../metadata-provider/component/forms/provider-form-fragment.component';
-import { ProviderEditorFormModule } from '../metadata-provider/component';
+import { ProviderEditorFormModule } from '../domain/component';
 import { FilterEffects } from './effect/filter.effect';
 import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from './component/search-dialog.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { EditFilterComponent } from './container/edit-filter.component';
 import { FilterComponent } from './container/filter.component';
 import { SearchIdEffects } from './effect/search.effect';
-import { FilterExistsGuard } from '../domain/guard/filter-exists.guard';
-import { PreviewDialogModule } from '../shared/preview/preview-dialog.module';
+import { FilterExistsGuard } from './guard/filter-exists.guard';
+import { DomainModule } from '../domain/domain.module';
 
 
 export const routes: Routes = [
@@ -61,7 +60,7 @@ export const routes: Routes = [
         NgbPopoverModule,
         NgbModalModule,
         SharedModule,
-        PreviewDialogModule,
+        DomainModule,
         HttpClientModule
     ],
     providers: [

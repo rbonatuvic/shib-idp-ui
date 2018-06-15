@@ -1,84 +1,112 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { ProviderComponent } from './container/provider.component';
-import { DraftComponent } from './container/draft.component';
-import { WizardComponent } from './container/wizard.component';
-import { EditorComponent } from './container/editor.component';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NewResolverComponent } from './container/new-resolver.component';
 
-import { RootProviderModule } from '../metadata-provider/metadata-provider.module';
-import { ProviderEditorFormModule } from '../metadata-provider/component';
-import { reducers } from './reducer';
-
-import { UnsavedDialogComponent } from './component/unsaved-dialog.component';
-import { CanDeactivateGuard } from '../core/service/can-deactivate.guard';
-import { WizardNavComponent } from './component/wizard-nav.component';
-import { WizardEffects } from './effect/wizard.effect';
-import { EditorEffects } from './effect/editor.effect';
-import { ValidFormIconComponent } from './component/valid-form-icon.component';
-import { SharedModule } from '../shared/shared.module';
+import { ProviderEditorFormModule } from '../domain/component';
+import { UploadResolverComponent } from './container/upload-resolver.component';
+import { BlankResolverComponent } from './container/blank-resolver.component';
+import { CopyResolverComponent } from './container/copy-resolver.component';
+import { ResolverComponent } from './container/resolver.component';
+import { SharedModule } from '../../shared/shared.module';
+import { SearchIdEffects } from './effect/search.effect';
+import * as fromProvider from './reducer';
+import { ConfirmCopyComponent } from './container/confirm-copy.component';
+import { CopyIsSetGuard } from './guard/copy-isset.guard';
+import { CopyResolverEffects } from './effect/copy.effect';
 import { DomainModule } from '../domain/domain.module';
+import { DraftComponent } from './container/draft.component';
+import { EditorComponent } from './container/editor.component';
+import { WizardComponent } from './container/wizard.component';
+
+@NgModule({
+    declarations: [
+        NewResolverComponent,
+        UploadResolverComponent,
+        BlankResolverComponent,
+        CopyResolverComponent,
+        ConfirmCopyComponent,
+        ResolverComponent,
+        DraftComponent,
+        EditorComponent,
+        WizardComponent
+    ],
+    entryComponents: [],
+    imports: [
+        DomainModule,
+        SharedModule,
+        HttpClientModule,
+        CommonModule,
+        RouterModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ProviderEditorFormModule
+    ],
+    exports: [
+        ProviderEditorFormModule
+    ],
+    providers: []
+})
+export class ResolverModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: RootResolverModule,
+            providers: [
+                CopyIsSetGuard
+            ]
+        };
+    }
+}
 
 export const routes: Routes = [
     {
-        path: ':id',
-        component: ProviderComponent,
-        canActivate: [],
+        path: 'resolver',
         children: [
-            { path: 'edit', redirectTo: 'edit/2' },
             {
-                path: 'edit/:index',
-                component: EditorComponent,
-                canDeactivate: [CanDeactivateGuard]
-            }
-        ]
-    },
-    {
-        path: ':entityId',
-        component: DraftComponent,
-        canActivate: [],
-        children: [
-            { path: 'wizard', redirectTo: 'wizard/2' },
+                path: 'new',
+                component: NewResolverComponent,
+                children: [
+                    { path: '', redirectTo: 'blank', pathMatch: 'prefix' },
+                    {
+                        path: 'blank',
+                        component: BlankResolverComponent,
+                        canDeactivate: []
+                    },
+                    {
+                        path: 'upload',
+                        component: UploadResolverComponent,
+                        canDeactivate: []
+                    },
+                    {
+                        path: 'copy',
+                        component: CopyResolverComponent,
+                        canDeactivate: []
+                    }
+                ]
+            },
             {
-                path: 'wizard/:index',
-                component: WizardComponent,
-                canDeactivate: [CanDeactivateGuard]
+                path: 'new/copy/confirm',
+                component: ConfirmCopyComponent,
+                canActivate: [CopyIsSetGuard]
             }
         ]
     }
 ];
 
 @NgModule({
-    declarations: [
-        ProviderComponent,
-        EditorComponent,
-        WizardComponent,
-        UnsavedDialogComponent,
-        WizardNavComponent,
-        DraftComponent,
-        ValidFormIconComponent
-    ],
-    entryComponents: [
-        UnsavedDialogComponent
-    ],
     imports: [
-        DomainModule,
-        CommonModule,
-        RouterModule,
-        ReactiveFormsModule,
-        RootProviderModule,
-        ProviderEditorFormModule,
-        NgbDropdownModule,
-        StoreModule.forFeature('edit-provider', reducers),
-        EffectsModule.forFeature([WizardEffects, EditorEffects]),
+        ResolverModule,
         RouterModule.forChild(routes),
-        SharedModule
+        StoreModule.forFeature('provider', fromProvider.reducers),
+        EffectsModule.forFeature([
+            SearchIdEffects,
+            CopyResolverEffects
+        ])
     ],
-    providers: []
 })
-export class ResolverModule { }
+export class RootResolverModule { }

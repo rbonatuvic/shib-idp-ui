@@ -3,8 +3,7 @@ import * as fromRoot from '../../../core/reducer';
 import * as fromFilter from './filter.reducer';
 import * as fromSearch from './search.reducer';
 import * as fromCollection from './collection.reducer';
-
-import * as fromDomain from '../../domain/reducer/index';
+import * as utils from '../../domain/domain.util';
 
 export interface FilterState {
     filter: fromFilter.FilterState;
@@ -48,6 +47,6 @@ export const getCollectionState = createSelector(getFilterState, getCollectionFr
 export const getAllFilters = createSelector(getCollectionState, fromCollection.selectAllFilters);
 export const getFilterEntities = createSelector(getCollectionState, fromCollection.selectFilterEntities);
 export const getSelectedFilterId = createSelector(getCollectionState, fromCollection.getSelectedFilterId);
-export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, fromDomain.getInCollectionFn);
+export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, utils.getInCollectionFn);
 export const getFilterIds = createSelector(getCollectionState, fromCollection.selectFilterIds);
 export const getFilterCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);

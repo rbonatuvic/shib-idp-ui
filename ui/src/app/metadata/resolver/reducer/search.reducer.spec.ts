@@ -1,6 +1,6 @@
 import { reducer } from './search.reducer';
 import * as fromProviderSearch from './search.reducer';
-import { SearchActionTypes, SearchActionUnion, SearchIds, SearchIdsSuccess, SearchIdsError } from '../action/search.action';
+import { SearchActionTypes, SearchIds, SearchIdsSuccess, SearchIdsError } from '../action/search.action';
 
 const snapshot: fromProviderSearch.SearchState = {
     matches: [],

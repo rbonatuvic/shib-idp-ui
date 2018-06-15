@@ -1,13 +1,13 @@
-import { AdvancedInfoFormComponent } from '../metadata-provider/component/forms/advanced-info-form.component';
-import { OrganizationInfoFormComponent } from '../metadata-provider/component/forms/organization-info-form.component';
-import { MetadataUiFormComponent } from '../metadata-provider/component/forms/metadata-ui-form.component';
-import { KeyInfoFormComponent } from '../metadata-provider/component/forms/key-info-form.component';
-import { LogoutFormComponent } from '../metadata-provider/component/forms/logout-form.component';
-import { AssertionFormComponent } from '../metadata-provider/component/forms/assertion-form.component';
-import { DescriptorInfoFormComponent } from '../metadata-provider/component/forms/descriptor-info-form.component';
-import { RelyingPartyFormComponent } from '../metadata-provider/component/forms/relying-party-form.component';
-import { AttributeReleaseFormComponent } from '../metadata-provider/component/forms/attribute-release-form.component';
-import { FinishFormComponent } from '../metadata-provider/component/forms/finish-form.component';
+import { AdvancedInfoFormComponent } from '../domain/component/forms/advanced-info-form.component';
+import { OrganizationInfoFormComponent } from '../domain/component/forms/organization-info-form.component';
+import { MetadataUiFormComponent } from '../domain/component/forms/metadata-ui-form.component';
+import { KeyInfoFormComponent } from '../domain/component/forms/key-info-form.component';
+import { LogoutFormComponent } from '../domain/component/forms/logout-form.component';
+import { AssertionFormComponent } from '../domain/component/forms/assertion-form.component';
+import { DescriptorInfoFormComponent } from '../domain/component/forms/descriptor-info-form.component';
+import { RelyingPartyFormComponent } from '../domain/component/forms/relying-party-form.component';
+import { AttributeReleaseFormComponent } from '../domain/component/forms/attribute-release-form.component';
+import { FinishFormComponent } from '../domain/component/forms/finish-form.component';
 
 export interface EditorFlowDefinition {
     index: number;

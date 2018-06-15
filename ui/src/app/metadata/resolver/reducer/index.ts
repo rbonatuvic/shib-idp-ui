@@ -6,7 +6,7 @@ import * as fromCopy from './copy.reducer';
 import * as fromDraft from './draft.reducer';
 import * as fromCollection from './collection.reducer';
 
-import { combineAllFn, getEntityIdsFn, getInCollectionFn, doesExistFn } from '../../metadata.reducer';
+import { combineAllFn, getEntityIdsFn, getInCollectionFn, doesExistFn } from '../../domain/domain.util';
 
 export interface ResolverState {
     editor: fromEditor.EditorState;
@@ -72,12 +72,12 @@ export const getSearchLoading = createSelector(getSearchState, fromSearch.getSea
 Collection State
 */
 
-export const getProviderEntities = createSelector(getCollectionState, fromCollection.selectProviderEntities);
-export const getSelectedProviderId = createSelector(getCollectionState, fromCollection.getSelectedProviderId);
-export const getProviderIds = createSelector(getCollectionState, fromCollection.selectProviderIds);
+export const getResolverEntities = createSelector(getCollectionState, fromCollection.selectResolverEntities);
+export const getSelectedResolverId = createSelector(getCollectionState, fromCollection.getSelectedResolverId);
+export const getResolverIds = createSelector(getCollectionState, fromCollection.selectResolverIds);
 
-export const getProviderCollection = createSelector(getCollectionState, getProviderIds, fromCollection.selectAllProviders);
-export const getSelectedProvider = createSelector(getProviderEntities, getSelectedProviderId, getInCollectionFn);
+export const getResolverCollection = createSelector(getCollectionState, getResolverIds, fromCollection.selectAllResolvers);
+export const getSelectedResolver = createSelector(getResolverEntities, getSelectedResolverId, getInCollectionFn);
 
 
 /*
@@ -90,14 +90,14 @@ export const getDraftCollection = createSelector(getDraftState, getDraftIds, fro
 export const getSelectedDraftId = createSelector(getDraftState, fromDraft.getSelectedDraftId);
 
 export const getSelectedDraft = createSelector(getDraftEntities, getSelectedDraftId, getInCollectionFn);
-export const isSelectedProviderInCollection = createSelector(getProviderIds, getSelectedProviderId, doesExistFn);
+export const isSelectedResolverInCollection = createSelector(getResolverIds, getSelectedResolverId, doesExistFn);
 export const isSelectedDraftInCollection = createSelector(getDraftIds, getSelectedDraftId, doesExistFn);
 
 /*
-Combine Drafts and Providers
+Combine Drafts and Resolvers
 */
 
-export const getAllProviders = createSelector(getDraftCollection, getProviderCollection, combineAllFn);
-export const getAllProviderIds = createSelector(getDraftIds, getProviderIds, combineAllFn);
+export const getAllResolvers = createSelector(getDraftCollection, getResolverCollection, combineAllFn);
+export const getAllResolverIds = createSelector(getDraftIds, getResolverIds, combineAllFn);
 
-export const getAllEntityIds = createSelector(getAllProviders, getEntityIdsFn);
+export const getAllEntityIds = createSelector(getAllResolvers, getEntityIdsFn);

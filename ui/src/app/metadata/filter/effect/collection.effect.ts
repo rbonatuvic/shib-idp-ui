@@ -10,7 +10,7 @@ import * as actions from '../action/collection.action';
 import { FilterCollectionActionTypes } from '../action/collection.action';
 import * as fromFilter from '../reducer';
 
-import { MetadataResolverService } from '../../domain/service/metadata-resolver.service';
+import { MetadataProviderService } from '../../domain/service/provider.service';
 import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
@@ -113,7 +113,7 @@ export class FilterCollectionEffects {
     constructor(
         private actions$: Actions,
         private router: Router,
-        private resolverService: MetadataResolverService,
+        private resolverService: MetadataProviderService,
         private store: Store<fromFilter.State>
     ) { }
 }

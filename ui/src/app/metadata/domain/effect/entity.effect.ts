@@ -5,9 +5,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { EntityDescriptorService } from '../service/entity-descriptor.service';
-import { PreviewDialogComponent } from '../../../shared/preview/preview-dialog.component';
-import { MetadataEntity, MetadataTypes } from '../domain.type';
+import { ResolverService } from '../service/resolver.service';
+import { PreviewDialogComponent } from '../component/preview-dialog.component';
+import { MetadataEntity } from '../model';
+import { MetadataTypes } from '../domain.type';
 import { EntityIdService } from '../service/entity-id.service';
 import * as entityActions from '../action/entity.action';
 
@@ -25,7 +26,7 @@ export class EntityEffects {
     constructor(
         private actions$: Actions,
         private modalService: NgbModal,
-        private providerService: EntityDescriptorService,
+        private providerService: ResolverService,
         private entityService: EntityIdService
     ) { }
 

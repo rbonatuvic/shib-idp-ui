@@ -16,7 +16,7 @@ import { QueryEntityIds, ViewMoreIds, ClearSearch } from '../action/search.actio
 import { AutoCompleteComponent } from '../../../shared/autocomplete/autocomplete.component';
 import { MDUI } from '../../domain/model';
 import { PreviewEntity } from '../../domain/action/entity.action';
-import { MetadataEntity } from '../../domain/domain.type';
+import { MetadataEntity } from '../../domain/model';
 import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
 
 @Component({

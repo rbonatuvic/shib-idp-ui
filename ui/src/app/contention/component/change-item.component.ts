@@ -1,15 +1,5 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import * as fromContention from '../reducer';
-import { ResolveContentionAction } from '../action/contention.action';
+import { Component, Input, OnChanges } from '@angular/core';
 import { ChangeItem } from '../model/contention';
-import { DifferentialService } from '../../core/service/differential.service';
 
 export enum ValueTypes {
     array = 'array',

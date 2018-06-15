@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { MetadataEntity } from '../../domain/domain.type';
+import { MetadataEntity } from '../../domain/model';
 
 export const PREVIEW_ENTITY = '[Domain] Preview Entity';
 

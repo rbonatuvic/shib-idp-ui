@@ -1,9 +1,9 @@
-<div class="container-fluid p-3" *ngIf="provider$ | async" role="main">
-    <section class="section" [attr.aria-label]="'Edit metadata source - ' + (provider$ | async).serviceProviderName" tabindex="0">
+<div class="container-fluid p-3" *ngIf="resolver$ | async" role="main">
+    <section class="section" [attr.aria-label]="'Edit metadata source - ' + (resolver$ | async).serviceProviderName" tabindex="0">
         <div class="section-header bg-info p-2 text-white">
             <div class="row justify-content-between">
                 <div class="col-md-12">
-                    <span class="display-6"><i class="fa fa-fw fa-gears"></i> Edit Metadata Source - {{ (provider$ | async).serviceProviderName }}</span>
+                    <span class="display-6"><i class="fa fa-fw fa-gears"></i> Edit Metadata Source - {{ (resolver$ | async).serviceProviderName }}</span>
                 </div>
             </div>
         </div>
@@ -83,17 +83,17 @@
                 </div>
                 <div class="col-lg-9" *ngIf="latest">
                     <div [ngSwitch]="editorIndex$ | async" class="px-3">
-                        <adv-info-form *ngSwitchDefault [provider]="latest$ | async"></adv-info-form>
-                        <metadata-ui-form *ngSwitchCase="3" [provider]="latest$ | async"></metadata-ui-form>
-                        <descriptor-info-form *ngSwitchCase="4" [provider]="latest$ | async"></descriptor-info-form>
-                        <logout-form *ngSwitchCase="5" [provider]="latest$ | async"></logout-form>
-                        <key-info-form *ngSwitchCase="6" [provider]="latest$ | async"></key-info-form>
-                        <assertion-form *ngSwitchCase="7" [provider]="latest$ | async"></assertion-form>
+                        <adv-info-form *ngSwitchDefault [resolver]="latest$ | async"></adv-info-form>
+                        <metadata-ui-form *ngSwitchCase="3" [resolver]="latest$ | async"></metadata-ui-form>
+                        <descriptor-info-form *ngSwitchCase="4" [resolver]="latest$ | async"></descriptor-info-form>
+                        <logout-form *ngSwitchCase="5" [resolver]="latest$ | async"></logout-form>
+                        <key-info-form *ngSwitchCase="6" [resolver]="latest$ | async"></key-info-form>
+                        <assertion-form *ngSwitchCase="7" [resolver]="latest$ | async"></assertion-form>
                         <div class="row" *ngSwitchCase="8">
-                            <relying-party-form [provider]="latest$ | async" class="form-section col-xl-6"></relying-party-form>
+                            <relying-party-form [resolver]="latest$ | async" class="form-section col-xl-6"></relying-party-form>
                         </div>
                         <div class="row" *ngSwitchCase="9">
-                            <attribute-release-form [provider]="latest$ | async" class="form-section col-xl-6"></attribute-release-form>
+                            <attribute-release-form [resolver]="latest$ | async" class="form-section col-xl-6"></attribute-release-form>
                         </div>
                     </div>
                 </div>

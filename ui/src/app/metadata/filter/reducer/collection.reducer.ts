@@ -1,6 +1,6 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/collection.action';
-import { MetadataFilter } from '../../domain/domain.type';
+import { MetadataFilter } from '../../domain/model';
 
 export interface CollectionState extends EntityState<MetadataFilter> {
     selectedFilterId: string | null;

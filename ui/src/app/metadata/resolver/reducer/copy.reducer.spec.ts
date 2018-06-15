@@ -1,11 +1,11 @@
 import { reducer } from './copy.reducer';
-import * as fromProviderCopy from './copy.reducer';
+import * as fromResolverCopy from './copy.reducer';
 import * as actions from '../action/copy.action';
-import * as fromCollection from '../../domain/action/provider-collection.action';
-import { CopySourceActionTypes, CopySourceActionUnion, CreateProviderCopyRequest } from '../action/copy.action';
-import { Resolver } from '../../domain/entity/provider';
+import * as fromCollection from '../action/collection.action';
+import { CopySourceActionTypes, CreateResolverCopyRequest } from '../action/copy.action';
+import { FileBackedHttpMetadataResolver } from '../../domain/entity/resolver/file-backed-http-metadata-resolver';
 
-const snapshot: fromProviderCopy.CopyState = { ...fromProviderCopy.initialState };
+const snapshot: fromResolverCopy.CopyState = { ...fromResolverCopy.initialState };
 
 describe('Resolver -> Copy Reducer', () => {
     describe('undefined action', () => {
@@ -15,69 +15,69 @@ describe('Resolver -> Copy Reducer', () => {
         });
     });
 
-    describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_REQUEST} action`, () => {
+    describe(`${CopySourceActionTypes.CREATE_RESOLVER_COPY_REQUEST} action`, () => {
         it('should set properties on the state', () => {
             const obj = { ...snapshot };
-            const result = reducer(snapshot, new CreateProviderCopyRequest(obj));
+            const result = reducer(snapshot, new CreateResolverCopyRequest(obj));
 
             expect(result).toEqual(obj);
         });
     });
 
-    describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_SUCCESS} action`, () => {
+    describe(`${CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Resolver({});
+            const p = new FileBackedHttpMetadataResolver({});
             const obj = { ...snapshot };
-            const result = reducer(snapshot, new actions.CreateProviderCopySuccess(p));
+            const result = reducer(snapshot, new actions.CreateResolverCopySuccess(p));
 
             expect(result.provider).toBe(p);
         });
     });
 
-    describe(`${CopySourceActionTypes.CREATE_PROVIDER_COPY_ERROR} action`, () => {
+    describe(`${CopySourceActionTypes.CREATE_RESOLVER_COPY_ERROR} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Resolver({});
+            const p = new FileBackedHttpMetadataResolver({});
             const obj = { ...snapshot };
-            const result = reducer(snapshot, new actions.CreateProviderCopyError(new Error()));
+            const result = reducer(snapshot, new actions.CreateResolverCopyError(new Error()));
 
             expect(result.provider).toBeNull();
         });
     });
 
-    describe(`${CopySourceActionTypes.UPDATE_PROVIDER_COPY} action`, () => {
+    describe(`${CopySourceActionTypes.UPDATE_RESOLVER_COPY} action`, () => {
         it('should set properties on the state', () => {
-            const obj = { ...snapshot, provider: new Resolver({}) };
-            const result = reducer(snapshot, new actions.UpdateProviderCopy({id: 'foo'}));
+            const obj = { ...snapshot, provider: new FileBackedHttpMetadataResolver({}) };
+            const result = reducer(snapshot, new actions.UpdateResolverCopy({id: 'foo'}));
 
             expect(result.provider.id).toBe('foo');
         });
     });
 
-    describe(`${ fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER } action`, () => {
+    describe(`${ fromCollection.ResolverCollectionActionTypes.ADD_RESOLVER } action`, () => {
         it('should set properties on the state', () => {
-            const p = new Resolver({});
+            const p = new FileBackedHttpMetadataResolver({});
             const obj = { ...snapshot, provider: p };
-            const result = reducer(snapshot, new fromCollection.AddProviderRequest(p));
+            const result = reducer(snapshot, new fromCollection.AddResolverRequest(p));
 
             expect(result.saving).toBe(true);
         });
     });
 
-    describe(`${fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS} action`, () => {
+    describe(`${fromCollection.ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Resolver({});
+            const p = new FileBackedHttpMetadataResolver({});
             const obj = { ...snapshot, provider: p };
-            const result = reducer(snapshot, new fromCollection.AddProviderSuccess(p));
+            const result = reducer(snapshot, new fromCollection.AddResolverSuccess(p));
 
             expect(result.saving).toBe(false);
         });
     });
 
-    describe(`${fromCollection.ProviderCollectionActionTypes.ADD_PROVIDER_FAIL} action`, () => {
+    describe(`${fromCollection.ResolverCollectionActionTypes.ADD_RESOLVER_FAIL} action`, () => {
         it('should set properties on the state', () => {
-            const p = new Resolver({});
+            const p = new FileBackedHttpMetadataResolver({});
             const obj = { ...snapshot, provider: p };
-            const result = reducer(snapshot, new fromCollection.AddProviderFail(p));
+            const result = reducer(snapshot, new fromCollection.AddResolverFail(p));
 
             expect(result.saving).toBe(false);
         });
@@ -85,22 +85,22 @@ describe('Resolver -> Copy Reducer', () => {
 
     describe(`getCopy selector function`, () => {
         it('should return the entire copy object', () => {
-            expect(fromProviderCopy.getCopy(snapshot)).toBe(snapshot.provider);
+            expect(fromResolverCopy.getCopy(snapshot)).toBe(snapshot.provider);
         });
     });
     describe(`getEntityId selector function`, () => {
         it('should return the entityId property', () => {
-            expect(fromProviderCopy.getEntityId(snapshot)).toBe(snapshot.entityId);
+            expect(fromResolverCopy.getEntityId(snapshot)).toBe(snapshot.entityId);
         });
     });
     describe(`getName selector function`, () => {
         it('should return the serviceProviderName property', () => {
-            expect(fromProviderCopy.getName(snapshot)).toBe(snapshot.serviceProviderName);
+            expect(fromResolverCopy.getName(snapshot)).toBe(snapshot.serviceProviderName);
         });
     });
     describe(`getTarget selector function`, () => {
         it('should return the target property', () => {
-            expect(fromProviderCopy.getTarget(snapshot)).toBe(snapshot.target);
+            expect(fromResolverCopy.getTarget(snapshot)).toBe(snapshot.target);
         });
     });
 });

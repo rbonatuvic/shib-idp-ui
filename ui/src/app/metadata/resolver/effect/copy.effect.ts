@@ -5,53 +5,52 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { switchMap, map, withLatestFrom } from 'rxjs/operators';
 
-import * as fromProvider from '../reducer';
-import * as fromCollection from '../../domain/reducer';
+import * as fromResolver from '../reducer';
 
 import {
     CopySourceActionUnion,
     CopySourceActionTypes,
-    CreateProviderCopyRequest,
-    CreateProviderCopySuccess,
-    CreateProviderCopyError
+    CreateResolverCopyRequest,
+    CreateResolverCopySuccess,
+    CreateResolverCopyError
 } from '../action/copy.action';
-import { Resolver } from '../../domain/entity/provider';
+import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 
 
 @Injectable()
-export class CopyProviderEffects {
+export class CopyResolverEffects {
 
     @Effect()
     copyRequest$ = this.actions$.pipe(
-        ofType<CreateProviderCopyRequest>(CopySourceActionTypes.CREATE_PROVIDER_COPY_REQUEST),
+        ofType<CreateResolverCopyRequest>(CopySourceActionTypes.CREATE_RESOLVER_COPY_REQUEST),
         map(action => action.payload),
         withLatestFrom(
-            this.store.select(fromCollection.getProviderCollection),
-            this.store.select(fromProvider.getSectionsToCopy)
+            this.store.select(fromResolver.getAllResolvers),
+            this.store.select(fromResolver.getSectionsToCopy)
         ),
         switchMap(([attrs, providers, sections]) => {
             const { serviceProviderName, entityId } = attrs;
             const provider = providers.find(p => p.entityId === attrs.target);
             const copied = sections.reduce((c, section) => ({ ...c, ...{[section]: provider[section] } }), {});
             const action = provider ?
-                new CreateProviderCopySuccess(new Resolver({
+                new CreateResolverCopySuccess(new FileBackedHttpMetadataResolver({
                     serviceProviderName,
                     entityId,
                     ...copied
                 })) :
-                new CreateProviderCopyError(new Error('Not found'));
+                new CreateResolverCopyError(new Error('Not found'));
             return of(action);
         }));
 
     @Effect({ dispatch: false })
     copyOnCreation$ = this.actions$.pipe(
-        ofType<CopySourceActionUnion>(CopySourceActionTypes.CREATE_PROVIDER_COPY_SUCCESS),
+        ofType<CopySourceActionUnion>(CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS),
         switchMap(() => this.router.navigate(['/new/copy/confirm']))
     );
 
     constructor(
         private actions$: Actions,
-        private store: Store<fromProvider.State>,
+        private store: Store<fromResolver.State>,
         private router: Router
     ) { }
 }

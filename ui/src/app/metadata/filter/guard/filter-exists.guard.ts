@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import * as fromCollection from '../reducer';
-import { MetadataResolverService } from '../../domain/service/metadata-resolver.service';
+import { MetadataProviderService } from '../../domain/service/provider.service';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
@@ -16,7 +16,7 @@ import { MetadataResolverService } from '../../domain/service/metadata-resolver.
 export class FilterExistsGuard implements CanActivate {
     constructor(
         private store: Store<fromCollection.State>,
-        private mdResolverService: MetadataResolverService,
+        private mdResolverService: MetadataProviderService,
         private router: Router
     ) { }
 

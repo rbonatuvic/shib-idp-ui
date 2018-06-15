@@ -27,7 +27,7 @@
                     </h3>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave(provider)" [disabled]="saving$ | async">
+                    <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave(resolver)" [disabled]="saving$ | async">
                         <span class="label pull-left" i18n="@@action--save">Save</span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw fa-save next d-block fa-2x"></i>
@@ -36,7 +36,7 @@
                     </button>
                 </li>
             </ul>
-            <finish-form [provider]="values$ | async"></finish-form>
+            <finish-form [resolver]="values$ | async"></finish-form>
         </div>
     </section>
 </div>

@@ -6,22 +6,20 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-
-import { MetadataResolver } from '../../domain/model/metadata-provider';
-import { SelectDraft } from '../../domain/action/draft-collection.action';
-import * as fromCollection from '../../domain/reducer';
+import { SelectDraft } from '../action/draft.action';
+import * as fromCollection from '../reducer';
 
 @Component({
-    selector: 'provider-page',
-    templateUrl: './provider.component.html',
-    styleUrls: ['./provider.component.scss'],
+    selector: 'resolver-page',
+    templateUrl: './resolver.component.html',
+    styleUrls: ['./resolver.component.scss'],
     providers: [NgbPopoverConfig]
 })
 export class DraftComponent implements OnDestroy {
     actionsSubscription: Subscription;
 
     constructor(
-        store: Store<fromCollection.CollectionState>,
+        store: Store<fromCollection.State>,
         route: ActivatedRoute
     ) {
         this.actionsSubscription = route.params.pipe(

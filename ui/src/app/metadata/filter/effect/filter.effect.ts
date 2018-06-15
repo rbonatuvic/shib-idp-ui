@@ -23,7 +23,7 @@ import {
     CancelCreateFilter
 } from '../action/filter.action';
 import { EntityIdService } from '../../domain/service/entity-id.service';
-import { MetadataResolverService } from '../../domain/service/metadata-resolver.service';
+import { MetadataProviderService } from '../../domain/service/provider.service';
 import { ShowContentionAction } from '../../../contention/action/contention.action';
 import { MetadataFilter } from '../../domain/model';
 import { ContentionService } from '../../../contention/service/contention.service';
@@ -76,7 +76,7 @@ export class FilterEffects {
         private actions$: Actions,
         private router: Router,
         private idService: EntityIdService,
-        private resolverService: MetadataResolverService,
+        private resolverService: MetadataProviderService,
         private contentionService: ContentionService
     ) { }
 }

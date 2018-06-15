@@ -1,5 +1,5 @@
-import { Component, Output, Input, EventEmitter, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
+import { Component, Input, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 

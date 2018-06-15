@@ -1,9 +1,9 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { MetadataResolver } from '../../domain/model';
-import { ProviderCollectionActionsUnion, ProviderCollectionActionTypes } from '../action/collection.action';
+import { ResolverCollectionActionsUnion, ResolverCollectionActionTypes } from '../action/collection.action';
 
 export interface CollectionState extends EntityState<MetadataResolver> {
-    selectedProviderId: string | null;
+    selectedResolverId: string | null;
 }
 
 export function sortByDate(a: MetadataResolver, b: MetadataResolver): number {
@@ -16,26 +16,26 @@ export const adapter: EntityAdapter<MetadataResolver> = createEntityAdapter<Meta
 });
 
 export const initialState: CollectionState = adapter.getInitialState({
-    selectedProviderId: null
+    selectedResolverId: null
 });
 
-export function reducer(state = initialState, action: ProviderCollectionActionsUnion): CollectionState {
+export function reducer(state = initialState, action: ResolverCollectionActionsUnion): CollectionState {
     switch (action.type) {
-        case ProviderCollectionActionTypes.LOAD_PROVIDER_SUCCESS: {
+        case ResolverCollectionActionTypes.LOAD_RESOLVER_SUCCESS: {
             return adapter.addAll(action.payload, {
                 ...state,
-                selectedProviderId: state.selectedProviderId
+                selectedResolverId: state.selectedResolverId
             });
         }
 
-        case ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS: {
+        case ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS: {
             return adapter.updateOne(action.payload, state);
         }
 
-        case ProviderCollectionActionTypes.SELECT: {
+        case ResolverCollectionActionTypes.SELECT: {
             return {
                 ...state,
-                selectedProviderId: action.payload,
+                selectedResolverId: action.payload,
             };
         }
 
@@ -45,10 +45,10 @@ export function reducer(state = initialState, action: ProviderCollectionActionsU
     }
 }
 
-export const getSelectedProviderId = (state: CollectionState) => state.selectedProviderId;
+export const getSelectedResolverId = (state: CollectionState) => state.selectedResolverId;
 export const {
-    selectIds: selectProviderIds,
-    selectEntities: selectProviderEntities,
-    selectAll: selectAllProviders,
-    selectTotal: selectProviderTotal
+    selectIds: selectResolverIds,
+    selectEntities: selectResolverEntities,
+    selectAll: selectAllResolvers,
+    selectTotal: selectResolverTotal
 } = adapter.getSelectors();

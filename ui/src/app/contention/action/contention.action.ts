@@ -1,7 +1,5 @@
 import { Action } from '@ngrx/store';
 import { Contention, ContentionResolution } from '../model/contention';
-import { MetadataEntity } from '../../domain/domain.type';
-
 
 export enum ContentionActionTypes {
     SHOW_CONTENTION = '[Contention] Show Contention',

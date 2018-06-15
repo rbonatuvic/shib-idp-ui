@@ -34,6 +34,3 @@ export enum MetadataTypes {
     PROVIDER = '[Type] Metadata Provider',
     RESOLVER = '[Type] Metadata Resolver'
 }
-
-export * from './model';
-export * from './entity';

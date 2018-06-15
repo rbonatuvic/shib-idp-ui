@@ -5,7 +5,6 @@ import { takeUntil, combineLatest, switchMap, map, startWith } from 'rxjs/operat
 
 import { Store } from '@ngrx/store';
 
-import * as fromCollection from '../../../domain/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataResolver, Contact } from '../../../domain/model';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
@@ -43,6 +42,7 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
     ) {
         super(fb, statusEmitter, valueEmitter);
 
+        /*
         this.ids$ = this.store
             .select(fromCollection.getAllEntityIds)
             .pipe(
@@ -51,6 +51,7 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
                     return ids.filter(id => provider.entityId !== id);
                 })
             );
+            */
     }
 
     createForm(): void {

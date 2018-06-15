@@ -1,15 +1,11 @@
 import {
     Component,
-    ViewChild,
-    AfterViewInit,
     OnInit,
-    OnDestroy,
-    EventEmitter
+    OnDestroy
 } from '@angular/core';
 import {
     ActivatedRoute,
     Router,
-    CanDeactivate,
     ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
@@ -19,16 +15,16 @@ import { Store } from '@ngrx/store';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { MetadataResolver } from '../../domain/model/metadata-provider';
-import * as fromCollections from '../../domain/reducer';
-import * as draftActions from '../../domain/action/draft-collection.action';
-import { AddProviderRequest, RemoveProviderRequest } from '../../domain/action/provider-collection.action';
+import { MetadataResolver } from '../../domain/model/metadata-resolver';
+import * as fromCollections from '../reducer';
+import * as draftActions from '../action/draft.action';
+import { AddResolverRequest } from '../action/collection.action';
 import * as fromEditor from '../reducer';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { UpdateStatus, UpdateChanges, SaveChanges } from '../action/editor.action';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
-import { CanComponentDeactivate } from '../../core/service/can-deactivate.guard';
+import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
 
 import { UnsavedDialogComponent } from '../component/unsaved-dialog.component';
 
@@ -42,8 +38,8 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    provider$: Observable<MetadataResolver>;
-    provider: MetadataResolver;
+    resolver$: Observable<MetadataResolver>;
+    resolver: MetadataResolver;
     providerName$: Observable<string>;
     changes$: Observable<MetadataResolver>;
     changes: MetadataResolver;
@@ -64,8 +60,8 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
         private valueEmitter: ProviderValueEmitter,
         private modalService: NgbModal
     ) {
-        this.provider$ = this.store.select(fromCollections.getSelectedDraft);
-        this.providerName$ = this.provider$.pipe(
+        this.resolver$ = this.store.select(fromCollections.getSelectedDraft);
+        this.providerName$ = this.resolver$.pipe(
             map(p => p.serviceProviderName)
         );
         this.changes$ = this.store.select(fromEditor.getEditorChanges);
@@ -80,7 +76,7 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
 
     save(): void {
-        this.store.dispatch(new AddProviderRequest(this.latest));
+        this.store.dispatch(new AddResolverRequest(this.latest));
     }
 
     next(index: number): void {
@@ -101,10 +97,10 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
     }
 
     subscribe(): void {
-        this.provider$.pipe(
+        this.resolver$.pipe(
             takeUntil(this.ngUnsubscribe),
             skipWhile(() => this.saving)
-        ).subscribe(provider => this.provider = provider);
+        ).subscribe(resolver => this.resolver = resolver);
         this.changes$.pipe(
             takeUntil(this.ngUnsubscribe),
             skipWhile(() => this.saving)
@@ -112,7 +108,7 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
         this.changes$.pipe(
             takeUntil(this.ngUnsubscribe),
             skipWhile(() => this.saving),
-            combineLatest(this.provider$, (changes, base) => ({ ...base, ...changes }))
+            combineLatest(this.resolver$, (changes, base) => ({ ...base, ...changes }))
         ).subscribe(latest => this.latest = latest);
 
         this.valueEmitter

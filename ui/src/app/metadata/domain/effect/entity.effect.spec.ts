@@ -8,7 +8,7 @@ import { EntityIdService } from '../service/entity-id.service';
 import { EntityDescriptorService } from '../service/entity-descriptor.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStub } from '../../../../testing/modal.stub';
-import { EntityAttributesFilter } from '../entity/filter/entity-attributes-filter';
+import { EntityAttributesFilter } from '../entity';
 
 describe('Entity Effects', () => {
     let effects: EntityEffects;

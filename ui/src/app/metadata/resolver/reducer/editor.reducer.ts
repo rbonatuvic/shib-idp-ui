@@ -1,6 +1,6 @@
 import { MetadataResolver } from '../../domain/model';
 import * as editor from '../action/editor.action';
-import { ProviderCollectionActionTypes, ProviderCollectionActionsUnion } from '../action/collection.action';
+import { ResolverCollectionActionTypes, ResolverCollectionActionsUnion } from '../action/collection.action';
 
 export interface EditorState {
     saving: boolean;
@@ -14,21 +14,21 @@ export const initialState: EditorState = {
     changes: {} as MetadataResolver
 };
 
-export function reducer(state = initialState, action: editor.Actions | ProviderCollectionActionsUnion): EditorState {
+export function reducer(state = initialState, action: editor.Actions | ResolverCollectionActionsUnion): EditorState {
     switch (action.type) {
-        case ProviderCollectionActionTypes.ADD_PROVIDER: {
+        case ResolverCollectionActionTypes.ADD_RESOLVER: {
             return {
                 ...state,
                 saving: true,
             };
         }
-        case ProviderCollectionActionTypes.ADD_PROVIDER_FAIL: {
+        case ResolverCollectionActionTypes.ADD_RESOLVER_FAIL: {
             return {
                 ...state,
                 saving: false
             };
         }
-        case ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS: {
+        case ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS: {
             return {
                 ...state,
                 changes: { ...initialState.changes },

@@ -1,29 +1,23 @@
 import {
     Component,
-    ViewChild,
-    AfterViewInit,
     OnInit,
-    OnDestroy,
-    EventEmitter
+    OnDestroy
 } from '@angular/core';
 import {
     ActivatedRoute,
     Router,
-    CanDeactivate,
     ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl, Validators, NgModel } from '@angular/forms';
 import { Observable, Subject, of } from 'rxjs';
 import { combineLatest, map, takeUntil, withLatestFrom, debounceTime, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 
-import { MetadataResolver } from '../../domain/model/metadata-provider';
-import * as fromProviders from '../../domain/reducer';
-import { UpdateProviderRequest } from '../../domain/action/provider-collection.action';
-import * as fromEditor from '../reducer';
+import { MetadataResolver } from '../../domain/model/metadata-resolver';
+import * as fromResolver from '../reducer';
+import { UpdateResolverRequest } from '../action/collection.action';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { UpdateStatus, UpdateChanges, CancelChanges } from '../action/editor.action';
@@ -49,9 +43,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     latest: MetadataResolver;
     latest$: Observable<MetadataResolver>;
 
-    provider$: Observable<MetadataResolver>;
+    resolver$: Observable<MetadataResolver>;
     providerName$: Observable<string>;
-    provider: MetadataResolver;
+    resolver: MetadataResolver;
     editorIndex$: Observable<number>;
     editor$: Observable<any[]>;
     editor: EditorFlowDefinition[];
@@ -65,35 +59,35 @@ export class EditorComponent implements OnInit, OnDestroy {
     wizardIsInvalid$: Observable<boolean>;
 
     constructor(
-        private store: Store<fromProviders.State>,
+        private store: Store<fromResolver.State>,
         private route: ActivatedRoute,
         private router: Router,
         private statusEmitter: ProviderStatusEmitter,
         private valueEmitter: ProviderValueEmitter,
         private modalService: NgbModal
     ) {
-        this.provider$ = this.store.select(fromProviders.getSelectedProvider);
-        this.changes$ = this.store.select(fromEditor.getEditorChanges);
+        this.resolver$ = this.store.select(fromResolver.getSelectedResolver);
+        this.changes$ = this.store.select(fromResolver.getEditorChanges);
 
-        this.latest$ = this.provider$.pipe(
+        this.latest$ = this.resolver$.pipe(
             combineLatest(this.changes$, (base, changes) => Object.assign({}, base, changes))
         );
 
-        this.providerName$ = this.provider$.pipe(map(p => p.serviceProviderName));
-        this.changes$ = this.store.select(fromEditor.getEditorChanges);
+        this.providerName$ = this.resolver$.pipe(map(p => p.serviceProviderName));
+        this.changes$ = this.store.select(fromResolver.getEditorChanges);
         this.editorIndex$ = this.route.params.pipe(map(params => Number(params.index)));
         this.currentPage$ = this.editorIndex$.pipe(map(index => EditorDef.find(r => r.index === index)));
         this.editor = EditorDef;
-        this.store.select(fromEditor.getEditorIsSaving).pipe(
+        this.store.select(fromResolver.getEditorIsSaving).pipe(
             takeUntil(this.ngUnsubscribe)
         ).subscribe(saving => this.saving = saving);
 
-        this.wizardIsValid$ = this.store.select(fromEditor.getEditorIsValid);
+        this.wizardIsValid$ = this.store.select(fromResolver.getEditorIsValid);
         this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
     }
 
     save(): void {
-        this.store.dispatch(new UpdateProviderRequest({
+        this.store.dispatch(new UpdateResolverRequest({
             ...this.latest,
             ...this.changes,
             ...this.updates
@@ -113,9 +107,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.provider$.pipe(
+        this.resolver$.pipe(
             takeUntil(this.ngUnsubscribe)
-        ).subscribe(provider => this.provider = provider);
+        ).subscribe(resolver => this.resolver = resolver);
         this.changes$.pipe(
             takeUntil(this.ngUnsubscribe)
         ).subscribe(changes => this.changes = changes);
@@ -143,7 +137,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             skipWhile(() => this.saving)
         ).subscribe(latest => this.latest = latest);
 
-        this.invalidForms$ = this.store.select(fromEditor.getInvalidEditorForms);
+        this.invalidForms$ = this.store.select(fromResolver.getInvalidEditorForms);
 
         this.invalidForms$.pipe(
             distinctUntilChanged(),
@@ -170,7 +164,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         if (nextState.url.match('edit')) { return of(true); }
         if (Object.keys({ ...this.changes }).length > 0) {
             let modal = this.modalService.open(UnsavedDialogComponent);
-            modal.componentInstance.provider = this.latest;
+            modal.componentInstance.resolver = this.latest;
             modal.componentInstance.message = 'editor';
             modal.componentInstance.action = new CancelChanges();
             modal.result.then(
@@ -178,6 +172,6 @@ export class EditorComponent implements OnInit, OnDestroy {
                 () => console.warn('denied')
             );
         }
-        return this.store.select(fromEditor.getEditorIsSaved);
+        return this.store.select(fromResolver.getEditorIsSaved);
     }
 }

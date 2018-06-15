@@ -13,14 +13,14 @@ let resolvers: MetadataResolver[] = [
             [resolvers[0].id]: resolvers[0],
             [resolvers[1].id]: resolvers[1]
         },
-        selectedProviderId: null
+        selectedResolverId: null
     };
 
 describe('Resolver Reducer', () => {
     const initialState: fromCollection.CollectionState = {
         ids: [],
         entities: {},
-        selectedProviderId: null,
+        selectedResolverId: null,
     };
 
     describe('undefined action', () => {
@@ -33,7 +33,7 @@ describe('Resolver Reducer', () => {
 
     describe('Load Providers: Success', () => {
         it('should add the loaded resolvers to the collection', () => {
-            const action = new resolverActions.LoadProviderSuccess(resolvers);
+            const action = new resolverActions.LoadResolverSuccess(resolvers);
             const result = reducer(initialState, action);
 
             expect(result).toEqual(
@@ -51,9 +51,9 @@ describe('Resolver Reducer', () => {
                         [resolvers[0].id]: resolvers[0],
                         [resolvers[1].id]: changes
                     },
-                    selectedProviderId: null
+                    selectedResolverId: null
                 };
-            const action = new resolverActions.UpdateProviderSuccess({id: changes.id, changes});
+            const action = new resolverActions.UpdateResolverSuccess({id: changes.id, changes});
             const result = reducer({ ...snapshot }, action);
 
             expect(result).toEqual(
@@ -63,7 +63,7 @@ describe('Resolver Reducer', () => {
 
         it('should return state if the entityId is not found', () => {
             let changes = { ...resolvers[1], serviceEnabled: true, id: '4' };
-            const action = new resolverActions.UpdateProviderSuccess({id: changes.id, changes});
+            const action = new resolverActions.UpdateResolverSuccess({id: changes.id, changes});
             const result = reducer({ ...snapshot }, action);
 
             expect(result).toEqual(snapshot);
@@ -73,8 +73,8 @@ describe('Resolver Reducer', () => {
     describe('Select Resolver', () => {
         it('should update the selected draft id', () => {
             let id = 'foo',
-                expected = { ...snapshot, selectedProviderId: id };
-            const action = new resolverActions.SelectProvider(id);
+                expected = { ...snapshot, selectedResolverId: id };
+            const action = new resolverActions.SelectResolver(id);
             const result = reducer({ ...snapshot }, action);
 
             expect(result).toEqual(

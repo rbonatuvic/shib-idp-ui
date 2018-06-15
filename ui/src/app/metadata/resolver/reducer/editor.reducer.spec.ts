@@ -25,7 +25,7 @@ describe('Editor Reducer', () => {
 
     describe('Editor Add Resolver', () => {
         it('should update the status when a provider is saved', () => {
-            const action = new collectionActions.AddProviderRequest(changes);
+            const action = new collectionActions.AddResolverRequest(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -35,7 +35,7 @@ describe('Editor Reducer', () => {
         });
 
         it('should update the status on success', () => {
-            const action = new collectionActions.AddProviderSuccess(changes);
+            const action = new collectionActions.AddResolverSuccess(changes);
             const result = reducer({...initialState, changes: {...changes, organization: {name: 'foo'}}}, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -46,7 +46,7 @@ describe('Editor Reducer', () => {
         });
 
         it('should update the status on success', () => {
-            const action = new collectionActions.AddProviderFail(changes);
+            const action = new collectionActions.AddResolverFail(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {

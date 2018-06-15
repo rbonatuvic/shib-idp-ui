@@ -1,17 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
 import { Router } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
 
-import { DraftCollectionActionTypes, DraftCollectionActionsUnion } from '../action/draft-collection.action';
-import * as actions from '../action/draft-collection.action';
-
-import { MetadataResolver } from '../../domain/model/provider';
-import { EntityDraftService } from '../../domain/service/entity-draft.service';
+import { DraftActionTypes } from '../action/draft.action';
+import * as actions from '../action/draft.action';
+import { EntityDraftService } from '../../domain/service/draft.service';
 
 export const getPayload = (action: any) => action.payload;
 
@@ -21,7 +17,7 @@ export class DraftCollectionEffects {
 
     @Effect()
     loadDrafts$ = this.actions$.pipe(
-        ofType(DraftCollectionActionTypes.LOAD_DRAFT_REQUEST),
+        ofType(DraftActionTypes.LOAD_DRAFT_REQUEST),
         switchMap(() =>
             this.draftService
                 .query()
@@ -34,7 +30,7 @@ export class DraftCollectionEffects {
 
     @Effect()
     addDraft$ = this.actions$.pipe(
-        ofType<actions.AddDraftRequest>(DraftCollectionActionTypes.ADD_DRAFT),
+        ofType<actions.AddDraftRequest>(DraftActionTypes.ADD_DRAFT),
         map(getPayload),
         switchMap(provider =>
             this.draftService
@@ -47,7 +43,7 @@ export class DraftCollectionEffects {
 
     @Effect()
     addDraftSuccessReload$ = this.actions$.pipe(
-        ofType<actions.AddDraftSuccess>(DraftCollectionActionTypes.ADD_DRAFT_SUCCESS),
+        ofType<actions.AddDraftSuccess>(DraftActionTypes.ADD_DRAFT_SUCCESS),
         map(getPayload),
         switchMap(provider =>
             this.draftService
@@ -60,14 +56,14 @@ export class DraftCollectionEffects {
 
     @Effect({ dispatch: false })
     addDraftSuccessRedirect$ = this.actions$.pipe(
-        ofType<actions.AddDraftSuccess>(DraftCollectionActionTypes.ADD_DRAFT_SUCCESS),
+        ofType<actions.AddDraftSuccess>(DraftActionTypes.ADD_DRAFT_SUCCESS),
         map(getPayload),
         tap(provider => this.router.navigate(['provider', provider.entityId, 'wizard']))
     );
 
     @Effect()
     updateDraft$ = this.actions$.pipe(
-        ofType<actions.UpdateDraftRequest>(DraftCollectionActionTypes.UPDATE_DRAFT_REQUEST),
+        ofType<actions.UpdateDraftRequest>(DraftActionTypes.UPDATE_DRAFT_REQUEST),
         map(getPayload),
         switchMap(provider => {
             return this.draftService
@@ -83,7 +79,7 @@ export class DraftCollectionEffects {
 
     @Effect()
     selectDraft$ = this.actions$.pipe(
-        ofType<actions.SelectDraft>(DraftCollectionActionTypes.SELECT),
+        ofType<actions.SelectDraft>(DraftActionTypes.SELECT),
         map(getPayload),
         switchMap(id =>
             this.draftService
@@ -96,7 +92,7 @@ export class DraftCollectionEffects {
 
     @Effect()
     removeDraft$ = this.actions$.pipe(
-        ofType<actions.RemoveDraftRequest>(DraftCollectionActionTypes.REMOVE_DRAFT),
+        ofType<actions.RemoveDraftRequest>(DraftActionTypes.REMOVE_DRAFT),
         map(getPayload),
         switchMap(provider =>
             this.draftService
@@ -108,7 +104,7 @@ export class DraftCollectionEffects {
     );
     @Effect()
     removeDraftSuccessReload$ = this.actions$.pipe(
-        ofType<actions.RemoveDraftRequest>(DraftCollectionActionTypes.REMOVE_DRAFT),
+        ofType<actions.RemoveDraftRequest>(DraftActionTypes.REMOVE_DRAFT),
         map(getPayload),
         map(provider => new actions.LoadDraftRequest())
     );

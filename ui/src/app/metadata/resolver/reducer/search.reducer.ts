@@ -1,5 +1,4 @@
-import { SearchActionTypes, SearchActionUnion, SearchIds, SearchIdsSuccess, SearchIdsError } from '../action/search.action';
-import { MetadataResolver } from '../../domain/domain.type';
+import { SearchActionTypes, SearchActionUnion } from '../action/search.action';
 
 export interface SearchState {
     query: string;

@@ -4,12 +4,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import * as fromProvider from '../reducer';
-import { MetadataResolver } from '../../domain/domain.type';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { MetadataResolver } from '../../domain/model';
 import { ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
-import { UpdateProviderCopy } from '../action/copy.action';
+import { UpdateResolverCopy } from '../action/copy.action';
 import { map, take } from 'rxjs/operators';
-import { AddProviderRequest } from '../../domain/action/provider-collection.action';
+import { AddResolverRequest } from '../action/collection.action';
 
 @Component({
     selector: 'confirm-copy-page',
@@ -22,7 +21,7 @@ export class ConfirmCopyComponent {
     values$: Observable<MetadataResolver>;
     saving$: Observable<boolean>;
 
-    provider: MetadataResolver;
+    resolver: MetadataResolver;
 
     constructor(
         private store: Store<fromProvider.State>,
@@ -32,12 +31,12 @@ export class ConfirmCopyComponent {
         this.saving$ = this.store.select(fromProvider.getSaving);
 
         this.values$ = this.copy$.pipe(take(1));
-        this.valueEmitter.changeEmitted$.subscribe(changes => this.store.dispatch(new UpdateProviderCopy(changes)));
+        this.valueEmitter.changeEmitted$.subscribe(changes => this.store.dispatch(new UpdateResolverCopy(changes)));
 
-        this.copy$.subscribe(p => this.provider = p);
+        this.copy$.subscribe(p => this.resolver = p);
     }
 
-    onSave(provider: MetadataResolver): void {
-        this.store.dispatch(new AddProviderRequest(provider));
+    onSave(resolver: MetadataResolver): void {
+        this.store.dispatch(new AddResolverRequest(resolver));
     }
 } /* istanbul ignore next */

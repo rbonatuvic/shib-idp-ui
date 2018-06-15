@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { map, switchMap, debounceTime, withLatestFrom } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { SearchActionTypes, SearchActionUnion, SearchIdsSuccess } from '../action/search.action';
-import * as fromProvider from '../reducer';
-import * as fromCollection from '../../domain/reducer';
+import * as fromResolver from '../reducer';
 
 @Injectable()
 export class SearchIdEffects {
@@ -17,7 +16,7 @@ export class SearchIdEffects {
     searchEntityIds$ = this.actions$.pipe(
         ofType<SearchActionUnion>(SearchActionTypes.SEARCH_IDS),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromCollection.getAllEntityIds)),
+        withLatestFrom(this.store.select(fromResolver.getAllEntityIds)),
         map(([ query, ids ]) => {
             if (!query) { return []; }
             return ids.filter(e => this.matcher(e, query));
@@ -29,6 +28,6 @@ export class SearchIdEffects {
 
     constructor(
         private actions$: Actions,
-        private store: Store<fromProvider.State>
+        private store: Store<fromResolver.State>
     ) { }
 }

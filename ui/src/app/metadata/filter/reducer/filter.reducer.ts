@@ -7,7 +7,7 @@ import {
     SearchActionsUnion
 } from '../action/search.action';
 import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/collection.action';
-import { MetadataFilter, MDUI } from '../../domain/domain.type';
+import { MetadataFilter, MDUI } from '../../domain/model';
 
 export interface FilterState {
     selected: string | null;
