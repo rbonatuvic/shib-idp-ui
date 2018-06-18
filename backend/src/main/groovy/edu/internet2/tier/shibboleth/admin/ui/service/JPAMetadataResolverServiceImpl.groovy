@@ -107,7 +107,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     }
                 }
             }
-            println writer.toString()
             return DOMBuilder.newInstance().parseText(writer.toString())
         }
     }
