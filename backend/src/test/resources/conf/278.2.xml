@@ -24,6 +24,9 @@
             </saml:Attribute>
             <Entity>https://sp1.example.org</Entity>
         </MetadataFilter>
+        <MetadataFilter xsi:type="EntityRoleWhiteList" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+            <RetainedRole>md:SPSSODescriptor</RetainedRole>
+        </MetadataFilter>
     </MetadataProvider>
 
 </MetadataProvider>
