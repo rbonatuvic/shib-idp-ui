@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { TestActions, getActions } from '../../../../testing/effect.util';
 import { EntityEffects } from './entity.effect';
 import { EntityIdService } from '../service/entity-id.service';
-import { EntityDescriptorService } from '../service/entity-descriptor.service';
+import { ResolverService } from '../service/resolver.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { EntityAttributesFilter } from '../entity';
@@ -26,7 +26,7 @@ describe('Entity Effects', () => {
                     useClass: NgbModalStub
                 },
                 {
-                    provide: EntityDescriptorService,
+                    provide: ResolverService,
                     useValue: { preview: () => {} },
                 },
                 {
@@ -38,7 +38,7 @@ describe('Entity Effects', () => {
         });
 
         effects = TestBed.get(EntityEffects);
-        providerService = TestBed.get(EntityDescriptorService);
+        providerService = TestBed.get(ResolverService);
         idService = TestBed.get(EntityIdService);
         modal = TestBed.get(NgbModal);
         actions$ = TestBed.get(Actions);

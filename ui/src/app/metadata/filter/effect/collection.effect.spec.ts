@@ -4,7 +4,7 @@ import { Actions } from '@ngrx/effects';
 import { TestActions, getActions } from '../../../../testing/effect.util';
 import { MetadataFilter } from '../../domain/model';
 import { FilterCollectionEffects } from './collection.effect';
-import { MetadataResolverService } from '../../domain/service/metadata-resolver.service';
+import { MetadataProviderService } from '../../domain/service/provider.service';
 import { Router } from '@angular/router';
 import { RouterStub } from '../../../../testing/router.stub';
 
@@ -18,7 +18,7 @@ describe('Filter Collection Effects', () => {
             providers: [
                 FilterCollectionEffects,
                 {
-                    provide: MetadataResolverService,
+                    provide: MetadataProviderService,
                     useValue: {
                         query: () => { },
                         find: (id: string) => { },
@@ -32,7 +32,7 @@ describe('Filter Collection Effects', () => {
         });
 
         effects = TestBed.get(FilterCollectionEffects);
-        draftService = TestBed.get(MetadataResolverService);
+        draftService = TestBed.get(MetadataProviderService);
         actions$ = TestBed.get(Actions);
     });
 });

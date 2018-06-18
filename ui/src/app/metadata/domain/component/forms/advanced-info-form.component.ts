@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
-import { takeUntil, combineLatest, switchMap, map, startWith } from 'rxjs/operators';
+import { takeUntil, switchMap, map, startWith } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 

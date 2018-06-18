@@ -4,21 +4,21 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromCollections from '../../../domain/reducer';
+import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { RelyingPartyFormComponent } from './relying-party-form.component';
-import { Resolver } from '../../../domain/entity/provider';
-import * as stubs from '../../../../testing/provider.stub';
-import { SharedModule } from '../../../shared/shared.module';
+import * as stubs from '../../../../../testing/resolver.stub';
+import { SharedModule } from '../../../../shared/shared.module';
+import { FileBackedHttpMetadataResolver } from '../../entity';
 
 
 @Component({
-    template: `<relying-party-form [provider]="provider"></relying-party-form>`
+    template: `<relying-party-form [resolver]="resolver"></relying-party-form>`
 })
 class TestHostComponent {
-    provider = new Resolver({
-        ...stubs.provider,
+    resolver = new FileBackedHttpMetadataResolver({
+        ...stubs.resolver,
         relyingPartyOverrides: {
             nameIdFormats: [],
             authenticationMethods: []
@@ -29,18 +29,18 @@ class TestHostComponent {
     public formUnderTest: RelyingPartyFormComponent;
 
     changeProvider(opts: any): void {
-        this.provider = Object.assign({}, this.provider, opts);
+        this.resolver = Object.assign({}, this.resolver, opts);
     }
 
     addString(collection: 'nameIdFormats' | 'authenticationMethods', value: string): void {
-        this.provider.relyingPartyOverrides[collection].push(value);
+        this.resolver.relyingPartyOverrides[collection].push(value);
     }
 }
 
 describe('Relying Party Form Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let store: Store<fromCollections.CollectionState>;
+    let store: Store<fromMetadata.MetadataState>;
     let form: RelyingPartyFormComponent;
     let fb: FormBuilder;
 
@@ -56,7 +56,7 @@ describe('Relying Party Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'collections': combineReducers(fromCollections.reducers),
+                    'metadata': combineReducers(fromMetadata.reducers),
                 }),
                 NgbPopoverModule,
                 SharedModule

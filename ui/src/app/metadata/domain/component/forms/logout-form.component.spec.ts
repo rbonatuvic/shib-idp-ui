@@ -4,22 +4,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromCollections from '../../../domain/reducer';
+import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { LogoutFormComponent } from './logout-form.component';
 
-import * as stubs from '../../../../testing/provider.stub';
-import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
+import * as stubs from '../../../../../testing/resolver.stub';
 import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
-import { Resolver } from '../../../domain/entity/provider';
+import { FileBackedHttpMetadataResolver } from '../../entity';
+import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
 
 @Component({
-    template: `<logout-form [provider]="provider"></logout-form>`
+    template: `<logout-form [resolver]="resolver"></logout-form>`
 })
 class TestHostComponent {
-    provider = new Resolver({
-        ...stubs.provider,
+    resolver = new FileBackedHttpMetadataResolver({
+        ...stubs.resolver,
         logoutEndpoints: [stubs.logoutEndpoint]
     });
 
@@ -27,14 +27,14 @@ class TestHostComponent {
     public formUnderTest: LogoutFormComponent;
 
     changeProvider(opts: any): void {
-        this.provider = Object.assign({}, this.provider, opts);
+        this.resolver = Object.assign({}, this.resolver, opts);
     }
 }
 
 describe('Logout Endpoints Form Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let store: Store<fromCollections.CollectionState>;
+    let store: Store<fromMetadata.MetadataState>;
     let form: LogoutFormComponent;
 
     beforeEach(() => {
@@ -49,7 +49,7 @@ describe('Logout Endpoints Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'collections': combineReducers(fromCollections.reducers),
+                    'metadata': combineReducers(fromMetadata.reducers),
                 }),
                 NgbPopoverModule
             ],
@@ -85,8 +85,8 @@ describe('Logout Endpoints Form Component', () => {
 
     describe('ngOnChanges method', () => {
         it('should add endpoints if provided', () => {
-            instance.provider = new Resolver({
-                ...stubs.provider
+            instance.resolver = new FileBackedHttpMetadataResolver({
+                ...stubs.resolver
             });
             fixture.detectChanges();
             expect(form.logoutEndpoints.length).toBe(0);

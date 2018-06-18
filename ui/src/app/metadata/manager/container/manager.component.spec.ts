@@ -5,7 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination/pagination.module';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
-import { DashboardComponent } from './manager.component';
+import { ManagerComponent } from './manager.component';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
 import { EntityItemComponent } from '../component/entity-item.component';
@@ -16,11 +16,11 @@ import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 
 
 describe('Metadata Manager Page', () => {
-    let fixture: ComponentFixture<DashboardComponent>;
+    let fixture: ComponentFixture<ManagerComponent>;
     let store: Store<fromDashboard.DashboardState>;
     let router: Router;
     let modal: NgbModal;
-    let instance: DashboardComponent;
+    let instance: ManagerComponent;
 
     let draft = new FileBackedHttpMetadataResolver({
             entityId: 'foo',
@@ -48,14 +48,14 @@ describe('Metadata Manager Page', () => {
                 NgbModalModule
             ],
             declarations: [
-                DashboardComponent,
+                ManagerComponent,
                 ProviderSearchComponent,
                 EntityItemComponent,
                 DeleteDialogComponent
             ],
         });
 
-        fixture = TestBed.createComponent(DashboardComponent);
+        fixture = TestBed.createComponent(ManagerComponent);
         instance = fixture.componentInstance;
         store = TestBed.get(Store);
         router = TestBed.get(Router);

@@ -5,7 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { WizardNavComponent } from './wizard-nav.component';
 import * as fromEditor from '../reducer';
-import { ProviderEditorFormModule } from '../../metadata-provider/component/index';
+import { ProviderEditorFormModule } from '../../domain/component';
 import { DomainModule } from '../../domain/domain.module';
 
 @Component({

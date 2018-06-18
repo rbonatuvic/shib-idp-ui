@@ -4,17 +4,19 @@ import {
     SsoService,
     Certificate,
     SecurityInfo,
-    LogoutEndpoint
+    LogoutEndpoint,
+    MetadataResolver
 } from '../app/metadata/domain/model';
 
 export const draft = {
+    entityId: 'foo',
     serviceProviderName: 'bar'
-} as MetadataProvider;
+} as MetadataResolver;
 
-export const provider = {
+export const resolver = {
     ...draft,
     id: '1'
-} as MetadataProvider;
+} as MetadataResolver;
 
 export const contact = {
     type: 'support',

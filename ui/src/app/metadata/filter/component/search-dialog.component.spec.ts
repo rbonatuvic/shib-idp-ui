@@ -1,11 +1,11 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { NgbModalModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { SearchDialogComponent } from './search-dialog.component';
-import { NgbActiveModalStub } from '../../../testing/modal.stub';
+import { NgbActiveModalStub } from '../../../../testing/modal.stub';
 import * as fromFilter from '../reducer';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 describe('Search Dialog', () => {
     let fixture: ComponentFixture<SearchDialogComponent>;

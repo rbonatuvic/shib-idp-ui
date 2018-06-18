@@ -15,7 +15,7 @@ import {
     UpdateFilterSuccess
 } from '../action/collection.action';
 import { MDUI } from '../../domain/model';
-import { MetadataFilter } from '../../domain/domain.type';
+import { MetadataFilter } from '../../domain/model';
 import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
 
 

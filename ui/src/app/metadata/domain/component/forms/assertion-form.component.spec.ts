@@ -3,15 +3,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromCollections from '../../../domain/reducer';
+import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { AssertionFormComponent } from './assertion-form.component';
-import * as stubs from '../../../../testing/provider.stub';
+import * as stubs from '../../../../../testing/resolver.stub';
 
 describe('Assertion Form Component', () => {
     let fixture: ComponentFixture<AssertionFormComponent>;
     let instance: AssertionFormComponent;
-    let store: Store<fromCollections.CollectionState>;
+    let store: Store<fromMetadata.MetadataState>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ describe('Assertion Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'collections': combineReducers(fromCollections.reducers),
+                    'metadata': combineReducers(fromMetadata.reducers),
                 }),
                 NgbPopoverModule
             ],
@@ -46,17 +46,17 @@ describe('Assertion Form Component', () => {
 
     describe('ngOnChanges method', () => {
         it('should set properties on the provider', () => {
-            instance.provider = stubs.provider;
+            instance.resolver = stubs.resolver;
             fixture.detectChanges();
             instance.ngOnChanges();
-            expect(instance.provider.assertionConsumerServices).toEqual([]);
+            expect(instance.resolver.assertionConsumerServices).toEqual([]);
         });
     });
 
     describe('removeEndpoint method', () => {
         it('should remove the endpoint at the given index', () => {
-            instance.provider = {
-                ...stubs.provider,
+            instance.resolver = {
+                ...stubs.resolver,
                 assertionConsumerServices: [stubs.endpoint]
             };
             fixture.detectChanges();
@@ -68,8 +68,8 @@ describe('Assertion Form Component', () => {
 
     describe('addEndpoint method', () => {
         it('should remove the endpoint at the given index', () => {
-            instance.provider = {
-                ...stubs.provider,
+            instance.resolver = {
+                ...stubs.resolver,
                 assertionConsumerServices: [stubs.endpoint]
             };
             fixture.detectChanges();

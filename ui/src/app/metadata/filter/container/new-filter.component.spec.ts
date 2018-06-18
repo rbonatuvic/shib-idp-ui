@@ -3,11 +3,11 @@ import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NewFilterComponent } from './new-filter.component';
 import * as fromFilter from '../reducer';
-import { ProviderEditorFormModule } from '../../metadata-provider/component';
+import { ProviderEditorFormModule } from '../../domain/component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
-import { NgbPopoverModule, NgbPopoverConfig, NgbModalModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NavigatorService } from '../../core/service/navigator.service';
-import { SharedModule } from '../../shared/shared.module';
+import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NavigatorService } from '../../../core/service/navigator.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;

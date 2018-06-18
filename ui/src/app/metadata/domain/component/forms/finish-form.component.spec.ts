@@ -5,38 +5,38 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromCollections from '../../../domain/reducer';
+import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { FinishFormComponent } from './finish-form.component';
-import { RouterStub, RouterLinkStubDirective } from '../../../../testing/router.stub';
-import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
+import { RouterStub, RouterLinkStubDirective } from '../../../../../testing/router.stub';
+import { ActivatedRouteStub } from '../../../../../testing/activated-route.stub';
 
-import * as stubs from '../../../../testing/provider.stub';
-import { InputDefaultsDirective } from '../../directive/input-defaults.directive';
+import * as stubs from '../../../../../testing/resolver.stub';
 import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
-import { Resolver } from '../../../domain/entity/provider';
+import { FileBackedHttpMetadataResolver } from '../../entity';
+import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
 
 @Component({
-    template: `<finish-form [provider]="provider"></finish-form>`
+    template: `<finish-form [resolver]="resolver"></finish-form>`
 })
 class TestHostComponent {
-    provider = new Resolver({
-        ...stubs.provider
+    resolver = new FileBackedHttpMetadataResolver({
+        ...stubs.resolver
     });
 
     @ViewChild(FinishFormComponent)
     public formUnderTest: FinishFormComponent;
 
     changeProvider(opts: any): void {
-        this.provider = Object.assign({}, this.provider, opts);
+        this.resolver = Object.assign({}, this.resolver, opts);
     }
 }
 
 describe('Finished Form Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let store: Store<fromCollections.CollectionState>;
+    let store: Store<fromMetadata.MetadataState>;
     let form: FinishFormComponent;
 
     beforeEach(() => {
@@ -53,7 +53,7 @@ describe('Finished Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'collections': combineReducers(fromCollections.reducers),
+                    'metadata': combineReducers(fromMetadata.reducers),
                 }),
                 NgbPopoverModule
             ],
@@ -88,9 +88,9 @@ describe('Finished Form Component', () => {
             expect(form.form.reset).toHaveBeenCalled();
         });
 
-        xit('should reset the form with serviceEnabled = false if no provider', () => {
+        xit('should reset the form with serviceEnabled = false if no resolver', () => {
             spyOn(form.form, 'reset').and.callThrough();
-            delete instance.provider;
+            delete instance.resolver;
             fixture.detectChanges();
             expect(form.form.reset).toHaveBeenCalled();
         });

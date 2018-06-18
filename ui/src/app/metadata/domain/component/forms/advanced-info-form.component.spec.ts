@@ -3,15 +3,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromCollections from '../../../domain/reducer';
+import * as fromMetadata from '../../../metadata.reducer';
 import { AdvancedInfoFormComponent } from './advanced-info-form.component';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
-import * as stubs from '../../../../testing/provider.stub';
+import * as stubs from '../../../../../testing/resolver.stub';
 
 describe('Advanced Info Form Component', () => {
     let fixture: ComponentFixture<AdvancedInfoFormComponent>;
     let instance: AdvancedInfoFormComponent;
-    let store: Store<fromCollections.CollectionState>;
+    let store: Store<fromMetadata.MetadataState>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ describe('Advanced Info Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'collections': combineReducers(fromCollections.reducers),
+                    'metadata': combineReducers(fromMetadata.reducers),
                 }),
                 NgbPopoverModule
             ],
@@ -45,19 +45,19 @@ describe('Advanced Info Form Component', () => {
     });
 
     describe('ngOnChanges method', () => {
-        it('should set properties on the provider', () => {
-            instance.provider = stubs.provider;
+        it('should set properties on the resolver', () => {
+            instance.resolver = stubs.resolver;
             fixture.detectChanges();
             instance.ngOnChanges();
-            expect(instance.provider.organization).toEqual({});
-            expect(instance.provider.contacts).toEqual([]);
+            expect(instance.resolver.organization).toEqual({});
+            expect(instance.resolver.contacts).toEqual([]);
         });
     });
 
     describe('removeContact method', () => {
         it('should remove the contact at the given index', () => {
-            instance.provider = {
-                ...stubs.provider,
+            instance.resolver = {
+                ...stubs.resolver,
                 contacts: [stubs.contact]
             };
             fixture.detectChanges();
@@ -69,8 +69,8 @@ describe('Advanced Info Form Component', () => {
 
     describe('addContact method', () => {
         it('should remove the contact at the given index', () => {
-            instance.provider = {
-                ...stubs.provider,
+            instance.resolver = {
+                ...stubs.resolver,
                 contacts: [stubs.contact]
             };
             fixture.detectChanges();

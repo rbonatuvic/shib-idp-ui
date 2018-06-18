@@ -3,16 +3,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromCollections from '../../../domain/reducer';
+import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { AttributeReleaseFormComponent } from './attribute-release-form.component';
 import { ListValuesService } from '../../../domain/service/list-values.service';
-import * as stubs from '../../../../testing/provider.stub';
+import * as stubs from '../../../../../testing/resolver.stub';
 
 describe('Attribute Release Form Component', () => {
     let fixture: ComponentFixture<AttributeReleaseFormComponent>;
     let instance: AttributeReleaseFormComponent;
-    let store: Store<fromCollections.CollectionState>;
+    let store: Store<fromMetadata.State>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -26,7 +26,7 @@ describe('Attribute Release Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 StoreModule.forRoot({
-                    'collections': combineReducers(fromCollections.reducers),
+                    'metadata': combineReducers(fromMetadata.reducers),
                 }),
                 NgbPopoverModule
             ],
@@ -39,8 +39,8 @@ describe('Attribute Release Form Component', () => {
 
         fixture = TestBed.createComponent(AttributeReleaseFormComponent);
         instance = fixture.componentInstance;
-        instance.provider = {
-            ...stubs.provider,
+        instance.resolver = {
+            ...stubs.resolver,
             attributeRelease: []
         };
         fixture.detectChanges();
@@ -54,7 +54,7 @@ describe('Attribute Release Form Component', () => {
         it('should set properties on the provider', () => {
             spyOn(instance, 'setAttributes');
             instance.ngOnChanges();
-            expect(instance.provider.attributeRelease).toEqual([]);
+            expect(instance.resolver.attributeRelease).toEqual([]);
             expect(instance.setAttributes).toHaveBeenCalled();
         });
     });
