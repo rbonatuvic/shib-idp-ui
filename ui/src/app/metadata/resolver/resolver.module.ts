@@ -15,7 +15,7 @@ import { CopyResolverComponent } from './container/copy-resolver.component';
 import { ResolverComponent } from './container/resolver.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchIdEffects } from './effect/search.effect';
-import * as fromProvider from './reducer';
+import * as fromResolver from './reducer';
 import { ConfirmCopyComponent } from './container/confirm-copy.component';
 import { CopyIsSetGuard } from './guard/copy-isset.guard';
 import { CopyResolverEffects } from './effect/copy.effect';
@@ -23,6 +23,11 @@ import { DomainModule } from '../domain/domain.module';
 import { DraftComponent } from './container/draft.component';
 import { EditorComponent } from './container/editor.component';
 import { WizardComponent } from './container/wizard.component';
+import { WizardNavComponent } from './component/wizard-nav.component';
+import { ResolverCollectionEffects } from './effect/collection.effects';
+import { DraftCollectionEffects } from './effect/draft-collection.effects';
+import { WizardEffects } from './effect/wizard.effect';
+import { EditorEffects } from './effect/editor.effect';
 
 @NgModule({
     declarations: [
@@ -34,7 +39,8 @@ import { WizardComponent } from './container/wizard.component';
         ResolverComponent,
         DraftComponent,
         EditorComponent,
-        WizardComponent
+        WizardComponent,
+        WizardNavComponent
     ],
     entryComponents: [],
     imports: [
@@ -48,7 +54,8 @@ import { WizardComponent } from './container/wizard.component';
         ProviderEditorFormModule
     ],
     exports: [
-        ProviderEditorFormModule
+        ProviderEditorFormModule,
+        WizardNavComponent
     ],
     providers: []
 })
@@ -102,10 +109,14 @@ export const routes: Routes = [
     imports: [
         ResolverModule,
         RouterModule.forChild(routes),
-        StoreModule.forFeature('provider', fromProvider.reducers),
+        StoreModule.forFeature('resolver', fromResolver.reducers),
         EffectsModule.forFeature([
             SearchIdEffects,
-            CopyResolverEffects
+            CopyResolverEffects,
+            ResolverCollectionEffects,
+            DraftCollectionEffects,
+            WizardEffects,
+            EditorEffects
         ])
     ],
 })

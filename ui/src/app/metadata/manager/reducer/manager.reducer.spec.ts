@@ -4,7 +4,7 @@ import { ToggleEntityDisplay } from '../action/manager.action';
 
 describe('Dashboard Reducer', () => {
     const initialState: fromDashboard.State = {
-        providersOpen: {}
+        resolversOpen: {}
     };
 
     describe('undefined action', () => {

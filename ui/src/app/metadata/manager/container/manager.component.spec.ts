@@ -26,7 +26,7 @@ describe('Metadata Manager Page', () => {
             entityId: 'foo',
             serviceProviderName: 'bar'
         }),
-        provider = new FileBackedHttpMetadataResolver({
+        resolver = new FileBackedHttpMetadataResolver({
             entityId: 'foo',
             serviceProviderName: 'foo',
             id: '1'
@@ -70,7 +70,7 @@ describe('Metadata Manager Page', () => {
         expect(fixture).toBeDefined();
     });
 
-    xdescribe('getPagedProviders method', () => {});
+    xdescribe('getPagedResolvers method', () => {});
 
     describe('changePage method', () => {
         it('should update the page value', () => {
@@ -79,24 +79,24 @@ describe('Metadata Manager Page', () => {
             expect(instance.page).toBe(page);
         });
 
-        it('should update the paged providers list', () => {
+        it('should update the paged resolvers list', () => {
             let page = 2;
-            spyOn(instance, 'getPagedProviders');
+            spyOn(instance, 'getPagedResolvers');
             instance.changePage(page);
-            expect(instance.getPagedProviders).toHaveBeenCalled();
+            expect(instance.getPagedResolvers).toHaveBeenCalled();
         });
     });
 
-    describe('toggleProvider method', () => {
+    describe('toggleResolver method', () => {
         it('should fire a redux action', () => {
-            instance.toggleProvider(draft);
+            instance.toggleEntity(draft);
             expect(store.dispatch).toHaveBeenCalled();
         });
     });
 
     describe('openPreviewDialog method', () => {
         it('should fire a redux action', () => {
-            instance.openPreviewDialog(provider);
+            instance.openPreviewDialog(resolver);
             expect(store.dispatch).toHaveBeenCalled();
         });
     });
@@ -115,24 +115,24 @@ describe('Metadata Manager Page', () => {
     describe('edit method', () => {
         it('should route to the edit page', () => {
             spyOn(router, 'navigate');
-            instance.edit(provider);
-            expect(router.navigate).toHaveBeenCalledWith(['provider', provider.id, 'edit']);
+            instance.edit(resolver);
+            expect(router.navigate).toHaveBeenCalledWith(['resolver', resolver.id, 'edit']);
         });
         it('should route to the wizard page', () => {
             spyOn(router, 'navigate');
             instance.edit(draft);
-            expect(router.navigate).toHaveBeenCalledWith(['provider', draft.entityId, 'wizard']);
+            expect(router.navigate).toHaveBeenCalledWith(['resolver', draft.entityId, 'wizard']);
         });
     });
 
-    describe('deleteProvider method', () => {
+    describe('deleteResolver method', () => {
         it('should call the modal service', () => {
             spyOn(modal, 'open').and.callFake(() => {
                 return {
                     result: Promise.resolve(true)
                 };
             });
-            instance.deleteProvider(provider);
+            instance.deleteResolver(resolver);
             expect(modal.open).toHaveBeenCalled();
         });
         it('should log an error to the console on failure', () => {
@@ -141,7 +141,7 @@ describe('Metadata Manager Page', () => {
                     result: Promise.reject(false)
                 };
             });
-            instance.deleteProvider(provider);
+            instance.deleteResolver(resolver);
             expect(modal.open).toHaveBeenCalled();
         });
     });

@@ -1,9 +1,8 @@
 import * as searchActions from '../action/search.action';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { MetadataFilter } from '../../domain/model/metadata-filter';
+import { MetadataEntity } from '../../domain/model';
 
 export interface SearchState {
-    entities: (MetadataProvider | MetadataFilter)[];
+    entities: MetadataEntity[];
     loading: boolean;
     query: string;
     kind: string;

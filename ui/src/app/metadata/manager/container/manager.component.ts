@@ -22,13 +22,13 @@ import { RemoveDraftRequest } from '../../resolver/action/draft.action';
 })
 export class ManagerComponent implements OnInit {
     searchQuery$: Observable<string>;
-    providers$: Observable<Metadata[]>;
+    resolvers$: Observable<MetadataEntity[]>;
     loading$: Observable<boolean>;
 
     total$: Observable<number>;
     page = 1;
     limit = 8;
-    limited$: Observable<Metadata[]>;
+    limited$: Observable<MetadataEntity[]>;
 
     entitiesOpen$: Observable<{[key: string]: boolean}>;
 
@@ -41,16 +41,16 @@ export class ManagerComponent implements OnInit {
         private router: Router,
         private modalService: NgbModal
     ) {
-        this.providers$ = store.select(fromDashboard.getSearchResults);
+        this.resolvers$ = store.select(fromDashboard.getSearchResults);
         this.searchQuery$ = store.select(fromDashboard.getSearchQuery);
         this.loading$ = store.select(fromDashboard.getSearchLoading);
         this.entitiesOpen$ = store.select(fromDashboard.getOpenProviders);
         this.filtering$ = store.select(fromDashboard.getFilterType);
         this.filtering$.subscribe(f => this.filtering = f);
 
-        this.total$ = this.providers$.pipe(map(list => list.length));
+        this.total$ = this.resolvers$.pipe(map(list => list.length));
 
-        this.limited$ = this.getPagedProviders(this.page, this.providers$);
+        this.limited$ = this.getPagedResolvers(this.page, this.resolvers$);
 
         // this.providers$.subscribe(p => console.log(p));
     }
@@ -60,12 +60,12 @@ export class ManagerComponent implements OnInit {
         this.changeFilter('all');
     }
 
-    getPagedProviders(page: number, list$: Observable<Metadata[]>): Observable<Metadata[]> {
+    getPagedResolvers(page: number, list$: Observable<MetadataEntity[]>): Observable<MetadataEntity[]> {
         return list$.pipe(
-            map((providers: Metadata[]) => {
+            map((providers: MetadataEntity[]) => {
                 let maxIndex = (page * this.limit) - 1,
                     minIndex = ((page - 1) * this.limit);
-                return providers.filter((provider: Metadata, index: number) =>  (maxIndex >= index && index >= minIndex) );
+                return providers.filter((resolver: MetadataEntity, index: number) =>  (maxIndex >= index && index >= minIndex) );
             })
         );
     }
@@ -76,7 +76,7 @@ export class ManagerComponent implements OnInit {
 
     changePage(index: number): void {
         this.page = index;
-        this.limited$ = this.getPagedProviders(index, this.providers$);
+        this.limited$ = this.getPagedResolvers(index, this.resolvers$);
     }
 
     search(query: string = ''): void {
@@ -85,10 +85,10 @@ export class ManagerComponent implements OnInit {
     }
 
     edit(entity: MetadataEntity): void {
-        this.router.navigate(['resolver', entity.getId(), entity.getId() ? 'edit' : 'wizard']);
+        this.router.navigate(['resolver', entity.getId(), entity.isDraft() ? 'wizard' : 'edit']);
     }
 
-    toggleProvider(entity: MetadataEntity): void {
+    toggleEntity(entity: MetadataEntity): void {
         this.store.dispatch(new ToggleEntityDisplay(entity.getId()));
     }
 
@@ -96,7 +96,7 @@ export class ManagerComponent implements OnInit {
         this.store.dispatch(new PreviewEntity(entity));
     }
 
-    deleteProvider(entity: MetadataResolver): void {
+    deleteResolver(entity: MetadataResolver): void {
         this.modalService
             .open(DeleteDialogComponent)
             .result

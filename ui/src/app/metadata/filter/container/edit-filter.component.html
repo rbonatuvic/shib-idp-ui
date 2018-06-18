@@ -171,10 +171,10 @@
                     </div>
                     <div class="row" *ngIf="filter$ | async">
                         <div class="col-lg-6">
-                            <relying-party-form [provider]="filter$ | async"></relying-party-form>
+                            <relying-party-form [resolver]="filter$ | async"></relying-party-form>
                         </div>
                         <div class="col-lg-6">
-                            <attribute-release-form [provider]="filter$ | async"></attribute-release-form>
+                            <attribute-release-form [resolver]="filter$ | async"></attribute-release-form>
                         </div>
                     </div>
                 </section>

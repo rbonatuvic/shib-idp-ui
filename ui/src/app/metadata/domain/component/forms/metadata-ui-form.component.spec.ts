@@ -15,7 +15,7 @@ import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
 
 @Component({
-    template: `<metadata-ui-form [provider]="provider"></metadata-ui-form>`
+    template: `<metadata-ui-form [resolver]="resolver"></metadata-ui-form>`
 })
 class TestHostComponent {
     resolver = new FileBackedHttpMetadataResolver({

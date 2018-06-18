@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HighlightPipe } from './pipe/highlight.pipe';
 import { AutoCompleteComponent } from './autocomplete/autocomplete.component';
 import { ValidationClassDirective } from './validation/validation-class.directive';
+import { InputDefaultsDirective } from './directive/input-defaults.directive';
 
 @NgModule({
     imports: [
@@ -14,14 +15,16 @@ import { ValidationClassDirective } from './validation/validation-class.directiv
     declarations: [
         HighlightPipe,
         AutoCompleteComponent,
-        ValidationClassDirective
+        ValidationClassDirective,
+        InputDefaultsDirective
     ],
     exports: [
         HighlightPipe,
         AutoCompleteComponent,
         CommonModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        InputDefaultsDirective
     ]
 })
 export class SharedModule { }

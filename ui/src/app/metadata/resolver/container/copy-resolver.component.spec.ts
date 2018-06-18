@@ -3,8 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import * as fromCollections from '../reducer';
-import * as fromProvider from '../reducer';
+import * as fromResolver from '../reducer';
 import { CopyResolverComponent } from './copy-resolver.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { NavigatorService } from '../../../core/service/navigator.service';
@@ -23,7 +22,7 @@ class TestHostComponent {
 
 describe('Copy Resolver Page', () => {
     let fixture: ComponentFixture<TestHostComponent>;
-    let store: Store<fromCollections.State>;
+    let store: Store<fromResolver.State>;
     let instance: CopyResolverComponent;
 
     beforeEach(() => {
@@ -31,8 +30,7 @@ describe('Copy Resolver Page', () => {
             imports: [
                 NoopAnimationsModule,
                 StoreModule.forRoot({
-                    collections: combineReducers(fromCollections.reducers),
-                    resolver: combineReducers(fromProvider.reducers)
+                    resolver: combineReducers(fromResolver.reducers)
                 }),
                 ReactiveFormsModule,
                 SharedModule

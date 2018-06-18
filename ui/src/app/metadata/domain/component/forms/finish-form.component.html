@@ -23,11 +23,11 @@
                 </h3>
                 <dl>
                     <dt class="text-primary" i18n="@@label--service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only)</dt>
-                    <dd class="value">{{ provider.serviceProviderName }}</dd>
+                    <dd class="value">{{ resolver.serviceProviderName }}</dd>
                     <dt class="text-primary" i18n="@@label--service-provider-entity-id">Service Provider Entity ID</dt>
-                    <dd class="value">{{ provider.entityId }}</dd>
+                    <dd class="value">{{ resolver.entityId }}</dd>
                     <dt class="text-primary" i18n="@@label--enable-this-service">Enable this service?</dt>
-                    <dd class="value">{{ provider.serviceEnabled ? 'Yes' : 'No' }}</dd>
+                    <dd class="value">{{ resolver.serviceEnabled ? 'Yes' : 'No' }}</dd>
                 </dl>
             </section>
             <section class="entity-section">
@@ -35,17 +35,17 @@
                     <span class="index">2</span>
                     <ng-container i18n="@@label--organization-information">Organization Information</ng-container>
                 </a>
-                <dl *ngIf="provider.organization">
+                <dl *ngIf="resolver.organization">
                     <dt class="text-primary" i18n="@@label--organization-name">Organization Name</dt>
-                    <dd class="value">{{ provider.organization.name }}</dd>
+                    <dd class="value">{{ resolver.organization.name }}</dd>
                     <dt class="text-primary" i18n="@@label--organization-display-name">Organization Display Name</dt>
-                    <dd class="value">{{ provider.organization.displayName }}</dd>
+                    <dd class="value">{{ resolver.organization.displayName }}</dd>
                     <dt class="text-primary" i18n="@@label--organization-url">Organization URL</dt>
-                    <dd class="value">{{ provider.organization.url }}</dd>
+                    <dd class="value">{{ resolver.organization.url }}</dd>
                     <dt class="text-primary" i18n="@@label--contact-information">Contact Information</dt>
                     <dd class="value">
-                        <p class="text-secondary" *ngIf="!provider.contacts.length">&mdash;</p>
-                        <table class="table table-sm table-bordered table-striped" *ngIf="provider.contacts.length">
+                        <p class="text-secondary" *ngIf="!resolver.contacts.length">&mdash;</p>
+                        <table class="table table-sm table-bordered table-striped" *ngIf="resolver.contacts.length">
                             <thead>
                             <tr class="table-secondary">
                                 <th scope="col" i18n="@@label--given-name">Given Name</th>
@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let contact of provider.contacts">
+                            <tr *ngFor="let contact of resolver.contacts">
                                 <td>{{ contact.name }}</td>
                                 <td>{{ contact.emailAddress }}</td>
                                 <td>{{ contact.type }}</td>
@@ -69,21 +69,21 @@
                     <span class="index">3</span>
                     <ng-container i18n="@@label--user-interface-mdui-infromation">User Interface / MDUI Information</ng-container>
                 </a>
-                <dl *ngIf="provider.mdui">
+                <dl *ngIf="resolver.mdui">
                     <dt class="text-primary" i18n="@@label--display-name">Display Name</dt>
-                    <dd class="value">{{ provider.mdui.displayName }}</dd>
+                    <dd class="value">{{ resolver.mdui.displayName }}</dd>
                     <dt class="text-primary" i18n="@@label--information-url">Information URL</dt>
-                    <dd class="value">{{ provider.mdui.informationUrl }}</dd>
+                    <dd class="value">{{ resolver.mdui.informationUrl }}</dd>
                     <dt class="text-primary" i18n="@@label--description">Description</dt>
-                    <dd class="value">{{ provider.mdui.description }}</dd>
+                    <dd class="value">{{ resolver.mdui.description }}</dd>
                     <dt class="text-primary" i18n="@@label--privacy-statement">Privacy Statement URL</dt>
-                    <dd class="value">{{ provider.mdui.privacyStatementUrl }}</dd>
+                    <dd class="value">{{ resolver.mdui.privacyStatementUrl }}</dd>
                     <dt class="text-primary" i18n="@@label--logo-url">Logo URL</dt>
-                    <dd class="value">{{ provider.mdui.logoUrl }}</dd>
+                    <dd class="value">{{ resolver.mdui.logoUrl }}</dd>
                     <dt class="text-primary" i18n="@@label--logo-width">Logo Width</dt>
-                    <dd class="value">{{ provider.mdui.logoWidth }}</dd>
+                    <dd class="value">{{ resolver.mdui.logoWidth }}</dd>
                     <dt class="text-primary" i18n="@@label--logo-height">Logo Height</dt>
-                    <dd class="value">{{ provider.mdui.logoHeight }}</dd>
+                    <dd class="value">{{ resolver.mdui.logoHeight }}</dd>
                 </dl>
             </section>
             <section class="entity-section">
@@ -91,14 +91,14 @@
                     <span class="index">4</span>
                     <ng-container i18n="@@label--sp-sso-descriptor-information">SP SSO Descriptor Information</ng-container>
                 </a>
-                <dl *ngIf="provider.serviceProviderSsoDescriptor">
+                <dl *ngIf="resolver.serviceProviderSsoDescriptor">
                     <dt class="text-primary" i18n="@@label--protocol-support-enumeration">Protocol Support Enumeration</dt>
-                    <dd class="value">{{ provider.serviceProviderSsoDescriptor.protocolSupportEnum }}</dd>
+                    <dd class="value">{{ resolver.serviceProviderSsoDescriptor.protocolSupportEnum }}</dd>
                     <dt class="text-primary" i18n="@@label--nameid-format">NameID Format</dt>
                     <dd class="value">
-                        <p class="text-secondary" *ngIf="!provider.serviceProviderSsoDescriptor.nameIdFormats.length">&mdash;</p>
-                        <ul class="list-unstyled" *ngIf="provider.serviceProviderSsoDescriptor.nameIdFormats.length">
-                            <li *ngFor="let format of provider.serviceProviderSsoDescriptor.nameIdFormats">
+                        <p class="text-secondary" *ngIf="!resolver.serviceProviderSsoDescriptor.nameIdFormats.length">&mdash;</p>
+                        <ul class="list-unstyled" *ngIf="resolver.serviceProviderSsoDescriptor.nameIdFormats.length">
+                            <li *ngFor="let format of resolver.serviceProviderSsoDescriptor.nameIdFormats">
                                 {{ format }}
                             </li>
                         </ul>
@@ -110,8 +110,8 @@
                     <span class="index">5</span>
                     <ng-container i18n="@@label--logout-endpoints">Logout Endpoints</ng-container>
                 </a>
-                <p class="text-secondary" *ngIf="!provider.logoutEndpoints.length">&mdash;</p>
-                <table class="table table-sm table-bordered table-striped"  *ngIf="provider.logoutEndpoints.length">
+                <p class="text-secondary" *ngIf="!resolver.logoutEndpoints.length">&mdash;</p>
+                <table class="table table-sm table-bordered table-striped"  *ngIf="resolver.logoutEndpoints.length">
                     <thead>
                     <tr class="table-secondary">
                         <th scope="col" i18n="@@label--logout-endpoints">Logout Endpoint</th>
@@ -119,7 +119,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let endpoint of provider.logoutEndpoints">
+                    <tr *ngFor="let endpoint of resolver.logoutEndpoints">
                         <td>{{ endpoint.url }}</td>
                         <td>{{ endpoint.bindingType }}</td>
                     </tr>
@@ -133,17 +133,17 @@
                     <span class="index">6</span>
                     <ng-container i18n="@@label--security-information">Security Information</ng-container>
                 </a>
-                <dl *ngIf="provider.securityInfo">
+                <dl *ngIf="resolver.securityInfo">
                     <dt class="text-primary" i18n="@@label--is-there-a-x509-certificate">Is there a X509 Certificate?</dt>
-                    <dd class="value">{{ provider.securityInfo.x509CertificateAvailable ? 'Yes' : 'No' }}</dd>
+                    <dd class="value">{{ resolver.securityInfo.x509CertificateAvailable ? 'Yes' : 'No' }}</dd>
                     <dt class="text-primary" i18n="@@label--authentication-requests-signed">Authentication Requests Signed?</dt>
-                    <dd class="value">{{ provider.securityInfo.authenticationRequestsSigned ? 'Yes' : 'No' }}</dd>
+                    <dd class="value">{{ resolver.securityInfo.authenticationRequestsSigned ? 'Yes' : 'No' }}</dd>
                     <dt class="text-primary" i18n="@@label--want-assertions-signed">Want Assertions Signed?</dt>
-                    <dd class="value">{{ provider.securityInfo.wantAssertionsSigned ? 'Yes' : 'No' }}</dd>
+                    <dd class="value">{{ resolver.securityInfo.wantAssertionsSigned ? 'Yes' : 'No' }}</dd>
                     <dt class="text-primary" i18n="@@label--x509-certificates">X509 Certificates</dt>
                     <dd class="value">
-                        <p class="text-secondary" *ngIf="!provider.securityInfo.x509Certificates.length">&mdash;</p>
-                        <table class="table table-sm table-bordered table-striped" *ngIf="provider.securityInfo.x509Certificates.length">
+                        <p class="text-secondary" *ngIf="!resolver.securityInfo.x509Certificates.length">&mdash;</p>
+                        <table class="table table-sm table-bordered table-striped" *ngIf="resolver.securityInfo.x509Certificates.length">
                             <caption class="sr-only" i18n="@@label--x509-certificates">X509 Certificates</caption>
                             <thead>
                             <tr class="table-secondary">
@@ -153,7 +153,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let cert of provider.securityInfo.x509Certificates; let i = index;">
+                            <tr *ngFor="let cert of resolver.securityInfo.x509Certificates; let i = index;">
                                 <td>{{ cert.name }}</td>
                                 <td>{{ cert.type }}</td>
                                 <td [ngbPopover]="cert.value"
@@ -174,8 +174,8 @@
                 <dl>
                     <dt class="text-primary" i18n="@@label--assertion-consumer-service-endpoints">Assertion Consumer Service Endpoints</dt>
                     <dd class="value">
-                        <p class="text-secondary" *ngIf="!provider.assertionConsumerServices.length">&mdash;</p>
-                        <table class="table table-sm table-bordered table-striped" *ngIf="provider.assertionConsumerServices.length">
+                        <p class="text-secondary" *ngIf="!resolver.assertionConsumerServices.length">&mdash;</p>
+                        <table class="table table-sm table-bordered table-striped" *ngIf="resolver.assertionConsumerServices.length">
                             <thead>
                             <tr class="table-secondary">
                                 <th scope="col">#</th>
@@ -184,7 +184,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr *ngFor="let service of provider.assertionConsumerServices; let i=index;">
+                            <tr *ngFor="let service of resolver.assertionConsumerServices; let i=index;">
                                 <th scope="row">{{ i + 1 }}</th>
                                 <td>{{ service.locationUrl }}</td>
                                 <td>{{ service.binding }}</td>
@@ -199,39 +199,39 @@
                     <span class="index">8</span>
                     <ng-container i18n="@@label--relying-party-overrides">Relying Party Overrides</ng-container>
                 </a>
-                <dl *ngIf="provider.relyingPartyOverrides">
+                <dl *ngIf="resolver.relyingPartyOverrides">
                     <dt class="text-primary" i18n="@@label--sign-the-assertion">Sign the Assertion?</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.signAssertion ? 'True' : 'False' }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.signAssertion ? 'True' : 'False' }}</dd>
                     <dt class="text-primary" i18n="@@label--dont-sign-the-response">Don't Sign the Response?</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.dontSignResponse ? 'True' : 'False' }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.dontSignResponse ? 'True' : 'False' }}</dd>
                     <dt class="text-primary" i18n="@@label--turn-off-encryption-of-response">Turn off Encryption of Response?</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.turnOffEncryption ? 'True' : 'False' }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.turnOffEncryption ? 'True' : 'False' }}</dd>
                     <dt class="text-primary" i18n="@@label--use-sha1-signing-algorithm">Use SHA1 Signing Algorithm?</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.useSha ? 'True' : 'False' }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.useSha ? 'True' : 'False' }}</dd>
                     <dt class="text-primary" i18n="@@label--nameid-format-to-send">NameID Format to Send</dt>
                     <dd class="value">
-                        <p class="text-secondary" *ngIf="!provider.relyingPartyOverrides.nameIdFormats.length">&mdash;</p>
-                        <ul class="list-unstyled" *ngIf="provider.relyingPartyOverrides.nameIdFormats.length">
-                            <li *ngFor="let format of provider.relyingPartyOverrides.nameIdFormats">
+                        <p class="text-secondary" *ngIf="!resolver.relyingPartyOverrides.nameIdFormats.length">&mdash;</p>
+                        <ul class="list-unstyled" *ngIf="resolver.relyingPartyOverrides.nameIdFormats.length">
+                            <li *ngFor="let format of resolver.relyingPartyOverrides.nameIdFormats">
                                 {{ format }}
                             </li>
                         </ul>
                     </dd>
                     <dt class="text-primary" i18n="@@label--default-authentication-methods">Default Authentication Method(s)</dt>
                     <dd class="value">
-                        <p class="text-secondary" *ngIf="!provider.relyingPartyOverrides.authenticationMethods.length">&mdash;</p>
-                        <ol class="list-unstyled" *ngIf="provider.relyingPartyOverrides.authenticationMethods.length">
-                            <li *ngFor="let method of provider.relyingPartyOverrides.authenticationMethods">
+                        <p class="text-secondary" *ngIf="!resolver.relyingPartyOverrides.authenticationMethods.length">&mdash;</p>
+                        <ol class="list-unstyled" *ngIf="resolver.relyingPartyOverrides.authenticationMethods.length">
+                            <li *ngFor="let method of resolver.relyingPartyOverrides.authenticationMethods">
                                 {{ method }}
                             </li>
                         </ol>
                     </dd>
                     <dt class="text-primary" i18n="@@label--ignore-any-sp-requested-authentication-method">Ignore any SP-Requested Authentication Method?</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.ignoreAuthenticationMethod ? 'True' : 'False' }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.ignoreAuthenticationMethod ? 'True' : 'False' }}</dd>
                     <dt class="text-primary" i18n="@@label--omit-not-before-condition">Omit Not Before Condition?</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.omitNotBefore ? 'True' : 'False' }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.omitNotBefore ? 'True' : 'False' }}</dd>
                     <dt class="text-primary" i18n="@@label--responderid">ResponderID</dt>
-                    <dd class="value">{{ provider.relyingPartyOverrides.responderId }}</dd>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.responderId }}</dd>
                 </dl>
             </section>
             <section class="entity-section">
@@ -239,7 +239,7 @@
                     <span class="index">9</span>
                     <ng-container i18n="@@label--attribute-release">Attribute Release</ng-container>
                 </a>
-                <table class="table table-sm table-bordered table-striped" *ngIf="provider.attributeRelease">
+                <table class="table table-sm table-bordered table-striped" *ngIf="resolver.attributeRelease">
                     <thead>
                     <tr class="table-secondary">
                         <th scope="col" i18n="@@label--attribute-name">Attribute Name</th>
@@ -251,10 +251,10 @@
                     <tr *ngFor="let attr of attributesToRelease$ | async">
                         <td>{{ attr.label }}</td>
                         <td>
-                            <i class="fa fa-fw fa-check" *ngIf="provider.attributeRelease.indexOf(attr.key) > -1"></i>
+                            <i class="fa fa-fw fa-check" *ngIf="resolver.attributeRelease.indexOf(attr.key) > -1"></i>
                         </td>
                         <td>
-                            <i class="fa fa-fw fa-check" *ngIf="!(provider.attributeRelease.indexOf(attr.key) > -1)"></i>
+                            <i class="fa fa-fw fa-check" *ngIf="!(resolver.attributeRelease.indexOf(attr.key) > -1)"></i>
                         </td>
                     </tr>
                     </tbody>

@@ -25,7 +25,7 @@ describe('New Metadata Filter Page', () => {
             ],
             imports: [
                 StoreModule.forRoot({
-                    'metadata-filter': combineReducers(fromFilter.reducers),
+                    'filter': combineReducers(fromFilter.reducers),
                 }),
                 ReactiveFormsModule,
                 ProviderEditorFormModule,

@@ -1,11 +1,11 @@
 import * as manager from '../action/manager.action';
 
 export interface State {
-    providersOpen: {[key: string]: boolean};
+    resolversOpen: {[key: string]: boolean};
 }
 
 export const initialState: State = {
-    providersOpen: {}
+    resolversOpen: {}
 };
 
 export function reducer(state = initialState, action: manager.Actions): State {
@@ -13,8 +13,8 @@ export function reducer(state = initialState, action: manager.Actions): State {
         case manager.TOGGLE_ENTITY_DISPLAY: {
             return Object.assign({}, state, {
                 providersOpen: {
-                    ...state.providersOpen,
-                    ...{[action.payload]: !state.providersOpen[action.payload]}
+                    ...state.resolversOpen,
+                    ...{[action.payload]: !state.resolversOpen[action.payload]}
                 }
             });
         }
@@ -25,4 +25,4 @@ export function reducer(state = initialState, action: manager.Actions): State {
     }
 }
 
-export const providersOpen = (state: State) => state.providersOpen;
+export const resolversOpen = (state: State) => state.resolversOpen;

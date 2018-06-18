@@ -4,7 +4,7 @@ import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataProviderService } from './provider.service';
 import { EntityAttributesFilter } from '../entity';
 
-describe(`Metadata Resolver Service`, () => {
+xdescribe(`Metadata Provider Service`, () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({

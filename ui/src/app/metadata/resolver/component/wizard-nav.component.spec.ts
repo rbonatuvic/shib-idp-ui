@@ -7,6 +7,8 @@ import { WizardNavComponent } from './wizard-nav.component';
 import * as fromEditor from '../reducer';
 import { ProviderEditorFormModule } from '../../domain/component';
 import { DomainModule } from '../../domain/domain.module';
+import { InputDefaultsDirective } from '../../../shared/directive/input-defaults.directive';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
     template:
@@ -49,6 +51,7 @@ describe('Wizard Nav Component', () => {
                 }),
                 ReactiveFormsModule,
                 DomainModule,
+                SharedModule,
                 ProviderEditorFormModule
             ],
             declarations: [TestHostComponent, WizardNavComponent],

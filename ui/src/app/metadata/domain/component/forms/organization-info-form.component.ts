@@ -14,7 +14,7 @@ import { EntityValidators } from '../../../domain/service/entity-validators.serv
     templateUrl: './organization-info-form.component.html'
 })
 export class OrganizationInfoFormComponent extends ProviderFormFragmentComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() provider: MetadataResolver;
+    @Input() resolver: MetadataResolver;
 
     contactTypes: string[] = [
         'support',
@@ -59,12 +59,12 @@ export class OrganizationInfoFormComponent extends ProviderFormFragmentComponent
     }
 
     ngOnChanges(): void {
-        this.provider.organization = this.provider.organization || {};
-        this.provider.contacts = this.provider.contacts || [];
+        this.resolver.organization = this.resolver.organization || {};
+        this.resolver.contacts = this.resolver.contacts || [];
         this.form.reset({
-            organization: this.provider.organization
+            organization: this.resolver.organization
         });
-        this.setContacts(this.provider.contacts);
+        this.setContacts(this.resolver.contacts);
     }
 
     get contacts(): FormArray {

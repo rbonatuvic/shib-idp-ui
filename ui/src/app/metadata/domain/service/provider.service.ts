@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { MetadataFilter } from '../../domain/model/metadata-filter';
+import { MetadataFilter } from '../../domain/model';
 
 @Injectable()
 export class MetadataProviderService {

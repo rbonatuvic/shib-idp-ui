@@ -4,7 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ResolverService } from './resolver.service';
 
 
-describe(`EntityDescriptorService`, () => {
+describe(`Resolver Service`, () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({

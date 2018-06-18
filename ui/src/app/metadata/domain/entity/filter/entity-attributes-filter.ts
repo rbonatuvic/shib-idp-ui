@@ -33,6 +33,10 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         return this.entityId;
     }
 
+    isDraft(): boolean {
+        return false;
+    }
+
     get id(): string {
         return this.resourceId;
     }

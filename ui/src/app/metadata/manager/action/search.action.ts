@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-import { MetadataProvider } from '../../domain/model/metadata-provider';
-import { MetadataFilter } from '../../domain/model/metadata-filter';
+import { MetadataEntity } from '../../domain/model';
 
 export const ENTITY_SEARCH = '[Metadata Entity Search] Entity Search';
 export const ENTITY_FILTER = '[Metadata Entity Filter] Entity Filter';
@@ -24,7 +23,7 @@ export class FilterAction implements Action {
 export class SearchCompleteAction implements Action {
     readonly type = ENTITY_SEARCH_COMPLETE;
 
-    constructor(public payload: Array<MetadataProvider | MetadataFilter>) { }
+    constructor(public payload: Array<MetadataEntity>) { }
 }
 
 export type Actions =

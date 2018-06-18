@@ -52,7 +52,7 @@ export const routes: Routes = [
     ],
     imports: [
         RouterModule.forChild(routes),
-        StoreModule.forFeature('metadata-filter', reducers),
+        StoreModule.forFeature('filter', reducers),
         EffectsModule.forFeature([FilterEffects, SearchIdEffects]),
         CommonModule,
         ReactiveFormsModule,

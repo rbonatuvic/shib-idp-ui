@@ -51,8 +51,8 @@ describe('Organization Info Form Component', () => {
             instance.resolver = stubs.resolver;
             fixture.detectChanges();
             instance.ngOnChanges();
-            expect(instance.provider.organization).toEqual({});
-            expect(instance.provider.contacts).toEqual([]);
+            expect(instance.resolver.organization).toEqual({});
+            expect(instance.resolver.contacts).toEqual([]);
         });
     });
 

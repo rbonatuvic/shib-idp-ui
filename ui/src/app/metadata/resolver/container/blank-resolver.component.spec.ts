@@ -2,10 +2,8 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NewResolverComponent } from './new-resolver.component';
 import * as fromResolver from '../reducer';
 import { BlankResolverComponent } from './blank-resolver.component';
-import { UploadResolverComponent } from './upload-resolver.component';
 
 describe('Blank Resolver Page', () => {
     let fixture: ComponentFixture<BlankResolverComponent>;
@@ -17,7 +15,7 @@ describe('Blank Resolver Page', () => {
             imports: [
                 NoopAnimationsModule,
                 StoreModule.forRoot({
-                    collections: combineReducers(fromResolver.reducers),
+                    resolver: combineReducers(fromResolver.reducers),
                 }),
                 ReactiveFormsModule,
             ],

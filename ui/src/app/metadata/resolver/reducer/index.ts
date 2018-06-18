@@ -19,7 +19,9 @@ export interface ResolverState {
 export const reducers = {
     copy: fromCopy.reducer,
     search: fromSearch.reducer,
-    editor: fromEditor.reducer
+    editor: fromEditor.reducer,
+    collection: fromCollection.reducer,
+    draft: fromDraft.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -30,7 +32,10 @@ export const getResolverState = createFeatureSelector<ResolverState>('resolver')
 
 export const getCollectionStateFn = (state: ResolverState) => state.collection;
 export const getDraftStateFn = (state: ResolverState) => state.draft;
-export const getEditorStateFn = (state: ResolverState) => state.editor;
+export const getEditorStateFn = (state: ResolverState) => {
+    console.log('RESOLVER STATE', JSON.stringify(state));
+    return state.editor;
+};
 export const getCopyStateFn = (state: ResolverState) => state.copy;
 export const getSearchStateFn = (state: ResolverState) => state.search;
 

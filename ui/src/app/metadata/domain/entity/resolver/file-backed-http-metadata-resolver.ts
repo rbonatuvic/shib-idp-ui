@@ -53,7 +53,11 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     }
 
     getId(): string {
-        return this.id;
+        return this.id ? this.id : this.entityId;
+    }
+
+    isDraft(): boolean {
+        return this.id ? false : true;
     }
 
     get name(): string {

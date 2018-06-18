@@ -19,7 +19,7 @@ export const reducers = {
 
 export const getFeatureState = createFeatureSelector<DashboardState>('manager');
 export const getDashboardState = createSelector(getFeatureState, (state: DashboardState) => state.manager);
-export const getOpenProviders = createSelector(getDashboardState, (manager: fromDashboard.State) => manager.providersOpen);
+export const getOpenProviders = createSelector(getDashboardState, (manager: fromDashboard.State) => manager.resolversOpen);
 
 export const getSearchState = createSelector(getFeatureState,
     (state: DashboardState) => state.search

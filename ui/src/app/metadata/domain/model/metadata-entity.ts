@@ -4,6 +4,7 @@ export interface MetadataEntity {
     kind: string;
 
     getId(): string;
+    isDraft(): boolean;
 
     serialize(): any;
 }
