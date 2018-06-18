@@ -1459,9 +1459,9 @@
           <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="message--search-provider" datatype="html">
-        <source>Search for a provider</source>
-        <target>Search for a provider</target>
+      <trans-unit id="message--search-sources" datatype="html">
+        <source>Search sources</source>
+        <target>Search sources</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/dashboard/component/provider-search.component.ts</context>
           <context context-type="linenumber">8</context>
