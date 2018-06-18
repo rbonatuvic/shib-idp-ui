@@ -100,10 +100,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                 'requireSignedRoot': 'true',
                                 'certificateFile': '%{idp.home}/credentials/inc-md-cert.pem'
                         )
-                        MetadataFilter(
-                                'xsi:type': 'RequiredValidUntil',
-                                'maxValidityInterval': 'P14D'
-                        )
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
                             constructXmlNodeForFilter(filter, delegate)
@@ -111,6 +107,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     }
                 }
             }
+            println writer.toString()
             return DOMBuilder.newInstance().parseText(writer.toString())
         }
     }
