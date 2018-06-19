@@ -11,14 +11,12 @@ import { EntityDraftService } from './service/draft.service';
 
 import { MetadataProviderService } from './service/provider.service';
 import { EntityEffects } from './effect/entity.effect';
-import { I18nTextComponent } from './component/i18n-text.component';
 import { PreviewDialogComponent } from './component/preview-dialog.component';
 
 export const COMPONENTS = [];
 
 export const DECLARATIONS = [
     ...COMPONENTS,
-    I18nTextComponent,
     PreviewDialogComponent
 ];
 

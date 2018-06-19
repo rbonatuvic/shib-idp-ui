@@ -8,6 +8,7 @@ import { ContentionEffects } from './effect/contention.effect';
 import { ContentionDialogComponent } from './component/contention-dialog.component';
 import { ChangeItemComponent } from './component/change-item.component';
 import { ContentionService } from './service/contention.service';
+import { SharedModule } from '../shared/shared.module';
 
 export const COMPONENTS = [
     ContentionDialogComponent,
@@ -17,6 +18,7 @@ export const COMPONENTS = [
 @NgModule({
     imports: [
         CommonModule,
+        SharedModule,
         StoreModule.forFeature('contention', reducers),
         EffectsModule.forFeature([ContentionEffects])
     ],

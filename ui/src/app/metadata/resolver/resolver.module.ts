@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NewResolverComponent } from './container/new-resolver.component';
 
@@ -51,7 +52,8 @@ import { EditorEffects } from './effect/editor.effect';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        ProviderEditorFormModule
+        ProviderEditorFormModule,
+        NgbDropdownModule
     ],
     exports: [
         ProviderEditorFormModule,

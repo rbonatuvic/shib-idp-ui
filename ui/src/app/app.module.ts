@@ -19,6 +19,7 @@ import { NotificationModule } from './notification/notification.module';
 import { ErrorInterceptor } from './core/service/error.interceptor';
 import { NavigatorService } from './core/service/navigator.service';
 import { ContentionModule } from './contention/contention.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -39,7 +40,8 @@ import { ContentionModule } from './contention/contention.module';
         NgbPaginationModule.forRoot(),
         NotificationModule,
         HttpClientModule,
-        ContentionModule
+        ContentionModule,
+        SharedModule
     ],
     providers: [
         NavigatorService,

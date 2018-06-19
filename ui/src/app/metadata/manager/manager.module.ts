@@ -28,7 +28,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     ],
     imports: [
         RouterModule.forChild([
-            { path: '', component: ManagerComponent }
+            { path: 'manager', component: ManagerComponent }
         ]),
         StoreModule.forFeature('manager', reducers),
         EffectsModule.forFeature([SearchEffects]),
