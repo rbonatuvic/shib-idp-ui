@@ -2,36 +2,8 @@
     <section class="section">
         <div class="section-header bg-primary p-2 text-light">
             <div class="row justify-content-between">
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <span class="lead" i18n="@@label--current-metadata-sources">Current Metadata Sources</span>
-                </div>
-                <div class="col-md-4 text-right">
-                    <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-light" id="filterDropdown" ngbDropdownToggle>
-                            <i class="fa fa-fw" [ngClass]="{
-                                'fa-cube': filtering === 'provider',
-                                'fa-cubes': filtering === 'filter',
-                                'fa-dot-circle-o': filtering === 'all'
-                            }"></i>
-                            <ng-container i18n="@@label--selected-filter-option">
-                                {filtering, select, filter {Show Filters} provider {Show Sources} other {Show All}}
-                            </ng-container>
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="filterDropdown">
-                            <button class="dropdown-item"
-                                *ngFor="let option of filterOptions; index as i"
-                                (click)="changeFilter(option)">
-                                <i class="fa fa-fw" [ngClass]="{
-                                    'fa-cube': option === 'provider',
-                                    'fa-cubes': option === 'filter',
-                                    'fa-dot-circle-o': option === 'all'
-                                }"></i>
-                                <ng-container i18n="@@label--select-filter-option">
-                                    {option, select, filter {Show Filters} provider {Show Source} other {Show All}}
-                                </ng-container>
-                            </button>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-md-4">
                     <provider-search

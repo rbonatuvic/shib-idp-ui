@@ -11,12 +11,13 @@ export const initialState: State = {
 export function reducer(state = initialState, action: manager.Actions): State {
     switch (action.type) {
         case manager.TOGGLE_ENTITY_DISPLAY: {
-            return Object.assign({}, state, {
-                providersOpen: {
+            return {
+                ...state,
+                resolversOpen: {
                     ...state.resolversOpen,
                     ...{[action.payload]: !state.resolversOpen[action.payload]}
                 }
-            });
+            };
         }
         default: {
             // console.log(state);

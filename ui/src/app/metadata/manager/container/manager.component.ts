@@ -52,7 +52,7 @@ export class ManagerComponent implements OnInit {
 
         this.limited$ = this.getPagedResolvers(this.page, this.resolvers$);
 
-        // this.providers$.subscribe(p => console.log(p));
+        this.entitiesOpen$.subscribe(p => console.log(p));
     }
 
     ngOnInit (): void {
