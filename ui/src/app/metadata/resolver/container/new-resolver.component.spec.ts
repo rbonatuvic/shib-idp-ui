@@ -14,7 +14,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { NavigatorService } from '../../../core/service/navigator.service';
 import * as fromResolver from '../reducer';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
-import { I18nTextComponent } from '../../domain/component/i18n-text.component';
+import { I18nTextComponent } from '../../../shared/component/i18n-text.component';
 
 describe('New Resolver Page', () => {
     let fixture: ComponentFixture<NewResolverComponent>;
@@ -36,8 +36,7 @@ describe('New Resolver Page', () => {
                 NewResolverComponent,
                 BlankResolverComponent,
                 UploadResolverComponent,
-                CopyResolverComponent,
-                I18nTextComponent
+                CopyResolverComponent
             ],
             providers: [
                 NavigatorService,

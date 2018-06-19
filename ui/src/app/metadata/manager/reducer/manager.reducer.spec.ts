@@ -23,7 +23,7 @@ describe('Dashboard Reducer', () => {
             const result = reducer(initialState, action);
 
             expect(result).toEqual(
-                Object.assign({}, initialState, { providersOpen: { foo: true } })
+                Object.assign({}, initialState, { resolversOpen: { foo: true } })
             );
         });
     });

@@ -116,12 +116,12 @@ describe('Metadata Manager Page', () => {
         it('should route to the edit page', () => {
             spyOn(router, 'navigate');
             instance.edit(resolver);
-            expect(router.navigate).toHaveBeenCalledWith(['resolver', resolver.id, 'edit']);
+            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', resolver.id, 'edit']);
         });
         it('should route to the wizard page', () => {
             spyOn(router, 'navigate');
             instance.edit(draft);
-            expect(router.navigate).toHaveBeenCalledWith(['resolver', draft.entityId, 'wizard']);
+            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', draft.entityId, 'wizard']);
         });
     });
 

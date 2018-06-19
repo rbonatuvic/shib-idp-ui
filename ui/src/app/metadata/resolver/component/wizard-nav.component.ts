@@ -1,9 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { Store } from '@ngrx/store';
-
 import * as fromEditor from '../reducer';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
 
