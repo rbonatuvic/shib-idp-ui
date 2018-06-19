@@ -4,6 +4,7 @@ import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -129,7 +130,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(
+        markupBuilderDelegate.MetadataFilter(id: filter.name,
                 'xsi:type': 'EntityRoleWhiteList',
                 'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
         ) {
@@ -137,6 +138,19 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 markupBuilderDelegate.RetainedRole(it)
             }
         }
+    }
+
+    void constructXmlNodeForFilter(SignatureValidationFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(id: filter.name,
+                'xsi:type': 'SignatureValidation',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                'requireSignedRoot': !filter.requireSignedRoot ?: null,
+                'certificateFile': filter.certificateFile,
+                'defaultCriteriaRef': filter.defaultCriteriaRef,
+                'signaturePrevalidatorRef': filter.signaturePrevalidatorRef,
+                'dynamicTrustedNamesStrategyRef': filter.dynamicTrustedNamesStrategyRef,
+                'trustEngineRef': filter.trustEngineRef,
+                'publicKey': filter.publicKey)
     }
 
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {

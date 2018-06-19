@@ -3,10 +3,9 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,6 +153,9 @@ public class MetadataFiltersController {
      * Add else if instanceof block here for each concrete filter types we add in the future
      */
     private void updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated, MetadataFilter filterWithUpdatedData) {
+        //TODO: Could we maybe use Dozer here before things get out of control? https://dozermapper.github.io
+        // Mapper mapper = new net.sf.dozer.Mapper(); // or autowire one
+        // mapper.map(fromFilter, toFilter);
         if(filterWithUpdatedData instanceof EntityAttributesFilter) {
             EntityAttributesFilter toFilter = EntityAttributesFilter.class.cast(filterToBeUpdated);
             EntityAttributesFilter fromFilter = EntityAttributesFilter.class.cast(filterWithUpdatedData);
@@ -167,6 +169,16 @@ public class MetadataFiltersController {
             toFilter.setRemoveEmptyEntitiesDescriptors(fromFilter.getRemoveEmptyEntitiesDescriptors());
             toFilter.setRemoveRolelessEntityDescriptors(fromFilter.getRemoveRolelessEntityDescriptors());
             toFilter.setRetainedRoles(fromFilter.getRetainedRoles());
+        } else if (filterWithUpdatedData instanceof SignatureValidationFilter) {
+            SignatureValidationFilter toFilter = SignatureValidationFilter.class.cast(filterToBeUpdated);
+            SignatureValidationFilter fromFilter = SignatureValidationFilter.class.cast(filterWithUpdatedData);
+            toFilter.setRequireSignedRoot(fromFilter.getRequireSignedRoot());
+            toFilter.setCertificateFile(fromFilter.getCertificateFile());
+            toFilter.setDefaultCriteriaRef(fromFilter.getDefaultCriteriaRef());
+            toFilter.setSignaturePrevalidatorRef(fromFilter.getSignaturePrevalidatorRef());
+            toFilter.setDynamicTrustedNamesStrategyRef(fromFilter.getDynamicTrustedNamesStrategyRef());
+            toFilter.setTrustEngineRef(fromFilter.getTrustEngineRef());
+            toFilter.setPublicKey(fromFilter.getPublicKey());
         }
         //TODO: add other types of concrete filters update here
     }
