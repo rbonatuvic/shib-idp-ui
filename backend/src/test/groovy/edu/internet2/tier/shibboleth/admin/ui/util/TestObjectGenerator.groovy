@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
@@ -19,6 +20,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResol
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
+
 import org.opensaml.saml.saml2.metadata.Organization
 
 import java.util.function.Supplier
@@ -64,6 +66,7 @@ class TestObjectGenerator {
         (1..generator.randomInt(4, 10)).each {
             filterList.add(buildFilter { entityAttributesFilter() })
             filterList.add(buildFilter { entityRoleWhitelistFilter() })
+            filterList.add(buildFilter { requiredValidUntilFilter() })
         }
         return filterList
     }
@@ -83,6 +86,13 @@ class TestObjectGenerator {
             it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTarget())
             it.setAttributes(buildAttributesList())
             it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    RequiredValidUntilFilter requiredValidUntilFilter() {
+        return new RequiredValidUntilFilter().with {
+            it.maxValidityInterval = 'P14D'
             it
         }
     }
