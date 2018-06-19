@@ -37,6 +37,10 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         return false;
     }
 
+    getCreationDate(): Date {
+        return new Date(this.createdDate);
+    }
+
     get id(): string {
         return this.resourceId;
     }

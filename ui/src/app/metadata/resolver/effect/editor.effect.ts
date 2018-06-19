@@ -24,7 +24,7 @@ export class EditorEffects {
     cancelChanges$ = this.actions$.pipe(
         ofType<editor.CancelChanges>(editor.CANCEL_CHANGES),
         map(() => new provider.LoadResolverRequest()),
-        tap(() => this.router.navigate(['/dashboard']))
+        tap(() => this.router.navigate(['metadata']))
     );
 
     @Effect()

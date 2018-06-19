@@ -58,7 +58,7 @@ export class DraftCollectionEffects {
     addDraftSuccessRedirect$ = this.actions$.pipe(
         ofType<actions.AddDraftSuccess>(DraftActionTypes.ADD_DRAFT_SUCCESS),
         map(getPayload),
-        tap(provider => this.router.navigate(['provider', provider.entityId, 'wizard']))
+        tap(provider => this.router.navigate(['metadata', 'resolver', provider.entityId, 'wizard']))
     );
 
     @Effect()

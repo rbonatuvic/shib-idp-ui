@@ -18,6 +18,7 @@ import { FilterComponent } from './container/filter.component';
 import { SearchIdEffects } from './effect/search.effect';
 import { FilterExistsGuard } from './guard/filter-exists.guard';
 import { DomainModule } from '../domain/domain.module';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
 
 
 export const routes: Routes = [
@@ -51,9 +52,6 @@ export const routes: Routes = [
         SearchDialogComponent
     ],
     imports: [
-        RouterModule.forChild(routes),
-        StoreModule.forFeature('filter', reducers),
-        EffectsModule.forFeature([FilterEffects, SearchIdEffects]),
         CommonModule,
         ReactiveFormsModule,
         ProviderEditorFormModule,
@@ -61,10 +59,27 @@ export const routes: Routes = [
         NgbModalModule,
         SharedModule,
         DomainModule,
-        HttpClientModule
-    ],
-    providers: [
-        FilterExistsGuard
+        HttpClientModule,
+        RouterModule
     ]
 })
-export class FilterModule { }
+export class FilterModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: RootFilterModule,
+            providers: [
+                FilterExistsGuard
+            ]
+        };
+    }
+}
+
+@NgModule({
+    imports: [
+        FilterModule,
+        RouterModule.forChild(routes),
+        StoreModule.forFeature('filter', reducers),
+        EffectsModule.forFeature([FilterEffects, SearchIdEffects]),
+    ],
+})
+export class RootFilterModule { }

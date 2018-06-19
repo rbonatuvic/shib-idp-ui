@@ -2,17 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { KeyInfoFormComponent } from './key-info-form.component';
 
 import * as stubs from '../../../../../testing/resolver.stub';
-import { I18nTextComponent } from '../../../domain/component/i18n-text.component';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
+import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
 
 @Component({
     template: `<key-info-form [resolver]="resolver"></key-info-form>`
@@ -37,7 +35,6 @@ class TestHostComponent {
 describe('Security (Key) Info Form Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let store: Store<fromMetadata.MetadataState>;
     let form: KeyInfoFormComponent;
 
     beforeEach(() => {
@@ -51,9 +48,6 @@ describe('Security (Key) Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                StoreModule.forRoot({
-                    'metadata': combineReducers(fromMetadata.reducers),
-                }),
                 NgbPopoverModule
             ],
             declarations: [
@@ -63,8 +57,6 @@ describe('Security (Key) Info Form Component', () => {
                 I18nTextComponent
             ],
         }).compileComponents();
-        store = TestBed.get(Store);
-        spyOn(store, 'dispatch').and.callThrough();
 
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;

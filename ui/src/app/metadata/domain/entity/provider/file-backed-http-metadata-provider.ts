@@ -60,6 +60,10 @@ export class FileBackedHttpMetadataProvider implements MetadataProvider, Metadat
         return false;
     }
 
+    getCreationDate(): Date {
+        return new Date(this.createdDate);
+    }
+
     get name(): string {
         return this.serviceProviderName;
     }

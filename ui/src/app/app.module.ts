@@ -31,7 +31,6 @@ import { SharedModule } from './shared/shared.module';
         }),
         EffectsModule.forRoot([]),
         BrowserModule,
-        AppRoutingModule,
         CoreModule.forRoot(),
         StoreRouterConnectingModule,
         NgbDropdownModule.forRoot(),
@@ -41,7 +40,8 @@ import { SharedModule } from './shared/shared.module';
         NotificationModule,
         HttpClientModule,
         ContentionModule,
-        SharedModule
+        SharedModule,
+        AppRoutingModule
     ],
     providers: [
         NavigatorService,

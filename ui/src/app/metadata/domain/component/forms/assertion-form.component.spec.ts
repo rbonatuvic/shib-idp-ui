@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { AssertionFormComponent } from './assertion-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
@@ -11,7 +10,6 @@ import * as stubs from '../../../../../testing/resolver.stub';
 describe('Assertion Form Component', () => {
     let fixture: ComponentFixture<AssertionFormComponent>;
     let instance: AssertionFormComponent;
-    let store: Store<fromMetadata.MetadataState>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -23,17 +21,12 @@ describe('Assertion Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                StoreModule.forRoot({
-                    'metadata': combineReducers(fromMetadata.reducers),
-                }),
                 NgbPopoverModule
             ],
             declarations: [
                 AssertionFormComponent
             ],
         });
-        store = TestBed.get(Store);
-        spyOn(store, 'dispatch').and.callThrough();
 
         fixture = TestBed.createComponent(AssertionFormComponent);
         instance = fixture.componentInstance;

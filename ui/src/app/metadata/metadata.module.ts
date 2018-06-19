@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+
 
 import { ResolverModule } from './resolver/resolver.module';
 import { FilterModule } from './filter/filter.module';
 import { DomainModule } from './domain/domain.module';
 import { MetadataPageComponent } from './metadata.component';
-import { StoreModule } from '@ngrx/store';
-import { reducers } from './metadata.reducer';
+import { ManagerModule } from './manager/manager.module';
+import { MetadataRoutingModule } from './metadata.routing';
+
 
 @NgModule({
     imports: [
-        ResolverModule,
-        FilterModule,
+        ResolverModule.forRoot(),
+        FilterModule.forRoot(),
         DomainModule.forRoot(),
-        StoreModule.forFeature('metadata', reducers),
-        RouterModule.forChild([
-            { path: '', component: MetadataPageComponent }
-        ])
+        ManagerModule.forRoot(),
+        MetadataRoutingModule
     ],
     providers: [],
     declarations: [

@@ -85,7 +85,7 @@ export class ManagerComponent implements OnInit {
     }
 
     edit(entity: MetadataEntity): void {
-        this.router.navigate(['resolver', entity.getId(), entity.isDraft() ? 'wizard' : 'edit']);
+        this.router.navigate(['metadata', 'resolver', entity.getId(), entity.isDraft() ? 'wizard' : 'edit']);
     }
 
     toggleEntity(entity: MetadataEntity): void {

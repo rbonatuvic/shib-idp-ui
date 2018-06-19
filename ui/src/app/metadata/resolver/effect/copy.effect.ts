@@ -45,7 +45,7 @@ export class CopyResolverEffects {
     @Effect({ dispatch: false })
     copyOnCreation$ = this.actions$.pipe(
         ofType<CopySourceActionUnion>(CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS),
-        switchMap(() => this.router.navigate(['/new/copy/confirm']))
+        switchMap(() => this.router.navigate(['metadata', 'resolver', 'new', 'copy', 'confirm']))
     );
 
     constructor(

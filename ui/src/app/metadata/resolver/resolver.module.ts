@@ -29,6 +29,7 @@ import { ResolverCollectionEffects } from './effect/collection.effects';
 import { DraftCollectionEffects } from './effect/draft-collection.effects';
 import { WizardEffects } from './effect/wizard.effect';
 import { EditorEffects } from './effect/editor.effect';
+import { UnsavedDialogComponent } from './component/unsaved-dialog.component';
 
 @NgModule({
     declarations: [
@@ -41,9 +42,12 @@ import { EditorEffects } from './effect/editor.effect';
         DraftComponent,
         EditorComponent,
         WizardComponent,
-        WizardNavComponent
+        WizardNavComponent,
+        UnsavedDialogComponent
     ],
-    entryComponents: [],
+    entryComponents: [
+        UnsavedDialogComponent
+    ],
     imports: [
         DomainModule,
         SharedModule,
@@ -72,45 +76,9 @@ export class ResolverModule {
     }
 }
 
-export const routes: Routes = [
-    {
-        path: 'resolver',
-        children: [
-            {
-                path: 'new',
-                component: NewResolverComponent,
-                children: [
-                    { path: '', redirectTo: 'blank', pathMatch: 'prefix' },
-                    {
-                        path: 'blank',
-                        component: BlankResolverComponent,
-                        canDeactivate: []
-                    },
-                    {
-                        path: 'upload',
-                        component: UploadResolverComponent,
-                        canDeactivate: []
-                    },
-                    {
-                        path: 'copy',
-                        component: CopyResolverComponent,
-                        canDeactivate: []
-                    }
-                ]
-            },
-            {
-                path: 'new/copy/confirm',
-                component: ConfirmCopyComponent,
-                canActivate: [CopyIsSetGuard]
-            }
-        ]
-    }
-];
-
 @NgModule({
     imports: [
         ResolverModule,
-        RouterModule.forChild(routes),
         StoreModule.forFeature('resolver', fromResolver.reducers),
         EffectsModule.forFeature([
             SearchIdEffects,

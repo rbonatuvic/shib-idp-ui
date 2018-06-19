@@ -60,6 +60,10 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
         return this.id ? false : true;
     }
 
+    getCreationDate(): Date {
+        return new Date(this.createdDate);
+    }
+
     get name(): string {
         return this.serviceProviderName;
     }

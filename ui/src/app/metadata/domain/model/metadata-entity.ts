@@ -5,6 +5,7 @@ export interface MetadataEntity {
 
     getId(): string;
     isDraft(): boolean;
+    getCreationDate(): Date;
 
     serialize(): any;
 }

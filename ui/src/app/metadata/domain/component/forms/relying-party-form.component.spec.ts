@@ -4,7 +4,6 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import * as fromMetadata from '../../../metadata.reducer';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { RelyingPartyFormComponent } from './relying-party-form.component';
@@ -40,7 +39,6 @@ class TestHostComponent {
 describe('Relying Party Form Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let store: Store<fromMetadata.MetadataState>;
     let form: RelyingPartyFormComponent;
     let fb: FormBuilder;
 
@@ -55,9 +53,6 @@ describe('Relying Party Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                StoreModule.forRoot({
-                    'metadata': combineReducers(fromMetadata.reducers),
-                }),
                 NgbPopoverModule,
                 SharedModule
             ],
@@ -66,8 +61,6 @@ describe('Relying Party Form Component', () => {
                 TestHostComponent
             ],
         });
-        store = TestBed.get(Store);
-        spyOn(store, 'dispatch').and.callThrough();
 
         fixture = TestBed.createComponent(TestHostComponent);
         fb = TestBed.get(FormBuilder);

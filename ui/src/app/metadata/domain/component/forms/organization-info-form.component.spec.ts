@@ -7,12 +7,10 @@ import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/p
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { OrganizationInfoFormComponent } from './organization-info-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
-import * as fromMetadata from '../../../metadata.reducer';
 
 describe('Organization Info Form Component', () => {
     let fixture: ComponentFixture<OrganizationInfoFormComponent>;
     let instance: OrganizationInfoFormComponent;
-    let store: Store<fromMetadata.MetadataState>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -25,17 +23,12 @@ describe('Organization Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                StoreModule.forRoot({
-                    'metadata': combineReducers(fromMetadata.reducers),
-                }),
                 NgbPopoverModule
             ],
             declarations: [
                 OrganizationInfoFormComponent
             ],
         });
-        store = TestBed.get(Store);
-        spyOn(store, 'dispatch').and.callThrough();
 
         fixture = TestBed.createComponent(OrganizationInfoFormComponent);
         instance = fixture.componentInstance;

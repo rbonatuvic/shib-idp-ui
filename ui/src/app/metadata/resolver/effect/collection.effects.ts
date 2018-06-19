@@ -51,7 +51,7 @@ export class ResolverCollectionEffects {
     updateResolverSuccessRedirect$ = this.actions$.pipe(
         ofType<providerActions.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['/dashboard']))
+        tap(provider => this.router.navigate(['metadata']))
     );
 
     @Effect()
@@ -96,7 +96,7 @@ export class ResolverCollectionEffects {
     addResolverSuccessRedirect$ = this.actions$.pipe(
         ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['/dashboard']))
+        tap(provider => this.router.navigate(['metadata']))
     );
     @Effect()
     addResolverSuccessReload$ = this.actions$.pipe(

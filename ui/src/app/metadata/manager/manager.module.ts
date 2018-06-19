@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination/pagination.module';
@@ -27,18 +27,29 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
         DeleteDialogComponent
     ],
     imports: [
-        RouterModule.forChild([
-            { path: 'manager', component: ManagerComponent }
-        ]),
-        StoreModule.forFeature('manager', reducers),
-        EffectsModule.forFeature([SearchEffects]),
         CommonModule,
         ReactiveFormsModule,
         NgbPaginationModule,
+        RouterModule,
         NgbModalModule,
         NgbDropdownModule,
         HttpClientModule
-    ],
-    providers: []
+    ]
 })
-export class DashboardModule { }
+export class ManagerModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: RootManagerModule,
+            providers: []
+        };
+    }
+}
+
+@NgModule({
+    imports: [
+        ManagerModule,
+        StoreModule.forFeature('manager', reducers),
+        EffectsModule.forFeature([SearchEffects]),
+    ],
+})
+export class RootManagerModule { }

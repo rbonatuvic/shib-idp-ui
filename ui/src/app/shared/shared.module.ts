@@ -7,6 +7,8 @@ import { ValidationClassDirective } from './validation/validation-class.directiv
 import { InputDefaultsDirective } from './directive/input-defaults.directive';
 import { I18nTextComponent } from './component/i18n-text.component';
 import { ValidFormIconComponent } from './component/valid-form-icon.component';
+import { InfoLabelDirective } from './directive/info-label.directive';
+import { PrettyXml } from './pipe/pretty-xml.pipe';
 
 @NgModule({
     imports: [
@@ -20,7 +22,9 @@ import { ValidFormIconComponent } from './component/valid-form-icon.component';
         ValidationClassDirective,
         InputDefaultsDirective,
         I18nTextComponent,
-        ValidFormIconComponent
+        ValidFormIconComponent,
+        InfoLabelDirective,
+        PrettyXml
     ],
     exports: [
         HighlightPipe,

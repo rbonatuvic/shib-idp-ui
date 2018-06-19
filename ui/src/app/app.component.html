@@ -24,27 +24,27 @@
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
                     <a class="nav-link"
-                        routerLink="/metadata/provider/new"
+                        routerLink="/metadata/resolver/new"
                         routerLinkActive="active"
                         aria-label="Add a new metadata provider"
                         role="button">
                         <i class="fa fa-cube fa-fw" aria-hidden="true"></i>
                         &nbsp;
-                        <ng-container i18n="@@action--add-source">Metadata Provider</ng-container>
+                        <ng-container i18n="@@action--add-source">Metadata Source</ng-container>
                     </a>
                     <a class="nav-link"
-                        routerLink="/metadata/resolver/new"
+                        routerLink="/metadata/provider/new"
                         routerLinkActive="active"
                         aria-label="Add a new metadata resolver"
                         role="button">
                         <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
                         &nbsp;
-                        <ng-container i18n="@@action--add-filter">Metadata Source</ng-container>
+                        <ng-container i18n="@@action--add-filter">Metadata Provider</ng-container>
                     </a>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" aria-label="Metadata Dashboard">
+                <a class="nav-link" routerLink="/metadata" routerLinkActive="active" aria-label="Metadata Dashboard">
                     <i class="fa fa-th fa-fw" aria-hidden="true"></i>
                     <ng-container i18n="@@action--dashboard">Dashboard</ng-container>
                 </a>

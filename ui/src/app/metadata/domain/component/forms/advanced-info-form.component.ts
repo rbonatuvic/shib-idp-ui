@@ -3,13 +3,10 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { takeUntil, switchMap, map, startWith } from 'rxjs/operators';
 
-import { Store } from '@ngrx/store';
-
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { MetadataResolver, Contact } from '../../../domain/model';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
 import { EntityValidators } from '../../../domain/service/entity-validators.service';
-import * as fromMetadata from '../../../metadata.reducer';
 
 @Component({
     selector: 'adv-info-form',
@@ -37,8 +34,7 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
     constructor(
         protected fb: FormBuilder,
         protected statusEmitter: ProviderStatusEmitter,
-        protected valueEmitter: ProviderValueEmitter,
-        protected store: Store<fromMetadata.MetadataState>
+        protected valueEmitter: ProviderValueEmitter
     ) {
         super(fb, statusEmitter, valueEmitter);
 
