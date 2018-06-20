@@ -43,6 +43,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     latest: MetadataResolver;
     latest$: Observable<MetadataResolver>;
 
+    ids$: Observable<string[]>;
+
     resolver$: Observable<MetadataResolver>;
     providerName$: Observable<string>;
     resolver: MetadataResolver;
@@ -84,6 +86,15 @@ export class EditorComponent implements OnInit, OnDestroy {
 
         this.wizardIsValid$ = this.store.select(fromResolver.getEditorIsValid);
         this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
+
+        this.ids$ = this.store
+            .select(fromResolver.getAllEntityIds)
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                combineLatest(this.store.select(fromResolver.getSelectedResolver), (ids: string[], provider: MetadataResolver) => {
+                    return ids.filter(id => provider.entityId !== id);
+                })
+            );
     }
 
     save(): void {

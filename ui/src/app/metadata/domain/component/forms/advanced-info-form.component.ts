@@ -15,6 +15,7 @@ import { EntityValidators } from '../../../domain/service/entity-validators.serv
 })
 export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent implements OnInit, OnChanges, OnDestroy {
     @Input() resolver: MetadataResolver;
+    @Input() ids: Observable<string[]>;
 
     contactTypes: string[] = [
         'support',
@@ -27,7 +28,6 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
 
     hasValue$: Observable<boolean>;
     totalValue$: Observable<string>;
-    ids$: Observable<string[]> = of([]);
 
     private validationSubscription: Subscription;
 
@@ -37,17 +37,6 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
         protected valueEmitter: ProviderValueEmitter
     ) {
         super(fb, statusEmitter, valueEmitter);
-
-        /*
-        this.ids$ = this.store
-            .select(fromCollection.getAllEntityIds)
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                combineLatest(this.store.select(fromCollection.getSelectedProvider), (ids: string[], provider: MetadataResolver) => {
-                    return ids.filter(id => provider.entityId !== id);
-                })
-            );
-            */
     }
 
     createForm(): void {
@@ -82,7 +71,7 @@ export class AdvancedInfoFormComponent extends ProviderFormFragmentComponent imp
         this.form
             .get('entityId')
             .setAsyncValidators(
-                EntityValidators.createUniqueIdValidator(this.ids$)
+                EntityValidators.createUniqueIdValidator(this.ids)
             );
     }
 

@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-lg-9" *ngIf="latest">
                     <div [ngSwitch]="editorIndex$ | async" class="px-3">
-                        <adv-info-form *ngSwitchDefault [resolver]="latest$ | async"></adv-info-form>
+                        <adv-info-form *ngSwitchDefault [resolver]="latest$ | async" [ids]="ids$"></adv-info-form>
                         <metadata-ui-form *ngSwitchCase="3" [resolver]="latest$ | async"></metadata-ui-form>
                         <descriptor-info-form *ngSwitchCase="4" [resolver]="latest$ | async"></descriptor-info-form>
                         <logout-form *ngSwitchCase="5" [resolver]="latest$ | async"></logout-form>
