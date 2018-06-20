@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
+
 import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
@@ -49,6 +50,8 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         metadataResolverRepository.save(mr)
         def output = metadataResolverService.generateConfiguration()
 
+        println(output.documentElement)
+
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/278.xml', output)
     }
@@ -60,7 +63,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters.add(new EntityAttributesFilter().with {
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
-                it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+                it.entityAttributesFilterTargetType = EntityAttributesFilterTargetType.ENTITY
                 it.value = ['https://sp1.example.org']
                 it
             }
@@ -128,6 +131,12 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
                 def mr = new TestObjectGenerator(attributeUtility).fileBackedHttpMetadataResolver()
                 mr.setName("HTTPMetadata")
                 metadataResolverRepository.save(mr)
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver.
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).dynamicHttpMetadataResolver())
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver.
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).localDynamicMetadataResolver())
             }
 
             return resolver

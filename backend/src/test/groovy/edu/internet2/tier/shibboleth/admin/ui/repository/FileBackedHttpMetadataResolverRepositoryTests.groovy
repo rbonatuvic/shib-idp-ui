@@ -54,7 +54,7 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = ENTITY
-                    it.setSingleValue(["hola"])
+                    it.setValue(["hola"])
                     it
                 }
                 it

@@ -28,7 +28,7 @@ public class HttpMetadataResolverAttributes {
 
     private String socketTimeout;
 
-    private Boolean disregardTLSCertificate;
+    private Boolean disregardTLSCertificate = false;
 
     private String tlsTrustEngineRef;
 

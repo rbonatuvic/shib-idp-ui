@@ -140,6 +140,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
+
     }
 
     def 'test generating RequiredValidUntilFilter xml snippet'() {
