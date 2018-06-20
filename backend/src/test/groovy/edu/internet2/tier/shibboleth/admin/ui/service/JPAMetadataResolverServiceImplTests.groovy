@@ -138,7 +138,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
 
         then:
-        assert generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
+        generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating FileBackedHttMetadataResolver xml snippet'() {
@@ -151,7 +151,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         }
 
         then:
-        assert generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
+        generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
