@@ -38,19 +38,11 @@
                       refreshDelayFactor="0.75">
         <MetadataFilter xsi:type="SignatureValidation" requireSignedRoot="true"
                         certificateFile="%{idp.home}/credentials/inc-md-cert.pem" />
-        <MetadataFilter xsi:type="RequiredValidUntil" maxValidityInterval="P14D" />
-        <MetadataFilter xsi:type="EntityRoleWhiteList" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
-            <RetainedRole>md:SPSSODescriptor</RetainedRole>
-        </MetadataFilter>
     </MetadataProvider>
     <MetadataProvider id="LocalDynamic"
                       initializeFromPersistentCacheInBackground="true"
                       removeIdleEntityData="true"
                       xsi:type="DynamicHttpMetadataProvider">
         <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" requireSignedRoot="true" xsi:type="SignatureValidation"/>
-        <MetadataFilter maxValidityInterval="P14D" xsi:type="RequiredValidUntil"/>
-        <MetadataFilter xsi:type="EntityRoleWhiteList" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
-            <RetainedRole>md:SPSSODescriptor</RetainedRole>
-        </MetadataFilter>
     </MetadataProvider>
 </MetadataProvider>

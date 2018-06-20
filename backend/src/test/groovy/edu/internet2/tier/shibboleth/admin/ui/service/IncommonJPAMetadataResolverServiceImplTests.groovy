@@ -63,7 +63,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters.add(new EntityAttributesFilter().with {
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
-                it.entityAttributesFilterTargetType = EntityAttributesFilterTargetType.ENTITY
+                it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
                 it.value = ['https://sp1.example.org']
                 it
             }
