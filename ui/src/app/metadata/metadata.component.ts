@@ -20,7 +20,5 @@ export class MetadataPageComponent {
         this.store.dispatch(new LoadResolverRequest());
         this.store.dispatch(new LoadFilterRequest());
         this.store.dispatch(new LoadDraftRequest());
-
-        console.log('metadata page component');
     }
 }

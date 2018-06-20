@@ -4,7 +4,7 @@ import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataProviderService } from './provider.service';
 import { EntityAttributesFilter } from '../entity';
 
-xdescribe(`Metadata Provider Service`, () => {
+describe(`Metadata Provider Service`, () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ xdescribe(`Metadata Provider Service`, () => {
                 service.query().subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `${service.base}${service.endpoint}s`
+                    return req.url === `${service.base}${service.endpoint}`
                         && req.method === 'GET';
                 }, `GET MetadataResolvers collection`);
             }

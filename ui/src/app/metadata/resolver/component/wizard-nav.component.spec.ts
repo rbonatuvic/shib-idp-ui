@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { WizardNavComponent } from './wizard-nav.component';
-import * as fromEditor from '../reducer';
+import * as fromResolver from '../reducer';
 import { ProviderEditorFormModule } from '../../domain/component';
 import { DomainModule } from '../../domain/domain.module';
 import { SharedModule } from '../../../shared/shared.module';
@@ -36,7 +36,7 @@ class TestHostComponent {
 
 describe('Wizard Nav Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
-    let store: Store<fromEditor.State>;
+    let store: Store<fromResolver.State>;
     let instance: TestHostComponent;
     let wizard: WizardNavComponent;
 
@@ -46,7 +46,7 @@ describe('Wizard Nav Component', () => {
             imports: [
                 NoopAnimationsModule,
                 StoreModule.forRoot({
-                    'edit-provider': combineReducers(fromEditor.reducers),
+                    'resolver': combineReducers(fromResolver.reducers),
                 }),
                 ReactiveFormsModule,
                 DomainModule,

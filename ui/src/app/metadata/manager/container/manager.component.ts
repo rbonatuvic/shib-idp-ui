@@ -51,8 +51,6 @@ export class ManagerComponent implements OnInit {
         this.total$ = this.resolvers$.pipe(map(list => list.length));
 
         this.limited$ = this.getPagedResolvers(this.page, this.resolvers$);
-
-        this.entitiesOpen$.subscribe(p => console.log(p));
     }
 
     ngOnInit (): void {

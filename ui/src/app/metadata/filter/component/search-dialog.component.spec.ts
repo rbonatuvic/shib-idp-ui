@@ -21,7 +21,7 @@ describe('Search Dialog', () => {
                 ReactiveFormsModule,
                 NgbModalModule,
                 StoreModule.forRoot({
-                    'metadata-filter': combineReducers(fromFilter.reducers),
+                    'filter': combineReducers(fromFilter.reducers),
                 }),
                 SharedModule
             ],
