@@ -39,4 +39,4 @@ export class FinishFormComponent extends ProviderFormFragmentComponent implement
             serviceEnabled: !this.resolver ? false : this.resolver.serviceEnabled !== false ? true : false
         });
     }
-} /* istanbul ignore next */
+}

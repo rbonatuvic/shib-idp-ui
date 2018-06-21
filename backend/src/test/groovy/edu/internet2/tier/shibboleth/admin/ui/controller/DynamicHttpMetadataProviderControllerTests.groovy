@@ -1,10 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.repository.FileBackedHttpMetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.repository.DynamicHttpMetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
@@ -27,27 +27,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Bill Smith (wsmith@unicon.net)
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, MetadataResolverConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class FileBackedHttpMetadataProviderControllerTests extends Specification {
+class DynamicHttpMetadataProviderControllerTests extends Specification {
     RandomGenerator randomGenerator
     TestObjectGenerator testObjectGenerator
     ObjectMapper mapper
 
-    @Autowired
-    AttributeUtility attributeUtility
-
-    def repository = Mock(FileBackedHttpMetadataResolverRepository)
+    def repository = Mock(DynamicHttpMetadataResolverRepository)
     def controller
     def mockMvc
+
+    @Autowired
+    AttributeUtility attributeUtility
 
     def setup() {
         randomGenerator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
 
-        controller = new FileBackedHttpMetadataProviderController (
+        controller = new DynamicHttpMetadataProviderController (
                 repository: repository
         )
 
@@ -62,7 +62,7 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                delete("/api/MetadataProvider/FileBackedHttp/$randomResourceId"))
+                delete("/api/MetadataProvider/DynamicHttp/$randomResourceId"))
 
         then:
         result.andExpect(status().isAccepted())
@@ -76,7 +76,7 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                delete("/api/MetadataProvider/FileBackedHttp/$randomResourceId"))
+                delete("/api/MetadataProvider/DynamicHttp/$randomResourceId"))
 
         then:
         result.andExpect(status().isNotFound())
@@ -84,8 +84,8 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "POST a new resolver properly persists and returns the new persisted resolver"() {
         given:
-        def resolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        resolver.version = resolver.hashCode()
+        def resolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
+        resolver.setVersion(resolver.hashCode())
         def postedJsonBody = mapper.writeValueAsString(resolver)
 
         1 * repository.findByName(resolver.getName()) >> null
@@ -93,11 +93,11 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
         def expectedResolverUUID = resolver.getResourceId()
         def expectedResponseHeader = 'Location'
-        def expectedResponseHeaderValue = "/api/MetadataProvider/FileBackedHttp/$expectedResolverUUID"
+        def expectedResponseHeaderValue = "/api/MetadataProvider/DynamicHttp/$expectedResolverUUID"
 
         when:
         def result = mockMvc.perform(
-                post('/api/MetadataProvider/FileBackedHttp')
+                post('/api/MetadataProvider/DynamicHttp')
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -110,18 +110,16 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "POST a new resolver that has a name of a persisted resolver returns conflict"() {
         given:
-        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        def randomResolverName = existingResolver.name
-        def newResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        newResolver.name = randomResolverName
-        def postedJsonBody = mapper.writeValueAsString(newResolver)
+        def resolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
+        def resolverName = resolver.name
+        def postedJsonBody = mapper.writeValueAsString(resolver)
 
-        1 * repository.findByName(randomResolverName) >> existingResolver
+        1 * repository.findByName(resolverName) >> resolver
         0 * repository.save(_)
 
         when:
         def result = mockMvc.perform(
-                post('/api/MetadataProvider/FileBackedHttp')
+                post('/api/MetadataProvider/DynamicHttp')
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -131,18 +129,18 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "GET by resourceId returns the desired persisted resolver"() {
         given:
-        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        existingResolver.version = existingResolver.hashCode()
-        def randomResourceId = existingResolver.resourceId
-        def resolverJson = mapper.writeValueAsString(existingResolver)
+        def resolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
+        resolver.version = resolver.hashCode()
+        def resourceId = resolver.resourceId
+        def resolverJson = mapper.writeValueAsString(resolver)
 
-        1 * repository.findByResourceId(randomResourceId) >> existingResolver
+        1 * repository.findByResourceId(resourceId) >> resolver
 
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
         def result = mockMvc.perform(
-                get("/api/MetadataProvider/FileBackedHttp/$randomResourceId"))
+                get("/api/MetadataProvider/DynamicHttp/$resourceId"))
 
         then:
         result.andExpect(status().isOk())
@@ -158,7 +156,7 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                get("/api/MetadataProvider/FileBackedHttp/$randomResourceId"))
+                get("/api/MetadataProvider/DynamicHttp/$randomResourceId"))
 
         then:
         result.andExpect(status().isNotFound())
@@ -166,18 +164,18 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "GET by resolver name returns the desired persisted resolver"() {
         given:
-        def randomResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        randomResolver.version = randomResolver.hashCode()
-        def randomResolverName = randomResolver.name
-        def resolverJson = mapper.writeValueAsString(randomResolver)
+        def resolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
+        resolver.version = resolver.hashCode()
+        def resolverName = resolver.name
+        def resolverJson = mapper.writeValueAsString(resolver)
 
-        1 * repository.findByName(randomResolverName) >> randomResolver
+        1 * repository.findByName(resolverName) >> resolver
 
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
         def result = mockMvc.perform(
-                get("/api/MetadataProvider/FileBackedHttp/name/$randomResolverName"))
+                get("/api/MetadataProvider/DynamicHttp/name/$resolverName"))
 
         then:
         result.andExpect(status().isOk())
@@ -193,7 +191,7 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                get("/api/MetadataProvider/FileBackedHttp/name/$randomResolverName"))
+                get("/api/MetadataProvider/DynamicHttp/name/$randomResolverName"))
 
         then:
         result.andExpect(status().isNotFound())
@@ -201,23 +199,24 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "PUT allows for a successful update of an already-persisted resolver"() {
         given:
-        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        def existingResolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
         existingResolver.version = existingResolver.hashCode()
-        def randomResourceId = existingResolver.resourceId
-        def updatedResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        updatedResolver.version = existingResolver.version
+        def resourceId = existingResolver.resourceId
+        def existingResolverJson = mapper.writeValueAsString(existingResolver)
+
+        def updatedResolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
         updatedResolver.resourceId = existingResolver.resourceId
+        updatedResolver.version = existingResolver.version
         def postedJsonBody = mapper.writeValueAsString(updatedResolver)
 
-
-        1 * repository.findByResourceId(randomResourceId) >> existingResolver
+        1 * repository.findByResourceId(existingResolver.resourceId) >> existingResolver
         1 * repository.save(_) >> updatedResolver
 
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
         def result = mockMvc.perform(
-                put('/api/MetadataProvider/FileBackedHttp')
+                put('/api/MetadataProvider/DynamicHttp')
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -231,20 +230,20 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "PUT of an updated resolver with an incorrect version returns a conflict"() {
         given:
-        def existingResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
+        def existingResolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
         existingResolver.version = existingResolver.hashCode()
-        def randomResourceId = existingResolver.resourceId
-        def updatedResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        updatedResolver.version = updatedResolver.hashCode()
+
+        def updatedResolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
         updatedResolver.resourceId = existingResolver.resourceId
+        updatedResolver.version = updatedResolver.hashCode()
         def postedJsonBody = mapper.writeValueAsString(updatedResolver)
 
-        1 * repository.findByResourceId(randomResourceId) >> existingResolver
+        1 * repository.findByResourceId(existingResolver.resourceId) >> existingResolver
         0 * repository.save(_)
 
         when:
         def result = mockMvc.perform(
-                put('/api/MetadataProvider/FileBackedHttp')
+                put('/api/MetadataProvider/DynamicHttp')
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -254,17 +253,15 @@ class FileBackedHttpMetadataProviderControllerTests extends Specification {
 
     def "PUT of a resolver that is not persisted returns not found"() {
         given:
-        def randomResolver = testObjectGenerator.buildFileBackedHttpMetadataResolver()
-        randomResolver.version = randomResolver.hashCode()
-        def randomResourceId = randomResolver.resourceId
-        def postedJsonBody = mapper.writeValueAsString(randomResolver)
+        def resolver = testObjectGenerator.buildDynamicHttpMetadataResolver()
+        def postedJsonBody = mapper.writeValueAsString(resolver)
 
-        1 * repository.findByResourceId(randomResourceId) >> null
+        1 * repository.findByResourceId(resolver.resourceId) >> null
         0 * repository.save(_)
 
         when:
         def result = mockMvc.perform(
-                put('/api/MetadataProvider/FileBackedHttp')
+                put('/api/MetadataProvider/DynamicHttp')
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 

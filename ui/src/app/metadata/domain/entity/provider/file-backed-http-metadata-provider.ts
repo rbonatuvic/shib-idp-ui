@@ -56,6 +56,10 @@ export class FileBackedHttpMetadataProvider implements MetadataProvider, Metadat
         return this.id;
     }
 
+    getDisplayId(): string {
+        return this.id;
+    }
+
     isDraft(): boolean {
         return false;
     }

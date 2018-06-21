@@ -33,6 +33,10 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         return this.entityId;
     }
 
+    getDisplayId(): string {
+        return this.entityId;
+    }
+
     isDraft(): boolean {
         return false;
     }

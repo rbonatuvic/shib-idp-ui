@@ -45,7 +45,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean useDefaultPredicateRegistry = true;
 
-    private Boolean satisfyAnyPredicates;
+    private Boolean satisfyAnyPredicates = false;
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn

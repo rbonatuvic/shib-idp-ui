@@ -4,6 +4,7 @@ export interface MetadataEntity {
     kind: string;
 
     getId(): string;
+    getDisplayId(): string;
     isDraft(): boolean;
     getCreationDate(): Date;
 

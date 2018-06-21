@@ -15,6 +15,7 @@ import {
     CreateResolverCopyError
 } from '../action/copy.action';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { removeNulls } from '../../../shared/util';
 
 
 @Injectable()
@@ -31,7 +32,7 @@ export class CopyResolverEffects {
         switchMap(([attrs, providers, sections]) => {
             const { serviceProviderName, entityId } = attrs;
             const provider = providers.find(p => p.entityId === attrs.target);
-            const copied = sections.reduce((c, section) => ({ ...c, ...{[section]: provider[section] } }), {});
+            const copied = removeNulls(sections.reduce((c, section) => ({ ...c, ...{[section]: provider[section] } }), {}));
             const action = provider ?
                 new CreateResolverCopySuccess(new FileBackedHttpMetadataResolver({
                     serviceProviderName,

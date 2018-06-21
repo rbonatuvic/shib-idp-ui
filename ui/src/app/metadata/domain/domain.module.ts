@@ -13,11 +13,12 @@ import { MetadataProviderService } from './service/provider.service';
 import { EntityEffects } from './effect/entity.effect';
 import { PreviewDialogComponent } from './component/preview-dialog.component';
 
-export const COMPONENTS = [];
+export const COMPONENTS = [
+    PreviewDialogComponent
+];
 
 export const DECLARATIONS = [
-    ...COMPONENTS,
-    PreviewDialogComponent
+    ...COMPONENTS
 ];
 
 @NgModule({

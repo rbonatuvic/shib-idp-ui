@@ -37,7 +37,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
         nameIdFormats: []
     } as IdpSsoDescriptor;
 
-    logoutEndpoints = [] as LogoutEndpoint[];
+    logoutEndpoints: LogoutEndpoint[] = [];
 
     serviceEnabled = false;
 
@@ -54,6 +54,10 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
 
     getId(): string {
         return this.id ? this.id : this.entityId;
+    }
+
+    getDisplayId(): string {
+        return this.entityId;
     }
 
     isDraft(): boolean {

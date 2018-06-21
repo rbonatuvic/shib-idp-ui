@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
+import org.xmlunit.builder.DiffBuilder
+import org.xmlunit.builder.Input
 import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
@@ -43,8 +45,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         when:
         def output = metadataResolverService.generateConfiguration()
 
+        println(output.documentElement)
+
         then:
-        assert generatedXmlIsTheSameAsExpectedXml('/conf/278.xml', output)
+        generatedXmlIsTheSameAsExpectedXml('/conf/278.xml', output)
     }
 
     def 'test generation of metadata-providers.xml with filters'() {
@@ -71,7 +75,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         def output = metadataResolverService.generateConfiguration()
 
         then:
-        assert generatedXmlIsTheSameAsExpectedXml('/conf/278.2.xml', output)
+        generatedXmlIsTheSameAsExpectedXml('/conf/278.2.xml', output)
     }
 
     //TODO: check that this configuration is sufficient
@@ -106,6 +110,12 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
                 def mr = new TestObjectGenerator(attributeUtility).fileBackedHttpMetadataResolver()
                 mr.setName("HTTPMetadata")
                 metadataResolverRepository.save(mr)
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver.
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).dynamicHttpMetadataResolver())
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver.
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).localDynamicMetadataResolver())
             }
 
             return resolver
