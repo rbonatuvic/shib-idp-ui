@@ -11,11 +11,14 @@ import javax.persistence.Entity;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class FileBackedHttpMetadataResolver extends MetadataResolver {
+
+    public FileBackedHttpMetadataResolver() {
+        type = "FileBackedHttpMetadataResolver";
+    }
 
     private String metadataURL;
 

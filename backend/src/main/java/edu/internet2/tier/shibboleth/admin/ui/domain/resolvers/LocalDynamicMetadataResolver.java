@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -11,11 +10,14 @@ import javax.persistence.Entity;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class LocalDynamicMetadataResolver extends MetadataResolver {
+
+    public LocalDynamicMetadataResolver() {
+        type = "LocalDynamicMetadataResolver";
+    }
 
     private String sourceDirectory;
 
