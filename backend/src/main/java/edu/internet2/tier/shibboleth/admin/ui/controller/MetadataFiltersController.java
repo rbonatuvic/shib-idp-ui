@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/api/MetadataResolver/{metadataResolverId}")
+@RequestMapping("/api/MetadataResolvers/{metadataResolverId}")
 public class MetadataFiltersController {
 
     private static Logger LOGGER = LoggerFactory.getLogger(MetadataFiltersController.class);

@@ -24,7 +24,7 @@ import spock.lang.Specification
 import javax.persistence.EntityManager
 
 /**
- * A highly unnecessary test so that I can check to make sure that persistence is correct for the model
+ * Testing persistence of the MetadataResolver models
  */
 @DataJpaTest
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
