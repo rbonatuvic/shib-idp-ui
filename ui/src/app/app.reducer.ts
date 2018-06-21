@@ -1,5 +1,4 @@
-import { ActionReducerMap, MetaReducer, ActionReducer } from '@ngrx/store';
-import { routerReducer, RouterReducerState } from '@ngrx/router-store';
+import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
 import { RouterStateUrl } from './shared/util';

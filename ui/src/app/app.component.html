@@ -4,7 +4,7 @@
         <img src="/assets/shibboleth_icon_color_130x130.png" width="30" height="30" class="d-inline-block align-top" alt="Shibboleth Logo - Click to be directed to www.shibboleth.net">
         <span class="d-lg-inline d-none">Shibboleth</span>
     </a>
-    <span class="navbar-text" i18n="@@label--app">Metadata Source Management</span>
+    <span class="navbar-text" i18n="@@label--app">Source Management</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -24,29 +24,29 @@
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
                     <a class="nav-link"
-                        routerLink="/filter/new"
+                        routerLink="/metadata/resolver/new"
                         routerLinkActive="active"
-                        aria-label="Add a new metadata filter"
-                        role="button">
-                        <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
-                        &nbsp;
-                        <ng-container i18n="@@action--add-filter">Filter</ng-container>
-                    </a>
-                    <a class="nav-link"
-                        routerLink="/new"
-                        routerLinkActive="active"
-                        aria-label="Launch wizard to add a new provider"
+                        aria-label="Add a new metadata provider"
                         role="button">
                         <i class="fa fa-cube fa-fw" aria-hidden="true"></i>
                         &nbsp;
                         <ng-container i18n="@@action--add-source">Metadata Source</ng-container>
                     </a>
+                    <a class="nav-link"
+                        routerLink="/metadata/provider/new"
+                        routerLinkActive="active"
+                        aria-label="Add a new metadata resolver"
+                        role="button">
+                        <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
+                        &nbsp;
+                        <ng-container i18n="@@action--add-filter">Metadata Provider</ng-container>
+                    </a>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" aria-label="Metadata sources dashboard">
+                <a class="nav-link" routerLink="/metadata" routerLinkActive="active" aria-label="Metadata Dashboard">
                     <i class="fa fa-th fa-fw" aria-hidden="true"></i>
-                    <ng-container i18n="@@action--manage-sources">Manage Sources</ng-container>
+                    <ng-container i18n="@@action--dashboard">Dashboard</ng-container>
                 </a>
             </li>
             <li>

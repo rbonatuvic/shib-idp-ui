@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Location } from '@angular/common';
-
 import { of } from 'rxjs';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 
@@ -9,7 +7,6 @@ import {
     ShowContentionAction,
     ResolveContentionAction,
     ContentionActionTypes,
-    ContentionActionUnion,
     CancelContentionAction
 } from '../action/contention.action';
 import { ModalService, DEFAULT_MODAL_OPTIONS } from '../../core/service/modal.service';

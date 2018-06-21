@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { HttpClientModule } from '@angular/common/http';
 
 import { reducers } from './reducer';
 import { ContentionEffects } from './effect/contention.effect';
 import { ContentionDialogComponent } from './component/contention-dialog.component';
 import { ChangeItemComponent } from './component/change-item.component';
-import { DomainModule } from '../domain/domain.module';
 import { ContentionService } from './service/contention.service';
+import { SharedModule } from '../shared/shared.module';
 
 export const COMPONENTS = [
     ContentionDialogComponent,
@@ -20,7 +18,7 @@ export const COMPONENTS = [
 @NgModule({
     imports: [
         CommonModule,
-        DomainModule,
+        SharedModule,
         StoreModule.forFeature('contention', reducers),
         EffectsModule.forFeature([ContentionEffects])
     ],

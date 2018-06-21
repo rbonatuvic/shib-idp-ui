@@ -20,7 +20,6 @@ export class DifferentialService {
         return lib.updatedDiff(originalObj, updatedObj);
     }
     detailedDiff(originalObj, updatedObj) { // returns an object with the added, deleted and updated differences
-        console.log(originalObj, updatedObj);
         return lib.detailedDiff(originalObj, updatedObj);
     }
 }

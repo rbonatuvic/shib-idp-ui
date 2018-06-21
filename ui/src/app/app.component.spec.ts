@@ -54,7 +54,7 @@ describe('AppComponent', () => {
 
     it('should create the app', async(() => {
         expect(app).toBeTruthy();
-        expect(store.dispatch).toHaveBeenCalledTimes(4);
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
     }));
 
     it(`should have as title 'Shib-UI'`, async(() => {

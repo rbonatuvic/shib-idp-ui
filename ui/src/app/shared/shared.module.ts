@@ -4,6 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HighlightPipe } from './pipe/highlight.pipe';
 import { AutoCompleteComponent } from './autocomplete/autocomplete.component';
 import { ValidationClassDirective } from './validation/validation-class.directive';
+import { InputDefaultsDirective } from './directive/input-defaults.directive';
+import { I18nTextComponent } from './component/i18n-text.component';
+import { ValidFormIconComponent } from './component/valid-form-icon.component';
+import { InfoLabelDirective } from './directive/info-label.directive';
+import { PrettyXml } from './pipe/pretty-xml.pipe';
 
 @NgModule({
     imports: [
@@ -14,14 +19,22 @@ import { ValidationClassDirective } from './validation/validation-class.directiv
     declarations: [
         HighlightPipe,
         AutoCompleteComponent,
-        ValidationClassDirective
+        ValidationClassDirective,
+        InputDefaultsDirective,
+        I18nTextComponent,
+        ValidFormIconComponent,
+        InfoLabelDirective,
+        PrettyXml
     ],
     exports: [
         HighlightPipe,
         AutoCompleteComponent,
         CommonModule,
         ReactiveFormsModule,
-        FormsModule
+        FormsModule,
+        InputDefaultsDirective,
+        I18nTextComponent,
+        ValidFormIconComponent
     ]
 })
 export class SharedModule { }
