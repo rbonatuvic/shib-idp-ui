@@ -1,6 +1,5 @@
 import { ContentionActionTypes, ContentionActionUnion } from '../action/contention.action';
 import { Contention } from '../model/contention';
-import { MetadataEntity } from '../../domain/domain.type';
 
 export interface State {
     contention: Contention<any>;

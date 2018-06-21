@@ -1,7 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromNotifications from './notification.reducer';
 import * as fromRoot from '../../core/reducer';
-import { Notification } from '../model/notification';
 
 export interface State extends fromRoot.State {
     notifications: NotificationState;

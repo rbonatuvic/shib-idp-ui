@@ -1,13 +1,9 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import * as fromContention from '../reducer';
-import { ResolveContentionAction } from '../action/contention.action';
 import { Contention, ChangeItem } from '../model/contention';
 
 @Component({
