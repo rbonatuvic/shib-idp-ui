@@ -29,7 +29,7 @@ public class MetadataResolversController {
 
     @GetMapping("/MetadataResolvers")
     @Transactional(readOnly = true)
-    ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll() {
         Iterable<MetadataResolver> resolvers = resolverRepository.findAll();
         resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
@@ -37,7 +37,7 @@ public class MetadataResolversController {
 
     @GetMapping("/MetadataResolvers/{resourceId}")
     @Transactional(readOnly = true)
-    ResponseEntity<?> getOne(@PathVariable String resourceId) {
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
         MetadataResolver resolver = resolverRepository.findByResourceId(resourceId);
         if (resolver == null) {
             return ResponseEntity.notFound().build();
@@ -48,7 +48,7 @@ public class MetadataResolversController {
 
     @PostMapping("/MetadataResolvers")
     @Transactional
-    ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
+    public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
         //TODO disregard attached filters if any sent from UI?
         //Only deal with filters via filters endpoints?
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
@@ -59,7 +59,7 @@ public class MetadataResolversController {
 
     @PutMapping("/MetadataResolvers/{resourceId}")
     @Transactional
-    ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) {
+    public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) {
         //TODO disregard attached filters if any sent from UI?
         //Only deal with filters via filters endpoints? And here only update the resolver pieces??
         MetadataResolver existingResolver = resolverRepository.findByResourceId(resourceId);
