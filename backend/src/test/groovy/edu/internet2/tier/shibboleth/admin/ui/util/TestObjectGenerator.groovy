@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
@@ -119,10 +120,42 @@ class TestObjectGenerator {
         (1..generator.randomInt(4, 10)).each {
             filterList.add(buildFilter { entityAttributesFilter() })
             filterList.add(buildFilter { entityRoleWhitelistFilter() })
+            filterList.add(buildFilter { signatureValidationFilter() })
         }
         return filterList
     }
 
+    MetadataFilter buildRandomFilterOfType(String filterType) {
+        def randomFilter
+        switch (filterType) {
+            case 'entityAttributes':
+                randomFilter = entityAttributesFilter()
+                break
+            case 'entityRoleWhiteList':
+                randomFilter = entityRoleWhitelistFilter()
+                break
+            case 'signatureValidation':
+                randomFilter = signatureValidationFilter()
+                break
+            default:
+                randomFilter = new MetadataFilter()
+        }
+        randomFilter
+    }
+
+    SignatureValidationFilter signatureValidationFilter() {
+        new SignatureValidationFilter().with {
+            it.name = 'SignatureValidation'
+            it.requireSignedRoot = generator.randomBoolean()
+            it.certificateFile = generator.randomString(50)
+            it.defaultCriteriaRef = generator.randomString(10)
+            it.signaturePrevalidatorRef = generator.randomString(10)
+            it.dynamicTrustedNamesStrategyRef = generator.randomString(10)
+            it.trustEngineRef = generator.randomString(10)
+            it.publicKey = generator.randomString(50)
+            it
+        }
+    }
     EntityRoleWhiteListFilter entityRoleWhitelistFilter() {
         new EntityRoleWhiteListFilter().with {
             it.name = 'EntityRoleWhiteList'
