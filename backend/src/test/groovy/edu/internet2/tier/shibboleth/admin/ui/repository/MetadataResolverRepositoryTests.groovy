@@ -6,6 +6,9 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
@@ -24,11 +27,11 @@ import javax.persistence.EntityManager
  * A highly unnecessary test so that I can check to make sure that persistence is correct for the model
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
+@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-class MetadataResolverRepositoryTest extends Specification {
+class MetadataResolverRepositoryTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
 
@@ -42,44 +45,16 @@ class MetadataResolverRepositoryTest extends Specification {
 
     def "test persisting a metadata resolver"() {
         when:
-        def mdr = new MetadataResolver().with {
-            it.name = "testme"
-            it.metadataFilters.add(new EntityAttributesFilter().with {
-                it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
-                    it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.value = ["hola"]
-                    return it
-                }
-                return it
-            })
-            return it
-        }
+        def mdr = create { new MetadataResolver() }
         metadataResolverRepository.save(mdr)
 
         then:
-        metadataResolverRepository.findAll().size() > 0
-        MetadataResolver item = metadataResolverRepository.findByName("testme")
-        item.name == "testme"
-        item.metadataFilters.size() == 1
-        item.metadataFilters.get(0).entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-        item.metadataFilters.get(0).entityAttributesFilterTarget.value.size() == 1
-        item.metadataFilters.get(0).entityAttributesFilterTarget.value.get(0) == "hola"
+        basicPersistenceOfResolverIsCorrectFor { it instanceof DynamicHttpMetadataResolver }
     }
 
     def "SHIBUI-553"() {
         when:
-        def mdr = new MetadataResolver().with {
-            it.name = "testme"
-            it.metadataFilters.add(new EntityAttributesFilter().with {
-                it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
-                    it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.setSingleValue(["hola"])
-                    return it
-                }
-                return it
-            })
-            return it
-        }
+        def mdr = create { new MetadataResolver() }
         metadataResolverRepository.save(mdr)
 
         def item1 = metadataResolverRepository.findByName('testme')
@@ -198,6 +173,63 @@ class MetadataResolverRepositoryTest extends Specification {
             }
         }
         !persistedFilter.relyingPartyOverrides.signAssertion
+    }
+
+    def "test persisting DynamicHttpMetadataResolver "() {
+        when:
+        def mdr = create { new DynamicHttpMetadataResolver() }
+        metadataResolverRepository.save(mdr)
+
+        then:
+        basicPersistenceOfResolverIsCorrectFor { it instanceof DynamicHttpMetadataResolver }
+    }
+
+    def "test persisting FileBackedHttpMetadataResolver "() {
+        when:
+        def mdr = create { new FileBackedHttpMetadataResolver() }
+        metadataResolverRepository.save(mdr)
+
+        then:
+        basicPersistenceOfResolverIsCorrectFor { it instanceof FileBackedHttpMetadataResolver }
+    }
+
+    def "test persisting LocalDynamicMetadataResolver "() {
+        when:
+        def mdr = create { new LocalDynamicMetadataResolver() }
+        metadataResolverRepository.save(mdr)
+
+        then:
+        basicPersistenceOfResolverIsCorrectFor { it instanceof LocalDynamicMetadataResolver }
+    }
+
+
+
+    private void basicPersistenceOfResolverIsCorrectFor(Closure resolverTypeCheck) {
+        assert metadataResolverRepository.findAll().size() > 0
+        MetadataResolver item = metadataResolverRepository.findByName("testme")
+        assert resolverTypeCheck(item)
+        assert item.name == "testme"
+        assert item.metadataFilters.size() == 1
+        assert item.metadataFilters.get(0).entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
+                .EntityAttributesFilterTargetType.ENTITY
+        assert item.metadataFilters.get(0).entityAttributesFilterTarget.value.size() == 1
+        assert item.metadataFilters.get(0).entityAttributesFilterTarget.value.get(0) == "hola"
+    }
+
+    private MetadataResolver create(Closure concreteResolverProvider) {
+        MetadataResolver resolver = concreteResolverProvider()
+        resolver.with {
+            it.name = "testme"
+            it.metadataFilters.add(new EntityAttributesFilter().with {
+                it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
+                    it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+                    it.value = ["hola"]
+                    return it
+                }
+                return it
+            })
+        }
+        resolver
     }
 
 }
