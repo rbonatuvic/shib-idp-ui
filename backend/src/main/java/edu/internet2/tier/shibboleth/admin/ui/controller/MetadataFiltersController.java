@@ -134,6 +134,8 @@ public class MetadataFiltersController {
         MetadataFilter persistedFilter =
                 convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), updatedFilter.getResourceId());
 
+        persistedFilter.setVersion(persistedFilter.hashCode());
+
         return ResponseEntity.ok().body(persistedFilter);
     }
 
@@ -170,7 +172,8 @@ public class MetadataFiltersController {
             toFilter.setRemoveEmptyEntitiesDescriptors(fromFilter.getRemoveEmptyEntitiesDescriptors());
             toFilter.setRemoveRolelessEntityDescriptors(fromFilter.getRemoveRolelessEntityDescriptors());
             toFilter.setRetainedRoles(fromFilter.getRetainedRoles());
-        } else if (filterWithUpdatedData instanceof SignatureValidationFilter) {
+        }
+        else if (filterWithUpdatedData instanceof SignatureValidationFilter) {
             SignatureValidationFilter toFilter = SignatureValidationFilter.class.cast(filterToBeUpdated);
             SignatureValidationFilter fromFilter = SignatureValidationFilter.class.cast(filterWithUpdatedData);
             toFilter.setRequireSignedRoot(fromFilter.getRequireSignedRoot());

@@ -126,7 +126,6 @@ class MetadataFiltersControllerTests extends Specification {
     def "FilterController.create creates the desired filter (filterType: #filterType)"(String filterType) {
         given:
         def randomFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
-        println('WOO! ' + randomFilter.class)
         def metadataResolver = new MetadataResolver()
         metadataResolver.setResourceId(randomGenerator.randomId())
         metadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
@@ -161,6 +160,7 @@ class MetadataFiltersControllerTests extends Specification {
             'entityAttributes'    | _
             'entityRoleWhiteList' | _
             'signatureValidation' | _
+            'requiredValidUntil'  | _
     }
 
     @Unroll
@@ -169,6 +169,7 @@ class MetadataFiltersControllerTests extends Specification {
         def originalFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
         def updatedFilter = testObjectGenerator.copyOf(originalFilter)
         updatedFilter.name = 'Updated Filter'
+        updatedFilter.version = originalFilter.hashCode()
         def postedJsonBody = mapper.writeValueAsString(updatedFilter)
 
         def originalMetadataResolver = new MetadataResolver()
@@ -194,7 +195,9 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         def expectedJson = new JsonSlurper().parseText(postedJsonBody)
-        updatedFilter.fromTransientRepresentation()
+        if (filterType == 'entityAttributes') {
+            EntityAttributesFilter.cast(updatedFilter).fromTransientRepresentation()
+        }
         expectedJson << [version: updatedFilter.hashCode()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
@@ -204,6 +207,7 @@ class MetadataFiltersControllerTests extends Specification {
             'entityAttributes'    | _
             'entityRoleWhiteList' | _
             'signatureValidation' | _
+            'requiredValidUntil'  | _
     }
 
     def "FilterController.update filter 409's if the version numbers don't match"() {

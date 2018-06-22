@@ -134,8 +134,11 @@ class TestObjectGenerator {
             case 'signatureValidation':
                 randomFilter = signatureValidationFilter()
                 break
+            case 'requiredValidUntil':
+                randomFilter = requiredValidUntilFilter()
+                break
             default:
-                randomFilter = new MetadataFilter()
+                throw new RuntimeException("Did you forget to create a TestObjectGenerator.copyOf method for filtertype: ${filterType} ?");
         }
         randomFilter
     }
@@ -175,6 +178,15 @@ class TestObjectGenerator {
     RequiredValidUntilFilter requiredValidUntilFilter() {
         return new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
+            it
+        }
+    }
+
+    RequiredValidUntilFilter copyOf(RequiredValidUntilFilter requiredValidUntilFilter) {
+        new RequiredValidUntilFilter().with {
+            it.name = requiredValidUntilFilter.name
+            it.resourceId = requiredValidUntilFilter.resourceId
+            it.maxValidityInterval = requiredValidUntilFilter.maxValidityInterval
             it
         }
     }

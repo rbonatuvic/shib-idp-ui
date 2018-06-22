@@ -120,6 +120,39 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'publicKey': filter.publicKey)
     }
 
+    void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
+            // TODO: enhance. currently this does weird things with namespaces
+            filter.attributes.each { attribute ->
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
+            }
+            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
+                    .EntityAttributesFilterTargetType.ENTITY) {
+                filter.entityAttributesFilterTarget.value.each {
+                    Entity(it)
+                }
+            }
+        }
+    }
+
+    void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'EntityRoleWhiteList',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
+        ) {
+            filter.retainedRoles.each {
+                markupBuilderDelegate.RetainedRole(it)
+            }
+        }
+    }
+
+    void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'RequiredValidUntil',
+                maxValidityInterval: filter.maxValidityInterval
+        )
+    }
+
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.name,
                 'xsi:type': 'DynamicHttpMetadataProvider',
@@ -165,39 +198,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
             childNodes()
         }
-    }
-
-    void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
-            // TODO: enhance. currently this does weird things with namespaces
-            filter.attributes.each { attribute ->
-                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
-            }
-            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
-                    .EntityAttributesFilterTargetType.ENTITY) {
-                filter.entityAttributesFilterTarget.value.each {
-                    Entity(it)
-                }
-            }
-        }
-    }
-
-    void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(
-                'xsi:type': 'EntityRoleWhiteList',
-                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
-        ) {
-            filter.retainedRoles.each {
-                markupBuilderDelegate.RetainedRole(it)
-            }
-        }
-    }
-
-    void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(
-                'xsi:type': 'RequiredValidUntil',
-                maxValidityInterval: filter.maxValidityInterval
-        )
     }
 
     void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
