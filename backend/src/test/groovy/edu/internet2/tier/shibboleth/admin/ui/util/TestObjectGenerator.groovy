@@ -175,6 +175,31 @@ class TestObjectGenerator {
         }
     }
 
+    SignatureValidationFilter copyOf(SignatureValidationFilter signatureValidationFilter) {
+        new SignatureValidationFilter().with {
+            it.name = signatureValidationFilter.name
+            it.resourceId = signatureValidationFilter.resourceId
+            it.trustEngineRef = signatureValidationFilter.trustEngineRef
+            it.signaturePrevalidatorRef = signatureValidationFilter.signaturePrevalidatorRef
+            it.publicKey = signatureValidationFilter.publicKey
+            it.dynamicTrustedNamesStrategyRef = signatureValidationFilter.dynamicTrustedNamesStrategyRef
+            it.requireSignedRoot = signatureValidationFilter.requireSignedRoot
+            it.certificateFile = signatureValidationFilter.certificateFile
+            it.defaultCriteriaRef = signatureValidationFilter.defaultCriteriaRef
+            it
+        }
+    }
+
+    EntityRoleWhiteListFilter copyOf(EntityRoleWhiteListFilter entityRoleWhiteListFilter) {
+        new EntityRoleWhiteListFilter().with {
+            it.name = entityRoleWhiteListFilter.name
+            it.resourceId = entityRoleWhiteListFilter.resourceId
+            it.removeEmptyEntitiesDescriptors = entityRoleWhiteListFilter.removeEmptyEntitiesDescriptors
+            it.removeRolelessEntityDescriptors = entityRoleWhiteListFilter.removeRolelessEntityDescriptors
+            it.retainedRoles = entityRoleWhiteListFilter.retainedRoles
+            it
+        }
+    }
     EntityAttributesFilter copyOf(EntityAttributesFilter entityAttributesFilter) {
         new EntityAttributesFilter().with {
             it.name = entityAttributesFilter.name
