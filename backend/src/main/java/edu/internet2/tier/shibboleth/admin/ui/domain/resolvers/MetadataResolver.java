@@ -38,7 +38,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     @JsonProperty("@type")
     @Transient
-    String type;
+    String type = "BaseMetadataResolver";
 
     @Column(unique = true)
     private String name;

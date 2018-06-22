@@ -49,7 +49,7 @@ class MetadataResolverRepositoryTests extends Specification {
         metadataResolverRepository.save(mdr)
 
         then:
-        basicPersistenceOfResolverIsCorrectFor { it instanceof DynamicHttpMetadataResolver }
+        basicPersistenceOfResolverIsCorrectFor { it instanceof MetadataResolver }
     }
 
     def "SHIBUI-553"() {
