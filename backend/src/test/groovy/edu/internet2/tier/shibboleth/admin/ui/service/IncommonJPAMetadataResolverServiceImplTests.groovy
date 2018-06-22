@@ -4,6 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -19,8 +21,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
-import org.xmlunit.builder.DiffBuilder
-import org.xmlunit.builder.Input
+
 import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
@@ -43,6 +44,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
     def 'simple test generation of metadata-providers.xml'() {
         when:
+        def mr = metadataResolverRepository.findAll().iterator().next()
+        mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
+        mr.metadataFilters << entityRoleWhiteListFilterForXmlGenerationTests()
+        metadataResolverRepository.save(mr)
         def output = metadataResolverService.generateConfiguration()
 
         println(output.documentElement)
@@ -55,6 +60,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         when:
         //TODO: this might break later
         def mr = metadataResolverRepository.findAll().iterator().next()
+        mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters.add(new EntityAttributesFilter().with {
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                 it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
@@ -70,12 +76,27 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
             it.attributes = [attribute]
             it
         })
+        mr.metadataFilters << entityRoleWhiteListFilterForXmlGenerationTests()
         metadataResolverRepository.save(mr)
 
         def output = metadataResolverService.generateConfiguration()
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/278.2.xml', output)
+    }
+
+    EntityRoleWhiteListFilter entityRoleWhiteListFilterForXmlGenerationTests() {
+        new EntityRoleWhiteListFilter().with {
+            it.retainedRoles = ['md:SPSSODescriptor']
+            it
+        }
+    }
+
+    RequiredValidUntilFilter requiredValidUntilFilterForXmlGenerationTests() {
+        new RequiredValidUntilFilter().with {
+            it.maxValidityInterval = 'P14D'
+            it
+        }
     }
 
     //TODO: check that this configuration is sufficient

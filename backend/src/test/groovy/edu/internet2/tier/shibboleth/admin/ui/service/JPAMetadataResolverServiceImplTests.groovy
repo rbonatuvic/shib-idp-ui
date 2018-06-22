@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 
@@ -139,6 +140,21 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/533.xml', domBuilder.parseText(writer.toString()))
+
+    }
+
+    def 'test generating RequiredValidUntilFilter xml snippet'() {
+        given:
+        def filter = new RequiredValidUntilFilter().with {
+            it.maxValidityInterval = 'P14D'
+            it
+        }
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/552.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating FileBackedHttMetadataResolver xml snippet'() {

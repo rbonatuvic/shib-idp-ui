@@ -1,19 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import com.google.common.base.Predicate;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-
-import com.google.common.base.Predicate
 
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 
@@ -111,10 +106,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                 'requireSignedRoot': 'true',
                                 'certificateFile': '%{idp.home}/credentials/inc-md-cert.pem'
                         )
-                        MetadataFilter(
-                                'xsi:type': 'RequiredValidUntil',
-                                'maxValidityInterval': 'P14D'
-                        )
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
                             constructXmlNodeForFilter(filter, delegate)
@@ -197,6 +188,13 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 markupBuilderDelegate.RetainedRole(it)
             }
         }
+    }
+
+    void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'RequiredValidUntil',
+                maxValidityInterval: filter.maxValidityInterval
+        )
     }
 
     void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
