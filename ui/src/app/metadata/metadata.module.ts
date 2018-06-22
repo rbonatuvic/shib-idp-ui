@@ -7,6 +7,7 @@ import { DomainModule } from './domain/domain.module';
 import { MetadataPageComponent } from './metadata.component';
 import { ManagerModule } from './manager/manager.module';
 import { MetadataRoutingModule } from './metadata.routing';
+import { ProviderModule } from './provider/provider.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { MetadataRoutingModule } from './metadata.routing';
         FilterModule.forRoot(),
         DomainModule.forRoot(),
         ManagerModule.forRoot(),
+        ProviderModule.forRoot(),
         MetadataRoutingModule
     ],
     providers: [],

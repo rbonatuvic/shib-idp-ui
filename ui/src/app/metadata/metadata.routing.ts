@@ -14,6 +14,8 @@ import { EditorComponent } from './resolver/container/editor.component';
 import { CanDeactivateGuard } from '../core/service/can-deactivate.guard';
 import { DraftComponent } from './resolver/container/draft.component';
 import { WizardComponent } from './resolver/container/wizard.component';
+import { NewProviderComponent } from './provider/container/new-provider.component';
+import { ProviderWizardComponent } from './provider/container/wizard.component';
 
 const routes: Routes = [
     {
@@ -76,6 +78,15 @@ const routes: Routes = [
                                 canDeactivate: [CanDeactivateGuard]
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                path: 'provider',
+                children: [
+                    {
+                        path: 'new',
+                        component: NewProviderComponent
                     }
                 ]
             }
