@@ -69,6 +69,8 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.statusCodeValue == 200
         returnedResolvers.size() == 1
         returnedResolvers[0] instanceof DynamicHttpMetadataResolver
+        returnedResolvers[0].name == 'Test DynamicHttpMetadataResolver'
+
     }
 
     @TestConfiguration
