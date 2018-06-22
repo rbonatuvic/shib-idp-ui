@@ -1,3 +1,40 @@
 <div class="container-fluid p-3" role="main">
-    Hi. I'm a new provider component page.
+    <section class="section" aria-label="Add a new metadata source - how are you adding the metadata information?" tabindex="0">
+        <div class="section-header bg-info p-2 text-white">
+            <div class="row justify-content-between">
+                <div class="col-md-12">
+                    <span class="display-6" i18n="@@label--add-a-new-metadata-resolver">Add a new metadata provider</span>
+                </div>
+            </div>
+        </div>
+        <div class="section-body p-4 border border-top-0 border-info">
+            <div class="row">
+                <div class="col col-xl-6 col-lg-9 col-xs-12">
+                    <form [formGroup]="form" role="form">
+                        <ul class="nav nav-wizard m-3">
+                            <li class="nav-item">
+                                <h3 class="tag tag-primary">
+                                    <span class="index">1</span>
+                                    <ng-container i18n="@@label--name-and-entityid">1. Name and EntityId</ng-container>
+                                </h3>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link next btn clearfix" (click)="next()" [disabled]="form.invalid" aria-label="Next: Step 2, Common Attributes"
+                                    role="button">
+                                    <span class="label pull-left">
+                                        2.
+                                        <ng-container i18n="@@label--common-attributes">Common Attributes</ng-container>
+                                    </span>
+                                    <span class="direction pull-right">
+                                        <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
+                                        <ng-container i18n="@@action--next">Next</ng-container>
+                                    </span>
+                                </button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

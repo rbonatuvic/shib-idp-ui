@@ -86,57 +86,7 @@ const routes: Routes = [
                 children: [
                     {
                         path: 'new',
-                        component: NewProviderComponent,
-                        children: [
-                            { path: '', redirectTo: 'blank', pathMatch: 'prefix' }
-                            // ,
-                            // {
-                            //     path: 'blank',
-                            //     component: BlankProviderComponent,
-                            //     canDeactivate: []
-                            // },
-                            // {
-                            //     path: 'upload',
-                            //     component: UploadProviderComponent,
-                            //     canDeactivate: []
-                            // },
-                            // {
-                            //     path: 'copy',
-                            //     component: CopyProviderComponent,
-                            //     canDeactivate: []
-                            // }
-                        ]
-                    },
-                    {
-                        path: 'new/copy/confirm',
-                        component: ConfirmCopyComponent,
-                        canActivate: [CopyIsSetGuard]
-                    },
-                    {
-                        path: ':id',
-                        component: ResolverComponent,
-                        canActivate: [],
-                        children: [
-                            { path: 'edit', redirectTo: 'edit/2' },
-                            {
-                                path: 'edit/:index',
-                                component: EditorComponent,
-                                canDeactivate: [CanDeactivateGuard]
-                            }
-                        ]
-                    },
-                    {
-                        path: ':entityId',
-                        component: DraftComponent,
-                        canActivate: [],
-                        children: [
-                            { path: 'wizard', redirectTo: 'wizard/2' },
-                            {
-                                path: 'wizard/:index',
-                                component: WizardComponent,
-                                canDeactivate: [CanDeactivateGuard]
-                            }
-                        ]
+                        component: NewProviderComponent
                     }
                 ]
             }

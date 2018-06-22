@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
     selector: 'new-provider-page',
@@ -7,5 +7,14 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./new-provider.component.scss']
 })
 export class NewProviderComponent {
-    constructor() {}
-} /* istanbul ignore next */
+    form: FormGroup = this.fb.group({
+        name: ['', [Validators.required]],
+        '@type': ['', [Validators.required]]
+    });
+
+    constructor(
+        private fb: FormBuilder
+    ) {}
+
+    next(): void {}
+}
