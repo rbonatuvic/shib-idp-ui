@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
@@ -74,28 +75,54 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         simulatedPrePersistentFilter.relyingPartyOverrides = simulatedPersistentFilter.relyingPartyOverrides
         simulatedPrePersistentFilter.fromTransientRepresentation()
 
+        expect:
+        simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
+    }
+
+    def "Correct polymorphic serialization of RequiredValidUntilFilter"() {
+        given:
+        def givenFilterJson = """
+            {
+                "@type" : "RequiredValidUntil",
+                "createdDate" : null,
+                "modifiedDate" : null,
+                "createdBy" : null,
+                "modifiedBy" : null,
+                "name" : null,
+                "resourceId" : "9667ae04-8c36-4741-be62-dd325e7d6790",
+                "filterEnabled" : true,
+                "version" : 0,
+                "maxValidityInterval" : "P14D"
+  
+            }
+        """
+
         when:
-        def jsonFromPersistentFilter = mapper.writeValueAsString(simulatedPersistentFilter)
-        def jsonFromPrePersistentFilter = mapper.writeValueAsString(simulatedPrePersistentFilter)
-        println("JSON from persistent filter -> $jsonFromPersistentFilter")
-        println("JSON from PRE persistent filter -> $jsonFromPrePersistentFilter")
-        println("Attributes from persistent filter -> $simulatedPersistentFilter.attributes")
-        println("Attributes from PRE persistent filter -> $simulatedPrePersistentFilter.attributes")
+        def deSerializedFilter = mapper.readValue(givenFilterJson, MetadataFilter)
+        def json = mapper.writeValueAsString(deSerializedFilter)
+        println(json)
+        def roundTripFilter = mapper.readValue(json, MetadataFilter)
 
         then:
-        simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
+        roundTripFilter == deSerializedFilter
+
+        and:
+        deSerializedFilter instanceof RequiredValidUntilFilter
+        roundTripFilter instanceof RequiredValidUntilFilter
     }
 
     def "List of filters with correct types"() {
         given:
-        def filters = testObjectGenerator.buildAllTypesOfFilterList();
+        def filters = testObjectGenerator.buildAllTypesOfFilterList()
 
         when:
         def json = mapper.writeValueAsString(filters)
         println(json)
 
         then:
-        json
+        json.contains('EntityAttributes')
+        json.contains('RequiredValidUntil')
+        json.contains('EntityAttributes')
 
     }
 

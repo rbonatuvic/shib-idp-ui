@@ -1,9 +1,0 @@
-@import '../../../../theme/_palette';
-
-.value:empty {
-    &::after {
-        content: "\2014";
-        color: #868e96;
-        text-align: center;
-    }
-}

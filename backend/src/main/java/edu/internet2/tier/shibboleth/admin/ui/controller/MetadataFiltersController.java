@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -179,6 +180,11 @@ public class MetadataFiltersController {
             toFilter.setDynamicTrustedNamesStrategyRef(fromFilter.getDynamicTrustedNamesStrategyRef());
             toFilter.setTrustEngineRef(fromFilter.getTrustEngineRef());
             toFilter.setPublicKey(fromFilter.getPublicKey());
+        }
+        else if(filterWithUpdatedData instanceof RequiredValidUntilFilter) {
+            RequiredValidUntilFilter toFilter = RequiredValidUntilFilter.class.cast(filterToBeUpdated);
+            RequiredValidUntilFilter fromFilter = RequiredValidUntilFilter.class.cast(filterWithUpdatedData);
+            toFilter.setMaxValidityInterval(fromFilter.getMaxValidityInterval());
         }
         //TODO: add other types of concrete filters update here
     }

@@ -1,0 +1,23 @@
+<form [formGroup]="searchForm">
+    <label for="search" class="sr-only" i18n="@@action--search">Search</label>
+    <div class="input-group">
+        <input
+            id="search"
+            type="text"
+            tabindex="0"
+            class="form-control"
+            i18n-placeholder="@@message--search-files"
+            placeholder="Search Files"
+            aria-label="To search for a source, enter name then press enter"
+            formControlName="search"
+            (keyup)="search.emit($event.target.value)">
+        <div class="input-group-append">
+            <button class="btn btn-light"
+                type="button"
+                tabindex="0"
+                aria-label="Clear search text field"
+                (click)="search.emit('')"
+                i18n="@@action--clear">Clear</button>
+        </div>
+    </div>
+</form>

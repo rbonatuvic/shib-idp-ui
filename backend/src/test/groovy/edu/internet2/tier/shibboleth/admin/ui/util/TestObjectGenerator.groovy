@@ -1,11 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.*
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
@@ -121,6 +117,7 @@ class TestObjectGenerator {
             filterList.add(buildFilter { entityAttributesFilter() })
             filterList.add(buildFilter { entityRoleWhitelistFilter() })
             filterList.add(buildFilter { signatureValidationFilter() })
+            filterList.add(buildFilter { requiredValidUntilFilter() })
         }
         return filterList
     }
@@ -175,6 +172,13 @@ class TestObjectGenerator {
         }
     }
 
+    RequiredValidUntilFilter requiredValidUntilFilter() {
+        return new RequiredValidUntilFilter().with {
+            it.maxValidityInterval = 'P14D'
+            it
+        }
+    }
+
     SignatureValidationFilter copyOf(SignatureValidationFilter signatureValidationFilter) {
         new SignatureValidationFilter().with {
             it.name = signatureValidationFilter.name
@@ -200,6 +204,7 @@ class TestObjectGenerator {
             it
         }
     }
+
     EntityAttributesFilter copyOf(EntityAttributesFilter entityAttributesFilter) {
         new EntityAttributesFilter().with {
             it.name = entityAttributesFilter.name

@@ -1,0 +1,40 @@
+<div class="container-fluid p-3" role="main">
+    <section class="section" *ngIf="resolver$ | async" tabindex="0" [attr.aria-label]="'Add a new metadata source wizard form - ' + (currentPage$ | async).label + ' ' + (resolver$ | async).serviceProviderName">
+        <div class="section-header bg-info p-2 text-white">
+            <div class="row justify-content-between">
+                <div class="col-md-12">
+                    <span class="display-6" role="heading" aria-level="1">
+                        <i class="fa fa-fw fa-plus-square"></i>
+                        <ng-container i18n="@@message--add-new-md-resolver">Add a new metadata source</ng-container>
+                        &ndash; {{ (currentPage$ | async).label }} ({{ (resolver$ | async).serviceProviderName }})
+                        <span class="pull-right">
+                            (<ng-container i18n="@@message--wizard-status">Step {{ wizardIndex$ | async }} of {{ wizard.length + 1 }}</ng-container>)
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="section-body p-4 border border-top-0 border-info" *ngIf="wizardIndex$ | async">
+            <wizard-nav [index]="wizardIndex$ | async"
+                (onNext)="next($event)"
+                (onPrevious)="previous($event)"
+                (onSave)="save($event)"></wizard-nav>
+            <hr />
+            <div [ngSwitch]="wizardIndex$ | async" class="py-4">
+                <org-info-form *ngSwitchDefault [resolver]="resolver$ | async"></org-info-form>
+                <metadata-ui-form *ngSwitchCase="3" [resolver]="resolver$ | async"></metadata-ui-form>
+                <descriptor-info-form *ngSwitchCase="4" [resolver]="resolver$ | async"></descriptor-info-form>
+                <logout-form *ngSwitchCase="5" [resolver]="resolver$ | async"></logout-form>
+                <key-info-form *ngSwitchCase="6" [resolver]="resolver$ | async"></key-info-form>
+                <assertion-form *ngSwitchCase="7" [resolver]="resolver$ | async"></assertion-form>
+                <div class="row" *ngSwitchCase="8">
+                    <relying-party-form [resolver]="resolver$ | async" class="col-xl-6"></relying-party-form>
+                </div>
+                <div class="row" *ngSwitchCase="9">
+                    <attribute-release-form [resolver]="resolver$ | async" class="col-xl-6"></attribute-release-form>
+                </div>
+                <finish-form *ngSwitchCase="10" [resolver]="resolver$ | async"></finish-form>
+            </div>
+        </div>
+    </section>
+</div>

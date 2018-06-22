@@ -30,7 +30,8 @@ import java.util.UUID;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@type", visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value=EntityRoleWhiteListFilter.class, name="EntityRoleWhiteList"),
         @JsonSubTypes.Type(value=EntityAttributesFilter.class, name="EntityAttributes"),
-        @JsonSubTypes.Type(value=SignatureValidationFilter.class, name="SignatureValidation")})
+        @JsonSubTypes.Type(value=SignatureValidationFilter.class, name="SignatureValidation"),
+        @JsonSubTypes.Type(value=RequiredValidUntilFilter.class, name="RequiredValidUntil")})
 public class MetadataFilter extends AbstractAuditable {
 
     @JsonProperty("@type")

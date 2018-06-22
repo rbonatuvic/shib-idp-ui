@@ -1,10 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -99,10 +96,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                 'requireSignedRoot': 'true',
                                 'certificateFile': '%{idp.home}/credentials/inc-md-cert.pem'
                         )
-                        MetadataFilter(
-                                'xsi:type': 'RequiredValidUntil',
-                                'maxValidityInterval': 'P14D'
-                        )
                         //TODO: enhance
                         mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
                             constructXmlNodeForFilter(filter, delegate)
@@ -111,32 +104,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 }
             }
             return DOMBuilder.newInstance().parseText(writer.toString())
-        }
-    }
-
-    void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
-            // TODO: enhance. currently this does weird things with namespaces
-            filter.attributes.each { attribute ->
-                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
-            }
-            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
-                    .EntityAttributesFilterTargetType.ENTITY) {
-                filter.entityAttributesFilterTarget.value.each {
-                    Entity(it)
-                }
-            }
-        }
-    }
-
-    void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(id: filter.name,
-                'xsi:type': 'EntityRoleWhiteList',
-                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
-        ) {
-            filter.retainedRoles.each {
-                markupBuilderDelegate.RetainedRole(it)
-            }
         }
     }
 
@@ -195,9 +162,42 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpCacheDirectory: resolver.httpMetadataResolverAttributes?.httpCacheDirectory,
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
                 httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
-            
+
             childNodes()
         }
+    }
+
+    void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
+            // TODO: enhance. currently this does weird things with namespaces
+            filter.attributes.each { attribute ->
+                mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
+            }
+            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
+                    .EntityAttributesFilterTargetType.ENTITY) {
+                filter.entityAttributesFilterTarget.value.each {
+                    Entity(it)
+                }
+            }
+        }
+    }
+
+    void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'EntityRoleWhiteList',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
+        ) {
+            filter.retainedRoles.each {
+                markupBuilderDelegate.RetainedRole(it)
+            }
+        }
+    }
+
+    void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'RequiredValidUntil',
+                maxValidityInterval: filter.maxValidityInterval
+        )
     }
 
     void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
@@ -272,5 +272,4 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             childNodes()
         }
     }
-
 }
