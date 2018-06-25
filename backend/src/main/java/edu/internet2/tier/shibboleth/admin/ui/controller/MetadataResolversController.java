@@ -49,7 +49,7 @@ public class MetadataResolversController {
     @PostMapping("/MetadataResolvers")
     @Transactional
     public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
-        //TODO: we are disregarding attached filters if any sent from UI below.
+        //TODO: we are disregarding attached filters if any sent from UI.
         //Only deal with filters via filters endpoints?
         newResolver.clearAllFilters();
 
@@ -62,8 +62,6 @@ public class MetadataResolversController {
     @PutMapping("/MetadataResolvers/{resourceId}")
     @Transactional
     public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) {
-        //TODO disregard attached filters if any sent from UI?
-        //Only deal with filters via filters endpoints? And here only update the resolver pieces??
         MetadataResolver existingResolver = resolverRepository.findByResourceId(resourceId);
         if (existingResolver == null) {
             return ResponseEntity.notFound().build();
@@ -75,6 +73,11 @@ public class MetadataResolversController {
         }
 
         updatedResolver.setAudId(existingResolver.getAudId());
+
+        //TODO: we are disregarding attached filters if any sent from UI.
+        //Only deal with filters via filters endpoints?
+        updatedResolver.setMetadataFilters(existingResolver.getMetadataFilters());
+
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
         persistedResolver.updateVersion();
 
