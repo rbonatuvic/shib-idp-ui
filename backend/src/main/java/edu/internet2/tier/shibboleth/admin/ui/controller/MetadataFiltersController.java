@@ -179,7 +179,7 @@ public class MetadataFiltersController {
 
     private static URI getResourceUriFor(MetadataResolver mr, String filterResourceId) {
         return ServletUriComponentsBuilder
-                .fromCurrentServletMapping().path("/api/MetadataResolver/")
+                .fromCurrentServletMapping().path("/api/MetadataResolvers/")
                 .pathSegment(mr.getResourceId())
                 .pathSegment("Filters")
                 .pathSegment(filterResourceId)

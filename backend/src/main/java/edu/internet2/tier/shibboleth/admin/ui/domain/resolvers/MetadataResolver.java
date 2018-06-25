@@ -68,4 +68,8 @@ public class MetadataResolver extends AbstractAuditable {
     public void updateVersion() {
         this.version = hashCode();
     }
+
+    public void clearAllFilters() {
+        this.metadataFilters.clear();
+    }
 }

@@ -49,8 +49,10 @@ public class MetadataResolversController {
     @PostMapping("/MetadataResolvers")
     @Transactional
     public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
-        //TODO disregard attached filters if any sent from UI?
+        //TODO: we are disregarding attached filters if any sent from UI below.
         //Only deal with filters via filters endpoints?
+        newResolver.clearAllFilters();
+
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         persistedResolver.updateVersion();
 
