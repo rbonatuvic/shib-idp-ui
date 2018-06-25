@@ -1,9 +1,19 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
+import { ProviderWizardComponent } from './container/wizard.component';
+import { NewProviderComponent } from './container/new-provider.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-    declarations: [],
+    declarations: [
+        NewProviderComponent,
+        ProviderWizardComponent
+    ],
     entryComponents: [],
-    imports: [],
+    imports: [
+        ReactiveFormsModule,
+        CommonModule
+    ],
     exports: []
 })
 export class ProviderModule {
@@ -17,9 +27,9 @@ export class ProviderModule {
 
 @NgModule({
     imports: [
-        ProviderModule,
+        ProviderModule
         // StoreModule.forFeature('provider', fromResolver.reducers),
         // EffectsModule.forFeature([])
-    ],
+    ]
 })
 export class RootProviderModule { }
