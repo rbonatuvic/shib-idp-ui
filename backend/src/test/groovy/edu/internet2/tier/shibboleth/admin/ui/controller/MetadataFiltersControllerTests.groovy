@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.w3c.dom.Document
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
@@ -94,7 +95,6 @@ class MetadataFiltersControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(get('/api/MetadataResolver/foo/Filters'))
-        println(mapper.writeValueAsString(expectedContent))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
@@ -122,9 +122,10 @@ class MetadataFiltersControllerTests extends Specification {
                 .andExpect(content().json(mapper.writeValueAsString(expectedFilter)))
     }
 
-    def "FilterController.create creates the desired filter"() {
+    @Unroll
+    def "FilterController.create creates the desired filter (filterType: #filterType)"(String filterType) {
         given:
-        def randomFilter = testObjectGenerator.entityAttributesFilter()
+        def randomFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
         def metadataResolver = new MetadataResolver()
         metadataResolver.setResourceId(randomGenerator.randomId())
         metadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
@@ -142,9 +143,6 @@ class MetadataFiltersControllerTests extends Specification {
         def expectedResponseHeaderValue = "/api/MetadataResolver/$expectedMetadataResolverUUID/Filters/$expectedFilterUUID"
         def expectedJsonBody = mapper.writeValueAsString(randomFilter)
         def postedJsonBody = expectedJsonBody - ~/"id":.*?,/ // remove the "id:<foo>,"
-        println postedJsonBody
-        def filter = mapper.readValue(postedJsonBody, MetadataFilter)
-        println filter
 
         when:
         def result = mockMvc.perform(
@@ -156,13 +154,22 @@ class MetadataFiltersControllerTests extends Specification {
         result.andExpect(status().isCreated())
                 .andExpect(content().json(expectedJsonBody, true))
                 .andExpect(header().string(expectedResponseHeader, containsString(expectedResponseHeaderValue)))
+
+        where:
+            filterType            | _
+            'entityAttributes'    | _
+            'entityRoleWhiteList' | _
+            'signatureValidation' | _
+            'requiredValidUntil'  | _
     }
 
-    def "FilterController.update updates the target EntityAttributes filter as desired"() {
+    @Unroll
+    def "FilterController.update updates the target #filterType filter as desired"(String filterType) {
         given:
-        def originalFilter = testObjectGenerator.entityAttributesFilter()
+        def originalFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
         def updatedFilter = testObjectGenerator.copyOf(originalFilter)
         updatedFilter.name = 'Updated Filter'
+        updatedFilter.version = originalFilter.hashCode()
         def postedJsonBody = mapper.writeValueAsString(updatedFilter)
 
         def originalMetadataResolver = new MetadataResolver()
@@ -188,10 +195,19 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         def expectedJson = new JsonSlurper().parseText(postedJsonBody)
-        updatedFilter.fromTransientRepresentation()
+        if (filterType == 'entityAttributes') {
+            EntityAttributesFilter.cast(updatedFilter).fromTransientRepresentation()
+        }
         expectedJson << [version: updatedFilter.hashCode()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
+
+        where:
+            filterType            | _
+            'entityAttributes'    | _
+            'entityRoleWhiteList' | _
+            'signatureValidation' | _
+            'requiredValidUntil'  | _
     }
 
     def "FilterController.update filter 409's if the version numbers don't match"() {
