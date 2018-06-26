@@ -11,7 +11,7 @@ import java.util.List;
 @Configuration
 public class MetadataResolverValidationConfiguration {
 
-    //@Bean
+    @Bean
     ResourceBackedMetadataResolverValidator resourceBackedMetadataResolverValidator() {
         return new ResourceBackedMetadataResolverValidator();
     }
