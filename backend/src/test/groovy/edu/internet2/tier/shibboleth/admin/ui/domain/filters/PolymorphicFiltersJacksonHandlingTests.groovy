@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain
+package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature

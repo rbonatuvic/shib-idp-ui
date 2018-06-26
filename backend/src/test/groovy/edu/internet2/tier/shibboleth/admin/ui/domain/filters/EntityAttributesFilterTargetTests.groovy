@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain
+package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import spock.lang.Specification
