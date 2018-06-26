@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A facade that aggregates {@link MetadataResolverValidator}s available to call just one of them supporting the type of a given resolver.
+ * If no {@link MetadataResolverValidator}s are configured, conciders provided MetadataResolver as valid.
+ * <p>
+ * Uses chain-of-responsibility design pattern
+ *
+ * @author Dmitriy Kopylenko
+ */
 public class MetadataResolverValidationService<T extends MetadataResolver> {
 
     private List<MetadataResolverValidator> validators;
