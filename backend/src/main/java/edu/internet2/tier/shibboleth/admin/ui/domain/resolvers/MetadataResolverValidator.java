@@ -11,7 +11,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
  */
 public interface MetadataResolverValidator<T extends MetadataResolver> {
 
-    boolean supports(T resolver);
+    boolean supports(MetadataResolver resolver);
 
     ValidationResult validate(T resolver);
 

@@ -29,18 +29,14 @@ public class ResourceBackedMetadataResolver extends MetadataResolver {
     @Embedded
     private SvnMetadataResource svnMetadataResource;
 
-    @Transient
-    @JsonIgnore
-    private ResourceType resourceType;
-
-    public void validateAndDetermineResourceType() throws InvalidResourceTypeException {
+    public ResourceType validateAndDetermineResourceType() throws InvalidResourceTypeException {
         if (classpathMetadataResource == null && svnMetadataResource == null) {
             throw new InvalidResourceTypeException("No metadata resource is provided. Exactly one is required");
         }
         if (classpathMetadataResource != null && svnMetadataResource != null) {
             throw new InvalidResourceTypeException("Too many metadata resources are provided. Exactly one is required");
         }
-        resourceType = classpathMetadataResource != null ? CLASSPATH : SVN;
+        return classpathMetadataResource != null ? CLASSPATH : SVN;
     }
 
     public class InvalidResourceTypeException extends IllegalStateException {

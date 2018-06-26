@@ -16,20 +16,25 @@ import java.util.Optional;
  */
 public class MetadataResolverValidationService<T extends MetadataResolver> {
 
-    private List<MetadataResolverValidator> validators;
+    private List<MetadataResolverValidator<T>> validators;
 
-    public MetadataResolverValidationService(List<MetadataResolverValidator> validators) {
+    public MetadataResolverValidationService(List<MetadataResolverValidator<T>> validators) {
         this.validators = validators != null ? validators : new ArrayList<>();
     }
 
     @SuppressWarnings("Uncheked")
     public ValidationResult validateIfNecessary(T metadataResolver) {
-        Optional<MetadataResolverValidator> validator =
+        Optional<MetadataResolverValidator<T>> validator =
                 this.validators
                         .stream()
                         .filter(v -> v.supports(metadataResolver))
                         .findFirst();
         return validator.isPresent() ? validator.get().validate(metadataResolver) : new ValidationResult(null);
 
+    }
+
+    //Package-private - used for unit tests
+    boolean noValidatorsConfigured() {
+        return this.validators.size() == 0;
     }
 }
