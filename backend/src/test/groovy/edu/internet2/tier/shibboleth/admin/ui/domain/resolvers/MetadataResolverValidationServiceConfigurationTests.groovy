@@ -1,12 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestMetadataResolverValidationServiceConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.TestMetadataResolverValidationConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
-@ContextConfiguration(classes=[TestMetadataResolverValidationServiceConfiguration])
+/**
+ * @author Dmitriy Kopylenko
+ */
+@ContextConfiguration(classes=[TestMetadataResolverValidationConfiguration])
 class MetadataResolverValidationServiceConfigurationTests extends Specification {
 
     @Autowired

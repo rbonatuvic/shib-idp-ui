@@ -162,10 +162,13 @@ class MetadataResolversControllerIntegrationTests extends Specification {
                 PUT,
                 createRequestHttpEntityFor { JsonOutput.toJson(metadataResolverMap) },
                 String)
+        then:
+        updatedResult.statusCodeValue == 200
+
+        and:
         def updatedResolverMap = new JsonSlurper().parseText(updatedResult.body)
 
         then:
-        updatedResult.statusCodeValue == 200
         updatedResolverMap.name == 'Updated DynamicHttpMetadataResolver'
 
     }

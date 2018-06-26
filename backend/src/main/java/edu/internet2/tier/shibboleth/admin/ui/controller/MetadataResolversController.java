@@ -1,8 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-import lombok.extern.log4j.Log4j;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
+
 @RestController
 @RequestMapping("/api")
 @Slf4j
@@ -26,6 +30,9 @@ public class MetadataResolversController {
 
     @Autowired
     MetadataResolverRepository resolverRepository;
+
+    @Autowired
+    MetadataResolverValidationService metadataResolverValidationService;
 
     @GetMapping("/MetadataResolvers")
     @Transactional(readOnly = true)
@@ -53,6 +60,11 @@ public class MetadataResolversController {
         //Only deal with filters via filters endpoints?
         newResolver.clearAllFilters();
 
+        ResponseEntity<?> validationErrorResponse = validate(newResolver);
+        if(validationErrorResponse != null) {
+            return validationErrorResponse;
+        }
+
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         persistedResolver.updateVersion();
 
@@ -72,6 +84,11 @@ public class MetadataResolversController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
+        ResponseEntity<?> validationErrorResponse = validate(updatedResolver);
+        if(validationErrorResponse != null) {
+            return validationErrorResponse;
+        }
+
         updatedResolver.setAudId(existingResolver.getAudId());
 
         //TODO: we are disregarding attached filters if any sent from UI.
@@ -82,6 +99,15 @@ public class MetadataResolversController {
         persistedResolver.updateVersion();
 
         return ResponseEntity.ok(persistedResolver);
+    }
+
+    @SuppressWarnings("Unchecked")
+    private ResponseEntity<?> validate(MetadataResolver metadataResolver) {
+        ValidationResult validationResult = metadataResolverValidationService.validateIfNecessary(metadataResolver);
+        if(!validationResult.isValid()) {
+            return ResponseEntity.badRequest().body(validationResult.getErrorMessage());
+        }
+        return null;
     }
 
     private static URI getResourceUriFor(MetadataResolver resolver) {

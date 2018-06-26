@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 
 
 @Configuration
-class TestMetadataResolverValidationServiceConfiguration {
+class TestMetadataResolverValidationConfiguration {
 
     @Bean
     ResourceBackedMetadataResolverValidator resourceBackedMetadataResolverValidator() {
