@@ -1,18 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.*
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
-
 import org.opensaml.saml.saml2.metadata.Organization
 
 import java.util.function.Supplier
@@ -121,11 +116,46 @@ class TestObjectGenerator {
         (1..generator.randomInt(4, 10)).each {
             filterList.add(buildFilter { entityAttributesFilter() })
             filterList.add(buildFilter { entityRoleWhitelistFilter() })
+            filterList.add(buildFilter { signatureValidationFilter() })
             filterList.add(buildFilter { requiredValidUntilFilter() })
         }
         return filterList
     }
 
+    MetadataFilter buildRandomFilterOfType(String filterType) {
+        def randomFilter
+        switch (filterType) {
+            case 'entityAttributes':
+                randomFilter = entityAttributesFilter()
+                break
+            case 'entityRoleWhiteList':
+                randomFilter = entityRoleWhitelistFilter()
+                break
+            case 'signatureValidation':
+                randomFilter = signatureValidationFilter()
+                break
+            case 'requiredValidUntil':
+                randomFilter = requiredValidUntilFilter()
+                break
+            default:
+                throw new RuntimeException("Did you forget to create a TestObjectGenerator.copyOf method for filtertype: ${filterType} ?");
+        }
+        randomFilter
+    }
+
+    SignatureValidationFilter signatureValidationFilter() {
+        new SignatureValidationFilter().with {
+            it.name = 'SignatureValidation'
+            it.requireSignedRoot = generator.randomBoolean()
+            it.certificateFile = generator.randomString(50)
+            it.defaultCriteriaRef = generator.randomString(10)
+            it.signaturePrevalidatorRef = generator.randomString(10)
+            it.dynamicTrustedNamesStrategyRef = generator.randomString(10)
+            it.trustEngineRef = generator.randomString(10)
+            it.publicKey = generator.randomString(50)
+            it
+        }
+    }
     EntityRoleWhiteListFilter entityRoleWhitelistFilter() {
         new EntityRoleWhiteListFilter().with {
             it.name = 'EntityRoleWhiteList'
@@ -148,6 +178,41 @@ class TestObjectGenerator {
     RequiredValidUntilFilter requiredValidUntilFilter() {
         return new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
+            it
+        }
+    }
+
+    RequiredValidUntilFilter copyOf(RequiredValidUntilFilter requiredValidUntilFilter) {
+        new RequiredValidUntilFilter().with {
+            it.name = requiredValidUntilFilter.name
+            it.resourceId = requiredValidUntilFilter.resourceId
+            it.maxValidityInterval = requiredValidUntilFilter.maxValidityInterval
+            it
+        }
+    }
+
+    SignatureValidationFilter copyOf(SignatureValidationFilter signatureValidationFilter) {
+        new SignatureValidationFilter().with {
+            it.name = signatureValidationFilter.name
+            it.resourceId = signatureValidationFilter.resourceId
+            it.trustEngineRef = signatureValidationFilter.trustEngineRef
+            it.signaturePrevalidatorRef = signatureValidationFilter.signaturePrevalidatorRef
+            it.publicKey = signatureValidationFilter.publicKey
+            it.dynamicTrustedNamesStrategyRef = signatureValidationFilter.dynamicTrustedNamesStrategyRef
+            it.requireSignedRoot = signatureValidationFilter.requireSignedRoot
+            it.certificateFile = signatureValidationFilter.certificateFile
+            it.defaultCriteriaRef = signatureValidationFilter.defaultCriteriaRef
+            it
+        }
+    }
+
+    EntityRoleWhiteListFilter copyOf(EntityRoleWhiteListFilter entityRoleWhiteListFilter) {
+        new EntityRoleWhiteListFilter().with {
+            it.name = entityRoleWhiteListFilter.name
+            it.resourceId = entityRoleWhiteListFilter.resourceId
+            it.removeEmptyEntitiesDescriptors = entityRoleWhiteListFilter.removeEmptyEntitiesDescriptors
+            it.removeRolelessEntityDescriptors = entityRoleWhiteListFilter.removeRolelessEntityDescriptors
+            it.retainedRoles = entityRoleWhiteListFilter.retainedRoles
             it
         }
     }
