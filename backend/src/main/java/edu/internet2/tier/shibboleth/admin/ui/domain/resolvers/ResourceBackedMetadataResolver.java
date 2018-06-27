@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH;
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN;

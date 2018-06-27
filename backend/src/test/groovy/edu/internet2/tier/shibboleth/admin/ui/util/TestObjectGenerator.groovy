@@ -406,6 +406,19 @@ class TestObjectGenerator {
         }
     }
 
+    ResourceBackedMetadataResolver resourceBackedMetadataResolverForSVN() {
+        new ResourceBackedMetadataResolver().with {
+            it.name = 'SVNResourceMetadata'
+            it.svnMetadataResource = new SvnMetadataResource().with {
+                it.resourceFile = 'entity.xml'
+                it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
+                it.workingCopyDirectory = '%{idp.home}/metadata/svn'
+                it
+            }
+            it
+        }
+    }
+
     FileBackedHttpMetadataResolver buildFileBackedHttpMetadataResolver() {
         def resolver = new FileBackedHttpMetadataResolver()
         resolver.name = generator.randomString(10)

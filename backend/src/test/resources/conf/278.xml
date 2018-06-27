@@ -45,4 +45,12 @@
                       xsi:type="DynamicHttpMetadataProvider">
         <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" requireSignedRoot="true" xsi:type="SignatureValidation"/>
     </MetadataProvider>
+    <MetadataProvider id="SVNResourceMetadata" xsi:type="ResourceBackedMetadataProvider">
+        <MetadataResource xmlns:resource="urn:mace:shibboleth:2.0:resource"
+                          xsi:type="resource:SVNResource"
+                          resourceFile="entity.xml"
+                          repositoryURL="https://svn.example.org/repo/path/to.dir"
+                          workingCopyDirectory="%{idp.home}/metadata/svn" />
+        <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" requireSignedRoot="true" xsi:type="SignatureValidation"/>
+    </MetadataProvider>
 </MetadataProvider>

@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
@@ -21,6 +22,9 @@ import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.w3c.dom.Document
+
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
 @Slf4j
 class JPAMetadataResolverServiceImpl implements MetadataResolverService {
@@ -271,5 +275,50 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
             childNodes()
         }
+    }
+
+    void constructXmlNodeForResolver(ResourceBackedMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
+        //This might throw an InvalidResourceTypeException if both resource types do not satisfy validation rules
+        //But this validation step already would have been performed by higher app layers such as REST controllers,
+        //and if this is not done, an exception thrown here would be trully considered a server side error bug which would
+        //need to be taken care of
+        def resourceType = resolver.validateAndDetermineResourceType()
+
+        markupBuilderDelegate.MetadataProvider(
+                id: resolver.name,
+                'xsi:type': 'ResourceBackedMetadataProvider',
+                parserPoolRef: resolver.reloadableMetadataResolverAttributes?.parserPoolRef,
+                minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
+                maxRefreshDelay: resolver.reloadableMetadataResolverAttributes?.maxRefreshDelay,
+                refreshDelayFactor: resolver.reloadableMetadataResolverAttributes?.refreshDelayFactor,
+                indexesRef: resolver.reloadableMetadataResolverAttributes?.indexesRef,
+                resolveViaPredicatesOnly: resolver.reloadableMetadataResolverAttributes?.resolveViaPredicatesOnly ?: null,
+                expirationWarningThreshold: resolver.reloadableMetadataResolverAttributes?.expirationWarningThreshold) {
+
+            if(resourceType == SVN) {
+                MetadataResource(
+                        'xmlns:resource': 'urn:mace:shibboleth:2.0:resource',
+                        'xsi:type': 'resource:SVNResource',
+                        'resourceFile': resolver.svnMetadataResource.resourceFile,
+                        'repositoryURL': resolver.svnMetadataResource.repositoryURL,
+                        'workingCopyDirectory': resolver.svnMetadataResource.workingCopyDirectory,
+                        'username': resolver.svnMetadataResource.username,
+                        'password': resolver.svnMetadataResource.password,
+                        'proxyHost': resolver.svnMetadataResource.proxyHost,
+                        'proxyPort': resolver.svnMetadataResource.proxyHost,
+                        'proxyUserName': resolver.svnMetadataResource.proxyUserName,
+                        'proxyPassword': resolver.svnMetadataResource.proxyPassword)
+
+            }
+            else if (resourceType == CLASSPATH) {
+                MetadataResource(
+                        'xmlns:resource': 'urn:mace:shibboleth:2.0:resource',
+                        'xsi:type': 'resource:ClasspathResource',
+                        'file': resolver.classpathMetadataResource.file)
+            }
+
+            childNodes()
+        }
+
     }
 }

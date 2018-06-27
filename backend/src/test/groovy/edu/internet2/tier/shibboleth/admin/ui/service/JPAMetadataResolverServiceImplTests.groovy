@@ -5,6 +5,8 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 
@@ -42,7 +44,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class JPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
@@ -80,6 +81,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     def cleanup() {
+        metadataResolverRepository.deleteAll()
         writer.close()
     }
 
@@ -168,6 +170,48 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating ResourceBackedMetadataResolver with SVN resource type xml snippet'() {
+        given:
+        def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
+            it.name = 'SVNResourceMetadata'
+            it.svnMetadataResource = new SvnMetadataResource().with {
+                it.resourceFile = 'entity.xml'
+                it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
+                it.workingCopyDirectory = '%{idp.home}/metadata/svn'
+                it
+            }
+            it
+        }
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/546-svn.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating ResourceBackedMetadataResolver with classpath resource type xml snippet'() {
+        given:
+        def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
+            it.name = 'ClasspathResourceMetadata'
+            it.classpathMetadataResource = new ClasspathMetadataResource().with {
+                it.file = '/path/to/a/classpath/location/metadata.xml'
+                it
+            }
+            it
+        }
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/546-classpath.xml', domBuilder.parseText(writer.toString()))
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
