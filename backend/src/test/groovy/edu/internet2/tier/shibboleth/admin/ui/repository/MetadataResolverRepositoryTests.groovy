@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
@@ -30,7 +29,6 @@ import javax.persistence.EntityManager
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 class MetadataResolverRepositoryTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
@@ -216,8 +214,8 @@ class MetadataResolverRepositoryTests extends Specification {
         assert item.metadataFilters.get(0).entityAttributesFilterTarget.value.get(0) == "hola"
     }
 
-    private MetadataResolver create(Closure concreteResolverProvider) {
-        MetadataResolver resolver = concreteResolverProvider()
+    private MetadataResolver create(Closure concreteResolverSupplier) {
+        MetadataResolver resolver = concreteResolverSupplier()
         resolver.with {
             it.name = "testme"
             it.metadataFilters.add(new EntityAttributesFilter().with {

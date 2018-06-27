@@ -44,6 +44,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class JPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository

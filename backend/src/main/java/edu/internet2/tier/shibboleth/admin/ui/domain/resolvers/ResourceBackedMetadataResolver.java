@@ -12,7 +12,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBa
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN;
 
 @Entity
-@EqualsAndHashCode(callSuper = true, exclude = "resourceType")
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @ToString
