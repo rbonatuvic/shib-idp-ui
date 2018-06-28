@@ -33,7 +33,8 @@ import java.util.UUID;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@type", visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value = LocalDynamicMetadataResolver.class, name = "LocalDynamicMetadataResolver"),
         @JsonSubTypes.Type(value = FileBackedHttpMetadataResolver.class, name = "FileBackedHttpMetadataResolver"),
-        @JsonSubTypes.Type(value = DynamicHttpMetadataResolver.class, name = "DynamicHttpMetadataResolver")})
+        @JsonSubTypes.Type(value = DynamicHttpMetadataResolver.class, name = "DynamicHttpMetadataResolver"),
+        @JsonSubTypes.Type(value = FilesystemMetadataResolver.class, name = "FilesystemMetadataResolver")})
 public class MetadataResolver extends AbstractAuditable {
 
     @JsonProperty("@type")
