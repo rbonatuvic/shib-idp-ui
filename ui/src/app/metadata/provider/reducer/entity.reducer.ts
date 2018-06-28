@@ -15,6 +15,12 @@ export const initialState: EntityState = {
 
 export function reducer(state = initialState, action: EntityActionUnion): EntityState {
     switch (action.type) {
+        case EntityActionTypes.RESET_CHANGES: {
+            return {
+                ...state,
+                changes: initialState.changes
+            };
+        }
         case EntityActionTypes.SELECT_PROVIDER:
         case EntityActionTypes.CREATE_PROVIDER: {
             return {

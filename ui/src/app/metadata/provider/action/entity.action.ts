@@ -7,7 +7,9 @@ export enum EntityActionTypes {
     UPDATE_PROVIDER = '[Provider Entity] Update Provider',
     SAVE_PROVIDER_REQUEST = '[Provider Entity] Save Provider Request',
     SAVE_PROVIDER_SUCCESS = '[Provider Entity] Save Provider Success',
-    SAVE_PROVIDER_FAIL = '[Provider Entity] Save Provider Fail'
+    SAVE_PROVIDER_FAIL = '[Provider Entity] Save Provider Fail',
+
+    RESET_CHANGES = '[Provider Entity] Reset Provider Changes'
 }
 
 export class SelectProvider implements Action {
@@ -46,10 +48,15 @@ export class SaveProviderFail implements Action {
     constructor(public payload: Error) { }
 }
 
+export class ResetChanges implements Action {
+    readonly type = EntityActionTypes.RESET_CHANGES;
+}
+
 export type EntityActionUnion =
     | SelectProvider
     | UpdateProvider
     | SaveProviderRequest
     | SaveProviderSuccess
     | SaveProviderFail
-    | CreateProvider;
+    | CreateProvider
+    | ResetChanges;

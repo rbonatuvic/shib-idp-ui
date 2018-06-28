@@ -39,3 +39,14 @@ export function checkByType(value): boolean {
         }
     }
 }
+
+export function pick(approvedProperties: string[]): Function {
+    return (original) =>
+        Object.keys(original)
+            .filter((key) => approvedProperties.indexOf(key) > -1)
+            .reduce((newObj, key) => {
+                let value = original[key];
+                newObj[key] = value;
+                return newObj;
+            }, {});
+}
