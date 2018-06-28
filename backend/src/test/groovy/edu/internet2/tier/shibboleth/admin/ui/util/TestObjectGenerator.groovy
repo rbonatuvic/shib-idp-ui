@@ -376,6 +376,45 @@ class TestObjectGenerator {
         return contactPerson
     }
 
+    MetadataResolver buildRandomMetadataResolverOfType(String metadataResolverType) {
+        def randomResolver
+        switch (metadataResolverType) {
+            case 'DynamicHttp':
+                randomResolver = dynamicHttpMetadataResolver()
+                break
+            case 'FileBacked':
+                randomResolver = fileBackedHttpMetadataResolver()
+                break
+            case 'LocalDynamic':
+                randomResolver = localDynamicMetadataResolver()
+                break
+            case 'ResourceBacked':
+                randomResolver = resourceBackedMetadataResolverForSVN()
+                break
+            case 'Filesystem':
+                randomResolver = filesystemMetadataResolver()
+                break;
+            default:
+                throw new RuntimeException("Did you forget to create a TestObjectGenerator.<type>MetadataResolver method for resolverType: ${metadataResolverType} ?");
+        }
+        randomResolver
+    }
+
+    FilesystemMetadataResolver filesystemMetadataResolver() {
+        new FilesystemMetadataResolver().with {
+            it.name = 'FilesystemMetadata'
+            it.metadataFile = 'some metadata filename'
+
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.minRefreshDelay = 'PT5M'
+                it.maxRefreshDelay = 'PT1H'
+                it.refreshDelayFactor = 0.75
+                it
+            }
+            it
+        }
+    }
+
     FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
         new FileBackedHttpMetadataResolver().with {
             it.name = 'HTTPMetadata'

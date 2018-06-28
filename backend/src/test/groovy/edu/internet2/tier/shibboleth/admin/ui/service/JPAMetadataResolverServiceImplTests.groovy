@@ -215,6 +215,19 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         generatedXmlIsTheSameAsExpectedXml('/conf/546-classpath.xml', domBuilder.parseText(writer.toString()))
     }
 
+    def 'test generating FilesystemMetadataResolver xml snippet'() {
+        given:
+        def resolver = testObjectGenerator.filesystemMetadataResolver()
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/520.xml', domBuilder.parseText(writer.toString()))
+    }
+
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
         xml.MetadataProvider('id': 'ShibbolethMetadata',
                 'xmlns': 'urn:mace:shibboleth:2.0:metadata',
