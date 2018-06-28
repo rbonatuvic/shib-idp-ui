@@ -11,15 +11,6 @@ import {
 } from '../model';
 
 export interface MetadataProvider extends MetadataBase {
-    serviceProviderName: string;
-    organization?: Organization;
-    contacts?: Contact[];
-    mdui?: MDUI;
-    securityInfo?: SecurityInfo;
-    assertionConsumerServices?: SsoService[];
-    serviceProviderSsoDescriptor?: IdpSsoDescriptor;
-    logoutEndpoints?: LogoutEndpoint[];
-    serviceEnabled?: boolean;
-    relyingPartyOverrides: RelyingPartyOverrides;
-    attributeRelease: string[];
+    name: string;
+    '@type': string;
 }

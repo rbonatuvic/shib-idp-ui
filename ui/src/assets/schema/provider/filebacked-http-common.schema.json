@@ -1,0 +1,161 @@
+{
+    "type": "object",
+    "order": [
+        "id",
+        "metadataURL",
+        "initializeFromBackupFile",
+        "backingFile",
+        "backupFileInitNextRefreshDelay",
+        "requireValidMetadata",
+        "failFastInitialization",
+        "useDefaultPredicateRegistry",
+        "satisfyAnyPredicates"
+    ],
+    "properties": {
+        "id": {
+            "title": "ID",
+            "description": "Unique Identifier",
+            "type": "string"
+        },
+        "metadataURL": {
+            "title": "Metadata URL",
+            "description": "",
+            "type": "string"
+        },
+        "initializeFromBackupFile": {
+            "title": "Initialize From Backup File?",
+            "description": "",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "backingFile": {
+            "title": "Backing File",
+            "description": "",
+            "type": "string",
+            "visibleIf": {
+                "initializeFromBackupFile": [
+                    true
+                ]
+            }
+        },
+        "backupFileInitNextRefreshDelay": {
+            "title": "Backup File Init Next Refresh Delay",
+            "description": "",
+            "type": "string",
+            "visibleIf": {
+                "initializeFromBackupFile": [
+                    true
+                ]
+            }
+        },
+        "requireValidMetadata": {
+            "title": "Require Valid Metadata?",
+            "description": "",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "failFastInitialization": {
+            "title": "Fail Fast Initialization?",
+            "description": "",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "useDefaultPredicateRegistry": {
+            "title": "Use Default Predicate Registry?",
+            "description": "",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "satisfyAnyPredicates": {
+            "title": "Satisy Any Predicates?",
+            "description": "",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": false
+        }
+    }
+}

@@ -1,0 +1,92 @@
+{
+    "type": "object",
+    "properties": {
+        "metadataFilters": {
+            "title": "",
+            "description": "",
+            "type": "object",
+            "properties": {
+                "@RequiredValidUntilFilter": {
+                    "title": "Required Valid Until Filter",
+                    "type": "object",
+                    "widget": {
+                        "id": "fieldset"
+                    },
+                    "properties": {
+                        "maxValidityInterval": {
+                            "title": "Max Validity Interval",
+                            "description": "",
+                            "type": "number"
+                        }
+                    }
+                },
+                "@SignatureValidationFilter": {
+                    "title": "Signature Validation Filter",
+                    "type": "object",
+                    "widget": {
+                        "id": "fieldset"
+                    },
+                    "properties": {
+                        "requireSignedRoot": {
+                            "title": "Require Signed Root",
+                            "description": "",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "certificateFile": {
+                            "title": "Certificate File",
+                            "description": "",
+                            "type": "string"
+                        }
+                    }
+                },
+                "@EntityRoleWhiteListFilter": {
+                    "title": "Entity Role Whitelist Filter",
+                    "type": "object",
+                    "widget": {
+                        "id": "fieldset"
+                    },
+                    "properties": {
+                        "retainedRoles": {
+                            "title": "Retained Roles",
+                            "description": "",
+                            "type": "array",
+                            "items": {
+                                "widget": {
+                                    "id": "select"
+                                },
+                                "type": "string",
+                                "oneOf": [
+                                    {
+                                        "enum": [
+                                            "SPSSODescriptor"
+                                        ],
+                                        "description": "SPSSODescriptor"
+                                    },
+                                    {
+                                        "enum": [
+                                            "AttributeAuthorityDescriptor"
+                                        ],
+                                        "description": "AttributeAuthorityDescriptor"
+                                    }
+                                ]
+                            }
+                        },
+                        "removeRolelessEntityDescriptors": {
+                            "title": "Remove Roleless Entity Descriptors?",
+                            "description": "",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "removeEmptyEntitiesDescriptors": {
+                            "title": "Remove Empty Entities Descriptors?",
+                            "description": "",
+                            "type": "boolean",
+                            "default": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

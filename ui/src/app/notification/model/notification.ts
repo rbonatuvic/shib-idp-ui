@@ -9,8 +9,8 @@ export class Notification {
 }
 
 export enum NotificationType {
-    Success = 'Notification.SUCCESS',
-    Info = 'Notification.INFO',
-    Warning = 'Notification.WARNING',
-    Danger = 'Notification.DANGER'
+    Success = 'alert-succes',
+    Info = 'alert-info',
+    Warning = 'alert-warning',
+    Danger = 'alert-danger'
 }

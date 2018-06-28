@@ -1,0 +1,53 @@
+{
+    "type": "object",
+    "properties": {
+        "reloadableMetadataResolverAttributes": {
+            "type": "object",
+            "properties": {
+                "minRefreshDelay": {
+                    "title": "Min Refresh Delay",
+                    "description": "",
+                    "type": "string"
+                },
+                "maxRefreshDelay": {
+                    "title": "Max Refresh Delay",
+                    "description": "",
+                    "type": "string"
+                },
+                "refreshDelayFactor": {
+                    "title": "Refresh Delay Factor",
+                    "description": "",
+                    "type": "number"
+                },
+                "resolveViaPredicatesOnly": {
+                    "title": "Resolve Via Predicates Only?",
+                    "description": "",
+                    "type": "boolean",
+                    "widget": {
+                        "id": "boolean-radio"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                true
+                            ],
+                            "description": "True"
+                        },
+                        {
+                            "enum": [
+                                false
+                            ],
+                            "description": "False"
+                        }
+                    ],
+                    "default": true
+                },
+                "expirationWarningThreshold": {
+                    "title": "Expiration Warning Threshold",
+                    "description": "",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
