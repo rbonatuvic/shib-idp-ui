@@ -8,6 +8,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -190,4 +191,16 @@ tasks.withType(JavaExec) {
 
 compileJava {
     dependsOn generateSources
+}
+
+jacoco {
+    toolVersion = '0.8.1'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = false
+        csv.enabled = false
+        html.destination = file("${buildDir}/jacocoHtml")
+    }
 }
