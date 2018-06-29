@@ -6,13 +6,13 @@
             <sf-form
                 [schema]="schema$ | async"
                 [model]="formModel"
-                (onChange)="onValueChange($event)"
+                (onChange)="changeSubject.next($event)"
                 (isValid)="onStatusChange($event)"></sf-form>
         </div>
         <!--
         <div class="col col-xl-6 col-lg-9 col-xs-12">
             <code class="bg-light border rounded p-4 d-block"><pre>{{ changes$ | async | json }}</pre></code>
         </div>
-         -->
+        -->
     </div>
 </div>

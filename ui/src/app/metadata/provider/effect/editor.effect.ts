@@ -10,6 +10,8 @@ import {
 } from '../action/editor.action';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { SetDefinition, WizardActionTypes } from '../../../wizard/action/wizard.action';
+import { ResetChanges } from '../action/entity.action';
 
 @Injectable()
 export class EditorEffects {
@@ -26,6 +28,12 @@ export class EditorEffects {
                     catchError(error => of(new LoadSchemaFail(error)))
                 )
         )
+    );
+
+    @Effect()
+    $resetChanges = this.actions$.pipe(
+        ofType<SetDefinition>(WizardActionTypes.SET_DEFINITION),
+        map(() => new ResetChanges())
     );
 
     constructor(
