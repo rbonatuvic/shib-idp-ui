@@ -7,17 +7,23 @@ import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.comp
 import { SchemaService } from './service/schema.service';
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
 import { CustomStringComponent } from './widget/text/string.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../shared/shared.module';
+import { CustomSelectComponent } from './widget/select/select.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
     FieldsetComponent,
-    CustomStringComponent
+    CustomStringComponent,
+    CustomSelectComponent
 ];
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        NgbPopoverModule,
+        SharedModule,
         SchemaFormModule.forRoot()
     ],
     declarations: COMPONENTS,
