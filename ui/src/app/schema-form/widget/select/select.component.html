@@ -1,0 +1,22 @@
+<div class="widget form-group">
+    <label [attr.for]="id" class="horizontal control-label">
+        {{ schema.title }}
+        <span>
+            <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
+            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
+                [ngbPopover]="tooltip"
+                i18n-aria-label="@@tooltip--instruction"
+                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+        </span>
+    </label>
+    <span *ngIf="schema.description" class="sr-only">
+        {{ schema.description }}
+    </span>
+    <select *ngIf="schema.type != 'array'" [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
+        <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
+    </select>
+    <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
+        <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
+    </select>
+    <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
+</div>

@@ -19,12 +19,12 @@
         },
         "metadataURL": {
             "title": "Metadata URL",
-            "description": "",
+            "description": "Metadata URL",
             "type": "string"
         },
         "initializeFromBackupFile": {
             "title": "Initialize From Backup File?",
-            "description": "",
+            "description": "Initialize From Backup File?",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -47,7 +47,7 @@
         },
         "backingFile": {
             "title": "Backing File",
-            "description": "",
+            "description": "Backing File",
             "type": "string",
             "visibleIf": {
                 "initializeFromBackupFile": [
@@ -57,7 +57,7 @@
         },
         "backupFileInitNextRefreshDelay": {
             "title": "Backup File Init Next Refresh Delay",
-            "description": "",
+            "description": "Backup File Init Next Refresh Delay",
             "type": "string",
             "visibleIf": {
                 "initializeFromBackupFile": [
@@ -67,7 +67,7 @@
         },
         "requireValidMetadata": {
             "title": "Require Valid Metadata?",
-            "description": "",
+            "description": "Require Valid Metadata?",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -90,7 +90,7 @@
         },
         "failFastInitialization": {
             "title": "Fail Fast Initialization?",
-            "description": "",
+            "description": "Fail Fast Initialization?",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -113,7 +113,7 @@
         },
         "useDefaultPredicateRegistry": {
             "title": "Use Default Predicate Registry?",
-            "description": "",
+            "description": "Use Default Predicate Registry?",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -136,7 +136,7 @@
         },
         "satisfyAnyPredicates": {
             "title": "Satisy Any Predicates?",
-            "description": "",
+            "description": "Satisy Any Predicates?",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"

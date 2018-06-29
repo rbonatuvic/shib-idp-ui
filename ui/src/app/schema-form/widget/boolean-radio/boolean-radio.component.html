@@ -1,5 +1,14 @@
 <div class="widget form-group">
-    <label>{{ schema.title }}</label>
+    <label class="d-flex justify-content-start control-label">
+        <span>{{ schema.title }}</span>
+        <span *ngIf="schema.description">
+            <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
+            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
+                [ngbPopover]="tooltip"
+                i18n-aria-label="@@tooltip--instruction"
+                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+        </span>
+    </label>
     <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
     <div *ngFor="let option of schema.oneOf; let i=index;" class="form-check form-check-inline">
         <label class="control-label">
