@@ -96,7 +96,7 @@ export class ProviderWizardComponent implements OnDestroy {
         this.changeSubject.complete();
     }
 
-    next(id: string): void {
+    next(): void {
         if (this.nextStep) {
             this.store.dispatch(new SetIndex(this.nextStep.id));
         }
