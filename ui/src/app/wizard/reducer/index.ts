@@ -48,13 +48,13 @@ export const getCurrentFn = (index: string, wizard: Wizard<any>) => {
     return wizard.steps.find(s => s.id === index);
 };
 
-export const getSaveFn = (index: string, wizard: Wizard<any>) => {
+export const getLastFn = (index: string, wizard: Wizard<any>) => {
     if (!wizard) { return null; }
-    const step = wizard.steps[wizard.steps.length - 1] && wizard.steps.length > 1;
-    return step;
+    const step = wizard.steps.length > 1 && wizard.steps[wizard.steps.length - 1];
+    return index === step.id ? step : null;
 };
 
 export const getPrevious = createSelector(getWizardIndex, getWizardDefinition, getPreviousFn);
 export const getCurrent = createSelector(getWizardIndex, getWizardDefinition, getCurrentFn);
 export const getNext = createSelector(getWizardIndex, getWizardDefinition, getNextFn);
-export const getSave = createSelector(getWizardIndex, getWizardDefinition, getSaveFn);
+export const getLast = createSelector(getWizardIndex, getWizardDefinition, getLastFn);

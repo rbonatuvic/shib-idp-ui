@@ -30,6 +30,18 @@
                 </span>
             </button>
         </li>
+        <li class="nav-item" *ngIf="(last$ | async)">
+            <button class="nav-link next btn clearfix" (click)="onNext.emit(null)" [disabled]="disabled$ | async" role="button">
+                <span class="label pull-left">
+                    Finish And Validate
+                </span>
+                <span class="direction pull-right">
+                    <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
+                    <ng-container i18n="@@action--next">Next</ng-container>
+                </span>
+            </button>
+        </li>
+        <!--
         <li class="nav-item" *ngIf="(save$ | async) && !(next$ | async)">
             <button class="nav-link save btn" aria-label="Save" role="button">
                 <span class="label pull-left" i18n="@@action--save">Save</span>
@@ -39,5 +51,6 @@
                 </span>
             </button>
         </li>
+        -->
     </ul>
 </nav>

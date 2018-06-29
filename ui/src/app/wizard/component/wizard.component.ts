@@ -26,7 +26,7 @@ export class WizardComponent implements OnChanges {
     previous$: Observable<WizardStep>;
     next$: Observable<WizardStep>;
     current$: Observable<WizardStep>;
-    save$: Observable<boolean>;
+    last$: Observable<WizardStep>;
 
     constructor(
         private store: Store<fromWizard.WizardState>
@@ -37,7 +37,7 @@ export class WizardComponent implements OnChanges {
         this.previous$ = this.store.select(fromWizard.getPrevious);
         this.next$ = this.store.select(fromWizard.getNext);
         this.current$ = this.store.select(fromWizard.getCurrent);
-        this.save$ = this.store.select(fromWizard.getSave);
+        this.last$ = this.store.select(fromWizard.getLast);
     }
 
     ngOnChanges(): void {
