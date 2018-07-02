@@ -1,18 +1,27 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="horizontal control-label">
-        {{ schema.title }}
-    </label>
-    <div *ngIf="schema.type!='array'" class="checkbox">
-        <label class="horizontal control-label">
-            <input [formControl]="control"
-                [attr.name]="name"
-                [indeterminate]="control.value !== false && control.value !== true ? true :null"
-                type="checkbox"
-                [attr.disabled]="schema.readOnly">
-            <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control"> {{schema.description}}
-        </label>
-    </div>
-    <ng-container *ngIf="schema.type==='array'">
+    <ng-container *ngIf="schema.type !== 'array'">
+        <div class="d-flex justify-content-start">
+            <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
+                <input [formControl]="control"
+                    class="custom-control-input"
+                    [attr.name]="name"
+                    [indeterminate]="control.value !== false && control.value !== true ? true :null"
+                    type="checkbox"
+                    [attr.disabled]="schema.readOnly"
+                    id="{{ schema.id }}-control">
+                <input id="{{ schema.id }}-control" *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
+                <label for="{{ schema.id }}-control" class="custom-control-label">
+                    {{ schema.title }}
+                </label>
+            </div>
+            <div>
+                <ng-template #tooltip>{{ schema.description }}</ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltip" i18n-aria-label="@@tooltip--instruction"
+                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="schema.type === 'array'">
         <div *ngFor="let option of schema.items.oneOf" class="checkbox">
             <label class="horizontal control-label">
                 <input [attr.name]="name" 
@@ -26,3 +35,17 @@
         </div>
     </ng-container>
 </div>
+<!--
+
+<fieldset aria-label="Don't sign the response? Checkbox - select for yes">
+    <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
+        <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="dontSignResponse" id="dontSignResponse"
+            [value]="true" role="checkbox" aria-checked="false">
+        <label class="custom-control-label" i18n="@@label--dont-sign-the-response" for="dontSignResponse">Don't Sign the Response</label>
+    </div>
+    <ng-template #tooltipDontSignResponse i18n="@@tooltip--dont-sign-response">Don't Sign Response popover</ng-template>
+    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipDontSignResponse" i18n-aria-label="@@tooltip--instruction"
+        aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+</fieldset>
+
+-->
