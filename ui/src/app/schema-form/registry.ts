@@ -15,6 +15,7 @@ import { RangeWidget } from 'ngx-schema-form';
 import { TextAreaWidget } from 'ngx-schema-form';
 import { CustomSelectComponent } from './widget/select/select.component';
 import { DatalistComponent } from './widget/datalist/datalist.component';
+import { CustomCheckboxComponent } from './widget/check/checkbox.component';
 
 
 export class CustomWidgetRegistry extends WidgetRegistry {
@@ -37,6 +38,8 @@ export class CustomWidgetRegistry extends WidgetRegistry {
         this.register('fieldset', FieldsetComponent);
 
         this.register('select', CustomSelectComponent);
+        this.register('boolean', CustomCheckboxComponent);
+        this.register('checkbox', CustomCheckboxComponent);
 
         this.register('datalist', DatalistComponent);
 
@@ -52,8 +55,6 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('file', FileWidget);
         this.register('radio', RadioWidget);
-        this.register('boolean', CheckboxWidget);
-        this.register('checkbox', CheckboxWidget);
 
         this.register('button', ButtonWidget);
 
