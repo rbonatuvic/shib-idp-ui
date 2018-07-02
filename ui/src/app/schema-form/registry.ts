@@ -12,11 +12,9 @@ import { IntegerWidget } from 'ngx-schema-form';
 import { ObjectWidget } from 'ngx-schema-form';
 import { RadioWidget } from 'ngx-schema-form';
 import { RangeWidget } from 'ngx-schema-form';
-import { SelectWidget } from 'ngx-schema-form';
-import { StringWidget } from 'ngx-schema-form';
 import { TextAreaWidget } from 'ngx-schema-form';
 import { CustomSelectComponent } from './widget/select/select.component';
-
+import { DatalistComponent } from './widget/datalist/datalist.component';
 
 
 export class CustomWidgetRegistry extends WidgetRegistry {
@@ -39,6 +37,8 @@ export class CustomWidgetRegistry extends WidgetRegistry {
         this.register('fieldset', FieldsetComponent);
 
         this.register('select', CustomSelectComponent);
+
+        this.register('datalist', DatalistComponent);
 
         /* NGX-Form */
         this.register('array', ArrayWidget);

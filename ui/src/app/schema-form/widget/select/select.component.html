@@ -12,7 +12,8 @@
     <span *ngIf="schema.description" class="sr-only">
         {{ schema.description }}
     </span>
-    <select *ngIf="schema.type != 'array'" [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
+    <select *ngIf="schema.type !== 'array'" [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
+        <option disabled selected>{{ schema.title }}</option>
         <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
     </select>
     <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">

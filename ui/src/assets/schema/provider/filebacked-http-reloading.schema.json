@@ -7,12 +7,40 @@
                 "minRefreshDelay": {
                     "title": "Min Refresh Delay",
                     "description": "",
-                    "type": "string"
+                    "type": "string",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    }
                 },
                 "maxRefreshDelay": {
                     "title": "Max Refresh Delay",
                     "description": "",
-                    "type": "string"
+                    "type": "string",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    }
                 },
                 "refreshDelayFactor": {
                     "title": "Refresh Delay Factor",
@@ -45,7 +73,21 @@
                 "expirationWarningThreshold": {
                     "title": "Expiration Warning Threshold",
                     "description": "",
-                    "type": "string"
+                    "type": "string",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    }
                 }
             }
         }

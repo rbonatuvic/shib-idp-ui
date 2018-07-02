@@ -10,12 +10,14 @@ import { CustomStringComponent } from './widget/text/string.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CustomSelectComponent } from './widget/select/select.component';
+import { DatalistComponent } from './widget/datalist/datalist.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
     FieldsetComponent,
     CustomStringComponent,
-    CustomSelectComponent
+    CustomSelectComponent,
+    DatalistComponent
 ];
 
 @NgModule({

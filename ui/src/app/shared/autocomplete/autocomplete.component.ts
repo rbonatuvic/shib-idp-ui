@@ -19,8 +19,8 @@ import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validators } from
 import { Observable, Subject, Subscription, interval } from 'rxjs';
 import { takeUntil, combineLatest, map } from 'rxjs/operators';
 
-import { keyCodes, isPrintableKeyCode } from '../../shared/keycodes';
-import { AutoCompleteState, AutoCompleteStateEmitter, defaultState } from './autocomplete.model';
+import { keyCodes } from '../../shared/keycodes';
+import { AutoCompleteStateEmitter } from './autocomplete.model';
 import { NavigatorService } from '../../core/service/navigator.service';
 
 const POLL_TIMEOUT = 1000;
@@ -48,6 +48,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     @Input() showMoreText = 'Show More...';
     @Input() limit = 0;
     @Input() processing = false;
+    @Input() dropdown = false;
 
     @Output() more: EventEmitter<any> = new EventEmitter<any>();
     @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
