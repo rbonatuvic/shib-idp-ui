@@ -3,11 +3,7 @@
     <hr />
     <div class="row">
         <div class="col col-xl-6 col-lg-9 col-xs-12">
-            <sf-form
-                [schema]="schema$ | async"
-                [model]="formModel"
-                (onChange)="changeSubject.next($event)"
-                (isValid)="onStatusChange($event)"></sf-form>
+            <router-outlet></router-outlet>
         </div>
         <!--
         <div class="col col-xl-6 col-lg-9 col-xs-12">

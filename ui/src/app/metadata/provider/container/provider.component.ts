@@ -11,11 +11,11 @@ import { SetDefinition, SetIndex } from '../../../wizard/action/wizard.action';
 import { MetadataProviderWizard } from '../model';
 
 @Component({
-    selector: 'new-provider-page',
-    templateUrl: './new-provider.component.html',
-    styleUrls: ['./new-provider.component.scss']
+    selector: 'provider-page',
+    templateUrl: './provider.component.html',
+    styleUrls: []
 })
-export class NewProviderComponent {
+export class ProviderComponent {
     types = MetadataProviderTypes;
 
     constructor(

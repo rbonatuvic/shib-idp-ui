@@ -1,0 +1,5 @@
+<sf-form
+    [schema]="schema$ | async"
+    [model]="formModel"
+    (onChange)="changeSubject.next($event)"
+    (isValid)="onStatusChange($event)"></sf-form>

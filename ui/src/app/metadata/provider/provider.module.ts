@@ -5,7 +5,9 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 
 import { ProviderWizardComponent } from './container/provider-wizard.component';
-import { NewProviderComponent } from './container/new-provider.component';
+import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
+import { ProviderWizardSummaryComponent } from './container/provider-wizard-summary.component';
+import { ProviderComponent } from './container/provider.component';
 import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
 import { EffectsModule } from '@ngrx/effects';
@@ -19,8 +21,10 @@ import { CustomWidgetRegistry } from '../../schema-form/registry';
 
 @NgModule({
     declarations: [
-        NewProviderComponent,
-        ProviderWizardComponent
+        ProviderComponent,
+        ProviderWizardComponent,
+        ProviderWizardStepComponent,
+        ProviderWizardSummaryComponent
     ],
     entryComponents: [],
     imports: [
