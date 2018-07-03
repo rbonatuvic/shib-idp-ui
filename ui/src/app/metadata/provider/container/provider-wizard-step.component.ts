@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -31,6 +31,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
     changes$: Observable<MetadataProvider>;
     currentPage: string;
     valid$: Observable<boolean>;
+    model$: Observable<any>;
 
     constructor(
         private store: Store<fromProvider.ProviderState>
@@ -52,32 +53,51 @@ export class ProviderWizardStepComponent implements OnDestroy {
                 this.store.dispatch(new SetDisabled(!valid));
             });
 
+        this.model$ = this.schema$.pipe(
+            withLatestFrom(
+                this.store.select(fromWizard.getModel),
+                this.changes$,
+                this.definition$
+            ),
+            map(([schema, model, changes, definition]) => {
+                return ({
+                    model: {
+                        ...model,
+                        ...changes
+                    },
+                    definition
+                });
+            }),
+            map(({ model, definition }) => {
+                return definition.translate ? definition.translate.formatter(model) : model;
+            })
+        );
+
         this.schema$.subscribe(s => this.schema = s);
 
-        this.changeEmitted$
-            .pipe(
-                withLatestFrom(this.schema$, this.definition$),
-            )
-            .subscribe(
-                ([changes, schema, definition]) => {
-                    const type = changes.value['@type'];
-                    if (type && type !== definition.type) {
-                        const newDefinition = MetadataProviderTypes.find(def => def.type === type);
-                        if (newDefinition) {
-                            this.store.dispatch(new SetDefinition({
-                                ...MetadataProviderWizard,
-                                ...newDefinition,
-                                steps: [
-                                    ...MetadataProviderWizard.steps,
-                                    ...newDefinition.steps
-                                ]
-                            }));
-                            changes = { value: pick(Object.keys(schema.properties))(changes.value) };
-                        }
+        this.changeEmitted$.pipe(
+            withLatestFrom(this.schema$, this.definition$),
+            map(([changes, schema, definition]) => {
+                const type = changes.value['@type'];
+                if (type && type !== definition.type) {
+                    const newDefinition = MetadataProviderTypes.find(def => def.type === type);
+                    if (newDefinition) {
+                        this.store.dispatch(new SetDefinition({
+                            ...MetadataProviderWizard,
+                            ...newDefinition,
+                            steps: [
+                                ...MetadataProviderWizard.steps,
+                                ...newDefinition.steps
+                            ]
+                        }));
+                        changes = { value: pick(Object.keys(schema.properties))(changes.value) };
                     }
-                    this.store.dispatch(new UpdateProvider(changes.value));
                 }
-            );
+                return { changes: changes.value, definition };
+            }),
+            map(({ changes, definition }) => definition.translate ? definition.translate.parser(changes) : changes)
+        )
+        .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
     }
 
     ngOnDestroy() {

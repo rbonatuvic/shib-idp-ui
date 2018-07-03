@@ -4,12 +4,13 @@ import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
-
-import { SetIndex, SetDisabled } from '../../../wizard/action/wizard.action';
-import { LoadSchemaRequest } from '../action/editor.action';
+import { SetIndex, SetDisabled, ClearWizard } from '../../../wizard/action/wizard.action';
+import { LoadSchemaRequest, ClearEditor } from '../action/editor.action';
 import { startWith } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
+import { ClearProvider } from '../action/entity.action';
+
 
 @Component({
     selector: 'provider-wizard',
@@ -17,15 +18,15 @@ import { MetadataProvider } from '../../domain/model';
     styleUrls: []
 })
 
-export class ProviderWizardComponent {
+export class ProviderWizardComponent implements OnDestroy {
+
     schema$: Observable<any>;
     schema: any;
     definition$: Observable<Wizard<MetadataProvider>>;
     changes$: Observable<MetadataProvider>;
+    model$: Observable<any>;
     currentPage: string;
     valid$: Observable<boolean>;
-
-    formModel: any;
 
     nextStep: WizardStep;
     previousStep: WizardStep;
@@ -48,6 +49,15 @@ export class ProviderWizardComponent {
             .subscribe((valid) => {
                 this.store.dispatch(new SetDisabled(!valid));
             });
+
+        this.schema$.subscribe(s => this.schema = s);
+
+    }
+
+    ngOnDestroy() {
+        this.store.dispatch(new ClearProvider());
+        this.store.dispatch(new ClearWizard());
+        this.store.dispatch(new ClearEditor());
     }
 
     next(): void {

@@ -15,7 +15,7 @@
                     "properties": {
                         "maxValidityInterval": {
                             "title": "Max Validity Interval",
-                            "description": "",
+                            "description": "Max Validity Interval",
                             "type": "number"
                         }
                     }
@@ -29,14 +29,15 @@
                     "properties": {
                         "requireSignedRoot": {
                             "title": "Require Signed Root",
-                            "description": "",
+                            "description": "Require Signed Root",
                             "type": "boolean",
                             "default": true
                         },
                         "certificateFile": {
                             "title": "Certificate File",
-                            "description": "",
-                            "type": "string"
+                            "description": "Certificate File",
+                            "type": "string",
+                            "widget": "textarea"
                         }
                     }
                 },
@@ -49,7 +50,7 @@
                     "properties": {
                         "retainedRoles": {
                             "title": "Retained Roles",
-                            "description": "",
+                            "description": "Retained Roles",
                             "type": "array",
                             "items": {
                                 "widget": {
@@ -74,13 +75,13 @@
                         },
                         "removeRolelessEntityDescriptors": {
                             "title": "Remove Roleless Entity Descriptors?",
-                            "description": "",
+                            "description": "Remove Roleless Entity Descriptors?",
                             "type": "boolean",
                             "default": true
                         },
                         "removeEmptyEntitiesDescriptors": {
                             "title": "Remove Empty Entities Descriptors?",
-                            "description": "",
+                            "description": "Remove Empty Entities Descriptors?",
                             "type": "boolean",
                             "default": true
                         }

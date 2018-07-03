@@ -8,7 +8,9 @@ export enum WizardActionTypes {
     SET_DISABLED = '[Wizard] Set Disabled',
 
     NEXT = '[Wizard] Next Page',
-    PREVIOUS = '[Wizard] Previous Page'
+    PREVIOUS = '[Wizard] Previous Page',
+
+    CLEAR = '[Wizard] Clear'
 }
 
 export class SetIndex implements Action {
@@ -47,10 +49,15 @@ export class Previous implements Action {
     constructor(public payload: string) { }
 }
 
+export class ClearWizard implements Action {
+    readonly type = WizardActionTypes.CLEAR;
+}
+
 export type WizardActionUnion =
     | SetIndex
     | SetDefinition
     | UpdateDefinition
     | SetDisabled
     | Next
-    | Previous;
+    | Previous
+    | ClearWizard;
