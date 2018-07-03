@@ -21,6 +21,8 @@ import java.util.List;
 @ToString
 public class DynamicHttpMetadataResolver extends MetadataResolver {
 
+
+
     public static final String DEFAULT_TIMEOUT = "PT5S";
 
     @Embedded
@@ -38,6 +40,7 @@ public class DynamicHttpMetadataResolver extends MetadataResolver {
     private List<String> supportedContentTypes;
 
     public DynamicHttpMetadataResolver() {
+        type = "DynamicHttpMetadataResolver";
         this.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes();
         this.httpMetadataResolverAttributes.setConnectionRequestTimeout(DEFAULT_TIMEOUT);
         this.httpMetadataResolverAttributes.setConnectionTimeout(DEFAULT_TIMEOUT);

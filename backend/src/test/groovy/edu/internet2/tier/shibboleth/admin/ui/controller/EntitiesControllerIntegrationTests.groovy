@@ -6,6 +6,7 @@ import org.joda.time.DateTime
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
+import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -146,6 +147,7 @@ class EntitiesControllerIntegrationTests extends Specification {
         def diff = DiffBuilder.compare(Input.fromString(expectedBody)).withTest(Input.fromString(resultBody.getResponseBody())).ignoreComments().checkForSimilar().ignoreWhitespace().withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndText)).build()
         !diff.hasDifferences()
     }
+
 
     @TestConfiguration
     static class Config {

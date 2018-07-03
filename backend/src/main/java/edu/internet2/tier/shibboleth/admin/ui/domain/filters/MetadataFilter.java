@@ -47,4 +47,8 @@ public class MetadataFilter extends AbstractAuditable {
 
     @Transient
     private int version;
+
+    public void updateVersion() {
+        this.version = hashCode();
+    }
 }

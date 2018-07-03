@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 
 import spock.lang.Specification
@@ -31,7 +30,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class IncommonJPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverService metadataResolverService
@@ -41,6 +39,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
     @Autowired
     AttributeUtility attributeUtility
+
+    def cleanup() {
+        metadataResolverRepository.deleteAll()
+    }
 
     def 'simple test generation of metadata-providers.xml'() {
         when:
@@ -137,6 +139,9 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
                 // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver.
                 metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).localDynamicMetadataResolver())
+
+                // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).resourceBackedMetadataResolverForSVN())
             }
 
             return resolver

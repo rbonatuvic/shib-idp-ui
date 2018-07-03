@@ -21,7 +21,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.w3c.dom.Document
 import spock.lang.Specification
@@ -57,7 +56,7 @@ class MetadataFiltersControllerTests extends Specification {
 
     def mockMvc
 
-    def mockFilterService = Mock(FilterService)
+    static BASE_URI = '/api/MetadataResolvers'
 
     def setup() {
         randomGenerator = new RandomGenerator()
@@ -94,7 +93,7 @@ class MetadataFiltersControllerTests extends Specification {
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
-        def result = mockMvc.perform(get('/api/MetadataResolver/foo/Filters'))
+        def result = mockMvc.perform(get("$BASE_URI/foo/Filters"))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
@@ -114,7 +113,7 @@ class MetadataFiltersControllerTests extends Specification {
         def expectedResponseContentType = APPLICATION_JSON_UTF8
 
         when:
-        def result = mockMvc.perform(get("/api/MetadataResolver/foo/Filters/$expectedResourceId"))
+        def result = mockMvc.perform(get("$BASE_URI/foo/Filters/$expectedResourceId"))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
@@ -140,13 +139,13 @@ class MetadataFiltersControllerTests extends Specification {
         def expectedMetadataResolverUUID = metadataResolver.getResourceId()
         def expectedFilterUUID = randomFilter.getResourceId()
         def expectedResponseHeader = 'Location'
-        def expectedResponseHeaderValue = "/api/MetadataResolver/$expectedMetadataResolverUUID/Filters/$expectedFilterUUID"
+        def expectedResponseHeaderValue = "$BASE_URI/$expectedMetadataResolverUUID/Filters/$expectedFilterUUID"
         def expectedJsonBody = mapper.writeValueAsString(randomFilter)
         def postedJsonBody = expectedJsonBody - ~/"id":.*?,/ // remove the "id:<foo>,"
 
         when:
         def result = mockMvc.perform(
-                post('/api/MetadataResolver/foo/Filters')
+                post("$BASE_URI/foo/Filters")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -189,7 +188,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                put("/api/MetadataResolver/foo/Filters/$filterUUID")
+                put("$BASE_URI/foo/Filters/$filterUUID")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 
@@ -228,7 +227,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(
-                put("/api/MetadataResolver/foo/Filters/$filterUUID")
+                put("$BASE_URI/foo/Filters/$filterUUID")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(postedJsonBody))
 

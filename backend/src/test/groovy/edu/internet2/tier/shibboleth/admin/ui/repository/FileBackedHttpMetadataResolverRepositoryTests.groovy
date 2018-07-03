@@ -84,6 +84,7 @@ class FileBackedHttpMetadataResolverRepositoryTests extends Specification {
         // I suspect similar weirdness if httpMetadataResolverAttributes is an empty object, too.
         def resolverJson = '''{
 	"name": "name",
+	"@type": "FileBackedHttpMetadataResolver",
 	"requireValidMetadata": true,
 	"failFastInitialization": true,
 	"sortKey": 7,

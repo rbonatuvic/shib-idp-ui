@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is an EXAMPLE metadata configuration file. -->
+<MetadataProvider id="ShibbolethMetadata"
+                  xmlns="urn:mace:shibboleth:2.0:metadata"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:type="ChainingMetadataProvider"
+                  xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd">
+    <MetadataProvider id="SVNResourceMetadata" xsi:type="ResourceBackedMetadataProvider">
+        <MetadataResource xmlns:resource="urn:mace:shibboleth:2.0:resource"
+                          xsi:type="resource:SVNResource"
+                          resourceFile="entity.xml"
+                          repositoryURL="https://svn.example.org/repo/path/to.dir"
+                          workingCopyDirectory="%{idp.home}/metadata/svn" />
+    </MetadataProvider>
+
+</MetadataProvider>

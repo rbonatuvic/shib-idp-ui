@@ -1,5 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
@@ -22,17 +25,25 @@ import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EqualsAndHashCode(callSuper = true, exclude={"version"})
+@EqualsAndHashCode(callSuper = true, exclude = {"version"})
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@type", visible = true)
+@JsonSubTypes({@JsonSubTypes.Type(value = LocalDynamicMetadataResolver.class, name = "LocalDynamicMetadataResolver"),
+        @JsonSubTypes.Type(value = FileBackedHttpMetadataResolver.class, name = "FileBackedHttpMetadataResolver"),
+        @JsonSubTypes.Type(value = DynamicHttpMetadataResolver.class, name = "DynamicHttpMetadataResolver")})
 public class MetadataResolver extends AbstractAuditable {
 
-    @Column(unique=true)
+    @JsonProperty("@type")
+    @Transient
+    String type = "BaseMetadataResolver";
+
+    @Column(unique = true)
     private String name;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String resourceId = UUID.randomUUID().toString();
 
     private Boolean requireValidMetadata = true;
@@ -53,4 +64,12 @@ public class MetadataResolver extends AbstractAuditable {
 
     @Transient
     private int version;
+
+    public void updateVersion() {
+        this.version = hashCode();
+    }
+
+    public void clearAllFilters() {
+        this.metadataFilters.clear();
+    }
 }
