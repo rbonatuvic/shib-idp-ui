@@ -1,0 +1,24 @@
+<div class="widget form-group">
+    <label [attr.for]="id" class="d-flex justify-content-between control-label">
+        <span>{{ schema.title }}</span>
+        <span *ngIf="schema.description">
+            <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
+            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
+                [ngbPopover]="tooltip"
+                i18n-aria-label="@@tooltip--instruction"
+                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+        </span>
+    </label>
+    <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
+    <input [name]="name"
+        [attr.readonly]="schema.readOnly?true:null"
+        class="text-widget.id textline-widget form-control"
+        [attr.type]="this.getInputType()"
+        [attr.id]="id" 
+        [formControl]="control"
+        [attr.placeholder]="schema.placeholder"
+        [attr.maxLength]="schema.maxLength || null"
+        [attr.minLength]="schema.minLength || null"
+        [attr.disabled]="(schema.widget.id=='color' && schema.readOnly)?true:null">
+    <input *ngIf="(schema.widget.id === 'color' && schema.readOnly)" [attr.name]="name" type="hidden" [formControl]="control">
+</div>

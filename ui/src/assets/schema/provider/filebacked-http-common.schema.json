@@ -1,0 +1,161 @@
+{
+    "type": "object",
+    "order": [
+        "id",
+        "metadataURL",
+        "initializeFromBackupFile",
+        "backingFile",
+        "backupFileInitNextRefreshDelay",
+        "requireValidMetadata",
+        "failFastInitialization",
+        "useDefaultPredicateRegistry",
+        "satisfyAnyPredicates"
+    ],
+    "properties": {
+        "id": {
+            "title": "ID",
+            "description": "Unique Identifier",
+            "type": "string"
+        },
+        "metadataURL": {
+            "title": "Metadata URL",
+            "description": "Metadata URL",
+            "type": "string"
+        },
+        "initializeFromBackupFile": {
+            "title": "Initialize From Backup File?",
+            "description": "Initialize From Backup File?",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "backingFile": {
+            "title": "Backing File",
+            "description": "Backing File",
+            "type": "string",
+            "visibleIf": {
+                "initializeFromBackupFile": [
+                    true
+                ]
+            }
+        },
+        "backupFileInitNextRefreshDelay": {
+            "title": "Backup File Init Next Refresh Delay",
+            "description": "Backup File Init Next Refresh Delay",
+            "type": "string",
+            "visibleIf": {
+                "initializeFromBackupFile": [
+                    true
+                ]
+            }
+        },
+        "requireValidMetadata": {
+            "title": "Require Valid Metadata?",
+            "description": "Require Valid Metadata?",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "failFastInitialization": {
+            "title": "Fail Fast Initialization?",
+            "description": "Fail Fast Initialization?",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "useDefaultPredicateRegistry": {
+            "title": "Use Default Predicate Registry?",
+            "description": "Use Default Predicate Registry?",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": true
+        },
+        "satisfyAnyPredicates": {
+            "title": "Satisy Any Predicates?",
+            "description": "Satisy Any Predicates?",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "True"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "False"
+                }
+            ],
+            "default": false
+        }
+    }
+}

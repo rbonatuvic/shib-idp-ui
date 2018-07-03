@@ -1,6 +1,6 @@
 import { FileBackedHttpMetadataProvider } from './file-backed-http-metadata-provider';
 
-describe('Resolver construct', () => {
+describe('FileBackedHttmMetadataProvider construct', () => {
 
     const config = {
         id: 'foo',

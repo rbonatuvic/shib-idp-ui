@@ -34,7 +34,8 @@ import { PrettyXml } from './pipe/pretty-xml.pipe';
         FormsModule,
         InputDefaultsDirective,
         I18nTextComponent,
-        ValidFormIconComponent
+        ValidFormIconComponent,
+        InfoLabelDirective
     ]
 })
 export class SharedModule { }

@@ -2,6 +2,26 @@
 @import './_variables';
 @import './_mixins';
 
+
+/*
+Json schema form
+*/
+
+.formHelp {
+    display: none;
+}
+
+.form-control {
+    &.ng-invalid.ng-touched {
+        @include component-validation-state("valid", $form-feedback-valid-color);
+    }
+    &.ng-valid.ng-touched {
+        @include component-validation-state("valid", $form-feedback-valid-color);
+    }
+}
+
+/* end json schema form */
+
 .form-section {
     padding-left: $grid-gutter-width;
     padding-right: $grid-gutter-width;

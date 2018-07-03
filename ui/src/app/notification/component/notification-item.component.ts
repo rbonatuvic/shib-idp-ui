@@ -1,8 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-
-import * as fromNotifications from '../reducer';
 import { Notification } from '../model/notification';
 
 @Component({
@@ -13,12 +9,6 @@ import { Notification } from '../model/notification';
 export class NotificationItemComponent implements OnInit {
     @Input() notification: Notification;
     @Output() clear: EventEmitter<Notification> = new EventEmitter<Notification>();
-    types = {
-        '0': 'alert-success',
-        '1': 'alert-info',
-        '2': 'alert-warning',
-        '3': 'alert-danger'
-    };
     readonly timerCallback = () => this.clear.emit(this.notification);
     constructor() {}
 

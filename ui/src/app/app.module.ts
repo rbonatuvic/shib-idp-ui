@@ -20,6 +20,8 @@ import { ErrorInterceptor } from './core/service/error.interceptor';
 import { NavigatorService } from './core/service/navigator.service';
 import { ContentionModule } from './contention/contention.module';
 import { SharedModule } from './shared/shared.module';
+import { WizardModule } from './wizard/wizard.module';
+import { FormModule } from './schema-form/schema-form.module';
 
 @NgModule({
     declarations: [
@@ -37,6 +39,8 @@ import { SharedModule } from './shared/shared.module';
         NgbModalModule.forRoot(),
         NgbPopoverModule.forRoot(),
         NgbPaginationModule.forRoot(),
+        WizardModule.forRoot(),
+        FormModule.forRoot(),
         NotificationModule,
         HttpClientModule,
         ContentionModule,
