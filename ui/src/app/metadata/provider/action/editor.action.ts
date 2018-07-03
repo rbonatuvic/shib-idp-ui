@@ -6,7 +6,9 @@ export enum EditorActionTypes {
     LOAD_SCHEMA_SUCCESS = '[Provider Editor] Load Schema Success',
     LOAD_SCHEMA_FAIL = '[Provider Editor] Load Schema Fail',
 
-    SELECT_PROVIDER_TYPE = '[Provider Editor] Select Provider Type'
+    SELECT_PROVIDER_TYPE = '[Provider Editor] Select Provider Type',
+
+    CLEAR = '[Provider Editor] Clear'
 }
 
 export class UpdateStatus implements Action {
@@ -39,9 +41,14 @@ export class SelectProviderType implements Action {
     constructor(public payload: string) { }
 }
 
+export class ClearEditor implements Action {
+    readonly type = EditorActionTypes.CLEAR;
+}
+
 export type EditorActionUnion =
     | UpdateStatus
     | LoadSchemaRequest
     | LoadSchemaSuccess
     | LoadSchemaFail
-    | SelectProviderType;
+    | SelectProviderType
+    | ClearEditor;

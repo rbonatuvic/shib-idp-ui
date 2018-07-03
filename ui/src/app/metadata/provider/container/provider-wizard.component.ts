@@ -1,20 +1,18 @@
-
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 
-import { SetIndex, SetDisabled, UpdateDefinition, WizardActionTypes, Next, SetDefinition } from '../../../wizard/action/wizard.action';
-import { LoadSchemaRequest, UpdateStatus } from '../action/editor.action';
+import { SetIndex, SetDisabled, SetDefinition, ClearWizard } from '../../../wizard/action/wizard.action';
+import { LoadSchemaRequest, UpdateStatus, ClearEditor } from '../action/editor.action';
 import { startWith } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { MetadataProviderTypes, MetadataProviderWizard } from '../model';
-import { UpdateProvider } from '../action/entity.action';
+import { UpdateProvider, ClearProvider } from '../action/entity.action';
 import { pick } from '../../../shared/util';
 
 @Component({
@@ -24,8 +22,6 @@ import { pick } from '../../../shared/util';
 })
 
 export class ProviderWizardComponent implements OnDestroy {
-    actionsSubscription: Subscription;
-
     changeSubject = new Subject<Partial<any>>();
     private changeEmitted$ = this.changeSubject.asObservable();
 
@@ -33,10 +29,9 @@ export class ProviderWizardComponent implements OnDestroy {
     schema: any;
     definition$: Observable<Wizard<MetadataProvider>>;
     changes$: Observable<MetadataProvider>;
+    model$: Observable<any>;
     currentPage: string;
     valid$: Observable<boolean>;
-
-    formModel: any;
 
     nextStep: WizardStep;
     previousStep: WizardStep;
@@ -57,6 +52,26 @@ export class ProviderWizardComponent implements OnDestroy {
         this.store.select(fromWizard.getNext).subscribe(n => this.nextStep = n);
         this.store.select(fromWizard.getPrevious).subscribe(p => this.previousStep = p);
 
+        this.model$ = this.schema$.pipe(
+            withLatestFrom(
+                this.store.select(fromWizard.getModel),
+                this.changes$,
+                this.definition$
+            ),
+            map(([schema, model, changes, definition]) => {
+                return ({
+                    model: {
+                        ...model,
+                        ...changes
+                    },
+                    definition
+                });
+            }),
+            map(({ model, definition }) => {
+                return definition.translate ? definition.translate.formatter(model) : model;
+            })
+        );
+
         this.valid$
             .pipe(startWith(false))
             .subscribe((valid) => {
@@ -65,12 +80,9 @@ export class ProviderWizardComponent implements OnDestroy {
 
         this.schema$.subscribe(s => this.schema = s);
 
-        this.changeEmitted$
-            .pipe(
+        this.changeEmitted$.pipe(
                 withLatestFrom(this.schema$, this.definition$),
-            )
-            .subscribe(
-                ([changes, schema, definition]) => {
+                map(([changes, schema, definition]) => {
                     const type = changes.value['@type'];
                     if (type && type !== definition.type) {
                         const newDefinition = MetadataProviderTypes.find(def => def.type === type);
@@ -86,13 +98,17 @@ export class ProviderWizardComponent implements OnDestroy {
                             changes = { value: pick(Object.keys(schema.properties))(changes.value) };
                         }
                     }
-                    this.store.dispatch(new UpdateProvider(changes.value));
-                }
-            );
+                    return { changes: changes.value, definition };
+                }),
+                map(({ changes, definition }) => definition.translate ? definition.translate.parser(changes) : changes)
+            )
+            .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
     }
 
     ngOnDestroy() {
-        this.actionsSubscription.unsubscribe();
+        this.store.dispatch(new ClearProvider());
+        this.store.dispatch(new ClearWizard());
+        this.store.dispatch(new ClearEditor());
         this.changeSubject.complete();
     }
 

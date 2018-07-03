@@ -6,9 +6,11 @@ import {
 
 import {
     EntityAttributesFilter,
-    FileBackedHttpMetadataResolver,
-    FileBackedHttpMetadataProvider
+    FileBackedHttpMetadataResolver
 } from './entity';
+import {
+    FileBackedHttpMetadataProvider
+} from './model/providers';
 
 export type Filter =
     | EntityAttributesFilter;
