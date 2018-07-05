@@ -12,6 +12,7 @@ import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { AddProviderRequest } from '../action/collection.action';
 
 
 @Component({
@@ -31,6 +32,16 @@ export class ProviderWizardComponent implements OnDestroy {
     previousStep: WizardStep;
 
     summary$: Observable<{ definition: Wizard<MetadataProvider>, schema: { [id: string]: any }, model: any }>;
+
+    provider: MetadataProvider;
+
+    namesList: string[] = [];
+
+    validators = {
+        '/name': (value, property, form) => {
+            return this.namesList.indexOf(value) > -1 ? { 'name': { 'expectedValue': 'unique' } } : null;
+        }
+    };
 
     constructor(
         private store: Store<fromProvider.ProviderState>,
@@ -62,6 +73,10 @@ export class ProviderWizardComponent implements OnDestroy {
         ).pipe(
             map(([ definition, schema, model ]) => ({ definition, schema, model }))
         );
+
+        this.changes$.subscribe(c => this.provider = c);
+
+        this.store.select(fromProvider.getProviderNames).subscribe(list => this.namesList = list);
     }
 
     ngOnDestroy() {
@@ -81,7 +96,7 @@ export class ProviderWizardComponent implements OnDestroy {
     }
 
     save(): void {
-        console.log('Save!');
+        this.store.dispatch(new AddProviderRequest(this.provider));
     }
 
     gotoPage(page: string): void {

@@ -36,7 +36,7 @@
             </button>
         </li>
         <li class="nav-item" *ngIf="(last$ | async)">
-            <button class="nav-link save btn" aria-label="Save" role="button">
+            <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave.emit()">
                 <span class="label pull-left" i18n="@@action--save">Save</span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-save next d-block fa-2x"></i>

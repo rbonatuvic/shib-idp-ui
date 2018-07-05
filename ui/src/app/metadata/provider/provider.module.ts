@@ -17,6 +17,7 @@ import { WidgetRegistry} from 'ngx-schema-form';
 import { FormModule } from '../../schema-form/schema-form.module';
 import { CustomWidgetRegistry } from '../../schema-form/registry';
 import { SummaryPropertyComponent } from './component/summary-property.component';
+import { CollectionEffects } from './effect/collection.effect';
 
 
 @NgModule({
@@ -52,7 +53,7 @@ export class ProviderModule {
     imports: [
         ProviderModule,
         StoreModule.forFeature('provider', fromProvider.reducers),
-        EffectsModule.forFeature([EditorEffects])
+        EffectsModule.forFeature([EditorEffects, CollectionEffects])
     ]
 })
 export class RootProviderModule { }

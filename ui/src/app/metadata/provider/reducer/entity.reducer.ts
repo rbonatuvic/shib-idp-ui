@@ -28,8 +28,7 @@ export function reducer(state = initialState, action: EntityActionUnion): Entity
                 }
             };
         }
-        case EntityActionTypes.SELECT_PROVIDER:
-        case EntityActionTypes.CREATE_PROVIDER: {
+        case EntityActionTypes.SELECT_PROVIDER: {
             return {
                 ...state,
                 base: {
@@ -44,23 +43,6 @@ export function reducer(state = initialState, action: EntityActionUnion): Entity
                     ...state.changes,
                     ...action.payload
                 }
-            };
-        }
-        case EntityActionTypes.SAVE_PROVIDER_REQUEST: {
-            return {
-                ...state,
-                saving: true
-            };
-        }
-        case EntityActionTypes.SAVE_PROVIDER_SUCCESS: {
-            return {
-                ...initialState,
-            };
-        }
-        case EntityActionTypes.SAVE_PROVIDER_FAIL: {
-            return {
-                ...state,
-                saving: false
             };
         }
         default: {

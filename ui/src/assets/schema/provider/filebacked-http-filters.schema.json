@@ -6,7 +6,7 @@
             "description": "",
             "type": "object",
             "properties": {
-                "@RequiredValidUntilFilter": {
+                "RequiredValidUntil": {
                     "title": "Required Valid Until Filter",
                     "type": "object",
                     "widget": {
@@ -16,11 +16,12 @@
                         "maxValidityInterval": {
                             "title": "Max Validity Interval",
                             "description": "Max Validity Interval",
-                            "type": "number"
+                            "type": "number",
+                            "default": 0
                         }
                     }
                 },
-                "@SignatureValidationFilter": {
+                "SignatureValidation": {
                     "title": "Signature Validation Filter",
                     "type": "object",
                     "widget": {
@@ -37,11 +38,12 @@
                             "title": "Certificate File",
                             "description": "Certificate File",
                             "type": "string",
-                            "widget": "textarea"
+                            "widget": "textarea",
+                            "default": ""
                         }
                     }
                 },
-                "@EntityRoleWhiteListFilter": {
+                "EntityRoleWhiteList": {
                     "title": "Entity Role Whitelist Filter",
                     "type": "object",
                     "widget": {

@@ -3,10 +3,27 @@ import { FileBackedHttpMetadataProvider } from '../../domain/model/providers/fil
 
 export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadataProvider> = {
     label: 'FileBackedHttpMetadataProvider',
-    type: '@FileBackedHttpMetadataProvider',
+    type: 'FileBackedHttpMetadataResolver',
     translate: {
         parser: (changes) => changes.metadataFilters ? ({
                 ...changes,
+                httpMetadataResolverAttributes: {
+                    httpClientRef: null,
+                    connectionRequestTimeout: null,
+                    connectionTimeout: null,
+                    socketTimeout: null,
+                    disregardTLSCertificate: false,
+                    tlsTrustEngineRef: null,
+                    httpClientSecurityParametersRef: null,
+                    proxyHost: null,
+                    proxyPort: null,
+                    proxyUser: null,
+                    proxyPassword: null,
+                    httpCaching: null,
+                    httpCacheDirectory: null,
+                    httpMaxCacheEntries: null,
+                    httpMaxCacheEntrySize: null
+                },
                 metadataFilters: [
                     ...Object.keys(changes.metadataFilters).reduce((collection, filterName) => ([
                         ...collection,
