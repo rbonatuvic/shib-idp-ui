@@ -1,0 +1,1159 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'localhost:8080'
+basePath: /
+tags:
+  - name: entities-controller
+    description: Entities Controller
+  - name: entity-descriptor-controller
+    description: Entity Descriptor Controller
+  - name: entity-ids-search-controller
+    description: Entity Ids Search Controller
+  - name: metadata-filters-controller
+    description: Metadata Filters Controller
+  - name: metadata-providers-controller
+    description: Metadata Providers Controller
+  - name: metadata-resolvers-controller
+    description: Metadata Resolvers Controller
+paths:
+  /api/EntityDescriptor:
+    post:
+      tags:
+        - entity-descriptor-controller
+      summary: create
+      operationId: createUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: edRepresentation
+          description: edRepresentation
+          required: true
+          schema:
+            $ref: '#/definitions/EntityDescriptorRepresentation'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/EntityDescriptor/{resourceId}':
+    get:
+      tags:
+        - entity-descriptor-controller
+      summary: getOne
+      operationId: getOneUsingGET_1
+      produces:
+        - application/xml
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - entity-descriptor-controller
+      summary: update
+      operationId: updateUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: edRepresentation
+          description: edRepresentation
+          required: true
+          schema:
+            $ref: '#/definitions/EntityDescriptorRepresentation'
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/EntityDescriptors:
+    get:
+      tags:
+        - entity-descriptor-controller
+      summary: getAll
+      operationId: getAllUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/EntityDescriptorRepresentation'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/EntityIds/search:
+    get:
+      tags:
+        - entity-ids-search-controller
+      summary: search
+      operationId: searchUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          format: int32
+        - name: term
+          in: query
+          description: term
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/MetadataResolvers:
+    get:
+      tags:
+        - metadata-resolvers-controller
+      summary: getAll
+      operationId: getAllUsingGET_2
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - metadata-resolvers-controller
+      summary: create
+      operationId: createUsingPOST_2
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: newResolver
+          description: newResolver
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataResolver'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/MetadataResolvers/{metadataResolverId}/Filters':
+    get:
+      tags:
+        - metadata-filters-controller
+      summary: getAll
+      operationId: getAllUsingGET_1
+      produces:
+        - '*/*'
+      parameters:
+        - name: metadataResolverId
+          in: path
+          description: metadataResolverId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - metadata-filters-controller
+      summary: create
+      operationId: createUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: createdFilter
+          description: createdFilter
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataFilter'
+        - name: metadataResolverId
+          in: path
+          description: metadataResolverId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/MetadataResolvers/{metadataResolverId}/Filters/{resourceId}':
+    get:
+      tags:
+        - metadata-filters-controller
+      summary: getOne
+      operationId: getOneUsingGET_2
+      produces:
+        - '*/*'
+      parameters:
+        - name: metadataResolverId
+          in: path
+          description: metadataResolverId
+          required: true
+          type: string
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - metadata-filters-controller
+      summary: update
+      operationId: updateUsingPUT_1
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: metadataResolverId
+          in: path
+          description: metadataResolverId
+          required: true
+          type: string
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+        - in: body
+          name: updatedFilter
+          description: updatedFilter
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataFilter'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/MetadataResolvers/{resourceId}':
+    get:
+      tags:
+        - metadata-resolvers-controller
+      summary: getOne
+      operationId: getOneUsingGET_3
+      produces:
+        - '*/*'
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - metadata-resolvers-controller
+      summary: update
+      operationId: updateUsingPUT_2
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+        - in: body
+          name: updatedResolver
+          description: updatedResolver
+          required: true
+          schema:
+            $ref: '#/definitions/MetadataResolver'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  '/api/entities/{entityId}':
+    get:
+      tags:
+        - entities-controller
+      summary: getOne
+      operationId: getOneUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: entityId
+          in: path
+          description: entityId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/metadataProviders:
+    get:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingGET
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    head:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingHEAD
+      consumes:
+        - application/json
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    post:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingDELETE
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    options:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingOPTIONS
+      consumes:
+        - application/json
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+    patch:
+      tags:
+        - metadata-providers-controller
+      summary: getXml
+      operationId: getXmlUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - application/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+definitions:
+  AssertionConsumerServiceRepresentation:
+    type: object
+    properties:
+      binding:
+        type: string
+      locationUrl:
+        type: string
+      makeDefault:
+        type: boolean
+    title: AssertionConsumerServiceRepresentation
+  ContactRepresentation:
+    type: object
+    properties:
+      displayName:
+        type: string
+      emailAddress:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      url:
+        type: string
+    title: ContactRepresentation
+  DynamicHttpMetadataResolver:
+    title: DynamicHttpMetadataResolver
+    allOf:
+      - $ref: '#/definitions/MetadataResolver'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          audId:
+            type: integer
+            format: int64
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          criterionPredicateRegistryRef:
+            type: string
+          dynamicMetadataResolverAttributes:
+            $ref: '#/definitions/DynamicMetadataResolverAttributes'
+          failFastInitialization:
+            type: boolean
+          httpMetadataResolverAttributes:
+            $ref: '#/definitions/HttpMetadataResolverAttributes'
+          maxConnectionsPerRoute:
+            type: integer
+            format: int32
+          maxConnectionsTotal:
+            type: integer
+            format: int32
+          metadataFilters:
+            type: array
+            items:
+              $ref: '#/definitions/MetadataFilter'
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          requireValidMetadata:
+            type: boolean
+          resourceId:
+            type: string
+          satisfyAnyPredicates:
+            type: boolean
+          sortKey:
+            type: integer
+            format: int32
+          supportedContentTypes:
+            type: array
+            items:
+              type: string
+          useDefaultPredicateRegistry:
+            type: boolean
+          version:
+            type: integer
+            format: int32
+        title: DynamicHttpMetadataResolver
+  EntityAttributesFilter:
+    title: EntityAttributesFilter
+    allOf:
+      - $ref: '#/definitions/MetadataFilter'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          attributeRelease:
+            type: array
+            items:
+              type: string
+          audId:
+            type: integer
+            format: int64
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          entityAttributesFilterTarget:
+            $ref: '#/definitions/EntityAttributesFilterTarget'
+          filterEnabled:
+            type: boolean
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          relyingPartyOverrides:
+            $ref: '#/definitions/RelyingPartyOverridesRepresentation'
+          resourceId:
+            type: string
+          version:
+            type: integer
+            format: int32
+        title: EntityAttributesFilter
+  EntityDescriptorRepresentation:
+    type: object
+    properties:
+      assertionConsumerServices:
+        type: array
+        items:
+          $ref: '#/definitions/AssertionConsumerServiceRepresentation'
+      attributeRelease:
+        type: array
+        items:
+          type: string
+      contacts:
+        type: array
+        items:
+          $ref: '#/definitions/ContactRepresentation'
+      createdDate:
+        type: string
+        format: date-time
+      entityId:
+        type: string
+      id:
+        type: string
+      logoutEndpoints:
+        type: array
+        items:
+          $ref: '#/definitions/LogoutEndpointRepresentation'
+      mdui:
+        $ref: '#/definitions/MduiRepresentation'
+      modifiedDate:
+        type: string
+        format: date-time
+      organization:
+        $ref: '#/definitions/OrganizationRepresentation'
+      relyingPartyOverrides:
+        $ref: '#/definitions/RelyingPartyOverridesRepresentation'
+      securityInfo:
+        $ref: '#/definitions/SecurityInfoRepresentation'
+      serviceEnabled:
+        type: boolean
+      serviceProviderName:
+        type: string
+      serviceProviderSsoDescriptor:
+        $ref: '#/definitions/ServiceProviderSsoDescriptorRepresentation'
+      version:
+        type: integer
+        format: int32
+    title: EntityDescriptorRepresentation
+  EntityRoleWhiteListFilter:
+    title: EntityRoleWhiteListFilter
+    allOf:
+      - $ref: '#/definitions/MetadataFilter'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          audId:
+            type: integer
+            format: int64
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          filterEnabled:
+            type: boolean
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          removeEmptyEntitiesDescriptors:
+            type: boolean
+          removeRolelessEntityDescriptors:
+            type: boolean
+          resourceId:
+            type: string
+          retainedRoles:
+            type: array
+            items:
+              type: string
+          version:
+            type: integer
+            format: int32
+        title: EntityRoleWhiteListFilter
+  FileBackedHttpMetadataResolver:
+    title: FileBackedHttpMetadataResolver
+    allOf:
+      - $ref: '#/definitions/MetadataResolver'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          audId:
+            type: integer
+            format: int64
+          backingFile:
+            type: string
+          backupFileInitNextRefreshDelay:
+            type: string
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          criterionPredicateRegistryRef:
+            type: string
+          failFastInitialization:
+            type: boolean
+          httpMetadataResolverAttributes:
+            $ref: '#/definitions/HttpMetadataResolverAttributes'
+          initializeFromBackupFile:
+            type: boolean
+          metadataFilters:
+            type: array
+            items:
+              $ref: '#/definitions/MetadataFilter'
+          metadataURL:
+            type: string
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          reloadableMetadataResolverAttributes:
+            $ref: '#/definitions/ReloadableMetadataResolverAttributes'
+          requireValidMetadata:
+            type: boolean
+          resourceId:
+            type: string
+          satisfyAnyPredicates:
+            type: boolean
+          sortKey:
+            type: integer
+            format: int32
+          useDefaultPredicateRegistry:
+            type: boolean
+          version:
+            type: integer
+            format: int32
+        title: FileBackedHttpMetadataResolver
+  Iterable«EntityDescriptorRepresentation»:
+    type: object
+    title: Iterable«EntityDescriptorRepresentation»
+  LocalDynamicMetadataResolver:
+    title: LocalDynamicMetadataResolver
+    allOf:
+      - $ref: '#/definitions/MetadataResolver'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          audId:
+            type: integer
+            format: int64
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          criterionPredicateRegistryRef:
+            type: string
+          dynamicMetadataResolverAttributes:
+            $ref: '#/definitions/DynamicMetadataResolverAttributes'
+          failFastInitialization:
+            type: boolean
+          metadataFilters:
+            type: array
+            items:
+              $ref: '#/definitions/MetadataFilter'
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          requireValidMetadata:
+            type: boolean
+          resourceId:
+            type: string
+          satisfyAnyPredicates:
+            type: boolean
+          sortKey:
+            type: integer
+            format: int32
+          sourceDirectory:
+            type: string
+          sourceKeyGeneratorRef:
+            type: string
+          sourceManagerRef:
+            type: string
+          useDefaultPredicateRegistry:
+            type: boolean
+          version:
+            type: integer
+            format: int32
+        title: LocalDynamicMetadataResolver
+  LogoutEndpointRepresentation:
+    type: object
+    properties:
+      bindingType:
+        type: string
+      url:
+        type: string
+    title: LogoutEndpointRepresentation
+  MduiRepresentation:
+    type: object
+    properties:
+      description:
+        type: string
+      displayName:
+        type: string
+      informationUrl:
+        type: string
+      logoHeight:
+        type: integer
+        format: int32
+      logoUrl:
+        type: string
+      logoWidth:
+        type: integer
+        format: int32
+      privacyStatementUrl:
+        type: string
+    title: MduiRepresentation
+  MetadataFilter:
+    type: object
+    properties:
+      '@type':
+        type: string
+      audId:
+        type: integer
+        format: int64
+      createdBy:
+        type: string
+      createdDate:
+        type: string
+        format: date-time
+      filterEnabled:
+        type: boolean
+      modifiedBy:
+        type: string
+      modifiedDate:
+        type: string
+        format: date-time
+      name:
+        type: string
+      resourceId:
+        type: string
+      version:
+        type: integer
+        format: int32
+    title: MetadataFilter
+  MetadataResolver:
+    type: object
+    properties:
+      '@type':
+        type: string
+      audId:
+        type: integer
+        format: int64
+      createdBy:
+        type: string
+      createdDate:
+        type: string
+        format: date-time
+      criterionPredicateRegistryRef:
+        type: string
+      failFastInitialization:
+        type: boolean
+      metadataFilters:
+        type: array
+        items:
+          $ref: '#/definitions/MetadataFilter'
+      modifiedBy:
+        type: string
+      modifiedDate:
+        type: string
+        format: date-time
+      name:
+        type: string
+      requireValidMetadata:
+        type: boolean
+      resourceId:
+        type: string
+      satisfyAnyPredicates:
+        type: boolean
+      sortKey:
+        type: integer
+        format: int32
+      useDefaultPredicateRegistry:
+        type: boolean
+      version:
+        type: integer
+        format: int32
+    title: MetadataResolver
+  OrganizationRepresentation:
+    type: object
+    properties:
+      displayName:
+        type: string
+      name:
+        type: string
+      url:
+        type: string
+    title: OrganizationRepresentation
+  RelyingPartyOverridesRepresentation:
+    type: object
+    properties:
+      authenticationMethods:
+        type: array
+        items:
+          type: string
+      dontSignResponse:
+        type: boolean
+      ignoreAuthenticationMethod:
+        type: boolean
+      nameIdFormats:
+        type: array
+        items:
+          type: string
+      omitNotBefore:
+        type: boolean
+      responderId:
+        type: string
+      signAssertion:
+        type: boolean
+      turnOffEncryption:
+        type: boolean
+      useSha:
+        type: boolean
+    title: RelyingPartyOverridesRepresentation
+  RequiredValidUntilFilter:
+    title: RequiredValidUntilFilter
+    allOf:
+      - $ref: '#/definitions/MetadataFilter'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          audId:
+            type: integer
+            format: int64
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          filterEnabled:
+            type: boolean
+          maxValidityInterval:
+            type: string
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          resourceId:
+            type: string
+          version:
+            type: integer
+            format: int32
+        title: RequiredValidUntilFilter
+  SecurityInfoRepresentation:
+    type: object
+    properties:
+      authenticationRequestsSigned:
+        type: boolean
+      wantAssertionsSigned:
+        type: boolean
+      x509CertificateAvailable:
+        type: boolean
+      x509Certificates:
+        type: array
+        items:
+          $ref: '#/definitions/X509CertificateRepresentation'
+    title: SecurityInfoRepresentation
+  ServiceProviderSsoDescriptorRepresentation:
+    type: object
+    properties:
+      nameIdFormats:
+        type: array
+        items:
+          type: string
+      protocolSupportEnum:
+        type: string
+    title: ServiceProviderSsoDescriptorRepresentation
+  SignatureValidationFilter:
+    title: SignatureValidationFilter
+    allOf:
+      - $ref: '#/definitions/MetadataFilter'
+      - type: object
+        properties:
+          '@type':
+            type: string
+          audId:
+            type: integer
+            format: int64
+          certificateFile:
+            type: string
+          createdBy:
+            type: string
+          createdDate:
+            type: string
+            format: date-time
+          defaultCriteriaRef:
+            type: string
+          dynamicTrustedNamesStrategyRef:
+            type: string
+          filterEnabled:
+            type: boolean
+          modifiedBy:
+            type: string
+          modifiedDate:
+            type: string
+            format: date-time
+          name:
+            type: string
+          publicKey:
+            type: string
+          requireSignedRoot:
+            type: boolean
+          resourceId:
+            type: string
+          signaturePrevalidatorRef:
+            type: string
+          trustEngineRef:
+            type: string
+          version:
+            type: integer
+            format: int32
+        title: SignatureValidationFilter
+  X509CertificateRepresentation:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+    title: X509CertificateRepresentation
