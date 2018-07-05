@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, map } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -21,8 +21,11 @@ import { pick } from '../../../shared/util';
 })
 
 export class ProviderWizardStepComponent implements OnDestroy {
-    changeSubject = new Subject<Partial<any>>();
-    private changeEmitted$ = this.changeSubject.asObservable();
+    valueChangeSubject = new Subject<Partial<any>>();
+    private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
+
+    statusChangeSubject = new Subject<Partial<any>>();
+    private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
 
     schema$: Observable<any>;
     schema: any;
@@ -32,12 +35,43 @@ export class ProviderWizardStepComponent implements OnDestroy {
     valid$: Observable<boolean>;
     model$: Observable<any>;
 
+    namesList: string[] = [];
+
+    validators = {
+        '/': (value, property, form_current) => {
+            let errors;
+            // iterate all customer
+            Object.keys(value).forEach((key) => {
+                const item = value[key];
+                const validatorKey = `/${key}`;
+                const validator = this.validators.hasOwnProperty(validatorKey) ? this.validators[validatorKey] : null;
+                const error = validator ? validator(item, { path: `/${key}` }, form_current) : null;
+                if (error) {
+                    errors = errors || [];
+                    errors.push(error);
+                }
+            });
+            return errors;
+        },
+        '/name': (value, property, form) => {
+            const err = this.namesList.indexOf(value) > -1 ? {
+                code: 'INVALID_NAME',
+                path: `#${property.path}`,
+                message: 'Name must be unique.',
+                params: [value]
+            } : null;
+            return err;
+        }
+    };
+
     constructor(
         private store: Store<fromProvider.ProviderState>
     ) {
         this.schema$ = this.store.select(fromProvider.getSchema);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
+
+        this.store.select(fromProvider.getProviderNames).subscribe(list => this.namesList = list);
 
         this.model$ = this.schema$.pipe(
             withLatestFrom(
@@ -55,7 +89,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
             map(({ model, definition }) => definition.translate ? definition.translate.formatter(model) : model)
         );
 
-        this.changeEmitted$.pipe(
+        this.valueChangeEmitted$.pipe(
             withLatestFrom(this.schema$, this.definition$),
             map(([changes, schema, definition]) => {
                 const type = changes.value['@type'];
@@ -78,15 +112,20 @@ export class ProviderWizardStepComponent implements OnDestroy {
             map(({ changes, definition }) => definition.translate ? definition.translate.parser(changes) : changes)
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
+
+        this.statusChangeEmitted$.pipe(
+            distinctUntilChanged()
+        ).subscribe(errors => {
+            console.log(!(errors.value));
+            const status = { [this.currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
+            this.store.dispatch(new UpdateStatus(status));
+        });
+
+        this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
     }
 
     ngOnDestroy() {
-        this.changeSubject.complete();
-    }
-
-    onStatusChange(value): void {
-        const status = { [this.currentPage]: value ? 'VALID' : 'INVALID' };
-        this.store.dispatch(new UpdateStatus(status));
+        this.valueChangeSubject.complete();
     }
 }
 

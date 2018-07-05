@@ -9,13 +9,29 @@ import {
     ProviderCollectionActionTypes,
     AddProviderRequest,
     AddProviderSuccess,
-    AddProviderFail
+    AddProviderFail,
+    LoadProviderRequest,
+    LoadProviderSuccess,
+    LoadProviderError
 } from '../action/collection.action';
 import { MetadataProviderService } from '../../domain/service/provider.service';
 
 /* istanbul ignore next */
 @Injectable()
 export class CollectionEffects {
+
+    @Effect()
+    loadFilters$ = this.actions$.pipe(
+        ofType<LoadProviderRequest>(ProviderCollectionActionTypes.LOAD_PROVIDER_REQUEST),
+        switchMap(() =>
+            this.providerService
+                .query()
+                .pipe(
+                    map(providers => new LoadProviderSuccess(providers)),
+                    catchError(error => of(new LoadProviderError(error)))
+                )
+        )
+    );
 
     @Effect()
     createProvider$ = this.actions$.pipe(
@@ -38,14 +54,12 @@ export class CollectionEffects {
         tap(provider => this.router.navigate(['metadata']))
     );
 
-    /*
     @Effect()
     addResolverSuccessReload$ = this.actions$.pipe(
-        ofType<CreateProviderSuccess>(EntityActionTypes.CREATE_PROVIDER_SUCCESS),
+        ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
         map(provider => new LoadProviderRequest())
     );
-    */
 
     constructor(
         private actions$: Actions,

@@ -35,14 +35,6 @@ export class ProviderWizardComponent implements OnDestroy {
 
     provider: MetadataProvider;
 
-    namesList: string[] = [];
-
-    validators = {
-        '/name': (value, property, form) => {
-            return this.namesList.indexOf(value) > -1 ? { 'name': { 'expectedValue': 'unique' } } : null;
-        }
-    };
-
     constructor(
         private store: Store<fromProvider.ProviderState>,
         private router: Router,
@@ -75,8 +67,6 @@ export class ProviderWizardComponent implements OnDestroy {
         );
 
         this.changes$.subscribe(c => this.provider = c);
-
-        this.store.select(fromProvider.getProviderNames).subscribe(list => this.namesList = list);
     }
 
     ngOnDestroy() {

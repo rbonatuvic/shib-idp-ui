@@ -18,6 +18,7 @@ import { FormModule } from '../../schema-form/schema-form.module';
 import { CustomWidgetRegistry } from '../../schema-form/registry';
 import { SummaryPropertyComponent } from './component/summary-property.component';
 import { CollectionEffects } from './effect/collection.effect';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { CollectionEffects } from './effect/collection.effect';
         CommonModule,
         WizardModule,
         RouterModule,
+        SharedModule,
         FormModule
     ],
     exports: []
