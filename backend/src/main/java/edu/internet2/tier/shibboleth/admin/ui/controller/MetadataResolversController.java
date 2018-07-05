@@ -1,15 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
@@ -33,6 +35,11 @@ public class MetadataResolversController {
 
     @Autowired
     MetadataResolverValidationService metadataResolverValidationService;
+
+    @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
+    public ResponseEntity<?> unableToParseJson(Exception ex) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()));
+    }
 
     @GetMapping("/MetadataResolvers")
     @Transactional(readOnly = true)
@@ -56,6 +63,10 @@ public class MetadataResolversController {
     @PostMapping("/MetadataResolvers")
     @Transactional
     public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
+        if (resolverRepository.findByName(newResolver.getName()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
         //TODO: we are disregarding attached filters if any sent from UI.
         //Only deal with filters via filters endpoints?
         newResolver.clearAllFilters();

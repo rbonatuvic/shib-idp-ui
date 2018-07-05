@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /**
  * A facade that aggregates {@link MetadataResolverValidator}s available to call just one of them supporting the type of a given resolver.
- * If no {@link MetadataResolverValidator}s are configured, conciders provided MetadataResolver as valid.
+ * If no {@link MetadataResolverValidator}s are configured, considers provided MetadataResolver as valid.
  * <p>
  * Uses chain-of-responsibility design pattern
  *
@@ -22,7 +22,7 @@ public class MetadataResolverValidationService<T extends MetadataResolver> {
         this.validators = validators != null ? validators : new ArrayList<>();
     }
 
-    @SuppressWarnings("Uncheked")
+    @SuppressWarnings("Unchecked")
     public ValidationResult validateIfNecessary(T metadataResolver) {
         Optional<MetadataResolverValidator<T>> validator =
                 this.validators
