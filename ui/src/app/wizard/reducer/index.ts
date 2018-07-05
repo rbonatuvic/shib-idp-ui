@@ -25,6 +25,7 @@ export const getWizardDefinition = createSelector(getState, fromWizard.getDefini
 export const getSchemaCollection = createSelector(getState, fromWizard.getCollection);
 
 export const getSchema = (index: string, wizard: Wizard<any>) => {
+    if (!wizard) { return null; }
     const step = wizard.steps.find(s => s.id === index);
     return step ? step.schema : null;
 };
@@ -55,7 +56,7 @@ export const getLastFn = (index: string, wizard: Wizard<any>) => {
 };
 
 export const getModelFn = (currentStep: WizardStep) => {
-    const model = currentStep.initialValues || [];
+    const model = (currentStep && currentStep.initialValues) || [];
     return model.reduce((m, property) => m[property.key] = property.value, {});
 };
 

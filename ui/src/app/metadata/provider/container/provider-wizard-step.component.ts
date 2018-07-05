@@ -65,7 +65,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
     };
 
     constructor(
-        private store: Store<fromProvider.ProviderState>
+        private store: Store<fromProvider.ProviderState>,
     ) {
         this.schema$ = this.store.select(fromProvider.getSchema);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
@@ -86,7 +86,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
                 },
                 definition
             })),
-            map(({ model, definition }) => definition.translate ? definition.translate.formatter(model) : model)
+            map(({ model, definition }) => definition && definition.translate ? definition.translate.formatter(model) : model)
         );
 
         this.valueChangeEmitted$.pipe(

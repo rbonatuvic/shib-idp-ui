@@ -3,11 +3,6 @@ import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { Update } from '@ngrx/entity';
 
 export enum ProviderCollectionActionTypes {
-    FIND = '[Metadata Provider] Find',
-    SELECT_PROVIDER = '[Metadata Provider] Select Request',
-    SELECT_PROVIDER_SUCCESS = '[Metadata Provider] Select Success',
-    SELECT_PROVIDER_FAIL = '[Metadata Provider] Select Fail',
-
     UPDATE_PROVIDER_REQUEST = '[Metadata Provider] Update Request',
     UPDATE_PROVIDER_SUCCESS = '[Metadata Provider] Update Success',
     UPDATE_PROVIDER_FAIL = '[Metadata Provider] Update Fail',

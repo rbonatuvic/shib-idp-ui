@@ -24,7 +24,7 @@ export class MetadataProviderService {
     }
 
     update(provider: MetadataProvider): Observable<MetadataProvider> {
-        return this.http.put<MetadataProvider>(`${this.base}${this.endpoint}/${provider.id}`, provider);
+        return this.http.put<MetadataProvider>(`${this.base}${this.endpoint}/${provider.resourceId}`, provider);
     }
 
     save(provider: MetadataProvider): Observable<MetadataProvider> {
