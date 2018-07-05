@@ -22,6 +22,7 @@ export const getState = createSelector(getWizardState, getWizardStateFn);
 export const getWizardIndex = createSelector(getState, fromWizard.getIndex);
 export const getWizardIsDisabled = createSelector(getState, fromWizard.getDisabled);
 export const getWizardDefinition = createSelector(getState, fromWizard.getDefinition);
+export const getSchemaCollection = createSelector(getState, fromWizard.getCollection);
 
 export const getSchema = (index: string, wizard: Wizard<any>) => {
     const step = wizard.steps.find(s => s.id === index);
@@ -63,4 +64,3 @@ export const getCurrent = createSelector(getWizardIndex, getWizardDefinition, ge
 export const getNext = createSelector(getWizardIndex, getWizardDefinition, getNextFn);
 export const getLast = createSelector(getWizardIndex, getWizardDefinition, getLastFn);
 export const getModel = createSelector(getCurrent, getModelFn);
-

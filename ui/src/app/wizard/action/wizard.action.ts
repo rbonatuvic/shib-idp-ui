@@ -7,6 +7,8 @@ export enum WizardActionTypes {
     UPDATE_DEFINITION = '[Wizard] Update Definition',
     SET_DISABLED = '[Wizard] Set Disabled',
 
+    ADD_SCHEMA = '[Wizard] Add Schema',
+
     NEXT = '[Wizard] Next Page',
     PREVIOUS = '[Wizard] Previous Page',
 
@@ -49,6 +51,12 @@ export class Previous implements Action {
     constructor(public payload: string) { }
 }
 
+export class AddSchema implements Action {
+    readonly type = WizardActionTypes.ADD_SCHEMA;
+
+    constructor(public payload: { id: string, schema: any }) { }
+}
+
 export class ClearWizard implements Action {
     readonly type = WizardActionTypes.CLEAR;
 }
@@ -60,4 +68,5 @@ export type WizardActionUnion =
     | SetDisabled
     | Next
     | Previous
-    | ClearWizard;
+    | ClearWizard
+    | AddSchema;

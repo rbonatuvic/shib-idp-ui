@@ -8,10 +8,13 @@ import {
     LoadSchemaFail,
     EditorActionTypes
 } from '../action/editor.action';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { SetDefinition, WizardActionTypes } from '../../../wizard/action/wizard.action';
+import { SetDefinition, WizardActionTypes, AddSchema } from '../../../wizard/action/wizard.action';
 import { ResetChanges } from '../action/entity.action';
+
+import * as fromWizard from '../../../wizard/reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class EditorEffects {
@@ -31,6 +34,14 @@ export class EditorEffects {
     );
 
     @Effect()
+    $loadSchemaSuccess = this.actions$.pipe(
+        ofType<LoadSchemaSuccess>(EditorActionTypes.LOAD_SCHEMA_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromWizard.getWizardIndex)),
+        map(([schema, id]) => new AddSchema({ id, schema }))
+    );
+
+    @Effect()
     $resetChanges = this.actions$.pipe(
         ofType<SetDefinition>(WizardActionTypes.SET_DEFINITION),
         map(() => new ResetChanges())
@@ -38,6 +49,7 @@ export class EditorEffects {
 
     constructor(
         private schemaService: SchemaService,
+        private store: Store<fromWizard.WizardState>,
         private actions$: Actions
     ) { }
 }  /* istanbul ignore next */

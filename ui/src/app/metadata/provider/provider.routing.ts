@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 
 import { ProviderComponent } from './container/provider.component';
 import { ProviderWizardComponent } from './container/provider-wizard.component';
-import { ProviderWizardSummaryComponent } from './container/provider-wizard-summary.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
 
 export const ProviderRoutes: Routes = [
@@ -23,11 +22,6 @@ export const ProviderRoutes: Routes = [
                     {
                         path: 'new',
                         component: ProviderWizardStepComponent
-                    },
-                    {
-                        path: 'summary',
-                        component: ProviderWizardSummaryComponent,
-                        canActivate: []
                     }
                 ]
             }

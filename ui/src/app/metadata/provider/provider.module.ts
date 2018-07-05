@@ -6,17 +6,17 @@ import { StoreModule } from '@ngrx/store';
 
 import { ProviderWizardComponent } from './container/provider-wizard.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
-import { ProviderWizardSummaryComponent } from './container/provider-wizard-summary.component';
+import { ProviderWizardSummaryComponent } from './component/provider-wizard-summary.component';
 import { ProviderComponent } from './container/provider.component';
 import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EditorEffects } from './effect/editor.effect';
-// import { SchemaFormModule } from '../../schema-form/form.module';
 
-import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
+import { WidgetRegistry} from 'ngx-schema-form';
 import { FormModule } from '../../schema-form/schema-form.module';
 import { CustomWidgetRegistry } from '../../schema-form/registry';
+import { SummaryPropertyComponent } from './component/summary-property.component';
 
 
 @NgModule({
@@ -24,7 +24,8 @@ import { CustomWidgetRegistry } from '../../schema-form/registry';
         ProviderComponent,
         ProviderWizardComponent,
         ProviderWizardStepComponent,
-        ProviderWizardSummaryComponent
+        ProviderWizardSummaryComponent,
+        SummaryPropertyComponent
     ],
     entryComponents: [],
     imports: [

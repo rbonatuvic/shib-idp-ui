@@ -6,9 +6,8 @@ import { Store } from '@ngrx/store';
 import * as fromProvider from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 
-import { SetDisabled, SetDefinition } from '../../../wizard/action/wizard.action';
-import { LoadSchemaRequest, UpdateStatus } from '../action/editor.action';
-import { startWith } from 'rxjs/operators';
+import { SetDefinition } from '../../../wizard/action/wizard.action';
+import { UpdateStatus } from '../action/editor.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { MetadataProviderTypes, MetadataProviderWizard } from '../model';
@@ -36,22 +35,9 @@ export class ProviderWizardStepComponent implements OnDestroy {
     constructor(
         private store: Store<fromProvider.ProviderState>
     ) {
-        this.store
-            .select(fromWizard.getCurrentWizardSchema)
-            .subscribe(s => {
-                this.store.dispatch(new LoadSchemaRequest(s));
-            });
-
         this.schema$ = this.store.select(fromProvider.getSchema);
-        this.valid$ = this.store.select(fromProvider.getEditorIsValid);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
-
-        this.valid$
-            .pipe(startWith(false))
-            .subscribe((valid) => {
-                this.store.dispatch(new SetDisabled(!valid));
-            });
 
         this.model$ = this.schema$.pipe(
             withLatestFrom(
@@ -59,21 +45,15 @@ export class ProviderWizardStepComponent implements OnDestroy {
                 this.changes$,
                 this.definition$
             ),
-            map(([schema, model, changes, definition]) => {
-                return ({
-                    model: {
-                        ...model,
-                        ...changes
-                    },
-                    definition
-                });
-            }),
-            map(({ model, definition }) => {
-                return definition.translate ? definition.translate.formatter(model) : model;
-            })
+            map(([schema, model, changes, definition]) => ({
+                model: {
+                    ...model,
+                    ...changes
+                },
+                definition
+            })),
+            map(({ model, definition }) => definition.translate ? definition.translate.formatter(model) : model)
         );
-
-        this.schema$.subscribe(s => this.schema = s);
 
         this.changeEmitted$.pipe(
             withLatestFrom(this.schema$, this.definition$),

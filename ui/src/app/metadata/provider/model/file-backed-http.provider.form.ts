@@ -5,27 +5,27 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
     label: 'FileBackedHttpMetadataProvider',
     type: '@FileBackedHttpMetadataProvider',
     translate: {
-        parser: (changes) => ({
-            ...changes,
-            metadataFilters: [
-                ...Object.keys(changes.metadataFilters || {}).reduce((collection, filterName) => ([
-                    ...collection,
-                    {
-                        ...changes.metadataFilters[filterName],
-                        '@type': filterName
-                    }
-                ]), [])
-            ]
-        }),
-        formatter: (changes) => ({
-            ...changes,
-            metadataFilters: {
-                ...(changes.metadataFilters || []).reduce((collection, filter) => ({
-                    ...collection,
-                    [filter['@type']]: filter
-                }), {})
-            }
-        })
+        parser: (changes) => changes.metadataFilters ? ({
+                ...changes,
+                metadataFilters: [
+                    ...Object.keys(changes.metadataFilters).reduce((collection, filterName) => ([
+                        ...collection,
+                        {
+                            ...changes.metadataFilters[filterName],
+                            '@type': filterName
+                        }
+                    ]), [])
+                ]
+            }) : changes,
+        formatter: (changes) => changes.metadataFilters ? ({
+                ...changes,
+                metadataFilters: {
+                    ...(changes.metadataFilters || []).reduce((collection, filter) => ({
+                        ...collection,
+                        [filter['@type']]: filter
+                    }), {})
+                }
+            }) : changes
     },
     steps: [
         {
@@ -50,6 +50,13 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
                 { key: 'metadataFilters', value: [] }
             ],
             schema: 'assets/schema/provider/filebacked-http-filters.schema.json'
+        },
+        {
+            id: 'summary',
+            label: 'FINISH SUMMARY AND VALIDATION',
+            index: null,
+            initialValues: [],
+            schema: 'assets/schema/provider/metadata-provider-summary.schema.json'
         }
     ]
 };
