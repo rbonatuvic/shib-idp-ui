@@ -56,6 +56,10 @@ public class MetadataResolversController {
     @PostMapping("/MetadataResolvers")
     @Transactional
     public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
+        if (resolverRepository.findByName(newResolver.getName()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
         //TODO: we are disregarding attached filters if any sent from UI.
         //Only deal with filters via filters endpoints?
         newResolver.clearAllFilters();
