@@ -8,21 +8,26 @@
                     <ng-container i18n="@@action--back">Back</ng-container>
                 </span>
                 <span class="label pull-right">
-                    {{ (previous$ | async).index }}. {{ (previous$ | async).label }}
+                    <ng-container *ngIf="(previous$ | async).index">{{ (previous$ | async).index }}. </ng-container>
+                    {{ (previous$ | async).label }}
                 </span>
             </button>
         </li>
         <li class="nav-item">
             <h3 class="tag tag-primary">
-                <span class="index">{{ (current$ | async).index }}</span>
-                {{ (current$ | async).index }}. {{ (current$ | async).label }}
+                <span class="index">{{ (current$ | async).index }} </span>
+                <ng-container *ngIf="(current$ | async).index">
+                    {{ (current$ | async).index }}. 
+                </ng-container>
+                {{ (current$ | async).label }}
             </h3>
         </li>
         <li class="nav-item" *ngIf="(next$ | async)">
             <button class="nav-link next btn clearfix" (click)="onNext.emit(nextPage.index)" [disabled]="disabled$ | async" [attr.aria-label]="nextPage.path"
                 role="button">
                 <span class="label pull-left">
-                    {{ (next$ | async).index }}. {{ (next$ | async).label }}
+                    <ng-container *ngIf="(next$ | async).index">{{ (next$ | async).index }}. </ng-container>
+                    {{ (next$ | async).label }}
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
@@ -31,19 +36,7 @@
             </button>
         </li>
         <li class="nav-item" *ngIf="(last$ | async)">
-            <button class="nav-link next btn clearfix" (click)="onNext.emit(null)" [disabled]="disabled$ | async" role="button">
-                <span class="label pull-left">
-                    Finish And Validate
-                </span>
-                <span class="direction pull-right">
-                    <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                    <ng-container i18n="@@action--next">Next</ng-container>
-                </span>
-            </button>
-        </li>
-        <!--
-        <li class="nav-item" *ngIf="(save$ | async) && !(next$ | async)">
-            <button class="nav-link save btn" aria-label="Save" role="button">
+            <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave.emit()">
                 <span class="label pull-left" i18n="@@action--save">Save</span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-save next d-block fa-2x"></i>
@@ -51,6 +44,5 @@
                 </span>
             </button>
         </li>
-        -->
     </ul>
 </nav>

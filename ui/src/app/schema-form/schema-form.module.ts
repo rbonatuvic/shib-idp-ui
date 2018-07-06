@@ -11,13 +11,19 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CustomSelectComponent } from './widget/select/select.component';
 import { DatalistComponent } from './widget/datalist/datalist.component';
+import { CustomCheckboxComponent } from './widget/check/checkbox.component';
+import { CustomTextAreaComponent } from './widget/textarea/textarea.component';
+import { CustomArrayComponent } from './widget/array/array.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
     FieldsetComponent,
     CustomStringComponent,
     CustomSelectComponent,
-    DatalistComponent
+    DatalistComponent,
+    CustomCheckboxComponent,
+    CustomTextAreaComponent,
+    CustomArrayComponent
 ];
 
 @NgModule({

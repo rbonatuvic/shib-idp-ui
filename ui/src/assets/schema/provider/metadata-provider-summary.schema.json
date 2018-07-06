@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+        "enabled": {
+            "title": "Enable Metadata Provider",
+            "description": "Enable Metadata Provider",
+            "type": "boolean",
+            "default": true
+        }
+    }
+}

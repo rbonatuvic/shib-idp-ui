@@ -6,7 +6,7 @@
             "description": "",
             "type": "object",
             "properties": {
-                "@RequiredValidUntilFilter": {
+                "RequiredValidUntil": {
                     "title": "Required Valid Until Filter",
                     "type": "object",
                     "widget": {
@@ -15,12 +15,13 @@
                     "properties": {
                         "maxValidityInterval": {
                             "title": "Max Validity Interval",
-                            "description": "",
-                            "type": "number"
+                            "description": "Max Validity Interval",
+                            "type": "number",
+                            "default": 0
                         }
                     }
                 },
-                "@SignatureValidationFilter": {
+                "SignatureValidation": {
                     "title": "Signature Validation Filter",
                     "type": "object",
                     "widget": {
@@ -29,18 +30,20 @@
                     "properties": {
                         "requireSignedRoot": {
                             "title": "Require Signed Root",
-                            "description": "",
+                            "description": "Require Signed Root",
                             "type": "boolean",
                             "default": true
                         },
                         "certificateFile": {
                             "title": "Certificate File",
-                            "description": "",
-                            "type": "string"
+                            "description": "Certificate File",
+                            "type": "string",
+                            "widget": "textarea",
+                            "default": ""
                         }
                     }
                 },
-                "@EntityRoleWhiteListFilter": {
+                "EntityRoleWhiteList": {
                     "title": "Entity Role Whitelist Filter",
                     "type": "object",
                     "widget": {
@@ -49,7 +52,7 @@
                     "properties": {
                         "retainedRoles": {
                             "title": "Retained Roles",
-                            "description": "",
+                            "description": "Retained Roles",
                             "type": "array",
                             "items": {
                                 "widget": {
@@ -74,13 +77,13 @@
                         },
                         "removeRolelessEntityDescriptors": {
                             "title": "Remove Roleless Entity Descriptors?",
-                            "description": "",
+                            "description": "Remove Roleless Entity Descriptors?",
                             "type": "boolean",
                             "default": true
                         },
                         "removeEmptyEntitiesDescriptors": {
                             "title": "Remove Empty Entities Descriptors?",
-                            "description": "",
+                            "description": "Remove Empty Entities Descriptors?",
                             "type": "boolean",
                             "default": true
                         }

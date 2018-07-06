@@ -2,7 +2,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataProviderService } from './provider.service';
-import { EntityAttributesFilter } from '../entity';
+import { MetadataProvider } from '../model';
 
 describe(`Metadata Provider Service`, () => {
 
@@ -47,8 +47,8 @@ describe(`Metadata Provider Service`, () => {
         it(`should send an expected PUT request`, async(inject([MetadataProviderService, HttpTestingController],
             (service: MetadataProviderService, backend: HttpTestingController) => {
                 const id = 'foo';
-                const filter = new EntityAttributesFilter({id});
-                service.update(filter).subscribe();
+                const provider = <MetadataProvider>{ resourceId: id };
+                service.update(provider).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
                     return req.url === `${service.base}${service.endpoint}/${id}`
@@ -61,8 +61,8 @@ describe(`Metadata Provider Service`, () => {
         it(`should send an expected POST request`, async(inject([MetadataProviderService, HttpTestingController],
             (service: MetadataProviderService, backend: HttpTestingController) => {
                 const id = 'foo';
-                const filter = new EntityAttributesFilter({ id });
-                service.save(filter).subscribe();
+                const provider = <MetadataProvider>{ resourceId: id };
+                service.save(provider).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
                     return req.url === `${service.base}${service.endpoint}`

@@ -35,6 +35,7 @@ import { PrettyXml } from './pipe/pretty-xml.pipe';
         InputDefaultsDirective,
         I18nTextComponent,
         ValidFormIconComponent,
+        ValidationClassDirective,
         InfoLabelDirective
     ]
 })

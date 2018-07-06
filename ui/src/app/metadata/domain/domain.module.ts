@@ -12,6 +12,7 @@ import { EntityDraftService } from './service/draft.service';
 import { MetadataProviderService } from './service/provider.service';
 import { EntityEffects } from './effect/entity.effect';
 import { PreviewDialogComponent } from './component/preview-dialog.component';
+import { MetadataFilterService } from './service/filter.service';
 
 export const COMPONENTS = [
     PreviewDialogComponent
@@ -42,7 +43,8 @@ export class DomainModule {
                 ListValuesService,
                 ProviderStatusEmitter,
                 ProviderValueEmitter,
-                MetadataProviderService
+                MetadataProviderService,
+                MetadataFilterService
             ]
         };
     }

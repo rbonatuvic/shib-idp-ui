@@ -1,7 +1,7 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="horizontal control-label">
+    <label [attr.for]="id" class="horizontal control-label" *ngIf="schema.title">
         {{ schema.title }}
-        <span>
+        <span *ngIf="schema.description">
             <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
