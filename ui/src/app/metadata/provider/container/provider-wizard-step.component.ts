@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, map, distinctUntilChanged } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -86,42 +86,45 @@ export class ProviderWizardStepComponent implements OnDestroy {
                 },
                 definition
             })),
-            map(({ model, definition }) => definition && definition.translate ? definition.translate.formatter(model) : model)
+            skipWhile(({ model, definition }) => !definition || !model),
+            map(({ model, definition }) => definition.translate.formatter(model))
         );
 
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.schema$, this.definition$),
-            map(([changes, schema, definition]) => {
-                const type = changes.value['@type'];
-                if (type && type !== definition.type) {
-                    const newDefinition = MetadataProviderTypes.find(def => def.type === type);
-                    if (newDefinition) {
-                        this.store.dispatch(new SetDefinition({
-                            ...MetadataProviderWizard,
-                            ...newDefinition,
-                            steps: [
-                                ...MetadataProviderWizard.steps,
-                                ...newDefinition.steps
-                            ]
-                        }));
-                        changes = { value: pick(Object.keys(schema.properties))(changes.value) };
-                    }
-                }
-                return { changes: changes.value, definition };
-            }),
-            map(({ changes, definition }) => definition.translate ? definition.translate.parser(changes) : changes)
+            map(([changes, schema, definition]) => this.resetSelectedType(changes, schema, definition)),
+            skipWhile(({ changes, definition }) => !definition || !changes),
+            map(({ changes, definition }) => definition.translate.parser(changes))
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 
-        this.statusChangeEmitted$.pipe(
-            distinctUntilChanged()
-        ).subscribe(errors => {
-            console.log(!(errors.value));
-            const status = { [this.currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
-            this.store.dispatch(new UpdateStatus(status));
-        });
+        this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
 
         this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
+    }
+
+    resetSelectedType(changes: any, schema: any, definition: any): { changes: any, definition: any } {
+        const type = changes.value['@type'];
+        if (type && type !== definition.type) {
+            const newDefinition = MetadataProviderTypes.find(def => def.type === type);
+            if (newDefinition) {
+                this.store.dispatch(new SetDefinition({
+                    ...MetadataProviderWizard,
+                    ...newDefinition,
+                    steps: [
+                        ...MetadataProviderWizard.steps,
+                        ...newDefinition.steps
+                    ]
+                }));
+                changes = { value: pick(Object.keys(schema.properties))(changes.value) };
+            }
+        }
+        return { changes: changes.value, definition };
+    }
+
+    updateStatus(errors: any): void {
+        const status = { [this.currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
+        this.store.dispatch(new UpdateStatus(status));
     }
 
     ngOnDestroy() {

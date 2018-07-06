@@ -1,5 +1,5 @@
-import { reducer, initialState as snapshot } from './editor.reducer';
-import { EditorActionTypes, ClearEditor } from '../action/editor.action';
+import { reducer, initialState as snapshot } from './entity.reducer';
+import { EntityActionTypes, ClearProvider } from '../action/entity.action';
 
 describe('Provider Editor Reducer', () => {
     describe('undefined action', () => {
@@ -10,9 +10,9 @@ describe('Provider Editor Reducer', () => {
         });
     });
 
-    describe(`${EditorActionTypes.CLEAR}`, () => {
+    describe(`${EntityActionTypes.CLEAR_PROVIDER}`, () => {
         it('should reset to initial state', () => {
-            expect(reducer(snapshot, new ClearEditor())).toEqual(snapshot);
+            expect(reducer(snapshot, new ClearProvider())).toEqual(snapshot);
         });
     });
 });

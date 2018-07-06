@@ -13,7 +13,7 @@ const snapshot: fromProvider.CollectionState = {
     loaded: false
 };
 
-describe('Provider Reducer', () => {
+describe('Provider Collection Reducer', () => {
     describe('undefined action', () => {
         it('should return the default state', () => {
             const result = reducer(snapshot, {} as any);

@@ -56,8 +56,8 @@ export const getLastFn = (index: string, wizard: Wizard<any>) => {
 };
 
 export const getModelFn = (currentStep: WizardStep) => {
-    const model = (currentStep && currentStep.initialValues) || [];
-    return model.reduce((m, property) => m[property.key] = property.value, {});
+    const model = (currentStep && currentStep.initialValues) ? currentStep.initialValues : [];
+    return model.reduce((m, property) => ({...m, [property.key]: property.value }), {});
 };
 
 export const getPrevious = createSelector(getWizardIndex, getWizardDefinition, getPreviousFn);

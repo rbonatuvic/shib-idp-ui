@@ -58,7 +58,7 @@ export class ProviderWizardSummaryComponent implements OnChanges {
                         id: step.id,
                         index: step.index,
                         label: step.label,
-                        properties: getStepProperties(schemas[step.id], def.translate ? def.translate.formatter(model) : model)
+                        properties: getStepProperties(schemas[step.id], def.translate.formatter(model))
                     })
                 );
 

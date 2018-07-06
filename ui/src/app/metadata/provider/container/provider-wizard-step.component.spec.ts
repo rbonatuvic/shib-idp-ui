@@ -9,6 +9,8 @@ import { ProviderWizardStepComponent } from './provider-wizard-step.component';
 import * as fromRoot from '../reducer';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import * as fromWizard from '../../../wizard/reducer';
+import { SCHEMA } from '../../../../testing/form-schema.stub';
+import { MetadataProviderWizard } from '../model';
 
 @Component({
     template: `
@@ -59,4 +61,38 @@ describe('Provider Wizard Step Component', () => {
     it('should instantiate the component', async(() => {
         expect(app).toBeTruthy();
     }));
+
+    describe('resetSelectedType method', () => {
+        it('should dispatch a SetDefinition action if the type has changed', () => {
+            app.resetSelectedType({ value: { name: 'foo', '@type': 'FileBackedHttpMetadataResolver' } }, SCHEMA, MetadataProviderWizard);
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+
+        it('should NOT dispatch a SetDefinition action if the type hasn\'t changed', () => {
+            app.resetSelectedType({ value: { name: 'foo', '@type': 'MetadataProvider' } }, SCHEMA, MetadataProviderWizard);
+            expect(store.dispatch).not.toHaveBeenCalled();
+        });
+
+        it('should NOT dispatch a SetDefinition action if the type isn\'t found', () => {
+            app.resetSelectedType({ value: { name: 'foo', '@type': 'FooProvider' } }, SCHEMA, MetadataProviderWizard);
+            expect(store.dispatch).not.toHaveBeenCalled();
+        });
+
+        it('should return changes and definition if no type supplied', () => {
+            app.resetSelectedType({ value: { name: 'foo' } }, SCHEMA, MetadataProviderWizard);
+            expect(store.dispatch).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('updateStatus method', () => {
+        it('should dispatch an UpdateStatus action', () => {
+            app.updateStatus({value: { name: 'notfound'} });
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+
+        it('should NOT dispatch a SetDefinition action if the type hasn\'t changed', () => {
+            app.updateStatus({ value: null });
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
 });
