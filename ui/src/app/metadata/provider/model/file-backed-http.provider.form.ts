@@ -5,25 +5,8 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
     translate: {
-        parser: (changes) => changes.metadataFilters ? ({
+        parser: (changes: any): FileBackedHttpMetadataProvider => changes.metadataFilters ? ({
                 ...changes,
-                httpMetadataResolverAttributes: {
-                    httpClientRef: null,
-                    connectionRequestTimeout: null,
-                    connectionTimeout: null,
-                    socketTimeout: null,
-                    disregardTLSCertificate: false,
-                    tlsTrustEngineRef: null,
-                    httpClientSecurityParametersRef: null,
-                    proxyHost: null,
-                    proxyPort: null,
-                    proxyUser: null,
-                    proxyPassword: null,
-                    httpCaching: null,
-                    httpCacheDirectory: null,
-                    httpMaxCacheEntries: null,
-                    httpMaxCacheEntrySize: null
-                },
                 metadataFilters: [
                     ...Object.keys(changes.metadataFilters).reduce((collection, filterName) => ([
                         ...collection,
@@ -34,7 +17,7 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
                     ]), [])
                 ]
             }) : changes,
-        formatter: (changes) => changes.metadataFilters ? ({
+        formatter: (changes: FileBackedHttpMetadataProvider): any => changes.metadataFilters ? ({
                 ...changes,
                 metadataFilters: {
                     ...(changes.metadataFilters || []).reduce((collection, filter) => ({
