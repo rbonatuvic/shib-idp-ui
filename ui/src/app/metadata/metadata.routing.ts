@@ -14,10 +14,11 @@ const routes: Routes = [
         path: '',
         component: MetadataPageComponent,
         children: [
-            { path: '', component: ManagerComponent },
-            { path: '', redirectTo: 'resolvers', pathMatch: 'full' },
-            { path: 'resolvers', component: DashboardResolversListComponent },
-            { path: 'providers', component: DashboardProvidersListComponent },
+            { path: '', component: ManagerComponent, children: [
+                { path: '', redirectTo: 'resolvers', pathMatch: 'full' },
+                { path: 'resolvers', component: DashboardResolversListComponent },
+                { path: 'providers', component: DashboardProvidersListComponent },
+            ] },
             ...ResolverRoutes,
             ...ProviderRoutes
         ],
