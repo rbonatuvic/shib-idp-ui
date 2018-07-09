@@ -21,7 +21,8 @@
                             "PT12H",
                             "PT24H"
                         ]
-                    }
+                    },
+                    "default": ""
                 },
                 "maxRefreshDelay": {
                     "title": "Max Refresh Delay",
@@ -40,12 +41,14 @@
                             "PT12H",
                             "PT24H"
                         ]
-                    }
+                    },
+                    "default": ""
                 },
                 "refreshDelayFactor": {
                     "title": "Refresh Delay Factor",
                     "description": "",
-                    "type": "number"
+                    "type": "number",
+                    "default": null
                 },
                 "resolveViaPredicatesOnly": {
                     "title": "Resolve Via Predicates Only?",
@@ -87,7 +90,8 @@
                             "PT12H",
                             "PT24H"
                         ]
-                    }
+                    },
+                    "default": ""
                 }
             }
         }

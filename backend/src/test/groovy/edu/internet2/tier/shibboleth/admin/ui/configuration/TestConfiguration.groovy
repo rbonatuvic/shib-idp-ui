@@ -12,6 +12,8 @@ import org.apache.lucene.index.IndexWriter
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
@@ -21,6 +23,7 @@ class TestConfiguration {
     final OpenSamlObjects openSamlObjects
     final IndexWriter indexWriter
     final MetadataResolverRepository metadataResolverRepository
+    final Logger logger = LoggerFactory.getLogger(TestConfiguration.class);
 
     TestConfiguration(final OpenSamlObjects openSamlObjects, final IndexWriter indexWriter, final MetadataResolverRepository metadataResolverRepository) {
         this.openSamlObjects =openSamlObjects

@@ -1,5 +1,5 @@
 {
-    "title": "@MetadataResolver",
+    "title": "MetadataResolver",
     "type": "object",
     "widget": {
         "id": "fieldset"
@@ -8,7 +8,11 @@
         "name": {
             "title": "Metadata Provider Name (Dashboard Display Only)",
             "description": "Metadata Provider Name (Dashboard Display Only)",
-            "type": "string"
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "Must be unique."
+            }
         },
         "@type": {
             "title": "Metadata Provider Type",
@@ -21,7 +25,7 @@
             "oneOf": [
                 {
                     "enum": [
-                        "@FileBackedHttpMetadataProvider"
+                        "FileBackedHttpMetadataResolver"
                     ],
                     "description": "FileBackedHttpMetadataProvider"
                 }

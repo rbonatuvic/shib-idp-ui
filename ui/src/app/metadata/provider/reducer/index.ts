@@ -2,15 +2,20 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../../app.reducer';
 import * as fromEditor from './editor.reducer';
 import * as fromEntity from './entity.reducer';
+import * as fromCollection from './collection.reducer';
+import * as utils from '../../domain/domain.util';
+import { MetadataProvider } from '../../domain/model';
 
 export interface ProviderState {
     editor: fromEditor.EditorState;
     entity: fromEntity.EntityState;
+    collection: fromCollection.CollectionState;
 }
 
 export const reducers = {
     editor: fromEditor.reducer,
-    entity: fromEntity.reducer
+    entity: fromEntity.reducer,
+    collection: fromCollection.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -21,9 +26,11 @@ export const getProviderState = createFeatureSelector<ProviderState>('provider')
 
 export const getEditorStateFn = (state: ProviderState) => state.editor;
 export const getEntityStateFn = (state: ProviderState) => state.entity;
+export const getCollectionStateFn = (state: ProviderState) => state.collection;
 
 export const getEditorState = createSelector(getProviderState, getEditorStateFn);
 export const getEntityState = createSelector(getProviderState, getEntityStateFn);
+export const getCollectionState = createSelector(getProviderState, getCollectionStateFn);
 
 /*
 Editor State
@@ -44,3 +51,15 @@ export const getEntityIsSaved = createSelector(getEntityState, fromEntity.isEnti
 export const getEntityChanges = createSelector(getEntityState, fromEntity.getEntityChanges);
 export const getEntityIsSaving = createSelector(getEntityState, fromEntity.isEditorSaving);
 export const getUpdatedEntity = createSelector(getEntityState, fromEntity.getUpdatedEntity);
+
+/*
+ *   Select pieces of Provider Collection
+*/
+export const getAllProviders = createSelector(getCollectionState, fromCollection.selectAllProviders);
+export const getProviderEntities = createSelector(getCollectionState, fromCollection.selectProviderEntities);
+export const getSelectedProviderId = createSelector(getCollectionState, fromCollection.getSelectedProviderId);
+export const getSelectedProvider = createSelector(getProviderEntities, getSelectedProviderId, utils.getInCollectionFn);
+export const getProviderIds = createSelector(getCollectionState, fromCollection.selectProviderIds);
+export const getProviderCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
+
+export const getProviderNames = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.name));

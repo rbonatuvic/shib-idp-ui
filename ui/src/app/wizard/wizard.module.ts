@@ -5,7 +5,6 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { WizardComponent } from './component/wizard.component';
 import { reducers } from './reducer';
-import { StepExistsGuard } from './guard/step-exists.guard';
 
 @NgModule({
     declarations: [
@@ -23,9 +22,7 @@ export class WizardModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: RootWizardModule,
-            providers: [
-                StepExistsGuard
-            ]
+            providers: []
         };
     }
 }

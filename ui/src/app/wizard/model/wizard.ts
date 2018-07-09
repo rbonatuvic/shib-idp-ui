@@ -1,9 +1,11 @@
-import { MetadataProvider } from '../../metadata/domain/model';
-
 export interface Wizard<T> {
     label: string;
     type: string;
     steps: WizardStep[];
+    translate: {
+        parser(changes: Partial<T>, schema?: any),
+        formatter(changes: Partial<T>, schema?: any)
+    };
 }
 
 export interface WizardStep {
@@ -12,7 +14,6 @@ export interface WizardStep {
     initialValues?: WizardValue[];
     schema: string;
     index: number;
-    parser?(changes: Partial<MetadataProvider>, schema: any);
 }
 
 export interface WizardValue {
