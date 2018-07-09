@@ -17,7 +17,7 @@ class TestHostComponent {
     public componentUnderTest: MetadataPageComponent;
 }
 
-describe('AppComponent', () => {
+describe('Metadata Root Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
@@ -48,8 +48,8 @@ describe('AppComponent', () => {
         fixture.detectChanges();
     }));
 
-    it('should create the app', async(() => {
+    it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
-        expect(store.dispatch).toHaveBeenCalledTimes(3);
+        expect(store.dispatch).toHaveBeenCalledTimes(4);
     }));
 });

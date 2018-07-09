@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
 
-import { NewProviderComponent } from './container/new-provider.component';
+import { ProviderComponent } from './container/provider.component';
 import { ProviderWizardComponent } from './container/provider-wizard.component';
+import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
 
 export const ProviderRoutes: Routes = [
     {
         path: 'provider',
-        component: NewProviderComponent,
+        component: ProviderComponent,
         children: [
             {
                 path: 'wizard',
@@ -14,9 +15,15 @@ export const ProviderRoutes: Routes = [
                 pathMatch: 'prefix'
             },
             {
-                path: 'wizard/new',
+                path: 'wizard',
                 component: ProviderWizardComponent,
-                canActivate: []
+                canActivate: [],
+                children: [
+                    {
+                        path: 'new',
+                        component: ProviderWizardStepComponent
+                    }
+                ]
             }
         ]
     }

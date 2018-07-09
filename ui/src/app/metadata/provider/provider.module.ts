@@ -5,22 +5,29 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 
 import { ProviderWizardComponent } from './container/provider-wizard.component';
-import { NewProviderComponent } from './container/new-provider.component';
+import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
+import { ProviderWizardSummaryComponent } from './component/provider-wizard-summary.component';
+import { ProviderComponent } from './container/provider.component';
 import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EditorEffects } from './effect/editor.effect';
-// import { SchemaFormModule } from '../../schema-form/form.module';
 
-import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
+import { WidgetRegistry} from 'ngx-schema-form';
 import { FormModule } from '../../schema-form/schema-form.module';
 import { CustomWidgetRegistry } from '../../schema-form/registry';
+import { SummaryPropertyComponent } from './component/summary-property.component';
+import { CollectionEffects } from './effect/collection.effect';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
     declarations: [
-        NewProviderComponent,
-        ProviderWizardComponent
+        ProviderComponent,
+        ProviderWizardComponent,
+        ProviderWizardStepComponent,
+        ProviderWizardSummaryComponent,
+        SummaryPropertyComponent
     ],
     entryComponents: [],
     imports: [
@@ -28,6 +35,7 @@ import { CustomWidgetRegistry } from '../../schema-form/registry';
         CommonModule,
         WizardModule,
         RouterModule,
+        SharedModule,
         FormModule
     ],
     exports: []
@@ -47,7 +55,7 @@ export class ProviderModule {
     imports: [
         ProviderModule,
         StoreModule.forFeature('provider', fromProvider.reducers),
-        EffectsModule.forFeature([EditorEffects])
+        EffectsModule.forFeature([EditorEffects, CollectionEffects])
     ]
 })
 export class RootProviderModule { }

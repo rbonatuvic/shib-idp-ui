@@ -4,7 +4,11 @@ import { Metadata } from '../../domain/domain.type';
 
 export const MetadataProviderWizard: Wizard<MetadataProvider> = {
     label: 'MetadataProvider',
-    type: '@MetadataProvider',
+    type: 'MetadataProvider',
+    translate: {
+        parser: changes => changes,
+        formatter: model => model
+    },
     steps: [
         {
             id: 'new',

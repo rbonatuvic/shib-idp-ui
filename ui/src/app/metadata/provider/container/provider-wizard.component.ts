@@ -1,61 +1,56 @@
-
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, map, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
-
-import { SetIndex, SetDisabled, UpdateDefinition, WizardActionTypes, Next, SetDefinition } from '../../../wizard/action/wizard.action';
-import { LoadSchemaRequest, UpdateStatus } from '../action/editor.action';
+import { SetIndex, SetDisabled, ClearWizard } from '../../../wizard/action/wizard.action';
+import { LoadSchemaRequest, ClearEditor } from '../action/editor.action';
 import { startWith } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
-import { MetadataProviderTypes, MetadataProviderWizard } from '../model';
-import { UpdateProvider } from '../action/entity.action';
-import { pick } from '../../../shared/util';
+import { ClearProvider } from '../action/entity.action';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { AddProviderRequest } from '../action/collection.action';
+
 
 @Component({
-    selector: 'provider-wizard-page',
+    selector: 'provider-wizard',
     templateUrl: './provider-wizard.component.html',
-    styleUrls: ['./provider-wizard.component.scss']
+    styleUrls: []
 })
 
 export class ProviderWizardComponent implements OnDestroy {
-    actionsSubscription: Subscription;
-
-    changeSubject = new Subject<Partial<any>>();
-    private changeEmitted$ = this.changeSubject.asObservable();
-
-    schema$: Observable<any>;
-    schema: any;
     definition$: Observable<Wizard<MetadataProvider>>;
     changes$: Observable<MetadataProvider>;
+    model$: Observable<any>;
     currentPage: string;
     valid$: Observable<boolean>;
-
-    formModel: any;
 
     nextStep: WizardStep;
     previousStep: WizardStep;
 
+    summary$: Observable<{ definition: Wizard<MetadataProvider>, schema: { [id: string]: any }, model: any }>;
+
+    provider: MetadataProvider;
+
     constructor(
-        private store: Store<fromProvider.ProviderState>
+        private store: Store<fromProvider.ProviderState>,
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .subscribe(s => {
                 this.store.dispatch(new LoadSchemaRequest(s));
             });
-
-        this.schema$ = this.store.select(fromProvider.getSchema);
         this.valid$ = this.store.select(fromProvider.getEditorIsValid);
-        this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
+
         this.store.select(fromWizard.getNext).subscribe(n => this.nextStep = n);
         this.store.select(fromWizard.getPrevious).subscribe(p => this.previousStep = p);
+        this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
 
         this.valid$
             .pipe(startWith(false))
@@ -63,43 +58,25 @@ export class ProviderWizardComponent implements OnDestroy {
                 this.store.dispatch(new SetDisabled(!valid));
             });
 
-        this.schema$.subscribe(s => this.schema = s);
+        this.summary$ = combineLatest(
+            this.store.select(fromWizard.getWizardDefinition),
+            this.store.select(fromWizard.getSchemaCollection),
+            this.store.select(fromProvider.getEntityChanges)
+        ).pipe(
+            map(([ definition, schema, model ]) => ({ definition, schema, model }))
+        );
 
-        this.changeEmitted$
-            .pipe(
-                withLatestFrom(this.schema$, this.definition$),
-            )
-            .subscribe(
-                ([changes, schema, definition]) => {
-                    const type = changes.value['@type'];
-                    if (type && type !== definition.type) {
-                        const newDefinition = MetadataProviderTypes.find(def => def.type === type);
-                        if (newDefinition) {
-                            this.store.dispatch(new SetDefinition({
-                                ...MetadataProviderWizard,
-                                ...newDefinition,
-                                steps: [
-                                    ...MetadataProviderWizard.steps,
-                                    ...newDefinition.steps
-                                ]
-                            }));
-                            changes = { value: pick(Object.keys(schema.properties))(changes.value) };
-                        }
-                    }
-                    this.store.dispatch(new UpdateProvider(changes.value));
-                }
-            );
+        this.changes$.subscribe(c => this.provider = c);
     }
 
     ngOnDestroy() {
-        this.actionsSubscription.unsubscribe();
-        this.changeSubject.complete();
+        this.store.dispatch(new ClearProvider());
+        this.store.dispatch(new ClearWizard());
+        this.store.dispatch(new ClearEditor());
     }
 
     next(): void {
-        if (this.nextStep) {
-            this.store.dispatch(new SetIndex(this.nextStep.id));
-        }
+        this.store.dispatch(new SetIndex(this.nextStep.id));
     }
 
     previous(): void {
@@ -107,12 +84,11 @@ export class ProviderWizardComponent implements OnDestroy {
     }
 
     save(): void {
-        console.log('Save!');
+        this.store.dispatch(new AddProviderRequest(this.provider));
     }
 
-    onStatusChange(value): void {
-        const status = { [this.currentPage]: value ? 'VALID' : 'INVALID' };
-        this.store.dispatch(new UpdateStatus(status));
+    gotoPage(page: string): void {
+        this.store.dispatch(new SetIndex(page));
     }
 }
 

@@ -1,0 +1,37 @@
+<div class="widget form-group">
+    <ng-container *ngIf="schema.type !== 'array'">
+        <div class="d-flex justify-content-start">
+            <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
+                <input [formControl]="control"
+                    class="custom-control-input"
+                    [attr.name]="name"
+                    [indeterminate]="control.value !== false && control.value !== true ? true :null"
+                    type="checkbox"
+                    [attr.disabled]="schema.readOnly"
+                    id="{{ schema.id }}-control">
+                <input id="{{ schema.id }}-control" *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
+                <label for="{{ schema.id }}-control" class="custom-control-label">
+                    {{ schema.title }}
+                </label>
+            </div>
+            <div>
+                <ng-template #tooltip>{{ schema.description }}</ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltip" i18n-aria-label="@@tooltip--instruction"
+                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="schema.type === 'array'">
+        <div *ngFor="let option of schema.items.oneOf" class="checkbox">
+            <label class="horizontal control-label">
+                <input [attr.name]="name" 
+                    value="{{option.enum[0]}}"
+                    type="checkbox"
+                    [attr.disabled]="schema.readOnly"
+                    (change)="onCheck($event.target)"
+                    [attr.checked]="checked[option.enum[0]] ? true : null">
+                {{option.description}}
+            </label>
+        </div>
+    </ng-container>
+</div>

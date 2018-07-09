@@ -9,11 +9,10 @@ import { switchMap, map, catchError, tap } from 'rxjs/operators';
 import * as actions from '../action/collection.action';
 import { FilterCollectionActionTypes } from '../action/collection.action';
 import * as fromFilter from '../reducer';
-
-import { MetadataProviderService } from '../../domain/service/provider.service';
 import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
+import { MetadataFilterService } from '../../domain/service/filter.service';
 
 /* istanbul ignore next */
 @Injectable()
@@ -23,7 +22,7 @@ export class FilterCollectionEffects {
     loadFilters$ = this.actions$.pipe(
         ofType<actions.LoadFilterRequest>(FilterCollectionActionTypes.LOAD_FILTER_REQUEST),
         switchMap(() =>
-            this.resolverService
+            this.filterService
                 .query()
                 .pipe(
                     map(filters => new actions.LoadFilterSuccess(filters)),
@@ -36,7 +35,7 @@ export class FilterCollectionEffects {
         ofType<actions.SelectFilter>(FilterCollectionActionTypes.SELECT_FILTER),
         map(action => action.payload),
         switchMap(id => {
-            return this.resolverService
+            return this.filterService
                 .find(id)
                 .pipe(
                     map(p => new actions.SelectFilterSuccess(p)),
@@ -57,7 +56,7 @@ export class FilterCollectionEffects {
             };
         }),
         switchMap(unsaved =>
-            this.resolverService
+            this.filterService
                 .save(unsaved as MetadataFilter)
                 .pipe(
                     map(saved => new actions.AddFilterSuccess(saved)),
@@ -86,7 +85,7 @@ export class FilterCollectionEffects {
         switchMap(filter => {
             delete filter.modifiedDate;
             delete filter.createdDate;
-            return this.resolverService
+            return this.filterService
                 .update(filter)
                 .pipe(
                     map(p => new actions.UpdateFilterSuccess({
@@ -113,7 +112,7 @@ export class FilterCollectionEffects {
     constructor(
         private actions$: Actions,
         private router: Router,
-        private resolverService: MetadataProviderService,
+        private filterService: MetadataFilterService,
         private store: Store<fromFilter.State>
     ) { }
 }
