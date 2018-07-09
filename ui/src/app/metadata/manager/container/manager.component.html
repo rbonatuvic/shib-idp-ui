@@ -24,28 +24,30 @@
                 </li>
             </ul>
             <router-outlet></router-outlet>
-            <ul class="list-unstyled m-0">
-                <li *ngFor="let entity of limited$ | async; index as i" [ngClass]="{'mt-2': i > 0}" aria-label="Provider Item Accordion. Press Spacebar to open">
-                    <entity-item
-                        [entity]="entity"
-                        [isOpen]="(entitiesOpen$ | async)[entity.getId()]"
-                        (select)="edit(entity)"
-                        (toggle)="toggleEntity(entity)"
-                        (preview)="openPreviewDialog(entity)"
-                        (delete)="deleteResolver(entity)">
-                    </entity-item>
-                </li>
-            </ul>
-            <div class="mt-3 clearfix" *ngIf="(total$ | async) > limit">
-                <ngb-pagination
-                    class="float-right"
-                    [collectionSize]="total$ | async"
-                    [page]="page"
-                    [pageSize]="limit"
-                    (pageChange)="changePage($event)"
-                    aria-label="Pages">
-                </ngb-pagination>
-            </div>
+            <!--
+                <ul class="list-unstyled m-0">
+                    <li *ngFor="let entity of limited$ | async; index as i" [ngClass]="{'mt-2': i > 0}" aria-label="Provider Item Accordion. Press Spacebar to open">
+                        <entity-item
+                            [entity]="entity"
+                            [isOpen]="(entitiesOpen$ | async)[entity.getId()]"
+                            (select)="edit(entity)"
+                            (toggle)="toggleEntity(entity)"
+                            (preview)="openPreviewDialog(entity)"
+                            (delete)="deleteResolver(entity)">
+                        </entity-item>
+                    </li>
+                </ul>
+                <div class="mt-3 clearfix" *ngIf="(total$ | async) > limit">
+                    <ngb-pagination
+                        class="float-right"
+                        [collectionSize]="total$ | async"
+                        [page]="page"
+                        [pageSize]="limit"
+                        (pageChange)="changePage($event)"
+                        aria-label="Pages">
+                    </ngb-pagination>
+                </div>
+            -->
         </div>
     </section>
 </div>

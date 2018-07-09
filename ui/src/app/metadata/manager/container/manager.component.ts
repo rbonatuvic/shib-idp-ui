@@ -16,7 +16,6 @@ import { RemoveDraftRequest } from '../../resolver/action/draft.action';
 
 @Component({
     selector: 'manager-page',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './manager.component.html',
     styleUrls: ['./manager.component.scss']
 })
