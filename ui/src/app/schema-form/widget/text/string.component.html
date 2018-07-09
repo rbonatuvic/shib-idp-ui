@@ -11,6 +11,7 @@
     </label>
     <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
     <input [name]="name"
+        validate="true"
         [attr.readonly]="schema.readOnly?true:null"
         class="text-widget.id textline-widget form-control"
         [attr.type]="this.getInputType()"
@@ -21,4 +22,10 @@
         [attr.minLength]="schema.minLength || null"
         [attr.disabled]="(schema.widget.id=='color' && schema.readOnly)?true:null">
     <input *ngIf="(schema.widget.id === 'color' && schema.readOnly)" [attr.name]="name" type="hidden" [formControl]="control">
+    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
+        {{ errorMessages }}
+    </small>
+    <small class="form-text text-muted" *ngIf="!(control.touched && errorMessages.length) && schema.widget.help">
+        {{ schema.widget.help }}
+    </small>
 </div>

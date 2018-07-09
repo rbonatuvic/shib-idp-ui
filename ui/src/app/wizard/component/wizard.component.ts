@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 export class WizardComponent implements OnChanges {
     @Output() onNext = new EventEmitter();
     @Output() onPrevious = new EventEmitter();
+    @Output() onLast = new EventEmitter();
     @Output() onSave = new EventEmitter();
 
     currentPage: any = {};

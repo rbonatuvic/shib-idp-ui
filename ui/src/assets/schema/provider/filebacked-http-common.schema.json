@@ -11,16 +11,19 @@
         "useDefaultPredicateRegistry",
         "satisfyAnyPredicates"
     ],
+    "required": ["id", "metadataURL"],
     "properties": {
         "id": {
             "title": "ID",
             "description": "Unique Identifier",
-            "type": "string"
+            "type": "string",
+            "default": ""
         },
         "metadataURL": {
             "title": "Metadata URL",
             "description": "Metadata URL",
-            "type": "string"
+            "type": "string",
+            "default": ""
         },
         "initializeFromBackupFile": {
             "title": "Initialize From Backup File?",

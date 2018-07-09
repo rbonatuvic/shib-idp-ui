@@ -24,6 +24,11 @@ export function reducer(state = initialState, action: EditorActionUnion): Editor
                 type: action.payload
             };
         }
+        case EditorActionTypes.CLEAR: {
+            return {
+                ...initialState
+            };
+        }
         case EditorActionTypes.UPDATE_STATUS: {
             return {
                 ...state,

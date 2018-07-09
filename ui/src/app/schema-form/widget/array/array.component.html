@@ -1,0 +1,23 @@
+<div class="widget form-group">
+    <div class="d-flex justify-content-start">
+        <label [attr.for]="id" class="m-0 pt-1 control-label">
+            {{ schema.title }}
+        </label>
+        &nbsp;
+        <button (click)="addItem()" class="btn btn-success btn-sm array-add-button">
+            Add &nbsp;
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div *ngFor="let itemProperty of formProperty.properties; let i=index; trackBy:trackByIndex" class="mt-2">
+        <div class="row">
+            <sf-form-element class="col-sm-11" [formProperty]="itemProperty"></sf-form-element>
+            <div class="col-sm-1">
+                <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                    <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <span *ngIf="schema.description" class="sr-only">{{schema.description}}</span>
+</div>

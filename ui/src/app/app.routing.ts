@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
     { path: '', redirectTo: 'metadata', pathMatch: 'full' },
+    { path: 'dashboard', redirectTo: 'metadata', pathMatch: 'full' },
     {
         path: 'metadata',
         loadChildren: './metadata/metadata.module#MetadataModule'
