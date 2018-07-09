@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ManagerComponent } from './manager/container/manager.component';
+import { DashboardResolversListComponent } from './manager/component/dashboard-resolvers-list.component';
+import { DashboardProvidersListComponent } from './manager/component/dashboard-providers-list.component';
 import { MetadataPageComponent } from './metadata.component';
 
 import { ResolverRoutes } from './resolver/resolver.routing';
@@ -13,9 +15,12 @@ const routes: Routes = [
         component: MetadataPageComponent,
         children: [
             { path: '', component: ManagerComponent },
+            { path: '', redirectTo: 'resolvers', pathMatch: 'full' },
+            { path: 'resolvers', component: DashboardResolversListComponent },
+            { path: 'providers', component: DashboardProvidersListComponent },
             ...ResolverRoutes,
             ...ProviderRoutes
-        ]
+        ],
     },
 ];
 

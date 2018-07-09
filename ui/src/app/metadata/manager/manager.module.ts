@@ -10,6 +10,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { ManagerComponent } from './container/manager.component';
 import { EntityItemComponent } from './component/entity-item.component';
 import { ProviderSearchComponent } from './component/provider-search.component';
+import { DashboardResolversListComponent } from './component/dashboard-resolvers-list.component';
+import { DashboardProvidersListComponent } from './component/dashboard-providers-list.component';
 import { reducers } from './reducer';
 import { SearchEffects } from './effect/search.effects';
 import { DeleteDialogComponent } from './component/delete-dialog.component';
@@ -21,7 +23,9 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
         ManagerComponent,
         EntityItemComponent,
         ProviderSearchComponent,
-        DeleteDialogComponent
+        DeleteDialogComponent,
+        DashboardResolversListComponent,
+        DashboardProvidersListComponent
     ],
     entryComponents: [
         DeleteDialogComponent

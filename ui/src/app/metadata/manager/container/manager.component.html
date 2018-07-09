@@ -15,6 +15,15 @@
             </div>
         </div>
         <div class="section-body p-2 border border-top-0 border-primary">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" [routerLink]="['/resolvers']">Resolvers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/providers']">Providers</a>
+                </li>
+            </ul>
+            <router-outlet></router-outlet>
             <ul class="list-unstyled m-0">
                 <li *ngFor="let entity of limited$ | async; index as i" [ngClass]="{'mt-2': i > 0}" aria-label="Provider Item Accordion. Press Spacebar to open">
                     <entity-item
