@@ -21,7 +21,7 @@ import { MetadataProviderService } from '../../domain/service/provider.service';
 export class CollectionEffects {
 
     @Effect()
-    loadFilters$ = this.actions$.pipe(
+    loadProviders$ = this.actions$.pipe(
         ofType<LoadProviderRequest>(ProviderCollectionActionTypes.LOAD_PROVIDER_REQUEST),
         switchMap(() =>
             this.providerService
