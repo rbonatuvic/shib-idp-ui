@@ -15,7 +15,7 @@
                     "properties": {
                         "maxValidityInterval": {
                             "title": "Max Validity Interval",
-                            "description": "Max Validity Interval",
+                            "description": "Defines the window within which the metadata is valid.",
                             "type": "number",
                             "default": 0
                         }
@@ -30,18 +30,19 @@
                     "properties": {
                         "requireSignedRoot": {
                             "title": "Require Signed Root",
-                            "description": "Require Signed Root",
+                            "description": "If true, this fails to load metadata with no signature on the root XML element.",
                             "type": "boolean",
                             "default": true
                         },
                         "certificateFile": {
                             "title": "Certificate File",
-                            "description": "Certificate File",
+                            "description": "A key used to verify the signature. Conflicts with trustEngineRef and both of the child elements.",
                             "type": "string",
                             "widget": "textarea",
                             "default": ""
                         }
-                    }
+                    },
+                    "required": ["certificateFile"]
                 },
                 "EntityRoleWhiteList": {
                     "title": "Entity Role Whitelist Filter",
@@ -77,13 +78,13 @@
                         },
                         "removeRolelessEntityDescriptors": {
                             "title": "Remove Roleless Entity Descriptors?",
-                            "description": "Remove Roleless Entity Descriptors?",
+                            "description": "Controls whether to keep entity descriptors that contain no roles.",
                             "type": "boolean",
                             "default": true
                         },
                         "removeEmptyEntitiesDescriptors": {
                             "title": "Remove Empty Entities Descriptors?",
-                            "description": "Remove Empty Entities Descriptors?",
+                            "description": "Controls whether to keep entities descriptors that contain no entity descriptors.",
                             "type": "boolean",
                             "default": true
                         }

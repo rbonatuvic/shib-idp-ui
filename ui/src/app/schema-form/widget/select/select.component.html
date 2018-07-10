@@ -1,6 +1,9 @@
 <div class="widget form-group">
     <label [attr.for]="id" class="horizontal control-label" *ngIf="schema.title">
-        {{ schema.title }}
+        <span>
+            {{ schema.title }}
+            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+        </span>
         <span *ngIf="schema.description">
             <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
@@ -12,8 +15,12 @@
     <span *ngIf="schema.description" class="sr-only">
         {{ schema.description }}
     </span>
-    <select *ngIf="schema.type !== 'array'" [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
-        <option disabled selected>{{ schema.title }}</option>
+    <select *ngIf="schema.type !== 'array'"
+        [formControl]="control"
+        [attr.name]="name"
+        [attr.disabled]="schema.readOnly"
+        class="form-control">
+        <option disabled selected>{{ schema.placeholder || schema.title }}</option>
         <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
     </select>
     <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
