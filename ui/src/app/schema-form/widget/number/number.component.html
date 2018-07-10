@@ -1,9 +1,6 @@
 <div class="widget form-group">
     <label [attr.for]="id" class="d-flex justify-content-between control-label">
-        <span>
-            {{ schema.title }}
-            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
-        </span>
+        <span>{{ schema.title }} <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i></span>
         <span *ngIf="schema.description">
             <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
@@ -12,15 +9,13 @@
                 aria-label="Information icon - press spacebar to read additional information for this form field"></i>
         </span>
     </label>
-    <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
-    <auto-complete
-        [attr.id]="id"
+    <span *ngIf="schema.description" class="formHelp">{{schema.description}}</span>
+    <input [attr.readonly]="schema.readOnly?true:null"
+        [name]="name"
+        class="text-widget integer-widget form-control"
         [formControl]="control"
-        [matches]="schema.widget.data"
-        [required]="true"
-        [dropdown]="true"
-        [placeholder]="schema.placeholder"
-        role="textbox"
-        aria-label="Name ID Format (type for auto-complete)">
-    </auto-complete>
+        [attr.type]="'number'" [attr.min]="schema.minimum" [attr.max]="schema.maximum"
+        [attr.placeholder]="schema.placeholder"
+        [attr.maxLength]="schema.maxLength || null"
+        [attr.minLength]="schema.minLength || null">
 </div>

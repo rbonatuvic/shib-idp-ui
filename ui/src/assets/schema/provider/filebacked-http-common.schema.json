@@ -12,22 +12,47 @@
         "satisfyAnyPredicates"
     ],
     "required": ["id", "metadataURL"],
+    "anyOf": [
+        {
+            "properties": {
+                "initializeFromBackupFile": {
+                    "enum": [
+                        true
+                    ]
+                }
+            },
+            "required": [
+                "backingFile"
+            ]
+        },
+        {
+            "properties": {
+                "initializeFromBackupFile": {
+                    "enum": [
+                        false
+                    ]
+                }
+            }
+        }
+    ],
     "properties": {
         "id": {
             "title": "ID",
-            "description": "Unique Identifier",
+            "description": "Identifier for logging, identification for command line reload, etc.",
             "type": "string",
-            "default": ""
+            "default": "",
+            "minLength": 1
         },
         "metadataURL": {
             "title": "Metadata URL",
-            "description": "Metadata URL",
+            "description": "Identifier for logging, identification for command line reload, etc.",
             "type": "string",
-            "default": ""
+            "default": "",
+            "minLength": 1
         },
         "initializeFromBackupFile": {
             "title": "Initialize From Backup File?",
-            "description": "Initialize From Backup File?",
+            "description": "Flag indicating whether initialization should first attempt to load metadata from the backup file.  If true, foreground initialization will be performed by loading the backing file, and then a refresh from the remote HTTP server will be scheduled to execute in a background thread, after a configured delay. This can improve IdP startup times when the remote HTTP file is large in size.",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -50,8 +75,9 @@
         },
         "backingFile": {
             "title": "Backing File",
-            "description": "Backing File",
+            "description": "Specifies where the backing file is located. If the remote server is unavailable at startup, the backing file is loaded instead.",
             "type": "string",
+            "default": "",
             "visibleIf": {
                 "initializeFromBackupFile": [
                     true
@@ -60,7 +86,7 @@
         },
         "backupFileInitNextRefreshDelay": {
             "title": "Backup File Init Next Refresh Delay",
-            "description": "Backup File Init Next Refresh Delay",
+            "description": "Delay duration after which to schedule next HTTP refresh when initialized from the backing file.",
             "type": "string",
             "visibleIf": {
                 "initializeFromBackupFile": [
@@ -70,7 +96,7 @@
         },
         "requireValidMetadata": {
             "title": "Require Valid Metadata?",
-            "description": "Require Valid Metadata?",
+            "description": "Whether candidate metadata found by the resolver must be valid in order to be returned (where validity is implementation specific, but in SAML cases generally depends on a validUntil attribute.) If this flag is true, then invalid candidate metadata will not be returned.",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -93,7 +119,7 @@
         },
         "failFastInitialization": {
             "title": "Fail Fast Initialization?",
-            "description": "Fail Fast Initialization?",
+            "description": "Whether to fail initialization of the underlying MetadataResolverService (and possibly the IdP as a whole) if the initialization of a metadata provider fails. When false, the IdP may start, and will continue to attempt to reload valid metadata if configured to do so, but operations that require valid metadata will fail until it does.",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -116,7 +142,7 @@
         },
         "useDefaultPredicateRegistry": {
             "title": "Use Default Predicate Registry?",
-            "description": "Use Default Predicate Registry?",
+            "description": "Whether to fail initialization of the underlying MetadataResolverService (and possibly the IdP as a whole) if the initialization of a metadata provider fails. When false, the IdP may start, and will continue to attempt to reload valid metadata if configured to do so, but operations that require valid metadata will fail until it does.",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -139,7 +165,7 @@
         },
         "satisfyAnyPredicates": {
             "title": "Satisy Any Predicates?",
-            "description": "Satisy Any Predicates?",
+            "description": "Flag which determines whether predicates used in filtering are connected by a logical 'OR' (true) or by logical 'AND' (false).",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"

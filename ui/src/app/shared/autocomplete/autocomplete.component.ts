@@ -49,6 +49,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     @Input() limit = 0;
     @Input() processing = false;
     @Input() dropdown = false;
+    @Input() placeholder = '';
 
     @Output() more: EventEmitter<any> = new EventEmitter<any>();
     @Output() onChange: EventEmitter<string> = new EventEmitter<string>();

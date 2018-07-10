@@ -6,8 +6,9 @@
             "properties": {
                 "minRefreshDelay": {
                     "title": "Min Refresh Delay",
-                    "description": "",
+                    "description": "Lower bound on the next refresh from the time calculated based on the metadata's expiration.",
                     "type": "string",
+                    "placeholder": "Duration",
                     "widget": {
                         "id": "datalist",
                         "data": [
@@ -26,8 +27,9 @@
                 },
                 "maxRefreshDelay": {
                     "title": "Max Refresh Delay",
-                    "description": "",
+                    "description": "Upper bound on the next refresh from the time calculated based on the metadata's expiration.",
                     "type": "string",
+                    "placeholder": "Duration",
                     "widget": {
                         "id": "datalist",
                         "data": [
@@ -46,13 +48,16 @@
                 },
                 "refreshDelayFactor": {
                     "title": "Refresh Delay Factor",
-                    "description": "",
+                    "description": "A factor applied to the initially determined refresh time in order to determine the next refresh time (typically to ensure refresh takes place prior to the metadata's expiration). Attempts to refresh metadata will generally begin around the product of this number and the maximum refresh delay.",
                     "type": "number",
+                    "placeholder": "Real Number (between 0.0 and 1.0)",
+                    "minimum": 0,
+                    "maximum": 1,
                     "default": null
                 },
                 "resolveViaPredicatesOnly": {
                     "title": "Resolve Via Predicates Only?",
-                    "description": "",
+                    "description": "Flag indicating whether resolution may be performed solely by applying predicates to the entire metadata collection, when an entityID input criterion is not supplied.",
                     "type": "boolean",
                     "widget": {
                         "id": "boolean-radio"
@@ -75,8 +80,9 @@
                 },
                 "expirationWarningThreshold": {
                     "title": "Expiration Warning Threshold",
-                    "description": "",
+                    "description": "For each attempted metadata refresh (whether or not fresh metadata is obtained), if requireValidMetadata is true, and there is a validUntil XML attribute on the document root element, and the difference between validUntil and the current time is less than expirationWarningThreshold, the system logs a warning about the impending expiration.",
                     "type": "string",
+                    "placeholder": "Duration",
                     "widget": {
                         "id": "datalist",
                         "data": [
