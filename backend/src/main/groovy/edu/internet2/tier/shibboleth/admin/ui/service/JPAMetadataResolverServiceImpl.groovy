@@ -1,8 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
