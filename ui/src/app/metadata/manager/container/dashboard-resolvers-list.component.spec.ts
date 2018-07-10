@@ -5,7 +5,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination/pagination.module';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
-import { ManagerComponent } from './manager.component';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
 import { EntityItemComponent } from '../component/entity-item.component';
@@ -13,14 +12,15 @@ import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RouterStub } from '../../../../testing/router.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { DashboardResolversListComponent } from './dashboard-resolvers-list.component';
 
 
-describe('Metadata Manager Page', () => {
-    let fixture: ComponentFixture<ManagerComponent>;
+describe('Dashboard Resolvers List Page', () => {
+    let fixture: ComponentFixture<DashboardResolversListComponent>;
     let store: Store<fromDashboard.DashboardState>;
     let router: Router;
     let modal: NgbModal;
-    let instance: ManagerComponent;
+    let instance: DashboardResolversListComponent;
 
     let draft = new FileBackedHttpMetadataResolver({
             entityId: 'foo',
@@ -48,14 +48,14 @@ describe('Metadata Manager Page', () => {
                 NgbModalModule
             ],
             declarations: [
-                ManagerComponent,
+                DashboardResolversListComponent,
                 ProviderSearchComponent,
                 EntityItemComponent,
                 DeleteDialogComponent
             ],
         });
 
-        fixture = TestBed.createComponent(ManagerComponent);
+        fixture = TestBed.createComponent(DashboardResolversListComponent);
         instance = fixture.componentInstance;
         store = TestBed.get(Store);
         router = TestBed.get(Router);
