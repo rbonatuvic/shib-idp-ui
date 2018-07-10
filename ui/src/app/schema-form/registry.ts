@@ -15,6 +15,7 @@ import { DatalistComponent } from './widget/datalist/datalist.component';
 import { CustomCheckboxComponent } from './widget/check/checkbox.component';
 import { CustomTextAreaComponent } from './widget/textarea/textarea.component';
 import { CustomArrayComponent } from './widget/array/array.component';
+import { CustomIntegerComponent } from './widget/number/number.component';
 
 
 export class CustomWidgetRegistry extends WidgetRegistry {
@@ -44,13 +45,13 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('textarea', CustomTextAreaComponent);
 
+        this.register('integer', CustomIntegerComponent);
+        this.register('number', CustomIntegerComponent);
+
         this.register('datalist', DatalistComponent);
 
         /* NGX-Form */
         this.register('object', ObjectWidget);
-
-        this.register('integer', IntegerWidget);
-        this.register('number', IntegerWidget);
         this.register('range', RangeWidget);
 
         this.register('file', FileWidget);
