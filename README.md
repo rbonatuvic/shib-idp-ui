@@ -9,7 +9,7 @@
 There are currently 2 ways to run the application:
 
 1. As an executable
-2. deployed in a Java Servlet 3.0 container
+1. deployed in a Java Servlet 3.0 container
 
 Note that some features require encoded slashes in the URL. In tomcat (which is embedded in the war), this can be
 allowed with:
