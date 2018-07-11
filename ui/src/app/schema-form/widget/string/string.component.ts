@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { StringWidget } from 'ngx-schema-form';
+import { Validators } from '@angular/forms';
 import { SchemaService } from '../../service/schema.service';
 
 @Component({
