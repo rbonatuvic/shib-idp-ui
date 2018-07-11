@@ -12,6 +12,9 @@
         "satisfyAnyPredicates"
     ],
     "required": ["id", "metadataURL"],
+    "dependencies": {
+        "initializeFromBackupFile": {"required": ["backingFile", "backupFileInitNextRefreshDelay"]}
+    },
     "anyOf": [
         {
             "properties": {

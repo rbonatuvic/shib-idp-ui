@@ -1,12 +1,11 @@
 import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.component';
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
-import { CustomStringComponent } from './widget/text/string.component';
+import { CustomStringComponent } from './widget/string/string.component';
 
 import { WidgetRegistry } from 'ngx-schema-form';
 
 import { ButtonWidget } from 'ngx-schema-form';
 import { FileWidget } from 'ngx-schema-form';
-import { IntegerWidget } from 'ngx-schema-form';
 import { ObjectWidget } from 'ngx-schema-form';
 import { RadioWidget } from 'ngx-schema-form';
 import { RangeWidget } from 'ngx-schema-form';

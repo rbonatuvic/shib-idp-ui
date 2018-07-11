@@ -15,6 +15,9 @@ export class SchemaService {
 
     isRequired(formProperty: any): boolean {
         let required = false;
+        if (!formProperty) {
+            return false;
+        }
         let requiredFields = formProperty.parent.schema.required || [];
         let fieldPath = formProperty.path;
         let controlName = fieldPath.substr(fieldPath.lastIndexOf('/') + 1);

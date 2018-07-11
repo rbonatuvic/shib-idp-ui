@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.component';
 import { SchemaService } from './service/schema.service';
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
-import { CustomStringComponent } from './widget/text/string.component';
+import { CustomStringComponent } from './widget/string/string.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CustomSelectComponent } from './widget/select/select.component';
