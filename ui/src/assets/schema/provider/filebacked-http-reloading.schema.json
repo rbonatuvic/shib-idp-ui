@@ -50,6 +50,10 @@
                     "title": "Refresh Delay Factor",
                     "description": "A factor applied to the initially determined refresh time in order to determine the next refresh time (typically to ensure refresh takes place prior to the metadata's expiration). Attempts to refresh metadata will generally begin around the product of this number and the maximum refresh delay.",
                     "type": "number",
+                    "widget": {
+                        "id": "number",
+                        "step": 0.01
+                    },
                     "placeholder": "Real Number (between 0.0 and 1.0)",
                     "minimum": 0,
                     "maximum": 1,

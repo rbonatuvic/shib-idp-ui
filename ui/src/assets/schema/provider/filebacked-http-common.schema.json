@@ -22,7 +22,8 @@
                 }
             },
             "required": [
-                "backingFile"
+                "backingFile",
+                "backupFileInitNextRefreshDelay"
             ]
         },
         {
