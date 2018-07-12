@@ -1,9 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -155,6 +160,30 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'xsi:type': 'RequiredValidUntil',
                 maxValidityInterval: filter.maxValidityInterval
         )
+    }
+
+    void constructXmlNodeForResolver(FilesystemMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
+        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+                'xsi:type': 'FilesystemMetadataProvider',
+                metadataFile: resolver.metadataFile,
+
+                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                failFastInitialization: !resolver.failFastInitialization ?: null,
+                sortKey: resolver.sortKey,
+                criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
+                useDefaultPredicateRegistry: !resolver.useDefaultPredicateRegistry ?: null,
+                satisfyAnyPredicates: resolver.satisfyAnyPredicates ?: null,
+
+                parserPoolRef: resolver.reloadableMetadataResolverAttributes?.parserPoolRef,
+                minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
+                maxRefreshDelay: resolver.reloadableMetadataResolverAttributes?.maxRefreshDelay,
+                refreshDelayFactor: resolver.reloadableMetadataResolverAttributes?.refreshDelayFactor,
+                indexesRef: resolver.reloadableMetadataResolverAttributes?.indexesRef,
+                resolveViaPredicatesOnly: resolver.reloadableMetadataResolverAttributes?.resolveViaPredicatesOnly ?: null,
+                expirationWarningThreshold: resolver.reloadableMetadataResolverAttributes?.expirationWarningThreshold) {
+
+            childNodes()
+        }
     }
 
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
