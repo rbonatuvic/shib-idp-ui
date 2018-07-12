@@ -8,9 +8,9 @@
                     [indeterminate]="control.value !== false && control.value !== true ? true :null"
                     type="checkbox"
                     [attr.disabled]="schema.readOnly"
-                    id="{{ schema.id }}-control">
-                <input id="{{ schema.id }}-control" *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
-                <label for="{{ schema.id }}-control" class="custom-control-label">
+                    id="{{ name }}"
+                    [disableValidation]="true">
+                <label for="{{ name }}" class="custom-control-label">
                     {{ schema.title }}
                 </label>
             </div>
