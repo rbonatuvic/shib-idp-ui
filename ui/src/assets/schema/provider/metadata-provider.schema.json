@@ -7,7 +7,7 @@
     "properties": {
         "name": {
             "title": "Metadata Provider Name (Dashboard Display Only)",
-            "description": "Metadata Provider Name (Dashboard Display Only)",
+            "description": "Metadata Provider Name",
             "type": "string",
             "widget": {
                 "id": "string",
@@ -17,7 +17,7 @@
         "@type": {
             "title": "Metadata Provider Type",
             "description": "Metadata Provider Type",
-            "ui:placeholder": "Select a metadata provider type",
+            "placeholder": "Select a metadata provider type",
             "type": "string",
             "widget": {
                 "id": "select"

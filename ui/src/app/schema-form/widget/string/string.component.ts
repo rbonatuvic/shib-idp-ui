@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-
-import { TextAreaWidget } from 'ngx-schema-form';
+import { StringWidget } from 'ngx-schema-form';
+import { Validators } from '@angular/forms';
 import { SchemaService } from '../../service/schema.service';
 
 @Component({
-  selector: 'textarea-component',
-  templateUrl: `./textarea.component.html`
+    selector: 'custom-string',
+    templateUrl: `./string.component.html`,
+    styleUrls: ['../widget.component.scss']
 })
-export class CustomTextAreaComponent extends TextAreaWidget {
+export class CustomStringComponent extends StringWidget {
+
     constructor(
         private widgetService: SchemaService
     ) {

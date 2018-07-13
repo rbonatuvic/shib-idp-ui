@@ -1,8 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -18,6 +22,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ActiveProfiles
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import static org.springframework.http.HttpMethod.PUT
 
@@ -34,9 +39,21 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
 
+    @Autowired
+    AttributeUtility attributeUtility
+
+    ObjectMapper mapper
+    TestObjectGenerator generator
+
     JsonSlurper jsonSlurper = new JsonSlurper()
 
     static BASE_URI = '/api/MetadataResolvers'
+
+    def setup() {
+        generator = new TestObjectGenerator(attributeUtility)
+        mapper = new ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+    }
 
     def cleanup() {
         metadataResolverRepository.deleteAll()
@@ -130,24 +147,31 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.statusCodeValue == 404
     }
 
-    def "POST new DynamicHttpMetadataResolver -> /api/MetadataResolvers"() {
+    @Unroll
+    def "POST new DynamicHttpMetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
-        def resolver = [name: 'Test DynamicHttpMetadataResolver', '@type': 'DynamicHttpMetadataResolver']
+        def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
 
         when: 'POST request is made with new DynamicHttpMetadataResolver JSON representation'
-        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { JsonOutput.toJson(resolver) }, String)
+        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
 
         then:
         result.statusCodeValue == 201
         result.headers.Location[0].contains(BASE_URI)
+
+        where:
+            resolverType     | _
+            'DynamicHttp'    | _
+            'FileBacked'     | _
+            'LocalDynamic'   | _
+            'ResourceBacked' | _
+            'Filesystem'     | _
     }
 
-    def "PUT concrete MetadataResolver with updated changes -> /api/MetadataResolvers/{resourceId}"() {
+    @Unroll
+    def "PUT concrete MetadataResolver of type #resolverType with updated changes -> /api/MetadataResolvers/{resourceId}"(String resolverType) {
         given: 'One resolver is available in data store'
-        def resolver = new DynamicHttpMetadataResolver().with {
-            it.name = 'Test DynamicHttpMetadataResolver'
-            it
-        }
+        def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
         def resolverResourceId = resolver.resourceId
         metadataResolverRepository.save(resolver)
 
@@ -171,6 +195,13 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         then:
         updatedResolverMap.name == 'Updated DynamicHttpMetadataResolver'
 
+        where:
+            resolverType     | _
+            'DynamicHttp'    | _
+            'FileBacked'     | _
+            'LocalDynamic'   | _
+            'ResourceBacked' | _
+            'Filesystem'     | _
     }
 
     def "PUT concrete MetadataResolver with version conflict -> /api/MetadataResolvers/{resourceId}"() {

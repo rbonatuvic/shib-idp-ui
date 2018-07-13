@@ -1,6 +1,9 @@
 <div class="widget form-group">
     <label [attr.for]="id" class="d-flex justify-content-between control-label">
-        <span>{{ schema.title }}</span>
+        <span>
+            {{ schema.title }}
+            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+        </span>
         <span *ngIf="schema.description">
             <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
@@ -16,6 +19,7 @@
         [matches]="schema.widget.data"
         [required]="true"
         [dropdown]="true"
+        [placeholder]="schema.placeholder"
         role="textbox"
         aria-label="Name ID Format (type for auto-complete)">
     </auto-complete>

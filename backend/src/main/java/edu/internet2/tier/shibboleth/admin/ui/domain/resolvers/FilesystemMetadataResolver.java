@@ -1,0 +1,29 @@
+package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+
+/**
+ * @author Bill Smith (wsmith@unicon.net)
+ */
+@Entity
+@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
+public class FilesystemMetadataResolver extends MetadataResolver {
+
+    public FilesystemMetadataResolver() {
+        type = "FilesystemMetadataResolver";
+    }
+
+    private String metadataFile;
+
+    @Embedded
+    private ReloadableMetadataResolverAttributes reloadableMetadataResolverAttributes;
+}

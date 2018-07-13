@@ -11,6 +11,7 @@
             type="text"
             role="textbox"
             [attr.aria-activedescendant]="activeDescendant"
+            [placeholder]="placeholder"
             attr.aria-owns="{{ id }}__listbox"
             (focus)="handleInputFocus()"
             (blur)="handleInputBlur()"

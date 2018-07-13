@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.component';
 import { SchemaService } from './service/schema.service';
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
-import { CustomStringComponent } from './widget/text/string.component';
+import { CustomStringComponent } from './widget/string/string.component';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CustomSelectComponent } from './widget/select/select.component';
@@ -14,6 +14,7 @@ import { DatalistComponent } from './widget/datalist/datalist.component';
 import { CustomCheckboxComponent } from './widget/check/checkbox.component';
 import { CustomTextAreaComponent } from './widget/textarea/textarea.component';
 import { CustomArrayComponent } from './widget/array/array.component';
+import { CustomIntegerComponent } from './widget/number/number.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
@@ -23,7 +24,8 @@ export const COMPONENTS = [
     DatalistComponent,
     CustomCheckboxComponent,
     CustomTextAreaComponent,
-    CustomArrayComponent
+    CustomArrayComponent,
+    CustomIntegerComponent
 ];
 
 @NgModule({
