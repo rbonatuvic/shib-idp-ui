@@ -1,9 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +24,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api")
@@ -35,6 +39,9 @@ public class MetadataResolversController {
 
     @Autowired
     MetadataResolverValidationService metadataResolverValidationService;
+
+    @Autowired
+    private MetadataResolverService metadataResolverService;
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
@@ -67,18 +74,19 @@ public class MetadataResolversController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        //TODO: we are disregarding attached filters if any sent from UI.
-        //Only deal with filters via filters endpoints?
-        newResolver.clearAllFilters();
-
         ResponseEntity<?> validationErrorResponse = validate(newResolver);
         if(validationErrorResponse != null) {
             return validationErrorResponse;
         }
 
+        newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         persistedResolver.updateVersion();
 
+        //TODO: should we call this here? Doing so currently throws ClassCastException
+        //this.metadataResolverService.reloadFilters(persistedResolver.getName());
+
+        persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
 
@@ -102,8 +110,7 @@ public class MetadataResolversController {
 
         updatedResolver.setAudId(existingResolver.getAudId());
 
-        //TODO: we are disregarding attached filters if any sent from UI.
-        //Only deal with filters via filters endpoints?
+        //If one needs to update filters, it should be dealt with via filters endpoints
         updatedResolver.setMetadataFilters(existingResolver.getMetadataFilters());
 
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);

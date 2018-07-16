@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
@@ -53,6 +55,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         generator = new TestObjectGenerator(attributeUtility)
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.registerModule(new JavaTimeModule())
     }
 
     def cleanup() {
@@ -148,7 +151,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     }
 
     @Unroll
-    def "POST new DynamicHttpMetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
+    def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
 
@@ -229,6 +232,27 @@ class MetadataResolversControllerIntegrationTests extends Specification {
 
         then:
         updatedResult.statusCodeValue == 409
+    }
+
+    def "POST new MetadataResolver with one EntityAttributesFilters attached -> /api/MetadataResolvers"() {
+        given: 'New MetadataResolver with attached entity attributes filter JSON representation'
+        def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
+        resolver.metadataFilters << generator.entityAttributesFilter()
+
+        when: 'POST request is made with new FileBackedMetadataResolver with EntityAttributesFilter JSON representation'
+        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+
+        then:
+        result.statusCodeValue == 201
+        result.headers.Location[0].contains(BASE_URI)
+
+        when: 'Query REST API for newly created resolver'
+        def createdResolverResult = this.restTemplate.getForEntity(result.headers.Location[0], String)
+        def createdResolver = mapper.readValue(createdResolverResult.body, edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver)
+
+        then:
+        createdResolver.metadataFilters.size() == 1
+        createdResolver.metadataFilters[0] instanceof EntityAttributesFilter
     }
 
     private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
