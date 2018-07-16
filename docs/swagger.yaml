@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  description: Api Documentation
+  description: Shibboleth UI REST Api Documentation
   version: '1.0'
   title: Api Documentation
   termsOfService: 'urn:tos'
@@ -32,8 +32,8 @@ paths:
       operationId: createUsingPOST
       consumes:
         - application/json
-      produces:
-        - '*/*'
+        - application/xml
+        - application/x-www-form-urlencoded
       parameters:
         - in: body
           name: edRepresentation
@@ -42,10 +42,6 @@ paths:
           schema:
             $ref: '#/definitions/EntityDescriptorRepresentation'
       responses:
-        '200':
-          description: OK
-          schema:
-            type: object
         '201':
           description: Created
         '401':
@@ -54,6 +50,8 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '409':
+          description: Already Exists
       deprecated: false
   '/api/EntityDescriptor/{resourceId}':
     get:
@@ -63,6 +61,7 @@ paths:
       operationId: getOneUsingGET_1
       produces:
         - application/xml
+        - application/json
       parameters:
         - name: resourceId
           in: path
@@ -89,7 +88,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - in: body
           name: edRepresentation
@@ -123,7 +122,7 @@ paths:
       summary: getAll
       operationId: getAllUsingGET
       produces:
-        - '*/*'
+        - application/json
       responses:
         '200':
           description: OK
@@ -143,7 +142,7 @@ paths:
       summary: search
       operationId: searchUsingGET
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: limit
           in: query
@@ -165,8 +164,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-        '404':
-          description: Not Found
       deprecated: false
   /api/MetadataResolvers:
     get:
@@ -175,7 +172,7 @@ paths:
       summary: getAll
       operationId: getAllUsingGET_2
       produces:
-        - '*/*'
+        - application/json
       responses:
         '200':
           description: OK
@@ -185,8 +182,6 @@ paths:
           description: Unauthorized
         '403':
           description: Forbidden
-        '404':
-          description: Not Found
       deprecated: false
     post:
       tags:
@@ -195,8 +190,6 @@ paths:
       operationId: createUsingPOST_2
       consumes:
         - application/json
-      produces:
-        - '*/*'
       parameters:
         - in: body
           name: newResolver
@@ -205,10 +198,6 @@ paths:
           schema:
             $ref: '#/definitions/MetadataResolver'
       responses:
-        '200':
-          description: OK
-          schema:
-            type: object
         '201':
           description: Created
         '401':
@@ -217,6 +206,8 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '409':
+          description: Already Exists
       deprecated: false
   '/api/MetadataResolvers/{metadataResolverId}/Filters':
     get:
@@ -225,7 +216,7 @@ paths:
       summary: getAll
       operationId: getAllUsingGET_1
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: metadataResolverId
           in: path
@@ -251,8 +242,6 @@ paths:
       operationId: createUsingPOST_1
       consumes:
         - application/json
-      produces:
-        - '*/*'
       parameters:
         - in: body
           name: createdFilter
@@ -266,10 +255,6 @@ paths:
           required: true
           type: string
       responses:
-        '200':
-          description: OK
-          schema:
-            type: object
         '201':
           description: Created
         '401':
@@ -286,7 +271,7 @@ paths:
       summary: getOne
       operationId: getOneUsingGET_2
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: metadataResolverId
           in: path
@@ -318,7 +303,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: metadataResolverId
           in: path
@@ -341,14 +326,14 @@ paths:
           description: OK
           schema:
             type: object
-        '201':
-          description: Created
         '401':
           description: Unauthorized
         '403':
           description: Forbidden
         '404':
           description: Not Found
+        '409':
+          description: Already Exists
       deprecated: false
   '/api/MetadataResolvers/{resourceId}':
     get:
@@ -357,7 +342,7 @@ paths:
       summary: getOne
       operationId: getOneUsingGET_3
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: resourceId
           in: path
@@ -384,7 +369,7 @@ paths:
       consumes:
         - application/json
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: resourceId
           in: path
@@ -410,6 +395,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '409':
+          description: Version conflict
+
       deprecated: false
   '/api/entities/{entityId}':
     get:
@@ -418,7 +406,7 @@ paths:
       summary: getOne
       operationId: getOneUsingGET
       produces:
-        - '*/*'
+        - application/json
       parameters:
         - name: entityId
           in: path
@@ -456,134 +444,6 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-      deprecated: false
-    head:
-      tags:
-        - metadata-providers-controller
-      summary: getXml
-      operationId: getXmlUsingHEAD
-      consumes:
-        - application/json
-      produces:
-        - application/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-      deprecated: false
-    post:
-      tags:
-        - metadata-providers-controller
-      summary: getXml
-      operationId: getXmlUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - application/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '201':
-          description: Created
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-    put:
-      tags:
-        - metadata-providers-controller
-      summary: getXml
-      operationId: getXmlUsingPUT
-      consumes:
-        - application/json
-      produces:
-        - application/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '201':
-          description: Created
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '404':
-          description: Not Found
-      deprecated: false
-    delete:
-      tags:
-        - metadata-providers-controller
-      summary: getXml
-      operationId: getXmlUsingDELETE
-      produces:
-        - application/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-      deprecated: false
-    options:
-      tags:
-        - metadata-providers-controller
-      summary: getXml
-      operationId: getXmlUsingOPTIONS
-      consumes:
-        - application/json
-      produces:
-        - application/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-      deprecated: false
-    patch:
-      tags:
-        - metadata-providers-controller
-      summary: getXml
-      operationId: getXmlUsingPATCH
-      consumes:
-        - application/json
-      produces:
-        - application/xml
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
       deprecated: false
 definitions:
   AssertionConsumerServiceRepresentation:
