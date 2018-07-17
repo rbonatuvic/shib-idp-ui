@@ -83,9 +83,6 @@ public class MetadataResolversController {
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         persistedResolver.updateVersion();
 
-        //TODO: should we call this here? Doing so currently throws ClassCastException
-        //this.metadataResolverService.reloadFilters(persistedResolver.getName());
-
         persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
