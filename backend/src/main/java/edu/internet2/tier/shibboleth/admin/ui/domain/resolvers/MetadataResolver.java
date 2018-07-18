@@ -51,6 +51,9 @@ public class MetadataResolver extends AbstractAuditable {
     @Column(unique = true)
     private String resourceId = UUID.randomUUID().toString();
 
+    @Column(unique = true)
+    private String xmlId;
+
     private Boolean requireValidMetadata = true;
 
     private Boolean failFastInitialization = true;

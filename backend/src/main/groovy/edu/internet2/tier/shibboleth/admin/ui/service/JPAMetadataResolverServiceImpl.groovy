@@ -163,7 +163,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(FilesystemMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+        markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'FilesystemMetadataProvider',
                 metadataFile: resolver.metadataFile,
 
@@ -187,7 +187,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+        markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'DynamicHttpMetadataProvider',
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
@@ -234,7 +234,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+        markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'FileBackedHTTPMetadataProvider',
                 backingFile: resolver.backingFile,
                 metadataURL: resolver.metadataURL,
@@ -279,7 +279,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 sourceManagerRef: resolver.sourceManagerRef,
                 sourceKeyGeneratorRef: resolver.sourceKeyGeneratorRef,
 
-                id: resolver.name,
+                id: resolver.xmlId,
                 'xsi:type': 'DynamicHttpMetadataProvider',
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
@@ -314,7 +314,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         def resourceType = resolver.validateAndDetermineResourceType()
 
         markupBuilderDelegate.MetadataProvider(
-                id: resolver.name,
+                id: resolver.xmlId,
                 'xsi:type': 'ResourceBackedMetadataProvider',
                 parserPoolRef: resolver.reloadableMetadataResolverAttributes?.parserPoolRef,
                 minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
