@@ -21,8 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +82,11 @@ public class CoreShibUiConfiguration {
     @Autowired
     Directory directory;
 
+    @Autowired
+    LocaleResolver localeResolver;
+
+    @Autowired
+    ResourceBundleMessageSource messageSource;
 
     @Bean
     public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository) {
@@ -101,6 +110,13 @@ public class CoreShibUiConfiguration {
             }
             return new EntityIdsSearchResultRepresentation(entityIds);
         };
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        return localeChangeInterceptor;
     }
 
     /**
@@ -138,6 +154,11 @@ public class CoreShibUiConfiguration {
                 };
                 helper.setUrlDecode(false);
                 configurer.setUrlPathHelper(helper);
+            }
+
+            @Override
+            public void addInterceptors(InterceptorRegistry registry) {
+                registry.addInterceptor(localeChangeInterceptor());
             }
         };
     }
