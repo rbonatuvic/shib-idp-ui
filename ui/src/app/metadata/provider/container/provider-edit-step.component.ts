@@ -1,65 +1,65 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
-import * as fromWizard from '../../../wizard/reducer';
-
-import { SetDefinition } from '../../../wizard/action/wizard.action';
 import { UpdateStatus } from '../action/editor.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
-import { MetadataProviderWizardTypes, MetadataProviderWizard } from '../model';
+
+import * as fromWizard from '../../../wizard/reducer';
+import { withLatestFrom, map, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 import { UpdateProvider } from '../action/entity.action';
-import { pick } from '../../../shared/util';
 
 @Component({
-    selector: 'provider-wizard-step',
-    templateUrl: './provider-wizard-step.component.html',
+    selector: 'provider-edit-step',
+    templateUrl: './provider-edit-step.component.html',
     styleUrls: []
 })
 
-export class ProviderWizardStepComponent implements OnDestroy {
+export class ProviderEditStepComponent implements OnDestroy {
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
 
     statusChangeSubject = new Subject<Partial<any>>();
     private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
 
-    schema$: Observable<any>;
-    schema: any;
-    definition$: Observable<Wizard<MetadataProvider>>;
-    changes$: Observable<MetadataProvider>;
     currentPage: string;
-    valid$: Observable<boolean>;
-    model$: Observable<any>;
 
     namesList: string[] = [];
+
+    schema$: Observable<any>;
+    provider$: Observable<MetadataProvider>;
+    model$: Observable<any>;
+    definition$: Observable<Wizard<MetadataProvider>>;
+    changes$: Observable<MetadataProvider>;
 
     validators$: Observable<{ [key: string]: any }>;
 
     constructor(
-        private store: Store<fromProvider.ProviderState>,
+        private store: Store<fromProvider.ProviderState>
     ) {
         this.schema$ = this.store.select(fromProvider.getSchema);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
+        this.provider$ = this.store.select(fromProvider.getSelectedProvider);
 
         this.validators$ = this.store.select(fromProvider.getProviderNames).pipe(
-            withLatestFrom(this.definition$),
-            map(([names, def]) => def.getValidators(names))
+            withLatestFrom(this.definition$, this.provider$),
+            map(([names, def, provider]) => def.getValidators(names.filter(n => n !== provider.name)))
         );
 
         this.model$ = this.schema$.pipe(
             withLatestFrom(
+                this.store.select(fromProvider.getSelectedProvider),
                 this.store.select(fromWizard.getModel),
                 this.changes$,
                 this.definition$
             ),
-            map(([schema, model, changes, definition]) => ({
+            map(([schema, provider, model, changes, definition]) => ({
                 model: {
                     ...model,
+                    ...provider,
                     ...changes
                 },
                 definition
@@ -69,35 +69,16 @@ export class ProviderWizardStepComponent implements OnDestroy {
         );
 
         this.valueChangeEmitted$.pipe(
-            withLatestFrom(this.schema$, this.definition$),
-            map(([changes, schema, definition]) => this.resetSelectedType(changes, schema, definition)),
-            skipWhile(({ changes, definition }) => !definition || !changes),
-            map(({ changes, definition }) => definition.translate.parser(changes))
+            map(changes => changes.value),
+            withLatestFrom(this.definition$),
+            skipWhile(([ changes, definition ]) => !definition || !changes),
+            map(([ changes, definition ]) => definition.translate.parser(changes))
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 
         this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
 
         this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
-    }
-
-    resetSelectedType(changes: any, schema: any, definition: any): { changes: any, definition: any } {
-        const type = changes.value['@type'];
-        if (type && type !== definition.type) {
-            const newDefinition = MetadataProviderWizardTypes.find(def => def.type === type);
-            if (newDefinition) {
-                this.store.dispatch(new SetDefinition({
-                    ...MetadataProviderWizard,
-                    ...newDefinition,
-                    steps: [
-                        ...MetadataProviderWizard.steps,
-                        ...newDefinition.steps
-                    ]
-                }));
-                changes = { value: pick(Object.keys(schema.properties))(changes.value) };
-            }
-        }
-        return { changes: changes.value, definition };
     }
 
     updateStatus(errors: any): void {

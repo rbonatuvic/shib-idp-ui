@@ -8,7 +8,10 @@
             </div>
         </div>
         <div class="p-3">
-            <code><pre>{{ providers$ | async | json }}</pre></code>
+            <a *ngFor="let provider of providers$ | async"
+                [routerLink]="['/', 'metadata', 'provider', provider.resourceId, 'edit']">
+                {{ provider.name }}
+            </a>
         </div>
     </div>
 </section>

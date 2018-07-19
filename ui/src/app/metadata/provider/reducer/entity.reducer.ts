@@ -3,13 +3,11 @@ import { EntityActionTypes, EntityActionUnion } from '../action/entity.action';
 
 export interface EntityState {
     saving: boolean;
-    base: MetadataProvider;
     changes: MetadataProvider;
 }
 
 export const initialState: EntityState = {
     saving: false,
-    base: null,
     changes: null
 };
 
@@ -25,14 +23,6 @@ export function reducer(state = initialState, action: EntityActionUnion): Entity
                 ...state,
                 changes: {
                     ...initialState.changes
-                }
-            };
-        }
-        case EntityActionTypes.SELECT_PROVIDER: {
-            return {
-                ...state,
-                base: {
-                    ...action.payload
                 }
             };
         }
@@ -54,4 +44,4 @@ export function reducer(state = initialState, action: EntityActionUnion): Entity
 export const isEntitySaved = (state: EntityState) => !Object.keys(state.changes).length && !state.saving;
 export const getEntityChanges = (state: EntityState) => state.changes;
 export const isEditorSaving = (state: EntityState) => state.saving;
-export const getUpdatedEntity = (state: EntityState) => ({ ...state.base, ...state.changes });
+export const getUpdatedEntity = (state: EntityState) => state.changes;

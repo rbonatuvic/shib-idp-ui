@@ -5,7 +5,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ProviderWizardSummaryComponent } from './provider-wizard-summary.component';
+import { ProviderWizardSummaryComponent, getStepProperties } from './provider-wizard-summary.component';
 import * as fromRoot from '../reducer';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import * as fromWizard from '../../../wizard/reducer';
@@ -75,6 +75,31 @@ describe('Provider Wizard Summary Component', () => {
     it('should instantiate the component', async(() => {
         expect(app).toBeTruthy();
     }));
+
+    describe('getStepProperties function', () => {
+        it('should return an empty array of schema or schema.properties is not defined', () => {
+            expect(getStepProperties(null, {})).toEqual([]);
+            expect(getStepProperties({}, {})).toEqual([]);
+        });
+
+        it('should return a formatted list of properties', () => {
+            expect(getStepProperties(SCHEMA, {}).length).toBe(2);
+        });
+    });
+
+    describe('gotoPage function', () => {
+        it('should emit an empty string if page is null', () => {
+            spyOn(app.onPageSelect, 'emit');
+            app.gotoPage();
+            expect(app.onPageSelect.emit).toHaveBeenCalledWith('');
+        });
+
+        it('should emit the provided page', () => {
+            spyOn(app.onPageSelect, 'emit');
+            app.gotoPage('foo');
+            expect(app.onPageSelect.emit).toHaveBeenCalledWith('foo');
+        });
+    });
 
     describe('ngOnChanges', () => {
         it('should set columns and sections if summary is provided', () => {

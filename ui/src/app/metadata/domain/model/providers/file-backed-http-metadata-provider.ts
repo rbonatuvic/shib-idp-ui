@@ -1,5 +1,7 @@
-import { MetadataProvider } from '../metadata-provider';
+import { BaseMetadataProvider } from './base-metadata-provider';
 
-export interface FileBackedHttpMetadataProvider extends MetadataProvider {
-    metadataFilters: any[];
+export interface FileBackedHttpMetadataProvider extends BaseMetadataProvider {
+    id: string;
+    metadataURL: string;
+    reloadableMetadataResolverAttributes: any;
 }
