@@ -6,13 +6,15 @@ export interface Wizard<T> {
         parser(changes: Partial<T>, schema?: any),
         formatter(changes: Partial<T>, schema?: any)
     };
+
+    getValidators?(params: any): { [key: string]: any };
 }
 
 export interface WizardStep {
     id: string;
     label: string;
     initialValues?: WizardValue[];
-    schema: string;
+    schema?: string;
     index: number;
 }
 

@@ -13,7 +13,7 @@ interface Section {
     properties: Property[];
 }
 
-function getStepProperties(schema: any, model: any): Property[] {
+export function getStepProperties(schema: any, model: any): Property[] {
     if (!schema || !schema.properties) { return []; }
     return Object.keys(schema.properties).map(property => ({
         name: schema.properties[property].title,
