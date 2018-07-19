@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
 import { of } from 'rxjs';
-import { map, catchError, switchMap, tap } from 'rxjs/operators';
+import { map, catchError, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import {
     ProviderCollectionActionsUnion,
     ProviderCollectionActionTypes,
@@ -12,9 +13,17 @@ import {
     AddProviderFail,
     LoadProviderRequest,
     LoadProviderSuccess,
-    LoadProviderError
+    LoadProviderError,
+    SelectProviderRequest,
+    SelectProviderSuccess,
+    SelectProviderError,
+    UpdateProviderRequest,
+    UpdateProviderSuccess,
+    UpdateProviderFail
 } from '../action/collection.action';
 import { MetadataProviderService } from '../../domain/service/provider.service';
+import * as fromProvider from '../reducer';
+
 
 /* istanbul ignore next */
 @Injectable()
@@ -29,6 +38,20 @@ export class CollectionEffects {
                 .pipe(
                     map(providers => new LoadProviderSuccess(providers)),
                     catchError(error => of(new LoadProviderError(error)))
+                )
+        )
+    );
+
+    @Effect()
+    selectProviders$ = this.actions$.pipe(
+        ofType<SelectProviderRequest>(ProviderCollectionActionTypes.SELECT_PROVIDER_REQUEST),
+        map(action => action.payload),
+        switchMap(id =>
+            this.providerService
+                .find(id)
+                .pipe(
+                    map(provider => new SelectProviderSuccess({ id, changes: provider })),
+                    catchError(error => of(new SelectProviderError(error)))
                 )
         )
     );
@@ -51,7 +74,37 @@ export class CollectionEffects {
     createProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['metadata']))
+        tap(provider => this.router.navigate(['metadata', 'manager', 'providers']))
+    );
+
+    @Effect()
+    updateProvider$ = this.actions$.pipe(
+        ofType<UpdateProviderRequest>(ProviderCollectionActionTypes.UPDATE_PROVIDER_REQUEST),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProvider)),
+        map(([updates, original]) => ({ ...original, ...updates })),
+        switchMap(provider =>
+            this.providerService
+                .update(provider)
+                .pipe(
+                    map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
+                    catchError((e) => of(new UpdateProviderFail(e)))
+                )
+        )
+    );
+
+    @Effect({ dispatch: false })
+    updateProviderSuccessReload$ = this.actions$.pipe(
+        ofType<UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS),
+        map(action => action.payload),
+        tap(provider => this.store.dispatch(new LoadProviderRequest()))
+    );
+
+    @Effect({ dispatch: false })
+    updateProviderSuccessRedirect$ = this.actions$.pipe(
+        ofType<UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS),
+        map(action => action.payload),
+        tap(provider => this.router.navigate(['metadata', 'manager', 'providers']))
     );
 
     @Effect()
@@ -64,6 +117,7 @@ export class CollectionEffects {
     constructor(
         private actions$: Actions,
         private router: Router,
+        private store: Store<fromProvider.ProviderState>,
         private providerService: MetadataProviderService
     ) { }
 } /* istanbul ignore next */

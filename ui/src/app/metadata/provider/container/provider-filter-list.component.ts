@@ -3,12 +3,12 @@ import { Store } from '@ngrx/store';
 import * as fromProvider from '../reducer';
 
 @Component({
-    selector: 'provider-page',
-    templateUrl: './provider.component.html',
+    selector: 'provider-filter-list',
+    templateUrl: './provider-filter-list.component.html',
     styleUrls: []
 })
-export class ProviderComponent {
+export class ProviderFilterListComponent {
     constructor(
         private store: Store<fromProvider.ProviderState>
-    ) {}
+    ) { }
 }
