@@ -67,18 +67,16 @@ public class MetadataResolversController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        //TODO: we are disregarding attached filters if any sent from UI.
-        //Only deal with filters via filters endpoints?
-        newResolver.clearAllFilters();
-
         ResponseEntity<?> validationErrorResponse = validate(newResolver);
         if(validationErrorResponse != null) {
             return validationErrorResponse;
         }
 
+        newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         persistedResolver.updateVersion();
 
+        persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
 
@@ -102,8 +100,7 @@ public class MetadataResolversController {
 
         updatedResolver.setAudId(existingResolver.getAudId());
 
-        //TODO: we are disregarding attached filters if any sent from UI.
-        //Only deal with filters via filters endpoints?
+        //If one needs to update filters, it should be dealt with via filters endpoints
         updatedResolver.setMetadataFilters(existingResolver.getMetadataFilters());
 
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
