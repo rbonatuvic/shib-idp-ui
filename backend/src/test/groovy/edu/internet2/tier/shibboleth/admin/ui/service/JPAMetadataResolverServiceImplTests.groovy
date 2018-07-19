@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -41,7 +42,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 
 @SpringBootTest
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)

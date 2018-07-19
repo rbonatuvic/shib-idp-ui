@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
@@ -15,7 +16,7 @@ import spock.lang.Specification
 import javax.persistence.EntityManager
 
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class FilterRepositoryTests extends Specification {

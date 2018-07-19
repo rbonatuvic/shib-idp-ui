@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
@@ -26,7 +27,7 @@ import javax.persistence.EntityManager
  * Testing persistence of the MetadataResolver models
  */
 @DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration])
+@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class MetadataResolverRepositoryTests extends Specification {
