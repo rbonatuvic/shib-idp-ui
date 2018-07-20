@@ -403,6 +403,7 @@ class TestObjectGenerator {
     FilesystemMetadataResolver filesystemMetadataResolver() {
         new FilesystemMetadataResolver().with {
             it.name = 'FilesystemMetadata'
+            it.xmlId = 'FilesystemMetadata'
             it.metadataFile = 'some metadata filename'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
@@ -418,6 +419,7 @@ class TestObjectGenerator {
     FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
         new FileBackedHttpMetadataResolver().with {
             it.name = 'HTTPMetadata'
+            it.xmlId = 'HTTPMetadata'
             it.backingFile = '%{idp.home}/metadata/incommonmd.xml'
             it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
 
@@ -434,6 +436,7 @@ class TestObjectGenerator {
     DynamicHttpMetadataResolver dynamicHttpMetadataResolver() {
         new DynamicHttpMetadataResolver().with {
             it.name = 'DynamicHTTP'
+            it.xmlId = 'DynamicHTTP'
             it
         }
     }
@@ -441,6 +444,7 @@ class TestObjectGenerator {
     LocalDynamicMetadataResolver localDynamicMetadataResolver() {
         new LocalDynamicMetadataResolver().with {
             it.name = 'LocalDynamic'
+            it.xmlId = 'LocalDynamic'
             it
         }
     }
@@ -448,6 +452,7 @@ class TestObjectGenerator {
     ResourceBackedMetadataResolver resourceBackedMetadataResolverForSVN() {
         new ResourceBackedMetadataResolver().with {
             it.name = 'SVNResourceMetadata'
+            it.xmlId = 'SVNResourceMetadata'
             it.svnMetadataResource = new SvnMetadataResource().with {
                 it.resourceFile = 'entity.xml'
                 it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
