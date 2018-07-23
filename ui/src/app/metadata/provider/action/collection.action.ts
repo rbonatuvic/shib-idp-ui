@@ -7,9 +7,13 @@ export enum ProviderCollectionActionTypes {
     UPDATE_PROVIDER_SUCCESS = '[Metadata Provider] Update Success',
     UPDATE_PROVIDER_FAIL = '[Metadata Provider] Update Fail',
 
-    LOAD_PROVIDER_REQUEST = '[Metadata Provider Collection] Provider REQUEST',
-    LOAD_PROVIDER_SUCCESS = '[Metadata Provider Collection] Provider SUCCESS',
-    LOAD_PROVIDER_ERROR = '[Metadata Provider Collection] Provider ERROR',
+    LOAD_PROVIDER_REQUEST = '[Metadata Provider Collection] Provider Load REQUEST',
+    LOAD_PROVIDER_SUCCESS = '[Metadata Provider Collection] Provider Load SUCCESS',
+    LOAD_PROVIDER_ERROR = '[Metadata Provider Collection] Provider Load ERROR',
+
+    SELECT_PROVIDER_REQUEST = '[Metadata Provider Collection] Provider SELECT REQUEST',
+    SELECT_PROVIDER_SUCCESS = '[Metadata Provider Collection] Provider SELECT SUCCESS',
+    SELECT_PROVIDER_ERROR = '[Metadata Provider Collection] Provider SELECT ERROR',
 
     ADD_PROVIDER_REQUEST = '[Metadata Provider Collection] Add Provider',
     ADD_PROVIDER_SUCCESS = '[Metadata Provider Collection] Add Provider Success',
@@ -34,6 +38,24 @@ export class LoadProviderSuccess implements Action {
 
 export class LoadProviderError implements Action {
     readonly type = ProviderCollectionActionTypes.LOAD_PROVIDER_ERROR;
+
+    constructor(public payload: any) { }
+}
+
+export class SelectProviderRequest implements Action {
+    readonly type = ProviderCollectionActionTypes.SELECT_PROVIDER_REQUEST;
+
+    constructor(public payload: any) { }
+}
+
+export class SelectProviderSuccess implements Action {
+    readonly type = ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS;
+
+    constructor(public payload: Update<MetadataProvider>) { }
+}
+
+export class SelectProviderError implements Action {
+    readonly type = ProviderCollectionActionTypes.SELECT_PROVIDER_ERROR;
 
     constructor(public payload: any) { }
 }
@@ -96,6 +118,9 @@ export type ProviderCollectionActionsUnion =
     | LoadProviderRequest
     | LoadProviderSuccess
     | LoadProviderError
+    | SelectProviderRequest
+    | SelectProviderSuccess
+    | SelectProviderError
     | AddProviderRequest
     | AddProviderSuccess
     | AddProviderFail

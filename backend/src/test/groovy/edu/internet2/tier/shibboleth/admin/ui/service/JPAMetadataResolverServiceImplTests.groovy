@@ -177,7 +177,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     def 'test generating ResourceBackedMetadataResolver with SVN resource type xml snippet'() {
         given:
         def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
-            it.name = 'SVNResourceMetadata'
+            it.xmlId = 'SVNResourceMetadata'
             it.svnMetadataResource = new SvnMetadataResource().with {
                 it.resourceFile = 'entity.xml'
                 it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
@@ -199,7 +199,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     def 'test generating ResourceBackedMetadataResolver with classpath resource type xml snippet'() {
         given:
         def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
-            it.name = 'ClasspathResourceMetadata'
+            it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
                 it.file = '/path/to/a/classpath/location/metadata.xml'
                 it
