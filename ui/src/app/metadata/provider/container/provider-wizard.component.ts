@@ -43,7 +43,9 @@ export class ProviderWizardComponent implements OnDestroy {
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .subscribe(s => {
-                this.store.dispatch(new LoadSchemaRequest(s));
+                if (s) {
+                    this.store.dispatch(new LoadSchemaRequest(s));
+                }
             });
         this.valid$ = this.store.select(fromProvider.getEditorIsValid);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);

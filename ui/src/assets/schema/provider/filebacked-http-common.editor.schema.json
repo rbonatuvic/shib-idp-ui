@@ -3,7 +3,7 @@
     "order": [
         "name",
         "@type",
-        "id",
+        "xmlId",
         "metadataURL",
         "initializeFromBackupFile",
         "backingFile",
@@ -14,7 +14,7 @@
         "satisfyAnyPredicates"
     ],
     "required": [
-        "id",
+        "xmlId",
         "metadataURL"
     ],
     "anyOf": [
@@ -50,7 +50,7 @@
         },
         {
             "fields": [
-                "id",
+                "xmlId",
                 "metadataURL",
                 "initializeFromBackupFile",
                 "backingFile",
@@ -90,7 +90,7 @@
                 }
             ]
         },
-        "id": {
+        "xmlId": {
             "title": "ID",
             "description": "Identifier for logging, identification for command line reload, etc.",
             "type": "string",

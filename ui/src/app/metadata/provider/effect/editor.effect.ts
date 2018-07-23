@@ -8,7 +8,7 @@ import {
     LoadSchemaFail,
     EditorActionTypes
 } from '../action/editor.action';
-import { map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, catchError, withLatestFrom, debounceTime } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SetDefinition, WizardActionTypes, AddSchema } from '../../../wizard/action/wizard.action';
 import { ResetChanges } from '../action/entity.action';
@@ -23,6 +23,7 @@ export class EditorEffects {
     $loadSchemaRequest = this.actions$.pipe(
         ofType<LoadSchemaRequest>(EditorActionTypes.LOAD_SCHEMA_REQUEST),
         map(action => action.payload),
+        debounceTime(100),
         switchMap((schemaPath: string) =>
             this.schemaService
                 .get(schemaPath)
