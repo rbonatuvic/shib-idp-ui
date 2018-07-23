@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URI;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
@@ -36,6 +44,9 @@ public class MetadataResolversController {
     @Autowired
     MetadataResolverValidationService metadataResolverValidationService;
 
+    @Autowired
+    MetadataResolverService metadataResolverService;
+
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
         return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()));
@@ -47,6 +58,20 @@ public class MetadataResolversController {
         Iterable<MetadataResolver> resolvers = resolverRepository.findAll();
         resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
+    }
+
+    @GetMapping(value = "/MetadataResolvers", produces = "application/xml")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getXml() throws IOException, TransformerException {
+        // TODO: externalize
+        try (StringWriter writer = new StringWriter()) {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+            transformer.transform(new DOMSource(metadataResolverService.generateConfiguration()), new StreamResult(writer));
+            return ResponseEntity.ok(writer.toString());
+        }
     }
 
     @GetMapping("/MetadataResolvers/{resourceId}")
