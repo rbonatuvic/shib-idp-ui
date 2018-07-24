@@ -84,7 +84,6 @@ describe('wizard index selectors', () => {
     describe('getModelFn method', () => {
         it('should return the model', () => {
             const step = FileBackedHttpMetadataProviderWizard.steps.find(s => s.id === 'filters');
-            console.log(step);
             expect(selectors.getModelFn(step)).toEqual({ metadataFilters: [] });
         });
     });

@@ -10,7 +10,7 @@ import { SetDefinition } from '../../../wizard/action/wizard.action';
 import { UpdateStatus } from '../action/editor.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
-import { MetadataProviderTypes, MetadataProviderWizard } from '../model';
+import { MetadataProviderWizardTypes, MetadataProviderWizard } from '../model';
 import { UpdateProvider } from '../action/entity.action';
 import { pick } from '../../../shared/util';
 
@@ -37,32 +37,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
 
     namesList: string[] = [];
 
-    validators = {
-        '/': (value, property, form_current) => {
-            let errors;
-            // iterate all customer
-            Object.keys(value).forEach((key) => {
-                const item = value[key];
-                const validatorKey = `/${key}`;
-                const validator = this.validators.hasOwnProperty(validatorKey) ? this.validators[validatorKey] : null;
-                const error = validator ? validator(item, { path: `/${key}` }, form_current) : null;
-                if (error) {
-                    errors = errors || [];
-                    errors.push(error);
-                }
-            });
-            return errors;
-        },
-        '/name': (value, property, form) => {
-            const err = this.namesList.indexOf(value) > -1 ? {
-                code: 'INVALID_NAME',
-                path: `#${property.path}`,
-                message: 'Name must be unique.',
-                params: [value]
-            } : null;
-            return err;
-        }
-    };
+    validators$: Observable<{ [key: string]: any }>;
 
     constructor(
         private store: Store<fromProvider.ProviderState>,
@@ -71,7 +46,10 @@ export class ProviderWizardStepComponent implements OnDestroy {
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
 
-        this.store.select(fromProvider.getProviderNames).subscribe(list => this.namesList = list);
+        this.validators$ = this.store.select(fromProvider.getProviderNames).pipe(
+            withLatestFrom(this.definition$),
+            map(([names, def]) => def.getValidators(names))
+        );
 
         this.model$ = this.schema$.pipe(
             withLatestFrom(
@@ -106,7 +84,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
     resetSelectedType(changes: any, schema: any, definition: any): { changes: any, definition: any } {
         const type = changes.value['@type'];
         if (type && type !== definition.type) {
-            const newDefinition = MetadataProviderTypes.find(def => def.type === type);
+            const newDefinition = MetadataProviderWizardTypes.find(def => def.type === type);
             if (newDefinition) {
                 this.store.dispatch(new SetDefinition({
                     ...MetadataProviderWizard,

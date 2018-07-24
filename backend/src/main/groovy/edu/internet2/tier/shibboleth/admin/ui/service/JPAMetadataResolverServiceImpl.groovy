@@ -46,12 +46,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     // TODO: enhance
     @Override
     void reloadFilters(String metadataResolverName) {
-        ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver)metadataResolver
+        ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver) metadataResolver
         MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverName }
         edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
-            MetadataFilterChain metadataFilterChain = (MetadataFilterChain)targetMetadataResolver.getMetadataFilter()
+            MetadataFilterChain metadataFilterChain = (MetadataFilterChain) targetMetadataResolver.getMetadataFilter()
 
             List<MetadataFilter> metadataFilters = new ArrayList<>()
 
@@ -64,7 +64,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     if (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType() == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY) {
                         rules.put(
                                 new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
-                                (List<Attribute>)(List<? extends Attribute>)entityAttributesFilter.getAttributes()
+                                (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
                         )
                     }
                     target.setRules(rules)
@@ -76,7 +76,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
         if (metadataResolver instanceof RefreshableMetadataResolver) {
             try {
-                ((RefreshableMetadataResolver)metadataResolver).refresh()
+                ((RefreshableMetadataResolver) metadataResolver).refresh()
             } catch (ResolverException e) {
                 log.warn("error refreshing metadataResolver " + metadataResolverName, e)
             }
@@ -99,15 +99,18 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
             ) {
                 metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                    constructXmlNodeForResolver(mr, delegate) {
-                        MetadataFilter(
-                                'xsi:type': 'SignatureValidation',
-                                'requireSignedRoot': 'true',
-                                'certificateFile': '%{idp.home}/credentials/inc-md-cert.pem'
-                        )
-                        //TODO: enhance
-                        mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                            constructXmlNodeForFilter(filter, delegate)
+                    //TODO: We cannot/do not currently have the code to marshall the internal incommon chaining resolver
+                    if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
+                        constructXmlNodeForResolver(mr, delegate) {
+                            MetadataFilter(
+                                    'xsi:type': 'SignatureValidation',
+                                    'requireSignedRoot': 'true',
+                                    'certificateFile': '%{idp.home}/credentials/inc-md-cert.pem'
+                            )
+                            //TODO: enhance
+                            mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
+                                constructXmlNodeForFilter(filter, delegate)
+                            }
                         }
                     }
                 }
@@ -163,7 +166,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(FilesystemMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+        markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'FilesystemMetadataProvider',
                 metadataFile: resolver.metadataFile,
 
@@ -187,7 +190,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+        markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'DynamicHttpMetadataProvider',
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
@@ -234,7 +237,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForResolver(FileBackedHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
-        markupBuilderDelegate.MetadataProvider(id: resolver.name,
+        markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'FileBackedHTTPMetadataProvider',
                 backingFile: resolver.backingFile,
                 metadataURL: resolver.metadataURL,
@@ -279,7 +282,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 sourceManagerRef: resolver.sourceManagerRef,
                 sourceKeyGeneratorRef: resolver.sourceKeyGeneratorRef,
 
-                id: resolver.name,
+                id: resolver.xmlId,
                 'xsi:type': 'DynamicHttpMetadataProvider',
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
@@ -314,7 +317,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         def resourceType = resolver.validateAndDetermineResourceType()
 
         markupBuilderDelegate.MetadataProvider(
-                id: resolver.name,
+                id: resolver.xmlId,
                 'xsi:type': 'ResourceBackedMetadataProvider',
                 parserPoolRef: resolver.reloadableMetadataResolverAttributes?.parserPoolRef,
                 minRefreshDelay: resolver.reloadableMetadataResolverAttributes?.minRefreshDelay,
@@ -324,7 +327,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 resolveViaPredicatesOnly: resolver.reloadableMetadataResolverAttributes?.resolveViaPredicatesOnly ?: null,
                 expirationWarningThreshold: resolver.reloadableMetadataResolverAttributes?.expirationWarningThreshold) {
 
-            if(resourceType == SVN) {
+            if (resourceType == SVN) {
                 MetadataResource(
                         'xmlns:resource': 'urn:mace:shibboleth:2.0:resource',
                         'xsi:type': 'resource:SVNResource',
@@ -338,8 +341,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         'proxyUserName': resolver.svnMetadataResource.proxyUserName,
                         'proxyPassword': resolver.svnMetadataResource.proxyPassword)
 
-            }
-            else if (resourceType == CLASSPATH) {
+            } else if (resourceType == CLASSPATH) {
                 MetadataResource(
                         'xmlns:resource': 'urn:mace:shibboleth:2.0:resource',
                         'xsi:type': 'resource:ClasspathResource',

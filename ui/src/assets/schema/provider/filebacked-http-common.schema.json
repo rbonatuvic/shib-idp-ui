@@ -1,7 +1,7 @@
 {
     "type": "object",
     "order": [
-        "id",
+        "xmlId",
         "metadataURL",
         "initializeFromBackupFile",
         "backingFile",
@@ -11,7 +11,7 @@
         "useDefaultPredicateRegistry",
         "satisfyAnyPredicates"
     ],
-    "required": ["id", "metadataURL"],
+    "required": ["xmlId", "metadataURL"],
     "dependencies": {
         "initializeFromBackupFile": {"required": ["backingFile", "backupFileInitNextRefreshDelay"]}
     },
@@ -40,7 +40,7 @@
         }
     ],
     "properties": {
-        "id": {
+        "xmlId": {
             "title": "ID",
             "description": "Identifier for logging, identification for command line reload, etc.",
             "type": "string",

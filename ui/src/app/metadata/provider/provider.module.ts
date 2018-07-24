@@ -19,7 +19,12 @@ import { CustomWidgetRegistry } from '../../schema-form/registry';
 import { SummaryPropertyComponent } from './component/summary-property.component';
 import { CollectionEffects } from './effect/collection.effect';
 import { SharedModule } from '../../shared/shared.module';
-
+import { ProviderEditComponent } from './container/provider-edit.component';
+import { ProviderSelectComponent } from './container/provider-select.component';
+import { ProviderEditStepComponent } from './container/provider-edit-step.component';
+import { EntityEffects } from './effect/entity.effect';
+import { ProviderFilterListComponent } from './container/provider-filter-list.component';
+import { NgbDropdownModule } from '../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -27,6 +32,10 @@ import { SharedModule } from '../../shared/shared.module';
         ProviderWizardComponent,
         ProviderWizardStepComponent,
         ProviderWizardSummaryComponent,
+        ProviderEditComponent,
+        ProviderEditStepComponent,
+        ProviderSelectComponent,
+        ProviderFilterListComponent,
         SummaryPropertyComponent
     ],
     entryComponents: [],
@@ -36,7 +45,8 @@ import { SharedModule } from '../../shared/shared.module';
         WizardModule,
         RouterModule,
         SharedModule,
-        FormModule
+        FormModule,
+        NgbDropdownModule
     ],
     exports: []
 })
@@ -55,7 +65,7 @@ export class ProviderModule {
     imports: [
         ProviderModule,
         StoreModule.forFeature('provider', fromProvider.reducers),
-        EffectsModule.forFeature([EditorEffects, CollectionEffects])
+        EffectsModule.forFeature([EntityEffects, EditorEffects, CollectionEffects])
     ]
 })
 export class RootProviderModule { }
