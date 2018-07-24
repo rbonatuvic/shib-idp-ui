@@ -4,8 +4,14 @@ import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import lombok.extern.slf4j.Slf4j;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.index.IndexWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +52,9 @@ public class MetadataResolversController {
 
     @Autowired
     MetadataResolverService metadataResolverService;
+
+    @Autowired
+    IndexWriterService indexWriterService;
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
@@ -149,5 +158,42 @@ public class MetadataResolversController {
                 .pathSegment(resolver.getResourceId())
                 .build()
                 .toUri();
+    }
+
+    private void updateLucene(MetadataResolver resolver) throws ComponentInitializationException {
+        IndexWriter indexWriter = null;
+        try {
+            indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
+        } catch (IOException e) {
+            throw new ComponentInitializationException(e);
+        }
+
+        // add documents to indexWriter .. for each what?
+        /*
+        for () {
+            Document document = new Document();
+            document.add(new StringField("id", entityId, Field.Store.YES));
+            document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
+            try {
+                indexWriter.addDocument(document);
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        */
+
+        Document document = new Document();
+        document.add(new StringField("id", resolver.getResourceId(), Field.Store.YES));
+        try {
+            indexWriter.addDocument(document);
+        } catch (IOException e) {
+            throw new ComponentInitializationException(e);
+        }
+
+        try {
+            indexWriter.commit();
+        } catch (IOException e) {
+            throw new ComponentInitializationException(e);
+        }
     }
 }
