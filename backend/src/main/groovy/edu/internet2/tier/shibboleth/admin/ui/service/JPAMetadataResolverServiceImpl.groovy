@@ -100,7 +100,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             ) {
                 metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
                     //TODO: We cannot/do not currently have the code to marshall the internal incommon chaining resolver
-                    if (mr.type != 'BaseMetadataResolver') {
+                    if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
                         constructXmlNodeForResolver(mr, delegate) {
                             MetadataFilter(
                                     'xsi:type': 'SignatureValidation',

@@ -54,6 +54,8 @@ public class MetadataResolver extends AbstractAuditable {
     @Column(unique = true)
     private String xmlId;
 
+    private Boolean enabled = true;
+
     private Boolean requireValidMetadata = true;
 
     private Boolean failFastInitialization = true;
