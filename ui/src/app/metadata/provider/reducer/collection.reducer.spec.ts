@@ -26,8 +26,24 @@ describe('Provider Collection Reducer', () => {
         it('should add the loaded providers to the collection', () => {
             spyOn(fromProvider.adapter, 'addAll').and.callThrough();
             const providers = [
-                { resourceId: 'foo', name: 'foo', '@type': 'foo', enabled: true, createdDate: new Date().toLocaleDateString() },
-                { resourceId: 'bar', name: 'bar', '@type': 'bar', enabled: false, createdDate: new Date().toLocaleDateString() }
+                {
+                    resourceId: 'foo',
+                    name: 'name',
+                    '@type': 'foo',
+                    enabled: true,
+                    createdDate: new Date().toLocaleDateString(),
+                    sortKey: 1,
+                    metadataFilters: []
+                },
+                {
+                    resourceId: 'bar',
+                    name: 'bar',
+                    '@type': 'bar',
+                    enabled: false,
+                    createdDate: new Date().toLocaleDateString(),
+                    sortKey: 2,
+                    metadataFilters: []
+                }
             ];
             const action = new LoadProviderSuccess(providers);
             const result = reducer(snapshot, action);

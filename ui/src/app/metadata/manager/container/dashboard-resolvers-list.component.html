@@ -16,17 +16,17 @@
         </div>
         <div class="p-3">
             <ul class="list-unstyled m-0">
-                <li *ngFor="let entity of limited$ | async; index as i"
+                <li *ngFor="let resolver of limited$ | async; index as i"
                     [ngClass]="{'mt-2': i > 0}"
                     aria-label="Provider Item Accordion. Press Spacebar to open">
-                    <entity-item
-                        [entity]="entity"
-                        [isOpen]="(entitiesOpen$ | async)[entity.getId()]"
-                        (select)="edit(entity)"
-                        (toggle)="toggleEntity(entity)"
-                        (preview)="openPreviewDialog(entity)"
-                        (delete)="deleteResolver(entity)">
-                    </entity-item>
+                    <resolver-item
+                        [entity]="resolver"
+                        [isOpen]="(entitiesOpen$ | async)[resolver.getId()]"
+                        (select)="edit(resolver)"
+                        (toggle)="toggleEntity(resolver)"
+                        (preview)="openPreviewDialog(resolver)"
+                        (delete)="deleteResolver(resolver)">
+                    </resolver-item>
                 </li>
             </ul>
             <div class="mt-3 clearfix" *ngIf="(total$ | async) > limit">

@@ -9,6 +9,8 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { ManagerComponent } from './container/manager.component';
 import { EntityItemComponent } from './component/entity-item.component';
+import { ProviderItemComponent } from './component/provider-item.component';
+import { ResolverItemComponent } from './component/resolver-item.component';
 import { ProviderSearchComponent } from './component/provider-search.component';
 import { DashboardResolversListComponent } from './container/dashboard-resolvers-list.component';
 import { DashboardProvidersListComponent } from './container/dashboard-providers-list.component';
@@ -22,6 +24,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     declarations: [
         ManagerComponent,
         EntityItemComponent,
+        ResolverItemComponent,
+        ProviderItemComponent,
         ProviderSearchComponent,
         DeleteDialogComponent,
         DashboardResolversListComponent,
