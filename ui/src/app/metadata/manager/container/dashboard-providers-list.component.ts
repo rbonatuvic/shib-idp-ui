@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { ProviderState, getAllProviders } from '../../provider/reducer';
 import * as fromDashboard from '../reducer';
 import { ToggleEntityDisplay } from '../action/manager.action';
-import { Meta } from '../../../../../node_modules/@angular/platform-browser';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'dashboard-providers-list',
@@ -23,7 +23,9 @@ export class DashboardProvidersListComponent {
         private store: Store<ProviderState>,
         private router: Router
     ) {
-        this.providers$ = this.store.select(getAllProviders);
+        this.providers$ = this.store.select(getAllProviders).pipe(
+            map(providers => providers.filter(p => p['@type'] !== 'BaseMetadataResolver'))
+        );
         this.providersOpen$ = store.select(fromDashboard.getOpenProviders);
     }
 
