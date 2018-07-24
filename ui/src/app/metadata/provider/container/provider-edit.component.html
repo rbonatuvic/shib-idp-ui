@@ -1,0 +1,87 @@
+<section *ngIf="provider$ | async" class="section" [attr.aria-label]="'Edit metadata provider - ' + (provider$ | async).name" tabindex="0">
+    <div class="section-header bg-info p-2 text-white">
+        <div class="row justify-content-between">
+            <div class="col-md-12">
+                <span class="display-6">
+                    <i class="fa fa-fw fa-gears"></i> Edit Metadata Provider - {{ (provider$ | async).name }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="section-body p-4 border border-top-0 border-info">
+        <div class="row">
+            <div class="col-6 d-lg-none order-1">
+                <div class="dropdown" ngbDropdown #dropdown="ngbDropdown">
+                    <button
+                        class="btn btn-secondary"
+                        role="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        ngbDropdownToggle>
+                        <i class="fa fa-fw fa-bars fa-lg" aria-hidden="true"></i>
+                        <span class="d-inline-block mx-2">
+                            <i18n-text [key]="(currentPage$ | async).label"></i18n-text>
+                        </span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" ngbDropdownMenu>
+                        <a *ngFor="let route of (definition$ | async).steps"
+                            href=""
+                            class="dropdown-item"
+                            [ngClass]="{'active': (editorIndex$ | async) === route.index}"
+                            (click)="setIndex($event, route.id); dropdown.close()"
+                            [attr.aria-label]="route.label"
+                            role="button">
+                            <i18n-text [key]="route.label"></i18n-text>
+                            <valid-form-icon *ngIf="(invalidForms$ | async).indexOf(route.id) > -1" status="INVALID"></valid-form-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 order-2 text-right">
+                <button class="btn btn-info"
+                    (click)="save()"
+                    [disabled]="isInvalid$ | async"
+                    aria-label="Save changes to the metadata source. You will return to the dashboard"
+                    role="button">
+                    <i class="fa fa-fw fa-save"></i>
+                    <ng-container i18n="@@action--save">Save</ng-container>
+                </button>
+                &nbsp;
+                <button class="btn btn-secondary"
+                    (click)="cancel()" aria-label="Cancel changes, go back to dashboard"
+                    role="button">
+                    <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                </button>
+            </div>
+            <div class="col-xs-12 col-lg-9 order-lg-1 order-3">
+                <div class="alert alert-danger alert-compact mt-3 mt-lg-0"
+                    *ngIf="(isInvalid$ | async)">
+                    <i class="fa fa-fw fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
+                    <ng-container i18n-text="@@message--editor-invalid">All forms must be valid before changes can be saved!</ng-container>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-3 d-none d-lg-block">
+                <nav class="nav nav-pills flex-column" role="navigation">
+                    <a *ngFor="let route of (definition$ | async).steps"
+                        href=""
+                        class="nav-link"
+                        [ngClass]="{'active': (index$ | async) === route.id}"
+                        (click)="setIndex($event, route.id)"
+                        role="button"
+                        [attr.aria-label]="route.label">
+                        <i18n-text [key]="route.label"></i18n-text>
+                        <valid-form-icon
+                            *ngIf="(invalidForms$ | async).indexOf(route.id) > -1"
+                            status="INVALID">
+                        </valid-form-icon>
+                    </a>
+                </nav>
+            </div>
+            <div class="col-lg-6">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</section>

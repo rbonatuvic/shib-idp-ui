@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
-import { SetIndex, SetDisabled, ClearWizard } from '../../../wizard/action/wizard.action';
+import { SetIndex, SetDisabled, ClearWizard, SetDefinition } from '../../../wizard/action/wizard.action';
 import { LoadSchemaRequest, ClearEditor } from '../action/editor.action';
 import { startWith } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
@@ -13,7 +13,7 @@ import { ClearProvider } from '../action/entity.action';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { AddProviderRequest } from '../action/collection.action';
-
+import { MetadataProviderWizard } from '../model';
 
 @Component({
     selector: 'provider-wizard',
@@ -43,7 +43,9 @@ export class ProviderWizardComponent implements OnDestroy {
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .subscribe(s => {
-                this.store.dispatch(new LoadSchemaRequest(s));
+                if (s) {
+                    this.store.dispatch(new LoadSchemaRequest(s));
+                }
             });
         this.valid$ = this.store.select(fromProvider.getEditorIsValid);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
@@ -67,6 +69,9 @@ export class ProviderWizardComponent implements OnDestroy {
         );
 
         this.changes$.subscribe(c => this.provider = c);
+
+        this.store.dispatch(new SetDefinition(MetadataProviderWizard));
+        this.store.dispatch(new SetIndex(MetadataProviderWizard.steps[0].id));
     }
 
     ngOnDestroy() {

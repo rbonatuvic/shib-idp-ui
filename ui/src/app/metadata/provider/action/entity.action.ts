@@ -2,16 +2,9 @@ import { Action } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model';
 
 export enum EntityActionTypes {
-    SELECT_PROVIDER = '[Provider Entity] Select Provider',
     UPDATE_PROVIDER = '[Provider Entity] Update Provider',
     CLEAR_PROVIDER = '[Provider Entity] Clear',
     RESET_CHANGES = '[Provider Entity] Reset Changes'
-}
-
-export class SelectProvider implements Action {
-    readonly type = EntityActionTypes.SELECT_PROVIDER;
-
-    constructor(public payload: MetadataProvider) { }
 }
 
 export class UpdateProvider implements Action {
@@ -29,7 +22,6 @@ export class ResetChanges implements Action {
 }
 
 export type EntityActionUnion =
-    | SelectProvider
     | UpdateProvider
     | ClearProvider
     | ResetChanges;

@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -41,7 +42,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 
 @SpringBootTest
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -176,7 +177,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     def 'test generating ResourceBackedMetadataResolver with SVN resource type xml snippet'() {
         given:
         def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
-            it.name = 'SVNResourceMetadata'
+            it.xmlId = 'SVNResourceMetadata'
             it.svnMetadataResource = new SvnMetadataResource().with {
                 it.resourceFile = 'entity.xml'
                 it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
@@ -198,7 +199,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     def 'test generating ResourceBackedMetadataResolver with classpath resource type xml snippet'() {
         given:
         def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
-            it.name = 'ClasspathResourceMetadata'
+            it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
                 it.file = '/path/to/a/classpath/location/metadata.xml'
                 it
@@ -226,6 +227,19 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/520.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating disabled MetadataResolver xml snippet'() {
+        given: 'disabled metadata resolver'
+        def resolver = testObjectGenerator.filesystemMetadataResolver()
+        resolver.enabled = false
+        metadataResolverRepository.save(resolver)
+
+        when:
+        def generatedXmlDocument = this.metadataResolverService.generateConfiguration()
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/670.xml', generatedXmlDocument)
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
