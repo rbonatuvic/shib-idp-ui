@@ -22,6 +22,8 @@ class EntityIdsSearchServiceTests extends Specification {
     @Autowired
     EntityIdsSearchService entityIdsSearchService
 
+    def test = "test"
+
     def "searching for carmen produces one result"() {
         setup:
         def searchTerm = "carmen"
@@ -30,7 +32,7 @@ class EntityIdsSearchServiceTests extends Specification {
         def expectedResultItem = "https://carmenwiki.osu.edu/shibboleth"
 
         when:
-        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(searchTerm, searchLimit)
+        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(test, searchTerm, searchLimit)
 
         then:
         expectedResultSize == actualResults.entityIds.size()
@@ -45,7 +47,7 @@ class EntityIdsSearchServiceTests extends Specification {
         def expectedResults = Arrays.asList(["http://unicon.instructure.com/saml2", "https://idp.unicon.net/idp/shibboleth"])
 
         when:
-        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(searchTerm, searchLimit)
+        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(test, searchTerm, searchLimit)
 
         then:
         expectedResultSize == actualResults.entityIds.size()
@@ -59,7 +61,7 @@ class EntityIdsSearchServiceTests extends Specification {
         def expectedResultSize = 0
 
         when:
-        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(searchTerm, searchLimit)
+        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(test, searchTerm, searchLimit)
 
         then:
         expectedResultSize == actualResults.entityIds.size()
@@ -73,7 +75,7 @@ class EntityIdsSearchServiceTests extends Specification {
         def expectedResults = Arrays.asList(["http://unicon.instructure.com/saml2"])
 
         when:
-        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(searchTerm, searchLimit)
+        def actualResults = entityIdsSearchService.findBySearchTermAndOptionalLimit(test, searchTerm, searchLimit)
 
         then:
         expectedResultSize == actualResults.entityIds.size()
@@ -86,7 +88,7 @@ class EntityIdsSearchServiceTests extends Specification {
         def searchLimit = 0
 
         when:
-        entityIdsSearchService.findBySearchTermAndOptionalLimit(searchTerm, searchLimit)
+        entityIdsSearchService.findBySearchTermAndOptionalLimit(test, searchTerm, searchLimit)
 
         then:
         thrown IllegalArgumentException

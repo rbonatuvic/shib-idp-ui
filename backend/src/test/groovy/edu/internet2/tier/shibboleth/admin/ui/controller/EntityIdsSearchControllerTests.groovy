@@ -25,11 +25,14 @@ class EntityIdsSearchControllerTests extends Specification {
 
     def mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 
+    static final String RESOURCE_ID = "resourceId"
+    static final String RESOURCE_ID_VALUE = "test"
+    static final String TERM = "term"
+    static final String LIMIT = "limit"
+
     def "GET /api/EntityIds/search with unicon and limit 5"() {
         given:
-        def term = "term"
         def termValue = "unicon"
-        def limit = "limit"
         def limitValue = "5"
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation(["http://unicon.instructure.com/saml2", "https://idp.unicon.net/idp/shibboleth"])
         def expectedHttpResponseStatus = status().isOk()
@@ -45,12 +48,13 @@ class EntityIdsSearchControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(get('/api/EntityIds/search')
-                .param(term, termValue)
-                .param(limit, limitValue))
+                .param(RESOURCE_ID, RESOURCE_ID_VALUE)
+                .param(TERM, termValue)
+                .param(LIMIT, limitValue))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
-        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
+        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(RESOURCE_ID_VALUE, termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
         result.andExpect(expectedHttpResponseStatus)
             .andExpect(content().contentType(expectedResponseContentType))
             .andExpect(content().json(expectedResponseBody, true))
@@ -58,9 +62,7 @@ class EntityIdsSearchControllerTests extends Specification {
 
     def "GET /api/EntityIds/search with unicon and limit 1"() {
         given:
-        def term = "term"
         def termValue = "unicon"
-        def limit = "limit"
         def limitValue = "1"
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation(["http://unicon.instructure.com/saml2"])
         def expectedHttpResponseStatus = status().isOk()
@@ -75,12 +77,13 @@ class EntityIdsSearchControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(get('/api/EntityIds/search')
-                .param(term, termValue)
-                .param(limit, limitValue))
+                .param(RESOURCE_ID, RESOURCE_ID_VALUE)
+                .param(TERM, termValue)
+                .param(LIMIT, limitValue))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
-        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
+        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(RESOURCE_ID_VALUE, termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedResponseBody, true))
@@ -88,9 +91,7 @@ class EntityIdsSearchControllerTests extends Specification {
 
     def "GET /api/EntityIds/search with shib and no limit"() {
         given:
-        def term = "term"
         def termValue = "shib"
-        def limit = "limit"
         def limitValue = NO_LIMIT
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation(["https://shib.ucanr.org/shibboleth",
                                                                                           "https://shibboleth2sp.tf.semcs.net/shibboleth",
@@ -123,11 +124,12 @@ class EntityIdsSearchControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(get('/api/EntityIds/search')
-                .param(term, termValue))
+                .param(RESOURCE_ID, RESOURCE_ID_VALUE)
+                .param(TERM, termValue))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
-        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
+        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(RESOURCE_ID_VALUE, termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedResponseBody, true))
@@ -135,9 +137,7 @@ class EntityIdsSearchControllerTests extends Specification {
 
     def "GET /api/EntityIds/search with empty term and limit 5"() {
         given:
-        def term = "term"
         def termValue = ""
-        def limit = "limit"
         def limitValue = "5"
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation([])
         def expectedHttpResponseStatus = status().isOk()
@@ -150,12 +150,13 @@ class EntityIdsSearchControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(get('/api/EntityIds/search')
-                .param(term, termValue)
-                .param(limit, limitValue))
+                .param(RESOURCE_ID, RESOURCE_ID_VALUE)
+                .param(TERM, termValue)
+                .param(LIMIT, limitValue))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
-        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
+        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(RESOURCE_ID_VALUE, termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedResponseBody, true))
@@ -163,9 +164,7 @@ class EntityIdsSearchControllerTests extends Specification {
 
     def "GET /api/EntityIds/search with empty term and no limit"() {
         given:
-        def term = "term"
         def termValue = ""
-        def limit = "limit"
         def limitValue = NO_LIMIT
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation([])
         def expectedHttpResponseStatus = status().isOk()
@@ -178,12 +177,13 @@ class EntityIdsSearchControllerTests extends Specification {
 
         when:
         def result = mockMvc.perform(get('/api/EntityIds/search')
-                .param(term, termValue)
-                .param(limit, limitValue))
+                .param(RESOURCE_ID, RESOURCE_ID_VALUE)
+                .param(TERM, termValue)
+                .param(LIMIT, limitValue))
 
         then:
         result.andExpect(expectedHttpResponseStatus)
-        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
+        1 * entityIdsSearchService.findBySearchTermAndOptionalLimit(RESOURCE_ID_VALUE, termValue, Integer.valueOf(limitValue)) >> expectedEntityIdsFromSearchService
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedResponseBody, true))

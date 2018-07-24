@@ -18,10 +18,13 @@ public class EntityIdsSearchController {
         this.entityIdsSearchService = entityIdsSearchService;
     }
 
+    // TODO Change this to include a metadata resolver id so we can pull out the right index to search
     @GetMapping
-    ResponseEntity<?> search(@RequestParam String term, @RequestParam(required = false) Integer limit) {
+    ResponseEntity<?> search(@RequestParam String resourceId,
+                             @RequestParam String term,
+                             @RequestParam(required = false) Integer limit) {
         //Zero indicates no-limit
         final int resultLimit = (limit != null ? limit : 10);
-        return ResponseEntity.ok(this.entityIdsSearchService.findBySearchTermAndOptionalLimit(term, resultLimit));
+        return ResponseEntity.ok(this.entityIdsSearchService.findBySearchTermAndOptionalLimit(resourceId, term, resultLimit));
     }
 }
