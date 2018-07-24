@@ -74,7 +74,7 @@ describe('Provider Edit Step Component', () => {
             app.currentPage = 'common';
             app.updateStatus({value: 'common'});
             app.updateStatus({value: 'foo'});
-            expect(store.dispatch).toHaveBeenCalledTimes(2);
+            expect(store.dispatch).toHaveBeenCalledTimes(3);
         });
     });
 

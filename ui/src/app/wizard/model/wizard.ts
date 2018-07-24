@@ -16,6 +16,7 @@ export interface WizardStep {
     initialValues?: WizardValue[];
     schema?: string;
     index: number;
+    locked?: boolean;
 }
 
 export interface WizardValue {

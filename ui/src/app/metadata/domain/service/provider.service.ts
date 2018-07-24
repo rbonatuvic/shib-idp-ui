@@ -19,7 +19,6 @@ export class MetadataProviderService {
     }
 
     find(id: string): Observable<MetadataProvider> {
-        // console.log(id);
         return this.http.get<MetadataProvider>(`${this.base}${this.endpoint}/${id}`);
     }
 
@@ -28,7 +27,6 @@ export class MetadataProviderService {
     }
 
     save(provider: MetadataProvider): Observable<MetadataProvider> {
-        const { metadataFilters, id, ...pruned } = provider as FileBackedHttpMetadataProvider;
-        return this.http.post<MetadataProvider>(`${this.base}${this.endpoint}`, pruned);
+        return this.http.post<MetadataProvider>(`${this.base}${this.endpoint}`, provider);
     }
 }

@@ -17,6 +17,7 @@
                             "title": "Max Validity Interval",
                             "description": "Defines the window within which the metadata is valid.",
                             "type": "number",
+                            "minimum": 0,
                             "default": 0
                         }
                     }

@@ -36,6 +36,8 @@ export class CustomWidgetRegistry extends WidgetRegistry {
         this.register('boolean-radio', BooleanRadioComponent);
 
         this.register('fieldset', FieldsetComponent);
+        this.register('object', FieldsetComponent);
+
         this.register('array', CustomArrayComponent);
 
         this.register('select', CustomSelectComponent);
@@ -50,7 +52,6 @@ export class CustomWidgetRegistry extends WidgetRegistry {
         this.register('datalist', DatalistComponent);
 
         /* NGX-Form */
-        this.register('object', ObjectWidget);
         this.register('range', RangeWidget);
 
         this.register('file', FileWidget);

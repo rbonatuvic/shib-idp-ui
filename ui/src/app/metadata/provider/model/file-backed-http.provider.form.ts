@@ -77,6 +77,7 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             label: 'Advanced Settings',
             index: 4,
             initialValues: [],
+            locked: true,
             schema: 'assets/schema/provider/filebacked-http-advanced.schema.json'
         }
     ]

@@ -1,0 +1,62 @@
+@import '../../../theme/_palette';
+
+:host {
+
+    $width: 60px;
+    $height: 34px;
+
+    $transition-duration: 400ms;
+
+    $off-color: $red;
+    $on-color: $light-blue;
+
+    $distance: 26px;
+
+    & {
+        line-height: 1;
+    }
+
+    .switch {
+        position: relative;
+        width: $width;
+        height: $height;
+        line-height: 1.5;
+        margin-bottom: 0px;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $off-color;
+        transition: $transition-duration;
+        border-radius: $height;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: $white;
+        transition: $transition-duration;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: $on-color;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px $on-color;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX($distance);
+    }
+}
+
