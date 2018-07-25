@@ -7,7 +7,6 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
