@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Service interface for manipulation of instances of {@link MetadataResolversPositionOrderContainer} and
- * encapsulate MetadataResolvers ordering logic.
+ * to abstract away  MetadataResolvers ordering logic.
  *
  * @author Dmitriy Kopylenko
  */
@@ -16,6 +16,4 @@ public interface MetadataResolversPositionOrderContainerService {
     void persistPositionOrderContainer(MetadataResolversPositionOrderContainer metadataResolversPositionOrderContainer);
 
     List<MetadataResolver> getAllMetadataResolversInDefinedOrderOrUnordered();
-
-
 }
