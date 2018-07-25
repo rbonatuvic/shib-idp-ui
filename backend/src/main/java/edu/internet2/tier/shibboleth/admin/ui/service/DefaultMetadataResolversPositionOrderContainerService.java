@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class DefaultMetadataResolversPositionOrderContainerService implements Me
     @Override
     @Transactional
     public void addOrUpdatePositionOrderContainer(MetadataResolversPositionOrderContainer metadataResolversPositionOrderContainer) {
-        MetadataResolversPositionOrderContainer existingPositionOrder = positionOrderContainerRepository.findAll().iterator().next();
+        MetadataResolversPositionOrderContainer existingPositionOrder = getPositionOrderContainerIfExists().orElse(null);
         if (existingPositionOrder != null) {
             existingPositionOrder.setResourceIds(metadataResolversPositionOrderContainer.getResourceIds());
             positionOrderContainerRepository.save(existingPositionOrder);
@@ -57,8 +58,7 @@ public class DefaultMetadataResolversPositionOrderContainerService implements Me
     }
 
     private Optional<MetadataResolversPositionOrderContainer> getPositionOrderContainerIfExists() {
-        return positionOrderContainerRepository.findAll().iterator().hasNext()
-                ? Optional.of(positionOrderContainerRepository.findAll().iterator().next())
-                : Optional.empty();
+        Iterator<MetadataResolversPositionOrderContainer> iter = positionOrderContainerRepository.findAll().iterator();
+        return iter.hasNext() ? Optional.of(iter.next()) : Optional.empty();
     }
 }
