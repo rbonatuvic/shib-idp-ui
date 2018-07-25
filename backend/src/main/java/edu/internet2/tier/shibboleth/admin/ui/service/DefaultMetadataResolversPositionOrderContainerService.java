@@ -13,6 +13,11 @@ import static com.google.common.collect.FluentIterable.from;
 import static java.util.stream.Collectors.toList;
 
 
+/**
+ * Default implementation of {@link MetadataResolversPositionOrderContainer}.
+ *
+ * @author Dmitriy Kopylenko
+ */
 public class DefaultMetadataResolversPositionOrderContainerService implements MetadataResolversPositionOrderContainerService {
 
     private MetadataResolversPositionOrderContainerRepository positionOrderContainerRepository;
@@ -27,7 +32,13 @@ public class DefaultMetadataResolversPositionOrderContainerService implements Me
 
     @Override
     @Transactional
-    public void persistPositionOrderContainer(MetadataResolversPositionOrderContainer metadataResolversPositionOrderContainer) {
+    public void addOrUpdatePositionOrderContainer(MetadataResolversPositionOrderContainer metadataResolversPositionOrderContainer) {
+        MetadataResolversPositionOrderContainer existingPositionOrder = positionOrderContainerRepository.findAll().iterator().next();
+        if (existingPositionOrder != null) {
+            existingPositionOrder.setResourceIds(metadataResolversPositionOrderContainer.getResourceIds());
+            positionOrderContainerRepository.save(existingPositionOrder);
+            return;
+        }
         positionOrderContainerRepository.save(metadataResolversPositionOrderContainer);
     }
 
