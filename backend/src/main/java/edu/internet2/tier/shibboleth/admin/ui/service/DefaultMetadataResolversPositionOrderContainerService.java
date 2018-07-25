@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import com.google.common.collect.Lists;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolversPositionOrderContainer;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -10,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.collect.FluentIterable.from;
 import static java.util.stream.Collectors.toList;
 
 
@@ -42,7 +42,7 @@ public class DefaultMetadataResolversPositionOrderContainerService implements Me
                     .collect(toList());
         }
 
-        return Lists.newArrayList(metadataResolverRepository.findAll());
+        return from(metadataResolverRepository.findAll()).toList();
     }
 
     private Optional<MetadataResolversPositionOrderContainer> getPositionOrderContainerIfExists() {
