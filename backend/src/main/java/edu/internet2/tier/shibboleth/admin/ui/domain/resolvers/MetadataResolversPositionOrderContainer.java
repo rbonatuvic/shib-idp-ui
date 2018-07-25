@@ -27,7 +27,7 @@ import java.util.List;
  * @author Dmitriy Kopylenko
  */
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Getter
 @Setter
