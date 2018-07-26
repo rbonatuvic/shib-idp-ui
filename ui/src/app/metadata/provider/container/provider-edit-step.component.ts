@@ -58,9 +58,16 @@ export class ProviderEditStepComponent implements OnDestroy {
 
         this.lock.valueChanges.subscribe(locked => this.store.dispatch(locked ? new LockEditor() : new UnlockEditor()));
 
-        this.validators$ = this.store.select(fromProvider.getProviderNames).pipe(
-            withLatestFrom(this.definition$, this.provider$),
-            map(([names, def, provider]) => def.getValidators(names.filter(n => n !== provider.name)))
+        this.validators$ = this.definition$.pipe(
+            withLatestFrom(
+                this.store.select(fromProvider.getProviderNames),
+                this.store.select(fromProvider.getProviderXmlIds),
+                this.provider$
+            ),
+            map(([def, names, ids, provider]) => def.getValidators(
+                names.filter(n => n !== provider.name),
+                ids.filter(id => id !== provider.xmlId)
+            ))
         );
 
         this.model$ = this.schema$.pipe(
