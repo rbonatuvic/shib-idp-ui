@@ -8,6 +8,7 @@ export interface MetadataProvider extends MetadataBase {
     '@type': string;
     enabled: boolean;
     resourceId: string;
+    xmlId: string;
     sortKey: number;
     metadataFilters: MetadataFilter[];
 }

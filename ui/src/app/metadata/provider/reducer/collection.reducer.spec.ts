@@ -33,6 +33,7 @@ describe('Provider Collection Reducer', () => {
                     enabled: true,
                     createdDate: new Date().toLocaleDateString(),
                     sortKey: 1,
+                    xmlId: 'foo',
                     metadataFilters: []
                 },
                 {
@@ -42,6 +43,7 @@ describe('Provider Collection Reducer', () => {
                     enabled: false,
                     createdDate: new Date().toLocaleDateString(),
                     sortKey: 2,
+                    xmlId: 'bar',
                     metadataFilters: []
                 }
             ];

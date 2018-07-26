@@ -95,3 +95,4 @@ export const getProviderIds = createSelector(getCollectionState, fromCollection.
 export const getProviderCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
 
 export const getProviderNames = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.name));
+export const getProviderXmlIds = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.xmlId));
