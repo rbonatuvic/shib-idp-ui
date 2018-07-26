@@ -17,6 +17,9 @@
         "xmlId",
         "metadataURL"
     ],
+    "dependencies": {
+        "initializeFromBackupFile": {"required": ["backingFile", "backupFileInitNextRefreshDelay"]}
+    },
     "anyOf": [
         {
             "properties": {
@@ -27,7 +30,8 @@
                 }
             },
             "required": [
-                "backingFile"
+                "backingFile",
+                "backupFileInitNextRefreshDelay"
             ]
         },
         {
