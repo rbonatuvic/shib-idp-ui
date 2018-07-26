@@ -16,9 +16,24 @@
                         "maxValidityInterval": {
                             "title": "Max Validity Interval",
                             "description": "Defines the window within which the metadata is valid.",
-                            "type": "number",
-                            "minimum": 0,
-                            "default": 0
+                            "type": "string",
+                            "placeholder": "Duration",
+                            "widget": {
+                                "id": "datalist",
+                                "data": [
+                                    "PT0S",
+                                    "PT30S",
+                                    "PT1M",
+                                    "PT10M",
+                                    "PT30M",
+                                    "PT1H",
+                                    "PT4H",
+                                    "PT12H",
+                                    "PT24H"
+                                ]
+                            },
+                            "default": null,
+                            "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                         }
                     }
                 },
