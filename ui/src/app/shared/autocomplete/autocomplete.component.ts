@@ -212,12 +212,14 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     handleInputChange(query: string): void {
         query = query || '';
+
         const queryEmpty = query.length === 0;
         const autoselect = this.hasAutoselect;
         const optionsAvailable = this.matches.length > 0;
         const searchForOptions = !queryEmpty;
+        const focused = this.state.currentState.focused !== null;
         this.state.setState({
-            menuOpen: searchForOptions && !this.matches.some(m => m === query),
+            menuOpen: searchForOptions && (focused && !this.matches.some(m => m === query)),
             selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null
         });
         this.propagateChange(query);
