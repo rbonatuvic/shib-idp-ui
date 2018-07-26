@@ -231,14 +231,16 @@
                     "title": "HTTP Max Cache Entries",
                     "description": "The maximum number of responses written to cache. This attribute is incompatible with httpClientRef.",
                     "placeholder": "",
-                    "default": 0
+                    "default": 0,
+                    "minimum": 0
                 },
                 "httpMaxCacheEntrySize": {
                     "type": "integer",
                     "title": "HTTP Max Cache Entry Size",
                     "description": "The maximum response body size that may be cached, in bytes. This attribute is incompatible with httpClientRef.",
                     "placeholder": "",
-                    "default": 0
+                    "default": 0,
+                    "minimum": 0
                 }
             }
         }
