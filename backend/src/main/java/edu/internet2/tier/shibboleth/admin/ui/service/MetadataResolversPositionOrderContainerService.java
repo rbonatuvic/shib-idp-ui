@@ -18,4 +18,6 @@ public interface MetadataResolversPositionOrderContainerService {
     void addOrUpdatePositionOrderContainer(MetadataResolversPositionOrderContainer metadataResolversPositionOrderContainer);
 
     List<MetadataResolver> getAllMetadataResolversInDefinedOrderOrUnordered();
+
+    void appendPositionOrderForNew(MetadataResolver metadataResolver);
 }

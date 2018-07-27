@@ -104,6 +104,7 @@ public class MetadataResolversController {
 
         newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
+        positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
         persistedResolver.updateVersion();
 
         persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();

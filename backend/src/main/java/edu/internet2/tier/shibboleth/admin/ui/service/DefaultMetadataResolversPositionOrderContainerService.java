@@ -62,6 +62,14 @@ public class DefaultMetadataResolversPositionOrderContainerService implements Me
         return getPositionOrderContainerIfExists().orElseGet(MetadataResolversPositionOrderContainer::new);
     }
 
+    @Override
+    @Transactional
+    public void appendPositionOrderForNew(MetadataResolver metadataResolver) {
+        MetadataResolversPositionOrderContainer positionOrderContainer = retrieveExistingOrEmpty();
+        positionOrderContainer.getResourceIds().add(metadataResolver.getResourceId());
+        positionOrderContainerRepository.save(positionOrderContainer);
+    }
+
     private Optional<MetadataResolversPositionOrderContainer> getPositionOrderContainerIfExists() {
         Iterator<MetadataResolversPositionOrderContainer> iter = positionOrderContainerRepository.findAll().iterator();
         return iter.hasNext() ? Optional.of(iter.next()) : Optional.empty();
