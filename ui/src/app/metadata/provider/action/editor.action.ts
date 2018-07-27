@@ -8,7 +8,10 @@ export enum EditorActionTypes {
 
     SELECT_PROVIDER_TYPE = '[Provider Editor] Select Provider Type',
 
-    CLEAR = '[Provider Editor] Clear'
+    CLEAR = '[Provider Editor] Clear',
+
+    LOCK = '[Provider Editor] Lock',
+    UNLOCK = '[Provider Editor] Unlock'
 }
 
 export class UpdateStatus implements Action {
@@ -45,10 +48,20 @@ export class ClearEditor implements Action {
     readonly type = EditorActionTypes.CLEAR;
 }
 
+export class LockEditor implements Action {
+    readonly type = EditorActionTypes.LOCK;
+}
+
+export class UnlockEditor implements Action {
+    readonly type = EditorActionTypes.UNLOCK;
+}
+
 export type EditorActionUnion =
     | UpdateStatus
     | LoadSchemaRequest
     | LoadSchemaSuccess
     | LoadSchemaFail
     | SelectProviderType
-    | ClearEditor;
+    | ClearEditor
+    | LockEditor
+    | UnlockEditor;

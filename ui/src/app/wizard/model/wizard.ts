@@ -7,7 +7,7 @@ export interface Wizard<T> {
         formatter(changes: Partial<T>, schema?: any)
     };
 
-    getValidators?(params: any): { [key: string]: any };
+    getValidators?(...args: any[]): { [key: string]: any };
 }
 
 export interface WizardStep {
@@ -16,6 +16,7 @@ export interface WizardStep {
     initialValues?: WizardValue[];
     schema?: string;
     index: number;
+    locked?: boolean;
 }
 
 export interface WizardValue {

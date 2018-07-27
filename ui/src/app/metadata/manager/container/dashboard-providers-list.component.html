@@ -8,13 +8,17 @@
             </div>
         </div>
         <div class="p-3">
-            <a *ngFor="let provider of providers$ | async"
-                [routerLink]="['/', 'metadata', 'provider', provider.resourceId, 'edit']">
-                {{ provider.name }}
-            </a>
+            <ul class="list-unstyled m-0">
+                <li *ngFor="let provider of providers$ | async; index as i"
+                    [class.mt-2]="i > 0">
+                    <provider-item
+                        [provider]="provider"
+                        [isOpen]="(providersOpen$ | async)[provider.resourceId]"
+                        (select)="edit(provider)"
+                        (toggle)="toggleEntity(provider)">
+                    </provider-item>
+                </li>
+            </ul>
         </div>
     </div>
 </section>
-
-
-

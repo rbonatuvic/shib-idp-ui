@@ -6,6 +6,7 @@ export interface EditorState {
     loading: boolean;
     schema: any;
     type: string;
+    locked: boolean;
 }
 
 export const initialState: EditorState = {
@@ -13,7 +14,8 @@ export const initialState: EditorState = {
     schemaPath: null,
     loading: false,
     schema: null,
-    type: null
+    type: null,
+    locked: false
 };
 
 export function reducer(state = initialState, action: EditorActionUnion): EditorState {
@@ -59,6 +61,20 @@ export function reducer(state = initialState, action: EditorActionUnion): Editor
                 schema: initialState.schema
             };
         }
+
+        case EditorActionTypes.LOCK: {
+            return {
+                ...state,
+                locked: true
+            };
+        }
+
+        case EditorActionTypes.UNLOCK: {
+            return {
+                ...state,
+                locked: false
+            };
+        }
         default: {
             return state;
         }
@@ -66,6 +82,7 @@ export function reducer(state = initialState, action: EditorActionUnion): Editor
 }
 
 export const getSchema = (state: EditorState) => state.schema;
+export const getLocked = (state: EditorState) => state.locked;
 
 export const isEditorValid = (state: EditorState) =>
     !Object.keys(state.status).some(key => state.status[key] === ('INVALID'));

@@ -1,0 +1,79 @@
+<div class="card">
+    <div class="card-header" (click)="toggle.emit(provider)" (keydown.space)="toggle.emit(provider)" tabindex="0">
+        <div class="row">
+            <div class="reorder-card">
+                <p class="text-center text-primary font-weight-bold">1</p>
+                <button class="btn btn-link" disabled>
+                    <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-link pull-right" disabled>
+                    <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="col-9 clearfix">
+                <div class="w-10 pr-3 pull-left">
+                    <i class="fa fa-fw fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
+                    &nbsp;
+                    <span class="label-icon sr-hidden">
+                        <i class="fa fa-fw fa-3x text-info fa-cubes"></i>
+                    </span>
+                </div>
+                <div>
+                    {{ provider.name }}
+                    <i *ngIf="!provider.enabled" class="fa fa-fw" [ngClass]="{
+                        'fa-check-circle text-success': provider.enabled,
+                        'fa-times-circle text-danger': !provider.enabled
+                    }"></i>
+                    <small class="d-block">{{ provider['@type'] }}</small>
+                </div>
+            </div>
+            <div class="col-2 text-right">
+                <button class="btn btn-primary btn-filter pull-left">
+                        <i class="fa fa-filter"></i>&nbsp;
+                        <span class="label">Active Filters</span>&nbsp;
+                        <span class="badge badge-light">{{ provider.metadataFilters.length }}</span>
+                </button>
+                <button class="btn btn-link pull-right" (click)="select.emit(provider)" aria-label="Edit selected service provider">
+                    <i class="fa fa-fw fa-edit fa-2x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="collapse" [ngClass]="{'show': isOpen}">
+        <div class="card-body" tabindex="0">
+            <div class="row">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col text-right font-weight-bold">
+                            Metadata Provider Name:
+                        </div>
+                        <div class="col">{{ provider.name }}</div>
+                        <div class="col text-right font-weight-bold">
+                            Created Date:
+                        </div>
+                        <div class="col">{{ provider.createdDate | date:'medium' }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right font-weight-bold">
+                            Metadata Provider Type:
+                        </div>
+                        <div class="col">{{ provider['@type'] }}</div>
+                        <div class="col text-right font-weight-bold">
+                            Metadata Provider Status:
+                        </div>
+                        <div class="col" *ngIf="!provider.enabled">
+                            <i class="fa fa-fw" [ngClass]="{
+                                'fa-check-circle text-success': provider.enabled,
+                                'fa-times-circle text-danger': !provider.enabled
+                            }"></i>
+                            <span *ngIf="provider.enabled" i18n="@@value--provider">Enabled</span>
+                            <span *ngIf="!provider.enabled" i18n="@@value--disabled">Disabled</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -6,6 +6,19 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
     ...BaseMetadataProviderEditor,
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
+    getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
+        const validators = BaseMetadataProviderEditor.getValidators(namesList);
+        validators['/xmlId'] = (value, property, form) => {
+            const err = xmlIdList.indexOf(value) > -1 ? {
+                code: 'INVALID_ID',
+                path: `#${property.path}`,
+                message: 'ID must be unique.',
+                params: [value]
+            } : null;
+            return err;
+        };
+        return validators;
+    },
     steps: [
         {
             id: 'common',
@@ -77,6 +90,7 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             label: 'Advanced Settings',
             index: 4,
             initialValues: [],
+            locked: true,
             schema: 'assets/schema/provider/filebacked-http-advanced.schema.json'
         }
     ]

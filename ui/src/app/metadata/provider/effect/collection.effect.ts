@@ -108,7 +108,7 @@ export class CollectionEffects {
     );
 
     @Effect()
-    addResolverSuccessReload$ = this.actions$.pipe(
+    addProviderSuccessReload$ = this.actions$.pipe(
         ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
         map(provider => new LoadProviderRequest())

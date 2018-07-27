@@ -3,7 +3,7 @@
         <ng-container *ngSwitchDefault>
             <ng-container *ngIf="property.name">
                 <strong class="text-primary d-block" role="term">{{ property.name }}</strong>
-                <span class="d-block" role="definition">{{ property.value || '-' }}</span>
+                <span class="d-block" role="definition">{{ property.value || property.value === false ? property.value : '-' }}</span>
             </ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'object'">

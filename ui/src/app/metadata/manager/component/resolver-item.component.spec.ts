@@ -2,10 +2,13 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EntityItemComponent } from './entity-item.component';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { ResolverItemComponent } from './resolver-item.component';
 
 describe('Resolver List item', () => {
-    let fixture: ComponentFixture<EntityItemComponent>;
-    let instance: EntityItemComponent;
+    let fixture: ComponentFixture<ResolverItemComponent>;
+    let instance: ResolverItemComponent;
+
+    let resolver = new FileBackedHttpMetadataResolver({ entityId: 'foo', serviceProviderName: 'bar' });
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -13,11 +16,14 @@ describe('Resolver List item', () => {
             imports: [
                 NoopAnimationsModule
             ],
-            declarations: [EntityItemComponent],
+            declarations: [
+                ResolverItemComponent
+            ],
         });
 
-        fixture = TestBed.createComponent(EntityItemComponent);
+        fixture = TestBed.createComponent(ResolverItemComponent);
         instance = fixture.componentInstance;
+        instance.entity = resolver;
     });
 
     it('should compile', () => {

@@ -1,6 +1,251 @@
 {
     "type": "object",
-    "title": "Advanced Settings",
-    "order": [],
-    "properties": {}
+    "title": "",
+    "properties": {
+        "httpMetadataResolverAttributes": {
+            "order": [],
+            "type": "object",
+            "fieldsets": [
+                {
+                    "title": "HTTP Connection Attributes",
+                    "type": "section",
+                    "fields": [
+                        "connectionRequestTimeout",
+                        "connectionTimeout",
+                        "socketTimeout"
+                    ]
+                },
+                {
+                    "title": "HTTP Security Attributes",
+                    "type": "section",
+                    "fields": [
+                        "disregardTLSCertificate"
+                    ]
+                },
+                {
+                    "title": "HTTP Proxy Attributes",
+                    "type": "section",
+                    "fields": [
+                        "proxyHost",
+                        "proxyPort",
+                        "proxyUser",
+                        "proxyPassword"
+                    ]
+                },
+                {
+                    "title": "HTTP Caching Attributes",
+                    "type": "section",
+                    "fields": [
+                        "httpCaching",
+                        "httpCacheDirectory",
+                        "httpMaxCacheEntries",
+                        "httpMaxCacheEntrySize"
+                    ]
+                },
+                {
+                    "title": "Unused Attributes",
+                    "type": "hidden",
+                    "fields": [
+                        "tlsTrustEngineRef",
+                        "httpClientSecurityParametersRef",
+                        "httpClientRef"
+                    ]
+                }
+            ],
+            "properties": {
+                "httpClientRef": {
+                    "type": "string",
+                    "title": "",
+                    "description": "",
+                    "placeholder": "",
+                    "widget": "hidden",
+                    "default": ""
+                },
+                "connectionRequestTimeout": {
+                    "type": "string",
+                    "title": "Connection Request Timeout",
+                    "description": "The maximum amount of time to wait for a connection to be returned from the HTTP client's connection pool manager. Set to PT0S to disable. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "Duration",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "default": null,
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "connectionTimeout": {
+                    "type": "string",
+                    "title": "Connection Timeout",
+                    "description": "The maximum amount of time to wait to establish a connection with the remote server. Set to PT0S to disable. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "Duration",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "default": null,
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "socketTimeout": {
+                    "type": "string",
+                    "title": "Socket Timeout",
+                    "description": "The maximum amount of time to wait between two consecutive packets while reading from the socket connected to the remote server. Set to PT0S to disable. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "Duration",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "default": null,
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "disregardTLSCertificate": {
+                    "type": "boolean",
+                    "title": "Disregard TLS Certificate?",
+                    "description": "If true, no TLS certificate checking will take place over an HTTPS connection. This attribute is incompatible with httpClientRef. (Be careful with this setting, it is typically only used during testing. See the HttpClientConfiguration topic for more information.)",
+                    "widget": {
+                        "id": "boolean-radio"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                true
+                            ],
+                            "description": "True"
+                        },
+                        {
+                            "enum": [
+                                false
+                            ],
+                            "description": "False"
+                        }
+                    ],
+                    "default": false
+                },
+                "tlsTrustEngineRef": {
+                    "type": "string",
+                    "title": "",
+                    "description": "",
+                    "placeholder": "",
+                    "widget": "hidden",
+                    "default": ""
+                },
+                "httpClientSecurityParametersRef": {
+                    "type": "string",
+                    "title": "",
+                    "description": "",
+                    "placeholder": "",
+                    "widget": "hidden",
+                    "default": ""
+                },
+                "proxyHost": {
+                    "type": "string",
+                    "title": "Proxy Host",
+                    "description": "The hostname of the HTTP proxy through which connections will be made. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "",
+                    "default": ""
+                },
+                "proxyPort": {
+                    "type": "string",
+                    "title": "Proxy Port",
+                    "description": "The port of the HTTP proxy through which connections will be made. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "",
+                    "default": ""
+                },
+                "proxyUser": {
+                    "type": "string",
+                    "title": "Proxy User",
+                    "description": "The username used with the HTTP proxy through which connections will be made. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "",
+                    "default": ""
+                },
+                "proxyPassword": {
+                    "type": "string",
+                    "title": "Proxy Password",
+                    "description": "The password used with the HTTP proxy through which connections will be made. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "",
+                    "default": ""
+                },
+                "httpCaching": {
+                    "type": "string",
+                    "title": "HTTP Caching?",
+                    "description": "The type of low-level HTTP caching to perform. There are three choices: 'none' indicates the HTTP response is not cached by the client library, 'file' indicates the HTTP response is written to disk (but will not survive a restart), 'memory' indicates the HTTP response is stored in memory. This attribute is incompatible with httpClientRef and its value may not be specified as a bean property. Some metadata providers, most notably the reloading 'batch-oriented' providers, implement HTTP caching at a higher layer and tend to work best with httpCaching='none'.",
+                    "placeholder": "Select Caching Type",
+                    "widget": {
+                        "id": "select"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "none"
+                            ],
+                            "description": "None"
+                        },
+                        {
+                            "enum": [
+                                "file"
+                            ],
+                            "description": "File"
+                        },
+                        {
+                            "enum": [
+                                "memory"
+                            ],
+                            "description": "Memory"
+                        }
+                    ]
+                },
+                "httpCacheDirectory": {
+                    "type": "string",
+                    "title": "HTTP Cache Directory",
+                    "description": "If httpCaching='file', this attribute specifies where retrieved files are to be cached. This attribute is incompatible with httpClientRef.",
+                    "placeholder": ""
+                },
+                "httpMaxCacheEntries": {
+                    "type": "integer",
+                    "title": "HTTP Max Cache Entries",
+                    "description": "The maximum number of responses written to cache. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "",
+                    "default": 0,
+                    "minimum": 0
+                },
+                "httpMaxCacheEntrySize": {
+                    "type": "integer",
+                    "title": "HTTP Max Cache Entry Size",
+                    "description": "The maximum response body size that may be cached, in bytes. This attribute is incompatible with httpClientRef.",
+                    "placeholder": "",
+                    "default": 0,
+                    "minimum": 0
+                }
+            }
+        }
+    }
 }
