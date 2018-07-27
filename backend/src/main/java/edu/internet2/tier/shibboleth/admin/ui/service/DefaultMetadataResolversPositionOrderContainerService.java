@@ -57,6 +57,11 @@ public class DefaultMetadataResolversPositionOrderContainerService implements Me
         return from(metadataResolverRepository.findAll()).toList();
     }
 
+    @Override
+    public MetadataResolversPositionOrderContainer retrieveExistingOrEmpty() {
+        return getPositionOrderContainerIfExists().orElseGet(MetadataResolversPositionOrderContainer::new);
+    }
+
     private Optional<MetadataResolversPositionOrderContainer> getPositionOrderContainerIfExists() {
         Iterator<MetadataResolversPositionOrderContainer> iter = positionOrderContainerRepository.findAll().iterator();
         return iter.hasNext() ? Optional.of(iter.next()) : Optional.empty();

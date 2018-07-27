@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,9 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OrderColumn;
 import java.util.ArrayList;
@@ -27,12 +30,17 @@ import java.util.List;
  * @author Dmitriy Kopylenko
  */
 @Entity
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class MetadataResolversPositionOrderContainer extends AbstractAuditable {
+public class MetadataResolversPositionOrderContainer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @JsonIgnore
+    protected Long id;
 
     @ElementCollection
     @CollectionTable(name="METADATA_RESOLVER_POSITION_ORDER", joinColumns=@JoinColumn(name="METADATA_RESOLVER_POSITION_ORDER_CONTAINER_ID"))

@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface MetadataResolversPositionOrderContainerService {
 
+    MetadataResolversPositionOrderContainer retrieveExistingOrEmpty();
+
     void addOrUpdatePositionOrderContainer(MetadataResolversPositionOrderContainer metadataResolversPositionOrderContainer);
 
     List<MetadataResolver> getAllMetadataResolversInDefinedOrderOrUnordered();
