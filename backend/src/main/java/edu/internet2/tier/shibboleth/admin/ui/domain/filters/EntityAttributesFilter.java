@@ -51,15 +51,12 @@ public class EntityAttributesFilter extends MetadataFilter {
     @Transient
     private RelyingPartyOverridesRepresentation relyingPartyOverrides;
 
-    @PostLoad
     public void intoTransientRepresentation() {
         this.attributeRelease = getAttributeReleaseListFromAttributeList(this.attributes);
         this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(attributes);
         updateVersion();
     }
 
-    @PrePersist
-    @PreUpdate
     public void fromTransientRepresentation() {
         List<org.opensaml.saml.saml2.core.Attribute> attributeList = new ArrayList<>();
         attributeList.addAll(getAttributeListFromAttributeReleaseList(this.attributeRelease));

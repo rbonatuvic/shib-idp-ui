@@ -103,10 +103,11 @@ public class MetadataResolversController {
         }
 
         newResolver.convertFiltersFromTransientRepresentationIfNecessary();
-        MetadataResolver persistedResolver = resolverRepository.save(newResolver);
+        resolverRepository.save(newResolver);
+        MetadataResolver persistedResolver = resolverRepository.findByResourceId(newResolver.getResourceId());
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
-        persistedResolver.updateVersion();
 
+        persistedResolver.updateVersion();
         persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
@@ -131,12 +132,12 @@ public class MetadataResolversController {
 
         updatedResolver.setAudId(existingResolver.getAudId());
 
-        //If one needs to update filters, it should be dealt with via filters endpoints
-        updatedResolver.setMetadataFilters(existingResolver.getMetadataFilters());
+        updatedResolver.convertFiltersFromTransientRepresentationIfNecessary();
+        resolverRepository.save(updatedResolver);
+        MetadataResolver persistedResolver = resolverRepository.findByResourceId(updatedResolver.getResourceId());
 
-        MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
         persistedResolver.updateVersion();
-
+        persistedResolver.convertFiltersFromTransientRepresentationIfNecessary();
         return ResponseEntity.ok(persistedResolver);
     }
 
