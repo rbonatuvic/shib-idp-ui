@@ -13,20 +13,20 @@ export class MetadataFilterService {
     constructor(
         private http: HttpClient
     ) { }
-    query(): Observable<MetadataFilter[]> {
-        return this.http.get<MetadataFilter[]>(`${this.base}${this.endpoint}`, {});
+    query(providerId: string): Observable<MetadataFilter[]> {
+        return this.http.get<MetadataFilter[]>(`${this.base}${this.endpoint}/${providerId}/Filters`);
     }
 
-    find(id: string): Observable<MetadataFilter> {
+    find(providerId: string, filterId: string): Observable<MetadataFilter> {
         // console.log(id);
-        return this.http.get<MetadataFilter>(`${this.base}${this.endpoint}/${id}`);
+        return this.http.get<MetadataFilter>(`${this.base}${this.endpoint}/${providerId}/Filters/${ filterId }`);
     }
 
-    update(filter: MetadataFilter): Observable<MetadataFilter> {
-        return this.http.put<MetadataFilter>(`${this.base}${this.endpoint}/${filter.id}`, filter);
+    update(providerId: string, filter: MetadataFilter): Observable<MetadataFilter> {
+        return this.http.put<MetadataFilter>(`${this.base}${this.endpoint}/${providerId}/Filters/${ filter.resourceId }`, filter);
     }
 
-    save(filter: MetadataFilter): Observable<MetadataFilter> {
-        return this.http.post<MetadataFilter>(`${this.base}${this.endpoint}`, filter);
+    save(providerId: string, filter: MetadataFilter): Observable<MetadataFilter> {
+        return this.http.post<MetadataFilter>(`${this.base}${this.endpoint}/${providerId}/Filters`, filter);
     }
 }

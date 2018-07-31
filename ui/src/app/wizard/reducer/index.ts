@@ -65,3 +65,5 @@ export const getCurrent = createSelector(getWizardIndex, getWizardDefinition, ge
 export const getNext = createSelector(getWizardIndex, getWizardDefinition, getNextFn);
 export const getLast = createSelector(getWizardIndex, getWizardDefinition, getLastFn);
 export const getModel = createSelector(getCurrent, getModelFn);
+
+export const getRoutes = createSelector(getWizardDefinition, d => d.steps.map(step => ({ path: step.id, label: step.label })));

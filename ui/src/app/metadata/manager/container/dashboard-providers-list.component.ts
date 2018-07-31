@@ -29,8 +29,16 @@ export class DashboardProvidersListComponent {
         this.providersOpen$ = store.select(fromDashboard.getOpenProviders);
     }
 
+    view(id: string, page: string): void {
+        this.router.navigate(['metadata', 'provider', id, page]);
+    }
+
     edit(provider: MetadataProvider): void {
-        this.router.navigate(['metadata', 'provider', provider.resourceId, 'edit']);
+        this.view(provider.resourceId, 'edit');
+    }
+
+    gotoFilters(provider: MetadataProvider): void {
+        this.view(provider.resourceId, 'filters');
     }
 
     toggleEntity(provider: MetadataProvider): void {
