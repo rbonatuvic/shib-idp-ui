@@ -182,8 +182,12 @@ public class MetadataResolversController {
         }
         */
 
+        // if document exists
+        // indexWriter.updateDocument(term, document) <-- what's the term?
+        // else, create...
         Document document = new Document();
         document.add(new StringField("id", resolver.getResourceId(), Field.Store.YES));
+
         try {
             indexWriter.addDocument(document);
         } catch (IOException e) {
