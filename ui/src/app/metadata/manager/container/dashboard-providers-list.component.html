@@ -15,6 +15,7 @@
                         [provider]="provider"
                         [isOpen]="(providersOpen$ | async)[provider.resourceId]"
                         (select)="edit(provider)"
+                        (viewFilters)="gotoFilters(provider)"
                         (toggle)="toggleEntity(provider)">
                     </provider-item>
                 </li>

@@ -53,7 +53,7 @@ export class SelectFilterFail implements Action {
 export class LoadFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.LOAD_FILTER_REQUEST;
 
-    constructor() { }
+    constructor(public payload: string) { }
 }
 
 export class LoadFilterSuccess implements Action {

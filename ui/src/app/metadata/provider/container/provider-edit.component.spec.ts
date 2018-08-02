@@ -11,6 +11,7 @@ import * as fromWizard from '../../../wizard/reducer';
 import { SharedModule } from '../../../shared/shared.module';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import { FileBackedHttpMetadataProviderEditor } from '../model';
+import { ProviderEditorNavComponent } from '../component/provider-editor-nav.component';
 
 @Component({
     template: `
@@ -55,7 +56,8 @@ describe('Provider Edit Component', () => {
             ],
             declarations: [
                 ProviderEditComponent,
-                TestHostComponent
+                TestHostComponent,
+                ProviderEditorNavComponent
             ],
             providers: [
                 { provide: ActivatedRoute, useValue: activatedRoute },
@@ -79,13 +81,7 @@ describe('Provider Edit Component', () => {
 
     describe('setIndex method', () => {
         it('should interrupt event default and dispatch an event', () => {
-            const ev = <any>{
-                preventDefault: jasmine.createSpy('preventDefault'),
-                stopPropagation: jasmine.createSpy('stopPropagation')
-            };
-            app.setIndex(ev, 'common');
-            expect(ev.preventDefault).toHaveBeenCalled();
-            expect(ev.stopPropagation).toHaveBeenCalled();
+            app.setIndex('common');
             expect(store.dispatch).toHaveBeenCalled();
         });
     });

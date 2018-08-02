@@ -58,18 +58,19 @@ export class FilterEffects {
         )
     );
 
+    /*
     @Effect({ dispatch: false })
     saveFilterSuccess$ = this.actions$.pipe(
         ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
         switchMap(() => this.router.navigate(['/dashboard']))
     );
-
     @Effect()
     cancelChanges$ = this.actions$.pipe(
         ofType<CancelCreateFilter>(FilterActionTypes.CANCEL_CREATE_FILTER),
         map(() => new LoadFilterRequest()),
         tap(() => this.router.navigate(['/dashboard']))
     );
+    */
 
     constructor(
         private store: Store<fromRoot.State>,

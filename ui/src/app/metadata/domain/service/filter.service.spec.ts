@@ -6,6 +6,8 @@ import { EntityAttributesFilter } from '../entity';
 
 describe(`Metadata Filter Service`, () => {
 
+    const provider = 'foo';
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -21,53 +23,53 @@ describe(`Metadata Filter Service`, () => {
     describe('query method', () => {
         it(`should send an expected GET[] request`, async(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
-                service.query().subscribe();
+                service.query(provider).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `${service.base}${service.endpoint}`
+                    return req.url === `${service.base}${service.endpoint}/${provider}/Filters`
                         && req.method === 'GET';
-                }, `GET MetadataResolvers collection`);
+                }, `GET MetadataFilter collection`);
             }
         )));
     });
     describe('find method', () => {
         it(`should send an expected GET request`, async(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
-                const id = 'foo';
-                service.find(id).subscribe();
+                const id = 'bar';
+                service.find(provider, id).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `${service.base}${service.endpoint}/${id}`
+                    return req.url === `${service.base}${service.endpoint}/${provider}/Filters/${id}`
                         && req.method === 'GET';
-                }, `GET MetadataResolvers collection`);
+                }, `GET MetadataFilter`);
             }
         )));
     });
     describe('update method', () => {
         it(`should send an expected PUT request`, async(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
-                const id = 'foo';
-                const filter = new EntityAttributesFilter({ id });
-                service.update(filter).subscribe();
+                const id = 'bar';
+                const filter = new EntityAttributesFilter({ resourceId: id });
+                service.update(provider, filter).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `${service.base}${service.endpoint}/${id}`
+                    return req.url === `${service.base}${service.endpoint}/${provider}/Filters/${ id }`
                         && req.method === 'PUT';
-                }, `PUT (update) MetadataResolvers collection`);
+                }, `PUT (update) MetadataFilter`);
             }
         )));
     });
     describe('save method', () => {
         it(`should send an expected POST request`, async(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
-                const id = 'foo';
+                const id = 'bar';
                 const filter = new EntityAttributesFilter({ id });
-                service.save(filter).subscribe();
+                service.save(provider, filter).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `${service.base}${service.endpoint}`
+                    return req.url === `${service.base}${service.endpoint}/${provider}/Filters`
                         && req.method === 'POST';
-                }, `POST MetadataResolvers collection`);
+                }, `POST MetadataFilter`);
             }
         )));
     });

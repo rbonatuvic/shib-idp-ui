@@ -73,7 +73,7 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         return {
             attributeRelease: this.attributeRelease,
             relyingPartyOverrides: this.relyingPartyOverrides,
-            entityAttributesFilterTarget: { ...this.entityAttributesFilterTarget },
+            entityAttributesFilterTarget: this.entityAttributesFilterTarget,
             filterEnabled: this.filterEnabled,
             name: this.name,
             '@type': 'EntityAttributes'

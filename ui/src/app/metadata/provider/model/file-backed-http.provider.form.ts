@@ -35,7 +35,7 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
             schema: 'assets/schema/provider/filebacked-http-reloading.schema.json'
         },
         {
-            id: 'filters',
+            id: 'plugins',
             label: 'Metadata Filter Plugins',
             index: 4,
             initialValues: [
@@ -58,11 +58,6 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
     ...FileBackedHttpMetadataProviderWizard,
     steps: [
         {
-            id: 'filter-list',
-            label: 'Filter List',
-            index: 0
-        },
-        {
             id: 'common',
             label: 'Common Attributes',
             index: 1,
@@ -77,7 +72,7 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             schema: 'assets/schema/provider/filebacked-http-reloading.schema.json'
         },
         {
-            id: 'filters',
+            id: 'plugins',
             label: 'Metadata Filter Plugins',
             index: 3,
             initialValues: [

@@ -50,6 +50,6 @@ describe('Metadata Root Component', () => {
 
     it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
-        expect(store.dispatch).toHaveBeenCalledTimes(4);
+        expect(store.dispatch).toHaveBeenCalledTimes(3);
     }));
 });

@@ -1,0 +1,61 @@
+<ng-container  [ngSwitch]="format">
+    <div class="dropdown" ngbDropdown #dropdown="ngbDropdown" *ngSwitchCase="formats.DROPDOWN">
+        <button
+            class="btn btn-secondary"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ngbDropdownToggle>
+            <i class="fa fa-fw fa-bars fa-lg" aria-hidden="true"></i>
+            <span class="d-inline-block mx-2">
+                <i18n-text [key]="currentPage$ | async"></i18n-text>
+            </span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" ngbDropdownMenu>
+            <a class="dropdown-item"
+                [routerLink]="['../', 'filters']"
+                routerLinkActive="active"
+                aria-label="Filter List"
+                role="button">
+                <i18n-text key="Filter List"></i18n-text>
+            </a>
+            <a *ngFor="let route of routes$ | async"
+                href=""
+                class="dropdown-item"
+                [routerLink]="['./', route.path]"
+                [ngClass]="{'active': (currentPage$ | async) === route.path}"
+                [attr.aria-label]="route.label"
+                role="button">
+                <i18n-text [key]="route.label"></i18n-text>
+                <valid-form-icon *ngIf="(invalidForms$ | async).indexOf(route.path) > -1" status="INVALID"></valid-form-icon>
+            </a>
+        </div>
+    </div>
+    <ng-container  *ngSwitchCase="formats.TABS">
+        <nav class="nav nav-pills flex-column" role="navigation">
+            <a *ngFor="let route of routes$ | async"
+                href=""
+                class="nav-link"
+                [ngClass]="{'active': (currentPage$ | async) === route.path}"
+                [routerLink]="['../', 'edit', route.path]"
+                role="button"
+                [attr.aria-label]="route.label">
+                <i18n-text [key]="route.label"></i18n-text>
+                <valid-form-icon
+                    *ngIf="(invalidForms$ | async).indexOf(route.path) > -1"
+                    status="INVALID">
+                </valid-form-icon>
+            </a>
+        </nav>
+        <hr />
+        <nav class="nav nav-pills flex-column" role="navigation">
+            <a class="nav-link"
+                [routerLink]="['../', 'filters']"
+                routerLinkActive="active"
+                aria-label="Filter List"
+                role="button">
+                <i18n-text key="Filter List"></i18n-text>
+            </a>
+        </nav>
+    </ng-container>
+</ng-container>

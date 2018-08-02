@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
 import { MetadataProvider } from '../../domain/model';
 import { EntityItemComponent } from './entity-item.component';
@@ -12,4 +12,6 @@ import { EntityItemComponent } from './entity-item.component';
 
 export class ProviderItemComponent extends EntityItemComponent {
     @Input() provider: MetadataProvider;
+
+    @Output() viewFilters: EventEmitter<MetadataProvider> = new EventEmitter();
 }
