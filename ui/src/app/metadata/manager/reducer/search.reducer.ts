@@ -25,23 +25,6 @@ export function reducer(state = initialState, action: searchActions.Actions): Se
             };
         }
 
-        case searchActions.ENTITY_FILTER: {
-            return {
-                ...state,
-                kind: action.payload,
-                loading: true
-            };
-        }
-
-        case searchActions.ENTITY_SEARCH_COMPLETE: {
-            return {
-                entities: action.payload,
-                loading: false,
-                query: state.query,
-                kind: state.kind
-            };
-        }
-
         default: {
             return state;
         }

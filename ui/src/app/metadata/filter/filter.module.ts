@@ -19,27 +19,7 @@ import { SearchIdEffects } from './effect/search.effect';
 import { FilterExistsGuard } from './guard/filter-exists.guard';
 import { DomainModule } from '../domain/domain.module';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
-
-
-export const routes: Routes = [
-    {
-        path: 'new',
-        component: NewFilterComponent,
-        canActivate: []
-    },
-    {
-        path: ':id',
-        component: FilterComponent,
-        canActivate: [FilterExistsGuard],
-        children: [
-            {
-                path: 'edit',
-                component: EditFilterComponent,
-                canDeactivate: []
-            }
-        ]
-    }
-];
+import { FilterCollectionEffects } from './effect/collection.effect';
 
 @NgModule({
     declarations: [
@@ -77,9 +57,8 @@ export class FilterModule {
 @NgModule({
     imports: [
         FilterModule,
-        RouterModule.forChild(routes),
         StoreModule.forFeature('filter', reducers),
-        EffectsModule.forFeature([FilterEffects, SearchIdEffects]),
+        EffectsModule.forFeature([FilterEffects, SearchIdEffects, FilterCollectionEffects]),
     ],
 })
 export class RootFilterModule { }

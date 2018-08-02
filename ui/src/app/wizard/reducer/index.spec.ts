@@ -83,8 +83,8 @@ describe('wizard index selectors', () => {
 
     describe('getModelFn method', () => {
         it('should return the model', () => {
-            const step = FileBackedHttpMetadataProviderWizard.steps.find(s => s.id === 'filters');
-            expect(selectors.getModelFn(step)).toEqual({ metadataFilters: [] });
+            const step = FileBackedHttpMetadataProviderWizard.steps.find(s => s.id === 'common');
+            expect(selectors.getModelFn(step)).toEqual({});
         });
     });
 });

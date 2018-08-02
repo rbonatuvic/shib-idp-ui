@@ -7,6 +7,11 @@ import { ProviderEditComponent } from './container/provider-edit.component';
 import { ProviderEditStepComponent } from './container/provider-edit-step.component';
 import { ProviderSelectComponent } from './container/provider-select.component';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
+import { NewFilterComponent } from '../filter/container/new-filter.component';
+import { FilterComponent } from '../filter/container/filter.component';
+import { FilterExistsGuard } from '../filter/guard/filter-exists.guard';
+import { EditFilterComponent } from '../filter/container/edit-filter.component';
+import { ProviderResolver } from './resolver/provider.resolver';
 
 export const ProviderRoutes: Routes = [
     {
@@ -36,13 +41,30 @@ export const ProviderRoutes: Routes = [
                         path: 'edit',
                         component: ProviderEditComponent,
                         children: [
-                            {
-                                path: 'filter-list',
-                                component: ProviderFilterListComponent
-                            },
+                            { path: '', redirectTo: 'common', pathMatch: 'prefix' },
                             {
                                 path: ':form',
                                 component: ProviderEditStepComponent
+                            }
+                        ]
+                    },
+                    {
+                        path: 'filters',
+                        component: ProviderFilterListComponent
+                    },
+                    {
+                        path: 'filter/new',
+                        component: NewFilterComponent
+                    },
+                    {
+                        path: 'filter/:id',
+                        component: FilterComponent,
+                        canActivate: [],
+                        children: [
+                            {
+                                path: 'edit',
+                                component: EditFilterComponent,
+                                canDeactivate: []
                             }
                         ]
                     }
