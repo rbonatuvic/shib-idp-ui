@@ -19,7 +19,6 @@ export class MetadataPageComponent {
         private store: Store<fromRoot.State>
     ) {
         this.store.dispatch(new LoadResolverRequest());
-        this.store.dispatch(new LoadFilterRequest());
         this.store.dispatch(new LoadDraftRequest());
         this.store.dispatch(new LoadProviderRequest());
     }

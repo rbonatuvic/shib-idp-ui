@@ -9,9 +9,9 @@ import { ClearWizard, SetDefinition, SetIndex } from '../../../wizard/action/wiz
 import { ClearEditor, LoadSchemaRequest } from '../action/editor.action';
 import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';
-import { MetadataProviderEditorTypes } from '../model';
-import { Wizard, WizardStep } from '../../../wizard/model';
+import { Wizard } from '../../../wizard/model';
 import { UpdateProviderRequest } from '../action/collection.action';
+import { NAV_FORMATS } from '../component/provider-editor-nav.component';
 
 @Component({
     selector: 'provider-edit',
@@ -24,14 +24,14 @@ export class ProviderEditComponent implements OnDestroy {
     provider$: Observable<MetadataProvider>;
     definition$: Observable<Wizard<MetadataProvider>>;
     index$: Observable<string>;
-    invalidForms$: Observable<string[]>;
-    currentPage$: Observable<WizardStep>;
 
     valid$: Observable<boolean>;
     isInvalid$: Observable<boolean>;
     status$: Observable<any>;
 
     latest: MetadataProvider;
+
+    formats = NAV_FORMATS;
 
     constructor(
         private store: Store<fromProvider.ProviderState>,
@@ -46,19 +46,12 @@ export class ProviderEditComponent implements OnDestroy {
         this.status$ = this.store.select(fromProvider.getInvalidEditorForms);
 
         let startIndex$ = this.route.firstChild ?
-            this.route.firstChild.params.pipe(map(p => p.form || 'filter-list')) :
+            this.route.firstChild.params.pipe(map(p => p.form || 'filters')) :
             this.definition$.pipe(map(d => d.steps[0].id));
 
         startIndex$
             .subscribe(index => {
                 this.store.dispatch(new SetIndex(index));
-            });
-
-        this.provider$
-            .subscribe(provider => {
-                this.store.dispatch(new SetDefinition({
-                    ...MetadataProviderEditorTypes.find(def => def.type === provider['@type'])
-                }));
             });
 
         this.index$.subscribe(id => this.go(id));
@@ -73,20 +66,13 @@ export class ProviderEditComponent implements OnDestroy {
             });
 
         this.store.select(fromProvider.getEntityChanges).subscribe(changes => this.latest = changes);
-
-        this.invalidForms$ = this.store.select(fromProvider.getInvalidEditorForms);
-        this.currentPage$ = this.index$.pipe(
-            combineLatest(this.definition$, (index, definition) => (definition.steps.find(r => r.id === index)))
-        );
     }
 
     go(id: string): void {
         this.router.navigate(['./', id], { relativeTo: this.route });
     }
 
-    setIndex($event: Event, id: string): void {
-        $event.preventDefault();
-        $event.stopPropagation();
+    setIndex(id: string): void {
         this.store.dispatch(new SetIndex(id));
     }
 

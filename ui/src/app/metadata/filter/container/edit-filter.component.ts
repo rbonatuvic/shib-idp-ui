@@ -63,12 +63,14 @@ export class EditFilterComponent implements OnInit, OnDestroy {
         private valueEmitter: ProviderValueEmitter,
         private fb: FormBuilder
     ) {
-        this.changes$ = this.store.select(fromFilter.getFilter);
+        this.changes$ = this.store.select(fromFilter.getFilterWithChanges);
         this.changes$
             .pipe(
                 distinctUntilChanged()
             )
-            .subscribe(c => this.changes = new EntityAttributesFilter(c));
+            .subscribe(c => {
+                this.changes = new EntityAttributesFilter(c);
+            });
 
         this.showMore$ = this.store.select(fromFilter.getViewingMore);
         this.selected$ = this.store.select(fromFilter.getSelected);
