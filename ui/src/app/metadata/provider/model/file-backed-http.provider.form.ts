@@ -45,8 +45,8 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
         },
         {
             id: 'summary',
-            label: 'FINISH SUMMARY AND VALIDATION',
-            index: null,
+            label: 'Finished!',
+            index: 5,
             initialValues: [],
             schema: 'assets/schema/provider/metadata-provider-summary.schema.json'
         }
