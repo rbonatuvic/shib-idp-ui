@@ -14,7 +14,7 @@
     </label>
     <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
     <auto-complete
-        [attr.id]="id"
+        [id]="id"
         [formControl]="control"
         [matches]="schema.widget.data"
         [required]="true"
