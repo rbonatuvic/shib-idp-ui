@@ -1,0 +1,225 @@
+{
+    "title": "EntityAttributes Filter",
+    "type": "object",
+    "widget": {
+        "id": "fieldset"
+    },
+    "properties": {
+        "name": {
+            "title": "Filter Name (Dashboard Display Only)",
+            "description": "Filter Name",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "Must be unique."
+            }
+        },
+        "@type": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            },
+            "default": "EntityAttributes"
+        },
+        "resourceId": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "version": {
+            "type": "integer",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "filterEnabled": {
+            "title": "Enable this Filter?",
+            "description": "Enable this Filter?",
+            "type": "boolean",
+            "default": false
+        },
+        "entityAttributesFilterTarget": {
+            "title": "Search Criteria",
+            "description": "Filter Name",
+            "type": "object",
+            "widget": {
+                "id": "filter-target"
+            },
+            "properties": {
+                "entityAttributesFilterTargetType": {
+                    "title": "",
+                    "type": "string",
+                    "default": "ENTITY",
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "ENTITY"
+                            ],
+                            "description": "Entity Id"
+                        },
+                        {
+                            "enum": [
+                                "REGEX"
+                            ],
+                            "description": "Regex"
+                        },
+                        {
+                            "enum": [
+                                "CONDITION_SCRIPT"
+                            ],
+                            "description": "Script"
+                        }
+                    ]
+                },
+                "value": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["value"]
+        },
+        "relyingPartyOverrides": {
+            "type": "object",
+            "properties": {
+                "signAssertion": {
+                    "title": "Sign the Assertion",
+                    "description": "Sign Assertion popover",
+                    "type": "boolean",
+                    "default": false
+                },
+                "dontSignResponse": {
+                    "title": "Don't sign the Response",
+                    "description": "Don't Sign Response popover",
+                    "type": "boolean",
+                    "default": false
+                },
+                "turnOffEncryption": {
+                    "title": "Turn off Encryption of Response",
+                    "description": "Turn Off Encryption of Response popover",
+                    "type": "boolean",
+                    "default": false
+                },
+                "useSha": {
+                    "title": "Use SHA1 Algorithm",
+                    "description": "Use SHA1 Signing Algorithm popover",
+                    "type": "boolean",
+                    "default": false
+                },
+                "ignoreAuthenticationMethod": {
+                    "title": "Ignore any SP-Requested Authentication Method",
+                    "description": "Ignore any SP-Requested Authentication Method popover",
+                    "type": "boolean",
+                    "default": false
+                },
+                "omitNotBefore": {
+                    "title": "Omit Not Before Condition",
+                    "type": "boolean",
+                    "description": "Omit Not Before Condition popover",
+                    "default": false
+                },
+                "responderId": {
+                    "title": "ResponderID",
+                    "description": "ResponderId popover",
+                    "type": "string"
+                },
+                "nameIdFormats": {
+                    "title": "NameID Format to Send",
+                    "placeholder": "NameID Format",
+                    "description": "NameID Format to Send popover",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string",
+                        "widget": {
+                            "id": "datalist",
+                            "data": [
+                                "urn:oasis:names:tc:SAML: 1.1:nameid-format:unspecified",
+                                "urn:oasis:names:tc:SAML: 1.1:nameid-format:emailAddress",
+                                "urn:oasis:names:tc:SAML: 2.0:nameid-format:persistent",
+                                "urn:oasis:names:tc:SAML: 2.0:nameid-format:transient"
+                            ]
+                        }
+                    },
+                    "default": null
+                },
+                "authenticationMethods": {
+                    "title": "Authentication Method to Use",
+                    "description": "Authentication Methods to Use popover",
+                    "type": "array",
+                    "placeholder": "Authentication Method",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string",
+                        "widget": {
+                            "id": "datalist",
+                            "data": [
+                                "https://refeds.org/profile/mfa",
+                                "urn:oasis:names:tc:SAML: 2.0:ac:classes:TimeSyncToken",
+                                "urn:oasis:names:tc:SAML: 2.0:ac:classes:PasswordProtectedTransport"
+                            ]
+                        }
+                    },
+                    "default": null
+                }
+            }
+        },
+        "attributeRelease": {
+            "type": "array",
+            "description": "Attribute release table - select the attributes you want to release (default unchecked)",
+            "widget": {
+                "id": "checklist",
+                "data": [
+                    { "key": "eduPersonPrincipalName", "label": "eduPersonPrincipalName (EPPN)" },
+                    { "key": "uid", "label": "uid" },
+                    { "key": "mail", "label": "mail" },
+                    { "key": "surname", "label": "surname" },
+                    { "key": "givenName", "label": "givenName" },
+                    { "key": "displayName", "label": "displayName" },
+                    { "key": "eduPersonAffiliation", "label": "eduPersonAffiliation" },
+                    { "key": "eduPersonScopedAffiliation", "label": "eduPersonScopedAffiliation" },
+                    { "key": "eduPersonPrimaryAffiliation", "label": "eduPersonPrimaryAffiliation" },
+                    { "key": "eduPersonEntitlement", "label": "eduPersonEntitlement" },
+                    { "key": "eduPersonAssurance", "label": "eduPersonAssurance" },
+                    { "key": "eduPersonUniqueId", "label": "eduPersonUniqueId" },
+                    { "key": "employeeNumber", "label": "employeeNumber" }
+                ]
+            },
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": [
+        "name"
+    ],
+    "fieldsets": [
+        {
+            "type": "group-lg",
+            "fields": [
+                "name",
+                "@type",
+                "resourceId",
+                "version",
+                "entityAttributesFilterTarget"
+            ]
+        },
+        {
+            "type": "group",
+            "fields": [
+                "filterEnabled",
+                "relyingPartyOverrides"
+            ]
+        },
+        {
+            "type": "group",
+            "fields": [
+                "attributeRelease"
+            ]
+        }
+    ]
+}

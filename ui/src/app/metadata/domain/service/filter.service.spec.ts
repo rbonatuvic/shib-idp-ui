@@ -2,7 +2,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataFilterService } from './filter.service';
-import { EntityAttributesFilter } from '../entity';
+import { EntityAttributesFilterEntity } from '../entity';
 
 describe(`Metadata Filter Service`, () => {
 
@@ -49,7 +49,7 @@ describe(`Metadata Filter Service`, () => {
         it(`should send an expected PUT request`, async(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
                 const id = 'bar';
-                const filter = new EntityAttributesFilter({ resourceId: id });
+                const filter = new EntityAttributesFilterEntity({ resourceId: id });
                 service.update(provider, filter).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
@@ -63,7 +63,7 @@ describe(`Metadata Filter Service`, () => {
         it(`should send an expected POST request`, async(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
                 const id = 'bar';
-                const filter = new EntityAttributesFilter({ id });
+                const filter = new EntityAttributesFilterEntity({ resourceId: id });
                 service.save(provider, filter).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {

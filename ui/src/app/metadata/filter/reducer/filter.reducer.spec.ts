@@ -16,7 +16,7 @@ import {
 } from '../action/collection.action';
 import { MDUI } from '../../domain/model';
 import { MetadataFilter } from '../../domain/model';
-import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
+import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 
 
 const snapshot: fromFilter.FilterState = {
@@ -72,26 +72,26 @@ describe('Filter Reducer', () => {
 
     describe(`${FilterCollectionActionTypes.ADD_FILTER} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new AddFilterRequest(new EntityAttributesFilter()));
+            const result = reducer(snapshot, new AddFilterRequest(new EntityAttributesFilterEntity()));
             expect(result.saving).toBe(true);
         });
     });
     describe(`${FilterCollectionActionTypes.UPDATE_FILTER_REQUEST} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new UpdateFilterRequest(new EntityAttributesFilter()));
+            const result = reducer(snapshot, new UpdateFilterRequest(new EntityAttributesFilterEntity()));
             expect(result.saving).toBe(true);
         });
     });
 
     describe(`${FilterCollectionActionTypes.ADD_FILTER_SUCCESS} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new AddFilterSuccess(new EntityAttributesFilter()));
+            const result = reducer(snapshot, new AddFilterSuccess(new EntityAttributesFilterEntity()));
             expect(result).toEqual(fromFilter.initialState);
         });
     });
     describe(`${FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS} action`, () => {
         it('should set saving to true', () => {
-            const update = {id: 'foo', changes: new EntityAttributesFilter({id: 'foo'})};
+            const update = {id: 'foo', changes: new EntityAttributesFilterEntity({id: 'foo'})};
             const result = reducer(snapshot, new UpdateFilterSuccess(update));
             expect(result).toEqual(fromFilter.initialState);
         });

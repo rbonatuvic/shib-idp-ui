@@ -19,7 +19,7 @@
         [matches]="schema.widget.data"
         [required]="true"
         [dropdown]="true"
-        [placeholder]="schema.placeholder"
+        [placeholder]="schema.placeholder || ''"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
         aria-label="Name ID Format (type for auto-complete)">
