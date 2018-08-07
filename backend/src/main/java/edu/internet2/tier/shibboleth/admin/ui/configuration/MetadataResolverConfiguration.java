@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.apache.http.HttpResponse;
@@ -38,7 +39,7 @@ public class MetadataResolverConfiguration {
     OpenSamlObjects openSamlObjects;
 
     @Autowired
-    IndexWriter indexWriter;
+    IndexWriterService indexWriterService;
 
     @Autowired
     MetadataResolverRepository metadataResolverRepository;
@@ -50,13 +51,22 @@ public class MetadataResolverConfiguration {
 
         List<MetadataResolver> resolvers = new ArrayList<>();
 
+        String incommonMRId = "incommonmd";
         // TODO: remove this later when we allow for creation of arbitrary metadata resolvers
         FileBackedHTTPMetadataResolver incommonMR = new FileBackedHTTPMetadataResolver(HttpClients.createMinimal(), "http://md.incommon.org/InCommon/InCommon-metadata.xml", "/tmp/incommonmd.xml"){
             @Override
             protected void initMetadataResolver() throws ComponentInitializationException {
                 super.initMetadataResolver();
 
+                IndexWriter indexWriter;
+                try {
+                    indexWriter = indexWriterService.getIndexWriter(incommonMRId);
+                } catch (IOException e) {
+                    throw new ComponentInitializationException(e);
+                }
+
                 for (String entityId: this.getBackingStore().getIndexedDescriptors().keySet()) {
+
                     Document document = new Document();
                     document.add(new StringField("id", entityId, Field.Store.YES));
                     document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
@@ -86,7 +96,7 @@ public class MetadataResolverConfiguration {
                 // let's do nothing 'cause we want to allow a refresh
             }
         };
-        incommonMR.setId("incommonmd");
+        incommonMR.setId(incommonMRId);
         incommonMR.setParserPool(openSamlObjects.getParserPool());
         incommonMR.setMetadataFilter(new MetadataFilterChain());
         incommonMR.initialize();
