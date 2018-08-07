@@ -165,10 +165,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(
-                'xsi:type': 'RequiredValidUntil',
-                maxValidityInterval: filter.maxValidityInterval
-        )
+        if(filter.xmlShouldBeGenerated()) {
+            markupBuilderDelegate.MetadataFilter(
+                    'xsi:type': 'RequiredValidUntil',
+                    maxValidityInterval: filter.maxValidityInterval
+            )
+        }
     }
 
     void constructXmlNodeForResolver(FilesystemMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {

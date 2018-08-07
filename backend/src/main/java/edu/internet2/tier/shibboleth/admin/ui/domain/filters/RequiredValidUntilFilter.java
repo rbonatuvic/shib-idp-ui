@@ -19,4 +19,8 @@ public class RequiredValidUntilFilter extends MetadataFilter {
     }
 
     private String maxValidityInterval;
+
+    public boolean xmlShouldBeGenerated() {
+        return (maxValidityInterval != null) && (!maxValidityInterval.equals("PT0S"));
+    }
 }
