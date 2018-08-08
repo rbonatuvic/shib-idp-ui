@@ -7,7 +7,7 @@ import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.comp
 import { SchemaService } from './service/schema.service';
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
 import { CustomStringComponent } from './widget/string/string.component';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CustomSelectComponent } from './widget/select/select.component';
 import { DatalistComponent } from './widget/datalist/datalist.component';
@@ -15,6 +15,8 @@ import { CustomCheckboxComponent } from './widget/check/checkbox.component';
 import { CustomTextAreaComponent } from './widget/textarea/textarea.component';
 import { CustomArrayComponent } from './widget/array/array.component';
 import { CustomIntegerComponent } from './widget/number/number.component';
+import { FilterTargetComponent } from './widget/filter-target/filter-target.component';
+import { ChecklistComponent } from './widget/check/checklist.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
@@ -25,7 +27,9 @@ export const COMPONENTS = [
     CustomCheckboxComponent,
     CustomTextAreaComponent,
     CustomArrayComponent,
-    CustomIntegerComponent
+    CustomIntegerComponent,
+    FilterTargetComponent,
+    ChecklistComponent
 ];
 
 @NgModule({
@@ -33,6 +37,7 @@ export const COMPONENTS = [
         CommonModule,
         ReactiveFormsModule,
         NgbPopoverModule,
+        NgbDropdownModule,
         SharedModule,
         SchemaFormModule.forRoot()
     ],
@@ -40,7 +45,8 @@ export const COMPONENTS = [
     entryComponents: COMPONENTS,
     exports: [
         ...COMPONENTS,
-        SchemaFormModule
+        SchemaFormModule,
+        SharedModule
     ],
 })
 export class FormModule {
