@@ -47,10 +47,11 @@
             </div>
         </div>
         <div class="col-lg-6">
+            <p *ngIf="!targets.length">You must add at least one entity id target.</p>
             <ul class="list-group list-group-sm list-group-scroll" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
                 <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let id of targets">
                     {{ id }}
-                    <button class="btn btn-link text-right">
+                    <button class="btn btn-link text-right" (click)="removeId(id)">
                         <i class="fa fa-trash fa-lg text-danger"></i>
                     </button>
                 </li>

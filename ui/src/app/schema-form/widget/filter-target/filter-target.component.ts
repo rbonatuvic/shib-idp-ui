@@ -97,6 +97,11 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         this.search.setValue(null);
     }
 
+    removeId(id: string): void {
+        let rest = this.targets.filter(target => target !== id);
+        this.setTargetValue(rest);
+    }
+
     setTargetValue(value: string[]): void {
         this.formProperty.getProperty('value').setValue(value);
     }
