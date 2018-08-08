@@ -71,6 +71,13 @@ Json schema form
     @include component-validation-state("invalid", $form-feedback-invalid-color);
 }
 
+.codearea {
+    white-space: pre-wrap;
+    resize: vertical;
+    font-family: monospace;
+    min-height: 166px;
+}
+
 @media only screen and (max-width: 1200px) {
     .form-section:not(:first-child) {
         border-left: 0px;

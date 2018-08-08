@@ -10,141 +10,27 @@
                 </div>
             </div>
         </div>
-        <div class="section-body p-4 border border-top-0 border-info">
-            <form [formGroup]="form">
-                <div class="row">
-                    <div class="col-lg-6 col-xs-9 ">
-                        <fieldset class="">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="name" class="col-sm-10">
-                                        <span>
-                                            <ng-container i18n="@@label--filter-name">
-                                                Filter Name
-                                            </ng-container>
-                                            <ng-container i18n="@@label--dashboard-display-only">
-                                                (Dashboard Display Only)
-                                            </ng-container>
-                                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
-                                        </span>
-                                    </label>
-                                    <span class="text-right col-sm-2">
-                                        <ng-template #tooltipName i18n="@@tooltip--filter-name">Filter Name</ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipName" i18n-aria-label="@@tooltip--instruction"
-                                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
-                                    </span>
-                                </div>
-                                <input id="name" type="text" class="form-control" placeholder="" formControlName="name" />
-                                <ng-container *ngIf="form.get('name').touched && form.get('name').invalid">
-                                    <small class="form-text text-danger" *ngIf="form.get('name').hasError('required')">
-                                        <ng-container i18n="@@message--service-provider-name-required">Filter Name is required</ng-container>
-                                    </small>
-                                </ng-container>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="entityId" class="col-sm-10">
-                                        <span>
-                                            <ng-container i18n="@@label--search-entity-id">Search Entity ID</ng-container>
-                                            <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
-                                            <i class="fa fa-fw fa-spinner fa-pulse fa-fw" *ngIf="processing$ | async"></i>
-                                        </span>
-                                    </label>
-                                    <span class="text-right col-sm-2">
-                                        <ng-template #tooltipFilterEntityId i18n="@@tooltip--search-entity-id">Search Entity ID</ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipFilterEntityId" i18n-aria-label="@@tooltip--instruction"
-                                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
-                                    </span>
-                                </div>
-                                <label for="entityId" class="sr-only">Search Entity ID</label>
-                                <auto-complete id="entityId" class="component-control" formControlName="entityId" limit="10" [matches]="entityIds$ | async"
-                                    [required]="true" [processing]="(processing$ | async)" (more)="onViewMore($event)">
-                                </auto-complete>
-                                <small class="form-text text-muted" i18n="@@label--min-4-chars">
-                                    Minimum 4 characters.
-                                </small>
-                                <ng-container *ngIf="form.get('entityId').touched && form.get('entityId').invalid">
-                                    <small class="form-text text-danger">
-                                        <ng-container *ngIf="form.get('entityId').hasError('required')" i18n="@@message--entity-id-required">Entity ID is required</ng-container>
-                                        <ng-container *ngIf="form.get('entityId').hasError('exists')" i18n="@@message--entity-id-not-found">Entity ID not found</ng-container>
-                                    </small>
-                                </ng-container>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="col-lg-6 col-xs-3 text-right">
-                        <button (click)="this.save()"
-                            type="submit"
-                            class="btn btn-primary"
-                            [disabled]="form.invalid || (isSaving$ | async)">
-                            <i class="fa fa-fw fa-lg"
-                                [ngClass]="{
-                                    'fa-save': !(isSaving$ | async),
-                                    'fa-spinner': (isSaving$ | async),
-                                    'fa-pulse': (isSaving$ | async)
-                                }"></i>
-                            <ng-container i18n="@@action--save">Save</ng-container>
-                        </button>
-                         &nbsp;
-                        <button (click)="this.cancel()"
-                            type="reset"
-                            class="btn btn-secondary"
-                            [disabled]="isSaving$ | async">
-                            <ng-container i18n="@@action--cancel">Cancel</ng-container>
-                        </button>
-                    </div>
-                </div>
-                <section *ngIf="form.get('entityId').valid">
-                    <hr />
-                    <div class="row" *ngIf="preview$ | async">
-                        <fieldset class="col-lg-6">
-                            <div class="form-group">
-                                <div class="row">
-                                    <label for="name" class="col-sm-10" i18n="@@label--entity-preview">
-                                        Entity ID Preview (read-only)
-                                    </label>
-                                    <span class="text-right col-sm-2">
-                                        <ng-template #tooltipName i18n="@@tooltip--entity-preview">Entity Preview</ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipName" i18n-aria-label="@@tooltip--instruction"
-                                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
-                                    </span>
-                                </div>
-                                <dl>
-                                    <dt class="text-primary" i18n="@@label--display-name">Display Name</dt>
-                                    <dd class="value">{{ (preview$ | async).displayName }}</dd>
-                                    <dt class="text-primary" i18n="@@label--description">Description</dt>
-                                    <dd class="value">{{ (preview$ | async).description || '&mdash;' }}</dd>
-                                </dl>
-                            </div>
-                            <hr />
-                        </fieldset>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse" for="filterEnabled">
-                                    <input disableValidation="true" class="custom-control-input" type="checkbox" formControlName="filterEnabled" id="filterEnabled"
-                                        name="filterEnabled" role="checkbox">
-                                    <label class="custom-control-label" i18n="@@label--enable-this-filter" for="filterEnabled" aria-label="Enable this filter?">
-                                        Enable this filter?
-                                    </label>
-                                </div>
-                                <ng-template #tooltipEnableThisFilterUponSaving i18n="@@tooltip--enable-this-filter-upon-saving">Enable this filter upon saving popover</ng-template>
-                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipEnableThisFilterUponSaving" i18n-aria-label="@@tooltip--instruction"
-                                    role="tooltip"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <relying-party-form [resolver]="filter"></relying-party-form>
-                        </div>
-                        <div class="col-lg-6">
-                            <attribute-release-form [resolver]="filter"></attribute-release-form>
-                        </div>
-                    </div>
-                </section>
-            </form>
+        <div class="section-body p-4 border border-top-0 border-info" *ngIf="schema$ | async">
+            <div class="mx-3 my-2 d-flex justify-content-end">
+                <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="!isValid || (isSaving$ | async)">
+                    <i class="fa fa-fw fa-lg" [ngClass]="{
+                                        'fa-save': !(isSaving$ | async),
+                                        'fa-spinner': (isSaving$ | async),
+                                        'fa-pulse': (isSaving$ | async)
+                                    }"></i>
+                    <ng-container i18n="@@action--save">Save</ng-container>
+                </button>
+                &nbsp;
+                <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
+                    <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                </button>
+            </div>
+            <sf-form
+                [schema]="schema$ | async"
+                [model]="model$ | async"
+                [validators]="definition.getValidators()"
+                (onChange)="valueChangeSubject.next($event)"
+                (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
         </div>
     </section>
 </div>

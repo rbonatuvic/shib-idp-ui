@@ -12,7 +12,7 @@ import * as fromFilter from '../reducer';
 import * as fromProvider from '../../provider/reducer';
 import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
-import { EntityAttributesFilter } from '../../domain/entity/filter/entity-attributes-filter';
+import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 import { MetadataFilterService } from '../../domain/service/filter.service';
 
 /* istanbul ignore next */
@@ -56,7 +56,7 @@ export class FilterCollectionEffects {
         map(filter => {
             return {
                 ...filter,
-                relyingPartyOverrides: removeNulls(new EntityAttributesFilter(filter).relyingPartyOverrides)
+                relyingPartyOverrides: removeNulls(new EntityAttributesFilterEntity(filter).relyingPartyOverrides)
             };
         }),
         combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),

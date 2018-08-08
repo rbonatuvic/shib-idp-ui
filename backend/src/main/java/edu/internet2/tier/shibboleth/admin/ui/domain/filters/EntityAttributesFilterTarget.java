@@ -16,7 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class EntityAttributesFilterTarget extends AbstractAuditable {
     public enum EntityAttributesFilterTargetType {
-        ENTITY, CONDITION_SCRIPT, CONDITION_REF
+        ENTITY, CONDITION_SCRIPT, CONDITION_REF, REGEX
     }
 
     private static Logger LOGGER = LoggerFactory.getLogger(EntityAttributesFilterTarget.class);
