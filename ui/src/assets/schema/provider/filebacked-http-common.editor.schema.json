@@ -83,7 +83,8 @@
             "type": "string",
             "readOnly": true,
             "widget": {
-                "id": "select"
+                "id": "select",
+                "disabled": true
             },
             "oneOf": [
                 {
