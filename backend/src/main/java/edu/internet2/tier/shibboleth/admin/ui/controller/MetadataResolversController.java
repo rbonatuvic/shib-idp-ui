@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.List;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
 
@@ -47,6 +49,9 @@ public class MetadataResolversController {
     @Autowired
     MetadataResolverService metadataResolverService;
 
+    @Autowired
+    MetadataResolversPositionOrderContainerService positionOrderContainerService;
+
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
         return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()));
@@ -55,7 +60,7 @@ public class MetadataResolversController {
     @GetMapping("/MetadataResolvers")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        Iterable<MetadataResolver> resolvers = resolverRepository.findAll();
+        List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
         resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
     }
@@ -99,6 +104,7 @@ public class MetadataResolversController {
 
         newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
+        positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
         persistedResolver.updateVersion();
 
         persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();

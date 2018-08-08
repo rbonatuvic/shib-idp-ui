@@ -43,6 +43,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     @Autowired
     private OpenSamlObjects openSamlObjects
 
+    @Autowired
+    private MetadataResolversPositionOrderContainerService resolversPositionOrderContainerService
+
     // TODO: enhance
     @Override
     void reloadFilters(String metadataResolverName) {
@@ -98,8 +101,11 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:type': 'ChainingMetadataProvider',
                     'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
             ) {
-                metadataResolverRepository.findAll().each { edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                    //TODO: We cannot/do not currently have the code to marshall the internal incommon chaining resolver
+
+
+                resolversPositionOrderContainerService.allMetadataResolversInDefinedOrderOrUnordered.each {
+                    edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
+                    //TODO: We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
                     if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
                         constructXmlNodeForResolver(mr, delegate) {
                             MetadataFilter(
