@@ -23,6 +23,8 @@ import {
 } from '../action/collection.action';
 import { MetadataProviderService } from '../../domain/service/provider.service';
 import * as fromProvider from '../reducer';
+import * as fromRoot from '../../../app.reducer';
+import { AddFilterSuccess, FilterCollectionActionTypes } from '../../filter/action/collection.action';
 
 
 /* istanbul ignore next */
@@ -114,10 +116,21 @@ export class CollectionEffects {
         map(provider => new LoadProviderRequest())
     );
 
+    @Effect({ dispatch: false })
+    newFilterSuccessUpdate = this.actions$.pipe(
+        ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId)),
+        map(([filter, id]) => id),
+        tap(id => {
+            this.store.dispatch(new SelectProviderRequest(id));
+        })
+    );
+
     constructor(
         private actions$: Actions,
         private router: Router,
-        private store: Store<fromProvider.ProviderState>,
+        private store: Store<fromRoot.State>,
         private providerService: MetadataProviderService
     ) { }
 } /* istanbul ignore next */
