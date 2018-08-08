@@ -57,7 +57,7 @@ export class FilterEffects {
         )
     );
 
-    @Effect()
+    @Effect({dispatch: false})
     cancelChanges$ = this.actions$.pipe(
         ofType<CancelCreateFilter>(FilterActionTypes.CANCEL_CREATE_FILTER),
         combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
