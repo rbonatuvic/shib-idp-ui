@@ -16,7 +16,7 @@ export class CustomSelectComponent extends SelectWidget implements AfterViewInit
 
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
-        if (this.schema.readOnly) {
+        if (this.schema.readOnly || this.schema.widget.disabled) {
             this.control.disable();
         } else {
             this.control.enable();
