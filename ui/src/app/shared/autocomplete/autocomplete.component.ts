@@ -13,7 +13,8 @@ import {
     SimpleChanges,
     forwardRef,
     ChangeDetectionStrategy,
-    OnChanges
+    OnChanges,
+    HostListener
 } from '@angular/core';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { Observable, Subject, Subscription, interval } from 'rxjs';

@@ -1,0 +1,16 @@
+.list-group {
+    &.list-group-sm {
+        & > .list-group-item {
+            padding: 0rem 0.75rem;
+        }
+    }
+
+    &.list-group-scroll {
+        overflow: scroll;
+        max-height: 48px * 5;
+
+        & > .list-group-item {
+            min-height: 30px;
+        }
+    }
+}
