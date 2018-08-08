@@ -46,9 +46,15 @@ export class ProviderWizardStepComponent implements OnDestroy {
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
 
-        this.validators$ = this.store.select(fromProvider.getProviderNames).pipe(
-            withLatestFrom(this.definition$),
-            map(([names, def]) => def.getValidators(names))
+        this.validators$ = this.definition$.pipe(
+            withLatestFrom(
+                this.store.select(fromProvider.getProviderNames),
+                this.store.select(fromProvider.getProviderXmlIds),
+            ),
+            map(([def, names, ids]) => def.getValidators(
+                names,
+                ids
+            ))
         );
 
         this.model$ = this.schema$.pipe(

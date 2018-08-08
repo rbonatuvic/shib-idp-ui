@@ -1,4 +1,4 @@
-<div class="widget form-group">
+<div class="widget form-group" [class.d-none]="this.getInputType() === 'hidden'">
     <label [attr.for]="id" class="d-flex justify-content-between control-label">
         <span>{{ schema.title }} <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i></span>
         <span *ngIf="schema.description">

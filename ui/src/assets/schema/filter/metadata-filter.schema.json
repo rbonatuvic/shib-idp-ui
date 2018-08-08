@@ -1,0 +1,48 @@
+{
+    "title": "MetadataFilter",
+    "type": "object",
+    "widget": {
+        "id": "fieldset"
+    },
+    "properties": {
+        "name": {
+            "title": "Metadata Filter Name (Dashboard Display Only)",
+            "description": "Metadata Filter Name",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "Must be unique."
+            }
+        },
+        "@type": {
+            "title": "Metadata Filter Type",
+            "description": "Metadata Filter Type",
+            "placeholder": "Select a metadata filter type",
+            "type": "string",
+            "widget": {
+                "id": "select"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        "EntityAttributes"
+                    ],
+                    "description": "EntityAttributes Filter"
+                }
+            ]
+        }
+    },
+    "required": [
+        "name",
+        "@type"
+    ],
+    "fieldsets": [
+        {
+            "type": "section",
+            "fields": [
+                "name",
+                "@type"
+            ]
+        }
+    ]
+}

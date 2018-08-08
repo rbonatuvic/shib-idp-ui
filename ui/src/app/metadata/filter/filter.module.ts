@@ -20,6 +20,7 @@ import { FilterExistsGuard } from './guard/filter-exists.guard';
 import { DomainModule } from '../domain/domain.module';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { FilterCollectionEffects } from './effect/collection.effect';
+import { FormModule } from '../../schema-form/schema-form.module';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { FilterCollectionEffects } from './effect/collection.effect';
         SharedModule,
         DomainModule,
         HttpClientModule,
-        RouterModule
+        RouterModule,
+        FormModule
     ]
 })
 export class FilterModule {
