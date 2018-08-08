@@ -31,14 +31,9 @@ export const getSearchResults = createSelector(
     getSearchState,
     fromSearch.getEntities
 );
-
 export const getSearchQuery = createSelector(
     getSearchState,
     fromSearch.getQuery
-);
-export const getFilterType = createSelector(
-    getSearchState,
-    fromSearch.getFilter
 );
 export const getSearchLoading = createSelector(
     getSearchState,
