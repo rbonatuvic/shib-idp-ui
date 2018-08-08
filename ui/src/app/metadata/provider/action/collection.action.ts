@@ -45,7 +45,7 @@ export class LoadProviderError implements Action {
 export class SelectProviderRequest implements Action {
     readonly type = ProviderCollectionActionTypes.SELECT_PROVIDER_REQUEST;
 
-    constructor(public payload: any) { }
+    constructor(public payload: string) { }
 }
 
 export class SelectProviderSuccess implements Action {
