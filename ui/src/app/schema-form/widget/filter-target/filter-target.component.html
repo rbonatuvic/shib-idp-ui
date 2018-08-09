@@ -1,20 +1,24 @@
 <fieldset>
     <div class="row">
         <div class="col-lg-6">
-            <div ngbDropdown>
-                <button ngbDropdownToggle
-                    class="btn btn-outline-secondary dropdown-toggle"
-                    type="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-                    {{ this.displayType }}
-                </button>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <a *ngFor="let option of typeOptions" class="dropdown-item" href="#" (click)="$event.preventDefault(); select(option.value);">
-                        {{ option.description }}
-                    </a>
+            <div class="d-flex justify-content-start">
+                <div ngbDropdown>
+                    <button ngbDropdownToggle
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        {{ this.displayType }}
+                    </button>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <a *ngFor="let option of typeOptions" class="dropdown-item" href="#" (click)="$event.preventDefault(); select(option.value);">
+                            {{ option.description }}
+                        </a>
+                    </div>
                 </div>
+                &nbsp;
+                <i class="fa fa-asterisk text-danger"></i>
             </div>
             <br />
             <div class="d-flex justify-content-between">
@@ -28,12 +32,21 @@
                             [matches]="ids$ | async"
                             (keydown.enter)="onSelectValue(search.value)">
                         </auto-complete>
+                        <small>You must add at least one entity id target.</small>
                     </ng-container>
                     <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
                         <p class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
+                        <small id="script-help" class="text-danger">
+                            <ng-container *ngIf="script.invalid && script.touched">Required for Scripts</ng-container>
+                            &nbsp;
+                        </small>
                     </ng-container>
                     <ng-container *ngSwitchCase="'REGEX'">
                         <input class="form-control" type="text" [formControl]="script" name="script" />
+                        <small id="regex-help" class="text-danger">
+                            <ng-container *ngIf="script.invalid && script.touched">Required for Regex</ng-container>
+                            &nbsp;
+                        </small>
                     </ng-container>
                 </div>
                 <div class="ml-2" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
@@ -47,7 +60,6 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <p *ngIf="!targets.length">You must add at least one entity id target.</p>
             <ul class="list-group list-group-sm list-group-scroll" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
                 <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let id of targets">
                     {{ id }}

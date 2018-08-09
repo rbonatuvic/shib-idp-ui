@@ -81,7 +81,7 @@
                     }
                 }
             },
-            "required": ["value"]
+            "required": ["value", "entityAttributesFilterTargetType"]
         },
         "relyingPartyOverrides": {
             "type": "object",
