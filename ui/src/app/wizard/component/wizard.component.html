@@ -16,8 +16,9 @@
         <li class="nav-item">
             <h3 class="tag tag-primary">
                 <span class="index">{{ (current$ | async).index }} </span>
-                <ng-container *ngIf="(current$ | async).index">
-                    {{ (current$ | async).index }}. 
+                <ng-container [ngSwitch]="currentIcon$ | async">
+                    <ng-container *ngSwitchDefault>{{ (current$ | async).index }}.</ng-container>
+                    <ng-container *ngSwitchCase="icons.CHECK"><i class="fa fa-check"></i></ng-container>
                 </ng-container>
                 {{ (current$ | async).label }}
             </h3>
