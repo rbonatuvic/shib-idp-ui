@@ -15,12 +15,13 @@
         </li>
         <li class="nav-item">
             <h3 class="tag tag-primary">
-                <span class="index">{{ (current$ | async).index }} </span>
-                <ng-container [ngSwitch]="currentIcon$ | async">
-                    <ng-container *ngSwitchDefault>{{ (current$ | async).index }}.</ng-container>
-                    <ng-container *ngSwitchCase="icons.CHECK"><i class="fa fa-check"></i></ng-container>
-                </ng-container>
-                {{ (current$ | async).label }}
+                <span class="index">
+                    <ng-container [ngSwitch]="currentIcon$ | async">
+                        <ng-container *ngSwitchDefault>{{ (current$ | async).index }}</ng-container>
+                        <ng-container *ngSwitchCase="icons.CHECK"><i class="fa fa-check"></i></ng-container>
+                    </ng-container>
+                </span>
+                {{ (current$ | async).index }}. {{ (current$ | async).label }}
             </h3>
         </li>
         <li class="nav-item" *ngIf="(next$ | async)">
