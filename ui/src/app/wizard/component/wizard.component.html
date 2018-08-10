@@ -21,7 +21,11 @@
                         <ng-container *ngSwitchCase="icons.CHECK"><i class="fa fa-check"></i></ng-container>
                     </ng-container>
                 </span>
-                {{ (current$ | async).index }}. {{ (current$ | async).label }}
+                <ng-container [ngSwitch]="currentIcon$ | async">
+                    <ng-container *ngSwitchDefault>{{ (current$ | async).index }}. {{ (current$ | async).label }}</ng-container>
+                    <ng-container *ngSwitchCase="icons.CHECK">{{ (current$ | async).label }}</ng-container>
+                </ng-container>
+                <!-- {{ (current$ | async).index }}. {{ (current$ | async).label }} -->
             </h3>
         </li>
         <li class="nav-item" *ngIf="(next$ | async)">
