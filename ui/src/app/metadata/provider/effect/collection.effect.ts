@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
 import { of } from 'rxjs';
-import { map, catchError, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, catchError, switchMap, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
 import {
     ProviderCollectionActionsUnion,
     ProviderCollectionActionTypes,
@@ -25,6 +25,7 @@ import { MetadataProviderService } from '../../domain/service/provider.service';
 import * as fromProvider from '../reducer';
 import * as fromRoot from '../../../app.reducer';
 import { AddFilterSuccess, FilterCollectionActionTypes } from '../../filter/action/collection.action';
+import { debounce } from '../../../../../node_modules/rxjs-compat/operator/debounce';
 
 
 /* istanbul ignore next */
@@ -48,6 +49,7 @@ export class CollectionEffects {
     selectProviders$ = this.actions$.pipe(
         ofType<SelectProviderRequest>(ProviderCollectionActionTypes.SELECT_PROVIDER_REQUEST),
         map(action => action.payload),
+        debounceTime(500),
         switchMap(id =>
             this.providerService
                 .find(id)
