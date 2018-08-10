@@ -168,7 +168,7 @@
             "default": true
         },
         "satisfyAnyPredicates": {
-            "title": "Satisy Any Predicates?",
+            "title": "Satisfy Any Predicates?",
             "description": "Flag which determines whether predicates used in filtering are connected by a logical 'OR' (true) or by logical 'AND' (false).",
             "type": "boolean",
             "widget": {
