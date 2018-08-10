@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, of } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import * as fromFilter from '../reducer';
 import { MetadataFilterTypes } from '../model';
@@ -14,7 +15,9 @@ import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action
     selector: 'new-filter-page',
     templateUrl: './new-filter.component.html'
 })
-export class NewFilterComponent {
+export class NewFilterComponent implements OnDestroy, OnInit {
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
@@ -37,17 +40,29 @@ export class NewFilterComponent {
         this.definition = MetadataFilterTypes.EntityAttributesFilter;
 
         this.schema$ = this.schemaService.get(this.definition.schema);
-        this.isSaving$ = this.store.select(fromFilter.getSaving);
+        this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = of(<MetadataFilter>{});
+    }
 
-        this.valueChangeEmitted$.subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
-        this.statusChangeEmitted$.subscribe(valid => {
-            this.isValid = valid.value ? valid.value.length === 0 : true;
-        });
+    ngOnInit(): void {
+        this.valueChangeEmitted$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
+        this.statusChangeEmitted$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(valid => {
+                this.isValid = valid.value ? valid.value.length === 0 : true;
+            });
 
         this.store
             .select(fromFilter.getFilter)
+            .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(filter => this.filter = filter);
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     save(): void {

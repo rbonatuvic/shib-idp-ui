@@ -23,7 +23,7 @@ describe('Filter Reducer', () => {
         });
     });
 
-    describe(`${FilterCollectionActionTypes.SELECT_FILTER}`, () => {
+    describe(`${FilterCollectionActionTypes.SELECT_FILTER_REQUEST}`, () => {
         it('should set the selected id in the store', () => {
             const selectedFilterId = 'foo';
             const action = new SelectFilter(selectedFilterId);
@@ -55,7 +55,7 @@ describe('Filter Reducer', () => {
         });
     });
 
-    describe(`${FilterCollectionActionTypes.ADD_FILTER}`, () => {
+    describe(`${FilterCollectionActionTypes.ADD_FILTER_REQUEST}`, () => {
         it('should set saving to true', () => {
             const filter = new EntityAttributesFilterEntity({ resourceId: 'foo', createdDate: new Date().toLocaleDateString() });
             const action = new AddFilterRequest(filter);

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
 import { of } from 'rxjs';
-import { switchMap, map, catchError, tap, combineLatest, skipWhile } from 'rxjs/operators';
+import { switchMap, map, catchError, tap, combineLatest, skipWhile, debounceTime, withLatestFrom } from 'rxjs/operators';
 
 import * as actions from '../action/collection.action';
 import { FilterCollectionActionTypes } from '../action/collection.action';
@@ -35,9 +35,9 @@ export class FilterCollectionEffects {
     );
     @Effect()
     selectFilterRequest$ = this.actions$.pipe(
-        ofType<actions.SelectFilter>(FilterCollectionActionTypes.SELECT_FILTER),
+        ofType<actions.SelectFilter>(FilterCollectionActionTypes.SELECT_FILTER_REQUEST),
         map(action => action.payload),
-        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         switchMap(([filterId, providerId]) => {
             return this.filterService
                 .find(providerId, filterId)
@@ -51,7 +51,7 @@ export class FilterCollectionEffects {
 
     @Effect()
     addFilter$ = this.actions$.pipe(
-        ofType<actions.AddFilterRequest>(FilterCollectionActionTypes.ADD_FILTER),
+        ofType<actions.AddFilterRequest>(FilterCollectionActionTypes.ADD_FILTER_REQUEST),
         map(action => action.payload),
         map(filter => {
             return {
@@ -59,7 +59,7 @@ export class FilterCollectionEffects {
                 relyingPartyOverrides: removeNulls(new EntityAttributesFilterEntity(filter).relyingPartyOverrides)
             };
         }),
-        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         switchMap(([unsaved, providerId]) => {
             return this.filterService
                 .save(providerId, unsaved as MetadataFilter)
@@ -73,7 +73,7 @@ export class FilterCollectionEffects {
     addFilterSuccessRedirect$ = this.actions$.pipe(
         ofType<actions.AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
         map(action => action.payload),
-        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
     );
 
@@ -81,7 +81,7 @@ export class FilterCollectionEffects {
     updateFilter$ = this.actions$.pipe(
         ofType<actions.UpdateFilterRequest>(FilterCollectionActionTypes.UPDATE_FILTER_REQUEST),
         map(action => action.payload),
-        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         switchMap(([filter, providerId]) => {
             delete filter.modifiedDate;
             delete filter.createdDate;
@@ -100,7 +100,7 @@ export class FilterCollectionEffects {
     updateFilterSuccessRedirect$ = this.actions$.pipe(
         ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
         map(action => action.payload),
-        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
     );
 

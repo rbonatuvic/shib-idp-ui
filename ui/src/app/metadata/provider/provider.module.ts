@@ -28,7 +28,6 @@ import { EntityEffects } from './effect/entity.effect';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
 
 import { ProviderEditorNavComponent } from './component/provider-editor-nav.component';
-import { ProviderResolver } from './resolver/provider.resolver';
 
 @NgModule({
     declarations: [
@@ -61,8 +60,7 @@ export class ProviderModule {
         return {
             ngModule: RootProviderModule,
             providers: [
-                { provide: WidgetRegistry, useClass: CustomWidgetRegistry },
-                ProviderResolver
+                { provide: WidgetRegistry, useClass: CustomWidgetRegistry }
             ]
         };
     }

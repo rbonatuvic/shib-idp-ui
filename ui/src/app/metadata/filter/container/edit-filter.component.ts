@@ -39,7 +39,7 @@ export class EditFilterComponent {
         this.definition = MetadataFilterTypes.EntityAttributesFilter;
 
         this.schema$ = this.schemaService.get(this.definition.schema);
-        this.isSaving$ = this.store.select(fromFilter.getSaving);
+        this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
 
         this.valueChangeEmitted$.subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
