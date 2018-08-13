@@ -118,21 +118,10 @@ export class CollectionEffects {
         map(provider => new LoadProviderRequest())
     );
 
-    @Effect({ dispatch: false })
-    newFilterSuccessUpdate = this.actions$.pipe(
-        ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
-        map(action => action.payload),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId)),
-        map(([filter, id]) => id),
-        tap(id => {
-            this.store.dispatch(new SelectProviderRequest(id));
-        })
-    );
-
     constructor(
         private actions$: Actions,
         private router: Router,
         private store: Store<fromRoot.State>,
         private providerService: MetadataProviderService
     ) { }
-} /* istanbul ignore next */
+}
