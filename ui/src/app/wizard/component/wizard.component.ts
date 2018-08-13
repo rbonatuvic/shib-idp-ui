@@ -3,6 +3,13 @@ import { Store } from '@ngrx/store';
 import { Wizard, WizardStep } from '../model';
 import * as fromWizard from '../reducer';
 import { Observable } from 'rxjs';
+import { withLatestFrom, map } from 'rxjs/operators';
+
+export enum ICONS {
+    CHECK = 'CHECK',
+    INDEX = 'INDEX'
+}
+
 
 /*tslint:disable:component-selector */
 @Component({
@@ -10,7 +17,7 @@ import { Observable } from 'rxjs';
     templateUrl: './wizard.component.html',
     styleUrls: ['./wizard.component.scss']
 })
-export class WizardComponent implements OnChanges {
+export class WizardComponent {
     @Output() onNext = new EventEmitter();
     @Output() onPrevious = new EventEmitter();
     @Output() onLast = new EventEmitter();
@@ -29,6 +36,10 @@ export class WizardComponent implements OnChanges {
     current$: Observable<WizardStep>;
     last$: Observable<WizardStep>;
 
+    currentIcon$: Observable<string>;
+
+    icons = ICONS;
+
     constructor(
         private store: Store<fromWizard.WizardState>
     ) {
@@ -39,11 +50,12 @@ export class WizardComponent implements OnChanges {
         this.next$ = this.store.select(fromWizard.getNext);
         this.current$ = this.store.select(fromWizard.getCurrent);
         this.last$ = this.store.select(fromWizard.getLast);
-    }
 
-    ngOnChanges(): void {
-        // this.currentPage = this.wizard.find(r => r.index === this.index);
-        // this.previousPage = this.wizard.find(r => r.index === this.index - 1);
-        // this.nextPage = this.wizard.find(r => r.index === this.index + 1);
+        this.currentIcon$ = this.current$.pipe(
+            withLatestFrom(this.last$),
+            map(([current, last]) => {
+                return (last && current.index === last.index) ? ICONS.CHECK : ICONS.INDEX;
+            })
+        );
     }
 }
