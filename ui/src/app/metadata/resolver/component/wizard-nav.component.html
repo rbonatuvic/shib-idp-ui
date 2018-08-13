@@ -11,9 +11,15 @@
                 </span>
             </button>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isLastPage">
             <h3 class="tag tag-primary">
                 <span class="index">{{ currentPage.index }}</span>
+                <i18n-text [key]="currentPage.path"></i18n-text>
+            </h3>
+        </li>
+        <li class="nav-item" *ngIf="isLastPage">
+            <h3 class="tag tag-primary">
+                <span class="index"><i class="fa fa-check"></i></span>
                 <i18n-text [key]="currentPage.path"></i18n-text>
             </h3>
         </li>
