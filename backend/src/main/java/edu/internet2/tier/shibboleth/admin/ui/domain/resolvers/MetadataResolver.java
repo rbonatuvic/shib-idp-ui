@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -73,10 +74,14 @@ public class MetadataResolver extends AbstractAuditable {
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
 
     @Transient
-    private int version;
+    private Integer version;
 
-    public void updateVersion() {
-        this.version = hashCode();
+    @JsonGetter("version")
+    public int getVersion() {
+        if (this.version != null && this.version != 0 ) {
+            return this.version;
+        }
+        return this.hashCode();
     }
 
     public void convertFiltersIntoTransientRepresentationIfNecessary() {

@@ -61,7 +61,6 @@ public class MetadataResolversController {
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
         List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
-        resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
     }
 
@@ -86,7 +85,6 @@ public class MetadataResolversController {
         if (resolver == null) {
             return ResponseEntity.notFound().build();
         }
-        resolver.updateVersion();
         return ResponseEntity.ok(resolver);
     }
 
@@ -103,11 +101,9 @@ public class MetadataResolversController {
         }
 
         newResolver.convertFiltersFromTransientRepresentationIfNecessary();
-        resolverRepository.save(newResolver);
-        MetadataResolver persistedResolver = resolverRepository.findByResourceId(newResolver.getResourceId());
+        MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
 
-        persistedResolver.updateVersion();
         persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
@@ -119,9 +115,9 @@ public class MetadataResolversController {
         if (existingResolver == null) {
             return ResponseEntity.notFound().build();
         }
-        if (existingResolver.hashCode() != updatedResolver.getVersion()) {
+        if (existingResolver.getVersion() != updatedResolver.getVersion()) {
             log.info("Metadata Resolver version conflict. Latest resolver in database version: {}. Resolver version sent from UI: {}",
-                    existingResolver.hashCode(), updatedResolver.getVersion());
+                    existingResolver.getVersion(), updatedResolver.getVersion());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -133,10 +129,8 @@ public class MetadataResolversController {
         updatedResolver.setAudId(existingResolver.getAudId());
 
         updatedResolver.convertFiltersFromTransientRepresentationIfNecessary();
-        resolverRepository.save(updatedResolver);
-        MetadataResolver persistedResolver = resolverRepository.findByResourceId(updatedResolver.getResourceId());
+        MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
 
-        persistedResolver.updateVersion();
         persistedResolver.convertFiltersFromTransientRepresentationIfNecessary();
         return ResponseEntity.ok(persistedResolver);
     }
