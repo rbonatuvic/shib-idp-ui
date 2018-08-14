@@ -14,12 +14,6 @@ import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 @Injectable()
 export class SearchEffects {
     @Effect()
-    filter$ = this.actions$.pipe(
-        ofType<entitySearch.FilterAction>(entitySearch.ENTITY_FILTER),
-        switchMap(() => this.performSearch())
-    );
-
-    @Effect()
     search$ = this.actions$.pipe(
         ofType<entitySearch.SearchAction>(entitySearch.ENTITY_SEARCH),
         map(action => action.payload),
@@ -45,9 +39,12 @@ export class SearchEffects {
             ),
             combineLatest(
                 this.store.select(fromManager.getSearchQuery),
-                (entities, term) => entities.filter(
-                    e => this.matcher(e.name, term) || this.matcher(e.entityId, term)
-                )
+                (entities, term) => {
+                    const filtered = entities.filter(
+                        e => this.matcher(e.name, term) || this.matcher(e.entityId, term)
+                    );
+                    return filtered;
+                }
             ),
             map(entities => new entitySearch.SearchCompleteAction(entities))
         );

@@ -13,6 +13,7 @@ import { RouterStub } from '../../../../testing/router.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { DashboardResolversListComponent } from './dashboard-resolvers-list.component';
+import { ResolverItemComponent } from '../component/resolver-item.component';
 
 
 describe('Dashboard Resolvers List Page', () => {
@@ -50,7 +51,7 @@ describe('Dashboard Resolvers List Page', () => {
             declarations: [
                 DashboardResolversListComponent,
                 ProviderSearchComponent,
-                EntityItemComponent,
+                ResolverItemComponent,
                 DeleteDialogComponent
             ],
         });

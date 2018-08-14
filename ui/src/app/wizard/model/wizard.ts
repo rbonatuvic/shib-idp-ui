@@ -1,13 +1,7 @@
-export interface Wizard<T> {
-    label: string;
-    type: string;
-    steps: WizardStep[];
-    translate: {
-        parser(changes: Partial<T>, schema?: any),
-        formatter(changes: Partial<T>, schema?: any)
-    };
+import { FormDefinition } from './form-definition';
 
-    getValidators?(params: any): { [key: string]: any };
+export interface Wizard<T> extends FormDefinition<T> {
+    steps: WizardStep[];
 }
 
 export interface WizardStep {
@@ -16,6 +10,7 @@ export interface WizardStep {
     initialValues?: WizardValue[];
     schema?: string;
     index: number;
+    locked?: boolean;
 }
 
 export interface WizardValue {

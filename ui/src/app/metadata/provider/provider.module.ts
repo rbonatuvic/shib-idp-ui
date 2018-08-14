@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 
+import { EffectsModule } from '@ngrx/effects';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { ProviderWizardComponent } from './container/provider-wizard.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
 import { ProviderWizardSummaryComponent } from './component/provider-wizard-summary.component';
 import { ProviderComponent } from './container/provider.component';
 import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
-import { EffectsModule } from '@ngrx/effects';
 import { EditorEffects } from './effect/editor.effect';
 
 import { WidgetRegistry} from 'ngx-schema-form';
@@ -24,7 +26,9 @@ import { ProviderSelectComponent } from './container/provider-select.component';
 import { ProviderEditStepComponent } from './container/provider-edit-step.component';
 import { EntityEffects } from './effect/entity.effect';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
-import { NgbDropdownModule } from '../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+
+import { ProviderEditorNavComponent } from './component/provider-editor-nav.component';
+import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 
 @NgModule({
     declarations: [
@@ -36,9 +40,13 @@ import { NgbDropdownModule } from '../../../../node_modules/@ng-bootstrap/ng-boo
         ProviderEditStepComponent,
         ProviderSelectComponent,
         ProviderFilterListComponent,
-        SummaryPropertyComponent
+        SummaryPropertyComponent,
+        ProviderEditorNavComponent,
+        UnsavedProviderComponent
     ],
-    entryComponents: [],
+    entryComponents: [
+        UnsavedProviderComponent
+    ],
     imports: [
         ReactiveFormsModule,
         CommonModule,
@@ -46,6 +54,7 @@ import { NgbDropdownModule } from '../../../../node_modules/@ng-bootstrap/ng-boo
         RouterModule,
         SharedModule,
         FormModule,
+        RouterModule,
         NgbDropdownModule
     ],
     exports: []

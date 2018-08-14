@@ -1,16 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProviderEditComponent } from './provider-edit.component';
 import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 import { SharedModule } from '../../../shared/shared.module';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import { FileBackedHttpMetadataProviderEditor } from '../model';
+import { ProviderEditorNavComponent } from '../component/provider-editor-nav.component';
+import { NgbModalStub } from '../../../../testing/modal.stub';
+import { MetadataProvider } from '../../domain/model';
+import { of } from 'rxjs';
 
 @Component({
     template: `
@@ -31,6 +35,7 @@ describe('Provider Edit Component', () => {
     let router: Router;
     let activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
     let child: ActivatedRouteStub = new ActivatedRouteStub();
+    let modal: NgbModal;
     child.testParamMap = { form: 'common' };
     activatedRoute.firstChild = child;
 
@@ -55,9 +60,11 @@ describe('Provider Edit Component', () => {
             ],
             declarations: [
                 ProviderEditComponent,
-                TestHostComponent
+                TestHostComponent,
+                ProviderEditorNavComponent
             ],
             providers: [
+                { provide: NgbModal, useClass: NgbModalStub },
                 { provide: ActivatedRoute, useValue: activatedRoute },
                 { provide: APP_BASE_HREF, useValue: '/' }
             ]
@@ -65,6 +72,7 @@ describe('Provider Edit Component', () => {
 
         store = TestBed.get(Store);
         router = TestBed.get(Router);
+        modal = TestBed.get(NgbModal);
         spyOn(store, 'dispatch');
 
         fixture = TestBed.createComponent(TestHostComponent);
@@ -79,13 +87,7 @@ describe('Provider Edit Component', () => {
 
     describe('setIndex method', () => {
         it('should interrupt event default and dispatch an event', () => {
-            const ev = <any>{
-                preventDefault: jasmine.createSpy('preventDefault'),
-                stopPropagation: jasmine.createSpy('stopPropagation')
-            };
-            app.setIndex(ev, 'common');
-            expect(ev.preventDefault).toHaveBeenCalled();
-            expect(ev.stopPropagation).toHaveBeenCalled();
+            app.setIndex('common');
             expect(store.dispatch).toHaveBeenCalled();
         });
     });
@@ -108,8 +110,46 @@ describe('Provider Edit Component', () => {
     describe('cancel method', () => {
         it('should route to the metadata manager', () => {
             spyOn(router, 'navigate');
+            spyOn(app, 'clear');
             app.cancel();
             expect(router.navigate).toHaveBeenCalled();
+            expect(app.clear).toHaveBeenCalled();
+        });
+    });
+
+    describe('clear method', () => {
+        it('should dispatch actions to clear the reducer state', () => {
+            app.clear();
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
+
+    describe('canDeactivate method', () => {
+        it('should check if the current route is another edit page', (done) => {
+            let route = new ActivatedRouteStub(),
+                snapshot = route.snapshot;
+            let result = app.canDeactivate(null, { url: 'edit', root: null }, { url: 'edit', root: null });
+            result.subscribe(can => {
+                expect(can).toBe(true);
+                done();
+            });
+            fixture.detectChanges();
+        });
+
+        it('should open a modal', (done) => {
+            app.latest = <MetadataProvider>{ name: 'bar' };
+            spyOn(store, 'select').and.returnValue(of(false));
+            spyOn(modal, 'open').and.returnValue({ result: Promise.resolve('closed') });
+            fixture.detectChanges();
+            let route = new ActivatedRouteStub(),
+                snapshot = route.snapshot;
+            let result = app.canDeactivate(null, { url: 'edit', root: null }, { url: 'foo', root: null });
+            result.subscribe(can => {
+                expect(can).toBe(false);
+                expect(modal.open).toHaveBeenCalled();
+                done();
+            });
+            fixture.detectChanges();
         });
     });
 });

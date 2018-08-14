@@ -7,7 +7,7 @@
                     [attr.name]="name"
                     [indeterminate]="control.value !== false && control.value !== true ? true :null"
                     type="checkbox"
-                    [attr.disabled]="schema.readOnly"
+                    [attr.disabled]="schema.readOnly?true:null"
                     id="{{ name }}"
                     [disableValidation]="true">
                 <label for="{{ name }}" class="custom-control-label">
@@ -27,7 +27,7 @@
                 <input [attr.name]="name" 
                     value="{{option.enum[0]}}"
                     type="checkbox"
-                    [attr.disabled]="schema.readOnly"
+                    [attr.disabled]="schema.readOnly?true:null"
                     (change)="onCheck($event.target)"
                     [attr.checked]="checked[option.enum[0]] ? true : null">
                 {{option.description}}

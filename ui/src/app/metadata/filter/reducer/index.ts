@@ -32,7 +32,6 @@ export const getFilterFromState = createSelector(getFilterState, getFiltersFromS
 export const getSelected = createSelector(getFilterFromState, fromFilter.getSelected);
 export const getFilter = createSelector(getFilterFromState, fromFilter.getFilterChanges);
 export const getPreview = createSelector(getFilterFromState, fromFilter.getPreview);
-export const getSaving = createSelector(getFilterFromState, fromFilter.getSaving);
 
 /*
  *   Select pieces of Search Collection
@@ -50,8 +49,23 @@ export const getViewingMore = createSelector(getSearchFromState, fromSearch.getV
 */
 export const getCollectionState = createSelector(getFilterState, getCollectionFromStateFn);
 export const getAllFilters = createSelector(getCollectionState, fromCollection.selectAllFilters);
+export const getCollectionSaving = createSelector(getCollectionState, fromCollection.getIsSaving);
+
+export const notAddtlFilters = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const filterTypeFn = filters => filters.filter(f => notAddtlFilters.indexOf(f['@type']) === -1);
+
+export const getAdditionalFilters = createSelector(getAllFilters, filterTypeFn);
+
 export const getFilterEntities = createSelector(getCollectionState, fromCollection.selectFilterEntities);
 export const getSelectedFilterId = createSelector(getCollectionState, fromCollection.getSelectedFilterId);
 export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, utils.getInCollectionFn);
 export const getFilterIds = createSelector(getCollectionState, fromCollection.selectFilterIds);
 export const getFilterCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
+
+/*
+ *   Combine pieces of State
+*/
+
+export const mergeFn = (changes, filter) => ({ ...filter, ...changes });
+
+export const getFilterWithChanges = createSelector(getFilter, getSelectedFilter, mergeFn);

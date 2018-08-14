@@ -9,6 +9,8 @@ import { I18nTextComponent } from './component/i18n-text.component';
 import { ValidFormIconComponent } from './component/valid-form-icon.component';
 import { InfoLabelDirective } from './directive/info-label.directive';
 import { PrettyXml } from './pipe/pretty-xml.pipe';
+import { ToggleSwitchComponent } from './switch/switch.component';
+import { ContenteditableDirective } from './contenteditable/contenteditable.directive';
 
 @NgModule({
     imports: [
@@ -19,16 +21,19 @@ import { PrettyXml } from './pipe/pretty-xml.pipe';
     declarations: [
         HighlightPipe,
         AutoCompleteComponent,
+        ToggleSwitchComponent,
         ValidationClassDirective,
         InputDefaultsDirective,
         I18nTextComponent,
         ValidFormIconComponent,
         InfoLabelDirective,
-        PrettyXml
+        PrettyXml,
+        ContenteditableDirective
     ],
     exports: [
         HighlightPipe,
         AutoCompleteComponent,
+        ToggleSwitchComponent,
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
@@ -36,7 +41,8 @@ import { PrettyXml } from './pipe/pretty-xml.pipe';
         I18nTextComponent,
         ValidFormIconComponent,
         ValidationClassDirective,
-        InfoLabelDirective
+        InfoLabelDirective,
+        ContenteditableDirective
     ]
 })
 export class SharedModule { }

@@ -1,9 +1,21 @@
-<fieldset *ngFor="let fieldset of formProperty.schema.fieldsets">
-    <legend class="text-primary" *ngIf="fieldset.title">{{ fieldset.title }}</legend>
-    <p *ngIf="fieldset.description">{{ fieldset.description }}</p>
-    <div  class="bg-light border rounded px-4 pt-4 pb-1">
-        <div *ngFor="let fieldId of fieldset.fields">
-            <sf-form-element [formProperty]="formProperty.getProperty(fieldId)"></sf-form-element>
-        </div>
+<div class="container-fluid">
+    <div class="row">
+        <ng-container *ngFor="let fieldset of formProperty.schema.fieldsets; let i = index;">
+            <fieldset
+                class="col"
+                [class.d-none]="fieldset.type === 'hidden'"
+                [class.col-lg-6]="fieldset.type === 'group'"
+                [class.col-lg-12]="fieldset.type === 'group-lg'">
+                <legend class="text-primary" *ngIf="fieldset.title">{{ fieldset.title }}</legend>
+                <p *ngIf="fieldset.description">{{ fieldset.description }}</p>
+                <div [ngClass]="{
+                    'bg-light border rounded px-4 pt-4 pb-1': fieldset.type === 'section' || (!fieldset.type && formProperty.schema.widget.id === 'fieldset')
+                }">
+                    <div *ngFor="let fieldId of fieldset.fields">
+                        <sf-form-element [formProperty]="formProperty.getProperty(fieldId)"></sf-form-element>
+                    </div>
+                </div>
+            </fieldset>
+        </ng-container>
     </div>
-</fieldset>
+</div>

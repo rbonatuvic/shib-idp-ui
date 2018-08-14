@@ -10,7 +10,6 @@ import { startWith } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';
-import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { AddProviderRequest } from '../action/collection.action';
 import { MetadataProviderWizard } from '../model';
@@ -36,9 +35,7 @@ export class ProviderWizardComponent implements OnDestroy {
     provider: MetadataProvider;
 
     constructor(
-        private store: Store<fromProvider.ProviderState>,
-        private router: Router,
-        private route: ActivatedRoute
+        private store: Store<fromProvider.ProviderState>
     ) {
         this.store
             .select(fromWizard.getCurrentWizardSchema)
@@ -89,6 +86,7 @@ export class ProviderWizardComponent implements OnDestroy {
     }
 
     save(): void {
+        this.store.dispatch(new SetDisabled(true));
         this.store.dispatch(new AddProviderRequest(this.provider));
     }
 

@@ -1,0 +1,44 @@
+@import '../../../../theme/palette';
+
+.card {
+    background-color: rgba($light-grey, 0.5);
+    &:focus {
+        outline: -webkit-focus-ring-color auto 5px;
+    }
+    .btn-link {
+        &:focus {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    }
+
+    .label-icon {
+        display: inline-block;
+        min-width: 64px;
+        text-align: center;
+    }
+
+    .reorder-card {
+        width: 65px;
+        margin-left: 20px;
+        background-color: $white;
+        border: 1px solid $gray-400;
+        border-radius: 4px;
+
+        p {
+            margin-bottom: 0;
+            padding-top: 3px;
+            font-size: 1.40rem;
+            line-height: 1;
+        }
+
+        .btn {
+            padding: 2px 5px;
+        }
+    }
+
+    .btn-filter {
+        .label {
+            font-size: .90rem;
+        }
+    }
+}

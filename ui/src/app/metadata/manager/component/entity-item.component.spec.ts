@@ -7,8 +7,6 @@ describe('Resolver List item', () => {
     let fixture: ComponentFixture<EntityItemComponent>;
     let instance: EntityItemComponent;
 
-    let resolver = new FileBackedHttpMetadataResolver({ entityId: 'foo', serviceProviderName: 'bar' });
-
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [],
@@ -20,7 +18,6 @@ describe('Resolver List item', () => {
 
         fixture = TestBed.createComponent(EntityItemComponent);
         instance = fixture.componentInstance;
-        instance.entity = resolver;
     });
 
     it('should compile', () => {

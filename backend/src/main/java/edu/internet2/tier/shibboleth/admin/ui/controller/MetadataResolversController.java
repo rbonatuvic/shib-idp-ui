@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverV
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import org.apache.lucene.document.Document;
@@ -36,6 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.List;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
 
@@ -54,6 +56,9 @@ public class MetadataResolversController {
     MetadataResolverService metadataResolverService;
 
     @Autowired
+    MetadataResolversPositionOrderContainerService positionOrderContainerService;
+
+    @Autowired
     IndexWriterService indexWriterService;
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
@@ -64,7 +69,7 @@ public class MetadataResolversController {
     @GetMapping("/MetadataResolvers")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        Iterable<MetadataResolver> resolvers = resolverRepository.findAll();
+        List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
         resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
     }
@@ -108,6 +113,7 @@ public class MetadataResolversController {
 
         newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
+        positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
         persistedResolver.updateVersion();
 
         persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();

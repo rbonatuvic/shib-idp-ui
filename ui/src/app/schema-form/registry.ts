@@ -2,11 +2,10 @@ import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.comp
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
 import { CustomStringComponent } from './widget/string/string.component';
 
-import { WidgetRegistry } from 'ngx-schema-form';
+import { WidgetRegistry, ObjectWidget } from 'ngx-schema-form';
 
 import { ButtonWidget } from 'ngx-schema-form';
 import { FileWidget } from 'ngx-schema-form';
-import { ObjectWidget } from 'ngx-schema-form';
 import { RadioWidget } from 'ngx-schema-form';
 import { RangeWidget } from 'ngx-schema-form';
 import { CustomSelectComponent } from './widget/select/select.component';
@@ -15,6 +14,8 @@ import { CustomCheckboxComponent } from './widget/check/checkbox.component';
 import { CustomTextAreaComponent } from './widget/textarea/textarea.component';
 import { CustomArrayComponent } from './widget/array/array.component';
 import { CustomIntegerComponent } from './widget/number/number.component';
+import { FilterTargetComponent } from './widget/filter-target/filter-target.component';
+import { ChecklistComponent } from './widget/check/checklist.component';
 
 
 export class CustomWidgetRegistry extends WidgetRegistry {
@@ -36,7 +37,10 @@ export class CustomWidgetRegistry extends WidgetRegistry {
         this.register('boolean-radio', BooleanRadioComponent);
 
         this.register('fieldset', FieldsetComponent);
+        this.register('object', ObjectWidget);
+
         this.register('array', CustomArrayComponent);
+        this.register('checklist', ChecklistComponent);
 
         this.register('select', CustomSelectComponent);
         this.register('boolean', CustomCheckboxComponent);
@@ -49,8 +53,9 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('datalist', DatalistComponent);
 
+        this.register('filter-target', FilterTargetComponent);
+
         /* NGX-Form */
-        this.register('object', ObjectWidget);
         this.register('range', RangeWidget);
 
         this.register('file', FileWidget);

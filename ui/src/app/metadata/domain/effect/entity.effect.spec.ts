@@ -8,7 +8,7 @@ import { EntityIdService } from '../service/entity-id.service';
 import { ResolverService } from '../service/resolver.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStub } from '../../../../testing/modal.stub';
-import { EntityAttributesFilter } from '../entity';
+import { EntityAttributesFilterEntity, FileBackedHttpMetadataResolver } from '../entity';
 
 describe('Entity Effects', () => {
     let effects: EntityEffects;
@@ -45,11 +45,20 @@ describe('Entity Effects', () => {
     });
 
     describe('openModal', () => {
-        it('should open a modal window', fakeAsync(() => {
+        it('should open a modal window for a filter', fakeAsync(() => {
             spyOn(modal, 'open').and.returnValue({componentInstance: <any>{}});
             spyOn(idService, 'preview').and.returnValue(of('<foo></foo>'));
-            effects.openModal(new EntityAttributesFilter());
+            effects.openModal(new EntityAttributesFilterEntity());
             expect(idService.preview).toHaveBeenCalled();
+            tick(10);
+            expect(modal.open).toHaveBeenCalled();
+        }));
+
+        it('should open a modal window for a provider', fakeAsync(() => {
+            spyOn(modal, 'open').and.returnValue({ componentInstance: <any>{} });
+            spyOn(providerService, 'preview').and.returnValue(of('<foo></foo>'));
+            effects.openModal(new FileBackedHttpMetadataResolver());
+            expect(providerService.preview).toHaveBeenCalled();
             tick(10);
             expect(modal.open).toHaveBeenCalled();
         }));

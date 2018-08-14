@@ -13,7 +13,7 @@
         </span>
     </label>
     <span *ngIf="schema.description" class="sr-only">{{schema.description}}</span>
-    <textarea [attr.readonly]="schema.readOnly"
+    <textarea [attr.readonly]="schema.readOnly?true:null"
         [name]="name"
         class="text-widget textarea-widget form-control"
         [attr.placeholder]="schema.placeholder"

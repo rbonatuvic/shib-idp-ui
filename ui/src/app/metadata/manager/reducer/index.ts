@@ -2,6 +2,8 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../../core/reducer';
 import * as fromDashboard from './manager.reducer';
 import * as fromSearch from './search.reducer';
+import { MetadataEntity } from '../../domain/model';
+import { Metadata } from '../../domain/domain.type';
 
 export interface DashboardState {
     manager: fromDashboard.State;
@@ -32,10 +34,6 @@ export const getSearchResults = createSelector(
 export const getSearchQuery = createSelector(
     getSearchState,
     fromSearch.getQuery
-);
-export const getFilterType = createSelector(
-    getSearchState,
-    fromSearch.getFilter
 );
 export const getSearchLoading = createSelector(
     getSearchState,

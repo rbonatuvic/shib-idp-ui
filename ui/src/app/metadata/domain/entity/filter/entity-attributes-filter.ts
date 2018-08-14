@@ -2,7 +2,7 @@ import { MetadataFilter, MetadataEntity, RelyingPartyOverrides } from '../../mod
 import { MetadataTypes } from '../../domain.type';
 import { FilterTarget } from '../../model';
 
-export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
+export class EntityAttributesFilterEntity implements MetadataFilter, MetadataEntity {
     createdDate?: string;
     modifiedDate?: string;
     version: string;
@@ -25,7 +25,7 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         value: ['']
     };
 
-    constructor(obj?: Partial<EntityAttributesFilter>) {
+    constructor(obj?: Partial<EntityAttributesFilterEntity>) {
         Object.assign(this, { ...obj });
     }
 
@@ -73,7 +73,7 @@ export class EntityAttributesFilter implements MetadataFilter, MetadataEntity {
         return {
             attributeRelease: this.attributeRelease,
             relyingPartyOverrides: this.relyingPartyOverrides,
-            entityAttributesFilterTarget: { ...this.entityAttributesFilterTarget },
+            entityAttributesFilterTarget: this.entityAttributesFilterTarget,
             filterEnabled: this.filterEnabled,
             name: this.name,
             '@type': 'EntityAttributes'

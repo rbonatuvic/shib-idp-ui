@@ -4,7 +4,12 @@ import * as fromEditor from './editor.reducer';
 import * as fromEntity from './entity.reducer';
 import * as fromCollection from './collection.reducer';
 import * as utils from '../../domain/domain.util';
+
+import * as fromWizard from '../../../wizard/reducer';
+
 import { MetadataProvider } from '../../domain/model';
+import { WizardStep } from '../../../wizard/model';
+import { ProviderOrder } from '../../domain/model/metadata-order';
 
 export interface ProviderState {
     editor: fromEditor.EditorState;
@@ -36,12 +41,40 @@ export const getCollectionState = createSelector(getProviderState, getCollection
 Editor State
 */
 
-export const getSchema = createSelector(getEditorState, fromEditor.getSchema);
+export function getSchemaParseFn(schema, locked): any {
+    if (!schema) {
+        return null;
+    }
+    return {
+        ...schema,
+        properties: Object.keys(schema.properties).reduce((prev, current) => {
+            return {
+                ...prev,
+                [current]: {
+                    ...schema.properties[current],
+                    readOnly: locked,
+                    ...(schema.properties[current].hasOwnProperty('properties') ?
+                        getSchemaParseFn(schema.properties[current], locked) :
+                        {}
+                    )
+                }
+            };
+        }, {})
+    };
+}
+
+export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked : false : false;
+export const getLockedStatus = createSelector(getEditorState, fromEditor.getLocked);
+export const getLocked = createSelector(fromWizard.getCurrent, getLockedStatus, getSchemaLockedFn);
+
+export const getSchemaObject = createSelector(getEditorState, fromEditor.getSchema);
+export const getSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
 
 export const getEditorIsValid = createSelector(getEditorState, fromEditor.isEditorValid);
 
 export const getFormStatus = createSelector(getEditorState, fromEditor.getFormStatus);
 export const getInvalidEditorForms = createSelector(getEditorState, fromEditor.getInvalidForms);
+
 
 /*
 Entity State
@@ -55,6 +88,7 @@ export const getUpdatedEntity = createSelector(getEntityState, fromEntity.getUpd
 /*
  *   Select pieces of Provider Collection
 */
+export const getProviderOrder = createSelector(getCollectionState, fromCollection.getProviderOrder);
 export const getAllProviders = createSelector(getCollectionState, fromCollection.selectAllProviders);
 export const getProviderEntities = createSelector(getCollectionState, fromCollection.selectProviderEntities);
 export const getSelectedProviderId = createSelector(getCollectionState, fromCollection.getSelectedProviderId);
@@ -63,3 +97,18 @@ export const getProviderIds = createSelector(getCollectionState, fromCollection.
 export const getProviderCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
 
 export const getProviderNames = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.name));
+
+export const getProviderFilters = createSelector(getSelectedProvider, provider => provider.metadataFilters);
+
+export const getProviderXmlIds = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.xmlId));
+
+export const mergeProviderOrderFn = (providers: MetadataProvider[], order: ProviderOrder): MetadataProvider[] => {
+    return [...providers.sort(
+        (a: MetadataProvider, b: MetadataProvider) => {
+            const aIndex = order.resourceIds.indexOf(a.resourceId);
+            const bIndex = order.resourceIds.indexOf(b.resourceId);
+            return aIndex > bIndex ? 1 : bIndex > aIndex ? -1 : 0;
+        }
+    )];
+};
+export const getOrderedProviders = createSelector(getAllProviders, getProviderOrder, mergeProviderOrderFn);

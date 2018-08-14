@@ -6,6 +6,19 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
     ...BaseMetadataProviderEditor,
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
+    getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
+        const validators = BaseMetadataProviderEditor.getValidators(namesList);
+        validators['/xmlId'] = (value, property, form) => {
+            const err = xmlIdList.indexOf(value) > -1 ? {
+                code: 'INVALID_ID',
+                path: `#${property.path}`,
+                message: 'ID must be unique.',
+                params: [value]
+            } : null;
+            return err;
+        };
+        return validators;
+    },
     steps: [
         {
             id: 'common',
@@ -22,7 +35,7 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
             schema: 'assets/schema/provider/filebacked-http-reloading.schema.json'
         },
         {
-            id: 'filters',
+            id: 'plugins',
             label: 'Metadata Filter Plugins',
             index: 4,
             initialValues: [
@@ -32,8 +45,8 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
         },
         {
             id: 'summary',
-            label: 'FINISH SUMMARY AND VALIDATION',
-            index: null,
+            label: 'Finished!',
+            index: 5,
             initialValues: [],
             schema: 'assets/schema/provider/metadata-provider-summary.schema.json'
         }
@@ -44,11 +57,6 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
 export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadataProvider> = {
     ...FileBackedHttpMetadataProviderWizard,
     steps: [
-        {
-            id: 'filter-list',
-            label: 'Filter List',
-            index: 0
-        },
         {
             id: 'common',
             label: 'Common Attributes',
@@ -64,7 +72,7 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             schema: 'assets/schema/provider/filebacked-http-reloading.schema.json'
         },
         {
-            id: 'filters',
+            id: 'plugins',
             label: 'Metadata Filter Plugins',
             index: 3,
             initialValues: [
@@ -77,6 +85,7 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             label: 'Advanced Settings',
             index: 4,
             initialValues: [],
+            locked: true,
             schema: 'assets/schema/provider/filebacked-http-advanced.schema.json'
         }
     ]

@@ -1,17 +1,10 @@
-import { reducer } from './collection.reducer';
+import { reducer, initialState as snapshot } from './collection.reducer';
 import * as fromProvider from './collection.reducer';
 import {
     ProviderCollectionActionTypes,
     LoadProviderSuccess,
     UpdateProviderSuccess
 } from '../action/collection.action';
-
-const snapshot: fromProvider.CollectionState = {
-    ids: [],
-    entities: {},
-    selectedProviderId: null,
-    loaded: false
-};
 
 describe('Provider Collection Reducer', () => {
     describe('undefined action', () => {
@@ -26,8 +19,26 @@ describe('Provider Collection Reducer', () => {
         it('should add the loaded providers to the collection', () => {
             spyOn(fromProvider.adapter, 'addAll').and.callThrough();
             const providers = [
-                { resourceId: 'foo', name: 'foo', '@type': 'foo', enabled: true, createdDate: new Date().toLocaleDateString() },
-                { resourceId: 'bar', name: 'bar', '@type': 'bar', enabled: false, createdDate: new Date().toLocaleDateString() }
+                {
+                    resourceId: 'foo',
+                    name: 'name',
+                    '@type': 'foo',
+                    enabled: true,
+                    createdDate: new Date().toLocaleDateString(),
+                    sortKey: 1,
+                    xmlId: 'foo',
+                    metadataFilters: []
+                },
+                {
+                    resourceId: 'bar',
+                    name: 'bar',
+                    '@type': 'bar',
+                    enabled: false,
+                    createdDate: new Date().toLocaleDateString(),
+                    sortKey: 2,
+                    xmlId: 'bar',
+                    metadataFilters: []
+                }
             ];
             const action = new LoadProviderSuccess(providers);
             const result = reducer(snapshot, action);
