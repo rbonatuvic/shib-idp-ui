@@ -79,6 +79,30 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
         updatedResultFromPUT.statusCode.value() == 200
     }
 
+    def "PUT EntityAttributesFilter and update it"() {
+        given: 'MetadataResolver with attached entity attributes is available in data store'
+        def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
+        resolver.metadataFilters << generator.entityAttributesFilter()
+        def filterResourceId = resolver.metadataFilters[0].resourceId
+        def resolverResourceId = resolver.resourceId
+        metadataResolverRepository.save(resolver)
+
+
+        when: 'GET request is made with resource Id matching the existing filter'
+        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId/Filters/$filterResourceId", String)
+        def existingFilterMap = jsonSlurper.parseText(result.body)
+
+        and: 'PUT call is made with modified filter state'
+        existingFilterMap.name = 'Entity Attributes Filter Updated'
+        def updatedResultFromPUT = this.restTemplate.exchange(
+                "$BASE_URI/$resolverResourceId/Filters/$filterResourceId",
+                PUT,
+                createRequestHttpEntityFor { JsonOutput.toJson(existingFilterMap) }, String)
+
+        then:
+        updatedResultFromPUT.statusCode.value() == 200
+    }
+
     private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
         new HttpEntity<String>(jsonBodySupplier(), ['Content-Type': 'application/json'] as HttpHeaders)
     }
