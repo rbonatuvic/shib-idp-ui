@@ -16,6 +16,7 @@ import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap
 import { UnsavedDialogComponent } from '../../resolver/component/unsaved-dialog.component';
 import { UnsavedProviderComponent } from '../component/unsaved-provider.dialog';
 import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
+import { DifferentialService } from '../../../core/service/differential.service';
 
 @Component({
     selector: 'provider-edit',
@@ -34,6 +35,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
     status$: Observable<any>;
 
     latest: MetadataProvider;
+    provider: MetadataProvider;
 
     formats = NAV_FORMATS;
 
@@ -41,7 +43,8 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         private store: Store<fromProvider.ProviderState>,
         private router: Router,
         private route: ActivatedRoute,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private diffService: DifferentialService
     ) {
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(d => !d));
         this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(skipWhile(d => !d));
@@ -70,6 +73,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
                 }
             });
 
+        this.provider$.subscribe(p => this.provider = p);
         this.store.select(fromProvider.getEntityChanges).subscribe(changes => this.latest = changes);
     }
 
@@ -105,8 +109,11 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        if (nextState.url.match('edit')) { return of(true); }
-        if (Object.keys({ ...this.latest }).length > 0) {
+        if (nextState.url.match('edit')) {
+            return of(true);
+        }
+        const diff = this.diffService.updatedDiff(this.provider, this.latest);
+        if (diff && Object.keys(diff).length > 0) {
             let modal = this.modalService.open(UnsavedProviderComponent);
             modal.result.then(
                 () => {
@@ -115,8 +122,9 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
                 },
                 () => console.warn('denied')
             );
+            return this.store.select(fromProvider.getEntityIsSaved);
         }
-        return this.store.select(fromProvider.getEntityIsSaved);
+        return of(true);
     }
 }
 
