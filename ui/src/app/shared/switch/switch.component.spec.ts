@@ -20,6 +20,7 @@ class TestHostComponent {
 describe('Toggle Switch Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
+    let cmp: ToggleSwitchComponent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -37,10 +38,24 @@ describe('Toggle Switch Component', () => {
 
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;
+        cmp = instance.instanceUnderTest;
         fixture.detectChanges();
     });
 
     it('should compile', () => {
         expect(fixture).toBeDefined();
+    });
+
+    describe('value getter', () => {
+        it('should return the checked value', () => {
+            expect(cmp.value).toBe(false);
+        });
+    });
+
+    describe('setDisabledState', () => {
+        it('should set the disabled property', () => {
+            cmp.setDisabledState(true);
+            expect(cmp.disabled).toBe(true);
+        })
     });
 });
