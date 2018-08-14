@@ -32,7 +32,6 @@ export const getFilterFromState = createSelector(getFilterState, getFiltersFromS
 export const getSelected = createSelector(getFilterFromState, fromFilter.getSelected);
 export const getFilter = createSelector(getFilterFromState, fromFilter.getFilterChanges);
 export const getPreview = createSelector(getFilterFromState, fromFilter.getPreview);
-export const getSaving = createSelector(getFilterFromState, fromFilter.getSaving);
 
 /*
  *   Select pieces of Search Collection
@@ -50,7 +49,7 @@ export const getViewingMore = createSelector(getSearchFromState, fromSearch.getV
 */
 export const getCollectionState = createSelector(getFilterState, getCollectionFromStateFn);
 export const getAllFilters = createSelector(getCollectionState, fromCollection.selectAllFilters);
-export const getFiltersSaving = createSelector(getCollectionState, fromCollection.getIsSaving);
+export const getCollectionSaving = createSelector(getCollectionState, fromCollection.getIsSaving);
 
 export const notAddtlFilters = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
 export const filterTypeFn = filters => filters.filter(f => notAddtlFilters.indexOf(f['@type']) === -1);

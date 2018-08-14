@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: ProviderCollectionActionsU
         case ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS: {
             return adapter.upsertOne(action.payload, {
                 ...state,
-                selectedProviderId: action.payload.id.toString()
+                selectedProviderId: action.payload.id as string
             });
         }
 

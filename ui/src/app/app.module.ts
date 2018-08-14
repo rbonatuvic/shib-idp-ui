@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
@@ -22,6 +23,7 @@ import { ContentionModule } from './contention/contention.module';
 import { SharedModule } from './shared/shared.module';
 import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
+import { environment } from '../environments/environment.prod';
 
 @NgModule({
     declarations: [
@@ -30,6 +32,10 @@ import { FormModule } from './schema-form/schema-form.module';
     imports: [
         StoreModule.forRoot(reducers, {
             metaReducers
+        }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25, // Retains last 25 states
+            logOnly: environment.production, // Restrict extension to log-only mode
         }),
         EffectsModule.forRoot([]),
         BrowserModule,
