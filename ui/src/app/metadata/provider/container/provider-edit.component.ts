@@ -33,6 +33,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
     valid$: Observable<boolean>;
     isInvalid$: Observable<boolean>;
     status$: Observable<any>;
+    isSaving$: Observable<boolean>;
 
     latest: MetadataProvider;
     provider: MetadataProvider;
@@ -52,6 +53,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         this.valid$ = this.store.select(fromProvider.getEditorIsValid);
         this.isInvalid$ = this.valid$.pipe(map(v => !v));
         this.status$ = this.store.select(fromProvider.getInvalidEditorForms);
+        this.isSaving$ = this.store.select(fromProvider.getEntityIsSaving);
 
         let startIndex$ = this.route.firstChild ?
             this.route.firstChild.params.pipe(map(p => p.form || 'filters')) :
