@@ -15,6 +15,7 @@ import { NAV_FORMATS } from '../component/provider-editor-nav.component';
 import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import { UnsavedDialogComponent } from '../../resolver/component/unsaved-dialog.component';
 import { UnsavedProviderComponent } from '../component/unsaved-provider.dialog';
+import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
 
 @Component({
     selector: 'provider-edit',
@@ -22,7 +23,7 @@ import { UnsavedProviderComponent } from '../component/unsaved-provider.dialog';
     styleUrls: []
 })
 
-export class ProviderEditComponent implements OnDestroy {
+export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate {
 
     provider$: Observable<MetadataProvider>;
     definition$: Observable<Wizard<MetadataProvider>>;

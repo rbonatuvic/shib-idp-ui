@@ -14,8 +14,7 @@ export class UnsavedProviderComponent {
     readonly subject: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-        public activeModal: NgbActiveModal,
-        private store: Store<fromEditor.State>
+        public activeModal: NgbActiveModal
     ) { }
 
     close(): void {
