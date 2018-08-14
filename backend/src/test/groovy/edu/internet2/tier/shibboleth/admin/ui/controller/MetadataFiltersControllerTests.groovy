@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterService
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
@@ -53,6 +54,8 @@ class MetadataFiltersControllerTests extends Specification {
 
     def metadataResolverRepository = Mock(MetadataResolverRepository)
 
+    def metadataFilterRepository = Mock(FilterRepository)
+
     def controller
 
     def mockMvc
@@ -67,6 +70,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         controller = new MetadataFiltersController (
                 repository: metadataResolverRepository,
+                filterRepository: metadataFilterRepository,
                 metadataResolverService: new MetadataResolverService() {
                     @Override
                     void reloadFilters(String metadataResolverName) {
@@ -98,8 +102,8 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         result.andExpect(expectedHttpResponseStatus)
-            .andExpect(content().contentType(expectedResponseContentType))
-            .andExpect(content().json(mapper.writeValueAsString(expectedContent)))
+                .andExpect(content().contentType(expectedResponseContentType))
+                .andExpect(content().json(mapper.writeValueAsString(expectedContent)))
     }
 
     def "FilterController.getOne gets the desired filter"() {
@@ -156,11 +160,11 @@ class MetadataFiltersControllerTests extends Specification {
                 .andExpect(header().string(expectedResponseHeader, containsString(expectedResponseHeaderValue)))
 
         where:
-            filterType            | _
-            'entityAttributes'    | _
-            'entityRoleWhiteList' | _
-            'signatureValidation' | _
-            'requiredValidUntil'  | _
+        filterType            | _
+        'entityAttributes'    | _
+        'entityRoleWhiteList' | _
+        'signatureValidation' | _
+        'requiredValidUntil'  | _
     }
 
     @Unroll
@@ -173,7 +177,7 @@ class MetadataFiltersControllerTests extends Specification {
         def postedJsonBody = mapper.writeValueAsString(updatedFilter)
 
         def originalMetadataResolver = new MetadataResolver()
-        originalMetadataResolver.setResourceId(randomGenerator.randomId())
+        originalMetadataResolver.setResourceId('foo')
         originalMetadataResolver.setMetadataFilters(testObjectGenerator.buildAllTypesOfFilterList())
         originalMetadataResolver.metadataFilters.add(originalFilter)
 
@@ -183,7 +187,8 @@ class MetadataFiltersControllerTests extends Specification {
         updatedMetadataResolver.getMetadataFilters().add(updatedFilter)
 
         1 * metadataResolverRepository.findByResourceId(_) >> originalMetadataResolver
-        1 * metadataResolverRepository.save(_) >> updatedMetadataResolver
+        1 * metadataFilterRepository.findByResourceId(_) >> originalFilter
+        1 * metadataFilterRepository.save(_) >> updatedFilter
 
         def filterUUID = updatedFilter.getResourceId()
 
@@ -198,16 +203,16 @@ class MetadataFiltersControllerTests extends Specification {
         if (filterType == 'entityAttributes') {
             EntityAttributesFilter.cast(updatedFilter).fromTransientRepresentation()
         }
-        expectedJson << [version: updatedFilter.hashCode()]
+        expectedJson << [version: updatedFilter.getVersion()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
 
         where:
-            filterType            | _
-            'entityAttributes'    | _
-            'entityRoleWhiteList' | _
-            'signatureValidation' | _
-            'requiredValidUntil'  | _
+        filterType            | _
+        'entityAttributes'    | _
+        'entityRoleWhiteList' | _
+        'signatureValidation' | _
+        'requiredValidUntil'  | _
     }
 
     def "FilterController.update filter 409's if the version numbers don't match"() {
@@ -223,6 +228,7 @@ class MetadataFiltersControllerTests extends Specification {
         originalMetadataResolver.getMetadataFilters().add(randomFilter)
 
         1 * metadataResolverRepository.findByResourceId(_) >> originalMetadataResolver
+        1 * metadataFilterRepository.findByResourceId(_) >> randomFilter
 
         def filterUUID = randomFilter.getResourceId()
 
