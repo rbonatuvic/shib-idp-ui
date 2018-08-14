@@ -28,7 +28,6 @@ export class DashboardProvidersListComponent implements OnInit {
     ngOnInit(): void {
         this.providers$ = this.store.select(getOrderedProviders);
         this.providersOpen$ = this.store.select(getOpenProviders);
-        this.providers$.subscribe(p => console.log(p));
     }
 
     view(id: string, page: string): void {

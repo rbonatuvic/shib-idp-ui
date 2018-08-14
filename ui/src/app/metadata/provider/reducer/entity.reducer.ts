@@ -41,7 +41,7 @@ export function reducer(state = initialState, action: EntityActionUnion): Entity
     }
 }
 
-export const isEntitySaved = (state: EntityState) => !Object.keys(state.changes).length && !state.saving;
+export const isEntitySaved = (state: EntityState) => state.changes ? !Object.keys(state.changes).length && !state.saving : true;
 export const getEntityChanges = (state: EntityState) => state.changes;
 export const isEditorSaving = (state: EntityState) => state.saving;
 export const getUpdatedEntity = (state: EntityState) => state.changes;

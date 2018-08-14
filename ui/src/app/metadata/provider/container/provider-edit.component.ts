@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { skipWhile, map, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
@@ -12,6 +12,10 @@ import { ClearProvider } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
 import { UpdateProviderRequest } from '../action/collection.action';
 import { NAV_FORMATS } from '../component/provider-editor-nav.component';
+import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { UnsavedDialogComponent } from '../../resolver/component/unsaved-dialog.component';
+import { UnsavedProviderComponent } from '../component/unsaved-provider.dialog';
+import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
 
 @Component({
     selector: 'provider-edit',
@@ -19,7 +23,7 @@ import { NAV_FORMATS } from '../component/provider-editor-nav.component';
     styleUrls: []
 })
 
-export class ProviderEditComponent implements OnDestroy {
+export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate {
 
     provider$: Observable<MetadataProvider>;
     definition$: Observable<Wizard<MetadataProvider>>;
@@ -36,7 +40,8 @@ export class ProviderEditComponent implements OnDestroy {
     constructor(
         private store: Store<fromProvider.ProviderState>,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private modalService: NgbModal
     ) {
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(d => !d));
         this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(skipWhile(d => !d));
@@ -77,6 +82,10 @@ export class ProviderEditComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
+        this.clear();
+    }
+
+    clear(): void {
         this.store.dispatch(new ClearProvider());
         this.store.dispatch(new ClearWizard());
         this.store.dispatch(new ClearEditor());
@@ -87,7 +96,27 @@ export class ProviderEditComponent implements OnDestroy {
     }
 
     cancel(): void {
+        this.clear();
         this.router.navigate(['metadata', 'manager', 'providers']);
+    }
+
+    canDeactivate(
+        currentRoute: ActivatedRouteSnapshot,
+        currentState: RouterStateSnapshot,
+        nextState: RouterStateSnapshot
+    ): Observable<boolean> {
+        if (nextState.url.match('edit')) { return of(true); }
+        if (Object.keys({ ...this.latest }).length > 0) {
+            let modal = this.modalService.open(UnsavedProviderComponent);
+            modal.result.then(
+                () => {
+                    this.clear();
+                    this.router.navigate([nextState.url]);
+                },
+                () => console.warn('denied')
+            );
+        }
+        return this.store.select(fromProvider.getEntityIsSaved);
     }
 }
 

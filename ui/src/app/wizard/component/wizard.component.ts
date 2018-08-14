@@ -53,9 +53,11 @@ export class WizardComponent {
 
         this.currentIcon$ = this.current$.pipe(
             withLatestFrom(this.last$),
-            map(([current, last]) => {
-                return (last && current.index === last.index) ? ICONS.CHECK : ICONS.INDEX;
-            })
+            map(([current, last]) => this.getIcon(current, last))
         );
+    }
+
+    getIcon(current, last): string {
+        return (last && current.index === last.index) ? ICONS.CHECK : ICONS.INDEX;
     }
 }
