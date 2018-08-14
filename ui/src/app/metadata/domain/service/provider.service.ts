@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { MetadataProvider } from '../../domain/model';
 import { FileBackedHttpMetadataProvider } from '../model/providers';
 import { ProviderOrder } from '../model/metadata-order';
+
 
 @Injectable()
 export class MetadataProviderService {
@@ -17,7 +19,9 @@ export class MetadataProviderService {
         private http: HttpClient
     ) {}
     query(): Observable<MetadataProvider[]> {
-        return this.http.get<MetadataProvider[]>(`${this.base}${this.endpoint}`, {});
+        return this.http.get<MetadataProvider[]>(`${this.base}${this.endpoint}`).pipe(
+            map(providers => providers.filter(p => p['@type'] !== 'BaseMetadataResolver'))
+        );
     }
 
     find(id: string): Observable<MetadataProvider> {
