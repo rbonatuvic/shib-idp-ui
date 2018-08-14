@@ -9,7 +9,6 @@ import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.Timer;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -27,15 +26,9 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
         this.indexWriter = indexWriter;
         this.luceneMetadataResolverService = luceneMetadataResolverService;
         this.sourceResolver = sourceResolver;
-        //TODO: set other things from the resolver here
-    }
 
-    public OpenSamlResourceBackedMetadataResolver(Timer timer, Resource resource) throws IOException {
-        super(timer, resource);
-    }
-
-    public OpenSamlResourceBackedMetadataResolver(Resource resource) throws IOException {
-        super(resource);
+        OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
+                this, sourceResolver.getReloadableMetadataResolverAttributes());
     }
 
     // TODO: this is still probably not the best way to do this?
@@ -52,18 +45,5 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
         luceneMetadataResolverService.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                                                                             this.sourceResolver.getResourceId(),
                                                                             indexWriter);
-    }
-
-    public void setIndexWriter(IndexWriter indexWriter) {
-
-        this.indexWriter = indexWriter;
-    }
-
-    public void setLuceneMetadataResolverService(LuceneMetadataResolverService luceneMetadataResolverService) {
-        this.luceneMetadataResolverService = luceneMetadataResolverService;
-    }
-
-    public void setSourceResolver(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver sourceResolver) {
-        this.sourceResolver = sourceResolver;
     }
 }

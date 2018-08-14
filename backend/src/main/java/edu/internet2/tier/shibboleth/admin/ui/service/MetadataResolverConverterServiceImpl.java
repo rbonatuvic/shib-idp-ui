@@ -13,6 +13,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import org.apache.lucene.index.IndexWriter;
+import org.opensaml.core.xml.persist.FilesystemLoadSaveManager;
 import org.opensaml.core.xml.persist.XMLObjectLoadSaveManager;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,9 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
 
     private OpenSamlLocalDynamicMetadataResolver convertToOpenSamlRepresentation(LocalDynamicMetadataResolver resolver) throws IOException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
-        XMLObjectLoadSaveManager manager = null;
-        //TODO: manager = new .. what?
+
+        //TODO: This is an educated guess.
+        XMLObjectLoadSaveManager manager = new FilesystemLoadSaveManager(resolver.getSourceDirectory());
 
         return new OpenSamlLocalDynamicMetadataResolver(manager, indexWriter, luceneMetadataResolverService, resolver);
     }
@@ -72,12 +74,13 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         Resource resource = null;
         switch (resourceType) {
             case SVN:
-                //TODO: resource = new ... what?
+                //TODO: What sort of resource type should be created here? URL?
                 break;
             case CLASSPATH:
-                resource = (Resource) new ClassPathResource(resolver.getClasspathMetadataResource()
-                                                                    .getFile());
+                resource = (Resource) new ClassPathResource(resolver.getClasspathMetadataResource().getFile());
                 break;
+            default:
+                throw new RuntimeException("Unsupported resource type!");
         }
 
         return new OpenSamlResourceBackedMetadataResolver(resource,
