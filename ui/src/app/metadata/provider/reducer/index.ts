@@ -9,6 +9,7 @@ import * as fromWizard from '../../../wizard/reducer';
 
 import { MetadataProvider } from '../../domain/model';
 import { WizardStep } from '../../../wizard/model';
+import { ProviderOrder } from '../../domain/model/metadata-order';
 
 export interface ProviderState {
     editor: fromEditor.EditorState;
@@ -87,6 +88,7 @@ export const getUpdatedEntity = createSelector(getEntityState, fromEntity.getUpd
 /*
  *   Select pieces of Provider Collection
 */
+export const getProviderOrder = createSelector(getCollectionState, fromCollection.getProviderOrder);
 export const getAllProviders = createSelector(getCollectionState, fromCollection.selectAllProviders);
 export const getProviderEntities = createSelector(getCollectionState, fromCollection.selectProviderEntities);
 export const getSelectedProviderId = createSelector(getCollectionState, fromCollection.getSelectedProviderId);
@@ -95,4 +97,18 @@ export const getProviderIds = createSelector(getCollectionState, fromCollection.
 export const getProviderCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
 
 export const getProviderNames = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.name));
+
+export const getProviderFilters = createSelector(getSelectedProvider, provider => provider.metadataFilters);
+
 export const getProviderXmlIds = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.xmlId));
+
+export const mergeProviderOrderFn = (providers: MetadataProvider[], order: ProviderOrder): MetadataProvider[] => {
+    return [...providers.sort(
+        (a: MetadataProvider, b: MetadataProvider) => {
+            const aIndex = order.resourceIds.indexOf(a.resourceId);
+            const bIndex = order.resourceIds.indexOf(b.resourceId);
+            return aIndex > bIndex ? 1 : bIndex > aIndex ? -1 : 0;
+        }
+    )];
+};
+export const getOrderedProviders = createSelector(getAllProviders, getProviderOrder, mergeProviderOrderFn);

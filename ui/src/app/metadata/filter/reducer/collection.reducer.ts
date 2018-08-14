@@ -5,6 +5,7 @@ import { MetadataFilter } from '../../domain/model';
 export interface CollectionState extends EntityState<MetadataFilter> {
     selectedFilterId: string | null;
     loaded: boolean;
+    saving: boolean;
 }
 
 export function sortByDate(a: MetadataFilter, b: MetadataFilter): number {
@@ -18,7 +19,8 @@ export const adapter: EntityAdapter<MetadataFilter> = createEntityAdapter<Metada
 
 export const initialState: CollectionState = adapter.getInitialState({
     selectedFilterId: null,
-    loaded: false
+    loaded: false,
+    saving: false
 });
 
 export function reducer(state = initialState, action: FilterCollectionActionsUnion): CollectionState {
@@ -32,11 +34,38 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
             return s;
         }
 
-        case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS: {
-            return adapter.updateOne(action.payload, state);
+        case FilterCollectionActionTypes.SELECT_FILTER_SUCCESS: {
+            return adapter.addOne(action.payload, {
+                ...state,
+                selectedFilterId: action.payload.resourceId
+            });
         }
 
-        case FilterCollectionActionTypes.SELECT_FILTER: {
+        case FilterCollectionActionTypes.ADD_FILTER_REQUEST:
+        case FilterCollectionActionTypes.UPDATE_FILTER_REQUEST: {
+            return {
+                ...state,
+                saving: true
+            };
+        }
+
+        case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS: {
+            return adapter.updateOne(action.payload, {
+                ...state,
+                saving: false
+            });
+        }
+
+        case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
+        case FilterCollectionActionTypes.ADD_FILTER_FAIL:
+        case FilterCollectionActionTypes.UPDATE_FILTER_FAIL: {
+            return {
+                ...state,
+                saving: false
+            };
+        }
+
+        case FilterCollectionActionTypes.SELECT_FILTER_REQUEST: {
             return {
                 ...state,
                 selectedFilterId: action.payload,
@@ -51,6 +80,7 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
 
 export const getSelectedFilterId = (state: CollectionState) => state.selectedFilterId;
 export const getIsLoaded = (state: CollectionState) => state.loaded;
+export const getIsSaving = (state: CollectionState) => state.saving;
 export const {
     selectIds: selectFilterIds,
     selectEntities: selectFilterEntities,

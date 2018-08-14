@@ -5,14 +5,12 @@ export interface SearchState {
     entities: MetadataEntity[];
     loading: boolean;
     query: string;
-    kind: string;
 }
 
 const initialState: SearchState = {
     entities: [],
     loading: false,
-    query: '',
-    kind: 'all'
+    query: ''
 };
 
 export function reducer(state = initialState, action: searchActions.Actions): SearchState {
@@ -25,20 +23,11 @@ export function reducer(state = initialState, action: searchActions.Actions): Se
             };
         }
 
-        case searchActions.ENTITY_FILTER: {
-            return {
-                ...state,
-                kind: action.payload,
-                loading: true
-            };
-        }
-
         case searchActions.ENTITY_SEARCH_COMPLETE: {
             return {
                 entities: action.payload,
                 loading: false,
-                query: state.query,
-                kind: state.kind
+                query: state.query
             };
         }
 
@@ -53,5 +42,3 @@ export const getEntities = (state: SearchState) => state.entities;
 export const getQuery = (state: SearchState) => state.query;
 
 export const getLoading = (state: SearchState) => state.loading;
-
-export const getFilter = (state: SearchState) => state.kind;

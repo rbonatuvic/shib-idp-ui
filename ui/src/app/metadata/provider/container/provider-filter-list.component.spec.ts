@@ -6,6 +6,9 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProviderFilterListComponent } from './provider-filter-list.component';
 import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
+import { ProviderEditorNavComponent } from '../component/provider-editor-nav.component';
+import { I18nTextComponent } from '../../../shared/component/i18n-text.component';
+import { ValidFormIconComponent } from '../../../shared/component/valid-form-icon.component';
 
 @Component({
     template: `
@@ -36,6 +39,9 @@ describe('Provider Filter List Component', () => {
             ],
             declarations: [
                 ProviderFilterListComponent,
+                ProviderEditorNavComponent,
+                I18nTextComponent,
+                ValidFormIconComponent,
                 TestHostComponent
             ],
             providers: []

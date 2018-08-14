@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { map, switchMap, catchError, withLatestFrom, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, withLatestFrom, tap, combineLatest, skipWhile } from 'rxjs/operators';
 
 import { Router } from '@angular/router';
 
 import * as fromFilter from '../reducer';
+import * as fromProvider from '../../provider/reducer';
 import * as fromRoot from '../../../app.reducer';
 import {
     FilterCollectionActionTypes,
     UpdateFilterFail,
-    UpdateFilterRequest,
-    AddFilterSuccess,
-    LoadFilterRequest
+    UpdateFilterRequest
 } from '../action/collection.action';
 import {
     SelectId,
@@ -59,16 +58,10 @@ export class FilterEffects {
     );
 
     @Effect({ dispatch: false })
-    saveFilterSuccess$ = this.actions$.pipe(
-        ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
-        switchMap(() => this.router.navigate(['/dashboard']))
-    );
-
-    @Effect()
     cancelChanges$ = this.actions$.pipe(
         ofType<CancelCreateFilter>(FilterActionTypes.CANCEL_CREATE_FILTER),
-        map(() => new LoadFilterRequest()),
-        tap(() => this.router.navigate(['/dashboard']))
+        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
     );
 
     constructor(

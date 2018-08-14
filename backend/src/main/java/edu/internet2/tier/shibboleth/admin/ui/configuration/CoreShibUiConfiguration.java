@@ -1,8 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityIdsSearchResultRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolversPositionOrderContainer;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.service.*;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
@@ -166,5 +169,15 @@ public class CoreShibUiConfiguration {
                 registry.addInterceptor(localeChangeInterceptor());
             }
         };
+    }
+
+    @Bean
+    public MetadataResolversPositionOrderContainerService
+        metadataResolversPositionOrderContainerService(MetadataResolversPositionOrderContainerRepository
+                                                               positionOrderContainerRepository,
+                                                       MetadataResolverRepository resolverRepository) {
+
+        return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository);
+
     }
 }

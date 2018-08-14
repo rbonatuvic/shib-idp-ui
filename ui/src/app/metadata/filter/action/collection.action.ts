@@ -3,37 +3,29 @@ import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Update } from '@ngrx/entity';
 
 export enum FilterCollectionActionTypes {
-    FIND = '[Metadata Filter] Find',
-    SELECT_FILTER = '[Metadata Filter] Select Request',
-    SELECT_FILTER_SUCCESS = '[Metadata Filter] Select Success',
-    SELECT_FILTER_FAIL = '[Metadata Filter] Select Fail',
+    SELECT_FILTER_REQUEST = '[Metadata Filter Collection] Select Filter Request',
+    SELECT_FILTER_SUCCESS = '[Metadata Filter Collection] Select Filter Success',
+    SELECT_FILTER_FAIL = '[Metadata Filter Collection] Select Filter Fail',
 
-    UPDATE_FILTER_REQUEST = '[Metadata Filter] Update Request',
-    UPDATE_FILTER_SUCCESS = '[Metadata Filter] Update Success',
-    UPDATE_FILTER_FAIL = '[Metadata Filter] Update Fail',
+    UPDATE_FILTER_REQUEST = '[Metadata Filter Collection] Update Filter Request',
+    UPDATE_FILTER_SUCCESS = '[Metadata Filter Collection] Update Filter Success',
+    UPDATE_FILTER_FAIL = '[Metadata Filter Collection] Update Filter Fail',
 
-    LOAD_FILTER_REQUEST = '[Metadata Filter Collection] Filter REQUEST',
-    LOAD_FILTER_SUCCESS = '[Metadata Filter Collection] Filter SUCCESS',
-    LOAD_FILTER_ERROR = '[Metadata Filter Collection] Filter ERROR',
+    LOAD_FILTER_REQUEST = '[Metadata Filter Collection] Load Filter Request',
+    LOAD_FILTER_SUCCESS = '[Metadata Filter Collection] Load Filter Success',
+    LOAD_FILTER_ERROR = '[Metadata Filter Collection] Load Filter Error',
 
-    ADD_FILTER = '[Metadata Filter Collection] Add Filter',
+    ADD_FILTER_REQUEST = '[Metadata Filter Collection] Add Filter Request',
     ADD_FILTER_SUCCESS = '[Metadata Filter Collection] Add Filter Success',
     ADD_FILTER_FAIL = '[Metadata Filter Collection] Add Filter Fail',
 
-    REMOVE_FILTER = '[Metadata Filter Collection] Remove Filter',
+    REMOVE_FILTER_REQUEST = '[Metadata Filter Collection] Remove Filter Request',
     REMOVE_FILTER_SUCCESS = '[Metadata Filter Collection] Remove Filter Success',
     REMOVE_FILTER_FAIL = '[Metadata Filter Collection] Remove Filter Fail'
 }
 
-
-export class FindFilter implements Action {
-    readonly type = FilterCollectionActionTypes.FIND;
-
-    constructor(public payload: string) { }
-}
-
 export class SelectFilter implements Action {
-    readonly type = FilterCollectionActionTypes.SELECT_FILTER;
+    readonly type = FilterCollectionActionTypes.SELECT_FILTER_REQUEST;
 
     constructor(public payload: string) { }
 }
@@ -53,7 +45,7 @@ export class SelectFilterFail implements Action {
 export class LoadFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.LOAD_FILTER_REQUEST;
 
-    constructor() { }
+    constructor(public payload: string) { }
 }
 
 export class LoadFilterSuccess implements Action {
@@ -87,7 +79,7 @@ export class UpdateFilterFail implements Action {
 }
 
 export class AddFilterRequest implements Action {
-    readonly type = FilterCollectionActionTypes.ADD_FILTER;
+    readonly type = FilterCollectionActionTypes.ADD_FILTER_REQUEST;
 
     constructor(public payload: MetadataFilter) { }
 }
@@ -105,7 +97,7 @@ export class AddFilterFail implements Action {
 }
 
 export class RemoveFilterRequest implements Action {
-    readonly type = FilterCollectionActionTypes.REMOVE_FILTER;
+    readonly type = FilterCollectionActionTypes.REMOVE_FILTER_REQUEST;
 
     constructor(public payload: MetadataFilter) { }
 }
@@ -132,7 +124,6 @@ export type FilterCollectionActionsUnion =
     | RemoveFilterRequest
     | RemoveFilterSuccess
     | RemoveFilterFail
-    | FindFilter
     | SelectFilter
     | SelectFilterSuccess
     | SelectFilterFail

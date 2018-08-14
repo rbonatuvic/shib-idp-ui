@@ -1,16 +1,16 @@
 <div class="card">
     <div class="card-header" (click)="toggle.emit(provider)" (keydown.space)="toggle.emit(provider)" tabindex="0">
-        <div class="row">
+        <div class="d-flex">
             <div class="reorder-card">
-                <p class="text-center text-primary font-weight-bold">1</p>
-                <button class="btn btn-link" disabled>
+                <p class="text-center text-primary font-weight-bold">{{ index }}</p>
+                <button class="btn btn-link" (click)="changeOrderDown.emit(provider); $event.stopPropagation();" [disabled]="last">
                     <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-link pull-right" disabled>
+                <button class="btn btn-link pull-right" (click)="changeOrderUp.emit(provider); $event.stopPropagation();" [disabled]="first">
                     <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
                 </button>
             </div>
-            <div class="col-9 clearfix">
+            <div class="flex-grow-1">
                 <div class="w-10 pr-3 pull-left">
                     <i class="fa fa-fw fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
                     &nbsp;
@@ -18,20 +18,19 @@
                         <i class="fa fa-fw fa-3x text-info fa-cubes"></i>
                     </span>
                 </div>
-                <div>
+                <div class="px-2">
                     {{ provider.name }}
-                    <i *ngIf="!provider.enabled" class="fa fa-fw" [ngClass]="{
+                    <i class="fa fa-fw" [ngClass]="{
                         'fa-check-circle text-success': provider.enabled,
                         'fa-times-circle text-danger': !provider.enabled
                     }"></i>
                     <small class="d-block">{{ provider['@type'] }}</small>
                 </div>
             </div>
-            <div class="col-2 text-right">
-                <button class="btn btn-primary btn-filter pull-left">
+            <div>
+                <button class="btn btn-primary btn-filter pull-left" (click)="viewFilters.emit(provider)">
                         <i class="fa fa-filter"></i>&nbsp;
-                        <span class="label">Active Filters</span>&nbsp;
-                        <span class="badge badge-light">{{ provider.metadataFilters.length }}</span>
+                        <span class="label">Manage Filters</span>
                 </button>
                 <button class="btn btn-link pull-right" (click)="select.emit(provider)" aria-label="Edit selected service provider">
                     <i class="fa fa-fw fa-edit fa-2x"></i>
@@ -61,7 +60,7 @@
                         <div class="col text-right font-weight-bold">
                             Metadata Provider Status:
                         </div>
-                        <div class="col" *ngIf="!provider.enabled">
+                        <div class="col">
                             <i class="fa fa-fw" [ngClass]="{
                                 'fa-check-circle text-success': provider.enabled,
                                 'fa-times-circle text-danger': !provider.enabled

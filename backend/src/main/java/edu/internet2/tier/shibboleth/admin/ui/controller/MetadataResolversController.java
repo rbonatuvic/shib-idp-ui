@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -58,6 +59,9 @@ public class MetadataResolversController {
     MetadataResolverService metadataResolverService;
 
     @Autowired
+    MetadataResolversPositionOrderContainerService positionOrderContainerService;
+
+    @Autowired
     IndexWriterService indexWriterService;
 
     @Autowired
@@ -74,7 +78,7 @@ public class MetadataResolversController {
     @GetMapping("/MetadataResolvers")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        Iterable<MetadataResolver> resolvers = resolverRepository.findAll();
+        List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
         resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
     }
@@ -118,6 +122,7 @@ public class MetadataResolversController {
 
         newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
+        positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
         persistedResolver.updateVersion();
 
         updateChainingMetadataResolver(persistedResolver);

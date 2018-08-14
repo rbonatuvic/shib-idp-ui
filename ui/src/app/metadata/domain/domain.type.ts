@@ -5,7 +5,7 @@ import {
 } from './model';
 
 import {
-    EntityAttributesFilter,
+    EntityAttributesFilterEntity,
     FileBackedHttpMetadataResolver
 } from './entity';
 import {
@@ -13,7 +13,7 @@ import {
 } from './model/providers';
 
 export type Filter =
-    | EntityAttributesFilter;
+    | EntityAttributesFilterEntity;
 
 export type Resolver =
     | FileBackedHttpMetadataResolver;
