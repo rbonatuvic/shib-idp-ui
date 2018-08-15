@@ -15,6 +15,7 @@ import { ProviderEditorNavComponent } from '../component/provider-editor-nav.com
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { MetadataProvider } from '../../domain/model';
 import { of } from 'rxjs';
+import { DifferentialService } from '../../../core/service/differential.service';
 
 @Component({
     template: `
@@ -44,7 +45,11 @@ describe('Provider Edit Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule.forRoot(),
-                RouterTestingModule,
+                RouterTestingModule.withRoutes([
+                    {path: 'edit', children: []},
+                    {path: 'foo', children: []},
+                    {path: '', children: []}
+                ]),
                 SharedModule,
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),
@@ -64,6 +69,7 @@ describe('Provider Edit Component', () => {
                 ProviderEditorNavComponent
             ],
             providers: [
+                DifferentialService,
                 { provide: NgbModal, useClass: NgbModalStub },
                 { provide: ActivatedRoute, useValue: activatedRoute },
                 { provide: APP_BASE_HREF, useValue: '/' }
