@@ -200,9 +200,6 @@ class MetadataFiltersControllerTests extends Specification {
 
         then:
         def expectedJson = new JsonSlurper().parseText(postedJsonBody)
-        if (filterType == 'entityAttributes') {
-            EntityAttributesFilter.cast(updatedFilter).fromTransientRepresentation()
-        }
         expectedJson << [version: updatedFilter.getVersion()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))

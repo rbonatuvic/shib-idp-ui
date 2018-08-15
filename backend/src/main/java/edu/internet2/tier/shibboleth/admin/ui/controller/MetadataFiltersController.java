@@ -68,11 +68,6 @@ public class MetadataFiltersController {
             return ResponseEntity.notFound().build();
         }
         metadataResolver.getMetadataFilters().add(createdFilter);
-
-        //convert before saving into database
-        if(createdFilter instanceof EntityAttributesFilter) {
-            EntityAttributesFilter.class.cast(createdFilter).fromTransientRepresentation();
-        }
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save

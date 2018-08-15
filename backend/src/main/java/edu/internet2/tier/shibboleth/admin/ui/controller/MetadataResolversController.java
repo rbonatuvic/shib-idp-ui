@@ -100,11 +100,9 @@ public class MetadataResolversController {
             return validationErrorResponse;
         }
 
-        newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
 
-        persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
 
@@ -128,10 +126,8 @@ public class MetadataResolversController {
 
         updatedResolver.setAudId(existingResolver.getAudId());
 
-        updatedResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
 
-        persistedResolver.convertFiltersFromTransientRepresentationIfNecessary();
         return ResponseEntity.ok(persistedResolver);
     }
 
