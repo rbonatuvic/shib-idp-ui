@@ -32,21 +32,17 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
     @Autowired
     IndexWriterService indexWriterService;
 
-    @Autowired
-    LuceneMetadataResolverService luceneMetadataResolverService;
-
     private OpenSamlFunctionDrivenDynamicHTTPMetadataResolver convertToOpenSamlRepresentation(DynamicHttpMetadataResolver resolver) throws IOException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
         return new OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(indexWriter,
-                                                                     luceneMetadataResolverService,
                                                                      resolver);
     }
 
     private OpenSamlFileBackedHTTPMetadataResolver convertToOpenSamlRepresentation(FileBackedHttpMetadataResolver resolver) throws IOException, ResolverException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
-        return new OpenSamlFileBackedHTTPMetadataResolver(indexWriter, luceneMetadataResolverService, resolver);
+        return new OpenSamlFileBackedHTTPMetadataResolver(indexWriter, resolver);
     }
 
     private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException {
@@ -55,7 +51,6 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
 
         return new OpenSamlFilesystemMetadataResolver(metadataFile,
                                                       indexWriter,
-                                                      luceneMetadataResolverService,
                                                       resolver);
     }
 
@@ -65,7 +60,7 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         //TODO: This is an educated guess.
         XMLObjectLoadSaveManager manager = new FilesystemLoadSaveManager(resolver.getSourceDirectory());
 
-        return new OpenSamlLocalDynamicMetadataResolver(manager, indexWriter, luceneMetadataResolverService, resolver);
+        return new OpenSamlLocalDynamicMetadataResolver(manager, indexWriter, resolver);
     }
 
     private OpenSamlResourceBackedMetadataResolver convertToOpenSamlRepresentation(ResourceBackedMetadataResolver resolver) throws IOException {
@@ -85,7 +80,6 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
 
         return new OpenSamlResourceBackedMetadataResolver(resource,
                                                           indexWriter,
-                                                          luceneMetadataResolverService,
                                                           resolver);
     }
 

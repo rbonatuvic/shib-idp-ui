@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.service.LuceneMetadataResolverService;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
@@ -12,16 +11,15 @@ import org.opensaml.saml.metadata.resolver.impl.FunctionDrivenDynamicHTTPMetadat
  */
 public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionDrivenDynamicHTTPMetadataResolver {
     private IndexWriter indexWriter;
-    private LuceneMetadataResolverService luceneMetadataResolverService;
     private DynamicHttpMetadataResolver sourceResolver;
+    private OpenSamlMetadataResolverDelegate delegate;
 
     public OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(IndexWriter indexWriter,
-                                                             LuceneMetadataResolverService luceneMetadataResolverService,
                                                              DynamicHttpMetadataResolver sourceResolver) {
         super(HttpClients.createMinimal());
         this.indexWriter = indexWriter;
-        this.luceneMetadataResolverService = luceneMetadataResolverService;
         this.sourceResolver = sourceResolver;
+        this.delegate = new OpenSamlMetadataResolverDelegate();
 
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromDynamicMetadataResolverAttributes(
                 this, sourceResolver.getDynamicMetadataResolverAttributes());
@@ -41,8 +39,8 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
     protected void initMetadataResolver() throws ComponentInitializationException {
         super.initMetadataResolver();
 
-        luceneMetadataResolverService.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
-                                                                            this.sourceResolver.getResourceId(),
-                                                                            indexWriter);
+        delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
+                                                       this.sourceResolver.getResourceId(),
+                                                       indexWriter);
     }
 }
