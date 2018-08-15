@@ -103,6 +103,29 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
         updatedResultFromPUT.statusCode.value() == 200
     }
 
+    def "DELETE Filter"() {
+        given: 'MetadataResolver with attached filter is available in data store'
+        def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
+        resolver.metadataFilters << generator.entityAttributesFilter()
+        def filterResourceId = resolver.metadataFilters[0].resourceId
+        def resolverResourceId = resolver.resourceId
+        metadataResolverRepository.save(resolver)
+
+
+        when: 'GET request is made with resource Id matching the existing filter'
+        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId/Filters/$filterResourceId", String)
+
+        then:
+        result.statusCode.value() == 200
+
+        and: 'DELETE call is made and then GET call is made for the just deleted resource'
+        restTemplate.delete("$BASE_URI/$resolverResourceId/Filters/$filterResourceId")
+        def GETResultAfterDelete = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId/Filters/$filterResourceId", String)
+
+        then: 'The deleted resource is gone'
+        GETResultAfterDelete.statusCode.value() == 404
+    }
+
     private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
         new HttpEntity<String>(jsonBodySupplier(), ['Content-Type': 'application/json'] as HttpHeaders)
     }

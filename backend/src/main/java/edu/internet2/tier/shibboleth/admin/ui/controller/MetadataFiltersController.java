@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,33 +48,31 @@ public class MetadataFiltersController {
 
     private static final Supplier<HttpClientErrorException> HTTP_404_CLIENT_ERROR_EXCEPTION = () -> new HttpClientErrorException(NOT_FOUND);
 
+    @ExceptionHandler
+    public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
+        if(ex.getStatusCode() == NOT_FOUND) {
+            return ResponseEntity.notFound().build();
+        }
+        throw ex;
+    }
+
     @GetMapping("/Filters")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll(@PathVariable String metadataResolverId) {
-        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
-        if(resolver == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
         return ResponseEntity.ok(resolver.getMetadataFilters());
     }
 
     @GetMapping("/Filters/{resourceId}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
-        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
-        if(resolver == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(resolver.getMetadataFilters().stream()
-                .filter(f -> f.getResourceId().equals(resourceId))
-                .collect(Collectors.toList()).get(0));
+        MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
+        return ResponseEntity.ok(findFilterOrThrowHttp404(resolver, resourceId));
     }
 
     @PostMapping("/Filters")
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
-        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
-        if(metadataResolver == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
         metadataResolver.getMetadataFilters().add(createdFilter);
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
@@ -85,7 +84,6 @@ public class MetadataFiltersController {
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
                 .body(persistedFilter);
-
     }
 
     @PutMapping("/Filters/{resourceId}")
@@ -97,10 +95,7 @@ public class MetadataFiltersController {
             return ResponseEntity.notFound().build();
         }
 
-        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
-        if(metadataResolver == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
 
         // check to make sure that the relationship exists
         if (!metadataResolver.getMetadataFilters().contains(filterTobeUpdated)) {
@@ -153,6 +148,13 @@ public class MetadataFiltersController {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
         }
         return resolver;
+    }
+
+    private MetadataFilter findFilterOrThrowHttp404(MetadataResolver resolver, String filterResourceId) {
+        return resolver.getMetadataFilters().stream()
+                .filter(f -> f.getResourceId().equals(filterResourceId))
+                .findFirst()
+                .orElseThrow(HTTP_404_CLIENT_ERROR_EXCEPTION);
     }
 
     private MetadataFilter newlyPersistedFilter(Stream<MetadataFilter> filters, final String filterResourceId) {
