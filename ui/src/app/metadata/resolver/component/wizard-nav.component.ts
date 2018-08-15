@@ -22,6 +22,7 @@ export class WizardNavComponent implements OnChanges {
     isFirstPage = false;
     wizardIsValid$: Observable<boolean>;
     wizardIsInvalid$: Observable<boolean>;
+    wizardIsSaving$: Observable<boolean>;
 
     wizard: EditorFlowDefinition[] = WizardDef;
 
@@ -38,6 +39,7 @@ export class WizardNavComponent implements OnChanges {
         this.wizard = WizardDef;
 
         this.wizardIsValid$ = this.store.select(fromEditor.getEditorIsValid);
+        this.wizardIsSaving$ = this.store.select(fromEditor.getEditorIsSaving);
         this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
     }
 } /* istanbul ignore next */

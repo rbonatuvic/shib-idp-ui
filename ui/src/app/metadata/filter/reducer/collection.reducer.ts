@@ -41,7 +41,7 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
             });
         }
 
-        case FilterCollectionActionTypes.ADD_FILTER:
+        case FilterCollectionActionTypes.ADD_FILTER_REQUEST:
         case FilterCollectionActionTypes.UPDATE_FILTER_REQUEST: {
             return {
                 ...state,
@@ -65,7 +65,7 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
             };
         }
 
-        case FilterCollectionActionTypes.SELECT_FILTER: {
+        case FilterCollectionActionTypes.SELECT_FILTER_REQUEST: {
             return {
                 ...state,
                 selectedFilterId: action.payload,

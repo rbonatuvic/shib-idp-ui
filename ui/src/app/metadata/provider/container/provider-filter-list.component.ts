@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { skipWhile, distinctUntilChanged, takeUntil, map } from 'rxjs/operators';
 import * as fromProvider from '../reducer';
 import * as fromFilter from '../../filter/reducer';
 import { MetadataFilter, MetadataProvider } from '../../domain/model';
@@ -14,7 +14,9 @@ import { UpdateFilterRequest, LoadFilterRequest } from '../../filter/action/coll
     templateUrl: './provider-filter-list.component.html',
     styleUrls: ['./provider-filter-list.component.scss']
 })
-export class ProviderFilterListComponent {
+export class ProviderFilterListComponent implements OnDestroy {
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     filters$: Observable<MetadataFilter[]>;
     provider$: Observable<MetadataProvider>;
@@ -27,17 +29,23 @@ export class ProviderFilterListComponent {
     ) {
         this.filters$ = this.store.select(fromFilter.getAdditionalFilters);
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(p => !p));
+        this.provider$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(p => {
+                this.store.dispatch(new LoadFilterRequest(p.resourceId));
+            });
 
         this.store.dispatch(new SetIndex('filters'));
 
-        this.provider$.subscribe(p => {
-            this.store.dispatch(new LoadFilterRequest(p.resourceId));
-        });
-
-        this.isSaving$ = this.store.select(fromFilter.getFiltersSaving);
+        this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
     }
 
     toggleEnabled(filter: MetadataFilter): void {
         this.store.dispatch(new UpdateFilterRequest({ ...filter, filterEnabled: !filter.filterEnabled }));
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

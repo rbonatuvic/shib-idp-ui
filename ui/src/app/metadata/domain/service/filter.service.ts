@@ -27,6 +27,7 @@ export class MetadataFilterService {
     }
 
     save(providerId: string, filter: MetadataFilter): Observable<MetadataFilter> {
+        console.log(providerId, filter);
         return this.http.post<MetadataFilter>(`${this.base}${this.endpoint}/${providerId}/Filters`, filter);
     }
 }

@@ -26,7 +26,6 @@ export class ProviderSelectComponent implements OnDestroy {
         private route: ActivatedRoute
     ) {
         this.actionsSubscription = this.route.params.pipe(
-            distinctUntilChanged(),
             map(params => new SelectProviderRequest(params.providerId))
         ).subscribe(store);
 

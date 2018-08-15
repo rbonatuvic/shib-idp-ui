@@ -86,6 +86,7 @@ export class ProviderWizardComponent implements OnDestroy {
     }
 
     save(): void {
+        this.store.dispatch(new SetDisabled(true));
         this.store.dispatch(new AddProviderRequest(this.provider));
     }
 

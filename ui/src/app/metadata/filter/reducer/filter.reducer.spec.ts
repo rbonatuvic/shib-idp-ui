@@ -1,4 +1,4 @@
-import { reducer } from './filter.reducer';
+import { reducer, initialState as snapshot } from './filter.reducer';
 import * as fromFilter from './filter.reducer';
 import { SelectId, LoadEntityPreviewSuccess, UpdateFilterChanges, FilterActionTypes, CancelCreateFilter } from '../action/filter.action';
 import { SearchActionTypes } from '../action/search.action';
@@ -17,14 +17,6 @@ import {
 import { MDUI } from '../../domain/model';
 import { MetadataFilter } from '../../domain/model';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
-
-
-const snapshot: fromFilter.FilterState = {
-    selected: null,
-    changes: null,
-    preview: null,
-    saving: false
-};
 
 const mdui: MDUI = {
     displayName: 'foo',
@@ -67,19 +59,6 @@ describe('Filter Reducer', () => {
             const current = { ...snapshot, changes: { filterEnabled: true } as MetadataFilter };
             const result = reducer(current, new UpdateFilterChanges(changes));
             expect(result.changes.filterEnabled).toBe(false);
-        });
-    });
-
-    describe(`${FilterCollectionActionTypes.ADD_FILTER} action`, () => {
-        it('should set saving to true', () => {
-            const result = reducer(snapshot, new AddFilterRequest(new EntityAttributesFilterEntity()));
-            expect(result.saving).toBe(true);
-        });
-    });
-    describe(`${FilterCollectionActionTypes.UPDATE_FILTER_REQUEST} action`, () => {
-        it('should set saving to true', () => {
-            const result = reducer(snapshot, new UpdateFilterRequest(new EntityAttributesFilterEntity()));
-            expect(result.saving).toBe(true);
         });
     });
 

@@ -1,0 +1,16 @@
+<ng-container>
+    <div aria-label="Save your information? modal" role="region" tabindex="0">
+        <div class="modal-header">
+            <h4 class="modal-title" i18n="@@message--unsaved-dialog-title">Save your information?</h4>
+        </div>
+        <div class="modal-body">
+            <p i18n="@@message--unsaved-editor">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="this.close()">
+                <span i18n="@@action--discard-changes" aria-label="Discard changes, go back to dashboard">Discard Changes</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="this.dismiss()" i18n="@@action--cancel" aria-label="Close modal and go back to editing">Cancel</button>
+        </div>
+    </div>
+</ng-container>
