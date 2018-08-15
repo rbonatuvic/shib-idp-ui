@@ -13,6 +13,7 @@
             [attr.aria-activedescendant]="activeDescendant"
             [placeholder]="placeholder"
             attr.aria-owns="{{ id }}__listbox"
+            [attr.aria-labelledby]="id"
             (focus)="handleInputFocus()"
             (blur)="handleInputBlur()"
         />
