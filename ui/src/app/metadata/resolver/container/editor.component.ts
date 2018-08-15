@@ -76,7 +76,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         );
 
         this.providerName$ = this.resolver$.pipe(map(p => p.serviceProviderName));
-        this.changes$ = this.store.select(fromResolver.getEditorChanges);
         this.editorIndex$ = this.route.params.pipe(map(params => Number(params.index)));
         this.currentPage$ = this.editorIndex$.pipe(map(index => EditorDef.find(r => r.index === index)));
         this.editor = EditorDef;

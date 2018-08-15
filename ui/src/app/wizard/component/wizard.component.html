@@ -42,10 +42,21 @@
             </button>
         </li>
         <li class="nav-item" *ngIf="(last$ | async)">
-            <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave.emit()">
-                <span class="label pull-left" i18n="@@action--save">Save</span>
+            <button class="nav-link save btn"
+                aria-label="Save"
+                role="button"
+                [disabled]="disabled$ | async"
+                (click)="onSave.emit()">
+                <span class="label pull-left" i18n="@@action--save">
+                    Save
+                </span>
                 <span class="direction pull-right">
-                    <i class="fa fa-fw fa-save next d-block fa-2x"></i>
+                    <i class="fa fa-fw fa-lg next d-block fa-2x"
+                        [ngClass]="{
+                            'fa-save': !(disabled$ | async),
+                            'fa-spinner': (disabled$ | async),
+                            'fa-pulse': (disabled$ | async)
+                        }"></i>
                     <ng-container i18n="@@action--save">Save</ng-container>
                 </span>
             </button>

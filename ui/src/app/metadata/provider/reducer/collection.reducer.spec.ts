@@ -1,17 +1,10 @@
-import { reducer } from './collection.reducer';
+import { reducer, initialState as snapshot } from './collection.reducer';
 import * as fromProvider from './collection.reducer';
 import {
     ProviderCollectionActionTypes,
     LoadProviderSuccess,
     UpdateProviderSuccess
 } from '../action/collection.action';
-
-const snapshot: fromProvider.CollectionState = {
-    ids: [],
-    entities: {},
-    selectedProviderId: null,
-    loaded: false
-};
 
 describe('Provider Collection Reducer', () => {
     describe('undefined action', () => {

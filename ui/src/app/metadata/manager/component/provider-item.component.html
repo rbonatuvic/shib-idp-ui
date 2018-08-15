@@ -2,11 +2,11 @@
     <div class="card-header" (click)="toggle.emit(provider)" (keydown.space)="toggle.emit(provider)" tabindex="0">
         <div class="d-flex">
             <div class="reorder-card">
-                <p class="text-center text-primary font-weight-bold">1</p>
-                <button class="btn btn-link" disabled>
+                <p class="text-center text-primary font-weight-bold">{{ index }}</p>
+                <button class="btn btn-link" (click)="changeOrderDown.emit(provider); $event.stopPropagation();" [disabled]="last">
                     <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-link pull-right" disabled>
+                <button class="btn btn-link pull-right" (click)="changeOrderUp.emit(provider); $event.stopPropagation();" [disabled]="first">
                     <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
                 </button>
             </div>

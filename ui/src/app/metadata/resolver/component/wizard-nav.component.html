@@ -35,10 +35,19 @@
             </button>
         </li>
         <li class="nav-item" *ngIf="isLastPage">
-            <button class="nav-link save btn" (click)="onSave.emit()" aria-label="Save" role="button">
+            <button class="nav-link save btn"
+                (click)="onSave.emit()"
+                [disabled]="wizardIsSaving$ | async"
+                aria-label="Save"
+                role="button">
                 <span class="label pull-left" i18n="@@action--save">Save</span>
                 <span class="direction pull-right">
-                    <i class="fa fa-fw fa-save next d-block fa-2x"></i>
+                    <i class="fa fa-fw fa-lg next d-block fa-2x"
+                        [ngClass]="{
+                            'fa-save': !(wizardIsSaving$ | async),
+                            'fa-spinner': (wizardIsSaving$ | async),
+                            'fa-pulse': (wizardIsSaving$ | async)
+                        }"></i>
                     <ng-container i18n="@@action--save">Save</ng-container>
                 </span>
             </button>

@@ -28,6 +28,7 @@ import { EntityEffects } from './effect/entity.effect';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
 
 import { ProviderEditorNavComponent } from './component/provider-editor-nav.component';
+import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 
 @NgModule({
     declarations: [
@@ -40,9 +41,12 @@ import { ProviderEditorNavComponent } from './component/provider-editor-nav.comp
         ProviderSelectComponent,
         ProviderFilterListComponent,
         SummaryPropertyComponent,
-        ProviderEditorNavComponent
+        ProviderEditorNavComponent,
+        UnsavedProviderComponent
     ],
-    entryComponents: [],
+    entryComponents: [
+        UnsavedProviderComponent
+    ],
     imports: [
         ReactiveFormsModule,
         CommonModule,
