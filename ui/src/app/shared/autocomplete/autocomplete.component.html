@@ -21,6 +21,7 @@
                 type="button"
                 aria-haspopup="true"
                 aria-expanded="false"
+                [attr.aria-labelledby]="id"
                 (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
                 <i class="fa fa-caret-down"></i>
             </button>
