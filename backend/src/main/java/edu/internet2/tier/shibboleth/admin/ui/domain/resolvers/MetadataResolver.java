@@ -1,10 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,8 +23,6 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -73,24 +71,13 @@ public class MetadataResolver extends AbstractAuditable {
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
 
     @Transient
-    private int version;
+    private Integer version;
 
-    public void updateVersion() {
-        this.version = hashCode();
-    }
-
-    public void convertFiltersIntoTransientRepresentationIfNecessary() {
-        getAvailableEntityAttributesFilters().forEach(EntityAttributesFilter::intoTransientRepresentation);
-    }
-
-    public void convertFiltersFromTransientRepresentationIfNecessary() {
-        getAvailableEntityAttributesFilters().forEach(EntityAttributesFilter::fromTransientRepresentation);
-    }
-
-    private List<EntityAttributesFilter> getAvailableEntityAttributesFilters() {
-        return this.metadataFilters.stream()
-                .filter(EntityAttributesFilter.class::isInstance)
-                .map(EntityAttributesFilter.class::cast)
-                .collect(toList());
+    @JsonGetter("version")
+    public int getVersion() {
+        if (this.version != null && this.version != 0 ) {
+            return this.version;
+        }
+        return this.hashCode();
     }
 }

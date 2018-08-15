@@ -1,24 +1,22 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { ProviderCollectionActionTypes, ProviderCollectionActionsUnion } from '../action/collection.action';
 import { MetadataProvider } from '../../domain/model';
+import { ProviderOrder } from '../../domain/model/metadata-order';
 
 export interface CollectionState extends EntityState<MetadataProvider> {
     selectedProviderId: string | null;
     loaded: boolean;
-}
-
-export function sortByDate(a: MetadataProvider, b: MetadataProvider): number {
-    return a.createdDate.localeCompare(b.createdDate);
+    order: ProviderOrder;
 }
 
 export const adapter: EntityAdapter<MetadataProvider> = createEntityAdapter<MetadataProvider>({
-    sortComparer: sortByDate,
     selectId: (model: MetadataProvider) => model.resourceId
 });
 
 export const initialState: CollectionState = adapter.getInitialState({
     selectedProviderId: null,
-    loaded: false
+    loaded: false,
+    order: { resourceIds: [] }
 });
 
 export function reducer(state = initialState, action: ProviderCollectionActionsUnion): CollectionState {
@@ -26,7 +24,7 @@ export function reducer(state = initialState, action: ProviderCollectionActionsU
         case ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS: {
             return adapter.upsertOne(action.payload, {
                 ...state,
-                selectedProviderId: action.payload.id.toString()
+                selectedProviderId: action.payload.id as string
             });
         }
 
@@ -40,6 +38,13 @@ export function reducer(state = initialState, action: ProviderCollectionActionsU
 
         case ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS: {
             return adapter.updateOne(action.payload, state);
+        }
+
+        case ProviderCollectionActionTypes.GET_ORDER_PROVIDER_SUCCESS: {
+            return {
+                ...state,
+                order: action.payload
+            };
         }
 
         default: {
@@ -56,3 +61,5 @@ export const {
     selectAll: selectAllProviders,
     selectTotal: selectProviderTotal
 } = adapter.getSelectors();
+
+export const getProviderOrder = (state: CollectionState) => state.order;

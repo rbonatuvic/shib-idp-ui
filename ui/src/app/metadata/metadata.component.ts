@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { LoadResolverRequest } from './resolver/action/collection.action';
-import { LoadFilterRequest } from './filter/action/collection.action';
 import { LoadDraftRequest } from './resolver/action/draft.action';
 import * as fromRoot from '../app.reducer';
 import { LoadProviderRequest } from './provider/action/collection.action';

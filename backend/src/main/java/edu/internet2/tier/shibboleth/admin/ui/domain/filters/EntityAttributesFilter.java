@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 
@@ -48,22 +46,29 @@ public class EntityAttributesFilter extends MetadataFilter {
     @Transient
     private List<String> attributeRelease = new ArrayList<>();
 
+    public void setAttributeRelease(List<String> attributeRelease) {
+        this.attributeRelease = attributeRelease;
+        this.rebuildAttributes();
+    }
+
     @Transient
     private RelyingPartyOverridesRepresentation relyingPartyOverrides;
 
+    public void setRelyingPartyOverrides(RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation) {
+        this.relyingPartyOverrides = relyingPartyOverridesRepresentation;
+        this.rebuildAttributes();
+    }
+
+    //TODO: yeah, I'm not too happy, either
+    private void rebuildAttributes() {
+        this.attributes.clear();
+        this.attributes.addAll((List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>)getAttributeListFromAttributeReleaseList(this.attributeRelease));
+        this.attributes.addAll((List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>)getAttributeListFromRelyingPartyOverridesRepresentation(this.relyingPartyOverrides));
+    }
+
+    @PostLoad
     public void intoTransientRepresentation() {
         this.attributeRelease = getAttributeReleaseListFromAttributeList(this.attributes);
         this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(attributes);
-        updateVersion();
-    }
-
-    public void fromTransientRepresentation() {
-        List<org.opensaml.saml.saml2.core.Attribute> attributeList = new ArrayList<>();
-        attributeList.addAll(getAttributeListFromAttributeReleaseList(this.attributeRelease));
-        attributeList.addAll(getAttributeListFromRelyingPartyOverridesRepresentation(this.relyingPartyOverrides));
-
-        if(!attributeList.isEmpty()) {
-            this.attributes = (List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) attributeList;
-        }
     }
 }
