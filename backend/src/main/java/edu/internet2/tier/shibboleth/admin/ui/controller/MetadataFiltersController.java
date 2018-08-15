@@ -6,10 +6,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,13 +31,14 @@ import java.util.stream.Stream;
 @RequestMapping("/api/MetadataResolvers/{metadataResolverId}")
 public class MetadataFiltersController {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(MetadataFiltersController.class);
-
     @Autowired
     private MetadataResolverRepository repository;
 
     @Autowired
     private MetadataResolverService metadataResolverService;
+
+    @Autowired
+    private FilterRepository filterRepository;
 
     @GetMapping("/Filters")
     @Transactional(readOnly = true)
@@ -68,18 +68,12 @@ public class MetadataFiltersController {
             return ResponseEntity.notFound().build();
         }
         metadataResolver.getMetadataFilters().add(createdFilter);
-
-        //convert before saving into database
-        if(createdFilter instanceof EntityAttributesFilter) {
-            EntityAttributesFilter.class.cast(createdFilter).fromTransientRepresentation();
-        }
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
         metadataResolverService.reloadFilters(persistedMr.getName());
 
-        MetadataFilter persistedFilter =
-                convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
+        MetadataFilter persistedFilter = newlyPersistedFilter(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
 
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
@@ -91,30 +85,28 @@ public class MetadataFiltersController {
     public ResponseEntity<?> update(@PathVariable String metadataResolverId,
                                     @PathVariable String resourceId,
                                     @RequestBody MetadataFilter updatedFilter) {
+        MetadataFilter filterTobeUpdated = filterRepository.findByResourceId(resourceId);
+        if (filterTobeUpdated == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
         if(metadataResolver == null) {
             return ResponseEntity.notFound().build();
         }
 
+        // check to make sure that the relationship exists
+        if (!metadataResolver.getMetadataFilters().contains(filterTobeUpdated)) {
+            // TODO: find a better response
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         if (!resourceId.equals(updatedFilter.getResourceId())) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
-        List<MetadataFilter> filters =
-                metadataResolver.getMetadataFilters().stream()
-                .filter(f -> f.getResourceId().equals(updatedFilter.getResourceId()))
-                .collect(Collectors.toList());
-        if (filters.size() > 1) {
-            // TODO: I don't think this should ever happen, but... if it does...
-            // do something? throw exception, return error?
-            LOGGER.warn("More than one filter was found for id {}! This is probably a bad thing.\n" +
-                    "We're going to go ahead and use the first one, but .. look in to this!", updatedFilter.getResourceId());
-        }
-
-        MetadataFilter filterTobeUpdated = filters.get(0);
         // Verify we're the only one attempting to update the filter
-        if (updatedFilter.getVersion() != filterTobeUpdated.hashCode()) {
+        if (updatedFilter.getVersion() != filterTobeUpdated.getVersion()) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
@@ -122,32 +114,19 @@ public class MetadataFiltersController {
         filterTobeUpdated.setFilterEnabled(updatedFilter.isFilterEnabled());
         updateConcreteFilterTypeData(filterTobeUpdated, updatedFilter);
 
-        //convert before saving into database
-        if(filterTobeUpdated instanceof EntityAttributesFilter) {
-            EntityAttributesFilter.class.cast(filterTobeUpdated).fromTransientRepresentation();
-        }
+        MetadataFilter persistedFilter = filterRepository.save(filterTobeUpdated);
 
-        MetadataResolver persistedMr = repository.save(metadataResolver);
-
-        metadataResolverService.reloadFilters(persistedMr.getName());
-
-        MetadataFilter persistedFilter =
-                convertIntoTransientRepresentationIfNecessary(persistedMr.getMetadataFilters().stream(), updatedFilter.getResourceId());
-
-        persistedFilter.setVersion(persistedFilter.hashCode());
+        // TODO: this is wrong
+        metadataResolverService.reloadFilters(metadataResolver.getName());
 
         return ResponseEntity.ok().body(persistedFilter);
     }
 
-    private MetadataFilter convertIntoTransientRepresentationIfNecessary(Stream<MetadataFilter> filters, final String filterResourceId) {
+    private MetadataFilter newlyPersistedFilter(Stream<MetadataFilter> filters, final String filterResourceId) {
         MetadataFilter persistedFilter = filters
                 .filter(f -> f.getResourceId().equals(filterResourceId))
                 .collect(Collectors.toList()).get(0);
 
-        //convert before saving into database
-        if(persistedFilter instanceof EntityAttributesFilter) {
-            EntityAttributesFilter.class.cast(persistedFilter).intoTransientRepresentation();
-        }
         return persistedFilter;
     }
 

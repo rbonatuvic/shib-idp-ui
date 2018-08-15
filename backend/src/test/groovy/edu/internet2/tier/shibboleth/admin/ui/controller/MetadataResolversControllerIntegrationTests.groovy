@@ -255,6 +255,33 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         createdResolver.metadataFilters[0] instanceof EntityAttributesFilter
     }
 
+    def "PUT MetadataResolver with one EntityAttributesFilters attached and check version -> /api/MetadataResolvers"() {
+        given: 'MetadataResolver with attached entity attributes is available in data store'
+        def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
+        resolver.metadataFilters << generator.entityAttributesFilter()
+        def resolverResourceId = resolver.resourceId
+        metadataResolverRepository.save(resolver)
+
+        when: 'GET request is made with resource Id matching the existing resolver'
+        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
+        def existingMetadataResolverMap = new JsonSlurper().parseText(result.body)
+        def existingMetadataVersion = existingMetadataResolverMap.version
+
+        and: 'PUT call is made with'
+        existingMetadataResolverMap.name = 'Updated'
+        def updatedResultFromPUT = this.restTemplate.exchange(
+                "$BASE_URI/${existingMetadataResolverMap.resourceId}",
+                PUT,
+                createRequestHttpEntityFor { JsonOutput.toJson(existingMetadataResolverMap) },
+                String)
+        def updatedResultFromGET = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
+        def updatedVersionReturnedFromPUT = new JsonSlurper().parseText(updatedResultFromPUT.body).version
+        def updatedVersionReturnedFromGET = new JsonSlurper().parseText(updatedResultFromGET.body).version
+
+        then:
+        updatedVersionReturnedFromPUT == updatedVersionReturnedFromGET
+    }
+
     private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
         new HttpEntity<String>(jsonBodySupplier(), ['Content-Type': 'application/json'] as HttpHeaders)
     }

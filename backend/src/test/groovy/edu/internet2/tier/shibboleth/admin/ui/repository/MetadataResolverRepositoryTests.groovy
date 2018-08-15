@@ -88,9 +88,6 @@ class MetadataResolverRepositoryTests extends Specification {
         }
         MetadataResolver metadataResolver = metadataResolverRepository.findAll().iterator().next()
 
-        //convert before saving into database
-        filter.fromTransientRepresentation()
-
         metadataResolver.getMetadataFilters().add(filter)
         MetadataResolver persistedMr = metadataResolverRepository.save(metadataResolver)
 
@@ -141,8 +138,6 @@ class MetadataResolverRepositoryTests extends Specification {
         filterToBeUpdated.relyingPartyOverrides = filter.relyingPartyOverrides
         filterToBeUpdated.attributeRelease = filter.attributeRelease
 
-        //convert before saving into database
-        filterToBeUpdated.fromTransientRepresentation()
         entityManager.clear()
         persistedMr = metadataResolverRepository.save(metadataResolver)
 
