@@ -18,7 +18,8 @@
     <select *ngIf="schema.type !== 'array'"
         [formControl]="control"
         [attr.name]="name"
-        class="form-control">
+        class="form-control"
+        [attr.aria-label]="schema.title">
         <option disabled selected>{{ schema.placeholder || schema.title }}</option>
         <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
     </select>

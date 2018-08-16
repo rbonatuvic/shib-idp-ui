@@ -1,5 +1,5 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="d-flex justify-content-between control-label">
+    <label [attr.for]="id" [id]="id" class="d-flex justify-content-between control-label">
         <span>
             {{ schema.title }}
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
@@ -22,6 +22,6 @@
         [placeholder]="schema.placeholder || ''"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        aria-label="Name ID Format (type for auto-complete)">
+        [attr.aria-label]="schema.title">
     </auto-complete>
 </div>
