@@ -130,6 +130,7 @@ public class MetadataFiltersController {
                                     @PathVariable String resourceId) {
 
         MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
+        //TODO: consider implementing delete of filter directly from RDBMS via FilterRepository
         boolean removed = resolver.getMetadataFilters().removeIf(f -> f.getResourceId().equals(resourceId));
         if(!removed) {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
