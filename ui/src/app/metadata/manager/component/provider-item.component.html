@@ -3,10 +3,18 @@
         <div class="d-flex">
             <div class="reorder-card">
                 <p class="text-center text-primary font-weight-bold">{{ index }}</p>
-                <button class="btn btn-link" (click)="changeOrderDown.emit(provider); $event.stopPropagation();" [disabled]="last">
+                <button
+                    class="btn btn-link"
+                    (click)="changeOrderDown.emit(provider); $event.stopPropagation();"
+                    [disabled]="last"
+                    aria-label="Decrease reorder by 1">
                     <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-link pull-right" (click)="changeOrderUp.emit(provider); $event.stopPropagation();" [disabled]="first">
+                <button
+                    class="btn btn-link pull-right"
+                    (click)="changeOrderUp.emit(provider); $event.stopPropagation();"
+                    [disabled]="first"
+                    aria-label="Increase reorder by 1">
                     <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
                 </button>
             </div>
