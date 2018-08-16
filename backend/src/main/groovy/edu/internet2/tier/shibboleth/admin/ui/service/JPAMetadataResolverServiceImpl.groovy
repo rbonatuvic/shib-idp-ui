@@ -126,16 +126,18 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(SignatureValidationFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(id: filter.name,
-                'xsi:type': 'SignatureValidation',
-                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
-                'requireSignedRoot': !filter.requireSignedRoot ?: null,
-                'certificateFile': filter.certificateFile,
-                'defaultCriteriaRef': filter.defaultCriteriaRef,
-                'signaturePrevalidatorRef': filter.signaturePrevalidatorRef,
-                'dynamicTrustedNamesStrategyRef': filter.dynamicTrustedNamesStrategyRef,
-                'trustEngineRef': filter.trustEngineRef,
-                'publicKey': filter.publicKey)
+        if(filter.xmlShouldBeGenerated()) {
+            markupBuilderDelegate.MetadataFilter(id: filter.name,
+                    'xsi:type': 'SignatureValidation',
+                    'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                    'requireSignedRoot': !filter.requireSignedRoot ?: null,
+                    'certificateFile': filter.certificateFile,
+                    'defaultCriteriaRef': filter.defaultCriteriaRef,
+                    'signaturePrevalidatorRef': filter.signaturePrevalidatorRef,
+                    'dynamicTrustedNamesStrategyRef': filter.dynamicTrustedNamesStrategyRef,
+                    'trustEngineRef': filter.trustEngineRef,
+                    'publicKey': filter.publicKey)
+        }
     }
 
     void constructXmlNodeForFilter(EntityAttributesFilter filter, def markupBuilderDelegate) {
@@ -165,10 +167,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(
-                'xsi:type': 'RequiredValidUntil',
-                maxValidityInterval: filter.maxValidityInterval
-        )
+        if(filter.xmlShouldBeGenerated()) {
+            markupBuilderDelegate.MetadataFilter(
+                    'xsi:type': 'RequiredValidUntil',
+                    maxValidityInterval: filter.maxValidityInterval
+            )
+        }
     }
 
     void constructXmlNodeForResolver(FilesystemMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {

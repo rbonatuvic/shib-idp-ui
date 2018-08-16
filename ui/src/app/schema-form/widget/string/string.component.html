@@ -20,7 +20,8 @@
         [attr.placeholder]="schema.placeholder"
         [attr.maxLength]="schema.maxLength || null"
         [attr.minLength]="schema.minLength || null"
-        [attr.disabled]="(schema.widget.id=='color' && schema.readOnly)?true:null">
+        [attr.disabled]="(schema.widget.id=='color' && schema.readOnly)?true:null"
+        [attr.aria-label]="schema.title">
     <input *ngIf="(schema.widget.id === 'color' && schema.readOnly)" [attr.name]="name" type="hidden" [formControl]="control">
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
         {{ errorMessages }}
