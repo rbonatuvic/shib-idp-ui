@@ -14,6 +14,7 @@ import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 import { MetadataFilterService } from '../../domain/service/filter.service';
+import { SelectProviderRequest } from '../../provider/action/collection.action';
 
 /* istanbul ignore next */
 @Injectable()
@@ -96,6 +97,14 @@ export class FilterCollectionEffects {
                 );
         })
     );
+    @Effect()
+    updateFilterSuccessReloadProvider$ = this.actions$.pipe(
+        ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        map(([filter, providerId]) => new SelectProviderRequest(providerId))
+    );
+
     @Effect({ dispatch: false })
     updateFilterSuccessRedirect$ = this.actions$.pipe(
         ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),

@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map, catchError, switchMap, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
 import {
-    ProviderCollectionActionsUnion,
     ProviderCollectionActionTypes,
     AddProviderRequest,
     AddProviderSuccess,
@@ -32,13 +31,31 @@ import {
 import { MetadataProviderService } from '../../domain/service/provider.service';
 import * as fromProvider from '../reducer';
 import * as fromRoot from '../../../app.reducer';
-import { AddFilterSuccess, FilterCollectionActionTypes } from '../../filter/action/collection.action';
-import { debounce } from '../../../../../node_modules/rxjs-compat/operator/debounce';
+import { ClearProvider, ResetChanges } from '../action/entity.action';
+import { ShowContentionAction } from '../../../contention/action/contention.action';
+import { ContentionService } from '../../../contention/service/contention.service';
+import { MetadataProvider } from '../../domain/model';
 
 
 /* istanbul ignore next */
 @Injectable()
 export class CollectionEffects {
+
+    @Effect()
+    openContention$ = this.actions$.pipe(
+        ofType<UpdateProviderFail>(ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProvider)),
+        switchMap(([changes, current]) =>
+            this.providerService.find(current.resourceId).pipe(
+                map(data => new ShowContentionAction(this.contentionService.getContention(current, changes, data, {
+                    resolve: (obj) => this.store.dispatch(new UpdateProviderRequest(<MetadataProvider>{ ...obj })),
+                    reject: (obj) => this.store.dispatch(new ResetChanges())
+                })))
+            )
+        )
+    );
+
 
     @Effect()
     loadProviders$ = this.actions$.pipe(
@@ -100,7 +117,7 @@ export class CollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
-                    catchError((e) => of(new UpdateProviderFail(e)))
+                    catchError((e) => of(new UpdateProviderFail(provider)))
                 )
         )
     );
@@ -116,7 +133,10 @@ export class CollectionEffects {
     updateProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['metadata', 'manager', 'providers']))
+        tap(provider => {
+            this.store.dispatch(new ClearProvider());
+            this.router.navigate(['metadata', 'manager', 'providers']);
+        })
     );
 
     @Effect()
@@ -210,6 +230,7 @@ export class CollectionEffects {
         private actions$: Actions,
         private router: Router,
         private store: Store<fromRoot.State>,
-        private providerService: MetadataProviderService
+        private providerService: MetadataProviderService,
+        private contentionService: ContentionService
     ) { }
 }
