@@ -25,6 +25,8 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
 
+        this.setId(sourceResolver.getResourceId());
+
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes());
     }

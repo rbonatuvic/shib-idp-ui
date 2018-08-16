@@ -11,6 +11,8 @@ import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 
 import javax.annotation.Nullable;
 
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
@@ -27,13 +29,15 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
 
+        this.setId(sourceResolver.getResourceId());
+
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromHttpMetadataResolverAttributes(
                 this, sourceResolver.getHttpMetadataResolverAttributes());
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes());
 
         this.setBackupFile(sourceResolver.getBackingFile());
-        this.setBackupFileInitNextRefreshDelay(Long.parseLong(sourceResolver.getBackupFileInitNextRefreshDelay()));
+        this.setBackupFileInitNextRefreshDelay(toMillis(sourceResolver.getBackupFileInitNextRefreshDelay()));
         this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
 
         //TODO: Where does this get set in OpenSAML land?

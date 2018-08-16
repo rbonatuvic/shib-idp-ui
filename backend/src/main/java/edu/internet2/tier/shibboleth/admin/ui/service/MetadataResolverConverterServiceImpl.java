@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,8 +58,13 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
     private OpenSamlLocalDynamicMetadataResolver convertToOpenSamlRepresentation(LocalDynamicMetadataResolver resolver) throws IOException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
-        //TODO: This is an educated guess.
-        XMLObjectLoadSaveManager manager = new FilesystemLoadSaveManager(resolver.getSourceDirectory());
+        XMLObjectLoadSaveManager manager = null;
+        try {
+            manager = new FilesystemLoadSaveManager(resolver.getSourceDirectory());
+        } catch (ConstraintViolationException e) {
+            // the base directory string instance was null or empty
+            //TODO: What should we do here? Currently, this causes a test to fail.
+        }
 
         return new OpenSamlLocalDynamicMetadataResolver(manager, indexWriter, resolver);
     }
@@ -72,7 +78,8 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 //TODO: What sort of resource type should be created here? URL?
                 break;
             case CLASSPATH:
-                resource = (Resource) new ClassPathResource(resolver.getClasspathMetadataResource().getFile());
+                //TODO: Not sure what kind of resource class to use here.
+                // resource = (Resource) new ClassPathResource(resolver.getClasspathMetadataResource().getFile()); // this doesn't work.
                 break;
             default:
                 throw new RuntimeException("Unsupported resource type!");

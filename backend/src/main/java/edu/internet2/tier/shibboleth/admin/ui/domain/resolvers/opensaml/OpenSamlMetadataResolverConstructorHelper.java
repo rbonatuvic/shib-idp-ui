@@ -7,25 +7,27 @@ import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractDynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractReloadingMetadataResolver;
 
+import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
 public class OpenSamlMetadataResolverConstructorHelper {
 
     public static void updateOpenSamlMetadataResolverFromDynamicMetadataResolverAttributes(MetadataResolver metadataResolver, DynamicMetadataResolverAttributes attributes) {
-
         AbstractDynamicMetadataResolver dynamicMetadataResolver = (AbstractDynamicMetadataResolver) metadataResolver;
 
-        // from DynamicMetadataResolverAttributes
-        dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(Long.valueOf(attributes.getBackgroundInitializationFromCacheDelay()));
-        dynamicMetadataResolver.setCleanupTaskInterval(Long.valueOf(attributes.getCleanupTaskInterval()));
+        dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(attributes.getBackgroundInitializationFromCacheDelay()));
+        dynamicMetadataResolver.setCleanupTaskInterval(toMillis(attributes.getCleanupTaskInterval()));
         dynamicMetadataResolver.setInitializeFromPersistentCacheInBackground(attributes.getInitializeFromPersistentCacheInBackground());
-        dynamicMetadataResolver.setMaxCacheDuration(Long.valueOf(attributes.getMaxCacheDuration()));
-        dynamicMetadataResolver.setMaxIdleEntityData(Long.valueOf(attributes.getMaxIdleEntityData()));
-        dynamicMetadataResolver.setMinCacheDuration(Long.valueOf(attributes.getMinCacheDuration()));
-        dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(Long.valueOf(attributes.getBackgroundInitializationFromCacheDelay()));
+        dynamicMetadataResolver.setMaxCacheDuration(toMillis(attributes.getMaxCacheDuration()));
+        dynamicMetadataResolver.setMaxIdleEntityData(toMillis(attributes.getMaxIdleEntityData()));
+        dynamicMetadataResolver.setMinCacheDuration(toMillis(attributes.getMinCacheDuration()));
+        dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(attributes.getBackgroundInitializationFromCacheDelay()));
         dynamicMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor().floatValue());
-        dynamicMetadataResolver.setRemoveIdleEntityData(attributes.getRemoveIdleEntityData());
+
+        //TODO: What should we do here if this data is null/empty?
+        dynamicMetadataResolver.setRemoveIdleEntityData(attributes.getRemoveIdleEntityData() == null ? false : attributes.getRemoveIdleEntityData());
 
         //TODO: This takes a XMLObjectLoadSaveManager. Do we have what we need to create one?
         // dynamicMetadataResolver.setPersistentCacheManager(); attributes.getPersistentCacheManagerDirectory();
@@ -51,11 +53,13 @@ public class OpenSamlMetadataResolverConstructorHelper {
     public static void updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(MetadataResolver metadataResolver, ReloadableMetadataResolverAttributes attributes) {
         AbstractReloadingMetadataResolver reloadingMetadataResolver = (AbstractReloadingMetadataResolver) metadataResolver;
 
-        reloadingMetadataResolver.setExpirationWarningThreshold(Long.parseLong(attributes.getExpirationWarningThreshold()));
-        reloadingMetadataResolver.setMaxRefreshDelay(Long.parseLong(attributes.getMaxRefreshDelay()));
-        reloadingMetadataResolver.setMinRefreshDelay(Long.parseLong(attributes.getMinRefreshDelay()));
+        reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
+        reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));
+        reloadingMetadataResolver.setMinRefreshDelay(toMillis(attributes.getMinRefreshDelay()));
         reloadingMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor().floatValue());
-        reloadingMetadataResolver.setResolveViaPredicatesOnly(attributes.getResolveViaPredicatesOnly());
+
+        //TODO: What should we do here if this data is null/empty?
+        reloadingMetadataResolver.setResolveViaPredicatesOnly(attributes.getResolveViaPredicatesOnly() == null ? false : attributes.getResolveViaPredicatesOnly());
 
         //TODO: This takes a set of MetadataIndex's. We've got an IndexesRef. How to convert?
         // reloadingMetadataResolver.setIndexes(); attributes.getIndexesRef();

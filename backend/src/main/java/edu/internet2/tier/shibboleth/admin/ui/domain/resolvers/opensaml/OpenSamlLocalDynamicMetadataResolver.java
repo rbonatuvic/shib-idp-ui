@@ -24,6 +24,8 @@ public class OpenSamlLocalDynamicMetadataResolver extends LocalDynamicMetadataRe
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
 
+        this.setId(sourceResolver.getResourceId());
+
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromDynamicMetadataResolverAttributes(
                 this, sourceResolver.getDynamicMetadataResolverAttributes());
 

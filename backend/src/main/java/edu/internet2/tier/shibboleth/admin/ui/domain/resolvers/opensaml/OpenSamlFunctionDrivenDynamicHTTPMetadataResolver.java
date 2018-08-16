@@ -21,6 +21,8 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
 
+        this.setId(sourceResolver.getResourceId());
+
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromDynamicMetadataResolverAttributes(
                 this, sourceResolver.getDynamicMetadataResolverAttributes());
 

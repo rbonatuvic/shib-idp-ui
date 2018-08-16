@@ -389,7 +389,7 @@ class TestObjectGenerator {
                 randomResolver = localDynamicMetadataResolver()
                 break
             case 'ResourceBacked':
-                randomResolver = resourceBackedMetadataResolverForSVN()
+                randomResolver = resourceBackedMetadataResolverForClasspath()
                 break
             case 'Filesystem':
                 randomResolver = filesystemMetadataResolver()
@@ -457,6 +457,20 @@ class TestObjectGenerator {
                 it.resourceFile = 'entity.xml'
                 it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
                 it.workingCopyDirectory = '%{idp.home}/metadata/svn'
+                it
+            }
+            it
+        }
+    }
+
+    ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
+        def file = new File('/tmp/foo.txt') // should we really do this?
+        file.write 'This is a temp file for a groovy test.'
+        new ResourceBackedMetadataResolver().with {
+            it.name = 'ClasspathResourceMetadata'
+            it.xmlId = 'ClasspathResourceMetadata'
+            it.classpathMetadataResource = new ClasspathMetadataResource().with {
+                it.file = '/tmp/foo.txt'
                 it
             }
             it

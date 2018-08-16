@@ -40,6 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
@@ -133,13 +134,14 @@ public class MetadataResolversController {
 
     private void updateChainingMetadataResolver(MetadataResolver persistedResolver) throws IOException, ResolverException {
         org.opensaml.saml.metadata.resolver.MetadataResolver openSamlResolver = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-        List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolverList = ((ChainingMetadataResolver) chainingMetadataResolver).getResolvers();
+        List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolverList = new ArrayList<>(((ChainingMetadataResolver) chainingMetadataResolver).getResolvers());
         for (org.opensaml.saml.metadata.resolver.MetadataResolver resolver : resolverList) {
             if (resolver.getId().equals(persistedResolver.getResourceId())) {
                 resolverList.remove(resolver);
             }
         }
         resolverList.add(openSamlResolver);
+        ((ChainingMetadataResolver) chainingMetadataResolver).setResolvers(resolverList);
     }
 
     @PutMapping("/MetadataResolvers/{resourceId}")
