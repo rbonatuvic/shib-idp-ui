@@ -13,6 +13,7 @@
             [attr.aria-activedescendant]="activeDescendant"
             [placeholder]="placeholder"
             attr.aria-owns="{{ id }}__listbox"
+            [attr.aria-labelledby]="id"
             (focus)="handleInputFocus()"
             (blur)="handleInputBlur()"
         />
@@ -21,6 +22,7 @@
                 type="button"
                 aria-haspopup="true"
                 aria-expanded="false"
+                [attr.aria-labelledby]="id"
                 (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
                 <i class="fa fa-caret-down"></i>
             </button>

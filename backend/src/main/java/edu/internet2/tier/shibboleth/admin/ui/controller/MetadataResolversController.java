@@ -70,7 +70,6 @@ public class MetadataResolversController {
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
         List<MetadataResolver> resolvers = positionOrderContainerService.getAllMetadataResolversInDefinedOrderOrUnordered();
-        resolvers.forEach(MetadataResolver::updateVersion);
         return ResponseEntity.ok(resolvers);
     }
 
@@ -95,7 +94,6 @@ public class MetadataResolversController {
         if (resolver == null) {
             return ResponseEntity.notFound().build();
         }
-        resolver.updateVersion();
         return ResponseEntity.ok(resolver);
     }
 
@@ -111,12 +109,9 @@ public class MetadataResolversController {
             return validationErrorResponse;
         }
 
-        newResolver.convertFiltersFromTransientRepresentationIfNecessary();
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
-        persistedResolver.updateVersion();
 
-        persistedResolver.convertFiltersIntoTransientRepresentationIfNecessary();
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
 
@@ -127,9 +122,9 @@ public class MetadataResolversController {
         if (existingResolver == null) {
             return ResponseEntity.notFound().build();
         }
-        if (existingResolver.hashCode() != updatedResolver.getVersion()) {
+        if (existingResolver.getVersion() != updatedResolver.getVersion()) {
             log.info("Metadata Resolver version conflict. Latest resolver in database version: {}. Resolver version sent from UI: {}",
-                    existingResolver.hashCode(), updatedResolver.getVersion());
+                    existingResolver.getVersion(), updatedResolver.getVersion());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
@@ -140,11 +135,7 @@ public class MetadataResolversController {
 
         updatedResolver.setAudId(existingResolver.getAudId());
 
-        //If one needs to update filters, it should be dealt with via filters endpoints
-        updatedResolver.setMetadataFilters(existingResolver.getMetadataFilters());
-
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
-        persistedResolver.updateVersion();
 
         return ResponseEntity.ok(persistedResolver);
     }

@@ -5,14 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OrderColumn;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -38,4 +31,8 @@ public class SignatureValidationFilter extends MetadataFilter {
     private String trustEngineRef;
 
     private String publicKey;
+
+    public boolean xmlShouldBeGenerated() {
+        return requireSignedRoot;
+    }
 }

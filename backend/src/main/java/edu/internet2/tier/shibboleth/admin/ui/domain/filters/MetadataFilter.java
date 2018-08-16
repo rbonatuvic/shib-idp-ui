@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -46,9 +47,13 @@ public class MetadataFilter extends AbstractAuditable {
     private boolean filterEnabled;
 
     @Transient
-    private int version;
+    private transient Integer version;
 
-    public void updateVersion() {
-        this.version = hashCode();
+    @JsonGetter("version")
+    public int getVersion() {
+        if (version != null && version != 0) {
+            return this.version;
+        }
+        return this.hashCode();
     }
 }

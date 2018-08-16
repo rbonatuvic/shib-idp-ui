@@ -73,7 +73,6 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         def simulatedPrePersistentFilter = new EntityAttributesFilter()
         simulatedPrePersistentFilter.attributeRelease = simulatedPersistentFilter.attributeRelease
         simulatedPrePersistentFilter.relyingPartyOverrides = simulatedPersistentFilter.relyingPartyOverrides
-        simulatedPrePersistentFilter.fromTransientRepresentation()
 
         expect:
         simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
