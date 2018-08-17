@@ -47,10 +47,14 @@ public class MetadataFiltersPositionOrderController {
                         .ifPresent(reOrderedFilters::add)
         );
 
-        resolver.setMetadataFilters(reOrderedFilters);
-        metadataResolverRepository.save(resolver);
-
-        return ResponseEntity.noContent().build();
+        if(currentFilters.size() == reOrderedFilters.size()) {
+            resolver.setMetadataFilters(reOrderedFilters);
+            metadataResolverRepository.save(resolver);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity
+                .badRequest()
+                .body("Number of filters to reorder or filters resource ids do not match current filters");
     }
 
     @GetMapping
