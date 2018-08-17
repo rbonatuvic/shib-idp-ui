@@ -48,6 +48,7 @@ public class MetadataFiltersController {
 
     private static final Supplier<HttpClientErrorException> HTTP_404_CLIENT_ERROR_EXCEPTION = () -> new HttpClientErrorException(NOT_FOUND);
 
+    //TODO: refactor to use RestControllerSupport class
     @ExceptionHandler
     public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
         if(ex.getStatusCode() == NOT_FOUND) {
@@ -100,6 +101,7 @@ public class MetadataFiltersController {
         // check to make sure that the relationship exists
         if (!metadataResolver.getMetadataFilters().contains(filterTobeUpdated)) {
             // TODO: find a better response
+            // TODO: refactor to use RestControllerSupport class
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -143,6 +145,7 @@ public class MetadataFiltersController {
         return ResponseEntity.noContent().build();
     }
 
+    //TODO: refactor to use RestControllerSupport class
     private MetadataResolver findResolverOrThrowHttp404(String resolverResourceId) {
         MetadataResolver resolver = repository.findByResourceId(resolverResourceId);
         if(resolver == null) {

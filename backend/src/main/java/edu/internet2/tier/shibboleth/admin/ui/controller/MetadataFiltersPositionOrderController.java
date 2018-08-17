@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
+import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,12 +33,15 @@ public class MetadataFiltersPositionOrderController {
     @Autowired
     MetadataResolverRepository metadataResolverRepository;
 
+    @Autowired
+    RestControllersSupport restControllersSupport;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> updateFiltersPositionOrder(@PathVariable String metadataResolverId,
                                                         @RequestBody List<String> filtersResourceIds) {
 
-        MetadataResolver resolver = metadataResolverRepository.findByResourceId(metadataResolverId);
+        MetadataResolver resolver = restControllersSupport.findResolverOrThrowHttp404(metadataResolverId);
         List<MetadataFilter> currentFilters = resolver.getMetadataFilters();
         List<MetadataFilter> reOrderedFilters = new ArrayList<>();
 
@@ -60,7 +65,7 @@ public class MetadataFiltersPositionOrderController {
     @GetMapping
     @Transactional(readOnly = true)
     public ResponseEntity<?> getFiltersPositionOrder(@PathVariable String metadataResolverId) {
-        MetadataResolver resolver = metadataResolverRepository.findByResourceId(metadataResolverId);
+        MetadataResolver resolver = restControllersSupport.findResolverOrThrowHttp404(metadataResolverId);
         List<String> resourceIds = resolver.getMetadataFilters().stream()
                 .map(MetadataFilter::getResourceId)
                 .collect(toList());
