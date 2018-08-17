@@ -32,7 +32,9 @@
                             [matches]="ids$ | async"
                             (keydown.enter)="onSelectValue(search.value)">
                         </auto-complete>
-                        <small>You must add at least one entity id target.</small>
+                        <small [class.text-danger]="search.invalid && search.touched">
+                            You must add at least one entity id target and they must each be unique.
+                        </small>
                     </ng-container>
                     <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
                         <p class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
