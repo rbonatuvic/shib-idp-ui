@@ -99,19 +99,19 @@ export class AddFilterFail implements Action {
 export class RemoveFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.REMOVE_FILTER_REQUEST;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveFilterSuccess implements Action {
     readonly type = FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveFilterFail implements Action {
     readonly type = FilterCollectionActionTypes.REMOVE_FILTER_FAIL;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public error: Error) { }
 }
 
 export type FilterCollectionActionsUnion =

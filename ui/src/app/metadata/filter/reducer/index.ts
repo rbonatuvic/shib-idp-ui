@@ -52,7 +52,7 @@ export const getAllFilters = createSelector(getCollectionState, fromCollection.s
 export const getCollectionSaving = createSelector(getCollectionState, fromCollection.getIsSaving);
 
 export const notAddtlFilters = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
-export const filterTypeFn = filters => filters.filter(f => notAddtlFilters.indexOf(f['@type']) === -1);
+export const filterTypeFn = filters => [...filters.filter(f => notAddtlFilters.indexOf(f['@type']) === -1)];
 
 export const getAdditionalFilters = createSelector(getAllFilters, filterTypeFn);
 

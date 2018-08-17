@@ -7,7 +7,7 @@ import * as fromFilter from '../../filter/reducer';
 import { MetadataFilter, MetadataProvider } from '../../domain/model';
 import { NAV_FORMATS } from '../component/provider-editor-nav.component';
 import { SetIndex } from '../../../wizard/action/wizard.action';
-import { UpdateFilterRequest, LoadFilterRequest } from '../../filter/action/collection.action';
+import { UpdateFilterRequest, LoadFilterRequest, RemoveFilterRequest } from '../../filter/action/collection.action';
 
 @Component({
     selector: 'provider-filter-list',
@@ -42,6 +42,10 @@ export class ProviderFilterListComponent implements OnDestroy {
 
     toggleEnabled(filter: MetadataFilter): void {
         this.store.dispatch(new UpdateFilterRequest({ ...filter, filterEnabled: !filter.filterEnabled }));
+    }
+
+    remove(id: string): void {
+        this.store.dispatch(new RemoveFilterRequest(id));
     }
 
     ngOnDestroy(): void {
