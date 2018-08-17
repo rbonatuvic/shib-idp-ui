@@ -59,4 +59,11 @@ describe('Provider Filter List Component', () => {
     it('should instantiate the component', async(() => {
         expect(app).toBeTruthy();
     }));
+
+    describe('remove method', () => {
+        it('should dispatch an action to the store', () => {
+            app.remove('foo');
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
 });

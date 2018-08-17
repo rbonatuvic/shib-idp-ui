@@ -113,6 +113,27 @@ export class FilterCollectionEffects {
         tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
     );
 
+    @Effect()
+    removeFilterRequest$ = this.actions$.pipe(
+        ofType<actions.RemoveFilterRequest>(FilterCollectionActionTypes.REMOVE_FILTER_REQUEST),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        switchMap(([filterId, providerId]) =>
+            this.filterService.remove(providerId, filterId).pipe(
+                map(removed => new actions.RemoveFilterSuccess(removed)),
+                catchError(err => of(new actions.RemoveFilterFail(err)))
+            )
+        )
+    );
+
+    @Effect()
+    removeFilterSuccess$ = this.actions$.pipe(
+        ofType<actions.RemoveFilterSuccess>(FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        map(([filter, providerId]) => new actions.LoadFilterRequest(providerId))
+    );
+
     constructor(
         private actions$: Actions,
         private router: Router,
