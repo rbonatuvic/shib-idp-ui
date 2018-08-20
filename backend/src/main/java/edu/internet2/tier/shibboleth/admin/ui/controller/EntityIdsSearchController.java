@@ -19,7 +19,7 @@ public class EntityIdsSearchController {
     }
 
     @GetMapping
-    ResponseEntity<?> search(@RequestParam String resourceId,
+    ResponseEntity<?> search(@RequestParam(required = false) String resourceId,
                              @RequestParam String term,
                              @RequestParam(required = false) Integer limit) {
         //Zero indicates no-limit
