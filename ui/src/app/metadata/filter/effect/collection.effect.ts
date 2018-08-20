@@ -14,6 +14,7 @@ import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 import { MetadataFilterService } from '../../domain/service/filter.service';
+import { SelectProviderRequest } from '../../provider/action/collection.action';
 
 /* istanbul ignore next */
 @Injectable()
@@ -96,12 +97,41 @@ export class FilterCollectionEffects {
                 );
         })
     );
+    @Effect()
+    updateFilterSuccessReloadProvider$ = this.actions$.pipe(
+        ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        map(([filter, providerId]) => new SelectProviderRequest(providerId))
+    );
+
     @Effect({ dispatch: false })
     updateFilterSuccessRedirect$ = this.actions$.pipe(
         ofType<actions.UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
+    );
+
+    @Effect()
+    removeFilterRequest$ = this.actions$.pipe(
+        ofType<actions.RemoveFilterRequest>(FilterCollectionActionTypes.REMOVE_FILTER_REQUEST),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        switchMap(([filterId, providerId]) =>
+            this.filterService.remove(providerId, filterId).pipe(
+                map(removed => new actions.RemoveFilterSuccess(removed)),
+                catchError(err => of(new actions.RemoveFilterFail(err)))
+            )
+        )
+    );
+
+    @Effect()
+    removeFilterSuccess$ = this.actions$.pipe(
+        ofType<actions.RemoveFilterSuccess>(FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        map(([filter, providerId]) => new actions.LoadFilterRequest(providerId))
     );
 
     constructor(

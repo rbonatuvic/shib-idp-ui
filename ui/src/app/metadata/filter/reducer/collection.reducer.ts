@@ -58,10 +58,25 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
 
         case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
         case FilterCollectionActionTypes.ADD_FILTER_FAIL:
+        case FilterCollectionActionTypes.REMOVE_FILTER_FAIL:
         case FilterCollectionActionTypes.UPDATE_FILTER_FAIL: {
             return {
                 ...state,
                 saving: false
+            };
+        }
+
+        case FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS: {
+            return adapter.removeOne(action.payload, {
+                ...state,
+                saving: false
+            });
+        }
+
+        case FilterCollectionActionTypes.REMOVE_FILTER_REQUEST: {
+            return {
+                ...state,
+                saving: true
             };
         }
 

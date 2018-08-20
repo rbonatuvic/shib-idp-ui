@@ -18,7 +18,6 @@ public class EntityIdsSearchController {
         this.entityIdsSearchService = entityIdsSearchService;
     }
 
-    // TODO Change this to include a metadata resolver id so we can pull out the right index to search
     @GetMapping
     ResponseEntity<?> search(@RequestParam String resourceId,
                              @RequestParam String term,

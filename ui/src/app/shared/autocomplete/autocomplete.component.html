@@ -50,15 +50,5 @@
         <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
             {{ noneFoundText }}
         </li>
-        <li class="dropdown-item"
-            *ngIf="showMoreAvailable && matches"
-            [class.active]="state.currentState.selected === matches.length"
-            [class.focused]="state.currentState.focused === matches.length"
-            (click)="handleViewMore($event)"
-            (mousedown)="handleViewMore($event)"
-            (keydown.enter)="handleViewMore($event)"
-            [id]="this.getOptionId(matches.length)">
-            {{ showMoreText }}
-        </li>
     </ul>
 </div>

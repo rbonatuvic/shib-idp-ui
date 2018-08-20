@@ -50,7 +50,8 @@
             "type": "section",
             "fields": [
                 "name",
-                "@type"
+                "@type",
+                "enabled"
             ]
         },
         {
@@ -95,6 +96,12 @@
                     "description": "FileBackedHttpMetadataProvider"
                 }
             ]
+        },
+        "enabled": {
+            "title": "Enable this service?",
+            "description": "Enable this service?",
+            "type": "boolean",
+            "default": false
         },
         "xmlId": {
             "title": "ID",

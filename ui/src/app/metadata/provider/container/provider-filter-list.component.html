@@ -40,7 +40,7 @@
                             <th>Filter Type</th>
                             <th>Enabled?</th>
                             <th>Edit</th>
-                            <!--<th>Delete</th>-->
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,14 +79,12 @@
                                     <span class="sr-only">Edit</span>
                                 </a>
                             </td>
-                            <!--
                             <td class="td-sm">
-                                <button class="btn btn-link">
+                                <button class="btn btn-link" (click)="remove(filter.resourceId)">
                                     <i class="fa fa-trash fa-lg sr-hidden text-danger"></i>
                                     <span class="sr-only">Delete</span>
                                 </button>
                             </td>
-                            -->
                         </tr>
                     </tbody>
                 </table>

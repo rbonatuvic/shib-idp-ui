@@ -182,45 +182,4 @@ public class MetadataResolversController {
                 .build()
                 .toUri();
     }
-
-    private void updateLucene(MetadataResolver resolver) throws ComponentInitializationException {
-        IndexWriter indexWriter = null;
-        try {
-            indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
-        } catch (IOException e) {
-            throw new ComponentInitializationException(e);
-        }
-
-        // add documents to indexWriter .. for each what?
-        /*
-        for () {
-            Document document = new Document();
-            document.add(new StringField("id", entityId, Field.Store.YES));
-            document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
-            try {
-                indexWriter.addDocument(document);
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-        */
-
-        // if document exists
-        // indexWriter.updateDocument(term, document) <-- what's the term?
-        // else, create...
-        Document document = new Document();
-        document.add(new StringField("id", resolver.getResourceId(), Field.Store.YES));
-
-        try {
-            indexWriter.addDocument(document);
-        } catch (IOException e) {
-            throw new ComponentInitializationException(e);
-        }
-
-        try {
-            indexWriter.commit();
-        } catch (IOException e) {
-            throw new ComponentInitializationException(e);
-        }
-    }
 }

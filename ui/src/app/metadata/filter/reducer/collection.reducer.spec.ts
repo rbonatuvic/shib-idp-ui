@@ -10,7 +10,8 @@ import {
     UpdateFilterRequest,
     AddFilterSuccess,
     AddFilterFail,
-    UpdateFilterFail
+    UpdateFilterFail,
+    RemoveFilterFail
 } from '../action/collection.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 
@@ -89,6 +90,13 @@ describe('Filter Reducer', () => {
         it('should set saving to false', () => {
             const filter = new EntityAttributesFilterEntity({ resourceId: 'foo', createdDate: new Date().toLocaleDateString() });
             const action = new UpdateFilterFail(filter);
+            expect(reducer(snapshot, action).saving).toBe(false);
+        });
+    });
+
+    describe(`${FilterCollectionActionTypes.REMOVE_FILTER_FAIL}`, () => {
+        it('should set saving to false', () => {
+            const action = new RemoveFilterFail(new Error('foo'));
             expect(reducer(snapshot, action).saving).toBe(false);
         });
     });
