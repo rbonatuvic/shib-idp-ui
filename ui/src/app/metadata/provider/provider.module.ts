@@ -29,6 +29,7 @@ import { ProviderFilterListComponent } from './container/provider-filter-list.co
 
 import { ProviderEditorNavComponent } from './component/provider-editor-nav.component';
 import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
+import { ContentionModule } from '../../contention/contention.module';
 
 @NgModule({
     declarations: [
@@ -55,6 +56,7 @@ import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
         SharedModule,
         FormModule,
         RouterModule,
+        ContentionModule,
         NgbDropdownModule
     ],
     exports: []

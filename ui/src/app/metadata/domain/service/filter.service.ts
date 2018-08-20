@@ -18,7 +18,6 @@ export class MetadataFilterService {
     }
 
     find(providerId: string, filterId: string): Observable<MetadataFilter> {
-        // console.log(id);
         return this.http.get<MetadataFilter>(`${this.base}${this.endpoint}/${providerId}/Filters/${ filterId }`);
     }
 
@@ -27,7 +26,10 @@ export class MetadataFilterService {
     }
 
     save(providerId: string, filter: MetadataFilter): Observable<MetadataFilter> {
-        console.log(providerId, filter);
         return this.http.post<MetadataFilter>(`${this.base}${this.endpoint}/${providerId}/Filters`, filter);
+    }
+
+    remove(providerId: string, filterId: string): Observable<string> {
+        return this.http.delete<string>(`${this.base}${this.endpoint}/${providerId}/Filters/${ filterId }`);
     }
 }
