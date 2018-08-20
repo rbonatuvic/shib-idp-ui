@@ -44,7 +44,7 @@ class MetadataFiltersPositionOrderControllerIntegrationTests extends Specificati
 
     def "GET Filter Position Order for non-existent resolver"() {
         when: 'GET request is made with resolver resource id NOT matching any existing filter'
-        def result = this.restTemplate.getForEntity(resourceUriFor('non-existent-resolver-id'), String)
+        def result = getFiltersPositionOrderFor('non-existent-resolver-id', String)
 
         then: "Request completed successfully"
         result.statusCodeValue == 404
@@ -55,7 +55,7 @@ class MetadataFiltersPositionOrderControllerIntegrationTests extends Specificati
         def resolver = createResolverWithTwoFilters()
 
         when: 'GET request is made to retrieve position order of filters'
-        def result = getFiltersPositionOrderFor(resolver.resourceId)
+        def result = getFiltersPositionOrderFor(resolver.resourceId, List)
 
         then: 'Original filters order is preserved'
         result.statusCodeValue == 200
@@ -74,13 +74,13 @@ class MetadataFiltersPositionOrderControllerIntegrationTests extends Specificati
         reorderPOSTResult.statusCodeValue == 204
 
         and: 'GET request is made to retrieve position order of filters'
-        def positionOrderResult = getFiltersPositionOrderFor(resolver.resourceId)
+        def positionOrderResult = getFiltersPositionOrderFor(resolver.resourceId, List)
 
         then:
         positionOrderResult.body == reOrderedFiltersPosition
 
         and: "Request is made to retrieve the resolver with affected filters"
-        def resolverResult = this.restTemplate.getForEntity("$BASE_URI/$resolver.resourceId", Map)
+        def resolverResult = getResolver(resolver.resourceId)
 
         then:
         resolverResult.statusCodeValue == 200
@@ -101,13 +101,13 @@ class MetadataFiltersPositionOrderControllerIntegrationTests extends Specificati
         reorderPOSTResult.statusCodeValue == 400
 
         and: 'GET request is made to retrieve position order of filters'
-        def positionOrderResult = getFiltersPositionOrderFor(resolver.resourceId)
+        def positionOrderResult = getFiltersPositionOrderFor(resolver.resourceId, List)
 
         then: 'Original filters position order is retrieved'
         positionOrderResult.body == originalFiltersPosition
 
         and: "Request is made to retrieve the resolver with original filters"
-        def resolverResult = this.restTemplate.getForEntity("$BASE_URI/$resolver.resourceId", Map)
+        def resolverResult = getResolver(resolver.resourceId)
 
         then:
         resolverResult.statusCodeValue == 200
@@ -133,12 +133,16 @@ class MetadataFiltersPositionOrderControllerIntegrationTests extends Specificati
          secondFilterResourceId: secondFilterResourceId]
     }
 
-    private getFiltersPositionOrderFor(String resourceId) {
-        this.restTemplate.getForEntity(resourceUriFor(resourceId), List)
+    private getFiltersPositionOrderFor(String resourceId, responseType) {
+        this.restTemplate.getForEntity(resourceUriFor(resourceId), responseType)
     }
 
     private reorderFilters(String resourceId, List filterIdsPositionOrderList) {
         this.restTemplate.postForEntity(resourceUriFor(resourceId), filterIdsPositionOrderList, null)
+    }
+
+    private getResolver(String resolverResourceId) {
+        this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", Object)
     }
 
     private static resourceUriFor(String resolverResourceId) {

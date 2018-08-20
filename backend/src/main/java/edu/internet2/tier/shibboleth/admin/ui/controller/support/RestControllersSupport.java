@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller.support;
 
+import com.google.common.collect.ImmutableMap;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
