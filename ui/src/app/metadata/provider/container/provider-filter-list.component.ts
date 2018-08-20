@@ -30,7 +30,9 @@ export class ProviderFilterListComponent implements OnDestroy {
         this.filters$ = this.store.select(fromFilter.getAdditionalFilters);
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(p => !p));
         this.provider$
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(
+                takeUntil(this.ngUnsubscribe)
+            )
             .subscribe(p => {
                 this.store.dispatch(new LoadFilterRequest(p.resourceId));
             });

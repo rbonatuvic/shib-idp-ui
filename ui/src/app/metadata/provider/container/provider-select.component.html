@@ -1,1 +1,3 @@
-<router-outlet></router-outlet>
+<ng-container *ngIf="provider$ | async">
+    <router-outlet></router-outlet>
+</ng-container>
