@@ -12,7 +12,6 @@ import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -74,20 +73,6 @@ public class SearchConfiguration {
                 indexWriterMap.put(resourceId, indexWriter);
             }
             return indexWriter;
-        };
-    }
-
-    @Bean
-    public DirectoryService directoryService() {
-        Map<String, Directory> directoryMap = new HashMap<>();
-
-        return resourceId -> {
-            Directory directory = directoryMap.get(resourceId);
-            if (directory == null) {
-                directory = new RAMDirectory();
-                directoryMap.put(resourceId, directory);
-            }
-            return directory;
         };
     }
 }
