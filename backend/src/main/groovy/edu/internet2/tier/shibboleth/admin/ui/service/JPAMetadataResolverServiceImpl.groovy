@@ -70,6 +70,8 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                 (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
                         )
                     }
+                    //TODO: else if CONDITION_SCRIPT/REGEX, add new rule
+                    // new ScriptedPredicate, new EvaluableScript
                     target.setRules(rules)
                     metadataFilters.add(target)
                 }
@@ -146,13 +148,45 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             filter.attributes.each { attribute ->
                 mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
             }
-            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
-                    .EntityAttributesFilterTargetType.ENTITY) {
-                filter.entityAttributesFilterTarget.value.each {
-                    Entity(it)
-                }
+            switch (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType) {
+                case EntityAttributesFilterTarget
+                        .EntityAttributesFilterTargetType.ENTITY:
+                    filter.entityAttributesFilterTarget.value.each {
+                        Entity(it)
+                    }
+                    break
+                case EntityAttributesFilterTarget
+                        .EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                case EntityAttributesFilterTarget
+                        .EntityAttributesFilterTargetType.REGEX:
+                    ConditionScript() {
+                        Script() {
+                            def script
+                            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
+                                    EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT) {
+                                script = filter.entityAttributesFilterTarget.value
+                            } else if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
+                            EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX) {
+                                //TODO: Is the "entityId" supposed to be the resourceId of the filter? Or something else?
+                                //TODO: Assuming value is a list of one element? Error check?
+                                script = generateRegexScript(filter.entityAttributesFilterTarget.value.get(0), filter.resourceId)
+                            }
+                            mkp.yieldUnescaped("<![CDATA[${script}]]>")
+                        }
+                    }
+                    break
+                default:
+                    //TODO do nothing?
+                    break
             }
         }
+    }
+
+    private String generateRegexScript(String regex, String entityId) {
+        def matched =  entityId ==~ ~regex
+        return '''\
+    "use strict";
+    ${matched};'''
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
