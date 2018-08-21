@@ -183,7 +183,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     private String generateRegexScript(String regex, String entityId) {
-        def matched =  entityId ==~ ~regex
+        def matched = entityId ==~ ~regex
         return '''\
     "use strict";
     ${matched};'''
