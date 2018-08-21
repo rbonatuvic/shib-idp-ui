@@ -114,7 +114,7 @@ class MetadataFiltersPositionOrderControllerIntegrationTests extends Specificati
         resolverResult.body.metadataFilters.collect {it.resourceId} == originalFiltersPosition
 
         and: 'POST is made to re-order filters position with invalid resource ids'
-        def reorderPOSTResult_2 = reorderFilters(resolver.resourceId, ['invalid', 'resource ids'])
+        def reorderPOSTResult_2 = reorderFilters(resolver.resourceId, [resolver.secondFilterResourceId, 'invalid-id'])
 
         then: 'Request completed successfully with 400'
         reorderPOSTResult_2.statusCodeValue == 400
