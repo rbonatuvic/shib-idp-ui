@@ -160,6 +160,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 case EntityAttributesFilterTarget
                         .EntityAttributesFilterTargetType.REGEX:
                     ConditionScript() {
+                        //TODO Script() is a defined method. How to get <Script> tag, then?
                         Script() {
                             def script
                             if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
