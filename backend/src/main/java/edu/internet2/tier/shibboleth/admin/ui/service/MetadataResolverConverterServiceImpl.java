@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFunctionDrivenDynamicHTTPMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlLocalDynamicMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlResourceBackedMetadataResolver;
+import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import org.apache.lucene.index.IndexWriter;
@@ -78,8 +79,7 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 //TODO: What sort of resource type should be created here? URL?
                 break;
             case CLASSPATH:
-                //TODO: Not sure what kind of resource class to use here.
-                // resource = (Resource) new ClassPathResource(resolver.getClasspathMetadataResource().getFile()); // this doesn't work.
+                resource = ResourceHelper.of(new ClassPathResource(resolver.getClasspathMetadataResource().getFile()));
                 break;
             default:
                 throw new RuntimeException("Unsupported resource type!");

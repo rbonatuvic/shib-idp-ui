@@ -160,10 +160,6 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.statusCodeValue == 201
         result.headers.Location[0].contains(BASE_URI)
 
-        cleanup:
-        def file = new File('/tmp/foo.txt')
-        file.delete()
-
         where:
             resolverType     | _
             'DynamicHttp'    | _

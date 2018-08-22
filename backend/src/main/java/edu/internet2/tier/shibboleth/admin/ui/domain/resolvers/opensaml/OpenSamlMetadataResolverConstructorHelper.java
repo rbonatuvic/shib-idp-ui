@@ -56,7 +56,9 @@ public class OpenSamlMetadataResolverConstructorHelper {
         reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
         reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));
         reloadingMetadataResolver.setMinRefreshDelay(toMillis(attributes.getMinRefreshDelay()));
-        reloadingMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor().floatValue());
+
+        //TODO: I think we may need to take another look at setting the defaults properly on our attributes.
+        reloadingMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor() == null ? 0.75f : attributes.getRefreshDelayFactor().floatValue());
 
         //TODO: What should we do here if this data is null/empty?
         reloadingMetadataResolver.setResolveViaPredicatesOnly(attributes.getResolveViaPredicatesOnly() == null ? false : attributes.getResolveViaPredicatesOnly());

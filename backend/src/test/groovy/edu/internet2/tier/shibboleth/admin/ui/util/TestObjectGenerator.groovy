@@ -437,6 +437,9 @@ class TestObjectGenerator {
         new DynamicHttpMetadataResolver().with {
             it.name = 'DynamicHTTP'
             it.xmlId = 'DynamicHTTP'
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
@@ -445,6 +448,10 @@ class TestObjectGenerator {
         new LocalDynamicMetadataResolver().with {
             it.name = 'LocalDynamic'
             it.xmlId = 'LocalDynamic'
+            it.sourceDirectory = '/tmp'
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
@@ -459,18 +466,22 @@ class TestObjectGenerator {
                 it.workingCopyDirectory = '%{idp.home}/metadata/svn'
                 it
             }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
 
     ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
-        def file = new File('/tmp/foo.txt') // should we really do this?
-        file.write 'This is a temp file for a groovy test.'
         new ResourceBackedMetadataResolver().with {
             it.name = 'ClasspathResourceMetadata'
             it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
-                it.file = '/tmp/foo.txt'
+                it.file = 'metadata/metadata.xml'
+                it
+            }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
                 it
             }
             it
