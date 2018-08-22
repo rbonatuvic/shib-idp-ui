@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { MetadataProvider } from '../../domain/model/metadata-provider';
 import { Update } from '@ngrx/entity';
-import { ProviderOrder } from '../../domain/model/metadata-order';
 
 export enum ProviderCollectionActionTypes {
     UPDATE_PROVIDER_REQUEST = '[Metadata Provider] Update Request',
@@ -25,12 +24,12 @@ export enum ProviderCollectionActionTypes {
     REMOVE_PROVIDER_FAIL = '[Metadata Provider Collection] Remove Provider Fail',
 
     SET_ORDER_PROVIDER_REQUEST = '[Metadata Provider Collection] Set Order Provider Request',
-    SET_ORDER_PROVIDER_SUCCESS = '[Metadata Provider Collection] Set Order Remove Provider Success',
-    SET_ORDER_PROVIDER_FAIL = '[Metadata Provider Collection] Set Order Remove Provider Fail',
+    SET_ORDER_PROVIDER_SUCCESS = '[Metadata Provider Collection] Set Order Provider Success',
+    SET_ORDER_PROVIDER_FAIL = '[Metadata Provider Collection] Set Order Provider Fail',
 
-    GET_ORDER_PROVIDER_REQUEST = '[Metadata Provider Collection] Get Order Remove Provider Request',
-    GET_ORDER_PROVIDER_SUCCESS = '[Metadata Provider Collection] Get Order Remove Provider Success',
-    GET_ORDER_PROVIDER_FAIL = '[Metadata Provider Collection] Get Order Remove Provider Fail',
+    GET_ORDER_PROVIDER_REQUEST = '[Metadata Provider Collection] Get Order Provider Request',
+    GET_ORDER_PROVIDER_SUCCESS = '[Metadata Provider Collection] Get Order Provider Success',
+    GET_ORDER_PROVIDER_FAIL = '[Metadata Provider Collection] Get Order Provider Fail',
 
     CHANGE_PROVIDER_ORDER_UP = '[Metadata Provider Collection] Change Order Up',
     CHANGE_PROVIDER_ORDER_DOWN = '[Metadata Provider Collection] Change Order Down',
@@ -129,7 +128,7 @@ export class RemoveProviderFail implements Action {
 export class SetOrderProviderRequest implements Action {
     readonly type = ProviderCollectionActionTypes.SET_ORDER_PROVIDER_REQUEST;
 
-    constructor(public payload: ProviderOrder) { }
+    constructor(public payload: string[]) { }
 }
 
 export class SetOrderProviderSuccess implements Action {
@@ -153,7 +152,7 @@ export class GetOrderProviderRequest implements Action {
 export class GetOrderProviderSuccess implements Action {
     readonly type = ProviderCollectionActionTypes.GET_ORDER_PROVIDER_SUCCESS;
 
-    constructor(public payload: ProviderOrder) { }
+    constructor(public payload: string[]) { }
 }
 
 export class GetOrderProviderFail implements Action {
@@ -162,13 +161,13 @@ export class GetOrderProviderFail implements Action {
     constructor(public payload: Error) { }
 }
 
-export class ChangeOrderUp implements Action {
+export class ChangeProviderOrderUp implements Action {
     readonly type = ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_UP;
 
     constructor(public payload: string) { }
 }
 
-export class ChangeOrderDown implements Action {
+export class ChangeProviderOrderDown implements Action {
     readonly type = ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_DOWN;
 
     constructor(public payload: string) { }
@@ -196,5 +195,5 @@ export type ProviderCollectionActionsUnion =
     | GetOrderProviderRequest
     | GetOrderProviderSuccess
     | GetOrderProviderFail
-    | ChangeOrderUp
-    | ChangeOrderDown;
+    | ChangeProviderOrderUp
+    | ChangeProviderOrderDown;

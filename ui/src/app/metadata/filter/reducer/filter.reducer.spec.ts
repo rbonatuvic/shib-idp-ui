@@ -87,4 +87,24 @@ describe('Filter Reducer', () => {
             expect(result).toEqual(fromFilter.initialState);
         });
     });
+
+    describe('selector methods', () => {
+        describe('getSelected', () => {
+            it('should return the state selected', () => {
+                expect(fromFilter.getSelected(snapshot)).toBe(snapshot.selected);
+            });
+        });
+
+        describe('getChanges', () => {
+            it('should return the state changes', () => {
+                expect(fromFilter.getFilterChanges(snapshot)).toBe(snapshot.changes);
+            });
+        });
+
+        describe('getPreview', () => {
+            it('should return the state preview', () => {
+                expect(fromFilter.getPreview(snapshot)).toBe(snapshot.preview);
+            });
+        });
+    });
 });
