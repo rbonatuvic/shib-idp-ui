@@ -4,9 +4,15 @@ import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.index.IndexWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +57,9 @@ public class MetadataResolversController {
 
     @Autowired
     MetadataResolversPositionOrderContainerService positionOrderContainerService;
+
+    @Autowired
+    IndexWriterService indexWriterService;
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
