@@ -30,6 +30,8 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.w3c.dom.Document
 
+import javax.annotation.Nonnull
+
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
@@ -73,13 +75,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                     (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
                             )
                             break
-                        //TODO JJ, which predicate is this?
                         case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT:
-                            rules.put(new ScriptedPredicate<EntityDescriptor>(new EvaluableScript(entityAttributesFilter.entityAttributesFilterTarget.value[0])),
+                            rules.put(new ScriptedPredicate(new EvaluableScript(entityAttributesFilter.entityAttributesFilterTarget.value[0])),
                                     (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
                             break
                         case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX:
-                            rules.put(new ScriptedPredicate<EntityDescriptor>(new EvaluableScript(generateJavaScriptRegexScript(entityAttributesFilter.entityAttributesFilterTarget.value[0]))),
+                            rules.put(new ScriptedPredicate(new EvaluableScript(generateJavaScriptRegexScript(entityAttributesFilter.entityAttributesFilterTarget.value[0]))),
                                     (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
                             break
                         default:
@@ -99,6 +100,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             } catch (ResolverException e) {
                 log.warn("error refreshing metadataResolver " + metadataResolverName, e)
             }
+        }
+    }
+
+    private class ScriptedPredicate extends net.shibboleth.utilities.java.support.logic.ScriptedPredicate<EntityDescriptor> {
+        protected ScriptedPredicate(@Nonnull EvaluableScript theScript) {
+            super(theScript)
         }
     }
 
