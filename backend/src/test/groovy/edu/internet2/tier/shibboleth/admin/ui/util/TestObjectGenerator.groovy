@@ -482,6 +482,7 @@ class TestObjectGenerator {
                 it
             }
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.refreshDelayFactor = 0.3
                 it
             }
             it
