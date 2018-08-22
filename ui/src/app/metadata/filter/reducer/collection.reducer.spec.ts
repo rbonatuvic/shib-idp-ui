@@ -11,7 +11,9 @@ import {
     AddFilterSuccess,
     AddFilterFail,
     UpdateFilterFail,
-    RemoveFilterFail
+    RemoveFilterFail,
+    RemoveFilterRequest,
+    RemoveFilterSuccess
 } from '../action/collection.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 
@@ -101,6 +103,20 @@ describe('Filter Reducer', () => {
         });
     });
 
+    describe(`${FilterCollectionActionTypes.REMOVE_FILTER_REQUEST}`, () => {
+        it('should set saving to false', () => {
+            const action = new RemoveFilterRequest('foo');
+            expect(reducer(snapshot, action).saving).toBe(true);
+        });
+    });
+
+    describe(`${FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS}`, () => {
+        it('should set saving to false', () => {
+            const action = new RemoveFilterSuccess('foo');
+            expect(reducer(snapshot, action).saving).toBe(false);
+        });
+    });
+
     describe(`${FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS}`, () => {
         it('should update the filter in the collection', () => {
             spyOn(fromFilter.adapter, 'updateOne').and.callThrough();
@@ -111,6 +127,32 @@ describe('Filter Reducer', () => {
             const action = new UpdateFilterSuccess(update);
             const result = reducer(snapshot, action);
             expect(fromFilter.adapter.updateOne).toHaveBeenCalled();
+        });
+    });
+
+    describe('selector methods', () => {
+        describe('getSelectedFilterId', () => {
+            it('should return the state selectedFilterId', () => {
+                expect(fromFilter.getSelectedFilterId(snapshot)).toBe(snapshot.selectedFilterId);
+            });
+        });
+
+        describe('getIsLoaded', () => {
+            it('should return the state loaded', () => {
+                expect(fromFilter.getIsLoaded(snapshot)).toBe(snapshot.loaded);
+            });
+        });
+
+        describe('getError', () => {
+            it('should return the state saving', () => {
+                expect(fromFilter.getIsSaving(snapshot)).toBe(snapshot.saving);
+            });
+        });
+
+        describe('getOrder', () => {
+            it('should return the state order', () => {
+                expect(fromFilter.getOrder(snapshot)).toBe(snapshot.order);
+            });
         });
     });
 });

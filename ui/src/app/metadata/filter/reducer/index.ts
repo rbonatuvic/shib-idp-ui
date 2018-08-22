@@ -50,17 +50,26 @@ export const getViewingMore = createSelector(getSearchFromState, fromSearch.getV
 export const getCollectionState = createSelector(getFilterState, getCollectionFromStateFn);
 export const getAllFilters = createSelector(getCollectionState, fromCollection.selectAllFilters);
 export const getCollectionSaving = createSelector(getCollectionState, fromCollection.getIsSaving);
-
-export const notAddtlFilters = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
-export const filterTypeFn = filters => [...filters.filter(f => notAddtlFilters.indexOf(f['@type']) === -1)];
-
-export const getAdditionalFilters = createSelector(getAllFilters, filterTypeFn);
+export const getCollectionOrder = createSelector(getCollectionState, fromCollection.getOrder);
 
 export const getFilterEntities = createSelector(getCollectionState, fromCollection.selectFilterEntities);
 export const getSelectedFilterId = createSelector(getCollectionState, fromCollection.getSelectedFilterId);
 export const getSelectedFilter = createSelector(getFilterEntities, getSelectedFilterId, utils.getInCollectionFn);
 export const getFilterIds = createSelector(getCollectionState, fromCollection.selectFilterIds);
 export const getFilterCollectionIsLoaded = createSelector(getCollectionState, fromCollection.getIsLoaded);
+
+export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
+export const isFilterPlugin = (type) => filterPluginTypes.indexOf(type) >= 0;
+
+export const filterTypeFn = filters => [...filters.filter(f => isAdditionalFilter(f['@type']))];
+export const filterOrderFn = (filters, order) => order.filter(id => filters.hasOwnProperty(id) && isAdditionalFilter(filters[id]['@type']));
+export const pluginOrderFn = (filters, order) => order.filter(id => filters.hasOwnProperty(id) && isFilterPlugin(filters[id]['@type']));
+
+export const getFilterList = createSelector(getAllFilters, filterTypeFn);
+export const getAdditionalFilterOrder = createSelector(getFilterEntities, getCollectionOrder, filterOrderFn);
+export const getAdditionalFilters = createSelector(getFilterList, getAdditionalFilterOrder, utils.mergeOrderFn);
+export const getPluginFilterOrder = createSelector(getFilterEntities, getCollectionOrder, pluginOrderFn);
 
 /*
  *   Combine pieces of State

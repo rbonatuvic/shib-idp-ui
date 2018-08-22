@@ -1,12 +1,11 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { ProviderCollectionActionTypes, ProviderCollectionActionsUnion } from '../action/collection.action';
 import { MetadataProvider } from '../../domain/model';
-import { ProviderOrder } from '../../domain/model/metadata-order';
 
 export interface CollectionState extends EntityState<MetadataProvider> {
     selectedProviderId: string | null;
     loaded: boolean;
-    order: ProviderOrder;
+    order: string[];
 }
 
 export const adapter: EntityAdapter<MetadataProvider> = createEntityAdapter<MetadataProvider>({
@@ -16,7 +15,7 @@ export const adapter: EntityAdapter<MetadataProvider> = createEntityAdapter<Meta
 export const initialState: CollectionState = adapter.getInitialState({
     selectedProviderId: null,
     loaded: false,
-    order: { resourceIds: [] }
+    order: []
 });
 
 export function reducer(state = initialState, action: ProviderCollectionActionsUnion): CollectionState {

@@ -8,7 +8,7 @@ import { ProviderState, getOrderedProviders } from '../../provider/reducer';
 import { getOpenProviders } from '../reducer';
 import { ToggleEntityDisplay } from '../action/manager.action';
 import { map } from 'rxjs/operators';
-import { ChangeOrderUp, ChangeOrderDown } from '../../provider/action/collection.action';
+import { ChangeProviderOrderUp, ChangeProviderOrderDown } from '../../provider/action/collection.action';
 
 @Component({
     selector: 'dashboard-providers-list',
@@ -26,7 +26,7 @@ export class DashboardProvidersListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.providers$ = this.store.select(getOrderedProviders);
+        this.providers$ = this.store.select(getOrderedProviders) as Observable<MetadataProvider[]>;
         this.providersOpen$ = this.store.select(getOpenProviders);
     }
 
@@ -47,10 +47,10 @@ export class DashboardProvidersListComponent implements OnInit {
     }
 
     updateOrderUp(provider: MetadataProvider): void {
-        this.store.dispatch(new ChangeOrderUp(provider.resourceId));
+        this.store.dispatch(new ChangeProviderOrderUp(provider.resourceId));
     }
 
     updateOrderDown(provider: MetadataProvider): void {
-        this.store.dispatch(new ChangeOrderDown(provider.resourceId));
+        this.store.dispatch(new ChangeProviderOrderDown(provider.resourceId));
     }
 }

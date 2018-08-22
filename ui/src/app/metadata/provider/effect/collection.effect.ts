@@ -25,12 +25,13 @@ import {
     SetOrderProviderRequest,
     SetOrderProviderSuccess,
     SetOrderProviderFail,
-    ChangeOrderUp,
-    ChangeOrderDown
+    ChangeProviderOrderUp,
+    ChangeProviderOrderDown
 } from '../action/collection.action';
 import { MetadataProviderService } from '../../domain/service/provider.service';
 import * as fromProvider from '../reducer';
 import * as fromRoot from '../../../app.reducer';
+import { array_move } from '../../../shared/util';
 import { ClearProvider, ResetChanges } from '../action/entity.action';
 import { ShowContentionAction } from '../../../contention/action/contention.action';
 import { ContentionService } from '../../../contention/service/contention.service';
@@ -183,15 +184,14 @@ export class CollectionEffects {
 
     @Effect()
     changeOrderUp$ = this.actions$.pipe(
-        ofType<ChangeOrderUp>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_UP),
+        ofType<ChangeProviderOrderUp>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_UP),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
-        map(([id, orderSet]) => {
-            const order = orderSet.resourceIds;
+        map(([id, order]) => {
             const index = order.indexOf(id);
             if (index > 0) {
-                const newOrder = this.array_move(order, index, index - 1);
-                return new SetOrderProviderRequest({ resourceIds: newOrder });
+                const newOrder = array_move(order, index, index - 1);
+                return new SetOrderProviderRequest(newOrder);
             } else {
                 return new SetOrderProviderFail(new Error(`could not change order: ${ id }`));
             }
@@ -200,31 +200,19 @@ export class CollectionEffects {
 
     @Effect()
     changeOrderDown$ = this.actions$.pipe(
-        ofType<ChangeOrderDown>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_DOWN),
+        ofType<ChangeProviderOrderDown>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_DOWN),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
-        map(([id, orderSet]) => {
-            const order = orderSet.resourceIds;
+        map(([id, order]) => {
             const index = order.indexOf(id);
             if (index < order.length - 1) {
-                const newOrder = this.array_move(order, index, index + 1);
-                return new SetOrderProviderRequest({ resourceIds: newOrder });
+                const newOrder = array_move(order, index, index + 1);
+                return new SetOrderProviderRequest(newOrder);
             } else {
                 return new SetOrderProviderFail(new Error(`could not change order: ${id}`));
             }
         })
     );
-
-    array_move(arr, old_index, new_index): any[] {
-        if (new_index >= arr.length) {
-            let k = new_index - arr.length + 1;
-            while (k--) {
-                arr.push(undefined);
-            }
-        }
-        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-        return arr;
-    }
 
     constructor(
         private actions$: Actions,
