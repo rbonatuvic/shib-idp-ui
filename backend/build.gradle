@@ -60,7 +60,7 @@ dependencies {
     }
 
     // shibboleth idp deps
-    [].each {
+    ['idp-profile-spring', 'idp-profile-api'].each {
         compile "net.shibboleth.idp:${it}:${project.'shibboleth.version'}"
     }
 

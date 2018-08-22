@@ -16,7 +16,9 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
+import net.shibboleth.utilities.java.support.logic.ScriptedPredicate
 import net.shibboleth.utilities.java.support.resolver.ResolverException
+import net.shibboleth.utilities.java.support.scripting.EvaluableScript
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -64,14 +66,26 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
                     org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
                     Map<Predicate<EntityDescriptor>, Collection<Attribute>> rules = new HashMap<>()
-                    if (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType() == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY) {
-                        rules.put(
-                                new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
-                                (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
-                        )
+                    switch (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType()) {
+                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY:
+                            rules.put(
+                                    new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
+                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
+                            )
+                            break
+                        //TODO JJ, which predicate is this?
+                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                            rules.put(new ScriptedPredicate<EntityDescriptor>(new EvaluableScript(entityAttributesFilter.entityAttributesFilterTarget.value[0])),
+                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
+                            break
+                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX:
+                            rules.put(new ScriptedPredicate<EntityDescriptor>(new EvaluableScript(generateJavaScriptRegexScript(entityAttributesFilter.entityAttributesFilterTarget.value[0]))),
+                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
+                            break
+                        default:
+                            // do nothing, we'd have exploded elsewhere previously.
+                            break
                     }
-                    //TODO: else if CONDITION_SCRIPT/REGEX, add new rule
-                    // new ScriptedPredicate, new EvaluableScript
                     target.setRules(rules)
                     metadataFilters.add(target)
                 }
@@ -160,34 +174,30 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 case EntityAttributesFilterTarget
                         .EntityAttributesFilterTargetType.REGEX:
                     ConditionScript() {
-                        //TODO Script() is a defined method. How to get <Script> tag, then?
                         Script() {
                             def script
                             if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
                                     EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT) {
-                                script = filter.entityAttributesFilterTarget.value
+                                script = filter.entityAttributesFilterTarget.value[0]
                             } else if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
-                            EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX) {
-                                //TODO: Is the "entityId" supposed to be the resourceId of the filter? Or something else?
-                                //TODO: Assuming value is a list of one element? Error check?
-                                script = generateRegexScript(filter.entityAttributesFilterTarget.value.get(0), filter.resourceId)
+                                    EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX) {
+                                script = generateJavaScriptRegexScript(filter.entityAttributesFilterTarget.value[0])
                             }
                             mkp.yieldUnescaped("<![CDATA[${script}]]>")
                         }
                     }
                     break
                 default:
-                    //TODO do nothing?
+                    // do nothing, we'd have exploded elsewhere previously.
                     break
             }
         }
     }
 
-    private String generateRegexScript(String regex, String entityId) {
-        def matched = entityId ==~ ~regex
-        return '''\
+    private String generateJavaScriptRegexScript(String regex) {
+        return """
     "use strict";
-    ${matched};'''
+    ${regex}.test(input.getEntityID());"""
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
