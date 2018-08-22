@@ -27,10 +27,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -67,7 +69,7 @@ public class MetadataFiltersController {
     @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
         MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
-        return ResponseEntity.ok(findFilterOrThrowHttp404(resolver, resourceId));
+        return ResponseEntity.ok(findFilterOrThrowHttp404(resourceId));
     }
 
     @PostMapping("/Filters")
@@ -130,12 +132,20 @@ public class MetadataFiltersController {
                                     @PathVariable String resourceId) {
 
         MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
+        MetadataFilter filterToDelete = findFilterOrThrowHttp404(resourceId);
+
         //TODO: consider implementing delete of filter directly from RDBMS via FilterRepository
-        boolean removed = resolver.getMetadataFilters().removeIf(f -> f.getResourceId().equals(resourceId));
+        //This is currently the only way to correctly delete and manage resolver-filter relationship
+        //Until we implement a bi-directional relationship between them which turns out to be a much larger
+        //change that we need to make in the entire code base
+        List<MetadataFilter> updatedFilters = new ArrayList<>(resolver.getMetadataFilters());
+        boolean removed = updatedFilters.removeIf(f -> f.getResourceId().equals(resourceId));
         if(!removed) {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
         }
+        resolver.setMetadataFilters(updatedFilters);
         repository.save(resolver);
+        filterRepository.delete(filterToDelete);
 
         //TODO: do we need to reload filters here?!?
         //metadataResolverService.reloadFilters(persistedMr.getName());
@@ -151,17 +161,18 @@ public class MetadataFiltersController {
         return resolver;
     }
 
-    private MetadataFilter findFilterOrThrowHttp404(MetadataResolver resolver, String filterResourceId) {
-        return resolver.getMetadataFilters().stream()
-                .filter(f -> f.getResourceId().equals(filterResourceId))
-                .findFirst()
-                .orElseThrow(HTTP_404_CLIENT_ERROR_EXCEPTION);
+    private MetadataFilter findFilterOrThrowHttp404(String filterResourceId) {
+        MetadataFilter filter = filterRepository.findByResourceId(filterResourceId);
+        if(filter == null) {
+            throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
+        }
+        return filter;
     }
 
     private MetadataFilter newlyPersistedFilter(Stream<MetadataFilter> filters, final String filterResourceId) {
         MetadataFilter persistedFilter = filters
                 .filter(f -> f.getResourceId().equals(filterResourceId))
-                .collect(Collectors.toList()).get(0);
+                .collect(toList()).get(0);
 
         return persistedFilter;
     }
