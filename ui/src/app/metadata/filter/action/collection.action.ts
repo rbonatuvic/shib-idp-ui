@@ -24,6 +24,8 @@ export enum FilterCollectionActionTypes {
     REMOVE_FILTER_SUCCESS = '[Metadata Filter Collection] Remove Filter Success',
     REMOVE_FILTER_FAIL = '[Metadata Filter Collection] Remove Filter Fail',
 
+    CLEAR_FILTERS = '[Metadata Filter Collection] Clear Filters',
+
     SET_ORDER_FILTER_REQUEST = '[Metadata Filter Collection] Set Order Filter Request',
     SET_ORDER_FILTER_SUCCESS = '[Metadata Filter Collection] Set Order Filter Success',
     SET_ORDER_FILTER_FAIL = '[Metadata Filter Collection] Set Order Filter Fail',
@@ -33,7 +35,8 @@ export enum FilterCollectionActionTypes {
     GET_ORDER_FILTER_FAIL = '[Metadata Filter Collection] Get Order Filter Fail',
 
     CHANGE_FILTER_ORDER_UP = '[Metadata Filter Collection] Change Order Up',
-    CHANGE_FILTER_ORDER_DOWN = '[Metadata Filter Collection] Change Order Down',
+    CHANGE_FILTER_ORDER_DOWN = '[Metadata Filter Collection] Change Order Down'
+
 }
 
 export class SelectFilter implements Action {
@@ -126,6 +129,10 @@ export class RemoveFilterFail implements Action {
     constructor(public error: Error) { }
 }
 
+export class ClearFilters implements Action {
+    readonly type = FilterCollectionActionTypes.CLEAR_FILTERS;
+}
+
 export class SetOrderFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.SET_ORDER_FILTER_REQUEST;
 
@@ -190,6 +197,7 @@ export type FilterCollectionActionsUnion =
     | UpdateFilterRequest
     | UpdateFilterSuccess
     | UpdateFilterFail
+    | ClearFilters
     | ChangeFilterOrderDown
     | ChangeFilterOrderUp
     | GetOrderFilterRequest

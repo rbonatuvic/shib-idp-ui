@@ -88,11 +88,16 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
                 selectedFilterId: action.payload,
             };
         }
-
         case FilterCollectionActionTypes.GET_ORDER_FILTER_SUCCESS: {
             return {
                 ...state,
                 order: action.payload
+            };
+        }
+
+        case FilterCollectionActionTypes.CLEAR_FILTERS: {
+            return {
+                ...initialState
             };
         }
 
