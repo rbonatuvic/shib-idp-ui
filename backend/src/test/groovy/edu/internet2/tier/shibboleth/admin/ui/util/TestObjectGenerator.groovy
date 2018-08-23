@@ -483,10 +483,15 @@ class TestObjectGenerator {
     }
 
     LocalDynamicMetadataResolver localDynamicMetadataResolver() {
+        def userHome = System.getProperty("user.home")
+        def tmpDirectory = new File(userHome + File.separator + 'groovytest')
+        if (!tmpDirectory.exists()) {
+            tmpDirectory.mkdir()
+        }
         new LocalDynamicMetadataResolver().with {
             it.name = 'LocalDynamic'
             it.xmlId = 'LocalDynamic'
-            it.sourceDirectory = '/tmp'
+            it.sourceDirectory = userHome + File.separator + 'groovytest'
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
             }

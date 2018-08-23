@@ -160,6 +160,13 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.statusCodeValue == 201
         result.headers.Location[0].contains(BASE_URI)
 
+        cleanup:
+        def userHome = System.getProperty("user.home")
+        def tmpDirectory = new File(userHome + File.separator + 'groovytest')
+        if (tmpDirectory.exists()) {
+            tmpDirectory.deleteDir()
+        }
+
         where:
             resolverType     | _
             'DynamicHttp'    | _
@@ -195,6 +202,13 @@ class MetadataResolversControllerIntegrationTests extends Specification {
 
         then:
         updatedResolverMap.name == 'Updated DynamicHttpMetadataResolver'
+
+        cleanup:
+        def userHome = System.getProperty("user.home")
+        def tmpDirectory = new File(userHome + File.separator + 'groovytest')
+        if (tmpDirectory.exists()) {
+            tmpDirectory.deleteDir()
+        }
 
         where:
             resolverType     | _
