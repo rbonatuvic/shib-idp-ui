@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
@@ -152,6 +153,10 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
+        String sourceDirectory
+        if (resolverType.equals('Localdynamic')) {
+            sourceDirectory = ((LocalDynamicMetadataResolver) resolver).sourceDirectory
+        }
 
         when: 'POST request is made with new DynamicHttpMetadataResolver JSON representation'
         def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
@@ -161,10 +166,11 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.headers.Location[0].contains(BASE_URI)
 
         cleanup:
-        def userHome = System.getProperty("user.home")
-        def tmpDirectory = new File(userHome + File.separator + 'groovytest')
-        if (tmpDirectory.exists()) {
-            tmpDirectory.deleteDir()
+        if (sourceDirectory != null) {
+            def tmpDirectory = new File(sourceDirectory)
+            if (tmpDirectory.exists()) {
+                tmpDirectory.deleteDir()
+            }
         }
 
         where:
@@ -180,6 +186,10 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     def "PUT concrete MetadataResolver of type #resolverType with updated changes -> /api/MetadataResolvers/{resourceId}"(String resolverType) {
         given: 'One resolver is available in data store'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
+        String sourceDirectory
+        if (resolverType.equals('Localdynamic')) {
+            sourceDirectory = ((LocalDynamicMetadataResolver) resolver).sourceDirectory
+        }
         def resolverResourceId = resolver.resourceId
         metadataResolverRepository.save(resolver)
 
@@ -204,10 +214,11 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         updatedResolverMap.name == 'Updated DynamicHttpMetadataResolver'
 
         cleanup:
-        def userHome = System.getProperty("user.home")
-        def tmpDirectory = new File(userHome + File.separator + 'groovytest')
-        if (tmpDirectory.exists()) {
-            tmpDirectory.deleteDir()
+        if (sourceDirectory != null) {
+            def tmpDirectory = new File(sourceDirectory)
+            if (tmpDirectory.exists()) {
+                tmpDirectory.deleteDir()
+            }
         }
 
         where:
