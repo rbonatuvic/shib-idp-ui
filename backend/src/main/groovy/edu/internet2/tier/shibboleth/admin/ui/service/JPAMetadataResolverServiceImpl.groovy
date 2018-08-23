@@ -16,7 +16,9 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
+import net.shibboleth.utilities.java.support.logic.ScriptedPredicate
 import net.shibboleth.utilities.java.support.resolver.ResolverException
+import net.shibboleth.utilities.java.support.scripting.EvaluableScript
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
@@ -27,6 +29,8 @@ import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.w3c.dom.Document
+
+import javax.annotation.Nonnull
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
@@ -64,11 +68,24 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
                     org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
                     Map<Predicate<EntityDescriptor>, Collection<Attribute>> rules = new HashMap<>()
-                    if (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType() == EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY) {
-                        rules.put(
-                                new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
-                                (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
-                        )
+                    switch (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType()) {
+                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY:
+                            rules.put(
+                                    new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
+                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
+                            )
+                            break
+                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                            rules.put(new ScriptedPredicate(new EvaluableScript(entityAttributesFilter.entityAttributesFilterTarget.value[0])),
+                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
+                            break
+                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX:
+                            rules.put(new ScriptedPredicate(new EvaluableScript(generateJavaScriptRegexScript(entityAttributesFilter.entityAttributesFilterTarget.value[0]))),
+                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
+                            break
+                        default:
+                            // do nothing, we'd have exploded elsewhere previously.
+                            break
                     }
                     target.setRules(rules)
                     metadataFilters.add(target)
@@ -83,6 +100,12 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             } catch (ResolverException e) {
                 log.warn("error refreshing metadataResolver " + metadataResolverName, e)
             }
+        }
+    }
+
+    private class ScriptedPredicate extends net.shibboleth.utilities.java.support.logic.ScriptedPredicate<EntityDescriptor> {
+        protected ScriptedPredicate(@Nonnull EvaluableScript theScript) {
+            super(theScript)
         }
     }
 
@@ -146,13 +169,42 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             filter.attributes.each { attribute ->
                 mkp.yieldUnescaped(openSamlObjects.marshalToXmlString(attribute, false))
             }
-            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType == EntityAttributesFilterTarget
-                    .EntityAttributesFilterTargetType.ENTITY) {
-                filter.entityAttributesFilterTarget.value.each {
-                    Entity(it)
-                }
+            switch (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType) {
+                case EntityAttributesFilterTarget
+                        .EntityAttributesFilterTargetType.ENTITY:
+                    filter.entityAttributesFilterTarget.value.each {
+                        Entity(it)
+                    }
+                    break
+                case EntityAttributesFilterTarget
+                        .EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                case EntityAttributesFilterTarget
+                        .EntityAttributesFilterTargetType.REGEX:
+                    ConditionScript() {
+                        Script() {
+                            def script
+                            if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
+                                    EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT) {
+                                script = filter.entityAttributesFilterTarget.value[0]
+                            } else if (filter.entityAttributesFilterTarget.entityAttributesFilterTargetType ==
+                                    EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX) {
+                                script = generateJavaScriptRegexScript(filter.entityAttributesFilterTarget.value[0])
+                            }
+                            mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+                        }
+                    }
+                    break
+                default:
+                    // do nothing, we'd have exploded elsewhere previously.
+                    break
             }
         }
+    }
+
+    private String generateJavaScriptRegexScript(String regex) {
+        return """
+    "use strict";
+    ${regex}.test(input.getEntityID());\n"""
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
