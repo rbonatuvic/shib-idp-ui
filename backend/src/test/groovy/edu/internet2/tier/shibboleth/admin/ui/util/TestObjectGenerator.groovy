@@ -175,6 +175,24 @@ class TestObjectGenerator {
         }
     }
 
+    EntityAttributesFilter entityAttributesFilterWithConditionScript() {
+        new EntityAttributesFilter().with {
+            it.name = 'EntityAttributes'
+            it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTargetWithConditionScript())
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    EntityAttributesFilter entityAttributesFilterWithRegex() {
+        new EntityAttributesFilter().with {
+            it.name = 'EntityAttributes'
+            it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTargetWithRegex())
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
     RequiredValidUntilFilter requiredValidUntilFilter() {
         return new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
@@ -305,8 +323,28 @@ class TestObjectGenerator {
     EntityAttributesFilterTarget buildEntityAttributesFilterTarget() {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
 
-        entityAttributesFilterTarget.setSingleValue(generator.randomStringList())
+        entityAttributesFilterTarget.setSingleValue(generator.randomString())
         entityAttributesFilterTarget.setEntityAttributesFilterTargetType(randomFilterTargetType())
+
+        return entityAttributesFilterTarget
+    }
+
+    EntityAttributesFilterTarget buildEntityAttributesFilterTargetWithConditionScript() {
+        EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
+
+        entityAttributesFilterTarget.setSingleValue("Pretend this is JavaScript.")
+        entityAttributesFilterTarget.setEntityAttributesFilterTargetType(
+                EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT)
+
+        return entityAttributesFilterTarget
+    }
+
+    EntityAttributesFilterTarget buildEntityAttributesFilterTargetWithRegex() {
+        EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
+
+        entityAttributesFilterTarget.setSingleValue("/foo.*/") // JavaScript-style regex
+        entityAttributesFilterTarget.setEntityAttributesFilterTargetType(
+                EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX)
 
         return entityAttributesFilterTarget
     }

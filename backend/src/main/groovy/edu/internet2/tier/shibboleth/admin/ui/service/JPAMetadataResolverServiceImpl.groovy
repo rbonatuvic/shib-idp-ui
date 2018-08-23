@@ -190,7 +190,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                                     EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX) {
                                 script = generateJavaScriptRegexScript(filter.entityAttributesFilterTarget.value[0])
                             }
-                            mkp.yieldUnescaped("<![CDATA[${script}]]>")
+                            mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
                         }
                     }
                     break
@@ -204,7 +204,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     private String generateJavaScriptRegexScript(String regex) {
         return """
     "use strict";
-    ${regex}.test(input.getEntityID());"""
+    ${regex}.test(input.getEntityID());\n"""
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
