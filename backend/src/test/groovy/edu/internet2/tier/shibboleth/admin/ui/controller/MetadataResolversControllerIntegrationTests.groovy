@@ -11,8 +11,8 @@ import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
-import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -20,9 +20,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
-
 import org.springframework.test.context.ActiveProfiles
-
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -290,7 +288,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     static class Config {
         @Bean
         MetadataResolver metadataResolver() {
-            new FilesystemMetadataResolver(new File('fake'))
+            new ChainingMetadataResolver()
         }
     }
 }

@@ -140,7 +140,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
                 metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).localDynamicMetadataResolver())
 
                 // Generate and test edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
-                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).resourceBackedMetadataResolverForSVN())
+                metadataResolverRepository.save(new TestObjectGenerator(attributeUtility).resourceBackedMetadataResolverForClasspath())
             }
 
             return resolver

@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 @Setter
 @ToString
 public class LocalDynamicMetadataResolver extends MetadataResolver {
-
     public LocalDynamicMetadataResolver() {
         type = "LocalDynamicMetadataResolver";
     }
@@ -27,5 +26,4 @@ public class LocalDynamicMetadataResolver extends MetadataResolver {
 
     @Embedded
     private DynamicMetadataResolverAttributes dynamicMetadataResolverAttributes;
-
 }

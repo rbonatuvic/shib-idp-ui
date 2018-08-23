@@ -5,14 +5,17 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
+import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidator.ValidationResult;
@@ -60,6 +64,12 @@ public class MetadataResolversController {
 
     @Autowired
     IndexWriterService indexWriterService;
+
+    @Autowired
+    org.opensaml.saml.metadata.resolver.MetadataResolver chainingMetadataResolver;
+
+    @Autowired
+    MetadataResolverConverterService metadataResolverConverterService;
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
@@ -99,7 +109,7 @@ public class MetadataResolversController {
 
     @PostMapping("/MetadataResolvers")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) {
+    public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) throws IOException, ResolverException {
         if (resolverRepository.findByName(newResolver.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -112,12 +122,26 @@ public class MetadataResolversController {
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
 
+        updateChainingMetadataResolver(persistedResolver);
+
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
+    }
+
+    private void updateChainingMetadataResolver(MetadataResolver persistedResolver) throws IOException, ResolverException {
+        org.opensaml.saml.metadata.resolver.MetadataResolver openSamlResolver = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
+        List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolverList = new ArrayList<>(((ChainingMetadataResolver) chainingMetadataResolver).getResolvers());
+        for (org.opensaml.saml.metadata.resolver.MetadataResolver resolver : resolverList) {
+            if (resolver.getId().equals(persistedResolver.getResourceId())) {
+                resolverList.remove(resolver);
+            }
+        }
+        resolverList.add(openSamlResolver);
+        ((ChainingMetadataResolver) chainingMetadataResolver).setResolvers(resolverList);
     }
 
     @PutMapping("/MetadataResolvers/{resourceId}")
     @Transactional
-    public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) {
+    public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) throws IOException, ResolverException {
         MetadataResolver existingResolver = resolverRepository.findByResourceId(resourceId);
         if (existingResolver == null) {
             return ResponseEntity.notFound().build();
@@ -136,6 +160,8 @@ public class MetadataResolversController {
         updatedResolver.setAudId(existingResolver.getAudId());
 
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
+
+        updateChainingMetadataResolver(persistedResolver);
 
         return ResponseEntity.ok(persistedResolver);
     }

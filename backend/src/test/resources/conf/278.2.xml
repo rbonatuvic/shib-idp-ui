@@ -47,17 +47,23 @@
                         certificateFile="%{idp.home}/credentials/inc-md-cert.pem" />
     </MetadataProvider>
     <MetadataProvider id="LocalDynamic"
-                      initializeFromPersistentCacheInBackground="true"
+                      backgroundInitializationFromCacheDelay="PT2S"
+                      cleanupTaskInterval="PT30M"
+                      maxCacheDuration="PT8H"
+                      maxIdleEntityData="PT8H"
+                      minCacheDuration="PT10M"
+                      refreshDelayFactor="0.75"
                       removeIdleEntityData="true"
+                      sourceDirectory="/tmp"
                       xsi:type="DynamicHttpMetadataProvider">
         <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" requireSignedRoot="true" xsi:type="SignatureValidation"/>
     </MetadataProvider>
-    <MetadataProvider id="SVNResourceMetadata" xsi:type="ResourceBackedMetadataProvider">
+    <MetadataProvider id="ClasspathResourceMetadata"
+                      refreshDelayFactor="0.3"
+                      xsi:type="ResourceBackedMetadataProvider">
         <MetadataResource xmlns:resource="urn:mace:shibboleth:2.0:resource"
-                          xsi:type="resource:SVNResource"
-                          resourceFile="entity.xml"
-                          repositoryURL="https://svn.example.org/repo/path/to.dir"
-                          workingCopyDirectory="%{idp.home}/metadata/svn" />
+                          xsi:type="resource:ClasspathResource"
+                          file="metadata/metadata.xml" />
         <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" requireSignedRoot="true" xsi:type="SignatureValidation"/>
     </MetadataProvider>
 

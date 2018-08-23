@@ -389,7 +389,7 @@ class TestObjectGenerator {
                 randomResolver = localDynamicMetadataResolver()
                 break
             case 'ResourceBacked':
-                randomResolver = resourceBackedMetadataResolverForSVN()
+                randomResolver = resourceBackedMetadataResolverForClasspath()
                 break
             case 'Filesystem':
                 randomResolver = filesystemMetadataResolver()
@@ -437,6 +437,9 @@ class TestObjectGenerator {
         new DynamicHttpMetadataResolver().with {
             it.name = 'DynamicHTTP'
             it.xmlId = 'DynamicHTTP'
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
@@ -445,6 +448,10 @@ class TestObjectGenerator {
         new LocalDynamicMetadataResolver().with {
             it.name = 'LocalDynamic'
             it.xmlId = 'LocalDynamic'
+            it.sourceDirectory = '/tmp'
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
@@ -457,6 +464,25 @@ class TestObjectGenerator {
                 it.resourceFile = 'entity.xml'
                 it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
                 it.workingCopyDirectory = '%{idp.home}/metadata/svn'
+                it
+            }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it
+            }
+            it
+        }
+    }
+
+    ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
+        new ResourceBackedMetadataResolver().with {
+            it.name = 'ClasspathResourceMetadata'
+            it.xmlId = 'ClasspathResourceMetadata'
+            it.classpathMetadataResource = new ClasspathMetadataResource().with {
+                it.file = 'metadata/metadata.xml'
+                it
+            }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.refreshDelayFactor = 0.3
                 it
             }
             it
