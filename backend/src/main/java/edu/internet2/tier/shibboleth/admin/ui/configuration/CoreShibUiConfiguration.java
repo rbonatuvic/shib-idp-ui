@@ -1,23 +1,36 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityIdsSearchResultRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolversPositionOrderContainer;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
-import edu.internet2.tier.shibboleth.admin.ui.service.*;
+import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
+import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +96,16 @@ public class CoreShibUiConfiguration {
     Analyzer fullTokenAnalyzer;
 
     @Autowired
-    Directory directory;
+    DirectoryService directoryService;
 
     @Autowired
     LocaleResolver localeResolver;
 
     @Autowired
     ResourceBundleMessageSource messageSource;
+
+    @Autowired
+    LuceneUtility luceneUtility;
 
     @Bean
     public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository) {
@@ -98,10 +114,11 @@ public class CoreShibUiConfiguration {
 
     @Bean
     public EntityIdsSearchService entityIdsSearchService() {
-        return (term, limit) -> {
+        return (resourceId, term, limit) -> {
             List<String> entityIds = new ArrayList<>();
             try {
-                IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(directory));
+                IndexReader indexReader = luceneUtility.getIndexReader(resourceId);
+                IndexSearcher searcher = new IndexSearcher(indexReader);
                 QueryParser parser = new QueryParser("content", fullTokenAnalyzer);
                 TopDocs topDocs = searcher.search(parser.parse(term.trim()), limit);
                 for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
@@ -174,5 +191,15 @@ public class CoreShibUiConfiguration {
 
         return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository);
 
+    }
+
+    @Bean
+    public DirectoryService directoryService() {
+        return new DirectoryServiceImpl();
+    }
+
+    @Bean
+    public LuceneUtility luceneUtility() {
+        return new LuceneUtility();
     }
 }

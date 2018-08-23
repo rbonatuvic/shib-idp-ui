@@ -19,9 +19,11 @@ public class EntityIdsSearchController {
     }
 
     @GetMapping
-    ResponseEntity<?> search(@RequestParam String term, @RequestParam(required = false) Integer limit) {
+    ResponseEntity<?> search(@RequestParam(required = false) String resourceId,
+                             @RequestParam String term,
+                             @RequestParam(required = false) Integer limit) {
         //Zero indicates no-limit
         final int resultLimit = (limit != null ? limit : 10);
-        return ResponseEntity.ok(this.entityIdsSearchService.findBySearchTermAndOptionalLimit(term, resultLimit));
+        return ResponseEntity.ok(this.entityIdsSearchService.findBySearchTermAndOptionalLimit(resourceId, term, resultLimit));
     }
 }

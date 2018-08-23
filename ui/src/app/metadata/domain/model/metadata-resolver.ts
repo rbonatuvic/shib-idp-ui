@@ -11,6 +11,7 @@ import {
 } from '../model';
 
 export interface MetadataResolver extends MetadataBase {
+    resourceId?: string;
     entityId: string;
     serviceProviderName: string;
     organization?: Organization;

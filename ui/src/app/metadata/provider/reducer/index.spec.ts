@@ -1,5 +1,6 @@
 import * as fromProvider from './';
 import { MetadataProvider } from '../../domain/model';
+import { mergeOrderFn } from '../../domain/domain.util';
 
 describe(`provider reducer/selector functions`, () => {
 
@@ -72,25 +73,6 @@ describe(`provider reducer/selector functions`, () => {
     describe('getSchemaLockedFn', () => {
         it('should return true if the step is locked', () => {
             expect(fromProvider.getSchemaLockedFn({ locked: true }, false)).toEqual(false);
-        });
-    });
-
-    describe('mergeProviderOrderFn', () => {
-        const providers = <MetadataProvider[]>[
-            { resourceId: 'foo', name: 'foo', '@type': 'foo', enabled: true, xmlId: 'id', sortKey: 1, metadataFilters: [] },
-            { resourceId: 'bar', name: 'bar', '@type': 'bar', enabled: false, xmlId: 'id2', sortKey: 2, metadataFilters: [] },
-            { resourceId: 'baz', name: 'baz', '@type': 'baz', enabled: false, xmlId: 'id3', sortKey: 3, metadataFilters: [] }
-        ];
-        it('1 should sort the list accordingly', () => {
-            let order = {resourceIds: ['bar', 'foo', 'baz']},
-                ordered = fromProvider.mergeProviderOrderFn([...providers], order);
-            expect(ordered.indexOf(providers[0])).toBe(1);
-        });
-
-        it('2 should sort the list accordingly', () => {
-            let order = { resourceIds: ['foo', 'bar', 'baz'] },
-                ordered = fromProvider.mergeProviderOrderFn(providers, order);
-            expect(ordered.indexOf(providers[0])).toBe(0);
         });
     });
 });

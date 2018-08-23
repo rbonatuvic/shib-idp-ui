@@ -8,8 +8,6 @@ import * as utils from '../../domain/domain.util';
 import * as fromWizard from '../../../wizard/reducer';
 
 import { MetadataProvider } from '../../domain/model';
-import { WizardStep } from '../../../wizard/model';
-import { ProviderOrder } from '../../domain/model/metadata-order';
 
 export interface ProviderState {
     editor: fromEditor.EditorState;
@@ -101,14 +99,4 @@ export const getProviderNames = createSelector(getAllProviders, (providers: Meta
 export const getProviderFilters = createSelector(getSelectedProvider, provider => provider.metadataFilters);
 
 export const getProviderXmlIds = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.xmlId));
-
-export const mergeProviderOrderFn = (providers: MetadataProvider[], order: ProviderOrder): MetadataProvider[] => {
-    return [...providers.sort(
-        (a: MetadataProvider, b: MetadataProvider) => {
-            const aIndex = order.resourceIds.indexOf(a.resourceId);
-            const bIndex = order.resourceIds.indexOf(b.resourceId);
-            return aIndex > bIndex ? 1 : bIndex > aIndex ? -1 : 0;
-        }
-    )];
-};
-export const getOrderedProviders = createSelector(getAllProviders, getProviderOrder, mergeProviderOrderFn);
+export const getOrderedProviders = createSelector(getAllProviders, getProviderOrder, utils.mergeOrderFn);
