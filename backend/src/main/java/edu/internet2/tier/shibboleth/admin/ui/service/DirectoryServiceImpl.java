@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,6 @@ public class DirectoryServiceImpl implements DirectoryService {
 
     @Override
     public List<Directory> getDirectories() {
-        return (List<Directory>) directoryMap.values();
+        return new ArrayList<>(directoryMap.values());
     }
 }
