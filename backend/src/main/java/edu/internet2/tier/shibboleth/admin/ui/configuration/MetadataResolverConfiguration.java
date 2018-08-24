@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
@@ -39,7 +40,7 @@ public class MetadataResolverConfiguration {
 
     @Bean
     public MetadataResolver metadataResolver() throws ResolverException, ComponentInitializationException {
-        ChainingMetadataResolver metadataResolver = new ChainingMetadataResolver();
+        ChainingMetadataResolver metadataResolver = new OpenSamlChainingMetadataResolver();
         metadataResolver.setId("chain");
 
         List<MetadataResolver> resolvers = new ArrayList<>();
