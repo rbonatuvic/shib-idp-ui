@@ -8,7 +8,6 @@ import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.store.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,9 +18,11 @@ import java.util.List;
  */
 public class LuceneUtility {
     private static final Logger logger = LoggerFactory.getLogger(LuceneUtility.class);
-
-    @Autowired
     private DirectoryService directoryService;
+
+    public LuceneUtility(DirectoryService directoryService) {
+        this.directoryService = directoryService;
+    }
 
     public IndexReader getIndexReader(String resourceId) throws IOException {
         IndexReader indexReader;
@@ -35,7 +36,8 @@ public class LuceneUtility {
                     logger.error(e.getMessage(), e);
                 }
             });
-            IndexReader[] indexReaders = (IndexReader[]) indexReaderList.toArray();
+            IndexReader[] indexReaders = new IndexReader[indexReaderList.size()];
+            indexReaders = indexReaderList.toArray(indexReaders);
             indexReader = new MultiReader(indexReaders, true);
         } else {
             indexReader = DirectoryReader.open(directoryService.getDirectory(resourceId));

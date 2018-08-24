@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
 
+import java.nio.file.Files
 import java.util.function.Supplier
 
 /**
@@ -483,10 +484,11 @@ class TestObjectGenerator {
     }
 
     LocalDynamicMetadataResolver localDynamicMetadataResolver() {
+        def tmpDirectory = Files.createTempDirectory("groovy")
         new LocalDynamicMetadataResolver().with {
             it.name = 'LocalDynamic'
             it.xmlId = 'LocalDynamic'
-            it.sourceDirectory = '/tmp'
+            it.sourceDirectory = tmpDirectory
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
             }
