@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -15,7 +14,6 @@ import javax.persistence.Entity;
 @Setter
 @ToString
 public class FileBackedHttpMetadataResolver extends MetadataResolver {
-
     public FileBackedHttpMetadataResolver() {
         type = "FileBackedHttpMetadataResolver";
     }
@@ -34,5 +32,4 @@ public class FileBackedHttpMetadataResolver extends MetadataResolver {
 
     @Embedded
     private HttpMetadataResolverAttributes httpMetadataResolverAttributes;
-
 }

@@ -46,6 +46,13 @@ export function reducer(state = initialState, action: ProviderCollectionActionsU
             };
         }
 
+        case ProviderCollectionActionTypes.CLEAR_SELECTION: {
+            return {
+                ...state,
+                selectedProviderId: null
+            };
+        }
+
         default: {
             return state;
         }

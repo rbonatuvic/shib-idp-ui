@@ -17,7 +17,6 @@ import javax.persistence.Entity;
 @Setter
 @ToString
 public class FilesystemMetadataResolver extends MetadataResolver {
-
     public FilesystemMetadataResolver() {
         type = "FilesystemMetadataResolver";
     }

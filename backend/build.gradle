@@ -60,7 +60,7 @@ dependencies {
     }
 
     // shibboleth idp deps
-    [].each {
+    ['idp-profile-spring', 'idp-profile-api'].each {
         compile "net.shibboleth.idp:${it}:${project.'shibboleth.version'}"
     }
 
@@ -106,7 +106,7 @@ dependencies {
     testCompile "org.xmlunit:xmlunit-core:2.5.1"
     testRuntime 'cglib:cglib-nodep:3.2.5'
 
-    testCompile "net.shibboleth.ext:spring-extensions:5.4.0-SNAPSHOT"
+    compile "net.shibboleth.ext:spring-extensions:5.4.0-SNAPSHOT"
 
     //JSON schema generator
     testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.29'

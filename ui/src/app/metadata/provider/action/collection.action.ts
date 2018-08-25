@@ -33,6 +33,8 @@ export enum ProviderCollectionActionTypes {
 
     CHANGE_PROVIDER_ORDER_UP = '[Metadata Provider Collection] Change Order Up',
     CHANGE_PROVIDER_ORDER_DOWN = '[Metadata Provider Collection] Change Order Down',
+
+    CLEAR_SELECTION = '[Metadata Provider Collection] Clear Provider Selection'
 }
 
 export class LoadProviderRequest implements Action {
@@ -173,6 +175,10 @@ export class ChangeProviderOrderDown implements Action {
     constructor(public payload: string) { }
 }
 
+export class ClearProviderSelection implements Action {
+    readonly type = ProviderCollectionActionTypes.CLEAR_SELECTION;
+}
+
 export type ProviderCollectionActionsUnion =
     | LoadProviderRequest
     | LoadProviderSuccess
@@ -196,4 +202,5 @@ export type ProviderCollectionActionsUnion =
     | GetOrderProviderSuccess
     | GetOrderProviderFail
     | ChangeProviderOrderUp
-    | ChangeProviderOrderDown;
+    | ChangeProviderOrderDown
+    | ClearProviderSelection;
