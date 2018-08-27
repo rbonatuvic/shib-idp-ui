@@ -19,6 +19,7 @@ import {
     UpdateProviderRequest,
     UpdateProviderSuccess,
     UpdateProviderFail,
+    UpdateProviderConflict,
     GetOrderProviderRequest,
     GetOrderProviderSuccess,
     GetOrderProviderFail,
@@ -44,7 +45,7 @@ export class CollectionEffects {
 
     @Effect()
     openContention$ = this.actions$.pipe(
-        ofType<UpdateProviderFail>(ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL),
+        ofType<UpdateProviderConflict>(ProviderCollectionActionTypes.UPDATE_PROVIDER_CONFLICT),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getSelectedProvider)),
         switchMap(([changes, current]) =>
@@ -118,7 +119,7 @@ export class CollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
-                    catchError((e) => of(new UpdateProviderFail(provider)))
+                    catchError((e) => e.status === 409 ? of(new UpdateProviderConflict(provider)) : of(new UpdateProviderFail(provider)))
                 )
         )
     );
