@@ -6,10 +6,16 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFunctionDrivenDynamicHTTPMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlLocalDynamicMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
+import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +33,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,6 +52,9 @@ public class MetadataFiltersController {
 
     @Autowired
     private FilterRepository filterRepository;
+
+    @Autowired
+    org.opensaml.saml.metadata.resolver.MetadataResolver chainingMetadataResolver;
 
     private static final Supplier<HttpClientErrorException> HTTP_404_CLIENT_ERROR_EXCEPTION = () -> new HttpClientErrorException(NOT_FOUND);
 
@@ -78,12 +88,40 @@ public class MetadataFiltersController {
 
         // we reload the filters here after save
         metadataResolverService.reloadFilters(persistedMr.getName());
+        refreshOrInitResolver(metadataResolver);
 
         MetadataFilter persistedFilter = newlyPersistedFilter(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
 
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
                 .body(persistedFilter);
+    }
+
+    private void refreshOrInitResolver(MetadataResolver resolver) {
+        List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolvers = ((ChainingMetadataResolver) chainingMetadataResolver).getResolvers();
+        resolvers.stream().filter(it -> it.getId().equals(resolver.getResourceId())).forEach(it -> {
+            if (it instanceof RefreshableMetadataResolver) {
+                try {
+                    ((RefreshableMetadataResolver) it).refresh();
+                } catch (ResolverException e) {
+                    //TODO what should we do if we can't refresh?
+                }
+            } else if (it instanceof OpenSamlFunctionDrivenDynamicHTTPMetadataResolver) {
+                try {
+                    ((OpenSamlFunctionDrivenDynamicHTTPMetadataResolver) it).refresh();
+                } catch (ComponentInitializationException e) {
+                    //TODO what should we do if we can't refresh?
+                }
+            } else if (it instanceof OpenSamlLocalDynamicMetadataResolver) {
+                try {
+                    ((OpenSamlLocalDynamicMetadataResolver) it).refresh();
+                } catch (ComponentInitializationException e) {
+                    //TODO what should we do if we can't refresh?
+                }
+            } else {
+                //TODO we shouldn't get here, but if we do... throw exception?
+            }
+        });
     }
 
     @PutMapping("/Filters/{resourceId}")
@@ -120,6 +158,7 @@ public class MetadataFiltersController {
 
         // TODO: this is wrong
         metadataResolverService.reloadFilters(metadataResolver.getName());
+        refreshOrInitResolver(metadataResolver);
 
         return ResponseEntity.ok().body(persistedFilter);
     }

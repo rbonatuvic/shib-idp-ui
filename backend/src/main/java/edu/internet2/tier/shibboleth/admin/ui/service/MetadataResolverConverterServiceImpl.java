@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFunctionDrivenDynamicHTTPMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlLocalDynamicMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlResourceBackedMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
@@ -34,26 +35,31 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
     @Autowired
     IndexWriterService indexWriterService;
 
+    @Autowired
+    OpenSamlObjects openSamlObjects;
+
     private OpenSamlFunctionDrivenDynamicHTTPMetadataResolver convertToOpenSamlRepresentation(DynamicHttpMetadataResolver resolver) throws IOException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
-        return new OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(indexWriter,
+        return new OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(openSamlObjects.getParserPool(),
+                                                                     indexWriter,
                                                                      resolver);
     }
 
     private OpenSamlFileBackedHTTPMetadataResolver convertToOpenSamlRepresentation(FileBackedHttpMetadataResolver resolver) throws IOException, ResolverException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
-        return new OpenSamlFileBackedHTTPMetadataResolver(indexWriter, resolver);
+        return new OpenSamlFileBackedHTTPMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver);
     }
 
     private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
         File metadataFile = new File(resolver.getMetadataFile());
 
-        return new OpenSamlFilesystemMetadataResolver(metadataFile,
+        return new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
                                                       indexWriter,
-                                                      resolver);
+                                                      resolver,
+                                                      metadataFile);
     }
 
     private OpenSamlLocalDynamicMetadataResolver convertToOpenSamlRepresentation(LocalDynamicMetadataResolver resolver) throws IOException {
@@ -67,7 +73,7 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
             //TODO: What should we do here? Currently, this causes a test to fail.
         }
 
-        return new OpenSamlLocalDynamicMetadataResolver(manager, indexWriter, resolver);
+        return new OpenSamlLocalDynamicMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver, manager);
     }
 
     private OpenSamlResourceBackedMetadataResolver convertToOpenSamlRepresentation(ResourceBackedMetadataResolver resolver) throws IOException {
@@ -85,9 +91,10 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 throw new RuntimeException("Unsupported resource type!");
         }
 
-        return new OpenSamlResourceBackedMetadataResolver(resource,
+        return new OpenSamlResourceBackedMetadataResolver(openSamlObjects.getParserPool(),
                                                           indexWriter,
-                                                          resolver);
+                                                          resolver,
+                                                          resource);
     }
 
     @Override

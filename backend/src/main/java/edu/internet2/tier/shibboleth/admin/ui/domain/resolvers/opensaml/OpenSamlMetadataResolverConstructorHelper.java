@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractDynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractReloadingMetadataResolver;
@@ -14,7 +15,9 @@ import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
  */
 public class OpenSamlMetadataResolverConstructorHelper {
 
-    public static void updateOpenSamlMetadataResolverFromDynamicMetadataResolverAttributes(MetadataResolver metadataResolver, DynamicMetadataResolverAttributes attributes) {
+    public static void updateOpenSamlMetadataResolverFromDynamicMetadataResolverAttributes(MetadataResolver metadataResolver,
+                                                                                           DynamicMetadataResolverAttributes attributes,
+                                                                                           ParserPool parserPool) {
         AbstractDynamicMetadataResolver dynamicMetadataResolver = (AbstractDynamicMetadataResolver) metadataResolver;
 
         dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(attributes.getBackgroundInitializationFromCacheDelay()));
@@ -39,8 +42,8 @@ public class OpenSamlMetadataResolverConstructorHelper {
         //TODO: This takes a Predicate. We've got a predicate ref. How to convert?
         // dynamicMetadataResolver.setInitializationFromCachePredicate(); attributes.getInitializationFromCachePredicateRef();
 
-        //TODO: This takes a ParserPool. We've got a ParserPoolRef. How to convert?
-        // dynamicMetadataResolver.setParserPool(); attributes.getParserPoolRef();
+        //TODO: This takes a ParserPool. We've got a ParserPoolRef in attributes.getParserPoolRef(). Should we use it for anything?
+        dynamicMetadataResolver.setParserPool(parserPool);
 
         //TODO: Where does this get used in OpenSAML land?
         // attributes.getTaskTimerRef();
@@ -50,7 +53,9 @@ public class OpenSamlMetadataResolverConstructorHelper {
         //TODO: Implement once we figure out what needs to happen here.
     }
 
-    public static void updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(MetadataResolver metadataResolver, ReloadableMetadataResolverAttributes attributes) {
+    public static void updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(MetadataResolver metadataResolver,
+                                                                                              ReloadableMetadataResolverAttributes attributes,
+                                                                                              ParserPool parserPool) {
         AbstractReloadingMetadataResolver reloadingMetadataResolver = (AbstractReloadingMetadataResolver) metadataResolver;
 
         reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
@@ -66,8 +71,8 @@ public class OpenSamlMetadataResolverConstructorHelper {
         //TODO: This takes a set of MetadataIndex's. We've got an IndexesRef. How to convert?
         // reloadingMetadataResolver.setIndexes(); attributes.getIndexesRef();
 
-        //TODO: This takes a ParserPool. We've got a ParserPoolRef. How to convert?
-        // reloadingMetadataResolver.setParserPool(); attributes.getParserPoolRef();
+        //TODO: This takes a ParserPool. We've got a ParserPoolRef in attributes.getParserPoolRef(). Should we use it for anything?
+        reloadingMetadataResolver.setParserPool(parserPool);
 
         //TODO: Where does this get used in OpenSAML land?
         // attributes.getTaskTimerRef();

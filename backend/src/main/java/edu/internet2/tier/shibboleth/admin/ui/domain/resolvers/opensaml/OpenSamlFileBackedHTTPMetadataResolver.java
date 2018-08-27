@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
@@ -22,7 +23,8 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
 
     private OpenSamlMetadataResolverDelegate delegate;
 
-    public OpenSamlFileBackedHTTPMetadataResolver(IndexWriter indexWriter,
+    public OpenSamlFileBackedHTTPMetadataResolver(ParserPool parserPool,
+                                                  IndexWriter indexWriter,
                                                   FileBackedHttpMetadataResolver sourceResolver) throws ResolverException {
         super(HttpClients.createMinimal(), sourceResolver.getMetadataURL(), sourceResolver.getBackingFile());
         this.indexWriter = indexWriter;
@@ -34,7 +36,7 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromHttpMetadataResolverAttributes(
                 this, sourceResolver.getHttpMetadataResolverAttributes());
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
-                this, sourceResolver.getReloadableMetadataResolverAttributes());
+                this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
         this.setBackupFile(sourceResolver.getBackingFile());
         this.setBackupFileInitNextRefreshDelay(toMillis(sourceResolver.getBackupFileInitNextRefreshDelay()));
