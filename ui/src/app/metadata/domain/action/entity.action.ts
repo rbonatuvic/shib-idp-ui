@@ -6,7 +6,10 @@ export const PREVIEW_ENTITY = '[Domain] Preview Entity';
 export class PreviewEntity implements Action {
     readonly type = PREVIEW_ENTITY;
 
-    constructor(public payload: MetadataEntity) { }
+    constructor(public payload: {
+        id: string,
+        entity: MetadataEntity
+    }) { }
 }
 
 export type Actions =

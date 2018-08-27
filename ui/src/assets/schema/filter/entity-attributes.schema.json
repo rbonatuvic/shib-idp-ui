@@ -74,6 +74,13 @@
                 },
                 "value": {
                     "type": "array",
+                    "buttons": [
+                        {
+                            "id": "preview",
+                            "label": "Preview",
+                            "widget": "icon-button"
+                        }
+                    ],
                     "minItems": 1,
                     "uniqueItems": true,
                     "items": {

@@ -97,9 +97,12 @@
             <ul class="list-group list-group-sm list-group-scroll">
                 <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let id of targets">
                     {{ id }}
-                    <button class="btn btn-link text-right" (click)="removeId(id)">
-                        <i class="fa fa-trash fa-lg text-danger"></i>
-                    </button>
+                    <span>
+                        <sf-form-element-action *ngFor="let button of getButtonConfig(id)" [button]="button" [formProperty]="formProperty"></sf-form-element-action>
+                        <button class="btn btn-link text-right" (click)="removeId(id)">
+                            <i class="fa fa-trash fa-lg text-danger"></i>
+                        </button>
+                    </span>
                 </li>
             </ul>
         </div>

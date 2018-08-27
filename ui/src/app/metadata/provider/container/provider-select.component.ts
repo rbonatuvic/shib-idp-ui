@@ -33,14 +33,15 @@ export class ProviderSelectComponent implements OnDestroy {
 
         this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(skipWhile(p => !p));
 
-        this.provider$
-            .subscribe(provider => {
-                if (provider) {
-                    this.store.dispatch(new SetDefinition({
-                        ...MetadataProviderEditorTypes.find(def => def.type === provider['@type'])
-                    }));
-                }
-            });
+        this.provider$.subscribe(provider => this.setDefinition(provider));
+    }
+
+    setDefinition(provider: MetadataProvider): void {
+        if (provider) {
+            this.store.dispatch(new SetDefinition({
+                ...MetadataProviderEditorTypes.find(def => def.type === provider['@type'])
+            }));
+        }
     }
 
     ngOnDestroy() {

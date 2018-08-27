@@ -61,7 +61,6 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
         this.script.setValue(this.targets[0]);
-
         this.search.setValidators(this.unique());
     }
 
@@ -78,6 +77,16 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
                 limit: 10
             }));
         }
+    }
+
+    getButtonConfig(id: string): any {
+        let buttons = this.formProperty.getProperty('value').schema.buttons;
+        return (buttons || []).map(btn => ({
+            ...btn,
+            parameters: {
+                id
+            }
+        }));
     }
 
     get targets(): string[] {
