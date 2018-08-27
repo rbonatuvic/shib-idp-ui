@@ -32,8 +32,7 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
     }
 
     @Override
-    public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers)
-            throws ResolverException {
+    public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers) {
         if (newResolvers == null || newResolvers.isEmpty()) {
             mutableResolvers = Collections.emptyList();
             return;

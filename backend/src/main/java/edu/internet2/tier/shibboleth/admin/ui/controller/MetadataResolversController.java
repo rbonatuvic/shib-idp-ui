@@ -9,12 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterS
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.index.IndexWriter;
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -130,11 +125,7 @@ public class MetadataResolversController {
     private void updateChainingMetadataResolver(MetadataResolver persistedResolver) throws IOException, ResolverException {
         org.opensaml.saml.metadata.resolver.MetadataResolver openSamlResolver = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
         List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolverList = new ArrayList<>(((ChainingMetadataResolver) chainingMetadataResolver).getResolvers());
-        for (org.opensaml.saml.metadata.resolver.MetadataResolver resolver : resolverList) {
-            if (resolver.getId().equals(persistedResolver.getResourceId())) {
-                resolverList.remove(resolver);
-            }
-        }
+        resolverList.removeIf(resolver -> resolver.getId().equals(persistedResolver.getResourceId()));
         resolverList.add(openSamlResolver);
         ((ChainingMetadataResolver) chainingMetadataResolver).setResolvers(resolverList);
     }

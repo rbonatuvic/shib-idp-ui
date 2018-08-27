@@ -70,6 +70,7 @@ public class SearchConfiguration {
             IndexWriter indexWriter = indexWriterMap.get(resourceId);
             if (indexWriter == null) {
                 indexWriter = createIndexWriter(directoryService.getDirectory(resourceId));
+                indexWriter.commit();
                 indexWriterMap.put(resourceId, indexWriter);
             }
             return indexWriter;
