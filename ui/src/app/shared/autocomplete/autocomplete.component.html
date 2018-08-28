@@ -1,11 +1,11 @@
 <div id="{{ id }}-container" class="dropdown form-group" (keydown)="handleKeyDown($event)" role='combobox' [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'">
-    <label for="{{ id }}__input" attr.aria-labelledby="{{ id }}__input" class="sr-only"></label>
+    <label *ngIf="!fieldId" for="{{ id }}__input" attr.aria-labelledby="{{ id }}__input" class="sr-only"></label>
     <div [ngClass]="{'input-group': dropdown}">
         <input
             #inputField
             [formControl]="input"
             [disableValidation]="true"
-            id="{{ id }}__input"
+            [id]="fieldId || (id + '__input')"
             class="form-control"
             autoComplete="off"
             type="text"
@@ -25,6 +25,7 @@
                 [attr.aria-labelledby]="id"
                 (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
                 <i class="fa fa-caret-down"></i>
+                <span class="sr-only">Toggle Dropdown</span>
             </button>
         </div>
     </div>

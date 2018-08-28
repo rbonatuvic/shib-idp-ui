@@ -141,6 +141,7 @@
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "NameID Format",
                         "type": "string",
                         "widget": {
                             "id": "datalist",
@@ -162,6 +163,7 @@
                     "uniqueItems": true,
                     "items": {
                         "type": "string",
+                        "title": "Authentication Method",
                         "widget": {
                             "id": "datalist",
                             "data": [

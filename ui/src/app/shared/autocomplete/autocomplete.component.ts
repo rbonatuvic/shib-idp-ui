@@ -44,6 +44,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     @Input() defaultValue = '';
     @Input() matches: string[] = [];
     @Input() id: string;
+    @Input() fieldId: string;
     @Input() autoSelect = false;
     @Input() noneFoundText = 'No Options Found';
     @Input() limit = 0;

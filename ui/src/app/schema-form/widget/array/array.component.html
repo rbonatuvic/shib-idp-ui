@@ -16,11 +16,12 @@
         </span>
     </div>
     <div *ngFor="let itemProperty of formProperty.properties; let i=index; trackBy:trackByIndex" class="mt-2">
-        <div class="row">
-            <sf-form-element class="col-sm-11" [formProperty]="itemProperty"></sf-form-element>
-            <div class="col-sm-1">
+        <div class="d-flex justify-content-between">
+            <sf-form-element class="flex-grow-1" [formProperty]="itemProperty"></sf-form-element>
+            <div class="py-2">
                 <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
                     <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
+                    <span class="sr-only">Remove</span>
                 </button>
             </div>
         </div>

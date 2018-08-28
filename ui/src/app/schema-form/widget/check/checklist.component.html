@@ -23,7 +23,9 @@
                                 role="checkbox"
                                 aria-checked="false"
                             />
-                            <label class="custom-control-label" for="input-{{ i }}"></label>
+                            <label class="custom-control-label" for="input-{{ i }}">
+                                <span class="sr-only">Toggle {{ attr.label }}</span>
+                            </label>
                         </div>
                     </fieldset>
                 </td>
