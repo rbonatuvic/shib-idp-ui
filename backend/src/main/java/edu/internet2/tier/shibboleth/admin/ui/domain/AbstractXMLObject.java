@@ -3,9 +3,12 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
 import org.w3c.dom.Element;
@@ -45,7 +48,13 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
 
     @Nullable
     public Element getDOM() {
-        return null; //convert this class using opensaml stuff
+        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        try {
+            return registry.getMarshallerFactory().getMarshaller(this).marshall(this);
+        } catch (MarshallingException e) {
+            // TODO: some sort of logging?
+            return null;
+        }
     }
 
     public String getNamespaceURI() {
