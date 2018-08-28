@@ -4,8 +4,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
 import lombok.EqualsAndHashCode;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.springframework.util.StringUtils;
+import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
 
@@ -261,5 +265,16 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
         children.addAll(this.getAdditionalMetadataLocations());
 
         return Collections.unmodifiableList(children);
+    }
+
+    @Override
+    public Element getDOM() {
+        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        try {
+            return registry.getMarshallerFactory().getMarshaller(this).marshall(this);
+        } catch (MarshallingException e) {
+            // TODO: some sort of logging?
+            return null;
+        }
     }
 }
