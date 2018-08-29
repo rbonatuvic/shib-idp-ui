@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterService
@@ -81,6 +82,12 @@ class MetadataFiltersControllerTests extends Specification {
                     Document generateConfiguration() {
                         return null
                     }
+                },
+                chainingMetadataResolver: new OpenSamlChainingMetadataResolver().with {
+                    it.id = 'chain'
+                    it.resolvers = []
+                    it.initialize()
+                    it
                 }
         )
 
