@@ -25,9 +25,7 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
     search: FormControl = new FormControl(
         '',
         [],
-        [
-            EntityValidators.existsInCollection(this.store.select(fromFilters.getEntityCollection))
-        ]
+        []
     );
 
     script: FormControl = new FormControl(
