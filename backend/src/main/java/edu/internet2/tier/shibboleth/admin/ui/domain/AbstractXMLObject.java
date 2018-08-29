@@ -54,7 +54,8 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
         return this.dom;
     }
 
-    public void setDom(Element dom) {
+    @Override
+    public void setDOM(@Nullable Element dom) {
         this.dom = dom;
     }
 
@@ -169,10 +170,6 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
     @Nullable
     public XMLObject resolveIDFromRoot(@Nonnull String s) {
         return null;
-    }
-
-    public void setDOM(@Nullable Element element) {
-
     }
 
     public void setNoNamespaceSchemaLocation(@Nullable String s) {
