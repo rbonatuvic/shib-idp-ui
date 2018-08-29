@@ -77,9 +77,8 @@ class EntityDescriptorTest extends Specification {
         when:
         ((RefreshableMetadataResolver)metadataResolver).refresh()
 
-        then:
-        println("We didn't explode .. hopefully.")
-
+        then: 'no exceptions should be thrown'
+        noExceptionThrown()
     }
 
     @TestConfiguration
