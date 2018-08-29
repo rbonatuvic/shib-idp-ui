@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFileBackedHTTPMetadataResolver
@@ -65,7 +66,8 @@ class EntityDescriptorTest extends Specification {
                         new FileBackedHttpMetadataResolver(
                                 metadataURL: 'https://idp.unicon.net/idp/shibboleth',
                                 backingFile: '/x.xml',
-                                reloadableMetadataResolverAttributes: new ReloadableMetadataResolverAttributes()
+                                reloadableMetadataResolverAttributes: new ReloadableMetadataResolverAttributes(),
+                                httpMetadataResolverAttributes: new HttpMetadataResolverAttributes()
                         )
                 )
         )
