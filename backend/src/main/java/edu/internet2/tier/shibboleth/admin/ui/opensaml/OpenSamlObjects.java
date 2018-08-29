@@ -88,6 +88,8 @@ public class OpenSamlObjects {
 
     public String marshalToXmlString(XMLObject ed, boolean includeXMLDeclaration) throws MarshallingException {
         Marshaller marshaller = this.marshallerFactory.getMarshaller(ed);
+        ed.releaseDOM();
+        ed.releaseChildrenDOM(true);
         String entityDescriptorXmlString = null;
         if (marshaller != null) {
             try (StringWriter writer = new StringWriter()) {

@@ -116,9 +116,19 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
         return null;
     }
 
+    @Transient
+    private transient XMLObject parent;
     @Nullable
     public XMLObject getParent() {
-        return null;
+        return parent;
+    }
+
+    public void setParent(@Nullable XMLObject xmlObject) {
+        parent = xmlObject;
+    }
+
+    public boolean hasParent() {
+        return getParent() != null;
     }
 
     @Nullable
@@ -143,23 +153,34 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
     }
 
     public boolean hasChildren() {
-        return false;
-    }
-
-    public boolean hasParent() {
-        return false;
+        List children = getOrderedChildren();
+        return children != null && children.size() > 0;
     }
 
     public void releaseChildrenDOM(boolean b) {
-
+        if (getOrderedChildren() != null) {
+            for (XMLObject child : getOrderedChildren()) {
+                if (child != null) {
+                    child.releaseDOM();
+                    if (b) {
+                        child.releaseChildrenDOM(b);
+                    }
+                }
+            }
+        }
     }
 
     public void releaseDOM() {
-
+        this.setDOM(null);
     }
 
     public void releaseParentDOM(boolean b) {
-
+        if (hasParent()) {
+            getParent().releaseDOM();
+            if (b) {
+                getParent().releaseParentDOM(b);
+            }
+        }
     }
 
     @Nullable
@@ -173,10 +194,6 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
     }
 
     public void setNoNamespaceSchemaLocation(@Nullable String s) {
-
-    }
-
-    public void setParent(@Nullable XMLObject xmlObject) {
 
     }
 
