@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
@@ -13,16 +12,14 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import org.apache.http.impl.client.HttpClients
-import org.apache.lucene.index.IndexWriter
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver
-import org.opensaml.saml.metadata.resolver.impl.AbstractReloadingMetadataResolver
-import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
@@ -34,7 +31,7 @@ import java.nio.file.Files
  * @author Bill Smith (wsmith@unicon.net)
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, MyConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -62,8 +59,7 @@ class EntityDescriptorTest extends Specification {
     def "entity descriptors properly marshall to xml"() {
         given:
         def tempDir = Files.createTempDirectory('test')
-        ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers.remove(0)
-        ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers.add(
+        ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers = [
                 new OpenSamlFileBackedHTTPMetadataResolver(
                         openSamlObjects.parserPool,
                         indexWriterService.getIndexWriter('testme'),
@@ -76,8 +72,7 @@ class EntityDescriptorTest extends Specification {
                 ).with {
                     it.initialize()
                     it
-                }
-        )
+                }]
 
         when:
         ((RefreshableMetadataResolver)metadataResolver).refresh()
@@ -85,5 +80,17 @@ class EntityDescriptorTest extends Specification {
         then:
         println("We didn't explode .. hopefully.")
 
+    }
+
+    @TestConfiguration
+    static class MyConfig {
+        @Bean
+        MetadataResolver metadataResolver() {
+            ChainingMetadataResolver metadataResolver = new OpenSamlChainingMetadataResolver()
+            metadataResolver.setId("chain")
+            metadataResolver.resolvers = new ArrayList<>()
+            metadataResolver.initialize()
+            return metadataResolver
+        }
     }
 }
