@@ -58,7 +58,9 @@ public class OpenSamlMetadataResolverConstructorHelper {
                                                                                               ParserPool parserPool) {
         AbstractReloadingMetadataResolver reloadingMetadataResolver = (AbstractReloadingMetadataResolver) metadataResolver;
 
-        reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
+        if (attributes.getExpirationWarningThreshold() != null) {
+            reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
+        }
         if (attributes.getMaxRefreshDelay() != null) {
             reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));
         }
