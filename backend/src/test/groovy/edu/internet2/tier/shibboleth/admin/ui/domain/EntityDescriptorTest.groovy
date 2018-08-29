@@ -28,6 +28,8 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
+import java.nio.file.Files
+
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
@@ -59,17 +61,22 @@ class EntityDescriptorTest extends Specification {
 
     def "entity descriptors properly marshall to xml"() {
         given:
+        def tempDir = Files.createTempDirectory('test')
+        ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers.remove(0)
         ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers.add(
                 new OpenSamlFileBackedHTTPMetadataResolver(
                         openSamlObjects.parserPool,
                         indexWriterService.getIndexWriter('testme'),
                         new FileBackedHttpMetadataResolver(
                                 metadataURL: 'https://idp.unicon.net/idp/shibboleth',
-                                backingFile: '/x.xml',
+                                backingFile: "${tempDir.toString()}/test.xml",
                                 reloadableMetadataResolverAttributes: new ReloadableMetadataResolverAttributes(),
                                 httpMetadataResolverAttributes: new HttpMetadataResolverAttributes()
                         )
-                )
+                ).with {
+                    it.initialize()
+                    it
+                }
         )
 
         when:
