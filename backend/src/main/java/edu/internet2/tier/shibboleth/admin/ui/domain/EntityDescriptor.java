@@ -266,15 +266,4 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
         return Collections.unmodifiableList(children);
     }
-
-    @Override
-    public Element getDOM() {
-        XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        try {
-            return registry.getMarshallerFactory().getMarshaller(this).marshall(this);
-        } catch (MarshallingException e) {
-            // TODO: some sort of logging?
-            return null;
-        }
-    }
 }

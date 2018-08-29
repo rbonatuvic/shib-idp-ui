@@ -46,9 +46,16 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
 
     }
 
+    @Transient
+    private transient Element dom;
+
     @Nullable
     public Element getDOM() {
-        return null;
+        return this.dom;
+    }
+
+    public void setDom(Element dom) {
+        this.dom = dom;
     }
 
     public String getNamespaceURI() {
