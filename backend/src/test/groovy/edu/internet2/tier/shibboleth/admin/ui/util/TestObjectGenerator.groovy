@@ -459,8 +459,8 @@ class TestObjectGenerator {
         new FileBackedHttpMetadataResolver().with {
             it.name = 'HTTPMetadata'
             it.xmlId = 'HTTPMetadata'
-            it.backingFile = 'incommonmd.xml'
-            it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+            it.backingFile = 'unicon.xml'
+            it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
                 it.minRefreshDelay = 'PT5M'
