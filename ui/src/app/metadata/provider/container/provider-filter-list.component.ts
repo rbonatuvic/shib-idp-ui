@@ -1,7 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { skipWhile, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { skipWhile, takeUntil } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import * as fromProvider from '../reducer';
 import * as fromFilter from '../../filter/reducer';
 import { MetadataFilter, MetadataProvider } from '../../domain/model';
@@ -16,6 +18,7 @@ import {
     RemoveFilterRequest,
     ClearFilters
 } from '../../filter/action/collection.action';
+import { DeleteFilterComponent } from '../component/delete-filter.component';
 
 @Component({
     selector: 'provider-filter-list',
@@ -33,7 +36,8 @@ export class ProviderFilterListComponent implements OnDestroy {
     formats = NAV_FORMATS;
 
     constructor(
-        private store: Store<fromProvider.ProviderState>
+        private store: Store<fromProvider.ProviderState>,
+        private modalService: NgbModal
     ) {
         this.filters$ = this.store.select(fromFilter.getAdditionalFilters) as Observable<MetadataFilter[]>;
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(p => !p));
@@ -63,7 +67,17 @@ export class ProviderFilterListComponent implements OnDestroy {
     }
 
     remove(id: string): void {
-        this.store.dispatch(new RemoveFilterRequest(id));
+        this.modalService
+            .open(DeleteFilterComponent)
+            .result
+            .then(
+                success => {
+                    this.store.dispatch(new RemoveFilterRequest(id));
+                },
+                err => {
+                    console.log('Cancelled');
+                }
+            );
     }
 
     ngOnDestroy(): void {

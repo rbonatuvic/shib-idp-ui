@@ -2,13 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModalModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProviderFilterListComponent } from './provider-filter-list.component';
 import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 import { ProviderEditorNavComponent } from '../component/provider-editor-nav.component';
 import { I18nTextComponent } from '../../../shared/component/i18n-text.component';
 import { ValidFormIconComponent } from '../../../shared/component/valid-form-icon.component';
+import { DeleteFilterComponent } from '../component/delete-filter.component';
+import { NgbModalStub } from '../../../../testing/modal.stub';
 
 @Component({
     template: `
@@ -42,9 +44,12 @@ describe('Provider Filter List Component', () => {
                 ProviderEditorNavComponent,
                 I18nTextComponent,
                 ValidFormIconComponent,
+                DeleteFilterComponent,
                 TestHostComponent
             ],
-            providers: []
+            providers: [
+                { provide: NgbModal, useClass: NgbModalStub }
+            ]
         }).compileComponents();
 
         store = TestBed.get(Store);
