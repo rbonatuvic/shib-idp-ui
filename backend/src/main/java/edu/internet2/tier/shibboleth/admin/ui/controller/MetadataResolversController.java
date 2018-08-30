@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterS
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import lombok.extern.slf4j.Slf4j;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +105,7 @@ public class MetadataResolversController {
 
     @PostMapping("/MetadataResolvers")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) throws IOException, ResolverException {
+    public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) throws IOException, ResolverException, ComponentInitializationException {
         if (resolverRepository.findByName(newResolver.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -122,7 +123,7 @@ public class MetadataResolversController {
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
 
-    private void updateChainingMetadataResolver(MetadataResolver persistedResolver) throws IOException, ResolverException {
+    private void updateChainingMetadataResolver(MetadataResolver persistedResolver) throws IOException, ResolverException, ComponentInitializationException {
         org.opensaml.saml.metadata.resolver.MetadataResolver openSamlResolver = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
         List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolverList = new ArrayList<>(((ChainingMetadataResolver) chainingMetadataResolver).getResolvers());
         resolverList.removeIf(resolver -> resolver.getId().equals(persistedResolver.getResourceId()));
@@ -132,7 +133,7 @@ public class MetadataResolversController {
 
     @PutMapping("/MetadataResolvers/{resourceId}")
     @Transactional
-    public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) throws IOException, ResolverException {
+    public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) throws IOException, ResolverException, ComponentInitializationException {
         MetadataResolver existingResolver = resolverRepository.findByResourceId(resourceId);
         if (existingResolver == null) {
             return ResponseEntity.notFound().build();
