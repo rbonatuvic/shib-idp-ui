@@ -7,7 +7,7 @@
                   xsi:type="ChainingMetadataProvider">
     <MetadataProvider id="FilesystemMetadata"
                       maxRefreshDelay="PT1H"
-                      metadataFile="some metadata filename"
+                      metadataFile="metadata.xml"
                       minRefreshDelay="PT5M"
                       refreshDelayFactor="0.75"
                       xsi:type="FilesystemMetadataProvider"/>

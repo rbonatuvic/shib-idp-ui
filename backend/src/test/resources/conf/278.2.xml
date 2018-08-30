@@ -38,7 +38,7 @@
     </MetadataProvider>
     <MetadataProvider id="HTTPMetadata"
                       xsi:type="FileBackedHTTPMetadataProvider"
-                      backingFile="%{idp.home}/metadata/incommonmd.xml"
+                      backingFile="incommonmd.xml"
                       metadataURL="http://md.incommon.org/InCommon/InCommon-metadata.xml"
                       minRefreshDelay="PT5M"
                       maxRefreshDelay="PT1H"

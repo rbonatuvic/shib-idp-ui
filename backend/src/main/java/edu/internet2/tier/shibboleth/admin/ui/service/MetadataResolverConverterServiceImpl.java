@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -59,7 +60,8 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
 
     private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
-        File metadataFile = new File(resolver.getMetadataFile());
+        URL url = Thread.currentThread().getContextClassLoader().getResource(resolver.getMetadataFile());
+        File metadataFile = new File(url.getPath());
 
         OpenSamlFilesystemMetadataResolver openSamlResolver = new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
                                                       indexWriter,
