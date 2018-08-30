@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 
 import { EffectsModule } from '@ngrx/effects';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProviderWizardComponent } from './container/provider-wizard.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
@@ -30,6 +30,7 @@ import { ProviderFilterListComponent } from './container/provider-filter-list.co
 import { ProviderEditorNavComponent } from './component/provider-editor-nav.component';
 import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 import { ContentionModule } from '../../contention/contention.module';
+import { DeleteFilterComponent } from './component/delete-filter.component';
 
 @NgModule({
     declarations: [
@@ -43,10 +44,12 @@ import { ContentionModule } from '../../contention/contention.module';
         ProviderFilterListComponent,
         SummaryPropertyComponent,
         ProviderEditorNavComponent,
-        UnsavedProviderComponent
+        UnsavedProviderComponent,
+        DeleteFilterComponent
     ],
     entryComponents: [
-        UnsavedProviderComponent
+        UnsavedProviderComponent,
+        DeleteFilterComponent
     ],
     imports: [
         ReactiveFormsModule,
@@ -57,7 +60,8 @@ import { ContentionModule } from '../../contention/contention.module';
         FormModule,
         RouterModule,
         ContentionModule,
-        NgbDropdownModule
+        NgbDropdownModule,
+        NgbModalModule
     ],
     exports: []
 })

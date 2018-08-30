@@ -43,7 +43,7 @@
                     ]
                 },
                 {
-                    "title": "Unused Attributes",
+                    "title": "",
                     "type": "hidden",
                     "fields": [
                         "tlsTrustEngineRef",

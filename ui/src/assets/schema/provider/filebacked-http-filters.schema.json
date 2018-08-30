@@ -58,7 +58,25 @@
                             "default": ""
                         }
                     },
-                    "required": ["certificateFile"]
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "requireSignedRoot": {
+                                    "enum": [ true ]
+                                }
+                            },
+                            "required": [
+                                "certificateFile"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "requireSignedRoot": {
+                                    "enum": [ false ]
+                                }
+                            }
+                        }
+                    ]
                 },
                 "EntityRoleWhiteList": {
                     "title": "Entity Role Whitelist Filter",
