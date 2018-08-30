@@ -16,11 +16,10 @@
     "required": [
         "name",
         "xmlId",
-        "metadataURL"
+        "metadataURL",
+        "backingFile",
+        "backupFileInitNextRefreshDelay"
     ],
-    "dependencies": {
-        "initializeFromBackupFile": {"required": ["backingFile", "backupFileInitNextRefreshDelay"]}
-    },
     "anyOf": [
         {
             "properties": {
@@ -29,11 +28,7 @@
                         true
                     ]
                 }
-            },
-            "required": [
-                "backingFile",
-                "backupFileInitNextRefreshDelay"
-            ]
+            }
         },
         {
             "properties": {
@@ -144,22 +139,12 @@
             "title": "Backing File",
             "description": "Specifies where the backing file is located. If the remote server is unavailable at startup, the backing file is loaded instead.",
             "type": "string",
-            "default": "",
-            "visibleIf": {
-                "initializeFromBackupFile": [
-                    true
-                ]
-            }
+            "default": ""
         },
         "backupFileInitNextRefreshDelay": {
             "title": "Backup File Init Next Refresh Delay",
             "description": "Delay duration after which to schedule next HTTP refresh when initialized from the backing file.",
             "type": "string",
-            "visibleIf": {
-                "initializeFromBackupFile": [
-                    true
-                ]
-            },
             "widget": {
                 "id": "datalist",
                 "data": [

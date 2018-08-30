@@ -48,7 +48,7 @@ describe('Entity Effects', () => {
         it('should open a modal window for a filter', fakeAsync(() => {
             spyOn(modal, 'open').and.returnValue({componentInstance: <any>{}});
             spyOn(idService, 'preview').and.returnValue(of('<foo></foo>'));
-            effects.openModal(new EntityAttributesFilterEntity());
+            effects.openModal({ id: 'foo', entity: new EntityAttributesFilterEntity()});
             expect(idService.preview).toHaveBeenCalled();
             tick(10);
             expect(modal.open).toHaveBeenCalled();
@@ -57,7 +57,7 @@ describe('Entity Effects', () => {
         it('should open a modal window for a provider', fakeAsync(() => {
             spyOn(modal, 'open').and.returnValue({ componentInstance: <any>{} });
             spyOn(providerService, 'preview').and.returnValue(of('<foo></foo>'));
-            effects.openModal(new FileBackedHttpMetadataResolver());
+            effects.openModal({id: 'foo', entity: new FileBackedHttpMetadataResolver()});
             expect(providerService.preview).toHaveBeenCalled();
             tick(10);
             expect(modal.open).toHaveBeenCalled();

@@ -74,6 +74,13 @@
                 },
                 "value": {
                     "type": "array",
+                    "buttons": [
+                        {
+                            "id": "preview",
+                            "label": "Preview",
+                            "widget": "icon-button"
+                        }
+                    ],
                     "minItems": 1,
                     "uniqueItems": true,
                     "items": {
@@ -134,6 +141,7 @@
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
+                        "title": "NameID Format",
                         "type": "string",
                         "widget": {
                             "id": "datalist",
@@ -155,6 +163,7 @@
                     "uniqueItems": true,
                     "items": {
                         "type": "string",
+                        "title": "Authentication Method",
                         "widget": {
                             "id": "datalist",
                             "data": [

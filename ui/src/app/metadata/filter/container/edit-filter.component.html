@@ -29,6 +29,7 @@
                 [schema]="schema$ | async"
                 [model]="model$ | async"
                 [validators]="definition.getValidators()"
+                [actions]="actions"
                 (onChange)="valueChangeSubject.next($event)"
                 (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
         </div>

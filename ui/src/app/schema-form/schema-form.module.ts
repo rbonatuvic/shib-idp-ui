@@ -17,6 +17,7 @@ import { CustomArrayComponent } from './widget/array/array.component';
 import { CustomIntegerComponent } from './widget/number/number.component';
 import { FilterTargetComponent } from './widget/filter-target/filter-target.component';
 import { ChecklistComponent } from './widget/check/checklist.component';
+import { IconButtonComponent } from './widget/button/icon-button.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
@@ -29,7 +30,8 @@ export const COMPONENTS = [
     CustomArrayComponent,
     CustomIntegerComponent,
     FilterTargetComponent,
-    ChecklistComponent
+    ChecklistComponent,
+    IconButtonComponent
 ];
 
 @NgModule({

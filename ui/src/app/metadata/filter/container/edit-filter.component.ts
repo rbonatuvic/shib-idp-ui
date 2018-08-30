@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import * as fromFilter from '../reducer';
-import { MetadataFilterTypes, EntityAttributesFilter } from '../model';
+import { MetadataFilterTypes } from '../model';
 import { FormDefinition } from '../../../wizard/model';
-import { MetadataFilter, MetadataEntity } from '../../domain/model';
+import { MetadataFilter } from '../../domain/model';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
@@ -32,6 +32,8 @@ export class EditFilterComponent {
     filter: MetadataFilter;
     isValid: boolean;
 
+    actions: any;
+
     constructor(
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
@@ -50,6 +52,12 @@ export class EditFilterComponent {
         this.store
             .select(fromFilter.getFilter)
             .subscribe(filter => this.filter = filter);
+
+        this.actions = {
+            preview: (property: any, parameters: any) => {
+                this.preview(parameters.id);
+            }
+        };
     }
 
     save(): void {
@@ -60,8 +68,11 @@ export class EditFilterComponent {
         this.store.dispatch(new CancelCreateFilter());
     }
 
-    preview(entity: MetadataFilter): void {
-        this.store.dispatch(new PreviewEntity(new EntityAttributesFilterEntity(entity)));
+    preview(id: string): void {
+        this.store.dispatch(new PreviewEntity({
+            id,
+            entity: new EntityAttributesFilterEntity(this.filter)
+        }));
     }
 }
 

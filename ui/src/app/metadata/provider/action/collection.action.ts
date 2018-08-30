@@ -6,6 +6,7 @@ export enum ProviderCollectionActionTypes {
     UPDATE_PROVIDER_REQUEST = '[Metadata Provider] Update Request',
     UPDATE_PROVIDER_SUCCESS = '[Metadata Provider] Update Success',
     UPDATE_PROVIDER_FAIL = '[Metadata Provider] Update Fail',
+    UPDATE_PROVIDER_CONFLICT = '[Metadata Provider] Update Conflict',
 
     LOAD_PROVIDER_REQUEST = '[Metadata Provider Collection] Provider Load REQUEST',
     LOAD_PROVIDER_SUCCESS = '[Metadata Provider Collection] Provider Load SUCCESS',
@@ -86,6 +87,12 @@ export class UpdateProviderSuccess implements Action {
 }
 
 export class UpdateProviderFail implements Action {
+    readonly type = ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL;
+
+    constructor(public payload: MetadataProvider) { }
+}
+
+export class UpdateProviderConflict implements Action {
     readonly type = ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL;
 
     constructor(public payload: MetadataProvider) { }
@@ -195,6 +202,7 @@ export type ProviderCollectionActionsUnion =
     | UpdateProviderRequest
     | UpdateProviderSuccess
     | UpdateProviderFail
+    | UpdateProviderConflict
     | SetOrderProviderRequest
     | SetOrderProviderSuccess
     | SetOrderProviderFail

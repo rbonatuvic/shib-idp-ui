@@ -119,6 +119,7 @@ class MetadataFiltersControllerTests extends Specification {
         def expectedFilter = testObjectGenerator.entityAttributesFilter()
         metadataResolver.metadataFilters = [expectedFilter]
         1 * metadataResolverRepository.findByResourceId(_) >> metadataResolver
+        1 * metadataFilterRepository.findByResourceId(_) >> expectedFilter
 
         def expectedResourceId = expectedFilter.resourceId
         def expectedHttpResponseStatus = status().isOk()

@@ -20,7 +20,7 @@ export class EntityEffects {
     previewEntityXml$ = this.actions$.pipe(
         ofType<entityActions.PreviewEntity>(entityActions.PREVIEW_ENTITY),
         map(action => action.payload),
-        tap(entity => this.openModal(entity))
+        tap(prev => this.openModal(prev))
     );
 
     constructor(
@@ -30,9 +30,10 @@ export class EntityEffects {
         private entityService: EntityIdService
     ) { }
 
-    openModal(entity: MetadataEntity): void {
-        let request: Observable<string> = entity.kind === MetadataTypes.FILTER ?
-            this.entityService.preview(entity.getId()) : this.providerService.preview(entity.getId());
+    openModal(prev: { id: string, entity: MetadataEntity }): void {
+        let { id, entity } = prev,
+            request: Observable<string> = entity.kind === MetadataTypes.FILTER ?
+            this.entityService.preview(id) : this.providerService.preview(id);
         request.subscribe(xml => {
             let modal = this.modalService.open(PreviewDialogComponent, {
                 size: 'lg',
