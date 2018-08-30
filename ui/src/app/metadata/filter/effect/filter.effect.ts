@@ -60,8 +60,10 @@ export class FilterEffects {
     @Effect({ dispatch: false })
     cancelChanges$ = this.actions$.pipe(
         ofType<CancelCreateFilter>(FilterActionTypes.CANCEL_CREATE_FILTER),
-        combineLatest(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        tap(([filter, provider]) => {
+            this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']);
+        })
     );
 
     constructor(
