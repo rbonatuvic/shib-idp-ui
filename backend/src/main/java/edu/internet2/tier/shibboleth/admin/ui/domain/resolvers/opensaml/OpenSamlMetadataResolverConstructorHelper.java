@@ -82,31 +82,33 @@ public class OpenSamlMetadataResolverConstructorHelper {
                                                                                               ParserPool parserPool) {
         AbstractReloadingMetadataResolver reloadingMetadataResolver = (AbstractReloadingMetadataResolver) metadataResolver;
 
-        if (attributes.getExpirationWarningThreshold() != null) {
-            reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
-        }
-        if (attributes.getMaxRefreshDelay() != null) {
-            reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));
-        }
-        if (attributes.getMinRefreshDelay() != null) {
-            reloadingMetadataResolver.setMinRefreshDelay(toMillis(attributes.getMinRefreshDelay()));
-        }
-
-        if (attributes.getResolveViaPredicatesOnly() != null) {
-            reloadingMetadataResolver.setResolveViaPredicatesOnly(attributes.getResolveViaPredicatesOnly());
-        }
-
-        if (attributes.getRefreshDelayFactor() != null) {
-            reloadingMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor().floatValue());
-        }
-
-        //TODO: This takes a set of MetadataIndex's. We've got an IndexesRef. How to convert?
-        // reloadingMetadataResolver.setIndexes(); attributes.getIndexesRef();
-
         //TODO: This takes a ParserPool. We've got a ParserPoolRef in attributes.getParserPoolRef(). Should we use it for anything?
         reloadingMetadataResolver.setParserPool(parserPool);
 
-        //TODO: Where does this get used in OpenSAML land?
-        // attributes.getTaskTimerRef();
+        if (attributes != null) {
+            if (attributes.getExpirationWarningThreshold() != null) {
+                reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
+            }
+            if (attributes.getMaxRefreshDelay() != null) {
+                reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));
+            }
+            if (attributes.getMinRefreshDelay() != null) {
+                reloadingMetadataResolver.setMinRefreshDelay(toMillis(attributes.getMinRefreshDelay()));
+            }
+
+            if (attributes.getResolveViaPredicatesOnly() != null) {
+                reloadingMetadataResolver.setResolveViaPredicatesOnly(attributes.getResolveViaPredicatesOnly());
+            }
+
+            if (attributes.getRefreshDelayFactor() != null) {
+                reloadingMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor().floatValue());
+            }
+
+            //TODO: This takes a set of MetadataIndex's. We've got an IndexesRef. How to convert?
+            // reloadingMetadataResolver.setIndexes(); attributes.getIndexesRef();
+
+            //TODO: Where does this get used in OpenSAML land?
+            // attributes.getTaskTimerRef();
+        }
     }
 }

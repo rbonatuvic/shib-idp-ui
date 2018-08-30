@@ -443,12 +443,9 @@ class TestObjectGenerator {
         new FilesystemMetadataResolver().with {
             it.name = 'FilesystemMetadata'
             it.xmlId = 'FilesystemMetadata'
-            it.metadataFile = 'metadata.xml'
+            it.metadataFile = 'metadata/metadata.xml'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
-                it.minRefreshDelay = 'PT5M'
-                it.maxRefreshDelay = 'PT1H'
-                it.refreshDelayFactor = 0.75
                 it
             }
             it
