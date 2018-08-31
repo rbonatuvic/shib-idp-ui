@@ -443,12 +443,9 @@ class TestObjectGenerator {
         new FilesystemMetadataResolver().with {
             it.name = 'FilesystemMetadata'
             it.xmlId = 'FilesystemMetadata'
-            it.metadataFile = 'some metadata filename'
+            it.metadataFile = 'metadata/metadata.xml'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
-                it.minRefreshDelay = 'PT5M'
-                it.maxRefreshDelay = 'PT1H'
-                it.refreshDelayFactor = 0.75
                 it
             }
             it
@@ -459,8 +456,8 @@ class TestObjectGenerator {
         new FileBackedHttpMetadataResolver().with {
             it.name = 'HTTPMetadata'
             it.xmlId = 'HTTPMetadata'
-            it.backingFile = '%{idp.home}/metadata/incommonmd.xml'
-            it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+            it.backingFile = 'unicon.xml'
+            it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
                 it.minRefreshDelay = 'PT5M'

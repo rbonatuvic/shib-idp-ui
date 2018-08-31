@@ -7,6 +7,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
+import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +33,7 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
     }
 
     @Override
-    public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers)
-            throws ResolverException {
+    public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers) {
         if (newResolvers == null || newResolvers.isEmpty()) {
             mutableResolvers = Collections.emptyList();
             return;
@@ -55,6 +55,15 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
         if (mutableResolvers == null) {
             log.warn("OpenSamlChainingMetadataResolver was not configured with any member MetadataResolvers");
             mutableResolvers = Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void refresh() throws ResolverException {
+        for (final MetadataResolver resolver : this.mutableResolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                ((RefreshableMetadataResolver) resolver).refresh();
+            }
         }
     }
 }

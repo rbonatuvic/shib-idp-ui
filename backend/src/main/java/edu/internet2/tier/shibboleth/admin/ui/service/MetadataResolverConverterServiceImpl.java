@@ -10,7 +10,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFunctionDrivenDynamicHTTPMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlLocalDynamicMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlResourceBackedMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import net.shibboleth.ext.spring.resource.ResourceHelper;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import org.apache.lucene.index.IndexWriter;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -34,29 +37,41 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
     @Autowired
     IndexWriterService indexWriterService;
 
-    private OpenSamlFunctionDrivenDynamicHTTPMetadataResolver convertToOpenSamlRepresentation(DynamicHttpMetadataResolver resolver) throws IOException {
+    @Autowired
+    OpenSamlObjects openSamlObjects;
+
+    private OpenSamlFunctionDrivenDynamicHTTPMetadataResolver convertToOpenSamlRepresentation(DynamicHttpMetadataResolver resolver) throws IOException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
-        return new OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(indexWriter,
+        OpenSamlFunctionDrivenDynamicHTTPMetadataResolver openSamlResolver = new OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(openSamlObjects.getParserPool(),
+                                                                     indexWriter,
                                                                      resolver);
+        openSamlResolver.initialize();
+        return openSamlResolver;
     }
 
-    private OpenSamlFileBackedHTTPMetadataResolver convertToOpenSamlRepresentation(FileBackedHttpMetadataResolver resolver) throws IOException, ResolverException {
+    private OpenSamlFileBackedHTTPMetadataResolver convertToOpenSamlRepresentation(FileBackedHttpMetadataResolver resolver) throws IOException, ResolverException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
-        return new OpenSamlFileBackedHTTPMetadataResolver(indexWriter, resolver);
+        OpenSamlFileBackedHTTPMetadataResolver openSamlResolver = new OpenSamlFileBackedHTTPMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver);
+        openSamlResolver.initialize();
+        return openSamlResolver;
     }
 
-    private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException {
+    private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
-        File metadataFile = new File(resolver.getMetadataFile());
+        URL url = Thread.currentThread().getContextClassLoader().getResource(resolver.getMetadataFile());
+        File metadataFile = new File(url.getPath());
 
-        return new OpenSamlFilesystemMetadataResolver(metadataFile,
+        OpenSamlFilesystemMetadataResolver openSamlResolver = new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
                                                       indexWriter,
-                                                      resolver);
+                                                      resolver,
+                                                      metadataFile);
+        openSamlResolver.initialize();
+        return openSamlResolver;
     }
 
-    private OpenSamlLocalDynamicMetadataResolver convertToOpenSamlRepresentation(LocalDynamicMetadataResolver resolver) throws IOException {
+    private OpenSamlLocalDynamicMetadataResolver convertToOpenSamlRepresentation(LocalDynamicMetadataResolver resolver) throws IOException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
         XMLObjectLoadSaveManager manager = null;
@@ -67,10 +82,12 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
             //TODO: What should we do here? Currently, this causes a test to fail.
         }
 
-        return new OpenSamlLocalDynamicMetadataResolver(manager, indexWriter, resolver);
+        OpenSamlLocalDynamicMetadataResolver openSamlResolver = new OpenSamlLocalDynamicMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver, manager);
+        openSamlResolver.initialize();
+        return openSamlResolver;
     }
 
-    private OpenSamlResourceBackedMetadataResolver convertToOpenSamlRepresentation(ResourceBackedMetadataResolver resolver) throws IOException {
+    private OpenSamlResourceBackedMetadataResolver convertToOpenSamlRepresentation(ResourceBackedMetadataResolver resolver) throws IOException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
         ResourceBackedMetadataResolver.ResourceType resourceType = resolver.validateAndDetermineResourceType();
         Resource resource = null;
@@ -85,13 +102,16 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 throw new RuntimeException("Unsupported resource type!");
         }
 
-        return new OpenSamlResourceBackedMetadataResolver(resource,
+        OpenSamlResourceBackedMetadataResolver openSamlResolver = new OpenSamlResourceBackedMetadataResolver(openSamlObjects.getParserPool(),
                                                           indexWriter,
-                                                          resolver);
+                                                          resolver,
+                                                          resource);
+        openSamlResolver.initialize();
+        return openSamlResolver;
     }
 
     @Override
-    public MetadataResolver convertToOpenSamlRepresentation(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver resolver) throws IOException, ResolverException {
+    public MetadataResolver convertToOpenSamlRepresentation(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver resolver) throws IOException, ResolverException, ComponentInitializationException {
         switch (resolver.getType()) {
             case "LocalDynamicMetadataResolver":
                 return convertToOpenSamlRepresentation((LocalDynamicMetadataResolver) resolver);

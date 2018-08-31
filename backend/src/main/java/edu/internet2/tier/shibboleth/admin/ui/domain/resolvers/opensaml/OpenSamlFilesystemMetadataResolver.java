@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
@@ -17,9 +18,10 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
     private edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver sourceResolver;
     private OpenSamlMetadataResolverDelegate delegate;
 
-    public OpenSamlFilesystemMetadataResolver(File metadataFile,
+    public OpenSamlFilesystemMetadataResolver(ParserPool parserPool,
                                               IndexWriter indexWriter,
-                                              edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver sourceResolver) throws ResolverException {
+                                              edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver sourceResolver,
+                                              File metadataFile) throws ResolverException {
         super(metadataFile);
         this.indexWriter = indexWriter;
         this.sourceResolver = sourceResolver;
@@ -28,7 +30,7 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
         this.setId(sourceResolver.getResourceId());
 
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
-                this, sourceResolver.getReloadableMetadataResolverAttributes());
+                this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
     }
 
     // TODO: this is still probably not the best way to do this?
