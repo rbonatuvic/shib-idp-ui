@@ -3,13 +3,12 @@ import { FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/
 import { ObjectWidget } from 'ngx-schema-form';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { distinctUntilChanged, skipWhile, map } from 'rxjs/operators';
 
 import * as fromRoot from '../../../app.reducer';
 import * as fromFilters from '../../../metadata/filter/reducer';
 
 import { QueryEntityIds, ClearSearch } from '../../../metadata/filter/action/search.action';
-import { EntityValidators } from '../../../metadata/domain/service/entity-validators.service';
 
 /* istanbul ignore next */
 @Component({
@@ -42,7 +41,9 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
 
         this.search
             .valueChanges
-            .pipe(distinctUntilChanged())
+            .pipe(
+                distinctUntilChanged()
+            )
             .subscribe(query => this.searchEntityIds(query));
 
         this.script
