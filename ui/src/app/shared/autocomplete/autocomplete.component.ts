@@ -40,13 +40,13 @@ const INPUT_FIELD_INDEX = -1;
         }
     ]
 })
-export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
+export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor {
     @Input() defaultValue = '';
     @Input() matches: string[] = [];
     @Input() id: string;
+    @Input() fieldId: string;
     @Input() autoSelect = false;
     @Input() noneFoundText = 'No Options Found';
-    @Input() showMoreText = 'Show More...';
     @Input() limit = 0;
     @Input() processing = false;
     @Input() dropdown = false;
@@ -117,12 +117,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     ngAfterViewInit(): void {
         this.listItems.changes.subscribe((changes) => this.setElementReferences(changes));
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.matches) {
-            this.showMoreAvailable = !!this.limit && this.matches && this.matches.length >= this.limit;
-        }
     }
 
     writeValue(value: any): void {

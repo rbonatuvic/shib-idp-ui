@@ -1,13 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { skipWhile, distinctUntilChanged, takeUntil, map } from 'rxjs/operators';
+import { skipWhile, takeUntil } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import * as fromProvider from '../reducer';
 import * as fromFilter from '../../filter/reducer';
 import { MetadataFilter, MetadataProvider } from '../../domain/model';
 import { NAV_FORMATS } from '../component/provider-editor-nav.component';
 import { SetIndex } from '../../../wizard/action/wizard.action';
-import { UpdateFilterRequest, LoadFilterRequest } from '../../filter/action/collection.action';
+
+import {
+    UpdateFilterRequest,
+    LoadFilterRequest,
+    ChangeFilterOrderUp,
+    ChangeFilterOrderDown,
+    RemoveFilterRequest,
+    ClearFilters
+} from '../../filter/action/collection.action';
+import { DeleteFilterComponent } from '../component/delete-filter.component';
 
 @Component({
     selector: 'provider-filter-list',
@@ -25,12 +36,15 @@ export class ProviderFilterListComponent implements OnDestroy {
     formats = NAV_FORMATS;
 
     constructor(
-        private store: Store<fromProvider.ProviderState>
+        private store: Store<fromProvider.ProviderState>,
+        private modalService: NgbModal
     ) {
-        this.filters$ = this.store.select(fromFilter.getAdditionalFilters);
+        this.filters$ = this.store.select(fromFilter.getAdditionalFilters) as Observable<MetadataFilter[]>;
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(p => !p));
         this.provider$
-            .pipe(takeUntil(this.ngUnsubscribe))
+            .pipe(
+                takeUntil(this.ngUnsubscribe)
+            )
             .subscribe(p => {
                 this.store.dispatch(new LoadFilterRequest(p.resourceId));
             });
@@ -44,8 +58,32 @@ export class ProviderFilterListComponent implements OnDestroy {
         this.store.dispatch(new UpdateFilterRequest({ ...filter, filterEnabled: !filter.filterEnabled }));
     }
 
+    updateOrderUp(filter: MetadataFilter): void {
+        this.store.dispatch(new ChangeFilterOrderUp(filter.resourceId));
+    }
+
+    updateOrderDown(filter: MetadataFilter): void {
+        this.store.dispatch(new ChangeFilterOrderDown(filter.resourceId));
+    }
+
+    remove(id: string): void {
+        this.modalService
+            .open(DeleteFilterComponent)
+            .result
+            .then(
+                success => {
+                    this.store.dispatch(new RemoveFilterRequest(id));
+                },
+                err => {
+                    console.log('Cancelled');
+                }
+            );
+    }
+
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+
+        this.store.dispatch(new ClearFilters());
     }
 }

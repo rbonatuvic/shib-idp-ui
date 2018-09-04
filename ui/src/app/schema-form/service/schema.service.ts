@@ -25,7 +25,15 @@ export class SchemaService {
 
         if (!required) {
             const conditions = formProperty.parent.schema.anyOf || [];
-            conditions.forEach(el => {
+            const values = formProperty.parent.value;
+            const currentConditions = conditions.filter(condition =>
+                Object
+                    .keys(condition.properties)
+                    .some(
+                        key => values.hasOwnProperty(key) ? condition.properties[key].enum[0] === values[key] : false
+                    )
+            );
+            currentConditions.forEach(el => {
                 requiredFields = el.required || [];
                 required = !required ? requiredFields.indexOf(controlName) > -1 : required;
             });

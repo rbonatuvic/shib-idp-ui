@@ -1,3 +1,5 @@
+import { Metadata } from './domain.type';
+
 /*
  *   Utility functions
 */
@@ -8,3 +10,13 @@ export const getInCollectionFn = (entities, selectedId) => {
     return selectedId && entities[selectedId];
 };
 export const getEntityIdsFn = list => list.map(entity => entity.entityId);
+
+export const mergeOrderFn = (entities: Metadata[], order: string[]): Metadata[] => {
+    return [...entities.sort(
+        (a: Metadata, b: Metadata) => {
+            const aIndex = order.indexOf(a.resourceId);
+            const bIndex = order.indexOf(b.resourceId);
+            return aIndex > bIndex ? 1 : bIndex > aIndex ? -1 : 0;
+        }
+    )];
+};

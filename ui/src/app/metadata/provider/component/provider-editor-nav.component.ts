@@ -28,18 +28,25 @@ export class ProviderEditorNavComponent {
     formats = NAV_FORMATS;
 
     currentPage$: Observable<string>;
+    currentLabel$: Observable<string>;
+    current$: Observable<WizardStep>;
+
     index$: Observable<string>;
     invalidForms$: Observable<string[]>;
     routes$: Observable<{ path: string, label: string }[]>;
+
+    getFilterId = p => p ? p.id : 'filters';
+    getFilterLabel = p => p ? p.label : 'Filter List';
 
     constructor(
         private store: Store<fromProvider.ProviderState>
     ) {
         this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(skipWhile(i => !i));
         this.routes$ = this.store.select(fromWizard.getRoutes);
-        this.currentPage$ = this.store.select(fromWizard.getCurrent).pipe(
-            map(p => p ? p.id : 'filters')
-        );
+        this.current$ = this.store.select(fromWizard.getCurrent);
+        this.currentPage$ = this.current$.pipe(map(this.getFilterId));
+
+        this.currentLabel$ = this.current$.pipe(map(this.getFilterLabel));
         this.invalidForms$ = this.store.select(fromProvider.getInvalidEditorForms);
     }
 

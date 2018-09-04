@@ -79,7 +79,7 @@ export class DashboardResolversListComponent implements OnInit {
     }
 
     openPreviewDialog(entity: MetadataEntity): void {
-        this.store.dispatch(new PreviewEntity(entity));
+        this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
     }
 
     deleteResolver(entity: MetadataResolver): void {

@@ -16,11 +16,10 @@
     "required": [
         "name",
         "xmlId",
-        "metadataURL"
+        "metadataURL",
+        "backingFile",
+        "backupFileInitNextRefreshDelay"
     ],
-    "dependencies": {
-        "initializeFromBackupFile": {"required": ["backingFile", "backupFileInitNextRefreshDelay"]}
-    },
     "anyOf": [
         {
             "properties": {
@@ -29,11 +28,7 @@
                         true
                     ]
                 }
-            },
-            "required": [
-                "backingFile",
-                "backupFileInitNextRefreshDelay"
-            ]
+            }
         },
         {
             "properties": {
@@ -50,7 +45,8 @@
             "type": "section",
             "fields": [
                 "name",
-                "@type"
+                "@type",
+                "enabled"
             ]
         },
         {
@@ -96,6 +92,12 @@
                 }
             ]
         },
+        "enabled": {
+            "title": "Enable this service?",
+            "description": "Enable this service?",
+            "type": "boolean",
+            "default": false
+        },
         "xmlId": {
             "title": "ID",
             "description": "Identifier for logging, identification for command line reload, etc.",
@@ -137,22 +139,28 @@
             "title": "Backing File",
             "description": "Specifies where the backing file is located. If the remote server is unavailable at startup, the backing file is loaded instead.",
             "type": "string",
-            "default": "",
-            "visibleIf": {
-                "initializeFromBackupFile": [
-                    true
-                ]
-            }
+            "default": ""
         },
         "backupFileInitNextRefreshDelay": {
             "title": "Backup File Init Next Refresh Delay",
             "description": "Delay duration after which to schedule next HTTP refresh when initialized from the backing file.",
             "type": "string",
-            "visibleIf": {
-                "initializeFromBackupFile": [
-                    true
+            "widget": {
+                "id": "datalist",
+                "data": [
+                    "PT0S",
+                    "PT30S",
+                    "PT1M",
+                    "PT10M",
+                    "PT30M",
+                    "PT1H",
+                    "PT4H",
+                    "PT12H",
+                    "PT24H"
                 ]
-            }
+            },
+            "default": null,
+            "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
         },
         "requireValidMetadata": {
             "title": "Require Valid Metadata?",

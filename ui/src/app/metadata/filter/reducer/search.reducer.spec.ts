@@ -1,4 +1,4 @@
-import { reducer } from './search.reducer';
+import { reducer, initialState as snapshot } from './search.reducer';
 import * as fromFilter from './search.reducer';
 import {
     SearchActionTypes,
@@ -6,16 +6,11 @@ import {
     CancelViewMore,
     QueryEntityIds,
     LoadEntityIdsError,
-    LoadEntityIdsSuccess
+    LoadEntityIdsSuccess,
+    ClearSearch
 } from '../action/search.action';
-
-const snapshot: fromFilter.SearchState = {
-    entityIds: [],
-    viewMore: false,
-    loading: false,
-    error: null,
-    term: '',
-};
+import { FilterCollectionActionTypes, UpdateFilterSuccess, AddFilterSuccess } from '../action/collection.action';
+import { EntityAttributesFilterEntity } from '../../domain/entity';
 
 describe('Filter Reducer', () => {
     describe('undefined action', () => {
@@ -67,6 +62,63 @@ describe('Filter Reducer', () => {
 
             expect(result.loading).toBe(false);
             expect(result.error).toBe(err);
+        });
+    });
+
+    describe(`${FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS} action`, () => {
+        it('should reset the state', () => {
+            const update = {
+                id: 'foo',
+                changes: new EntityAttributesFilterEntity({ resourceId: 'foo', name: 'bar', createdDate: new Date().toLocaleDateString() }),
+            };
+            const action = new UpdateFilterSuccess(update);
+            const result = reducer(snapshot, action);
+
+            expect(result).toEqual(snapshot);
+        });
+    });
+
+    describe(`${FilterCollectionActionTypes.ADD_FILTER_SUCCESS} action`, () => {
+        it('should reset the state', () => {
+            const filter = new EntityAttributesFilterEntity(
+                { resourceId: 'foo', name: 'bar', createdDate: new Date().toLocaleDateString() }
+            );
+            const action = new AddFilterSuccess(filter);
+            const result = reducer(snapshot, action);
+
+            expect(result).toEqual(snapshot);
+        });
+    });
+
+    describe('selector methods', () => {
+        describe('getViewMore', () => {
+            it('should return the state viewMore', () => {
+                expect(fromFilter.getViewMore(snapshot)).toBe(snapshot.viewMore);
+            });
+        });
+
+        describe('getEntityIds', () => {
+            it('should return the state entityIds', () => {
+                expect(fromFilter.getEntityIds(snapshot)).toBe(snapshot.entityIds);
+            });
+        });
+
+        describe('getError', () => {
+            it('should return the state error', () => {
+                expect(fromFilter.getError(snapshot)).toBe(snapshot.error);
+            });
+        });
+
+        describe('getLoading', () => {
+            it('should return the state loading', () => {
+                expect(fromFilter.getLoading(snapshot)).toBe(snapshot.loading);
+            });
+        });
+
+        describe('getTerm', () => {
+            it('should return the state term', () => {
+                expect(fromFilter.getTerm(snapshot)).toBe(snapshot.term);
+            });
         });
     });
 });

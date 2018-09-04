@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import org.opensaml.saml.saml2.metadata.Organization
 
+import java.nio.file.Files
 import java.util.function.Supplier
 
 /**
@@ -175,6 +176,24 @@ class TestObjectGenerator {
         }
     }
 
+    EntityAttributesFilter entityAttributesFilterWithConditionScript() {
+        new EntityAttributesFilter().with {
+            it.name = 'EntityAttributes'
+            it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTargetWithConditionScript())
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    EntityAttributesFilter entityAttributesFilterWithRegex() {
+        new EntityAttributesFilter().with {
+            it.name = 'EntityAttributes'
+            it.setEntityAttributesFilterTarget(buildEntityAttributesFilterTargetWithRegex())
+            it.intoTransientRepresentation()
+            it
+        }
+    }
+
     RequiredValidUntilFilter requiredValidUntilFilter() {
         return new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
@@ -305,8 +324,28 @@ class TestObjectGenerator {
     EntityAttributesFilterTarget buildEntityAttributesFilterTarget() {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
 
-        entityAttributesFilterTarget.setSingleValue(generator.randomStringList())
+        entityAttributesFilterTarget.setSingleValue(generator.randomString())
         entityAttributesFilterTarget.setEntityAttributesFilterTargetType(randomFilterTargetType())
+
+        return entityAttributesFilterTarget
+    }
+
+    EntityAttributesFilterTarget buildEntityAttributesFilterTargetWithConditionScript() {
+        EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
+
+        entityAttributesFilterTarget.setSingleValue("Pretend this is JavaScript.")
+        entityAttributesFilterTarget.setEntityAttributesFilterTargetType(
+                EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT)
+
+        return entityAttributesFilterTarget
+    }
+
+    EntityAttributesFilterTarget buildEntityAttributesFilterTargetWithRegex() {
+        EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
+
+        entityAttributesFilterTarget.setSingleValue("/foo.*/") // JavaScript-style regex
+        entityAttributesFilterTarget.setEntityAttributesFilterTargetType(
+                EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX)
 
         return entityAttributesFilterTarget
     }
@@ -389,7 +428,7 @@ class TestObjectGenerator {
                 randomResolver = localDynamicMetadataResolver()
                 break
             case 'ResourceBacked':
-                randomResolver = resourceBackedMetadataResolverForSVN()
+                randomResolver = resourceBackedMetadataResolverForClasspath()
                 break
             case 'Filesystem':
                 randomResolver = filesystemMetadataResolver()
@@ -404,12 +443,9 @@ class TestObjectGenerator {
         new FilesystemMetadataResolver().with {
             it.name = 'FilesystemMetadata'
             it.xmlId = 'FilesystemMetadata'
-            it.metadataFile = 'some metadata filename'
+            it.metadataFile = 'metadata/metadata.xml'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
-                it.minRefreshDelay = 'PT5M'
-                it.maxRefreshDelay = 'PT1H'
-                it.refreshDelayFactor = 0.75
                 it
             }
             it
@@ -420,8 +456,8 @@ class TestObjectGenerator {
         new FileBackedHttpMetadataResolver().with {
             it.name = 'HTTPMetadata'
             it.xmlId = 'HTTPMetadata'
-            it.backingFile = '%{idp.home}/metadata/incommonmd.xml'
-            it.metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+            it.backingFile = 'unicon.xml'
+            it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
                 it.minRefreshDelay = 'PT5M'
@@ -437,14 +473,22 @@ class TestObjectGenerator {
         new DynamicHttpMetadataResolver().with {
             it.name = 'DynamicHTTP'
             it.xmlId = 'DynamicHTTP'
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
 
     LocalDynamicMetadataResolver localDynamicMetadataResolver() {
+        def tmpDirectory = Files.createTempDirectory("groovy")
         new LocalDynamicMetadataResolver().with {
             it.name = 'LocalDynamic'
             it.xmlId = 'LocalDynamic'
+            it.sourceDirectory = tmpDirectory
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
+                it
+            }
             it
         }
     }
@@ -457,6 +501,25 @@ class TestObjectGenerator {
                 it.resourceFile = 'entity.xml'
                 it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
                 it.workingCopyDirectory = '%{idp.home}/metadata/svn'
+                it
+            }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it
+            }
+            it
+        }
+    }
+
+    ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
+        new ResourceBackedMetadataResolver().with {
+            it.name = 'ClasspathResourceMetadata'
+            it.xmlId = 'ClasspathResourceMetadata'
+            it.classpathMetadataResource = new ClasspathMetadataResource().with {
+                it.file = 'metadata/metadata.xml'
+                it
+            }
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.refreshDelayFactor = 0.3
                 it
             }
             it

@@ -1,6 +1,6 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="d-flex justify-content-between control-label">
-        <span>
+    <label [for]="id" class="d-flex justify-content-between control-label">
+        <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
             {{ schema.title }}
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
@@ -15,6 +15,7 @@
     <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
     <auto-complete
         [id]="id"
+        [fieldId]="id"
         [formControl]="control"
         [matches]="schema.widget.data"
         [required]="true"
@@ -22,6 +23,6 @@
         [placeholder]="schema.placeholder || ''"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        aria-label="Name ID Format (type for auto-complete)">
+        [attr.aria-label]="schema.title">
     </auto-complete>
 </div>

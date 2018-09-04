@@ -29,6 +29,7 @@ class TestHelpers {
     static void generatedXmlIsTheSameAsExpectedXml(String expectedXmlResource, Document generatedXml) {
         assert !DiffBuilder.compare(Input.fromStream(TestHelpers.getResourceAsStream(expectedXmlResource)))
                 .withTest(Input.fromDocument(generatedXml))
+                .withAttributeFilter({attribute -> !attribute.name.equals("sourceDirectory")})
                 .ignoreComments()
                 .ignoreWhitespace()
                 .build()

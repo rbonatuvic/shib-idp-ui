@@ -3,9 +3,12 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
 import org.w3c.dom.Element;
@@ -43,9 +46,17 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
 
     }
 
+    @Transient
+    private transient Element dom;
+
     @Nullable
     public Element getDOM() {
-        return null; //convert this class using opensaml stuff
+        return this.dom;
+    }
+
+    @Override
+    public void setDOM(@Nullable Element dom) {
+        this.dom = dom;
     }
 
     public String getNamespaceURI() {
@@ -105,9 +116,19 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
         return null;
     }
 
+    @Transient
+    private transient XMLObject parent;
     @Nullable
     public XMLObject getParent() {
-        return null;
+        return parent;
+    }
+
+    public void setParent(@Nullable XMLObject xmlObject) {
+        parent = xmlObject;
+    }
+
+    public boolean hasParent() {
+        return getParent() != null;
     }
 
     @Nullable
@@ -132,23 +153,34 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
     }
 
     public boolean hasChildren() {
-        return false;
-    }
-
-    public boolean hasParent() {
-        return false;
+        List children = getOrderedChildren();
+        return children != null && children.size() > 0;
     }
 
     public void releaseChildrenDOM(boolean b) {
-
+        if (getOrderedChildren() != null) {
+            for (XMLObject child : getOrderedChildren()) {
+                if (child != null) {
+                    child.releaseDOM();
+                    if (b) {
+                        child.releaseChildrenDOM(b);
+                    }
+                }
+            }
+        }
     }
 
     public void releaseDOM() {
-
+        this.setDOM(null);
     }
 
     public void releaseParentDOM(boolean b) {
-
+        if (hasParent()) {
+            getParent().releaseDOM();
+            if (b) {
+                getParent().releaseParentDOM(b);
+            }
+        }
     }
 
     @Nullable
@@ -161,15 +193,7 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
         return null;
     }
 
-    public void setDOM(@Nullable Element element) {
-
-    }
-
     public void setNoNamespaceSchemaLocation(@Nullable String s) {
-
-    }
-
-    public void setParent(@Nullable XMLObject xmlObject) {
 
     }
 

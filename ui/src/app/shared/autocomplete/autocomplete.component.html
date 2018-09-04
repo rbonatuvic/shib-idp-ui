@@ -1,11 +1,11 @@
 <div id="{{ id }}-container" class="dropdown form-group" (keydown)="handleKeyDown($event)" role='combobox' [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'">
-    <label for="{{ id }}__input" attr.aria-labelledby="{{ id }}__input" class="sr-only"></label>
+    <label *ngIf="!fieldId" for="{{ id }}__input" attr.aria-labelledby="{{ id }}__input" class="sr-only"></label>
     <div [ngClass]="{'input-group': dropdown}">
         <input
             #inputField
             [formControl]="input"
             [disableValidation]="true"
-            id="{{ id }}__input"
+            [id]="fieldId || (id + '__input')"
             class="form-control"
             autoComplete="off"
             type="text"
@@ -13,6 +13,7 @@
             [attr.aria-activedescendant]="activeDescendant"
             [placeholder]="placeholder"
             attr.aria-owns="{{ id }}__listbox"
+            [attr.aria-labelledby]="id"
             (focus)="handleInputFocus()"
             (blur)="handleInputBlur()"
         />
@@ -21,8 +22,10 @@
                 type="button"
                 aria-haspopup="true"
                 aria-expanded="false"
+                [attr.aria-labelledby]="id"
                 (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
                 <i class="fa fa-caret-down"></i>
+                <span class="sr-only">Toggle Dropdown</span>
             </button>
         </div>
     </div>
@@ -47,16 +50,6 @@
             [innerHTML]="option | highlight:this.input.value"></li>
         <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
             {{ noneFoundText }}
-        </li>
-        <li class="dropdown-item"
-            *ngIf="showMoreAvailable && matches"
-            [class.active]="state.currentState.selected === matches.length"
-            [class.focused]="state.currentState.focused === matches.length"
-            (click)="handleViewMore($event)"
-            (mousedown)="handleViewMore($event)"
-            (keydown.enter)="handleViewMore($event)"
-            [id]="this.getOptionId(matches.length)">
-            {{ showMoreText }}
         </li>
     </ul>
 </div>

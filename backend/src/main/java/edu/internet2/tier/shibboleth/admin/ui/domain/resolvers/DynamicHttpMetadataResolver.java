@@ -20,9 +20,6 @@ import java.util.List;
 @Setter
 @ToString
 public class DynamicHttpMetadataResolver extends MetadataResolver {
-
-
-
     public static final String DEFAULT_TIMEOUT = "PT5S";
 
     @Embedded

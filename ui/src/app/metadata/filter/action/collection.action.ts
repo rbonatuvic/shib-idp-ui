@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
-import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { Update } from '@ngrx/entity';
+
+import { MetadataFilter } from '../../domain/model/metadata-filter';
 
 export enum FilterCollectionActionTypes {
     SELECT_FILTER_REQUEST = '[Metadata Filter Collection] Select Filter Request',
@@ -21,7 +22,21 @@ export enum FilterCollectionActionTypes {
 
     REMOVE_FILTER_REQUEST = '[Metadata Filter Collection] Remove Filter Request',
     REMOVE_FILTER_SUCCESS = '[Metadata Filter Collection] Remove Filter Success',
-    REMOVE_FILTER_FAIL = '[Metadata Filter Collection] Remove Filter Fail'
+    REMOVE_FILTER_FAIL = '[Metadata Filter Collection] Remove Filter Fail',
+
+    CLEAR_FILTERS = '[Metadata Filter Collection] Clear Filters',
+
+    SET_ORDER_FILTER_REQUEST = '[Metadata Filter Collection] Set Order Filter Request',
+    SET_ORDER_FILTER_SUCCESS = '[Metadata Filter Collection] Set Order Filter Success',
+    SET_ORDER_FILTER_FAIL = '[Metadata Filter Collection] Set Order Filter Fail',
+
+    GET_ORDER_FILTER_REQUEST = '[Metadata Filter Collection] Get Order Filter Request',
+    GET_ORDER_FILTER_SUCCESS = '[Metadata Filter Collection] Get Order Filter Success',
+    GET_ORDER_FILTER_FAIL = '[Metadata Filter Collection] Get Order Filter Fail',
+
+    CHANGE_FILTER_ORDER_UP = '[Metadata Filter Collection] Change Order Up',
+    CHANGE_FILTER_ORDER_DOWN = '[Metadata Filter Collection] Change Order Down'
+
 }
 
 export class SelectFilter implements Action {
@@ -99,19 +114,71 @@ export class AddFilterFail implements Action {
 export class RemoveFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.REMOVE_FILTER_REQUEST;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveFilterSuccess implements Action {
     readonly type = FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveFilterFail implements Action {
     readonly type = FilterCollectionActionTypes.REMOVE_FILTER_FAIL;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public error: Error) { }
+}
+
+export class ClearFilters implements Action {
+    readonly type = FilterCollectionActionTypes.CLEAR_FILTERS;
+}
+
+export class SetOrderFilterRequest implements Action {
+    readonly type = FilterCollectionActionTypes.SET_ORDER_FILTER_REQUEST;
+
+    constructor(public payload: string[]) { }
+}
+
+export class SetOrderFilterSuccess implements Action {
+    readonly type = FilterCollectionActionTypes.SET_ORDER_FILTER_SUCCESS;
+
+    constructor() { }
+}
+
+export class SetOrderFilterFail implements Action {
+    readonly type = FilterCollectionActionTypes.SET_ORDER_FILTER_FAIL;
+
+    constructor(public payload: Error) { }
+}
+
+export class GetOrderFilterRequest implements Action {
+    readonly type = FilterCollectionActionTypes.GET_ORDER_FILTER_REQUEST;
+
+    constructor() { }
+}
+
+export class GetOrderFilterSuccess implements Action {
+    readonly type = FilterCollectionActionTypes.GET_ORDER_FILTER_SUCCESS;
+
+    constructor(public payload: string[]) { }
+}
+
+export class GetOrderFilterFail implements Action {
+    readonly type = FilterCollectionActionTypes.GET_ORDER_FILTER_FAIL;
+
+    constructor(public payload: Error) { }
+}
+
+export class ChangeFilterOrderUp implements Action {
+    readonly type = FilterCollectionActionTypes.CHANGE_FILTER_ORDER_UP;
+
+    constructor(public payload: string) { }
+}
+
+export class ChangeFilterOrderDown implements Action {
+    readonly type = FilterCollectionActionTypes.CHANGE_FILTER_ORDER_DOWN;
+
+    constructor(public payload: string) { }
 }
 
 export type FilterCollectionActionsUnion =
@@ -129,4 +196,13 @@ export type FilterCollectionActionsUnion =
     | SelectFilterFail
     | UpdateFilterRequest
     | UpdateFilterSuccess
-    | UpdateFilterFail;
+    | UpdateFilterFail
+    | ClearFilters
+    | ChangeFilterOrderDown
+    | ChangeFilterOrderUp
+    | GetOrderFilterRequest
+    | GetOrderFilterSuccess
+    | GetOrderFilterFail
+    | SetOrderFilterRequest
+    | SetOrderFilterSuccess
+    | SetOrderFilterFail;

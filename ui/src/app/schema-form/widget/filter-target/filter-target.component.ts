@@ -1,5 +1,5 @@
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ObjectWidget } from 'ngx-schema-form';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -25,7 +25,7 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
     search: FormControl = new FormControl(
         '',
         [],
-        [EntityValidators.existsInCollection(this.store.select(fromFilters.getEntityCollection))]
+        []
     );
 
     script: FormControl = new FormControl(
@@ -59,6 +59,13 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
         this.script.setValue(this.targets[0]);
+        this.search.setValidators(this.unique());
+    }
+
+    unique(): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: any } | null => {
+            return this.targets.indexOf(control.value) > -1 ? { unique: true } : null;
+        };
     }
 
     searchEntityIds(term: string): void {
@@ -68,6 +75,16 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
                 limit: 10
             }));
         }
+    }
+
+    getButtonConfig(id: string): any {
+        let buttons = this.formProperty.getProperty('value').schema.buttons;
+        return (buttons || []).map(btn => ({
+            ...btn,
+            parameters: {
+                id
+            }
+        }));
     }
 
     get targets(): string[] {

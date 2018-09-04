@@ -6,6 +6,7 @@ export interface CollectionState extends EntityState<MetadataFilter> {
     selectedFilterId: string | null;
     loaded: boolean;
     saving: boolean;
+    order: string[];
 }
 
 export function sortByDate(a: MetadataFilter, b: MetadataFilter): number {
@@ -20,7 +21,8 @@ export const adapter: EntityAdapter<MetadataFilter> = createEntityAdapter<Metada
 export const initialState: CollectionState = adapter.getInitialState({
     selectedFilterId: null,
     loaded: false,
-    saving: false
+    saving: false,
+    order: []
 });
 
 export function reducer(state = initialState, action: FilterCollectionActionsUnion): CollectionState {
@@ -58,6 +60,7 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
 
         case FilterCollectionActionTypes.ADD_FILTER_SUCCESS:
         case FilterCollectionActionTypes.ADD_FILTER_FAIL:
+        case FilterCollectionActionTypes.REMOVE_FILTER_FAIL:
         case FilterCollectionActionTypes.UPDATE_FILTER_FAIL: {
             return {
                 ...state,
@@ -65,10 +68,36 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
             };
         }
 
+        case FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS: {
+            return adapter.removeOne(action.payload, {
+                ...state,
+                saving: false
+            });
+        }
+
+        case FilterCollectionActionTypes.REMOVE_FILTER_REQUEST: {
+            return {
+                ...state,
+                saving: true
+            };
+        }
+
         case FilterCollectionActionTypes.SELECT_FILTER_REQUEST: {
             return {
                 ...state,
                 selectedFilterId: action.payload,
+            };
+        }
+        case FilterCollectionActionTypes.GET_ORDER_FILTER_SUCCESS: {
+            return {
+                ...state,
+                order: action.payload
+            };
+        }
+
+        case FilterCollectionActionTypes.CLEAR_FILTERS: {
+            return {
+                ...initialState
             };
         }
 
@@ -81,6 +110,7 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
 export const getSelectedFilterId = (state: CollectionState) => state.selectedFilterId;
 export const getIsLoaded = (state: CollectionState) => state.loaded;
 export const getIsSaving = (state: CollectionState) => state.saving;
+export const getOrder = (state: CollectionState) => state.order;
 export const {
     selectIds: selectFilterIds,
     selectEntities: selectFilterEntities,

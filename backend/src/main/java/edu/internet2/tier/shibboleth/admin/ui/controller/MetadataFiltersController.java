@@ -6,14 +6,22 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFunctionDrivenDynamicHTTPMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlLocalDynamicMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
+import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +29,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/api/MetadataResolvers/{metadataResolverId}")
@@ -40,45 +54,75 @@ public class MetadataFiltersController {
     @Autowired
     private FilterRepository filterRepository;
 
+    @Autowired
+    org.opensaml.saml.metadata.resolver.MetadataResolver chainingMetadataResolver;
+
+    private static final Supplier<HttpClientErrorException> HTTP_404_CLIENT_ERROR_EXCEPTION = () -> new HttpClientErrorException(NOT_FOUND);
+
+    @ExceptionHandler
+    public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
+        if(ex.getStatusCode() == NOT_FOUND) {
+            return ResponseEntity.notFound().build();
+        }
+        throw ex;
+    }
+
     @GetMapping("/Filters")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll(@PathVariable String metadataResolverId) {
-        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
-        if(resolver == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
         return ResponseEntity.ok(resolver.getMetadataFilters());
     }
 
     @GetMapping("/Filters/{resourceId}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
-        MetadataResolver resolver = repository.findByResourceId(metadataResolverId);
-        if(resolver == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(resolver.getMetadataFilters().stream()
-                .filter(f -> f.getResourceId().equals(resourceId))
-                .collect(Collectors.toList()).get(0));
+        MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
+        return ResponseEntity.ok(findFilterOrThrowHttp404(resourceId));
     }
 
     @PostMapping("/Filters")
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
-        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
-        if(metadataResolver == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
         metadataResolver.getMetadataFilters().add(createdFilter);
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
         metadataResolverService.reloadFilters(persistedMr.getName());
+        refreshOrInitResolver(metadataResolver);
 
         MetadataFilter persistedFilter = newlyPersistedFilter(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
 
         return ResponseEntity
                 .created(getResourceUriFor(persistedMr, createdFilter.getResourceId()))
                 .body(persistedFilter);
+    }
 
+    private void refreshOrInitResolver(MetadataResolver resolver) {
+        List<org.opensaml.saml.metadata.resolver.MetadataResolver> resolvers = ((ChainingMetadataResolver) chainingMetadataResolver).getResolvers();
+        resolvers.stream().filter(it -> it.getId().equals(resolver.getResourceId())).forEach(it -> {
+            if (it instanceof RefreshableMetadataResolver) {
+                try {
+                    ((RefreshableMetadataResolver) it).refresh();
+                } catch (ResolverException e) {
+                    //TODO what should we do if we can't refresh?
+                }
+            } else if (it instanceof OpenSamlFunctionDrivenDynamicHTTPMetadataResolver) {
+                try {
+                    ((OpenSamlFunctionDrivenDynamicHTTPMetadataResolver) it).refresh();
+                } catch (ComponentInitializationException e) {
+                    //TODO what should we do if we can't refresh?
+                }
+            } else if (it instanceof OpenSamlLocalDynamicMetadataResolver) {
+                try {
+                    ((OpenSamlLocalDynamicMetadataResolver) it).refresh();
+                } catch (ComponentInitializationException e) {
+                    //TODO what should we do if we can't refresh?
+                }
+            } else {
+                //TODO we shouldn't get here, but if we do... throw exception?
+            }
+        });
     }
 
     @PutMapping("/Filters/{resourceId}")
@@ -90,10 +134,7 @@ public class MetadataFiltersController {
             return ResponseEntity.notFound().build();
         }
 
-        MetadataResolver metadataResolver = repository.findByResourceId(metadataResolverId);
-        if(metadataResolver == null) {
-            return ResponseEntity.notFound().build();
-        }
+        MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
 
         // check to make sure that the relationship exists
         if (!metadataResolver.getMetadataFilters().contains(filterTobeUpdated)) {
@@ -118,14 +159,58 @@ public class MetadataFiltersController {
 
         // TODO: this is wrong
         metadataResolverService.reloadFilters(metadataResolver.getName());
+        refreshOrInitResolver(metadataResolver);
 
         return ResponseEntity.ok().body(persistedFilter);
+    }
+
+    @DeleteMapping("/Filters/{resourceId}")
+    @Transactional
+    public ResponseEntity<?> delete(@PathVariable String metadataResolverId,
+                                    @PathVariable String resourceId) {
+
+        MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
+        MetadataFilter filterToDelete = findFilterOrThrowHttp404(resourceId);
+
+        //TODO: consider implementing delete of filter directly from RDBMS via FilterRepository
+        //This is currently the only way to correctly delete and manage resolver-filter relationship
+        //Until we implement a bi-directional relationship between them which turns out to be a much larger
+        //change that we need to make in the entire code base
+        List<MetadataFilter> updatedFilters = new ArrayList<>(resolver.getMetadataFilters());
+        boolean removed = updatedFilters.removeIf(f -> f.getResourceId().equals(resourceId));
+        if(!removed) {
+            throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
+        }
+        resolver.setMetadataFilters(updatedFilters);
+        repository.save(resolver);
+        filterRepository.delete(filterToDelete);
+
+        //TODO: do we need to reload filters here?!?
+        //metadataResolverService.reloadFilters(persistedMr.getName());
+
+        return ResponseEntity.noContent().build();
+    }
+
+    private MetadataResolver findResolverOrThrowHttp404(String resolverResourceId) {
+        MetadataResolver resolver = repository.findByResourceId(resolverResourceId);
+        if(resolver == null) {
+            throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
+        }
+        return resolver;
+    }
+
+    private MetadataFilter findFilterOrThrowHttp404(String filterResourceId) {
+        MetadataFilter filter = filterRepository.findByResourceId(filterResourceId);
+        if(filter == null) {
+            throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
+        }
+        return filter;
     }
 
     private MetadataFilter newlyPersistedFilter(Stream<MetadataFilter> filters, final String filterResourceId) {
         MetadataFilter persistedFilter = filters
                 .filter(f -> f.getResourceId().equals(filterResourceId))
-                .collect(Collectors.toList()).get(0);
+                .collect(toList()).get(0);
 
         return persistedFilter;
     }

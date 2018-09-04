@@ -17,7 +17,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBa
 @Setter
 @ToString
 public class ResourceBackedMetadataResolver extends MetadataResolver {
-
     public ResourceBackedMetadataResolver() {
         type = "ResourceBackedMetadataResolver";
     }

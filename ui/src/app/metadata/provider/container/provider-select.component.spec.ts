@@ -6,6 +6,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProviderSelectComponent } from './provider-select.component';
 import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
+import { MetadataProvider } from '../../domain/model';
 
 @Component({
     template: `
@@ -53,4 +54,15 @@ describe('Provider Select Component', () => {
     it('should instantiate the component', async(() => {
         expect(app).toBeTruthy();
     }));
+
+    describe('setDefinition method', () => {
+        it('should not dispatch an action if no provider is defined', () => {
+            app.setDefinition(null);
+            expect(store.dispatch).not.toHaveBeenCalled();
+        });
+        it('should dispatch an action if a provider is defined', () => {
+            app.setDefinition({} as MetadataProvider);
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
 });

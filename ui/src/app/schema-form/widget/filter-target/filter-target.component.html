@@ -1,7 +1,17 @@
 <fieldset>
     <div class="row">
         <div class="col-lg-6">
-            <div class="d-flex justify-content-start">
+            <div>
+                <label [attr.for]="id" class="d-flex justify-content-start control-label">
+                    <span>Search By <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></span>
+                    <span>
+                        <ng-template #tooltipBy i18n="@@tooltip--description">Search By</ng-template>
+                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
+                            [ngbPopover]="tooltipBy"
+                            i18n-aria-label="@@tooltip--instruction"
+                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </label>
                 <div ngbDropdown>
                     <button ngbDropdownToggle
                         class="btn btn-outline-secondary dropdown-toggle"
@@ -12,60 +22,87 @@
                         {{ this.displayType }}
                     </button>
                     <div class="dropdown-menu" ngbDropdownMenu>
-                        <a *ngFor="let option of typeOptions" class="dropdown-item" href="#" (click)="$event.preventDefault(); select(option.value);">
+                        <a *ngFor="let option of typeOptions"
+                            class="dropdown-item"
+                            href="#"
+                            (click)="$event.preventDefault(); select(option.value);">
                             {{ option.description }}
                         </a>
                     </div>
                 </div>
-                &nbsp;
-                <i class="fa fa-asterisk text-danger"></i>
             </div>
             <br />
-            <div class="d-flex justify-content-between">
-                <div class="w-100" [ngSwitch]="this.entityAttributesFilterTargetType">
-                    <ng-container *ngSwitchDefault>
-                        <auto-complete
-                            id="entityId"
-                            class="component-control"
-                            limit="10"
-                            [formControl]="search"
-                            [matches]="ids$ | async"
-                            (keydown.enter)="onSelectValue(search.value)">
-                        </auto-complete>
-                        <small>You must add at least one entity id target.</small>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
-                        <p class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
-                        <small id="script-help" class="text-danger">
-                            <ng-container *ngIf="script.invalid && script.touched">Required for Scripts</ng-container>
-                            &nbsp;
-                        </small>
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'REGEX'">
-                        <input class="form-control" type="text" [formControl]="script" name="script" />
-                        <small id="regex-help" class="text-danger">
-                            <ng-container *ngIf="script.invalid && script.touched">Required for Regex</ng-container>
-                            &nbsp;
-                        </small>
-                    </ng-container>
-                </div>
-                <div class="ml-2" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
-                    <button
-                        class="btn btn-success"
-                        [disabled]="search.invalid"
-                        (click)="onSelectValue(search.value)">
-                        Add Entity ID
-                    </button>
+            <div>
+                <label for="targetInput" class="d-flex justify-content-start control-label">
+                    <span>
+                        Search Criteria by {{ this.displayType }}
+                        <i class="fa fa-asterisk text-danger"
+                            aria-hidden="true"
+                            *ngIf="entityAttributesFilterTargetType !== 'ENTITY'"></i>
+                    </span>
+                    <span>
+                        <ng-template #tooltipCriteria i18n="@@tooltip--description">
+                            Search Criteria by {{ this.displayType }}
+                        </ng-template>
+                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
+                            [ngbPopover]="tooltipCriteria"
+                            i18n-aria-label="@@tooltip--instruction"
+                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    </span>
+                </label>
+                <div class="d-flex justify-content-between">
+                    <div class="w-100" [ngSwitch]="this.entityAttributesFilterTargetType">
+                        <ng-container *ngSwitchDefault>
+                            <auto-complete
+                                [fieldId]="'targetInput'"
+                                class="component-control"
+                                limit="10"
+                                [formControl]="search"
+                                [matches]="ids$ | async"
+                                (keydown.enter)="onSelectValue(search.value)">
+                            </auto-complete>
+                            <small [class.text-danger]="search.invalid && search.touched">
+                                You must add at least one entity id target and they must each be unique.
+                            </small>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
+                            <p id="targetInput" role="textbox" class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
+                            <small id="script-help" class="text-danger">
+                                <ng-container *ngIf="script.invalid && script.touched">Required for Scripts</ng-container>
+                                &nbsp;
+                            </small>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'REGEX'">
+                            <input id="targetInput" class="form-control" type="text" [formControl]="script" name="script" />
+                            <small id="regex-help" class="text-danger">
+                                <ng-container *ngIf="script.invalid && script.touched">Required for Regex</ng-container>
+                                &nbsp;
+                            </small>
+                        </ng-container>
+                    </div>
+                    <div class="ml-2" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
+                        <button
+                            class="btn btn-success"
+                            [disabled]="search.invalid"
+                            (click)="onSelectValue(search.value)">
+                            Add Entity ID
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <ul class="list-group list-group-sm list-group-scroll" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
+        <div class="col-lg-6" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
+            <label class="control-label">Entity Ids Added</label>
+            <hr />
+            <ul class="list-group list-group-sm list-group-scroll">
                 <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let id of targets">
                     {{ id }}
-                    <button class="btn btn-link text-right" (click)="removeId(id)">
-                        <i class="fa fa-trash fa-lg text-danger"></i>
-                    </button>
+                    <span>
+                        <sf-form-element-action *ngFor="let button of getButtonConfig(id)" [button]="button" [formProperty]="formProperty"></sf-form-element-action>
+                        <button class="btn btn-link text-right" (click)="removeId(id)">
+                            <i class="fa fa-trash fa-lg text-danger"></i>
+                        </button>
+                    </span>
                 </li>
             </ul>
         </div>

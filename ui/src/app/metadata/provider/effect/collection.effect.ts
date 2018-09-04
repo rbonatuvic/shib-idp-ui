@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { map, catchError, switchMap, tap, withLatestFrom, debounceTime } from 'rxjs/operators';
 import {
-    ProviderCollectionActionsUnion,
     ProviderCollectionActionTypes,
     AddProviderRequest,
     AddProviderSuccess,
@@ -20,25 +19,45 @@ import {
     UpdateProviderRequest,
     UpdateProviderSuccess,
     UpdateProviderFail,
+    UpdateProviderConflict,
     GetOrderProviderRequest,
     GetOrderProviderSuccess,
     GetOrderProviderFail,
     SetOrderProviderRequest,
     SetOrderProviderSuccess,
     SetOrderProviderFail,
-    ChangeOrderUp,
-    ChangeOrderDown
+    ChangeProviderOrderUp,
+    ChangeProviderOrderDown
 } from '../action/collection.action';
 import { MetadataProviderService } from '../../domain/service/provider.service';
 import * as fromProvider from '../reducer';
 import * as fromRoot from '../../../app.reducer';
-import { AddFilterSuccess, FilterCollectionActionTypes } from '../../filter/action/collection.action';
-import { debounce } from '../../../../../node_modules/rxjs-compat/operator/debounce';
+import { array_move } from '../../../shared/util';
+import { ClearProvider, ResetChanges } from '../action/entity.action';
+import { ShowContentionAction } from '../../../contention/action/contention.action';
+import { ContentionService } from '../../../contention/service/contention.service';
+import { MetadataProvider } from '../../domain/model';
 
 
 /* istanbul ignore next */
 @Injectable()
 export class CollectionEffects {
+
+    @Effect()
+    openContention$ = this.actions$.pipe(
+        ofType<UpdateProviderConflict>(ProviderCollectionActionTypes.UPDATE_PROVIDER_CONFLICT),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProvider)),
+        switchMap(([changes, current]) =>
+            this.providerService.find(current.resourceId).pipe(
+                map(data => new ShowContentionAction(this.contentionService.getContention(current, changes, data, {
+                    resolve: (obj) => this.store.dispatch(new UpdateProviderRequest(<MetadataProvider>{ ...obj })),
+                    reject: (obj) => this.store.dispatch(new ResetChanges())
+                })))
+            )
+        )
+    );
+
 
     @Effect()
     loadProviders$ = this.actions$.pipe(
@@ -100,7 +119,7 @@ export class CollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
-                    catchError((e) => of(new UpdateProviderFail(e)))
+                    catchError((e) => e.status === 409 ? of(new UpdateProviderConflict(provider)) : of(new UpdateProviderFail(provider)))
                 )
         )
     );
@@ -116,7 +135,10 @@ export class CollectionEffects {
     updateProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<UpdateProviderSuccess>(ProviderCollectionActionTypes.UPDATE_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['metadata', 'manager', 'providers']))
+        tap(provider => {
+            this.store.dispatch(new ClearProvider());
+            this.router.navigate(['metadata', 'manager', 'providers']);
+        })
     );
 
     @Effect()
@@ -163,15 +185,14 @@ export class CollectionEffects {
 
     @Effect()
     changeOrderUp$ = this.actions$.pipe(
-        ofType<ChangeOrderUp>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_UP),
+        ofType<ChangeProviderOrderUp>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_UP),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
-        map(([id, orderSet]) => {
-            const order = orderSet.resourceIds;
+        map(([id, order]) => {
             const index = order.indexOf(id);
             if (index > 0) {
-                const newOrder = this.array_move(order, index, index - 1);
-                return new SetOrderProviderRequest({ resourceIds: newOrder });
+                const newOrder = array_move(order, index, index - 1);
+                return new SetOrderProviderRequest(newOrder);
             } else {
                 return new SetOrderProviderFail(new Error(`could not change order: ${ id }`));
             }
@@ -180,36 +201,25 @@ export class CollectionEffects {
 
     @Effect()
     changeOrderDown$ = this.actions$.pipe(
-        ofType<ChangeOrderDown>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_DOWN),
+        ofType<ChangeProviderOrderDown>(ProviderCollectionActionTypes.CHANGE_PROVIDER_ORDER_DOWN),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
-        map(([id, orderSet]) => {
-            const order = orderSet.resourceIds;
+        map(([id, order]) => {
             const index = order.indexOf(id);
             if (index < order.length - 1) {
-                const newOrder = this.array_move(order, index, index + 1);
-                return new SetOrderProviderRequest({ resourceIds: newOrder });
+                const newOrder = array_move(order, index, index + 1);
+                return new SetOrderProviderRequest(newOrder);
             } else {
                 return new SetOrderProviderFail(new Error(`could not change order: ${id}`));
             }
         })
     );
 
-    array_move(arr, old_index, new_index): any[] {
-        if (new_index >= arr.length) {
-            let k = new_index - arr.length + 1;
-            while (k--) {
-                arr.push(undefined);
-            }
-        }
-        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
-        return arr;
-    }
-
     constructor(
         private actions$: Actions,
         private router: Router,
         private store: Store<fromRoot.State>,
-        private providerService: MetadataProviderService
+        private providerService: MetadataProviderService,
+        private contentionService: ContentionService
     ) { }
 }
