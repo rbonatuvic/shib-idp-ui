@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -24,6 +24,7 @@ import { SharedModule } from './shared/shared.module';
 import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
+import { getCurrentLanguage } from './shared/util';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { environment } from '../environments/environment.prod';
         AppRoutingModule
     ],
     providers: [
+        { provide: LOCALE_ID, useValue: getCurrentLanguage() },
         NavigatorService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {

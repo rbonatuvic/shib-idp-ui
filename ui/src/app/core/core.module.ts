@@ -14,6 +14,8 @@ import { UserEffects } from './effect/user.effect';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalService } from './service/modal.service';
 import { DifferentialService } from './service/differential.service';
+import { I18nService } from './service/i18n.service';
+import { MessageEffects } from './effect/message.effect';
 
 export const COMPONENTS = [];
 
@@ -36,7 +38,8 @@ export class CoreModule {
                 FileService,
                 ModalService,
                 DifferentialService,
-                CanDeactivateGuard
+                CanDeactivateGuard,
+                I18nService
             ]
         };
     }
@@ -45,7 +48,7 @@ export class CoreModule {
 @NgModule({
     imports: [
         StoreModule.forFeature('core', reducers),
-        EffectsModule.forFeature([UserEffects, VersionEffects]),
+        EffectsModule.forFeature([UserEffects, VersionEffects, MessageEffects]),
     ],
 })
 export class RootCoreModule { }
