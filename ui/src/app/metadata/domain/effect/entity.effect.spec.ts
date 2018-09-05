@@ -10,6 +10,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { EntityAttributesFilterEntity, FileBackedHttpMetadataResolver } from '../entity';
 
+import * as fromRoot from '../../../app.reducer';
+import { StoreModule } from '@ngrx/store';
+
 describe('Entity Effects', () => {
     let effects: EntityEffects;
     let providerService: any;
@@ -35,6 +38,9 @@ describe('Entity Effects', () => {
                 },
                 { provide: Actions, useFactory: getActions }
             ],
+            imports: [
+                StoreModule.forRoot(fromRoot.reducers)
+            ]
         });
 
         effects = TestBed.get(EntityEffects);
