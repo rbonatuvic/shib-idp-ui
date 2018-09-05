@@ -32,7 +32,7 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
                 return err;
             },
             '/metadataURL': (value, property, form) => {
-                return !!UriValidator.isUri(value) ? {
+                return !UriValidator.isUri(value) ? {
                     code: 'INVALID_URI',
                     path: `#${property.path}`,
                     message: 'URI must be valid format.',
