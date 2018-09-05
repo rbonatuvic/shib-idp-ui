@@ -66,7 +66,6 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-spec-reporter": "0.0.31",
     "path": "^0.12.7",
-    "phantomjs-prebuilt": "^2.1.15",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
