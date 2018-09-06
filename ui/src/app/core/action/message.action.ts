@@ -5,7 +5,7 @@ export enum MessagesActionTypes {
     MESSAGES_LOAD_SUCCESS = '[Messages] Load SUCCESS',
     MESSAGES_LOAD_ERROR = '[Messages] Load ERROR',
 
-    SET_LANGUAGE = '[Messages] Set Language'
+    SET_LOCALE = '[Messages] Set Locale'
 }
 
 export class MessagesLoadRequestAction implements Action {
@@ -26,8 +26,8 @@ export class MessagesLoadErrorAction implements Action {
     constructor(public payload: { message: string, type: string }) { }
 }
 
-export class SetLanguage implements Action {
-    readonly type = MessagesActionTypes.SET_LANGUAGE;
+export class SetLocale implements Action {
+    readonly type = MessagesActionTypes.SET_LOCALE;
 
     constructor(public payload: string) {}
 }
@@ -36,4 +36,4 @@ export type Actions =
     | MessagesLoadRequestAction
     | MessagesLoadSuccessAction
     | MessagesLoadErrorAction
-    | SetLanguage;
+    | SetLocale;

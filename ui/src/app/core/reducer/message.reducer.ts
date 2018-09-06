@@ -8,14 +8,14 @@ export interface MessageState {
     fetching: boolean;
     messages: any;
     error: any;
-    language: string;
+    locale: string;
 }
 
 export const initialState: MessageState = {
     fetching: false,
     messages: null,
     error: null,
-    language: 'en'
+    locale: null
 };
 
 export function reducer(state = initialState, action: Actions): MessageState {
@@ -41,10 +41,10 @@ export function reducer(state = initialState, action: Actions): MessageState {
                 error: action.payload
             };
         }
-        case MessagesActionTypes.SET_LANGUAGE: {
+        case MessagesActionTypes.SET_LOCALE: {
             return {
                 ...state,
-                language: action.payload
+                locale: action.payload
             };
         }
         default: {
@@ -55,6 +55,6 @@ export function reducer(state = initialState, action: Actions): MessageState {
 
 
 export const getMessages = (state: MessageState) => state.messages;
-export const getLanguage = (state: MessageState) => state.language;
+export const getLocale = (state: MessageState) => state.locale;
 export const getError = (state: MessageState) => state.error;
 export const isFetching = (state: MessageState) => state.fetching;

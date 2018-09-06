@@ -24,7 +24,7 @@ import { SharedModule } from './shared/shared.module';
 import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
-import { getCurrentLanguage } from './shared/util';
+import { getCurrentLocale } from './shared/util';
 
 @NgModule({
     declarations: [
@@ -55,7 +55,7 @@ import { getCurrentLanguage } from './shared/util';
         AppRoutingModule
     ],
     providers: [
-        { provide: LOCALE_ID, useValue: getCurrentLanguage() },
+        { provide: LOCALE_ID, useValue: getCurrentLocale(null) },
         NavigatorService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {

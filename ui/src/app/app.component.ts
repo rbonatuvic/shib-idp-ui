@@ -8,7 +8,7 @@ import * as fromRoot from './core/reducer';
 import { VersionInfo } from './core/model/version';
 import { VersionInfoLoadRequestAction } from './core/action/version.action';
 import { I18nService } from './core/service/i18n.service';
-import { SetLanguage } from './core/action/message.action';
+import { SetLocale } from './core/action/message.action';
 
 @Component({
     selector: 'app-root',
@@ -34,6 +34,6 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.store.dispatch(new VersionInfoLoadRequestAction());
-        this.store.dispatch(new SetLanguage(this.i18nService.getCurrentLanguage()));
+        this.store.dispatch(new SetLocale(this.i18nService.getCurrentLocale()));
     }
 }

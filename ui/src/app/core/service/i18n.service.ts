@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NavigatorService } from './navigator.service';
-import { getCurrentLanguage } from '../../shared/util';
+import { getCurrentLanguage, getCurrentCountry, getCurrentLocale } from '../../shared/util';
 
 @Injectable()
 export class I18nService {
@@ -15,11 +15,9 @@ export class I18nService {
         private navigator: NavigatorService
     ) {}
 
-    get(language: string = null): Observable<any> {
+    get(locale: string): Observable<any> {
         let params: HttpParams = new HttpParams();
-        if (!!language) {
-            params = params.set('lang', language);
-        }
+        params = params.set('lang', locale);
         return this.http.get(`${ this.base }${this.path}`, {
             params
         });
@@ -27,5 +25,13 @@ export class I18nService {
 
     getCurrentLanguage(): string {
         return getCurrentLanguage(this.navigator.native);
+    }
+
+    getCurrentCountry(): string {
+        return getCurrentCountry(this.navigator.native);
+    }
+
+    getCurrentLocale(): string {
+        return getCurrentLocale(this.navigator.native);
     }
 }

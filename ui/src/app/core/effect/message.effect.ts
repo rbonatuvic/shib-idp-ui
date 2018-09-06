@@ -9,7 +9,7 @@ import {
     MessagesLoadErrorAction,
     MessagesLoadRequestAction,
     MessagesLoadSuccessAction,
-    SetLanguage
+    SetLocale
 } from '../action/message.action';
 import { I18nService } from '../service/i18n.service';
 import * as fromCore from '../reducer';
@@ -21,18 +21,21 @@ export class MessageEffects {
     @Effect()
     loadMessages$ = this.actions$.pipe(
         ofType<MessagesLoadRequestAction>(MessagesActionTypes.MESSAGES_LOAD_REQUEST),
-        withLatestFrom(this.store.select(fromCore.getLanguage)),
-        switchMap(([action, lang]) => {
-            return this.i18nService.get(lang)
+        withLatestFrom(
+            this.store.select(fromCore.getLocale)
+        ),
+        map(([action, locale]) => locale.replace('-', '_')),
+        switchMap(locale =>
+            this.i18nService.get(locale)
                 .pipe(
                     map(u => new MessagesLoadSuccessAction({ ...u })),
                     catchError(error => of(new MessagesLoadErrorAction(error)))
-                );
-        })
+                )
+        )
     );
     @Effect()
     setLanguage$ = this.actions$.pipe(
-        ofType<SetLanguage>(MessagesActionTypes.SET_LANGUAGE),
+        ofType<SetLocale>(MessagesActionTypes.SET_LOCALE),
         map(action => action.payload),
         map(language => new MessagesLoadRequestAction())
     );

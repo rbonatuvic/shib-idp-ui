@@ -12,6 +12,7 @@ import * as fromUser from './user.reducer';
 import * as fromVersion from './version.reducer';
 import * as fromMessages from './message.reducer';
 import * as fromRoot from '../../app.reducer';
+import { getCurrentLanguage, getCurrentCountry } from '../../shared/util';
 
 export interface CoreState {
     user: fromUser.UserState;
@@ -45,6 +46,9 @@ export const getVersionLoading = createSelector(getVersionState, fromVersion.get
 export const getVersionError = createSelector(getVersionState, fromVersion.getVersionError);
 
 export const getMessageState = createSelector(getCoreFeature, getMessageStateFn);
-export const getLanguage = createSelector(getMessageState, fromMessages.getLanguage);
+export const getLocale = createSelector(getMessageState, fromMessages.getLocale);
+export const getLanguage = createSelector(getLocale, locale => getCurrentLanguage(locale));
+export const getCountry = createSelector(getLocale, locale => getCurrentCountry(locale));
+
 export const getMessages = createSelector(getMessageState, fromMessages.getMessages);
 export const getFetchingMessages = createSelector(getMessageState, fromMessages.isFetching);
