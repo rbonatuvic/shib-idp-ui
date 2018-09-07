@@ -8,9 +8,15 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import java.io.InputStream;
+import java.time.Instant;
 
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
 
@@ -18,10 +24,18 @@ import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
  * @author Bill Smith (wsmith@unicon.net)
  */
 public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetadataResolver {
+
+    private static final long MILLISECONDS_IN_ONE_SECOND = 1000;
+
     private IndexWriter indexWriter;
     private FileBackedHttpMetadataResolver sourceResolver;
 
     private OpenSamlMetadataResolverDelegate delegate;
+
+    private byte[] cachedMetadataBytes;
+    private Instant metadataLastFetchedAt;
+    boolean shouldRefreshMetadata;
+    XMLObject cachedMetadata;
 
     public OpenSamlFileBackedHTTPMetadataResolver(ParserPool parserPool,
                                                   IndexWriter indexWriter,
@@ -66,5 +80,32 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                                                        this.sourceResolver.getResourceId(),
                                                        indexWriter);
+    }
+
+    @Override
+    protected byte[] fetchMetadata() throws ResolverException {
+        if (metadataLastFetchedAt == null || shouldRefreshMetadata()) {
+            this.cachedMetadataBytes = super.fetchMetadata();
+            this.metadataLastFetchedAt = Instant.now();
+        }
+        return cachedMetadataBytes;
+    }
+
+    private boolean shouldRefreshMetadata() {
+        if ((Instant.now().getEpochSecond() - metadataLastFetchedAt.getEpochSecond()) > (this.getMinRefreshDelay() / MILLISECONDS_IN_ONE_SECOND)) {
+            shouldRefreshMetadata = true;
+        }
+        return shouldRefreshMetadata;
+    }
+
+    @Override
+    protected XMLObject unmarshallMetadata(@Nonnull final InputStream metadataInput)
+            throws UnmarshallingException {
+        //TODO: This should probably be based on something other than minRefreshDelay
+        if (cachedMetadata == null || shouldRefreshMetadata) {
+            this.cachedMetadata = super.unmarshallMetadata(metadataInput);
+            this.shouldRefreshMetadata = false;
+        }
+        return this.cachedMetadata;
     }
 }

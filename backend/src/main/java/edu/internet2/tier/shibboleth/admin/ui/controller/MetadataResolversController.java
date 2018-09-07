@@ -118,6 +118,8 @@ public class MetadataResolversController {
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
 
+        //TODO: currently, the update call might explode, but the save works.. in which case, the UI never gets
+        // an valid response. This operation is not atomic. Should we return an error here?
         updateChainingMetadataResolver(persistedResolver);
 
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
