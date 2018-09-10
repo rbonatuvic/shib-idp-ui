@@ -29,6 +29,16 @@ $cyan:    #17a2b8;
 $dark-grey: #666666;
 $light-grey: #EEEEEE;
 
+
+$brand-primary: $blue;
+$brand-secondary: $gray-700;
+$brand-success: $green;
+$brand-info: $light-blue;
+$brand-warning: $yellow;
+$brand-danger: $red;
+$brand-light: $light-grey;
+$brand-dark: $dark-grey;
+
 @import "../brand";
 
 $grays: (
@@ -60,14 +70,14 @@ $colors: (
 );
 
 $theme-colors: (
-  primary: $blue,
-  secondary: $gray-700,
-  success: $green,
-  info: $light-blue,
-  warning: $yellow,
-  danger: $red,
-  light: $light-grey,
-  dark: $dark-grey
+  primary: $brand-primary,
+  secondary: $brand-secondary,
+  success: $brand-success,
+  info: $brand-info,
+  warning: $brand-warning,
+  danger: $brand-danger,
+  light: $brand-light,
+  dark: $brand-dark
 );
 
 // Set a specific jump point for requesting color jumps
