@@ -1,10 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nav class="navbar navbar-expand-md fixed-top">
-    <a class="navbar-brand" href="https://www.shibboleth.net/" target="_blank">
-        <img src="/assets/shibboleth_icon_color_130x130.png" width="30" height="30" class="d-inline-block align-top" alt="Shibboleth Logo - Click to be directed to www.shibboleth.net">
-        <span class="d-lg-inline d-none">Shibboleth</span>
+    <a class="navbar-brand" [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.description">
+        <img [src]="brand.logo.small" width="30" height="30" class="d-inline-block align-top" [alt]="brand.logo.alt">
+        <span class="d-lg-inline d-none">{{ brand.logo.link.label }}</span>
     </a>
-    <span class="navbar-text" i18n="@@label--app">Source Management</span>
+    <span class="navbar-text" i18n="@@label--app">{{ brand.header.title }}</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -66,11 +66,12 @@
     <div class="row">
         <div class="col-md-8 copyright">
             <ul class="list-inline">
-                <li class="list-inline-item" i18n="@@link--links-to-shibboleth-resources">Links to Shibboleth resources:</li>
-                <li class="list-inline-item"><a href="https://www.shibboleth.net/" target="_blank" i18n="@@link--home-page" aria-label="Shibboleth.net open-source community home page">Home Page</a></li>
-                <li class="list-inline-item"><a href="https://wiki.shibboleth.net/" target="_blank" i18n="@@link--wiki" aria-label="Shibboleth.net open-source community wiki">Wiki</a></li>
-                <li class="list-inline-item"><a href="https://issues.shibboleth.net/" target="_blank" i18n="@@link--issue-tracker" aria-label="Shibboleth.net open-source community issue tracker">Issue Tracker</a></li>
-                <li class="list-inline-item"><a href="https://www.shibboleth.net/community/lists/" target="_blank" i18n="@@link--mailing-list" aria-label="Shibboleth.net open-source community mailing list">Mailing List</a></li>
+                <li class="list-inline-item">{{ brand.footer.text }}</li>
+                <li class="list-inline-item" *ngFor="let link of brand.footer.links">
+                    <a [href]="link.url" target="_blank" [attr.aria-label]="link.description" [title]="link.description">
+                        {{ link.label }}
+                    </a>
+                </li>
             </ul>
             <p>
                 <ng-container *ngIf="version$ | async">
@@ -81,7 +82,9 @@
             </p>
         </div>
         <div class="col-md-4 logo">
-            <a href="https://www.shibboleth.net/" target="_blank"><img src="/assets/shibboleth_logowordmark_color.png" class="img-fluid float-right" alt="Shibboleth Logo - Click to be directed to www.shibboleth.net"></a>
+            <a [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.label">
+                <img [src]="brand.logo.default" class="img-fluid float-right" [alt]="brand.logo.alt">
+            </a>
         </div>
     </div>
 </footer>

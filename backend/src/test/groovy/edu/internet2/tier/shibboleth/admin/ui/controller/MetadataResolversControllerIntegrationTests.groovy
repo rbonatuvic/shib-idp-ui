@@ -21,6 +21,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -150,6 +151,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     }
 
     @Unroll
+    @DirtiesContext
     def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)

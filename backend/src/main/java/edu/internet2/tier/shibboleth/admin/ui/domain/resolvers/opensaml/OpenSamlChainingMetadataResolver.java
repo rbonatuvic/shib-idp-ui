@@ -54,6 +54,26 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
     }
 
     @Override
+    @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        //Our overridden method uses a collection of mutable resolvers instead of regular resolvers
+        for (final MetadataResolver resolver : mutableResolvers) {
+            try {
+                final Iterable<EntityDescriptor> descriptors = resolver.resolve(criteria);
+                if (descriptors != null && descriptors.iterator().hasNext()) {
+                    return descriptors;
+                }
+            } catch (final ResolverException e) {
+                log.warn("Error retrieving metadata from resolver of type {}, proceeding to next resolver",
+                        resolver.getClass().getName(), e);
+                continue;
+            }
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Override
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         if (mutableResolvers == null) {
