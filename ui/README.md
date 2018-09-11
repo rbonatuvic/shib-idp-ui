@@ -66,7 +66,7 @@ The supported values are:
 `$brand-dark: $dark-grey;` - Color used for accents, text, etc throughout application. Default: dark grey.
 
 ### Logos / Footer
-The `Brand.ts` contains the links, text, and image paths to modify the logos, text, and links found within the header and footer. Override the values within this Typescript file and rebuild the user interface to view changes.
+The `Brand.ts` contains the links, text, and image paths to modify the logos, text, and links found within the header and footer. Override the values within this Typescript file and rebuild the user interface to view changes. If the local server should host these files, they should be added to the assets folder.
 
 For example:
 
