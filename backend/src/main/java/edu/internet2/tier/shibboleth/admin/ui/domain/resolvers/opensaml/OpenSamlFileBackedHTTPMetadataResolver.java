@@ -8,35 +8,27 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import java.io.InputStream;
-import java.time.Instant;
 
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetadataResolver {
+public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetadataResolver implements Refilterable {
 
     private static final Logger logger = LoggerFactory.getLogger(OpenSamlFileBackedHTTPMetadataResolver.class);
-
-    private static final long MILLISECONDS_IN_ONE_SECOND = 1000;
 
     private IndexWriter indexWriter;
     private FileBackedHttpMetadataResolver sourceResolver;
 
     private OpenSamlMetadataResolverDelegate delegate;
-    private OpenSamlBatchMetadataResolverDelegate batchDelegate;
 
     public OpenSamlFileBackedHTTPMetadataResolver(ParserPool parserPool,
                                                   IndexWriter indexWriter,
@@ -45,7 +37,6 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         this.indexWriter = indexWriter;
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
-        this.batchDelegate = new OpenSamlBatchMetadataResolverDelegate();
 
         this.setId(sourceResolver.getResourceId());
 
@@ -57,6 +48,8 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         this.setBackupFile(sourceResolver.getBackingFile());
         this.setBackupFileInitNextRefreshDelay(toMillis(sourceResolver.getBackupFileInitNextRefreshDelay()));
         this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
+
+        this.setMetadataFilter(new MetadataFilterChain());
 
         //TODO: Where does this get set in OpenSAML land?
         // sourceResolver.getMetadataURL();
@@ -84,9 +77,12 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
                                                        indexWriter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void refilter() {
         try {
-            batchDelegate.refilter(this.getBackingStore(), filterMetadata(getCachedOriginalMetadata()));
+            this.getBackingStore().setCachedFilteredMetadata(filterMetadata(getCachedOriginalMetadata()));
         } catch (FilterException e) {
             logger.error("An error occurred while attempting to filter metadata!", e);
         }

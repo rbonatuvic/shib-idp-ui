@@ -17,13 +17,13 @@ import java.io.IOException;
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetadataResolver {
+public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetadataResolver implements Refilterable {
+
     private static final Logger logger = LoggerFactory.getLogger(OpenSamlResourceBackedMetadataResolver.class);
 
     private IndexWriter indexWriter;
     private edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver sourceResolver;
     private OpenSamlMetadataResolverDelegate delegate;
-    private OpenSamlBatchMetadataResolverDelegate batchDelegate;
 
     public OpenSamlResourceBackedMetadataResolver(ParserPool parserPool,
                                                   IndexWriter indexWriter,
@@ -33,7 +33,6 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
         this.indexWriter = indexWriter;
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
-        this.batchDelegate = new OpenSamlBatchMetadataResolverDelegate();
 
         this.setId(sourceResolver.getResourceId());
 
@@ -60,9 +59,12 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
                                                        indexWriter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void refilter() {
         try {
-            batchDelegate.refilter(this.getBackingStore(), filterMetadata(getCachedOriginalMetadata()));
+            this.getBackingStore().setCachedFilteredMetadata(filterMetadata(getCachedOriginalMetadata()));
         } catch (FilterException e) {
             logger.error("An error occurred while attempting to filter metadata!", e);
         }
