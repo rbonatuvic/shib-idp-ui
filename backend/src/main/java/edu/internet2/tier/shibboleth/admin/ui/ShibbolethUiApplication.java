@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui;
 
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -36,10 +37,15 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
         @Autowired
         MetadataResolverRepository metadataResolverRepository;
 
+        @Value("${idp.home}")
+        String idpHome;
+
         @EventListener
         void showMetadataResolversResourceIds(ApplicationStartedEvent e) {
             metadataResolverRepository.findAll()
                     .forEach(it -> System.out.println(String.format("MetadataResolver [%s: %s]", it.getName(), it.getResourceId())));
+
+            System.out.println("IDP HOME: " + idpHome);
         }
     }
 
