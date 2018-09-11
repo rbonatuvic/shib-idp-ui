@@ -6,6 +6,7 @@ import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,9 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
 
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
+
+        //TODO: check if this is the right thing to do
+        this.setMetadataFilter(new MetadataFilterChain());
     }
 
     // TODO: this is still probably not the best way to do this?
