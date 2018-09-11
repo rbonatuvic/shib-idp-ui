@@ -10,7 +10,10 @@ import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,17 +28,15 @@ import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
  */
 public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetadataResolver {
 
+    private static final Logger logger = LoggerFactory.getLogger(OpenSamlFileBackedHTTPMetadataResolver.class);
+
     private static final long MILLISECONDS_IN_ONE_SECOND = 1000;
 
     private IndexWriter indexWriter;
     private FileBackedHttpMetadataResolver sourceResolver;
 
     private OpenSamlMetadataResolverDelegate delegate;
-
-    private byte[] cachedMetadataBytes;
-    private Instant metadataLastFetchedAt;
-    boolean shouldRefreshMetadata;
-    XMLObject cachedMetadata;
+    private OpenSamlBatchMetadataResolverDelegate batchDelegate;
 
     public OpenSamlFileBackedHTTPMetadataResolver(ParserPool parserPool,
                                                   IndexWriter indexWriter,
@@ -44,6 +45,7 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         this.indexWriter = indexWriter;
         this.sourceResolver = sourceResolver;
         this.delegate = new OpenSamlMetadataResolverDelegate();
+        this.batchDelegate = new OpenSamlBatchMetadataResolverDelegate();
 
         this.setId(sourceResolver.getResourceId());
 
@@ -82,30 +84,11 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
                                                        indexWriter);
     }
 
-    @Override
-    protected byte[] fetchMetadata() throws ResolverException {
-        if (metadataLastFetchedAt == null || shouldRefreshMetadata()) {
-            this.cachedMetadataBytes = super.fetchMetadata();
-            this.metadataLastFetchedAt = Instant.now();
+    public void refilter() {
+        try {
+            batchDelegate.refilter(this.getBackingStore(), filterMetadata(getCachedOriginalMetadata()));
+        } catch (FilterException e) {
+            logger.error("An error occurred while attempting to filter metadata!", e);
         }
-        return cachedMetadataBytes;
-    }
-
-    private boolean shouldRefreshMetadata() {
-        if ((Instant.now().getEpochSecond() - metadataLastFetchedAt.getEpochSecond()) > (this.getMinRefreshDelay() / MILLISECONDS_IN_ONE_SECOND)) {
-            shouldRefreshMetadata = true;
-        }
-        return shouldRefreshMetadata;
-    }
-
-    @Override
-    protected XMLObject unmarshallMetadata(@Nonnull final InputStream metadataInput)
-            throws UnmarshallingException {
-        //TODO: This should probably be based on something other than minRefreshDelay
-        if (cachedMetadata == null || shouldRefreshMetadata) {
-            this.cachedMetadata = super.unmarshallMetadata(metadataInput);
-            this.shouldRefreshMetadata = false;
-        }
-        return this.cachedMetadata;
     }
 }
