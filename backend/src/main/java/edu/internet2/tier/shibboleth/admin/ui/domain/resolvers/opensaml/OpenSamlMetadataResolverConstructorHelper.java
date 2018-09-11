@@ -3,12 +3,14 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes;
+import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractDynamicMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractReloadingMetadataResolver;
 
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -85,9 +87,12 @@ public class OpenSamlMetadataResolverConstructorHelper {
         //TODO: This takes a ParserPool. We've got a ParserPoolRef in attributes.getParserPoolRef(). Should we use it for anything?
         reloadingMetadataResolver.setParserPool(parserPool);
 
+        //TODO: finish placeholder resolving
         if (attributes != null) {
             if (attributes.getExpirationWarningThreshold() != null) {
-                reloadingMetadataResolver.setExpirationWarningThreshold(toMillis(attributes.getExpirationWarningThreshold()));
+                reloadingMetadataResolver
+                        .setExpirationWarningThreshold(toMillis(placeholderResolverService()
+                                .resolveValueFromTokenPlaceholder(attributes.getExpirationWarningThreshold())));
             }
             if (attributes.getMaxRefreshDelay() != null) {
                 reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));

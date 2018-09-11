@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -13,6 +14,7 @@ import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
 import javax.annotation.Nullable;
 
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -38,8 +40,12 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
-        this.setBackupFile(sourceResolver.getBackingFile());
-        this.setBackupFileInitNextRefreshDelay(toMillis(sourceResolver.getBackupFileInitNextRefreshDelay()));
+        //TODO: complete resolving placeholders everywhere
+        //This might throw runtime exception if unable to resolve placeholders sent from higher layers
+        this.setBackupFile(placeholderResolverService().resolveValueFromTokenPlaceholder(sourceResolver.getBackingFile()));
+        this.setBackupFileInitNextRefreshDelay(toMillis(placeholderResolverService()
+                .resolveValueFromTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
+
         this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
 
         //TODO: Where does this get set in OpenSAML land?
@@ -62,6 +68,7 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
         super.initMetadataResolver();
+
 
         delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                                                        this.sourceResolver.getResourceId(),
