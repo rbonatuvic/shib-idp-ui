@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui;
 
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.TokenPlaceholderValueResolvingService;
+import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -56,9 +57,8 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
 
             System.out.println("IDP HOME: " + idpHome);
             String rawValue = "%{idp.home}/metadata/file.xml";
-            boolean hasToken = rawValue.contains("%{idp.home}");
-            String resolvedIdpHome = propertyResolver.resolvePlaceholders("${idp.home}");
-            String fullyResolvedDir = rawValue.replace("%{idp.home}", resolvedIdpHome);
+            String resolved = propertyResolver.resolvePlaceholders(rawValue.replace("%{", "${"));
+            TokenPlaceholderValueResolvingService service = TokenPlaceholderResolvers.placeholderResolverService();
         }
     }
 

@@ -2,6 +2,10 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import org.springframework.core.env.PropertyResolver;
 
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
 /**
  * Implementation of {@link TokenPlaceholderValueResolvingService} based on Spring Framework's default property resolver
  * which understands and replaces Shibboleth Idp specific placeholder prefix of '%{' with standard Spring's placeholder
@@ -21,6 +25,9 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
 
     @Override
     public String resolveValueFromTokenPlaceholder(String tokenPlaceholder) {
+        requireNonNull(tokenPlaceholder, "tokenPlaceholder must not be null");
+        tokenPlaceholder.replace("%{", "${");
+
         return null;
     }
 }

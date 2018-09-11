@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import edu.internet2.tier.shibboleth.admin.ui.service.TokenPlaceholderValueResolvingService;
+import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.PropertyResolver;
@@ -11,5 +12,10 @@ public class PlaceholderResolverComponentsConfiguration {
     @Bean
     public TokenPlaceholderValueResolvingService tokenPlaceholderValueResolvingService(PropertyResolver propertyResolver) {
         return TokenPlaceholderValueResolvingService.shibbolethPlaceholderAware(propertyResolver);
+    }
+
+    @Bean
+    public TokenPlaceholderResolvers tokenPlaceholderResolvers(TokenPlaceholderValueResolvingService service) {
+        return new TokenPlaceholderResolvers(service);
     }
 }

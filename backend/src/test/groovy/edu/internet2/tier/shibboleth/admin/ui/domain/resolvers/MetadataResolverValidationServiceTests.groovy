@@ -11,7 +11,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRe
 class MetadataResolverValidationServiceTests extends Specification {
 
     def "Validation service with no available validators always returns default valid result"() {
-        given: 'Sample metadata resolver and validation service with no validators'
+        given: 'Sample metadata resolver and validation placeholderResolverService with no validators'
         def resolver = Mock(MetadataResolver)
         @Subject
         def validationService = new MetadataResolverValidationService(null)
@@ -24,7 +24,7 @@ class MetadataResolverValidationServiceTests extends Specification {
     }
 
     def "Validation service with one validator not supporting the type of resolver returns default valid result"() {
-        given: 'Sample metadata resolver and validation service with one validator not supporting that type'
+        given: 'Sample metadata resolver and validation placeholderResolverService with one validator not supporting that type'
         def resolver = Mock(MetadataResolver)
         def validator = Mock(MetadataResolverValidator)
         validator.supports(_) >> false
@@ -39,7 +39,7 @@ class MetadataResolverValidationServiceTests extends Specification {
     }
 
     def "Validation service with one validator supporting the type of resolver but fails its validation"() {
-        given: 'Sample metadata resolver and validation service with one validator supporting that type'
+        given: 'Sample metadata resolver and validation placeholderResolverService with one validator supporting that type'
         def resolver = Mock(MetadataResolver)
         def validator = Mock(MetadataResolverValidator)
         validator.supports(_) >> true
@@ -55,7 +55,7 @@ class MetadataResolverValidationServiceTests extends Specification {
     }
 
     def "Validation service with with two validators supporting the type of resolver, first fails, second passes validation"() {
-        given: 'Sample metadata resolver and validation service with two validators supporting that type'
+        given: 'Sample metadata resolver and validation placeholderResolverService with two validators supporting that type'
         def resolver = Mock(MetadataResolver)
         def validator1 = Mock(MetadataResolverValidator)
         validator1.supports(_) >> true
@@ -74,7 +74,7 @@ class MetadataResolverValidationServiceTests extends Specification {
     }
 
     def "Validation service with with two validators, only one supporting the type of resolver, passes validation"() {
-        given: 'Sample metadata resolver and validation service with two validators, with one supporting that type'
+        given: 'Sample metadata resolver and validation placeholderResolverService with two validators, with one supporting that type'
         def resolver = Mock(MetadataResolver)
         def validator1 = Mock(MetadataResolverValidator)
         validator1.supports(_) >> false
