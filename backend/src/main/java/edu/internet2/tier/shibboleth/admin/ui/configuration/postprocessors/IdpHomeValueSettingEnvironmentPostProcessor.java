@@ -17,7 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Spring Boot Environment Post Processor setting the value for idp.home property to an abstract temp directory.
+ * Spring Boot Environment Post Processor setting the value for idp.home property to an abstract temp directory
+ * if no IDP_HOME environment variable has been set already.
  *
  * @author Dmitriy Kopylenko
  */
@@ -47,7 +48,11 @@ public class IdpHomeValueSettingEnvironmentPostProcessor implements EnvironmentP
 
         Map<String, Object> map = new HashMap<>(1);
         try {
-            map.put(IDP_HOME_PROP, Files.createTempDirectory(null).toAbsolutePath().toString());
+            Path tempDir = Files.createTempDirectory(String.format("%s.%s.", "shibui", IDP_HOME_PROP));
+            String tempDirName = tempDir.toAbsolutePath().toString();
+            Path tempMetadataSubDir = Paths.get(tempDirName, METADATA_DIR);
+            Files.createDirectories(tempMetadataSubDir);
+            map.put(IDP_HOME_PROP, tempDirName);
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
