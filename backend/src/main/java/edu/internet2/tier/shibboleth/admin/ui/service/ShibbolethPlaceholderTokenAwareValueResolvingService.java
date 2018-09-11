@@ -7,7 +7,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
  *
  * If passed it value does not contain Shibboleth Idp '%{}' placeholder token, returns that value as is.
  */
-public class SpringPropertyPlaceholderBasedValueResolvingService implements TokenPlaceholderValueResolvingService {
+public class ShibbolethPlaceholderTokenAwareValueResolvingService implements TokenPlaceholderValueResolvingService {
 
     @Override
     public String resolveValueFromTokenPlaceholder(String tokenPlaceholder) {
