@@ -1,8 +1,9 @@
 import {
-    Component, AfterViewInit,
+    Component, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import { ButtonWidget } from 'ngx-schema-form';
 import { ɵb as ActionRegistry } from 'ngx-schema-form';
+import { interval } from 'rxjs';
 
 @Component({
     selector: 'icon-button',
@@ -10,9 +11,14 @@ import { ɵb as ActionRegistry } from 'ngx-schema-form';
 })
 export class IconButtonComponent extends ButtonWidget implements AfterViewInit {
 
-    action = ($event) => {};
+    visible = false;
 
-    constructor(private actionRegistry: ActionRegistry) {
+    action = (e) => {};
+
+    constructor(
+        private actionRegistry: ActionRegistry,
+        private changeDetector: ChangeDetectorRef
+    ) {
         super();
     }
 
@@ -24,5 +30,8 @@ export class IconButtonComponent extends ButtonWidget implements AfterViewInit {
             }
             e.preventDefault();
         };
+
+        this.visible = !!this.actionRegistry.get(this.button.id);
+        this.changeDetector.detectChanges();
     }
 }
