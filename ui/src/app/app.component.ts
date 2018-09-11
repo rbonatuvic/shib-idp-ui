@@ -7,6 +7,9 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from './core/reducer';
 import { VersionInfo } from './core/model/version';
 import { VersionInfoLoadRequestAction } from './core/action/version.action';
+
+import { brand } from './app.brand';
+import { Brand } from './core/model/brand';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -18,6 +21,9 @@ export class AppComponent implements OnInit {
     version: string;
     formatted$: Observable<string>;
     today = new Date();
+    year = new Date().getFullYear();
+
+    brand: Brand = brand;
 
     formatter = v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : '';
 
