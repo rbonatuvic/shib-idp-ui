@@ -11,6 +11,7 @@ import { InfoLabelDirective } from './directive/info-label.directive';
 import { PrettyXml } from './pipe/pretty-xml.pipe';
 import { ToggleSwitchComponent } from './switch/switch.component';
 import { ContenteditableDirective } from './contenteditable/contenteditable.directive';
+import { ReplacePipe } from './pipe/replace.pipe';
 
 @NgModule({
     imports: [
@@ -28,6 +29,7 @@ import { ContenteditableDirective } from './contenteditable/contenteditable.dire
         ValidFormIconComponent,
         InfoLabelDirective,
         PrettyXml,
+        ReplacePipe,
         ContenteditableDirective
     ],
     exports: [
@@ -42,7 +44,8 @@ import { ContenteditableDirective } from './contenteditable/contenteditable.dire
         ValidFormIconComponent,
         ValidationClassDirective,
         InfoLabelDirective,
-        ContenteditableDirective
+        ContenteditableDirective,
+        ReplacePipe
     ]
 })
 export class SharedModule { }

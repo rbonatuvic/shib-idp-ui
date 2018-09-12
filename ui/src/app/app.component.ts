@@ -9,6 +9,8 @@ import { VersionInfo } from './core/model/version';
 import { VersionInfoLoadRequestAction } from './core/action/version.action';
 import { I18nService } from './i18n/service/i18n.service';
 import { SetLocale } from './i18n/action/message.action';
+import { brand } from './app.brand';
+import { Brand } from './core/model/brand';
 
 @Component({
     selector: 'app-root',
@@ -21,6 +23,9 @@ export class AppComponent implements OnInit {
     version: string;
     formatted$: Observable<string>;
     today = new Date();
+    year = new Date().getFullYear();
+
+    brand: Brand = brand;
 
     formatter = v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : '';
 
