@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
     name: 'i18n',
     pure: false
 })
-export class MockI18nPipe implements PipeTransform {
+export class MockTranslatePipe implements PipeTransform {
 
     constructor() {}
 

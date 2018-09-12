@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NavigatorService } from '../../core/service/navigator.service';
 import { getCurrentLanguage, getCurrentCountry, getCurrentLocale } from '../../shared/util';
+import { Messages } from '../model/Messages';
 
 @Injectable()
 export class I18nService {
@@ -33,6 +34,12 @@ export class I18nService {
 
     getCurrentLocale(): string {
         return getCurrentLocale(this.navigator.native);
+    }
+
+    translate(value: string, interpolated: any, messages: Messages): string {
+        interpolated = interpolated || {};
+        let val = messages.hasOwnProperty(value) ? messages[value] : value;
+        return this.interpolate(val, interpolated);
     }
 
     interpolate(value: string, interpolated: { [prop: string]: string } = {}): string {

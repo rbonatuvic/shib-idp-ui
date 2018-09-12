@@ -7,13 +7,16 @@ import { reducers } from './reducer';
 import { HttpClientModule } from '@angular/common/http';
 import { I18nService } from './service/i18n.service';
 import { MessageEffects } from './effect/message.effect';
-import { I18nPipe } from './pipe/i18n.pipe';
+import { TranslatePipe } from './pipe/i18n.pipe';
 import { CoreModule } from '../core/core.module';
+import { TranslateDirective } from './directive/translate.directive';
 
 export const COMPONENTS = [];
-export const DIRECTIVES = [];
+export const DIRECTIVES = [
+    TranslateDirective
+];
 export const PIPES = [
-    I18nPipe
+    TranslatePipe
 ];
 
 @NgModule({

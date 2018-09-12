@@ -1,4 +1,4 @@
-import { I18nPipe } from './i18n.pipe';
+import { TranslatePipe } from './i18n.pipe';
 import { I18nService } from '../service/i18n.service';
 import { CommonModule } from '@angular/common';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
@@ -10,7 +10,7 @@ import { MessagesLoadSuccessAction } from '../action/message.action';
 
 @Component({
     template: `
-        <span>{{ foo | i18n:{ foo: 'bar' } }}</span>
+        <span>{{ foo | translate:{ foo: 'bar' } }}</span>
     `
 })
 class TestHostComponent {
@@ -49,7 +49,7 @@ describe('Pipe: I18n translation', () => {
                 })
             ],
             declarations: [
-                I18nPipe,
+                TranslatePipe,
                 TestHostComponent
             ],
         });

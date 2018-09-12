@@ -5,16 +5,14 @@ import { Subscription } from 'rxjs';
 import { I18nService } from '../service/i18n.service';
 
 @Pipe({
-    name: 'i18n',
+    name: 'translate',
     pure: false
 })
-export class I18nPipe implements PipeTransform, OnDestroy {
+export class TranslatePipe implements PipeTransform, OnDestroy {
 
     sub: Subscription;
 
     messages: { [propName: string]: string } = {};
-
-    value: string;
 
     constructor(
         private store: Store<fromI18n.State>,
@@ -28,10 +26,7 @@ export class I18nPipe implements PipeTransform, OnDestroy {
     }
 
     transform(value: string, interpolated: { [prop: string]: string } = {}): any {
-        interpolated = interpolated || {};
-        let val = this.messages.hasOwnProperty(value) ? this.messages[value] : value;
-        this.value = this.i18nService.interpolate(val, interpolated);
-        return this.value;
+        return this.i18nService.translate(value, interpolated, this.messages);
     }
 
     ngOnDestroy(): void {
