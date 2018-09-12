@@ -2,9 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import org.springframework.core.env.PropertyResolver;
 
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Implementation of {@link TokenPlaceholderValueResolvingService} based on Spring Framework's default property resolver
