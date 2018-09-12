@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { NavigatorService } from './navigator.service';
+import { NavigatorService } from '../../core/service/navigator.service';
 import { getCurrentLanguage, getCurrentCountry, getCurrentLocale } from '../../shared/util';
 
 @Injectable()
@@ -33,5 +33,12 @@ export class I18nService {
 
     getCurrentLocale(): string {
         return getCurrentLocale(this.navigator.native);
+    }
+
+    interpolate(value: string, interpolated: { [prop: string]: string } = {}): string {
+        return Object.entries(interpolated).reduce((current, interpolate) => {
+            let reg = new RegExp(`{\\s*${interpolate[0]}\\s*}`, 'gm');
+            return current.replace(reg, interpolate[1]);
+        }, value);
     }
 }

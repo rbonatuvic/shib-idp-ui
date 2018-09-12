@@ -7,8 +7,8 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from './core/reducer';
 import { VersionInfo } from './core/model/version';
 import { VersionInfoLoadRequestAction } from './core/action/version.action';
-import { I18nService } from './core/service/i18n.service';
-import { SetLocale } from './core/action/message.action';
+import { I18nService } from './i18n/service/i18n.service';
+import { SetLocale } from './i18n/action/message.action';
 
 @Component({
     selector: 'app-root',

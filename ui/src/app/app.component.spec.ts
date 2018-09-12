@@ -4,11 +4,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { AppComponent } from './app.component';
 
-import { User } from './core/model/user';
 import * as fromRoot from './core/reducer';
-import * as fromVersion from './core/reducer/version.reducer';
 import { NotificationModule } from './notification/notification.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { MockI18nPipe, MockI18nService } from '../testing/i18n.stub';
+import { I18nService } from './i18n/service/i18n.service';
 
 @Component({
     template: `
@@ -29,6 +29,9 @@ describe('AppComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            providers: [
+                {provide: I18nService, useClass: MockI18nService }
+            ],
             imports: [
                 NgbDropdownModule.forRoot(),
                 RouterTestingModule,
@@ -39,7 +42,8 @@ describe('AppComponent', () => {
             ],
             declarations: [
                 AppComponent,
-                TestHostComponent
+                TestHostComponent,
+                MockI18nPipe
             ],
         }).compileComponents();
 
@@ -54,7 +58,7 @@ describe('AppComponent', () => {
 
     it('should create the app', async(() => {
         expect(app).toBeTruthy();
-        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(store.dispatch).toHaveBeenCalledTimes(2);
     }));
 
     it(`should have as title 'Shib-UI'`, async(() => {
