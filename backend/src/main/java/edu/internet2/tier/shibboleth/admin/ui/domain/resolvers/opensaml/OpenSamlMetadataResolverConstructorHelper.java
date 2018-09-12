@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes;
-import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.AbstractDynamicMetadataResolver;
@@ -23,11 +22,14 @@ public class OpenSamlMetadataResolverConstructorHelper {
         AbstractDynamicMetadataResolver dynamicMetadataResolver = (AbstractDynamicMetadataResolver) metadataResolver;
 
         if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
-            dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(attributes.getBackgroundInitializationFromCacheDelay()));
+            dynamicMetadataResolver
+                    .setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
+                            .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
         }
 
         if (attributes.getCleanupTaskInterval() != null) {
-            dynamicMetadataResolver.setCleanupTaskInterval(toMillis(attributes.getCleanupTaskInterval()));
+            dynamicMetadataResolver.setCleanupTaskInterval(toMillis(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(attributes.getCleanupTaskInterval())));
         }
 
         if (attributes.getInitializeFromPersistentCacheInBackground()) {
@@ -35,19 +37,23 @@ public class OpenSamlMetadataResolverConstructorHelper {
         }
 
         if (attributes.getMaxCacheDuration() != null) {
-            dynamicMetadataResolver.setMaxCacheDuration(toMillis(attributes.getMaxCacheDuration()));
+            dynamicMetadataResolver.setMaxCacheDuration(toMillis(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxCacheDuration())));
         }
 
         if (attributes.getMaxIdleEntityData() != null) {
-            dynamicMetadataResolver.setMaxIdleEntityData(toMillis(attributes.getMaxIdleEntityData()));
+            dynamicMetadataResolver.setMaxIdleEntityData(toMillis(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxIdleEntityData())));
         }
 
         if (attributes.getMinCacheDuration() != null) {
-            dynamicMetadataResolver.setMinCacheDuration(toMillis(attributes.getMinCacheDuration()));
+            dynamicMetadataResolver.setMinCacheDuration(toMillis(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(attributes.getMinCacheDuration())));
         }
 
         if (attributes.getBackgroundInitializationFromCacheDelay() != null) {
-            dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(attributes.getBackgroundInitializationFromCacheDelay()));
+            dynamicMetadataResolver.setBackgroundInitializationFromCacheDelay(toMillis(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(attributes.getBackgroundInitializationFromCacheDelay())));
         }
 
         if (attributes.getRefreshDelayFactor() != null) {
@@ -87,18 +93,19 @@ public class OpenSamlMetadataResolverConstructorHelper {
         //TODO: This takes a ParserPool. We've got a ParserPoolRef in attributes.getParserPoolRef(). Should we use it for anything?
         reloadingMetadataResolver.setParserPool(parserPool);
 
-        //TODO: finish placeholder resolving
         if (attributes != null) {
             if (attributes.getExpirationWarningThreshold() != null) {
                 reloadingMetadataResolver
                         .setExpirationWarningThreshold(toMillis(placeholderResolverService()
-                                .resolveValueFromTokenPlaceholder(attributes.getExpirationWarningThreshold())));
+                                .resolveValueFromPossibleTokenPlaceholder(attributes.getExpirationWarningThreshold())));
             }
             if (attributes.getMaxRefreshDelay() != null) {
-                reloadingMetadataResolver.setMaxRefreshDelay(toMillis(attributes.getMaxRefreshDelay()));
+                reloadingMetadataResolver.setMaxRefreshDelay(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMaxRefreshDelay())));
             }
             if (attributes.getMinRefreshDelay() != null) {
-                reloadingMetadataResolver.setMinRefreshDelay(toMillis(attributes.getMinRefreshDelay()));
+                reloadingMetadataResolver.setMinRefreshDelay(toMillis(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(attributes.getMinRefreshDelay())));
             }
 
             if (attributes.getResolveViaPredicatesOnly() != null) {

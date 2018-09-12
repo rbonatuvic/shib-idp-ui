@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver;
-import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
@@ -40,11 +39,10 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
-        //TODO: complete resolving placeholders everywhere
-        //This might throw runtime exception if unable to resolve placeholders sent from higher layers
-        this.setBackupFile(placeholderResolverService().resolveValueFromTokenPlaceholder(sourceResolver.getBackingFile()));
+        this.setBackupFile(placeholderResolverService()
+                .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackingFile()));
         this.setBackupFileInitNextRefreshDelay(toMillis(placeholderResolverService()
-                .resolveValueFromTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
+                .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
 
         this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
 

@@ -28,7 +28,7 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
     }
 
     @Override
-    public String resolveValueFromTokenPlaceholder(String potentialTokenPlaceholder) {
+    public String resolveValueFromPossibleTokenPlaceholder(String potentialTokenPlaceholder) {
         //Ignore nulls.
         if(potentialTokenPlaceholder == null) {
             return potentialTokenPlaceholder;
