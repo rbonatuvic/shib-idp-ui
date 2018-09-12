@@ -368,7 +368,7 @@ class TestObjectGenerator {
 
         representation.setType(randomFilterTargetType().toString())
         representation.setValue([
-                buildEntityAttributesFilterTargetValueByType(representation.getType())
+                buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType.valueOf(representation.getType()))
         ])
 
         return representation
