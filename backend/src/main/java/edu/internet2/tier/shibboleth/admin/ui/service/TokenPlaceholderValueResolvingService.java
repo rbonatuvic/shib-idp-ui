@@ -10,7 +10,7 @@ import org.springframework.core.env.PropertyResolver;
 @FunctionalInterface
 public interface TokenPlaceholderValueResolvingService {
 
-    String resolveValueFromTokenPlaceholder(String tokenPlaceholder);
+    String resolveValueFromTokenPlaceholder(String potentialTokenPlaceholder);
 
     static TokenPlaceholderValueResolvingService shibbolethPlaceholderAware(PropertyResolver propertyResolver) {
         return new ShibbolethPlaceholderTokenAwareValueResolvingService(propertyResolver);

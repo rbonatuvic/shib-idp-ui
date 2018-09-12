@@ -19,15 +19,26 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
 
     private PropertyResolver propertyResolver;
 
+    private static final String SHIB_IDP_PLACEHOLDER_PREEFIX = "%{";
+
+    private static final String STANDART_PLACEHOLDER_PREFIX = "${";
+
     ShibbolethPlaceholderTokenAwareValueResolvingService(PropertyResolver propertyResolver) {
         this.propertyResolver = propertyResolver;
     }
 
     @Override
-    public String resolveValueFromTokenPlaceholder(String tokenPlaceholder) {
-        requireNonNull(tokenPlaceholder, "tokenPlaceholder must not be null");
-        tokenPlaceholder.replace("%{", "${");
-
-        return null;
+    public String resolveValueFromTokenPlaceholder(String potentialTokenPlaceholder) {
+        requireNonNull(potentialTokenPlaceholder, "potentialTokenPlaceholder must not be null");
+        if(potentialTokenPlaceholder.contains(SHIB_IDP_PLACEHOLDER_PREEFIX)) {
+            String normalizedTokenPlaceholder =
+                    potentialTokenPlaceholder.replace(SHIB_IDP_PLACEHOLDER_PREEFIX, STANDART_PLACEHOLDER_PREFIX);
+            //This call might result in IllegalArgumentException if it's unable to resolve passed in property(ies)
+            //e.g. due to bad data sent, etc. This is OK, as passing correct data and ensuring that
+            //property values are correctly set is the responsibility of the software operator
+            return this.propertyResolver.resolveRequiredPlaceholders(normalizedTokenPlaceholder);
+        }
+        //No token placeholders, just return the given data as is
+        return potentialTokenPlaceholder;
     }
 }
