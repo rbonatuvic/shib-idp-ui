@@ -24,6 +24,7 @@ class TokenPlaceholderValueResolvingServiceTests extends Specification {
 
     static final IDP_HOME = '/tmp/test/idp'
     static final REFRESH_INTERVAL = 'PT5M'
+    static final PLAIN_VALUE = 'Plain String value'
 
     def setup() {
         def propPairs = ["idp.home=$IDP_HOME".toString(), "refresh.interval=$REFRESH_INTERVAL".toString()]
@@ -31,12 +32,50 @@ class TokenPlaceholderValueResolvingServiceTests extends Specification {
     }
 
     def "resolves correctly existing properties from well-formed shibboleth idp style placeholder tokens: %{}"() {
-        when: 'Valid placeholder token is passed for which property values are defined'
+        when: 'Valid placeholder token is passed in for which property values are defined'
         def idpHome = serviceUnderTest.resolveValueFromTokenPlaceholder('%{idp.home}')
         def refreshInterval = serviceUnderTest.resolveValueFromTokenPlaceholder('%{refresh.interval}')
 
         then: 'Correct property value resolution is performed'
         idpHome == IDP_HOME
         refreshInterval == REFRESH_INTERVAL
+    }
+
+    def "returns value as is if no well-formed shibboleth idp style placeholder tokens: %{} are passed in"() {
+        when: 'Plain value without placeholder token is passed in'
+        def idpHome = serviceUnderTest.resolveValueFromTokenPlaceholder(IDP_HOME)
+        def plainValue = serviceUnderTest.resolveValueFromTokenPlaceholder(PLAIN_VALUE)
+
+        then: 'Value returned as is'
+        idpHome == IDP_HOME
+        plainValue == PLAIN_VALUE
+
+        when: 'Malformed placeholder value is passed in'
+        plainValue = serviceUnderTest.resolveValueFromTokenPlaceholder('%{malformed.value')
+
+        then:
+        plainValue == '%{malformed.value'
+    }
+
+    def "Throws IllegalArgumentException for unresolvable properties"() {
+        when: 'Valid placeholder token is passed in for which property values are undefined'
+        serviceUnderTest.resolveValueFromTokenPlaceholder("%{i.am.not.defined}")
+
+        then:
+        thrown IllegalArgumentException
+
+        when: 'Combination of resolvable and unresolvable tokens are passed in'
+        serviceUnderTest.resolveValueFromTokenPlaceholder("%{idp.home}/%{i.am.not.defined}")
+
+        then:
+        thrown IllegalArgumentException
+    }
+
+    def "resolves correctly combination of existing properties from well-formed shibboleth idp style placeholder tokens: %{}"() {
+        when: 'Valid placeholder token is passed in for which property values are defined'
+        def combinedValue = serviceUnderTest.resolveValueFromTokenPlaceholder('%{idp.home} AND %{refresh.interval}')
+
+        then: 'Correct combined property values resolution is performed'
+        combinedValue == "$IDP_HOME AND $REFRESH_INTERVAL"
     }
 }

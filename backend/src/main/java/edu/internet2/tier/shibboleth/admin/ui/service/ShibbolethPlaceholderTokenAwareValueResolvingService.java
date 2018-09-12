@@ -36,7 +36,14 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
             //This call might result in IllegalArgumentException if it's unable to resolve passed in property(ies)
             //e.g. due to bad data sent, etc. This is OK, as passing correct data and ensuring that
             //property values are correctly set is the responsibility of the software operator
-            return this.propertyResolver.resolveRequiredPlaceholders(normalizedTokenPlaceholder);
+            String resolved = this.propertyResolver.resolveRequiredPlaceholders(normalizedTokenPlaceholder);
+
+            //Indicates that malformed values such as %{incomplete.token are passed. Spring won't resolve and return
+            //the value as is. Just change it back to the original shib-style token and return.
+            if(resolved.equals(normalizedTokenPlaceholder)) {
+                return resolved.replace(STANDART_PLACEHOLDER_PREFIX, SHIB_IDP_PLACEHOLDER_PREEFIX);
+            }
+            return resolved;
         }
         //No token placeholders, just return the given data as is
         return potentialTokenPlaceholder;
