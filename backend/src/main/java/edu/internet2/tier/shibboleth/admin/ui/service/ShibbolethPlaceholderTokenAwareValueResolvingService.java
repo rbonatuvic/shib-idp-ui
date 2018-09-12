@@ -29,7 +29,11 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
 
     @Override
     public String resolveValueFromTokenPlaceholder(String potentialTokenPlaceholder) {
-        requireNonNull(potentialTokenPlaceholder, "potentialTokenPlaceholder must not be null");
+        //Ignore nulls.
+        if(potentialTokenPlaceholder == null) {
+            return potentialTokenPlaceholder;
+        }
+
         if(potentialTokenPlaceholder.contains(SHIB_IDP_PLACEHOLDER_PREEFIX)) {
             String normalizedTokenPlaceholder =
                     potentialTokenPlaceholder.replace(SHIB_IDP_PLACEHOLDER_PREEFIX, STANDART_PLACEHOLDER_PREFIX);
