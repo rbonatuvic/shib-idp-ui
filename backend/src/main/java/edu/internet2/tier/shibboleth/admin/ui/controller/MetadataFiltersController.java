@@ -88,7 +88,7 @@ public class MetadataFiltersController {
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
-        metadataResolverService.reloadFilters(persistedMr.getName());
+        metadataResolverService.reloadFilters(persistedMr.getResourceId());
 
         MetadataFilter persistedFilter = newlyPersistedFilter(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
 
@@ -130,7 +130,7 @@ public class MetadataFiltersController {
         MetadataFilter persistedFilter = filterRepository.save(filterTobeUpdated);
 
         // TODO: this is wrong
-        metadataResolverService.reloadFilters(metadataResolver.getName());
+        metadataResolverService.reloadFilters(metadataResolver.getResourceId());
 
         return ResponseEntity.ok().body(persistedFilter);
     }

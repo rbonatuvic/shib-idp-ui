@@ -56,7 +56,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     void reloadFilters(String metadataResolverName) {
         ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver) metadataResolver
         MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverName }
-        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName)
+        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverName)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
             MetadataFilterChain metadataFilterChain = (MetadataFilterChain) targetMetadataResolver.getMetadataFilter()
