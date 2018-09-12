@@ -30,6 +30,66 @@ For Providers and Filters, the forms in SHIB-UI are built based on the standard 
 
 [Bootstrap](http://getbootstrap.com/) 4 is used for the css framework in SHIB-UI, and provides our base theme, a responsive grid system, consistent styling across all major browsers, and pre-styled components which are connected to Angular using ng-bootstrap, a 3rd party framework.
 
+# Customizing UI
+
+Within the `ui > src` folder, there are two files which can be used to customize the user interface quickly.
+
+### Color Scheme
+The `Brand.scss` contains the palette information used by bootstrap to color the user interface buttons and other components. Uncomment the color you wish to override and change the hex value accordingly and rebuild the user interface.
+
+For example:
+
+`// $blue: #00355f;`
+
+change to...
+
+`$blue: #0000FF;`
+
+If you wish to change the __"primary"__ color or any other mapping according to Bootstrap's conventions, there is a block of mappings at the bottom of the `Brand.scss` file to accomodate this as well. Uncomment and change the value allocated to the corresponding aspect of the theme you wish to change.
+
+The supported values are:
+
+`$brand-primary: $blue;` - The primary color used throughout the site. Default: dark blue.
+
+`$brand-secondary: $gray-700;` - An accept color used throughout the site. Default: dark gray.
+
+`$brand-success: $green;` - Indicates success or some other positive action. Default: green.
+
+`$brand-info: $light-blue;` - Indicates some sort of informative text or action for the user. Default: light blue.
+
+`$brand-warning: $yellow;` - Indicates a warning to the user. Default: yellow.
+
+`$brand-danger: $red;` - Indicates a dangerous action or error. Default: red.
+
+`$brand-light: $light-grey;` - Color used for accents, text, etc throughout application. Default: light grey.
+
+`$brand-dark: $dark-grey;` - Color used for accents, text, etc throughout application. Default: dark grey.
+
+### Logos / Footer
+The `Brand.ts` contains the links, text, and image paths to modify the logos, text, and links found within the header and footer. Override the values within this Typescript file and rebuild the user interface to view changes. If the local server should host these files, they should be added to the assets folder.
+
+For example:
+
+`export const brand = {};`
+
+change to...
+
+`export const brand = {
+    header: 'Metadata Management'
+};`
+
+### Sitewide text
+Finally, this project has support for internationalization (i18n). In the folder `backend > src > main > resources > i18n` folder there is a group of files which can be used to modify the text seen throughout the application. In order to change the default value, you can override the text in the messages_en file with the desired text.
+
+For example:
+
+`action.logout=Logout`
+
+change to...
+
+`action.logout=Sign Out`
+
+
 # Development
 
 ## Scaffolding
