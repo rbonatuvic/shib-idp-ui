@@ -18,7 +18,7 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
 
     private static final String SHIB_IDP_PLACEHOLDER_PREEFIX = "%{";
 
-    private static final String STANDART_PLACEHOLDER_PREFIX = "${";
+    private static final String STANDARD_PLACEHOLDER_PREFIX = "${";
 
     ShibbolethPlaceholderTokenAwareValueResolvingService(PropertyResolver propertyResolver) {
         this.propertyResolver = propertyResolver;
@@ -33,7 +33,7 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
 
         if(potentialTokenPlaceholder.contains(SHIB_IDP_PLACEHOLDER_PREEFIX)) {
             String normalizedTokenPlaceholder =
-                    potentialTokenPlaceholder.replace(SHIB_IDP_PLACEHOLDER_PREEFIX, STANDART_PLACEHOLDER_PREFIX);
+                    potentialTokenPlaceholder.replace(SHIB_IDP_PLACEHOLDER_PREEFIX, STANDARD_PLACEHOLDER_PREFIX);
             //This call might result in IllegalArgumentException if it's unable to resolve passed in property(ies)
             //e.g. due to bad data sent, etc. This is OK, as passing correct data and ensuring that
             //property values are correctly set is the responsibility of the software operator
@@ -42,7 +42,7 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
             //Indicates that malformed values such as %{incomplete.token are passed. Spring won't resolve and return
             //the value as is. Just change it back to the original shib-style token and return.
             if(resolved.equals(normalizedTokenPlaceholder)) {
-                return resolved.replace(STANDART_PLACEHOLDER_PREFIX, SHIB_IDP_PLACEHOLDER_PREEFIX);
+                return resolved.replace(STANDARD_PLACEHOLDER_PREFIX, SHIB_IDP_PLACEHOLDER_PREEFIX);
             }
             return resolved;
         }
