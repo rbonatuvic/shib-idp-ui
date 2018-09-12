@@ -9,10 +9,6 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Subject
 
-import static edu.internet2.tier.shibboleth.admin.ui.service.TestProps.IDP_HOME
-import static edu.internet2.tier.shibboleth.admin.ui.service.TestProps.REFRESH_INTERVAL
-
-
 /**
  * @author Dmitriy Kopylenko
  */
@@ -25,6 +21,9 @@ class TokenPlaceholderValueResolvingServiceTests extends Specification {
 
     @Autowired
     ConfigurableEnvironment environment
+
+    static final IDP_HOME = '/tmp/test/idp'
+    static final REFRESH_INTERVAL = 'PT5M'
 
     def setup() {
         def propPairs = ["idp.home=$IDP_HOME".toString(), "refresh.interval=$REFRESH_INTERVAL".toString()]
@@ -40,9 +39,4 @@ class TokenPlaceholderValueResolvingServiceTests extends Specification {
         idpHome == IDP_HOME
         refreshInterval == REFRESH_INTERVAL
     }
-}
-
-class TestProps {
-    static final IDP_HOME = '/tmp/test/idp'
-    static final REFRESH_INTERVAL = 'PT5M'
 }
