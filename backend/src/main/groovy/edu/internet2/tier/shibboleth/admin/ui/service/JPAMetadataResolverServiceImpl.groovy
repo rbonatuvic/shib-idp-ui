@@ -96,7 +96,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             (Refilterable) targetMetadataResolver.refilter()
         } else {
             //TODO: Do something here if we need to refilter other non-Batch resolvers
-            println("We shouldn't be here. But we are. Why?")
+            log.warn("Target resolver is not a Refilterable resolver. Skipping refilter()")
         }
     }
 
