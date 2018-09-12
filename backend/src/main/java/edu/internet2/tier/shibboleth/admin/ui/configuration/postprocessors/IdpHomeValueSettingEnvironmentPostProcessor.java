@@ -17,8 +17,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Spring Boot Environment Post Processor setting the value for idp.home property to an abstract temp directory
+ * Spring Boot Environment Post Processor setting the value for idp.home property to a temp directory
  * if no IDP_HOME environment variable has been set already.
+ *
+ * Also creates IDP_HOME/metadata directory if no such directory already exixst.
  *
  * @author Dmitriy Kopylenko
  */
