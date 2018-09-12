@@ -8,7 +8,7 @@ import org.springframework.core.env.PropertyResolver;
  * which understands and replaces Shibboleth Idp specific placeholder prefix of '%{' with standard Spring's placeholder
  * prefix of '${' before resolving.
  *
- * If passed it value does not contain Shibboleth Idp '%{}' placeholder token, returns that value as is.
+ * If passed in value does not contain Shibboleth Idp '%{}' placeholder token, returns that value as is.
  *
  * @author Dmitriy Kopylenko
  */
