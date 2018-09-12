@@ -11,9 +11,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMet
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFileBackedHTTPMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFilesystemMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
@@ -21,11 +20,9 @@ import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.utilities.java.support.scripting.EvaluableScript
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
-import org.opensaml.saml.metadata.resolver.impl.AbstractBatchMetadataResolver
 import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,10 +50,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     // TODO: enhance
     @Override
-    void reloadFilters(String metadataResolverName) {
-        ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver) metadataResolver
-        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverName }
-        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverName)
+    void reloadFilters(String metadataResolverResourceId) {
+        OpenSamlChainingMetadataResolver chainingMetadataResolver = (OpenSamlChainingMetadataResolver) metadataResolver
+        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverResourceId }
+        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverResourceId)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
             MetadataFilterChain metadataFilterChain = (MetadataFilterChain) targetMetadataResolver.getMetadataFilter()
@@ -95,17 +92,11 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             metadataFilterChain.setFilters(metadataFilters)
         }
 
-        if (targetMetadataResolver != null && targetMetadataResolver instanceof AbstractBatchMetadataResolver) {
-            if (targetMetadataResolver instanceof OpenSamlFileBackedHTTPMetadataResolver) {
-                (OpenSamlFileBackedHTTPMetadataResolver) targetMetadataResolver.refilter()
-            } else if (targetMetadataResolver instanceof OpenSamlFilesystemMetadataResolver) {
-                (OpenSamlFilesystemMetadataResolver) targetMetadataResolver.refilter()
-            } else if (targetMetadataResolver instanceof OpenSamlResourceBackedMetadataResolver) {
-                (OpenSamlResourceBackedMetadataResolver) targetMetadataResolver.refilter()
-            } else {
-                //TODO: Do something here if we need to refilter other non-Batch resolvers
-                println("We shouldn't be here. But we are. Why?")
-            }
+        if (targetMetadataResolver != null && targetMetadataResolver instanceof Refilterable) {
+            (Refilterable) targetMetadataResolver.refilter()
+        } else {
+            //TODO: Do something here if we need to refilter other non-Batch resolvers
+            println("We shouldn't be here. But we are. Why?")
         }
     }
 
