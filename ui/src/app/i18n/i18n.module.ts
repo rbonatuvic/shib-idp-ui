@@ -10,8 +10,11 @@ import { MessageEffects } from './effect/message.effect';
 import { TranslatePipe } from './pipe/i18n.pipe';
 import { CoreModule } from '../core/core.module';
 import { TranslateDirective } from './directive/translate.directive';
+import { TranslateComponent } from './component/translate.component';
 
-export const COMPONENTS = [];
+export const COMPONENTS = [
+    TranslateComponent
+];
 export const DIRECTIVES = [
     TranslateDirective
 ];
