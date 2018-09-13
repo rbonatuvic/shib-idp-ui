@@ -19,7 +19,7 @@ export class TranslateDirective implements OnDestroy {
     key: string;
     lastParams: any;
     currentParams: any;
-    messages: Messages;
+    messages: Messages = {};
     sub: Subscription;
 
     @Input() set translate(key: string) {
@@ -40,11 +40,18 @@ export class TranslateDirective implements OnDestroy {
         private element: ElementRef,
         private _ref: ChangeDetectorRef
     ) {
-        this.sub = this.store.select(fromI18n.getMessages).subscribe(m => this.messages = m);
+        this.sub = this.store.select(fromI18n.getMessages).subscribe(m => {
+            if (m && Object.keys(m).length) {
+                this.messages = m;
+                this.update();
+            }
+        });
     }
 
     update(): void {
-        this.element.nativeElement.textContent = this.service.translate(this.key, this.currentParams, this.messages);
+        const translated = this.service.translate(this.key, this.currentParams, this.messages);
+        this.element.nativeElement.textContent = translated;
+        // this.element.nativeElement.data = translated;
     }
 
     ngOnDestroy() {
