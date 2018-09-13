@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import * as fromRoot from './core/reducer';
 import { NotificationModule } from './notification/notification.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { MockTranslatePipe, MockI18nService } from '../testing/i18n.stub';
+import { MockTranslatePipe, MockI18nService, MockI18nModule } from '../testing/i18n.stub';
 import { I18nService } from './i18n/service/i18n.service';
 
 @Component({
@@ -38,12 +38,12 @@ describe('AppComponent', () => {
                 StoreModule.forRoot({
                     core: combineReducers(fromRoot.reducers)
                 }),
-                NotificationModule
+                NotificationModule,
+                MockI18nModule
             ],
             declarations: [
                 AppComponent,
-                TestHostComponent,
-                MockTranslatePipe
+                TestHostComponent
             ],
         }).compileComponents();
 

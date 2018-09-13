@@ -7,6 +7,7 @@ import * as fromI18n from '../reducer';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { MessagesLoadSuccessAction } from '../action/message.action';
+import { MockI18nService, MockI18nModule } from '../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -33,14 +34,7 @@ describe('Pipe: I18n translation', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
-                { provide: I18nService, useValue: {
-                    interpolate: (value: string, interpolated: { [prop: string]: string } = {}): string => {
-                        return Object.entries(interpolated).reduce((current, interpolate) => {
-                            let reg = new RegExp(`{\\s*${interpolate[0]}\\s*}`, 'gm');
-                            return current.replace(reg, interpolate[1]);
-                        }, value);
-                    }
-                } }
+                { provide: I18nService, useClass: MockI18nService }
             ],
             imports: [
                 CommonModule,
