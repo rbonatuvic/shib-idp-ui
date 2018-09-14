@@ -3,12 +3,14 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import edu.internet2.tier.shibboleth.admin.util.OpenSamlChainingMetadataResolverUtil
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -38,6 +40,12 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
     @Autowired
     AttributeUtility attributeUtility
 
+    @Autowired
+    MetadataResolverConverterService metadataResolverConverterService
+
+    @Autowired
+    MetadataResolver chainingMetadataResolver
+
     ObjectMapper mapper
     TestObjectGenerator generator
 
@@ -63,7 +71,8 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
         def filterResourceId = resolver.metadataFilters[0].resourceId
         def resolverResourceId = resolver.resourceId
         metadataResolverRepository.save(resolver)
-
+        MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(resolver)
+        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
 
         when: 'GET request is made with resource Id matching the existing filter'
         def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId/Filters/$filterResourceId", String)
@@ -86,7 +95,8 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
         def filterResourceId = resolver.metadataFilters[0].resourceId
         def resolverResourceId = resolver.resourceId
         metadataResolverRepository.save(resolver)
-
+        MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(resolver)
+        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
 
         when: 'GET request is made with resource Id matching the existing filter'
         def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId/Filters/$filterResourceId", String)
@@ -182,7 +192,7 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
     static class Config {
         @Bean
         MetadataResolver metadataResolver() {
-            new ChainingMetadataResolver().with {
+            new OpenSamlChainingMetadataResolver().with {
                 it.id = 'tester'
                 it.initialize()
                 return it

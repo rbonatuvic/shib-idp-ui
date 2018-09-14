@@ -32,10 +32,7 @@
     <MetadataProvider id="HTTPMetadata"
                       xsi:type="FileBackedHTTPMetadataProvider"
                       backingFile="unicon.xml"
-                      metadataURL="https://idp.unicon.net/idp/shibboleth"
-                      minRefreshDelay="PT5M"
-                      maxRefreshDelay="PT1H"
-                      refreshDelayFactor="0.75">
+                      metadataURL="https://idp.unicon.net/idp/shibboleth">
         <MetadataFilter xsi:type="SignatureValidation" requireSignedRoot="true"
                         certificateFile="%{idp.home}/credentials/inc-md-cert.pem" />
     </MetadataProvider>

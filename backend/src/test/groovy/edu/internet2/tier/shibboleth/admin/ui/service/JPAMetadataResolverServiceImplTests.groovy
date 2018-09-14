@@ -2,15 +2,16 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
-
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.xml.DOMBuilder
@@ -39,10 +40,9 @@ import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-
 @SpringBootTest
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, MetadataResolverConverterConfiguration, SearchConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -64,6 +64,9 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
     @Autowired
     AttributeUtility attributeUtility
+
+    @Autowired
+    MetadataResolverConverterService mdrConverterService
 
     TestObjectGenerator testObjectGenerator
 
@@ -111,8 +114,13 @@ class JPAMetadataResolverServiceImplTests extends Specification {
   </md:SPSSODescriptor>
 </md:EntityDescriptor>'''
         when:
-        def mdr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver().with {
+        def mdr = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
+            it.resourceId = "testme"
             it.name = "testme"
+            it.classpathMetadataResource = new ClasspathMetadataResource().with {
+                it.file = "metadata/aggregate.xml"
+                it
+            }
             it.metadataFilters.add(new EntityAttributesFilter().with {
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
@@ -125,12 +133,14 @@ class JPAMetadataResolverServiceImplTests extends Specification {
             return it
         }
         metadataResolverRepository.save(mdr)
+        ((OpenSamlChainingMetadataResolver) metadataResolver).getResolvers().add(mdrConverterService.convertToOpenSamlRepresentation(mdr))
         metadataResolverService.reloadFilters("testme")
 
         then:
         assert metadataResolverRepository.findAll().size() > 0
         def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
         def resultString = openSamlObjects.marshalToXmlString(ed)
+        println(resultString)
         def diff = DiffBuilder.compare(Input.fromString(expectedXML)).withTest(Input.fromString(resultString)).ignoreComments().ignoreWhitespace().build()
         !diff.hasDifferences()
     }
@@ -302,9 +312,10 @@ class JPAMetadataResolverServiceImplTests extends Specification {
                 it
             }
 
-            return new ChainingMetadataResolver().with {
+            return new OpenSamlChainingMetadataResolver().with {
                 it.id = 'chain'
-                it.resolvers = [aggregate]
+                //it.resolvers = [aggregate]
+//                it.resolvers = []
                 it.initialize()
                 it
             }
