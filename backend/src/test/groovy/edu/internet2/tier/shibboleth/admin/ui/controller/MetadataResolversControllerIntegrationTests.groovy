@@ -178,8 +178,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         where:
             resolverType     | _
             'DynamicHttp'    | _
-            // TODO: fix
-            // 'FileBacked'     | _
+            'FileBacked'     | _
             'LocalDynamic'   | _
             'ResourceBacked' | _
             'Filesystem'     | _
@@ -227,8 +226,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         where:
             resolverType     | _
             'DynamicHttp'    | _
-            // TODO: fix
-            // 'FileBacked'     | _
+            'FileBacked'     | _
             'LocalDynamic'   | _
             'ResourceBacked' | _
             'Filesystem'     | _
