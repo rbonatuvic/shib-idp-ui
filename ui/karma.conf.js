@@ -8,7 +8,7 @@ module.exports = function (config) {
         frameworks: ['jasmine', '@angular-devkit/build-angular'],
         plugins: [
             require('karma-jasmine'),
-            require('karma-phantomjs-launcher'),
+            require('karma-chrome-launcher'),
             require('karma-jasmine-html-reporter'),
             require('karma-coverage-istanbul-reporter'),
             require('karma-spec-reporter'),
@@ -46,13 +46,7 @@ module.exports = function (config) {
         colors: true,
         logLevel: config.LOG_WARN,
         autoWatch: false,
-        browsers: ['PhantomJS_custom'],
-        customLaunchers: {
-            'PhantomJS_custom': {
-                base: 'PhantomJS',
-                flags: ['--disk-cache=false']
-            }
-        },
+        browsers: ['ChromeHeadless'],
         singleRun: true
     });
 };

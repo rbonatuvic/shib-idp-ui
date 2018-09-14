@@ -7,12 +7,12 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +21,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -150,6 +151,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     }
 
     @Unroll
+    @DirtiesContext
     def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
@@ -313,7 +315,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     static class Config {
         @Bean
         MetadataResolver metadataResolver() {
-            new ChainingMetadataResolver()
+            new OpenSamlChainingMetadataResolver()
         }
     }
 }

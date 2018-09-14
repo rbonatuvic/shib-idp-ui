@@ -31,7 +31,6 @@ import java.net.URL;
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@Service
 public class MetadataResolverConverterServiceImpl implements MetadataResolverConverterService {
 
     @Autowired
