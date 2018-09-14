@@ -34,7 +34,9 @@ pipeline {
         }
       }
       steps {
-        sh '''docker run -d --restart always unicon/shibui
+        sh '''
+        docker stop shibui
+        docker run -d --restart always -t shibui unicon/shibui --spring.config.location=file:/etc/shibui
         '''
       }
     }
