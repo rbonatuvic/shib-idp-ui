@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" i18n="@@label--preview-provider">Preview XML</h4>
+    <h4 class="modal-title" translate="label.preview-provider">Preview XML</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="activeModal.close()">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -10,7 +10,7 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="preview(xml)">
         <i class="fa fa-fw fa-save"></i>
-        <ng-container i18n="@@action--download-file">Download File</ng-container>
+        <translate key="action.download-file">Download File</translate>
     </button>
-    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()" i18n="@@action--cancel">Cancel</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()" translate="action.cancel">Cancel</button>
 </div>

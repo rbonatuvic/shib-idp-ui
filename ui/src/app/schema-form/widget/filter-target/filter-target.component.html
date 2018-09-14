@@ -5,10 +5,10 @@
                 <label [attr.for]="id" class="d-flex justify-content-start control-label">
                     <span>Search By <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></span>
                     <span>
-                        <ng-template #tooltipBy i18n="@@tooltip--description">Search By</ng-template>
+                        <ng-template #tooltipBy translate="tooltip.description">Search By</ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipBy"
-                            i18n-aria-label="@@tooltip--instruction"
+                            i18n-aria-label="@@tooltip.instruction"
                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                     </span>
                 </label>
@@ -41,12 +41,12 @@
                             *ngIf="entityAttributesFilterTargetType !== 'ENTITY'"></i>
                     </span>
                     <span>
-                        <ng-template #tooltipCriteria i18n="@@tooltip--description">
+                        <ng-template #tooltipCriteria translate="tooltip.description">
                             Search Criteria by {{ this.displayType }}
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipCriteria"
-                            i18n-aria-label="@@tooltip--instruction"
+                            i18n-aria-label="@@tooltip.instruction"
                             aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                     </span>
                 </label>

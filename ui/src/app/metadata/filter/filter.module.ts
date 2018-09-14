@@ -21,6 +21,7 @@ import { DomainModule } from '../domain/domain.module';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { FilterCollectionEffects } from './effect/collection.effect';
 import { FormModule } from '../../schema-form/schema-form.module';
+import { I18nModule } from '../../i18n/i18n.module';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { FormModule } from '../../schema-form/schema-form.module';
         DomainModule,
         HttpClientModule,
         RouterModule,
-        FormModule
+        FormModule,
+        I18nModule
     ]
 })
 export class FilterModule {

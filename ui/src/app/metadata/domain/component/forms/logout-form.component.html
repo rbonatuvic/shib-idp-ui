@@ -2,8 +2,8 @@
     <div class="row">
         <fieldset class="col col-xl-6 form-section">
             <p>
-                <ng-container i18n="@@label--logout-endpoints">Logout Endpoints: </ng-container>
-                <button class="btn btn-success btn-sm" (click)="addEndpoint()" i18n="@@action--add-endpoint" aria-label="Add logout endpoint to accordion group">Add Endpoint</button>
+                <translate key="label.logout-endpoints">Logout Endpoints: </translate>
+                <button class="btn btn-success btn-sm" (click)="addEndpoint()" translate="action.add-endpoint" aria-label="Add logout endpoint to accordion group">Add Endpoint</button>
             </p>
             <div formArrayName="logoutEndpoints" class="bg-light border rounded p-4" *ngIf="logoutEndpoints.length">
                 <ul class="list-group" id="logoutAccordionGroup" aria-label="Logout endpoint accordion group" role="presentation" tabindex="0">
@@ -18,7 +18,7 @@
                                     <i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
                                     <span tabindex="0" role="heading" aria-level="3">
                                         <ng-container *ngIf="endpoint.get('url').value">{{ endpoint.get('url').value }}</ng-container>
-                                        <ng-container *ngIf="!endpoint.get('url').value" i18n="@@label--new-endpoint">New Endpoint</ng-container>
+                                        <ng-container *ngIf="!endpoint.get('url').value" translate="label.new-endpoint">New Endpoint</ng-container>
                                     </span>
                                 </div>
                                 <span class="col-sm-2 text-right">
@@ -33,13 +33,15 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label [for]="'url-' + i" class="col-sm-10">
-                                        <ng-container i18n="@@label--url">URL</ng-container>
+                                        <translate key="label.url">URL</translate>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipLogoutEndpointsUrl i18n="@@tooltip--logout-endpoints-url">Logout Endpoints Url popover</ng-template>
+                                        <ng-template #tooltipLogoutEndpointsUrl>
+                                            <translate key="tooltip.logout-endpoints-url">Logout Endpoints Url popover</translate>
+                                        </ng-template>
                                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                            [ngbPopover]="tooltipLogoutEndpointsUrl"
-                                           i18n-aria-label="@@tooltip--instruction"
+                                           i18n-aria-label="@@tooltip.instruction"
                                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
@@ -49,18 +51,20 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label [for]="'binding-' + i" class="col-sm-10">
-                                        <ng-container i18n="@@label--binding-types">Binding Type</ng-container>
+                                        <translate key="label.binding-types">Binding Type</translate>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipLogoutEndpointsBindingType i18n="@@tooltip--logout-endpoints-binding-type">Logout Endpoints Binding Type popover</ng-template>
+                                        <ng-template #tooltipLogoutEndpointsBindingType>
+                                            <translate key="tooltip.logout-endpoints-binding-type">Logout Endpoints Binding Type popover</translate>
+                                        </ng-template>
                                     <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                        [ngbPopover]="tooltipLogoutEndpointsBindingType"
-                                       i18n-aria-label="@@tooltip--instruction"
+                                       i18n-aria-label="@@tooltip.instruction"
                                        aria-label="Information icon - press spacebar to read additional information for this form field"></i>
                                     </span>
                                 </div>
                                 <select [id]="'binding-' + i" class="form-control" formControlName="bindingType" aria-label="Logout binding type dropdown" role="listbox">
-                                    <option disabled selected [ngValue]="null" hidden role="option" i18n="@@label--select-binding">Select Binding Type</option>
+                                    <option disabled selected [ngValue]="null" hidden role="option" translate="label.select-binding">Select Binding Type</option>
                                     <option *ngFor="let opt of bindingTypes; let i=index;" [value]="opt" [attr.aria-label]="opt" role="option">{{ opt }}</option>
                                 </select>
                             </div>

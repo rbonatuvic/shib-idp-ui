@@ -2,10 +2,10 @@
     <label class="d-flex justify-content-start control-label">
         <span>{{ schema.title }}</span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip i18n="@@tooltip--description">{{ schema.description }}</ng-template>
+            <ng-template #tooltip translate="tooltip.description">{{ schema.description }}</ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
-                i18n-aria-label="@@tooltip--instruction"
+                i18n-aria-label="@@tooltip.instruction"
                 aria-label="Information icon - press spacebar to read additional information for this form field"></i>
         </span>
     </label>

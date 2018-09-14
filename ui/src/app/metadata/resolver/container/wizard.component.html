@@ -5,10 +5,10 @@
                 <div class="col-md-12">
                     <span class="display-6" role="heading" aria-level="1">
                         <i class="fa fa-fw fa-plus-square"></i>
-                        <ng-container i18n="@@message--add-new-md-resolver">Add a new metadata source</ng-container>
+                        <translate key="message.add-new-md-resolver">Add a new metadata source</translate>
                         &ndash; {{ (currentPage$ | async).label }} ({{ (resolver$ | async).serviceProviderName }})
                         <span class="pull-right">
-                            (<ng-container i18n="@@message--wizard-status">Step {{ wizardIndex$ | async }} of {{ wizard.length + 1 }}</ng-container>)
+                            (<translate key="message.wizard-status">Step {{ wizardIndex$ | async }} of {{ wizard.length + 1 }}</translate>)
                         </span>
                     </span>
                 </div>

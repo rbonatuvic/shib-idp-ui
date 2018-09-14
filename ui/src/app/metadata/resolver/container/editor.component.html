@@ -46,19 +46,19 @@
                         aria-label="Save changes to the metadata source. You will return to the dashboard"
                         role="button">
                         <i class="fa fa-fw fa-save"></i>
-                        <ng-container i18n="@@action--save">Save</ng-container>
+                        <translate key="action.save">Save</translate>
                     </button>
                     &nbsp;
                     <button class="btn btn-secondary"
                         (click)="cancel()" aria-label="Cancel changes, go back to dashboard"
                         role="button">
-                        <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                        <translate key="action.cancel">Cancel</translate>
                     </button>
                 </div>
                 <div class="col-xs-12 col-lg-9 order-lg-1 order-3">
                     <div class="alert alert-danger alert-compact mt-3 mt-lg-0" *ngIf="(wizardIsInvalid$ | async) && (otherPageInvalid$ | async)">
                         <i class="fa fa-fw fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
-                        <ng-container i18n-text="@@message--editor-invalid">All forms must be valid before changes can be saved!</ng-container>
+                        <translate key="message.editor-invalid">All forms must be valid before changes can be saved!</translate>
                     </div>
                 </div>
             </div>

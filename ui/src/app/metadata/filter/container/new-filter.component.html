@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <span class="display-6">
                         <i class="fa fa-fw fa-gears"></i>
-                        <ng-container i18n="@@label--new-filter">&nbsp; New Filter - EntityAttributes</ng-container>
+                        <translate key="label.new-filter">&nbsp; New Filter - EntityAttributes</translate>
                     </span>
                 </div>
             </div>
@@ -18,11 +18,11 @@
                                         'fa-spinner': (isSaving$ | async),
                                         'fa-pulse': (isSaving$ | async)
                                     }"></i>
-                    <ng-container i18n="@@action--save">Save</ng-container>
+                    <translate key="action.save">Save</translate>
                 </button>
                 &nbsp;
                 <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
-                    <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                    <translate key="action.cancel">Cancel</translate>
                 </button>
             </div>
             <sf-form

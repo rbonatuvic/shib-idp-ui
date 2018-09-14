@@ -1,10 +1,9 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <nav class="navbar navbar-expand-md fixed-top">
     <a class="navbar-brand" [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.description">
         <img [src]="brand.logo.small" width="30" height="30" class="d-inline-block align-top" [alt]="brand.logo.alt">
         <span class="d-lg-inline d-none">{{ brand.logo.link.label }}</span>
     </a>
-    <span class="navbar-text" i18n="@@label--app">{{ brand.header.title }}</span>
+    <span class="navbar-text">{{ brand.header.title }}</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -30,7 +29,7 @@
                         role="button">
                         <i class="fa fa-cube fa-fw" aria-hidden="true"></i>
                         &nbsp;
-                        <ng-container i18n="@@action--add-source">Metadata Source</ng-container>
+                        <translate key="label.metadata-source">Metadata Source</translate>
                     </a>
                     <a class="nav-link"
                         routerLink="/metadata/provider/wizard"
@@ -39,20 +38,20 @@
                         role="button">
                         <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
                         &nbsp;
-                        <ng-container i18n="@@action--add-filter">Metadata Provider</ng-container>
+                        <translate key="label.metadata-provider">Metadata Provider</translate>
                     </a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/metadata" routerLinkActive="active" aria-label="Metadata Dashboard">
                     <i class="fa fa-th fa-fw" aria-hidden="true"></i>
-                    <ng-container i18n="@@action--dashboard">Dashboard</ng-container>
+                    <translate key="action.dashboard">Dashboard</translate>
                 </a>
             </li>
             <li>
                 <a class="nav-link" href="/logout" target="_self" aria-label="Log out of Shibboleth UI">
                     <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
-                    <ng-container i18n="@@action--logout">Logout</ng-container>
+                    <translate key="action.logout">Logout</translate>
                 </a>
             </li>
         </ul>
@@ -78,7 +77,7 @@
                 {{ formatted$ | async }}
                 &nbsp;|&nbsp;
                 </ng-container>
-                <ng-container i18n="@@label--copyright">Copyright</ng-container> &copy; {{ today | date:'yyyy' }} Internet2
+                <translate key="label.copyright" [params]="{ year: year }">Copyright &copy; Internet2</translate>
             </p>
         </div>
         <div class="col-md-4 logo">

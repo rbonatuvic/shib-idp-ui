@@ -5,7 +5,7 @@
                 [attr.aria-label]="previousPage.path" role="button">
                 <span class="direction pull-left">
                     <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
-                    <ng-container i18n="@@action--back">Back</ng-container>
+                    <translate key="action.back">Back</ng-container>
                 </span>
                 <span class="label pull-right">
                     <ng-container *ngIf="(previous$ | async).index">{{ (previous$ | async).index }}. </ng-container>
@@ -25,7 +25,6 @@
                     <ng-container *ngSwitchDefault>{{ (current$ | async).index }}. {{ (current$ | async).label }}</ng-container>
                     <ng-container *ngSwitchCase="icons.CHECK">{{ (current$ | async).label }}</ng-container>
                 </ng-container>
-                <!-- {{ (current$ | async).index }}. {{ (current$ | async).label }} -->
             </h3>
         </li>
         <li class="nav-item" *ngIf="(next$ | async)">
@@ -37,7 +36,7 @@
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                    <ng-container i18n="@@action--next">Next</ng-container>
+                    <translate key="action.next">Next</ng-container>
                 </span>
             </button>
         </li>
@@ -47,7 +46,7 @@
                 role="button"
                 [disabled]="disabled$ | async"
                 (click)="onSave.emit()">
-                <span class="label pull-left" i18n="@@action--save">
+                <span class="label pull-left" translate="action.save">
                     Save
                 </span>
                 <span class="direction pull-right">
@@ -57,7 +56,7 @@
                             'fa-spinner': (disabled$ | async),
                             'fa-pulse': (disabled$ | async)
                         }"></i>
-                    <ng-container i18n="@@action--save">Save</ng-container>
+                    <translate key="action.save">Save</ng-container>
                 </span>
             </button>
         </li>

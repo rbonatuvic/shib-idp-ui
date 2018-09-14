@@ -4,7 +4,7 @@
             <button class="nav-link previous btn clearfix" (click)="onPrevious.emit(previousPage.index)" [disabled]="wizardIsInvalid$ | async" [attr.aria-label]="previousPage.path" role="button">
                 <span class="direction pull-left">
                     <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
-                    <ng-container i18n="@@action--back">Back</ng-container>
+                    <translate key="action.back">Back</translate>
                 </span>
                 <span class="label pull-right">
                     {{ previousPage.index }}. <i18n-text [key]="previousPage.path"></i18n-text>
@@ -30,7 +30,7 @@
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                    <ng-container i18n="@@action--next">Next</ng-container>
+                    <translate key="action.next">Next</translate>
                 </span>
             </button>
         </li>
@@ -40,7 +40,7 @@
                 [disabled]="wizardIsSaving$ | async"
                 aria-label="Save"
                 role="button">
-                <span class="label pull-left" i18n="@@action--save">Save</span>
+                <span class="label pull-left" translate="action.save">Save</span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw next d-block fa-2x"
                         [ngClass]="{
@@ -48,7 +48,7 @@
                             'fa-spinner': (wizardIsSaving$ | async),
                             'fa-pulse': (wizardIsSaving$ | async)
                         }"></i>
-                    <ng-container i18n="@@action--save">Save</ng-container>
+                    <translate key="action.save">Save</translate>
                 </span>
             </button>
         </li>

@@ -8,6 +8,7 @@ import { MetadataPageComponent } from './metadata.component';
 import { ManagerModule } from './manager/manager.module';
 import { MetadataRoutingModule } from './metadata.routing';
 import { ProviderModule } from './provider/provider.module';
+import { I18nModule } from '../i18n/i18n.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ProviderModule } from './provider/provider.module';
         DomainModule.forRoot(),
         ManagerModule.forRoot(),
         ProviderModule.forRoot(),
-        MetadataRoutingModule
+        MetadataRoutingModule,
+        I18nModule
     ],
     providers: [],
     declarations: [

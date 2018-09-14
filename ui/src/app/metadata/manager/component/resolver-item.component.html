@@ -17,7 +17,7 @@
                         'fa-check-circle text-success': entity.enabled,
                         'fa-times-circle text-danger': !entity.enabled
                     }"></i>
-                    <span *ngIf="entity.isDraft()" class="badge badge-warning" i18n="@@warning--incomplete-form" aria-label="Warning Badge: Incomplete Form">Incomplete Form</span>
+                    <span *ngIf="entity.isDraft()" class="badge badge-warning" translate="warning.incomplete-form" aria-label="Warning Badge: Incomplete Form">Incomplete Form</span>
                     <small class="d-block">{{ entity.getDisplayId() }}</small>
                 </div>
             </div>
@@ -36,20 +36,20 @@
             <div class="row">
                 <div class="col-10">
                     <div class="row">
-                        <div class="col text-right font-weight-bold" i18n="@@label--service-provider">
+                        <div class="col text-right font-weight-bold" translate="label.service-provider">
                             Metadata Source Name:
                         </div>
                         <div class="col">{{ entity.name }}</div>
-                        <div class="col text-right font-weight-bold" i18n="@@label--created-date">Created Date:</div>
+                        <div class="col text-right font-weight-bold" translate="label.created-date">Created Date:</div>
                         <div class="col" *ngIf="!entity.isDraft()">{{ entity.getCreationDate() | date:'medium' }}</div>
                         <div class="col" *ngIf="entity.isDraft()"> &mdash; </div>
                     </div>
                     <div class="row">
-                        <div class="col text-right font-weight-bold" i18n="@@label--service-entity-id">
+                        <div class="col text-right font-weight-bold" translate="label.service-entity-id">
                             Metadata Source Entity ID:
                         </div>
                         <div class="col">{{ entity.getDisplayId() }}</div>
-                        <div class="col text-right font-weight-bold" i18n="@@label--service-provider-status">
+                        <div class="col text-right font-weight-bold" translate="label.service-provider-status">
                             Metadata Source Status:
                         </div>
                         <div class="col" *ngIf="!entity.isDraft()">
@@ -57,11 +57,11 @@
                                 'fa-check-circle text-success': entity.enabled,
                                 'fa-times-circle text-danger': !entity.enabled
                             }"></i>
-                            <span *ngIf="entity.enabled" i18n="@@value--enabled">Enabled</span>
-                            <span *ngIf="!entity.enabled" i18n="@@value--disabled">Disabled</span>
+                            <span *ngIf="entity.enabled" translate="value.enabled">Enabled</span>
+                            <span *ngIf="!entity.enabled" translate="value.disabled">Disabled</span>
                         </div>
                         <div class="col" *ngIf="entity.isDraft()">
-                            <span class="badge badge-warning" i18n="@@warning--incomplete-form">Incomplete Form</span>
+                            <span class="badge badge-warning" translate="warning.incomplete-form">Incomplete Form</span>
                         </div>
                     </div>
                 </div>
