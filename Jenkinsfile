@@ -34,8 +34,7 @@ pipeline {
         }
       }
       steps {
-        sh '''
-        docker run -d --restart unicon/shibui
+        sh '''docker run -d --restart unicon/shibui
         '''
       }
     }
