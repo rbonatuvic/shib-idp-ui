@@ -1,18 +1,20 @@
 <div class="widget form-group">
     <label [attr.for]="id" class="horizontal control-label" *ngIf="schema.title">
         <span>
-            {{ schema.title }}
+            <translate [key]="schema.title">{{ schema.title }}</translate>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip translate="tooltip.description">{{ schema.description }}</ng-template>
+            <ng-template #tooltip translate="tooltip.description">
+                <translate [key]="schema.description">{{ schema.description }}</translate>
+            </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
                 i18n-aria-label="@@tooltip.instruction"
                 aria-label="Information icon - press spacebar to read additional information for this form field"></i>
         </span>
     </label>
-    <span *ngIf="schema.description" class="sr-only">
+    <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">
         {{ schema.description }}
     </span>
     <select *ngIf="schema.type !== 'array'"
@@ -20,11 +22,14 @@
         [attr.name]="name"
         class="form-control"
         [attr.aria-label]="schema.title">
-        <option disabled selected>{{ schema.placeholder || schema.title }}</option>
-        <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
+        <option disabled selected>
+            <translate *ngIf="schema.placeholder">{{ schema.placeholder }}</translate>
+            <translate *ngIf="!schema.placeholder">{{ schema.title }}</translate>
+        </option>
+        <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
     </select>
     <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
-        <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]">{{option.description}}</option>
+        <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
     </select>
     <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
 </div>

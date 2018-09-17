@@ -2,14 +2,16 @@
     <label [attr.for]="id" class="d-flex justify-content-between control-label">
         <span>{{ schema.title }} <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i></span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip translate="tooltip.description">{{ schema.description }}</ng-template>
+            <ng-template #tooltip translate="tooltip.description">
+                <translate [key]="schema.description">{{ schema.description }}</translate>
+            </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
                 i18n-aria-label="@@tooltip.instruction"
                 aria-label="Information icon - press spacebar to read additional information for this form field"></i>
         </span>
     </label>
-    <span *ngIf="schema.description" class="formHelp">{{schema.description}}</span>
+    <span *ngIf="schema.description" class="formHelp" [translate]="schema.description">{{schema.description}}</span>
     <input [attr.readonly]="schema.readOnly?true:null"
         [name]="name"
         class="text-widget integer-widget form-control"

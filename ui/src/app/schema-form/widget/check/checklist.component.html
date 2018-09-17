@@ -24,7 +24,9 @@
                                 aria-checked="false"
                             />
                             <label class="custom-control-label" for="input-{{ i }}">
-                                <span class="sr-only">Toggle {{ attr.label }}</span>
+                                <span class="sr-only" translate="action.toggle" [translateParams]="{ label: attr.label }">
+                                    Toggle {{ attr.label }}
+                                </span>
                             </label>
                         </div>
                     </fieldset>

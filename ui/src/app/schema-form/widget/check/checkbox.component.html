@@ -10,12 +10,14 @@
                     [attr.disabled]="schema.readOnly?true:null"
                     id="{{ name }}"
                     [disableValidation]="true">
-                <label for="{{ name }}" class="custom-control-label">
+                <label for="{{ name }}" class="custom-control-label" [translate]="schema.title">
                     {{ schema.title }}
                 </label>
             </div>
             <div>
-                <ng-template #tooltip>{{ schema.description }}</ng-template>
+                <ng-template #tooltip>
+                    <translate [key]="schema.description">{{ schema.description }}</translate>
+                </ng-template>
                 <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltip" i18n-aria-label="@@tooltip.instruction"
                     aria-label="Information icon - press spacebar to read additional information for this form field"></i>
             </div>
@@ -30,7 +32,7 @@
                     [attr.disabled]="schema.readOnly?true:null"
                     (change)="onCheck($event.target)"
                     [attr.checked]="checked[option.enum[0]] ? true : null">
-                {{option.description}}
+                <translate [key]="option.description">{{ option.description }}</translate>
             </label>
         </div>
     </ng-container>

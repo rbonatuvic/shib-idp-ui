@@ -5,14 +5,16 @@
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip translate="tooltip.description">{{ schema.description }}</ng-template>
+            <ng-template #tooltip>
+                <translate key="tooltip.description">{{ schema.description }}</translate>
+            </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
-                i18n-aria-label="@@tooltip.instruction"
+                i18n-aria-label="tooltip.instruction"
                 aria-label="Information icon - press spacebar to read additional information for this form field"></i>
         </span>
     </label>
-    <span *ngIf="schema.description" class="sr-only">{{ schema.description }}</span>
+    <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
     <auto-complete
         [id]="id"
         [fieldId]="id"
