@@ -5,7 +5,11 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
+import org.opensaml.saml.metadata.resolver.filter.FilterException;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -13,7 +17,10 @@ import java.io.File;
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolver {
+public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolver implements Refilterable {
+
+    private static final Logger logger = LoggerFactory.getLogger(OpenSamlFilesystemMetadataResolver.class);
+
     private IndexWriter indexWriter;
     private edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver sourceResolver;
     private OpenSamlMetadataResolverDelegate delegate;
@@ -31,6 +38,8 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
 
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
+
+        this.setMetadataFilter(new MetadataFilterChain());
     }
 
     // TODO: this is still probably not the best way to do this?
@@ -47,5 +56,16 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
         delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                                                        this.sourceResolver.getResourceId(),
                                                        indexWriter);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void refilter() {
+        try {
+            this.getBackingStore().setCachedFilteredMetadata(filterMetadata(getCachedOriginalMetadata()));
+        } catch (FilterException e) {
+            logger.error("An error occurred while attempting to filter metadata!", e);
+        }
     }
 }

@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
@@ -321,11 +322,23 @@ class TestObjectGenerator {
         return representation
     }
 
+    String buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType type) {
+        switch (type) {
+            case EntityAttributesFilterTargetType.ENTITY:
+                return generator.randomString()
+            case EntityAttributesFilterTargetType.CONDITION_SCRIPT:
+                return "eval(true);"
+            case EntityAttributesFilterTargetType.REGEX:
+                return "/foo.*/"
+        }
+    }
+
     EntityAttributesFilterTarget buildEntityAttributesFilterTarget() {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
 
-        entityAttributesFilterTarget.setSingleValue(generator.randomString())
         entityAttributesFilterTarget.setEntityAttributesFilterTargetType(randomFilterTargetType())
+        entityAttributesFilterTarget.setSingleValue(
+                buildEntityAttributesFilterTargetValueByType(entityAttributesFilterTarget.getEntityAttributesFilterTargetType()))
 
         return entityAttributesFilterTarget
     }
@@ -353,8 +366,10 @@ class TestObjectGenerator {
     FilterTargetRepresentation buildFilterTargetRepresentation() {
         FilterTargetRepresentation representation = new FilterTargetRepresentation()
 
-        representation.setValue(generator.randomStringList())
         representation.setType(randomFilterTargetType().toString())
+        representation.setValue([
+                buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType.valueOf(representation.getType()))
+        ])
 
         return representation
     }
@@ -460,9 +475,6 @@ class TestObjectGenerator {
             it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
-                it.minRefreshDelay = 'PT5M'
-                it.maxRefreshDelay = 'PT1H'
-                it.refreshDelayFactor = 0.75
                 it
             }
             it

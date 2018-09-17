@@ -33,7 +33,6 @@ import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@Service
 public class MetadataResolverConverterServiceImpl implements MetadataResolverConverterService {
 
     @Autowired
