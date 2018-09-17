@@ -19,7 +19,7 @@ pipeline {
     stage('Build Docker images') {
       when {
         expression {
-          return GIT_BRANCH in ['master', 'SHIBUI-794']
+          return GIT_BRANCH in ['master']
         }
       }
       steps {
@@ -30,7 +30,7 @@ pipeline {
     stage('Deploy') {
       when {
         expression {
-          return GIT_BRANCH in ['master', 'SHIBUI-794']
+          return GIT_BRANCH in ['master']
         }
       }
       steps {
