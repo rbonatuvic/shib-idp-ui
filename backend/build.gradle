@@ -112,6 +112,10 @@ dependencies {
     //JSON schema generator
     testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.29'
     testCompile 'javax.validation:validation-api:2.0.1.Final'
+
+    //Configuration Annotation Processor
+    //This could go in the spring boot section above, but I wasn't sure about the compileOnly vs compile
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 def generatedSrcDir = new File(buildDir, 'generated/src/main/java')

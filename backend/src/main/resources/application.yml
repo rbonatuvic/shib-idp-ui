@@ -1,0 +1,28 @@
+custom:
+  attributes:
+  # Default attributes
+    - name: eduPersonPrincipalName
+      displayName: eduPersonPrincipalName (EPPN)
+    - name: uid
+      displayName: uid
+    - name: mail
+      displayName: mail
+    - name: surname
+      displayName: surname
+    - name: givenName
+      displayName: givenName
+    - name: eduPersonAffiliation
+      displayName: eduPersonAffiliation
+    - name: eduPersonScopedAffiliation
+      displayName: eduPersonScopedAffiliation
+    - name: eduPersonPrimaryAffiliation
+      displayName: eduPersonPrimaryAffiliation
+    - name: eduPersonEntitlement
+      displayName: eduPersonEntitlement
+    - name: eduPersonAssurance
+      displayName: eduPersonAssurance
+    - name: eduPersonUniqueId
+      displayName: eduPersonUniqueId
+    - name: employeeNumber
+      displayName: employeeNumber
+  # Custom attributes

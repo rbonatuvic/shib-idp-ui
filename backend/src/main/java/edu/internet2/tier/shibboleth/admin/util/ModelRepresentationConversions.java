@@ -47,14 +47,11 @@ public abstract class ModelRepresentationConversions {
                 .filter(attribute -> attribute.getName().equals(MDDCConstants.RELEASE_ATTRIBUTES))
                 .collect(Collectors.toList());
 
-        if (releaseAttributes.size() != 1) {
-            // TODO: What do we do if there is more than one?
+        List<String> attributeValues = new ArrayList<>();
+        for (Attribute attribute : releaseAttributes) {
+            attributeValues.addAll(getStringListOfAttributeValues(attribute.getAttributeValues()));
         }
-        if (releaseAttributes.size() == 0) {
-            return new ArrayList<>();
-        } else {
-            return getStringListOfAttributeValues(releaseAttributes.get(0).getAttributeValues());
-        }
+        return attributeValues;
     }
 
     public static boolean getBooleanValueOfAttribute(Attribute attribute) {
