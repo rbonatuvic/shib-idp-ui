@@ -11,7 +11,7 @@ import { MockI18nService, MockI18nModule } from '../../../testing/i18n.stub';
 
 @Component({
     template: `
-        <translate [key]="foo">Word</translate>
+        <translate-i18n [key]="foo">Word</translate-i18n>
     `
 })
 class TestHostComponent {

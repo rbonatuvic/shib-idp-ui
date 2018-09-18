@@ -16,7 +16,7 @@ import { Messages } from '../model/Messages';
 /*tslint:disable:component-selector */
 
 @Component({
-    selector: 'translate',
+    selector: 'translate-i18n',
     template: `<ng-content></ng-content>`
 })
 export class TranslateComponent implements OnDestroy {

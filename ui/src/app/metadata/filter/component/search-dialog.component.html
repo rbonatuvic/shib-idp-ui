@@ -1,7 +1,7 @@
 <section role="dialog" aria-label="Search filter modal" tabindex="0">
     <div class="modal-header">
         <h4 class="modal-title">
-            <translate key="label.search-entity-id">Search Entity Id</translate>
+            <translate-i18n key="label.search-entity-id">Search Entity Id</translate-i18n>
              ({{ source }})
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close modal" (click)="activeModal.dismiss()">
@@ -29,7 +29,7 @@
                         [disabled]="form.get('search').invalid">
                         <i class="fa fa-fw fa-search" *ngSwitchDefault></i>
                         <i class="fa fa-fw fa-spinner fa-pulse fa-fw" *ngSwitchCase="true"></i>
-                        <translate key="action.search">Search</translate>
+                        <translate-i18n key="action.search">Search</translate-i18n>
                     </button>
                 </div>
             </div>
@@ -47,7 +47,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="activeModal.close(selected)">
             <i class="fa fa-fw fa-save"></i>
-            <translate key="action.select-id">Select ID</translate>
+            <translate-i18n key="action.select-id">Select ID</translate-i18n>
         </button>
         <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()" translate="action.cancel">Cancel</button>
     </div>

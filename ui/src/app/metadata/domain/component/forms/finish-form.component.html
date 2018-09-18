@@ -12,14 +12,14 @@
                     <ng-template #tooltipEnableThisServiceUponSaving translate="tooltip.enable-this-service-upon-saving">Enable this service upon saving popover</ng-template>
                     <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                        [ngbPopover]="tooltipEnableThisServiceUponSaving"
-                       i18n-aria-label="@@tooltip.instruction"
+                      
                        role="tooltip"></i>
                 </div>
             </section>
             <section class="entity-section">
                 <h3 class="tag tag-success tag-sm my-4">
                     <span class="index">1</span>
-                    <translate key="label.name-and-entity-id">Name and Entity ID</ng-container>
+                    <translate-i18n key="label.name-and-entity-id">Name and Entity ID</translate-i18n>
                 </h3>
                 <dl>
                     <dt class="text-primary" translate="label.service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only)</dt>
@@ -33,7 +33,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 2]" class="tag tag-success tag-sm my-4" aria-label="Organization Information wizard page, step 2 - click to go back and make updates" role="button">
                     <span class="index">2</span>
-                    <translate key="label.organization-information">Organization Information</ng-container>
+                    <translate-i18n key="label.organization-information">Organization Information</translate-i18n>
                 </a>
                 <dl *ngIf="resolver.organization">
                     <dt class="text-primary" translate="label.organization-name">Organization Name</dt>
@@ -49,8 +49,8 @@
                             <thead>
                             <tr class="table-secondary">
                                 <th scope="col" translate="label.given-name">Given Name</th>
-                                <th scope="col" translate="email-address">Email Address</th>
-                                <th scope="col" i18n=label.contact-type>Contact Type</th>
+                                <th scope="col" translate="label.email-address">Email Address</th>
+                                <th scope="col" translate="label.contact-type">Contact Type</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,7 +67,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 3]" class="tag tag-success tag-sm my-4" aria-label="User Interface / MDUI Information wizard page, step 3 - click to go back and make updates" role="button">
                     <span class="index">3</span>
-                    <translate key="label.user-interface-mdui-infromation">User Interface / MDUI Information</ng-container>
+                    <translate-i18n key="label.user-interface-mdui-infromation">User Interface / MDUI Information</translate-i18n>
                 </a>
                 <dl *ngIf="resolver.mdui">
                     <dt class="text-primary" translate="label.display-name">Display Name</dt>
@@ -89,7 +89,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 4]" class="tag tag-success tag-sm my-4" aria-label="SP SSO Descriptor Information wizard page, step 4 - click to go back and make updates" role="button">
                     <span class="index">4</span>
-                    <translate key="label.sp-sso-descriptor-information">SP SSO Descriptor Information</ng-container>
+                    <translate-i18n key="label.sp-sso-descriptor-information">SP SSO Descriptor Information</translate-i18n>
                 </a>
                 <dl *ngIf="resolver.serviceProviderSsoDescriptor">
                     <dt class="text-primary" translate="label.protocol-support-enumeration">Protocol Support Enumeration</dt>
@@ -108,7 +108,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 5]" class="tag tag-success tag-sm my-4" aria-label="Logout Endpoints wizard page, step 5 - click to go back and make updates" role="button">
                     <span class="index">5</span>
-                    <translate key="label.logout-endpoints">Logout Endpoints</ng-container>
+                    <translate-i18n key="label.logout-endpoints">Logout Endpoints</translate-i18n>
                 </a>
                 <p class="text-secondary" *ngIf="!resolver.logoutEndpoints.length">&mdash;</p>
                 <table class="table table-sm table-bordered table-striped"  *ngIf="resolver.logoutEndpoints.length">
@@ -131,7 +131,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 6]" class="tag tag-success tag-sm my-4" aria-label="Security Information wizard page, step 6 - click to go back and make updates" role="button">
                     <span class="index">6</span>
-                    <translate key="label.security-information">Security Information</ng-container>
+                    <translate-i18n key="label.security-information">Security Information</translate-i18n>
                 </a>
                 <dl *ngIf="resolver.securityInfo">
                     <dt class="text-primary" translate="label.is-there-a-x509-certificate">Is there a X509 Certificate?</dt>
@@ -169,7 +169,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 7]" class="tag tag-success tag-sm my-4" aria-label="Assertion Consumer Services wizard page, step 7 - click to go back and make updates" role="button">
                     <span class="index">7</span>
-                    <translate key="label.assertion-consumer-services">Assertion Consumer Services</ng-container>
+                    <translate-i18n key="label.assertion-consumer-services">Assertion Consumer Services</translate-i18n>
                 </a>
                 <dl>
                     <dt class="text-primary" translate="label.assertion-consumer-service-endpoints">Assertion Consumer Service Endpoints</dt>
@@ -197,7 +197,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 8]" class="tag tag-success tag-sm my-4" aria-label="Relying Party Overrides wizard page, step 8 - click to go back and make updates" role="button">
                     <span class="index">8</span>
-                    <translate key="label.relying-party-overrides">Relying Party Overrides</ng-container>
+                    <translate-i18n key="label.relying-party-overrides">Relying Party Overrides</translate-i18n>
                 </a>
                 <dl *ngIf="resolver.relyingPartyOverrides">
                     <dt class="text-primary" translate="label.sign-the-assertion">Sign the Assertion?</dt>
@@ -237,7 +237,7 @@
             <section class="entity-section">
                 <a href="" [routerLink]="['../', 9]" class="tag tag-success tag-sm my-4" aria-label="Attribute Release wizard page, step 9 - click to go back and make updates" role="button">
                     <span class="index">9</span>
-                    <translate key="label.attribute-release">Attribute Release</ng-container>
+                    <translate-i18n key="label.attribute-release">Attribute Release</translate-i18n>
                 </a>
                 <table class="table table-sm table-bordered table-striped" *ngIf="resolver.attributeRelease">
                     <thead>

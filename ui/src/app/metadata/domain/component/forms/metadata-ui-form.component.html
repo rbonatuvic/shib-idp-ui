@@ -4,16 +4,16 @@
             <div class="form-group">
                 <div class="row">
                     <label for="displayName" class="col-sm-10">
-                        <translate key="label.display-name">Display Name</translate>
+                        <translate-i18n key="label.display-name">Display Name</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipMDUIDisplayName>
-                            <translate key="tooltip.mdui-display-name">Typically, the IdP Display Name field will be presented on IdP discovery service interfaces.</translate>
+                            <translate-i18n key="tooltip.mdui-display-name">Typically, the IdP Display Name field will be presented on IdP discovery service interfaces.</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipMDUIDisplayName"
-                           i18n-aria-label="@@tooltip.instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                          
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <input id="displayName" type="text" class="form-control" placeholder="" formControlName="displayName" role="textbox" />
@@ -21,37 +21,37 @@
             <div class="form-group">
                 <div class="row">
                     <label for="informationUrl" class="col-sm-10">
-                        <translate key="label.information-url">Information URL</translate>
+                        <translate-i18n key="label.information-url">Information URL</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipMDUIInformationUrl>
-                            <translate key="tooltip.mdui-information-url">The IdP Information URL is a link to a comprehensive information page about the IdP. This page should expand on the
-                            content of the IdP Description field.</translate>
+                            <translate-i18n key="tooltip.mdui-information-url">The IdP Information URL is a link to a comprehensive information page about the IdP. This page should expand on the
+                            content of the IdP Description field.</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipMDUIInformationUrl"
-                           i18n-aria-label="@@tooltip.instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                          
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <input id="informationUrl" type="text" class="form-control" placeholder="" formControlName="informationUrl" role="textbox" />
-                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')">Must be a valid URL</small>
+                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')" translate="message.must-be-valid-url">Must be a valid URL</small>
             </div>
             <div class="form-group">
                 <div class="row">
                     <label for="description" class="col-sm-10">
-                        <translate key="label.description">Description</translate>
+                        <translate-i18n key="label.description">Description</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipMDUIDescription>
-                            <translate key="tooltip.mdui-description">The IdP Description is a brief description of the IdP service. On a well-designed discovery interface, the IdP
+                            <translate-i18n key="tooltip.mdui-description">The IdP Description is a brief description of the IdP service. On a well-designed discovery interface, the IdP
                             Description will be presented to the user in addition to the IdP Display Name, and so the IdP Description helps
-                            disambiguate duplicate or similar IdP Display Names.</translate>
+                            disambiguate duplicate or similar IdP Display Names.</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipMDUIDescription"
-                           i18n-aria-label="@@tooltip.instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                          
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <textarea id="description"
@@ -74,56 +74,53 @@
             <div class="form-group">
                 <div class="row">
                     <label for="privacyStatementUrl" class="col-sm-10">
-                        <translate key="label.privacy-statement-url">Privacy Statement URL</translate>
+                        <translate-i18n key="label.privacy-statement-url">Privacy Statement URL</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipMDUIPrivacyStatementUrl>
-                            <translate key="tooltip.mdui-privacy-statement-url">The IdP Privacy Statement URL is a link to the IdP's Privacy Statement. The content of the Privacy Statement should be
-                            targeted at end users.</translate>
+                            <translate-i18n key="tooltip.mdui-privacy-statement-url">The IdP Privacy Statement URL is a link to the IdP's Privacy Statement. The content of the Privacy Statement should be
+                            targeted at end users.</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipMDUIPrivacyStatementUrl"
-                           i18n-aria-label="@@tooltip.instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <input id="privacyStatementUrl" type="text" class="form-control" placeholder="" formControlName="privacyStatementUrl" role="textbox" />
-                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')">Must be a valid URL</small>
+                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')" translate="message.must-be-valid-url">Must be a valid URL</small>
             </div>
             <div class="form-group">
                 <div class="row">
                     <label for="logoUrl" class="col-sm-10">
-                        <translate key="label.logo-url">Logo URL</translate>
+                        <translate-i18n key="label.logo-url">Logo URL</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipMDUILogoUrl>
-                            <translate key="tooltip.mdui-logo-url">The IdP Logo URL in metadata points to an image file on a remote server. A discovery service, for example, may rely on
-                            a visual cue (i.e., a logo) instead of or in addition to the IdP Display Name.</translate>
+                            <translate-i18n key="tooltip.mdui-logo-url">The IdP Logo URL in metadata points to an image file on a remote server. A discovery service, for example, may rely on
+                            a visual cue (i.e., a logo) instead of or in addition to the IdP Display Name.</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipMDUILogoUrl"
-                           i18n-aria-label="@@tooltip.instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <input id="logoUrl" type="text" class="form-control" placeholder="" formControlName="logoUrl" role="textbox" />
-                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')">Must be a valid URL</small>
+                <small class="form-text text-danger" *ngIf="form.get('mdui.logoUrl').hasError('pattern')" translate="message.must-be-valid-url">Must be a valid URL</small>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <div class="row">
                             <label for="logoWidth" class="col-sm-10">
-                                <translate key="label.logo-width">Logo Width</translate>
+                                <translate-i18n key="label.logo-width">Logo Width</translate-i18n>
                             </label>
                             <span class="col-sm-2 text-right">
                                 <ng-template #tooltipMDUILogoWidth>
-                                    <translate key="tooltip.mdui-logo-width">The logo should have a minimum width of 100 pixels</translate>
+                                    <translate-i18n key="tooltip.mdui-logo-width">The logo should have a minimum width of 100 pixels</translate-i18n>
                                 </ng-template>
                                 <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                    [ngbPopover]="tooltipMDUILogoUrl"
-                                   i18n-aria-label="@@tooltip.instruction"
-                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
                             </span>
                         </div>
                         <input id="logoWidth" type="number" class="form-control" placeholder="" formControlName="logoWidth" step="1" role="textbox" />
@@ -134,17 +131,16 @@
                     <div class="form-group">
                         <div class="row">
                             <label for="logoHeight" class="col-sm-10">
-                                <translate key="label.logo-height">Logo Height</translate>
+                                <translate-i18n key="label.logo-height">Logo Height</translate-i18n>
                             </label>
                             <span class="col-sm-2 text-right">
                                 <ng-template #tooltipMDUILogoHeight>
-                                    <translate key="tooltip.mdui-logo-height">The logo should have a minimum height of 75 pixels and a maximum height of 150 pixels (or the application will scale it
-                                    proportionally)</translate>
+                                    <translate-i18n key="tooltip.mdui-logo-height">The logo should have a minimum height of 75 pixels and a maximum height of 150 pixels (or the application will scale it
+                                    proportionally)</translate-i18n>
                                 </ng-template>
                                 <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                    [ngbPopover]="tooltipMDUILogoHeight"
-                                   i18n-aria-label="@@tooltip.instruction"
-                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
                             </span>
                         </div>
                         <input id="logoHeight" type="number" class="form-control" placeholder="" formControlName="logoHeight" step="1" role="textbox" />

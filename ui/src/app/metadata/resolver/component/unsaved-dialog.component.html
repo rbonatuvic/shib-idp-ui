@@ -4,10 +4,10 @@
             <h4 class="modal-title" translate="message.unsaved-dialog-title">Save your information?</h4>
         </div>
         <div class="modal-body">
-            <p *ngSwitchDefault translate="message.unsaved-default">
-                You have not completed the wizard! Do you wish to save this information? You can finish the wizard later by clicking the
-                "Edit"
-                <i class="fa fa-fw fa-edit"></i> icon on the dashboard.
+            <p *ngSwitchDefault>
+                <translate-i18n key="message.unsaved-source-1">You have not completed the wizard! Do you wish to save this information? You can finish the wizard later by clicking the "Edit"</translate-i18n>
+                <i class="fa fa-fw fa-edit"></i>
+                <translate-i18n key="message.unsaved-source-2">icon on the dashboard.</translate-i18n>
             </p>
             <p *ngSwitchCase="'editor'" translate="message.unsaved-editor">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
         </div>

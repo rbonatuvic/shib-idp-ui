@@ -17,7 +17,7 @@
                         'fa-check-circle text-success': entity.enabled,
                         'fa-times-circle text-danger': !entity.enabled
                     }"></i>
-                    <span *ngIf="entity.isDraft()" class="badge badge-warning" translate="warning.incomplete-form" aria-label="Warning Badge: Incomplete Form">Incomplete Form</span>
+                    <span *ngIf="entity.isDraft()" class="badge badge-warning" translate="message.incomplete-form" aria-label="Warning Badge: Incomplete Form">Incomplete Form</span>
                     <small class="d-block">{{ entity.getDisplayId() }}</small>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                             <span *ngIf="!entity.enabled" translate="value.disabled">Disabled</span>
                         </div>
                         <div class="col" *ngIf="entity.isDraft()">
-                            <span class="badge badge-warning" translate="warning.incomplete-form">Incomplete Form</span>
+                            <span class="badge badge-warning" translate="message.incomplete-form">Incomplete Form</span>
                         </div>
                     </div>
                 </div>

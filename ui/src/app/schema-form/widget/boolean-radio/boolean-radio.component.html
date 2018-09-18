@@ -3,12 +3,12 @@
         <span [translate]="schema.title">{{ schema.title }}</span>
         <span *ngIf="schema.description">
             <ng-template #tooltip translate="tooltip.description">
-                <translate [key]="schema.description">{{ schema.description }}</translate>
+                <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
             </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
                 i18n-aria-label="tooltip.instruction"
-                aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                [attr.aria-label]="'tooltip.instruction' | translate"></i>
         </span>
     </label>
     <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
@@ -21,7 +21,7 @@
                 [value]="option.enum[0]"
                 type="radio"
                 [attr.disabled]="schema.readOnly">
-            <translate [key]="option.description">{{ option.description }}</translate>
+            <translate-i18n [key]="option.description">{{ option.description }}</translate-i18n>
         </label>
     </div>
     <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">

@@ -4,8 +4,8 @@
             <div class="row justify-content-between">
                 <div class="col-md-12">
                     <span class="display-6">
-                        <i class="fa fa-fw fa-gears"></i>
-                        <translate key="label.new-filter">&nbsp; Edit EntityAttributesFilter</translate>
+                        <i class="fa fa-fw fa-gears"></i>&nbsp;&nbsp;
+                        <translate-i18n key="label.new-filter">Edit EntityAttributesFilter</translate-i18n>
                     </span>
                 </div>
             </div>
@@ -18,11 +18,11 @@
                         'fa-spinner': (isSaving$ | async),
                         'fa-pulse': (isSaving$ | async)
                     }"></i>
-                    <translate key="action.save">Save</translate>
+                    <translate-i18n key="action.save">Save</translate-i18n>
                 </button>
                 &nbsp;
                 <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
-                    <translate key="action.cancel">Cancel</translate>
+                    <translate-i18n key="action.cancel">Cancel</translate-i18n>
                 </button>
             </div>
             <sf-form

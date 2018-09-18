@@ -16,10 +16,10 @@
             </div>
             <div>
                 <ng-template #tooltip>
-                    <translate [key]="schema.description">{{ schema.description }}</translate>
+                    <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
                 </ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltip" i18n-aria-label="@@tooltip.instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltip"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </div>
         </div>
     </ng-container>
@@ -32,7 +32,7 @@
                     [attr.disabled]="schema.readOnly?true:null"
                     (change)="onCheck($event.target)"
                     [attr.checked]="checked[option.enum[0]] ? true : null">
-                <translate [key]="option.description">{{ option.description }}</translate>
+                <translate-i18n [key]="option.description">{{ option.description }}</translate-i18n>
             </label>
         </div>
     </ng-container>

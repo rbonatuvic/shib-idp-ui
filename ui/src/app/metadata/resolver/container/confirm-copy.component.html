@@ -13,7 +13,7 @@
                     <button class="nav-link previous btn clearfix" role="button" routerLink="/new/copy">
                         <span class="direction pull-left">
                             <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
-                            <translate key="action.back">Back</translate>
+                            <translate-i18n key="action.back">Back</translate-i18n>
                         </span>
                         <span class="label pull-right" translate="label.name-and-entityid">
                             Name and Entity ID.
@@ -23,7 +23,7 @@
                 <li class="nav-item">
                     <h3 class="tag tag-primary">
                         <span class="index"><i class="fa fa-fw fa-check"></i></span>
-                        <translate key="label.finish-summary-validation">Finished!</translate>
+                        <translate-i18n key="label.finish-summary-validation">Finished!</translate-i18n>
                     </h3>
                 </li>
                 <li class="nav-item">
@@ -35,7 +35,7 @@
                                     'fa-save': !(saving$ | async),
                                     'fa-spinner fa-pulse': (saving$ | async)
                                 }"></i>
-                            <translate key="action.save">Save</translate>
+                            <translate-i18n key="action.save">Save</translate-i18n>
                         </span>
                     </button>
                 </li>

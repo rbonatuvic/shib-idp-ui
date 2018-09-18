@@ -5,7 +5,7 @@
                 [attr.aria-label]="previousPage.path" role="button">
                 <span class="direction pull-left">
                     <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
-                    <translate key="action.back">Back</ng-container>
+                    <translate-i18n key="action.back">Back</translate-i18n>
                 </span>
                 <span class="label pull-right">
                     <ng-container *ngIf="(previous$ | async).index">{{ (previous$ | async).index }}. </ng-container>
@@ -36,7 +36,7 @@
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                    <translate key="action.next">Next</ng-container>
+                    <translate-i18n key="action.next">Next</translate-i18n>
                 </span>
             </button>
         </li>
@@ -56,7 +56,7 @@
                             'fa-spinner': (disabled$ | async),
                             'fa-pulse': (disabled$ | async)
                         }"></i>
-                    <translate key="action.save">Save</ng-container>
+                    <translate-i18n key="action.save">Save</translate-i18n>
                 </span>
             </button>
         </li>

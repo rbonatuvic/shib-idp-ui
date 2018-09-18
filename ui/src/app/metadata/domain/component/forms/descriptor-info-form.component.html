@@ -4,16 +4,15 @@
             <div class="form-group">
                 <div class="row">
                     <label for="protocolSupportEnum" class="col-sm-10">
-                        <translate key="label.protocol-support-enumeration">Protocol Support Enumeration</translate>
+                        <translate-i18n key="label.protocol-support-enumeration">Protocol Support Enumeration</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipProtocolSupportEnumeration>
-                            <translate key="tooltip.protocol-support-enumeration">Protocol Support Enumeration popover</translate>
+                            <translate-i18n key="tooltip.protocol-support-enumeration">Protocol Support Enumeration popover</translate-i18n>
                         </ng-template>
                     <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                        [ngbPopover]="tooltipProtocolSupportEnumeration"
-                       i18n-aria-label="@@tooltip.instruction"
-                       aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                       [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <select id="protocolSupportEnum" class="form-control" formControlName="protocolSupportEnum" aria-label="Protocol support enumeration dropdown" role="listbox">
@@ -24,15 +23,14 @@
             <div class="form-group">
                 <div class="row">
                     <span class="col-sm-10">
-                        <translate key="label.nameid-format">NameID Format</translate>&nbsp;
+                        <translate-i18n key="label.nameid-format">NameID Format</translate-i18n>&nbsp;
                         <button class="btn btn-success btn-sm" (click)="addFormat()" translate="action.add-nameid-format" role="button">Add NameID Format</button>
                     </span>
                     <span class="col-sm-2 text-right">
                         <ng-template #tooltipNameIdFormat translate="tooltip.nameid-format">Add NameID Format Popover</ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipNameIdFormat"
-                           i18n-aria-label="@@tooltip.instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
             </div>
@@ -40,7 +38,7 @@
                 <div *ngFor="let format of nameIdFormats.controls; let i=index; let isLast=last" class="row">
                     <div class="col">
                         <label [for]="'nameIdFormat-' + i" class="sr-only">
-                            <translate key="label.nameid-format">NameID Format</translate> {{ i + 1 }}
+                            <translate-i18n key="label.nameid-format">NameID Format</translate-i18n> {{ i + 1 }}
                         </label>
                         <auto-complete
                             [id]="'nameIdFormat-' + i"

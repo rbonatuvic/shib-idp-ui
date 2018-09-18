@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-md fixed-top">
-    <a class="navbar-brand" [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.description">
+    <a class="navbar-brand" [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.description | translate">
         <img [src]="brand.logo.small" width="30" height="30" class="d-inline-block align-top" [alt]="brand.logo.alt">
-        <span class="d-lg-inline d-none">{{ brand.logo.link.label }}</span>
+        <span class="d-lg-inline d-none" [translate]="brand.logo.link.label">{{ brand.logo.link.label }}</span>
     </a>
-    <span class="navbar-text">{{ brand.header.title }}</span>
+    <span class="navbar-text" [translate]="brand.header.title">{{ brand.header.title }}</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,39 +19,39 @@
                     aria-expanded="false"
                     ngbDropdownToggle>
                     <i class="fa fa-plus-circle fa-fw" aria-hidden="true"></i>
-                    <translate key="action.add-new">Add</translate>
+                    <translate-i18n key="action.add-new">Add New</translate-i18n>
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
                     <a class="nav-link"
                         routerLink="/metadata/resolver/new"
                         routerLinkActive="active"
-                        aria-label="Add a new metadata provider"
+                        [attr.aria-label]="'action.add-new-source' | translate"
                         role="button">
                         <i class="fa fa-cube fa-fw" aria-hidden="true"></i>
                         &nbsp;
-                        <translate key="label.metadata-source">Metadata Source</translate>
+                        <translate-i18n key="label.metadata-source">Metadata Source</translate-i18n>
                     </a>
                     <a class="nav-link"
                         routerLink="/metadata/provider/wizard"
                         routerLinkActive="active"
-                        aria-label="Add a new metadata resolver"
+                        [attr.aria-label]="'action.add-new-provider' | translate"
                         role="button">
                         <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
                         &nbsp;
-                        <translate key="label.metadata-provider">Metadata Provider</translate>
+                        <translate-i18n key="label.metadata-provider">Metadata Provider</translate-i18n>
                     </a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/metadata" routerLinkActive="active" aria-label="Metadata Dashboard">
                     <i class="fa fa-th fa-fw" aria-hidden="true"></i>
-                    <translate key="action.dashboard">Dashboard</translate>
+                    <translate-i18n key="action.dashboard">Dashboard</translate-i18n>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="/logout" target="_self" aria-label="Log out of Shibboleth UI">
+                <a class="nav-link" href="/logout" target="_self" [attr.aria-label]="'action.logout' | translate">
                     <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
-                    <translate key="action.logout">Logout</translate>
+                    <translate-i18n key="action.logout">Logout</translate-i18n>
                 </a>
             </li>
         </ul>
@@ -65,10 +65,10 @@
     <div class="row">
         <div class="col-md-8 copyright">
             <ul class="list-inline">
-                <li class="list-inline-item">{{ brand.footer.text }}</li>
-                <li class="list-inline-item" *ngFor="let link of brand.footer.links">
+                <li class="list-inline-item" [translate]="brand.footer.text">{{ brand.footer.text }}</li>
+                <li class="list-inline-item" *ngFor="let link of brand.footer.links; let i = index;">
                     <a [href]="link.url" target="_blank" [attr.aria-label]="link.description" [title]="link.description">
-                        {{ link.label }}
+                        <translate-i18n [key]="link.label">{{ link.label }}</translate-i18n>
                     </a>
                 </li>
             </ul>
@@ -77,7 +77,7 @@
                 {{ formatted$ | async }}
                 &nbsp;|&nbsp;
                 </ng-container>
-                <translate key="label.copyright" [params]="{ year: year }">Copyright &copy; Internet2</translate>
+                <translate-i18n key="label.copyright" [params]="{ year: year }">Copyright &copy; Internet2</translate-i18n>
             </p>
         </div>
         <div class="col-md-4 logo">

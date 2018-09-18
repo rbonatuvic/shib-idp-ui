@@ -5,7 +5,7 @@
                 <li class="nav-item">
                     <h3 class="tag tag-primary">
                         <span class="index">1</span>
-                        <translate key="label.name-and-upload-url">1. Name and Upload Url</translate>
+                        1. <translate-i18n key="label.name-and-upload-url">Name and Upload Url</translate-i18n>
                     </h3>
                 </li>
                 <li class="nav-item">
@@ -15,7 +15,7 @@
                         </span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw fa-save d-block fa-2x"></i>
-                            <translate key="action.save">Save</translate>
+                            <translate-i18n key="action.save">Save</translate-i18n>
                         </span>
                     </button>
                 </li>
@@ -23,7 +23,7 @@
             <fieldset class="bg-light border rounded p-4">
                 <div class="form-group">
                     <label for="serviceProviderName">
-                        <translate key="label.service-resolver-name-dashboard-display-only">Service Resolver Name (Dashboard Display Only)</translate>
+                        <translate-i18n key="label.service-resolver-name-dashboard-display-only">Service Resolver Name (Dashboard Display Only)</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
                     <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
@@ -41,13 +41,13 @@
                         <input id="fileInput" type="file" name="file" class="custom-file-input" (change)="fileChange($event)" />
                         <label for="fileInput" class="custom-file-label">
                             <span *ngIf="!providerForm.get('file').value" class="custom-file-control" translate="action.choose-file">Choose File</span>
-                            <span *ngIf="providerForm.get('file').value" class="custom-file-control" translate="action.choose-file">{{ providerForm.get('file').value }}</span>
+                            <span *ngIf="providerForm.get('file').value" class="custom-file-control">{{ providerForm.get('file').value }}</span>
                         </label>
                     </div>
                 </div>
                 <div class="text-center">
                     &mdash;
-                    <translate key="label.or">OR</translate>
+                    <translate-i18n key="label.or">OR</translate-i18n>
                     &mdash;
                 </div>
                 <div class="form-group">
@@ -55,7 +55,7 @@
                     <input id="url" type="text" class="form-control" placeholder="" formControlName="url" />
                 </div>
                 <div class="alert alert-danger" role="alert">
-                    <span translate="alert.file-upload-alert">Note: You can only import a file with a single entityID (EntityDescriptor element) in it. Anything more in that file will result in an error.</span>
+                    <span translate="message.file-upload-alert">Note: You can only import a file with a single entityID (EntityDescriptor element) in it. Anything more in that file will result in an error.</span>
                 </div>
             </fieldset>
         </form>

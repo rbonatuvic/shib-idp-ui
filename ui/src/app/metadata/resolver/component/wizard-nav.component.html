@@ -4,7 +4,7 @@
             <button class="nav-link previous btn clearfix" (click)="onPrevious.emit(previousPage.index)" [disabled]="wizardIsInvalid$ | async" [attr.aria-label]="previousPage.path" role="button">
                 <span class="direction pull-left">
                     <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
-                    <translate key="action.back">Back</translate>
+                    <translate-i18n key="action.back">Back</translate-i18n>
                 </span>
                 <span class="label pull-right">
                     {{ previousPage.index }}. <i18n-text [key]="previousPage.path"></i18n-text>
@@ -30,7 +30,7 @@
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                    <translate key="action.next">Next</translate>
+                    <translate-i18n key="action.next">Next</translate-i18n>
                 </span>
             </button>
         </li>
@@ -48,7 +48,7 @@
                             'fa-spinner': (wizardIsSaving$ | async),
                             'fa-pulse': (wizardIsSaving$ | async)
                         }"></i>
-                    <translate key="action.save">Save</translate>
+                    <translate-i18n key="action.save">Save</translate-i18n>
                 </span>
             </button>
         </li>

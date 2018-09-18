@@ -38,7 +38,7 @@ export class I18nService {
 
     translate(value: string, interpolated: any, messages: Messages): string {
         interpolated = interpolated || {};
-        let val = messages.hasOwnProperty(value) ? messages[value] : '';
+        let val = messages.hasOwnProperty(value) ? messages[value] : value;
         return this.interpolate(val, interpolated);
     }
 

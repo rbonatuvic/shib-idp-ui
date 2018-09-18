@@ -2,7 +2,7 @@
     <div class="row">
         <fieldset class="col col-xl-6 form-section">
             <p>
-                <translate key="label.logout-endpoints">Logout Endpoints: </translate>
+                <translate-i18n key="label.logout-endpoints">Logout Endpoints: </translate-i18n>
                 <button class="btn btn-success btn-sm" (click)="addEndpoint()" translate="action.add-endpoint" aria-label="Add logout endpoint to accordion group">Add Endpoint</button>
             </p>
             <div formArrayName="logoutEndpoints" class="bg-light border rounded p-4" *ngIf="logoutEndpoints.length">
@@ -33,16 +33,16 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label [for]="'url-' + i" class="col-sm-10">
-                                        <translate key="label.url">URL</translate>
+                                        <translate-i18n key="label.url">URL</translate-i18n>
                                     </label>
                                     <span class="col-sm-2 text-right">
                                         <ng-template #tooltipLogoutEndpointsUrl>
-                                            <translate key="tooltip.logout-endpoints-url">Logout Endpoints Url popover</translate>
+                                            <translate-i18n key="tooltip.logout-endpoints-url">Logout Endpoints Url popover</translate-i18n>
                                         </ng-template>
                                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                            [ngbPopover]="tooltipLogoutEndpointsUrl"
-                                           i18n-aria-label="@@tooltip.instruction"
-                                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                          
+                                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                                     </span>
                                 </div>
                                 <input [id]="'url-' + i" type="text" class="form-control" placeholder="" formControlName="url" aria-label="Logout endpoint URL" role="textbox" />
@@ -51,16 +51,16 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label [for]="'binding-' + i" class="col-sm-10">
-                                        <translate key="label.binding-types">Binding Type</translate>
+                                        <translate-i18n key="label.binding-types">Binding Type</translate-i18n>
                                     </label>
                                     <span class="col-sm-2 text-right">
                                         <ng-template #tooltipLogoutEndpointsBindingType>
-                                            <translate key="tooltip.logout-endpoints-binding-type">Logout Endpoints Binding Type popover</translate>
+                                            <translate-i18n key="tooltip.logout-endpoints-binding-type">Logout Endpoints Binding Type popover</translate-i18n>
                                         </ng-template>
                                     <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                        [ngbPopover]="tooltipLogoutEndpointsBindingType"
-                                       i18n-aria-label="@@tooltip.instruction"
-                                       aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                      
+                                       [attr.aria-label]="'tooltip.instruction' | translate"></i>
                                     </span>
                                 </div>
                                 <select [id]="'binding-' + i" class="form-control" formControlName="bindingType" aria-label="Logout binding type dropdown" role="listbox">

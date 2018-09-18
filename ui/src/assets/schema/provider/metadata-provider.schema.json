@@ -6,7 +6,7 @@
     },
     "properties": {
         "name": {
-            "title": "Metadata Provider Name (Dashboard Display Only)",
+            "title": "label.metadata-provider-name-dashboard-display-only",
             "description": "Metadata Provider Name",
             "type": "string",
             "widget": {
