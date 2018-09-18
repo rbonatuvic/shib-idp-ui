@@ -1,14 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import org.springframework.core.env.PropertyResolver;
+import org.springframework.core.env.PropertySources;
+import org.springframework.core.env.PropertySourcesPropertyResolver;
 
 
 /**
- * Implementation of {@link TokenPlaceholderValueResolvingService} based on Spring Framework's default property resolver
- * which understands and replaces Shibboleth Idp specific placeholder prefix of '%{' with standard Spring's placeholder
- * prefix of '${' before resolving.
- *
- * If passed in value does not contain Shibboleth Idp '%{}' placeholder token, returns that value as is.
+ * Implementation of {@link TokenPlaceholderValueResolvingService} based on Spring Framework's property resolver which
+ * understands Shibboleth Idp custom placeholder prefix of <strong>%{</strong> and can resolve property values from these
+ * placeholders against existing property sources.
  *
  * @author Dmitriy Kopylenko
  */
@@ -16,37 +16,16 @@ public class ShibbolethPlaceholderTokenAwareValueResolvingService implements Tok
 
     private PropertyResolver propertyResolver;
 
-    private static final String SHIB_IDP_PLACEHOLDER_PREFIX = "%{";
-
-    private static final String STANDARD_PLACEHOLDER_PREFIX = "${";
-
-    ShibbolethPlaceholderTokenAwareValueResolvingService(PropertyResolver propertyResolver) {
-        this.propertyResolver = propertyResolver;
+    ShibbolethPlaceholderTokenAwareValueResolvingService(PropertySources propertySources) {
+        PropertySourcesPropertyResolver propertySourcesPropertyResolver = new PropertySourcesPropertyResolver(propertySources);
+        propertySourcesPropertyResolver.setPlaceholderPrefix("%{");
+        this.propertyResolver = propertySourcesPropertyResolver;
     }
 
     @Override
     public String resolveValueFromPossibleTokenPlaceholder(String potentialTokenPlaceholder) {
-        //Ignore nulls.
-        if(potentialTokenPlaceholder == null) {
-            return potentialTokenPlaceholder;
-        }
-
-        if(potentialTokenPlaceholder.contains(SHIB_IDP_PLACEHOLDER_PREFIX)) {
-            String normalizedTokenPlaceholder =
-                    potentialTokenPlaceholder.replace(SHIB_IDP_PLACEHOLDER_PREFIX, STANDARD_PLACEHOLDER_PREFIX);
-            //This call might result in IllegalArgumentException if it's unable to resolve passed in property(ies)
-            //e.g. due to bad data sent, etc. This is OK, as passing correct data and ensuring that
-            //property values are correctly set is the responsibility of the software operator
-            String resolved = this.propertyResolver.resolveRequiredPlaceholders(normalizedTokenPlaceholder);
-
-            //Indicates that malformed values such as %{incomplete.token are passed. Spring won't resolve and return
-            //the value as is. Just change it back to the original shib-style token and return.
-            if(resolved.equals(normalizedTokenPlaceholder)) {
-                return resolved.replace(STANDARD_PLACEHOLDER_PREFIX, SHIB_IDP_PLACEHOLDER_PREFIX);
-            }
-            return resolved;
-        }
-        //No token placeholders, just return the given data as is
-        return potentialTokenPlaceholder;
+        return potentialTokenPlaceholder != null
+                ? this.propertyResolver.resolveRequiredPlaceholders(potentialTokenPlaceholder)
+                : potentialTokenPlaceholder;
     }
 }

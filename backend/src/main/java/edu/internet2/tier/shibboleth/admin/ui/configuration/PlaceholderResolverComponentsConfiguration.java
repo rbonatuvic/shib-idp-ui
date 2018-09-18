@@ -4,14 +4,14 @@ import edu.internet2.tier.shibboleth.admin.ui.service.TokenPlaceholderValueResol
 import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.PropertyResolver;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 @Configuration
 public class PlaceholderResolverComponentsConfiguration {
 
     @Bean
-    public TokenPlaceholderValueResolvingService tokenPlaceholderValueResolvingService(PropertyResolver propertyResolver) {
-        return TokenPlaceholderValueResolvingService.shibbolethPlaceholderAware(propertyResolver);
+    public TokenPlaceholderValueResolvingService tokenPlaceholderValueResolvingService(ConfigurableEnvironment env) {
+        return TokenPlaceholderValueResolvingService.shibbolethPlaceholderPrefixAware(env.getPropertySources());
     }
 
     @Bean
