@@ -150,13 +150,27 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.statusCodeValue == 404
     }
 
+    @DirtiesContext
+    def "SHIBUI-839 - POST resolver with spaces in the provider name results in trimmed name"() {
+        given:
+        def resolver = generator.buildRandomMetadataResolverOfType('DynamicHttp')
+        resolver.name = '   This name has spaces    '
+
+        when:
+        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+
+        then:
+        def metadataResolverMap = new JsonSlurper().parseText(result.body)
+        metadataResolverMap.name == resolver.name.trim()
+    }
+
     @Unroll
     @DirtiesContext
     def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
         String sourceDirectory
-        if (resolverType.equals('Localdynamic')) {
+        if (resolverType.equals('LocalDynamic')) {
             sourceDirectory = ((LocalDynamicMetadataResolver) resolver).sourceDirectory
         }
 
