@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -14,13 +14,13 @@ import java.util.List;
 @ConfigurationProperties(prefix="custom")
 public class CustomAttributesConfiguration {
 
-    private List<HashMap<String, String>> attributes = new ArrayList<>();
+    private List<? extends Map<String, String>> attributes = new ArrayList<>();
 
-    public List<HashMap<String, String>> getAttributes() {
+    public List<? extends Map<String, String>> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<HashMap<String, String>> attributes) {
+    public void setAttributes(List<? extends Map<String, String>> attributes) {
         this.attributes = attributes;
     }
 }
