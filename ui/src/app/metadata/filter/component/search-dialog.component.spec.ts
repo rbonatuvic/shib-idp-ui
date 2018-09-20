@@ -6,6 +6,7 @@ import { SearchDialogComponent } from './search-dialog.component';
 import { NgbActiveModalStub } from '../../../../testing/modal.stub';
 import * as fromFilter from '../reducer';
 import { SharedModule } from '../../../shared/shared.module';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('Search Dialog', () => {
     let fixture: ComponentFixture<SearchDialogComponent>;
@@ -23,7 +24,8 @@ describe('Search Dialog', () => {
                 StoreModule.forRoot({
                     'filter': combineReducers(fromFilter.reducers),
                 }),
-                SharedModule
+                SharedModule,
+                MockI18nModule
             ],
             declarations: [
                 SearchDialogComponent

@@ -15,6 +15,7 @@ import { NavigatorService } from '../../../core/service/navigator.service';
 import * as fromResolver from '../reducer';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import { I18nTextComponent } from '../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('New Resolver Page', () => {
     let fixture: ComponentFixture<NewResolverComponent>;
@@ -30,7 +31,8 @@ describe('New Resolver Page', () => {
                 StoreModule.forRoot(fromResolver.reducers),
                 ReactiveFormsModule,
                 SharedModule,
-                RouterModule.forRoot([])
+                RouterModule.forRoot([]),
+                MockI18nModule
             ],
             declarations: [
                 NewResolverComponent,

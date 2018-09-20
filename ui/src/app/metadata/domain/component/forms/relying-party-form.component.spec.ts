@@ -10,6 +10,7 @@ import { RelyingPartyFormComponent } from './relying-party-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { SharedModule } from '../../../../shared/shared.module';
 import { FileBackedHttpMetadataResolver } from '../../entity';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 
 @Component({
@@ -54,7 +55,8 @@ describe('Relying Party Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 NgbPopoverModule,
-                SharedModule
+                SharedModule,
+                MockI18nModule
             ],
             declarations: [
                 RelyingPartyFormComponent,

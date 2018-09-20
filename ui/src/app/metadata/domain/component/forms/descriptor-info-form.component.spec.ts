@@ -11,6 +11,7 @@ import { DescriptorInfoFormComponent } from './descriptor-info-form.component';
 
 import * as stubs from '../../../../../testing/resolver.stub';
 import { SharedModule } from '../../../../shared/shared.module';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
     template: `<descriptor-info-form [resolver]="resolver"></descriptor-info-form>`
@@ -54,7 +55,8 @@ describe('Descriptor Info Form Component', () => {
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 NgbPopoverModule,
-                SharedModule
+                SharedModule,
+                MockI18nModule
             ],
             declarations: [
                 DescriptorInfoFormComponent,

@@ -7,6 +7,7 @@ import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/p
 import { AttributeReleaseFormComponent } from './attribute-release-form.component';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import * as stubs from '../../../../../testing/resolver.stub';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 describe('Attribute Release Form Component', () => {
     let fixture: ComponentFixture<AttributeReleaseFormComponent>;
@@ -23,7 +24,8 @@ describe('Attribute Release Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 AttributeReleaseFormComponent

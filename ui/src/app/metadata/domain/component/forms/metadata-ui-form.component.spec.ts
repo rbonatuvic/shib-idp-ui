@@ -11,6 +11,7 @@ import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
 import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
     template: `<metadata-ui-form [resolver]="resolver"></metadata-ui-form>`
@@ -44,7 +45,8 @@ describe('Metadata UI Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 MetadataUiFormComponent,

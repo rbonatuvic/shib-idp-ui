@@ -7,6 +7,7 @@ import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/p
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { OrganizationInfoFormComponent } from './organization-info-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 describe('Organization Info Form Component', () => {
     let fixture: ComponentFixture<OrganizationInfoFormComponent>;
@@ -23,7 +24,8 @@ describe('Organization Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 OrganizationInfoFormComponent

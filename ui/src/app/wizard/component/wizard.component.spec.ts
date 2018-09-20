@@ -6,6 +6,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import * as fromWizard from '../reducer';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { WizardComponent, ICONS } from './wizard.component';
+import { MockI18nModule } from '../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -31,7 +32,8 @@ describe('Wizard Component', () => {
                 RouterTestingModule,
                 StoreModule.forRoot({
                     wizard: combineReducers(fromWizard.reducers)
-                })
+                }),
+                MockI18nModule
             ],
             declarations: [
                 WizardComponent,

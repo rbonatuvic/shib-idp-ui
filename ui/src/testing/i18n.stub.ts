@@ -28,7 +28,7 @@ export class MockTranslateDirective {}
 
 
 @Component({
-    selector: 'translate',
+    selector: 'translate-18n',
     template: '<ng-content></ng-content>'
 })
 export class MockTranslateComponent { }
