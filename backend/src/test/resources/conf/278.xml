@@ -31,8 +31,8 @@
     </MetadataProvider>
     <MetadataProvider id="HTTPMetadata"
                       xsi:type="FileBackedHTTPMetadataProvider"
-                      backingFile="unicon.xml"
-                      metadataURL="https://idp.unicon.net/idp/shibboleth">
+                      backingFile="%{idp.home}/metadata/metadata.xml"
+                      metadataURL="https://idp.unicon.net/idp/shibboleth">                    
         <MetadataFilter xsi:type="SignatureValidation" requireSignedRoot="true"
                         certificateFile="%{idp.home}/credentials/inc-md-cert.pem" />
     </MetadataProvider>

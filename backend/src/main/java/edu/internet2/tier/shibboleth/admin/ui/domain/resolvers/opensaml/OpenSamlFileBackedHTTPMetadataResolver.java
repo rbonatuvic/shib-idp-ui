@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nullable;
 
 import static edu.internet2.tier.shibboleth.admin.util.DurationUtility.toMillis;
+import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -45,8 +46,11 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
         OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
                 this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
-        this.setBackupFile(sourceResolver.getBackingFile());
-        this.setBackupFileInitNextRefreshDelay(toMillis(sourceResolver.getBackupFileInitNextRefreshDelay()));
+        this.setBackupFile(placeholderResolverService()
+                .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackingFile()));
+        this.setBackupFileInitNextRefreshDelay(toMillis(placeholderResolverService()
+                .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
+
         this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
 
         this.setMetadataFilter(new MetadataFilterChain());
@@ -71,6 +75,7 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
         super.initMetadataResolver();
+
 
         delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                                                        this.sourceResolver.getResourceId(),

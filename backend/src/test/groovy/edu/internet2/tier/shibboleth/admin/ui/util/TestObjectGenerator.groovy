@@ -471,7 +471,7 @@ class TestObjectGenerator {
         new FileBackedHttpMetadataResolver().with {
             it.name = 'HTTPMetadata'
             it.xmlId = 'HTTPMetadata'
-            it.backingFile = 'unicon.xml'
+            it.backingFile = '%{idp.home}/metadata/metadata.xml'
             it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
