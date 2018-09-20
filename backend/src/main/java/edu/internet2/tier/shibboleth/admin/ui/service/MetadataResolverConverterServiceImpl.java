@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
+
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
@@ -59,7 +61,8 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
 
     private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
-        URL url = Thread.currentThread().getContextClassLoader().getResource(resolver.getMetadataFile());
+        URL url = Thread.currentThread().getContextClassLoader().getResource(placeholderResolverService()
+                .resolveValueFromPossibleTokenPlaceholder(resolver.getMetadataFile()));
         File metadataFile = new File(url.getPath());
 
         OpenSamlFilesystemMetadataResolver openSamlResolver = new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
@@ -75,7 +78,8 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
 
         XMLObjectLoadSaveManager manager = null;
         try {
-            manager = new FilesystemLoadSaveManager(resolver.getSourceDirectory());
+            manager = new FilesystemLoadSaveManager(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(resolver.getSourceDirectory()));
         } catch (ConstraintViolationException e) {
             // the base directory string instance was null or empty
             //TODO: What should we do here? Currently, this causes a test to fail.
@@ -95,7 +99,8 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 //TODO: What sort of resource type should be created here? URL?
                 break;
             case CLASSPATH:
-                resource = ResourceHelper.of(new ClassPathResource(resolver.getClasspathMetadataResource().getFile()));
+                resource = ResourceHelper.of(new ClassPathResource(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(resolver.getClasspathMetadataResource().getFile())));
                 break;
             default:
                 throw new RuntimeException("Unsupported resource type!");

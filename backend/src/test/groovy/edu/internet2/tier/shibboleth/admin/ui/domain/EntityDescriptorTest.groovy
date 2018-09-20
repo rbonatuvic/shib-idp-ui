@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
@@ -18,6 +19,7 @@ import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
@@ -31,7 +33,7 @@ import java.nio.file.Files
  * @author Bill Smith (wsmith@unicon.net)
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, MyConfig])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, MyConfig, PlaceholderResolverComponentsConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -58,14 +60,13 @@ class EntityDescriptorTest extends Specification {
 
     def "entity descriptors properly marshall to xml"() {
         given:
-        def tempDir = Files.createTempDirectory('test')
         ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers = [
                 new OpenSamlFileBackedHTTPMetadataResolver(
                         openSamlObjects.parserPool,
                         indexWriterService.getIndexWriter('testme'),
                         new FileBackedHttpMetadataResolver(
                                 metadataURL: 'https://idp.unicon.net/idp/shibboleth',
-                                backingFile: "${tempDir.toString()}/test.xml",
+                                backingFile: "%{idp.home}/metadata/test.xml",
                                 reloadableMetadataResolverAttributes: new ReloadableMetadataResolverAttributes(),
                                 httpMetadataResolverAttributes: new HttpMetadataResolverAttributes()
                         )

@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  edu.internet2.tier.shibboleth.admin.ui.configuration.postprocessors.IdpHomeValueSettingEnvironmentPostProcessor
