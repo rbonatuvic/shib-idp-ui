@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui;
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
