@@ -1,23 +1,23 @@
 {
-    "title": "MetadataFilter",
+    "title": "label.metadata-filter",
     "type": "object",
     "widget": {
         "id": "fieldset"
     },
     "properties": {
         "name": {
-            "title": "Metadata Filter Name (Dashboard Display Only)",
-            "description": "Metadata Filter Name",
+            "title": "label.metadata-filter-name",
+            "description": "tooltip.metadata-filter-name",
             "type": "string",
             "widget": {
                 "id": "string",
-                "help": "Must be unique."
+                "help": "message.unique"
             }
         },
         "@type": {
-            "title": "Metadata Filter Type",
-            "description": "Metadata Filter Type",
-            "placeholder": "Select a metadata filter type",
+            "title": "label.metadata-filter-type",
+            "description": "tooltip.metadata-filter-type",
+            "placeholder": "action.select-metadata-filter-type",
             "type": "string",
             "widget": {
                 "id": "select"
@@ -27,7 +27,7 @@
                     "enum": [
                         "EntityAttributes"
                     ],
-                    "description": "EntityAttributes Filter"
+                    "description": "value.entity-attributes-filter"
                 }
             ]
         }

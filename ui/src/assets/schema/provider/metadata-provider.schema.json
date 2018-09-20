@@ -1,23 +1,23 @@
 {
-    "title": "MetadataResolver",
+    "title": "label.metadata-provider",
     "type": "object",
     "widget": {
         "id": "fieldset"
     },
     "properties": {
         "name": {
-            "title": "label.metadata-provider-name-dashboard-display-only",
-            "description": "Metadata Provider Name",
+            "title": "label.metadata-provider-name",
+            "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
                 "id": "string",
-                "help": "Must be unique."
+                "help": "message.unique"
             }
         },
         "@type": {
-            "title": "Metadata Provider Type",
-            "description": "Metadata Provider Type",
-            "placeholder": "Select a metadata provider type",
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "placeholder": "label.select-metadata-type",
             "type": "string",
             "widget": {
                 "id": "select"
@@ -27,7 +27,7 @@
                     "enum": [
                         "FileBackedHttpMetadataResolver"
                     ],
-                    "description": "FileBackedHttpMetadataProvider"
+                    "description": "value.file-backed-http-metadata-provider"
                 }
             ]
         }
