@@ -155,13 +155,14 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         given:
         def resolver = generator.buildRandomMetadataResolverOfType('DynamicHttp')
         resolver.name = '   This name has spaces    '
+        def expectedName = 'This name has spaces'
 
         when:
         def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
 
         then:
         def metadataResolverMap = new JsonSlurper().parseText(result.body)
-        metadataResolverMap.name == resolver.name.trim()
+        metadataResolverMap.name == expectedName
     }
 
     @Unroll
