@@ -4,7 +4,7 @@
         <span *ngIf="schema.description">
             <ng-template #tooltip>
                 <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
-            </ng-template>
+            </ng-template>&nbsp;&nbsp;
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
                 i18n-aria-label="tooltip.instruction"

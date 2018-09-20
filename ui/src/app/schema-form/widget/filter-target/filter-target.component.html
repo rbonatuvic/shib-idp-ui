@@ -41,7 +41,7 @@
                     <span>
                         <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">
                             Search Criteria by {{ this.displayType | translate }}
-                        </translate-i18n>
+                        </translate-i18n>&nbsp;&nbsp;
                         <i class="fa fa-asterisk text-danger"
                             aria-hidden="true"
                             *ngIf="entityAttributesFilterTargetType !== 'ENTITY'"></i>
@@ -49,7 +49,7 @@
                     <span>
                         <ng-template #tooltipCriteria>
                             <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">Search Criteria by {{ this.displayType }}</translate-i18n>
-                        </ng-template>
+                        </ng-template>&nbsp;&nbsp;
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipCriteria"
                            
