@@ -1,6 +1,6 @@
 /* istanbul ignore */
 
-import { PipeTransform, Pipe, NgModule, Directive, Component } from '@angular/core';
+import { PipeTransform, Pipe, NgModule, Directive, Component, Input } from '@angular/core';
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 /*tslint:disable:component-selector */
 
 @Pipe({
-    name: 'i18n',
+    name: 'translate',
     pure: false
 })
 export class MockTranslatePipe implements PipeTransform {
@@ -24,14 +24,20 @@ export class MockTranslatePipe implements PipeTransform {
 @Directive({
     selector: '[translate]'
 })
-export class MockTranslateDirective {}
+export class MockTranslateDirective {
+    @Input() translate: any | null;
+    @Input() translateParams: any | null;
+}
 
 
 @Component({
-    selector: 'translate-18n',
+    selector: 'translate-i18n',
     template: '<ng-content></ng-content>'
 })
-export class MockTranslateComponent { }
+export class MockTranslateComponent {
+    @Input() key: any | null;
+    @Input() params: any | null;
+}
 
 @Injectable()
 export class MockI18nService {
