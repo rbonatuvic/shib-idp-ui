@@ -6,12 +6,11 @@
                     <span>
                         <translate-i18n key="action.search-by">Search By</translate-i18n> <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></span>
                     <span>
-                        <ng-template #tooltipBy translate="tooltip.description">
+                        <ng-template #tooltipBy>
                             <translate-i18n key="action.search-by">Search By</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipBy"
-                           
                             [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </label>
@@ -40,14 +39,16 @@
             <div>
                 <label for="targetInput" class="d-flex justify-content-start control-label">
                     <span>
-                        <translate-i18n key="label.search-criteria-by" params="{ displayType }">Search Criteria by {{ this.displayType }}</translate-i18n>
+                        <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">
+                            Search Criteria by {{ this.displayType | translate }}
+                        </translate-i18n>
                         <i class="fa fa-asterisk text-danger"
                             aria-hidden="true"
                             *ngIf="entityAttributesFilterTargetType !== 'ENTITY'"></i>
                     </span>
                     <span>
                         <ng-template #tooltipCriteria>
-                            <translate-i18n key="label.search-criteria-by" params="{ displayType }">Search Criteria by {{ this.displayType }}</translate-i18n>
+                            <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">Search Criteria by {{ this.displayType }}</translate-i18n>
                         </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipCriteria"

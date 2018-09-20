@@ -1,8 +1,11 @@
 <div class="widget form-group">
     <label [attr.for]="id" class="d-flex justify-content-between control-label">
-        <span>{{ schema.title }} <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i></span>
+        <span>
+            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
+            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+        </span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip translate="tooltip.description">
+            <ng-template #tooltip>
                 <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
             </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
@@ -19,7 +22,7 @@
         [attr.type]="'number'"
         [attr.min]="schema.minimum"
         [attr.max]="schema.maximum"
-        [attr.placeholder]="schema.placeholder"
+        [attr.placeholder]="schema.placeholder | translate"
         [attr.maxLength]="schema.maxLength || null"
         [attr.minLength]="schema.minLength || null"
         [attr.step]="schema.multipleOf || schema.widget.step"

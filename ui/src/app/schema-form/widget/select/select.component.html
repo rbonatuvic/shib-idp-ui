@@ -5,7 +5,7 @@
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip translate="tooltip.description">
+            <ng-template #tooltip>
                 <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
             </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
@@ -23,8 +23,8 @@
         class="form-control"
         [attr.aria-label]="schema.title">
         <option disabled selected>
-            <translate-i18n *ngIf="schema.placeholder">{{ schema.placeholder }}</translate-i18n>
-            <translate-i18n *ngIf="!schema.placeholder">{{ schema.title }}</translate-i18n>
+            <translate-i18n *ngIf="schema.placeholder" [key]="schema.placeholder">{{ schema.placeholder }}</translate-i18n>
+            <translate-i18n *ngIf="!schema.placeholder" [key]="schema.title">{{ schema.title }}</translate-i18n>
         </option>
         <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
     </select>

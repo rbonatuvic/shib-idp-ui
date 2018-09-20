@@ -1,12 +1,12 @@
 <div class="widget form-group">
     <label [for]="id" class="d-flex justify-content-between control-label">
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
-            {{ schema.title }}
+            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
         <span *ngIf="schema.description">
             <ng-template #tooltip>
-                <translate-i18n key="tooltip.description">{{ schema.description }}</translate-i18n>
+                <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
             </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                 [ngbPopover]="tooltip"
@@ -22,9 +22,9 @@
         [matches]="schema.widget.data"
         [required]="true"
         [dropdown]="true"
-        [placeholder]="schema.placeholder || ''"
+        [attr.placeholder]="schema.placeholder || '' | translate"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        [attr.aria-label]="schema.title">
+        [attr.aria-label]="schema.title | translate">
     </auto-complete>
 </div>

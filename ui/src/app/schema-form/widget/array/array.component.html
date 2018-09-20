@@ -1,7 +1,7 @@
 <div class="widget form-group">
     <div class="d-flex justify-content-start">
         <label [attr.for]="id" class="m-0 pt-1 control-label">
-            {{ schema.title }}
+            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
         </label>
         &nbsp;
         <button (click)="addItem()" class="btn btn-success btn-sm array-add-button">

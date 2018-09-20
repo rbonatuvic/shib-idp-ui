@@ -51,7 +51,7 @@ export class TranslateDirective implements OnDestroy {
     update(): void {
         const translated = this.service.translate(this.key, this.currentParams, this.messages);
         this.element.nativeElement.textContent = translated;
-        // this.element.nativeElement.data = translated;
+        this.element.nativeElement.data = translated;
     }
 
     ngOnDestroy() {

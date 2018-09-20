@@ -5,7 +5,7 @@
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip translate="tooltip.description">
+            <ng-template #tooltip>
                 <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
             </ng-template>
             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"

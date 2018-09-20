@@ -70,7 +70,7 @@
             "type": "string",
             "widget": {
                 "id": "string",
-                "help": "message.unique"
+                "help": "message.must-be-unique"
             }
         },
         "@type": {

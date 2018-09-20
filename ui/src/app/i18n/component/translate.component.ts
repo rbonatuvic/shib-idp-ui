@@ -37,6 +37,7 @@ export class TranslateComponent implements OnDestroy {
 
     @Input() set params(params: any) {
         this.currentParams = params || {};
+        console.log(params);
         this.update();
     }
 

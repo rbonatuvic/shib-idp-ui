@@ -17,7 +17,7 @@ import { CustomIntegerComponent } from './widget/number/number.component';
 import { FilterTargetComponent } from './widget/filter-target/filter-target.component';
 import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
-
+import { CustomObjectWidget } from './widget/object/object.component';
 
 export class CustomWidgetRegistry extends WidgetRegistry {
     constructor() {
@@ -38,7 +38,7 @@ export class CustomWidgetRegistry extends WidgetRegistry {
         this.register('boolean-radio', BooleanRadioComponent);
 
         this.register('fieldset', FieldsetComponent);
-        this.register('object', ObjectWidget);
+        this.register('object', CustomObjectWidget);
 
         this.register('array', CustomArrayComponent);
         this.register('checklist', ChecklistComponent);

@@ -1,5 +1,5 @@
 <fieldset [attr.aria-label]="schema.description" tabindex="0">
-    <legend *ngIf="schema.title">{{ schema.title }}</legend>
+    <legend *ngIf="schema.title" [translate]="schema.title">{{ schema.title }}</legend>
     <table class="table table-striped table-sm">
         <thead>
             <tr class="table-secondary">
