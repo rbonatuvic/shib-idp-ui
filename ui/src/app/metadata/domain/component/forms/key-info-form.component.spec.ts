@@ -10,7 +10,6 @@ import { KeyInfoFormComponent } from './key-info-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
@@ -55,8 +54,7 @@ describe('Security (Key) Info Form Component', () => {
             declarations: [
                 KeyInfoFormComponent,
                 TestHostComponent,
-                InputDefaultsDirective,
-                I18nTextComponent
+                InputDefaultsDirective
             ],
         }).compileComponents();
 

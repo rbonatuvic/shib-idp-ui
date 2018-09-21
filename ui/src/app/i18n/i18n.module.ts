@@ -11,9 +11,11 @@ import { TranslatePipe } from './pipe/i18n.pipe';
 import { CoreModule } from '../core/core.module';
 import { TranslateDirective } from './directive/translate.directive';
 import { TranslateComponent } from './component/translate.component';
+import { I18nTextComponent } from './component/i18n-text.component';
 
 export const COMPONENTS = [
-    TranslateComponent
+    TranslateComponent,
+    I18nTextComponent
 ];
 export const DIRECTIVES = [
     TranslateDirective

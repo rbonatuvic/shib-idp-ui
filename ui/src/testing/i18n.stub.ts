@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
 /*tslint:disable:component-selector */
 
 @Pipe({
-    name: 'translate',
-    pure: false
+    name: 'translate'
 })
 export class MockTranslatePipe implements PipeTransform {
 
@@ -29,6 +28,13 @@ export class MockTranslateDirective {
     @Input() translateParams: any | null;
 }
 
+@Component({
+    selector: 'i18n-text',
+    template: '<ng-content></ng-content>'
+})
+export class MockI18nTextComponent {
+    @Input() key: any | null;
+}
 
 @Component({
     selector: 'translate-i18n',
@@ -80,11 +86,13 @@ export class MockI18nService {
     declarations: [
         MockTranslatePipe,
         MockTranslateDirective,
-        MockTranslateComponent
+        MockTranslateComponent,
+        MockI18nTextComponent
     ],
     exports: [
         MockTranslateComponent,
         MockTranslateDirective,
+        MockI18nTextComponent,
         MockTranslatePipe
     ],
     providers: [

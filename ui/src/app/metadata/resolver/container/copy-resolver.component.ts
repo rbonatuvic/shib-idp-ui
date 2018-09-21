@@ -5,18 +5,15 @@ import {
     EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormControlName, Validators, AbstractControl } from '@angular/forms';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { startWith, take, last } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
-import { AddDraftRequest } from '../action/draft.action';
-import { AddResolverRequest, UploadResolverRequest } from '../action/collection.action';
 import * as fromResolver from '../reducer';
 import { EntityValidators } from '../../domain/service/entity-validators.service';
 import { SearchIds } from '../action/search.action';
 import * as fromProvider from '../reducer';
-import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { CreateResolverCopyRequest, UpdateResolverCopySections } from '../action/copy.action';
 
 

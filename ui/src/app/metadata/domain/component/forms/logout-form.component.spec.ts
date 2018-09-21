@@ -11,7 +11,6 @@ import { LogoutFormComponent } from './logout-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
@@ -53,8 +52,7 @@ describe('Logout Endpoints Form Component', () => {
             declarations: [
                 LogoutFormComponent,
                 TestHostComponent,
-                InputDefaultsDirective,
-                I18nTextComponent
+                InputDefaultsDirective
             ],
         });
 

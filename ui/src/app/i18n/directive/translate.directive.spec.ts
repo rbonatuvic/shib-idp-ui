@@ -1,4 +1,3 @@
-import { TranslatePipe } from './i18n.pipe';
 import { I18nService } from '../service/i18n.service';
 import { CommonModule } from '@angular/common';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
@@ -7,11 +6,12 @@ import * as fromI18n from '../reducer';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { MessagesLoadSuccessAction } from '../action/message.action';
+import { TranslateDirective } from './translate.directive';
 import { MockI18nService, MockI18nModule } from '../../../testing/i18n.stub';
 
 @Component({
     template: `
-        <span>{{ foo | translate }}</span>
+        <div [translate]="foo">Word</div>
     `
 })
 class TestHostComponent {
@@ -26,11 +26,17 @@ class TestHostComponent {
     }
 }
 
-describe('Pipe: I18n translation', () => {
+describe('Directive: I18n translation', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
     let store: Store<fromI18n.State>;
     let service: I18nService;
+
+    const msg = {
+        foo: 'foo',
+        bar: 'bar',
+        baz: 'baz'
+    };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -44,7 +50,7 @@ describe('Pipe: I18n translation', () => {
                 })
             ],
             declarations: [
-                TranslatePipe,
+                TranslateDirective,
                 TestHostComponent
             ],
         });
@@ -58,12 +64,12 @@ describe('Pipe: I18n translation', () => {
     });
 
     it('should set the correct text', () => {
-        spyOn(service, 'translate').and.returnValue('hi there');
-        store.dispatch(new MessagesLoadSuccessAction({ foo: 'hi there' }));
+        spyOn(service, 'translate').and.returnValue('foo');
+        store.dispatch(new MessagesLoadSuccessAction(msg));
 
         store.select(fromI18n.getMessages).subscribe(() => {
             fixture.detectChanges();
-            expect(fixture.nativeElement.textContent).toContain('hi there');
+            expect(fixture.nativeElement.textContent).toContain(msg.foo);
         });
     });
 });

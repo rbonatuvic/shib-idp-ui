@@ -13,7 +13,6 @@ import { ActivatedRouteStub } from '../../../../../testing/activated-route.stub'
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
@@ -56,7 +55,6 @@ describe('Finished Form Component', () => {
             declarations: [
                 FinishFormComponent,
                 RouterLinkStubDirective,
-                I18nTextComponent,
                 InputDefaultsDirective,
                 TestHostComponent
             ],

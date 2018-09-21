@@ -30,6 +30,7 @@ describe('Component: I18n translation', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
     let store: Store<fromI18n.State>;
+    let service: I18nService;
 
     const msg = {
         foo: 'foo',
@@ -45,7 +46,7 @@ describe('Component: I18n translation', () => {
             imports: [
                 CommonModule,
                 StoreModule.forRoot({
-                    'message': combineReducers(fromI18n.reducers),
+                    'i18n': combineReducers(fromI18n.reducers),
                 })
             ],
             declarations: [
@@ -54,6 +55,7 @@ describe('Component: I18n translation', () => {
             ],
         });
         store = TestBed.get(Store);
+        service = TestBed.get(I18nService);
 
         spyOn(store, 'dispatch').and.callThrough();
 
@@ -62,6 +64,7 @@ describe('Component: I18n translation', () => {
     });
 
     it('should set the correct text', () => {
+        spyOn(service, 'translate').and.returnValue('foo');
         store.dispatch(new MessagesLoadSuccessAction(msg));
 
         store.select(fromI18n.getMessages).subscribe(() => {

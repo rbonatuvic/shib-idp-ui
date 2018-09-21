@@ -9,7 +9,6 @@ import * as fromRoot from '../reducer';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import * as fromWizard from '../../../wizard/reducer';
 import { ProviderEditorNavComponent, NAV_FORMATS } from './provider-editor-nav.component';
-import { I18nTextComponent } from '../../../shared/component/i18n-text.component';
 import { ValidFormIconComponent } from '../../../shared/component/valid-form-icon.component';
 import { WizardStep } from '../../../wizard/model';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
@@ -55,7 +54,6 @@ describe('Provider Editor Nav Component', () => {
             ],
             declarations: [
                 ProviderEditorNavComponent,
-                I18nTextComponent,
                 ValidFormIconComponent,
                 TestHostComponent
             ],
