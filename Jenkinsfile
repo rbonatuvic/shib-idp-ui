@@ -23,7 +23,7 @@ pipeline {
         }
       }
       steps {
-        sh '''./gradlew docker
+        sh '''./gradlew docker -x test
         '''
       }
     }
