@@ -7,12 +7,12 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -150,13 +150,28 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         result.statusCodeValue == 404
     }
 
+    @DirtiesContext
+    def "SHIBUI-839 - POST resolver with spaces in the provider name results in trimmed name"() {
+        given:
+        def resolver = generator.buildRandomMetadataResolverOfType('DynamicHttp')
+        resolver.name = '   This name has spaces    '
+        def expectedName = 'This name has spaces'
+
+        when:
+        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+
+        then:
+        def metadataResolverMap = new JsonSlurper().parseText(result.body)
+        metadataResolverMap.name == expectedName
+    }
+
     @Unroll
     @DirtiesContext
     def "POST new concrete MetadataResolver of type #resolverType -> /api/MetadataResolvers"(String resolverType) {
         given: 'New MetadataResolver JSON representation'
         def resolver = generator.buildRandomMetadataResolverOfType(resolverType)
         String sourceDirectory
-        if (resolverType.equals('Localdynamic')) {
+        if (resolverType.equals('LocalDynamic')) {
             sourceDirectory = ((LocalDynamicMetadataResolver) resolver).sourceDirectory
         }
 
@@ -315,7 +330,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     static class Config {
         @Bean
         MetadataResolver metadataResolver() {
-            new ChainingMetadataResolver()
+            new OpenSamlChainingMetadataResolver()
         }
     }
 }

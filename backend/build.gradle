@@ -5,6 +5,7 @@ plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
     id 'net.researchgate.release' version '2.6.0'
     id 'io.franzbecker.gradle-lombok' version '1.13'
+    id 'com.palantir.docker' version '0.20.1'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -207,4 +208,14 @@ jacocoTestReport {
         csv.enabled = false
         html.destination = file("${buildDir}/jacocoHtml")
     }
+}
+
+tasks.docker.dependsOn tasks.build
+docker {
+    name 'unicon/shibui'
+    tags 'latest'
+    pull true
+    noCache true
+    files tasks.bootWar.outputs
+    buildArgs(['JAR_FILE': 'shibui.war'])
 }

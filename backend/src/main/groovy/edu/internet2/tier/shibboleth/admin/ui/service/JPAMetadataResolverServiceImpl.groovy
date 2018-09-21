@@ -11,18 +11,16 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMet
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import groovy.util.logging.Slf4j
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
-import net.shibboleth.utilities.java.support.logic.ScriptedPredicate
-import net.shibboleth.utilities.java.support.resolver.ResolverException
 import net.shibboleth.utilities.java.support.scripting.EvaluableScript
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
-import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.saml2.core.Attribute
@@ -52,10 +50,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     // TODO: enhance
     @Override
-    void reloadFilters(String metadataResolverName) {
-        ChainingMetadataResolver chainingMetadataResolver = (ChainingMetadataResolver) metadataResolver
-        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverName }
-        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByName(metadataResolverName)
+    void reloadFilters(String metadataResolverResourceId) {
+        OpenSamlChainingMetadataResolver chainingMetadataResolver = (OpenSamlChainingMetadataResolver) metadataResolver
+        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverResourceId }
+        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverResourceId)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
             MetadataFilterChain metadataFilterChain = (MetadataFilterChain) targetMetadataResolver.getMetadataFilter()
@@ -94,12 +92,11 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             metadataFilterChain.setFilters(metadataFilters)
         }
 
-        if (metadataResolver instanceof RefreshableMetadataResolver) {
-            try {
-                ((RefreshableMetadataResolver) metadataResolver).refresh()
-            } catch (ResolverException e) {
-                log.warn("error refreshing metadataResolver " + metadataResolverName, e)
-            }
+        if (targetMetadataResolver != null && targetMetadataResolver instanceof Refilterable) {
+            (Refilterable) targetMetadataResolver.refilter()
+        } else {
+            //TODO: Do something here if we need to refilter other non-Batch resolvers
+            log.warn("Target resolver is not a Refilterable resolver. Skipping refilter()")
         }
     }
 

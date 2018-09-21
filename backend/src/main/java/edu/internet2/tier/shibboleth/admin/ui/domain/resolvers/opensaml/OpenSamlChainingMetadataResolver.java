@@ -29,7 +29,7 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
     @Nonnull @NonnullElements private List<MetadataResolver> mutableResolvers;
 
     public OpenSamlChainingMetadataResolver() {
-        this.mutableResolvers = Collections.emptyList();
+        this.mutableResolvers = new ArrayList<>();
     }
 
     public OpenSamlChainingMetadataResolver(@Nonnull List<MetadataResolver> mutableResolvers) {
@@ -39,7 +39,7 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
     @Override
     public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers) {
         if (newResolvers == null || newResolvers.isEmpty()) {
-            mutableResolvers = Collections.emptyList();
+            mutableResolvers = new ArrayList<>();
             return;
         }
 
@@ -78,7 +78,7 @@ public class OpenSamlChainingMetadataResolver extends ChainingMetadataResolver {
         super.doInitialize();
         if (mutableResolvers == null) {
             log.warn("OpenSamlChainingMetadataResolver was not configured with any member MetadataResolvers");
-            mutableResolvers = Collections.emptyList();
+            mutableResolvers = new ArrayList<>();
         }
     }
 
