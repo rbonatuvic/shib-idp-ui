@@ -25,15 +25,15 @@ export class I18nService {
     }
 
     getCurrentLanguage(): string {
-        return getCurrentLanguage(this.navigator.native);
+        return getCurrentLanguage(this.navigator);
     }
 
     getCurrentCountry(): string {
-        return getCurrentCountry(this.navigator.native);
+        return getCurrentCountry(this.navigator);
     }
 
     getCurrentLocale(): string {
-        return getCurrentLocale(this.navigator.native);
+        return getCurrentLocale(this.navigator);
     }
 
     translate(value: string, interpolated: any, messages: Messages): string {

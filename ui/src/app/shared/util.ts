@@ -62,12 +62,12 @@ export function array_move(arr, old_index, new_index): any[] {
     return arr;
 }
 
-export function getCurrentLanguage(locale: string): string {
-    return getCurrentLocale(locale).split('-', 1)[0];
+export function getCurrentLanguage(navigator: any = null): string {
+    return getCurrentLocale(navigator).split('-', 1)[0];
 }
 
-export function getCurrentCountry(locale: string): string {
-    return getCurrentLocale(locale).split('-', 1)[1];
+export function getCurrentCountry(navigator: any = null): string {
+    return getCurrentLocale(navigator).split('-', 1)[1];
 }
 
 export function getCurrentLocale(nav: any = null): string {
