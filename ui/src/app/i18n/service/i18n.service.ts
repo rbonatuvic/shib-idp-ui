@@ -25,20 +25,20 @@ export class I18nService {
     }
 
     getCurrentLanguage(): string {
-        return getCurrentLanguage(this.navigator);
+        return getCurrentLanguage(this.navigator.native);
     }
 
     getCurrentCountry(): string {
-        return getCurrentCountry(this.navigator);
+        return getCurrentCountry(this.navigator.native);
     }
 
     getCurrentLocale(): string {
-        return getCurrentLocale(this.navigator);
+        return getCurrentLocale(this.navigator.native);
     }
 
     translate(value: string, interpolated: any, messages: Messages): string {
         interpolated = interpolated || {};
-        let val = messages.hasOwnProperty(value) ? messages[value] : value;
+        let val = messages.hasOwnProperty(value) ? messages[value] : (Object.keys(messages).length ? value : '');
         return this.interpolate(val, interpolated);
     }
 

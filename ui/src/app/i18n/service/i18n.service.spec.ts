@@ -4,20 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NavigatorService } from '../../core/service/navigator.service';
 
-class MockNavigatorService {
-    language = 'en-US';
-
-    languages = ['en-US'];
-
-    get native(): string {
-        return this.language;
-    }
-
-    set native(str: string) {
-        this.language = str;
-    }
-}
-
 describe('i18n Service', () => {
     let service: I18nService;
     let nav: NavigatorService;
@@ -29,7 +15,7 @@ describe('i18n Service', () => {
                 HttpClientTestingModule
             ],
             providers: [
-                { provide: NavigatorService, useClass: MockNavigatorService },
+                NavigatorService,
                 I18nService
             ]
         });
