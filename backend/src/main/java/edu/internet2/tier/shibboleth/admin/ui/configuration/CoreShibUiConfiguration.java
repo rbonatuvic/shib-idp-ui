@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import com.fasterxml.jackson.databind.Module;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -174,5 +175,10 @@ public class CoreShibUiConfiguration {
     @Bean
     public CustomAttributesConfiguration customAttributesConfiguration() {
         return new CustomAttributesConfiguration();
+    }
+
+    @Bean
+    public Module stringTrimModule() {
+        return new StringTrimModule();
     }
 }
