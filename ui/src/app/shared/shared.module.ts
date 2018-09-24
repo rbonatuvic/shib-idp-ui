@@ -12,6 +12,7 @@ import { ToggleSwitchComponent } from './switch/switch.component';
 import { ContenteditableDirective } from './contenteditable/contenteditable.directive';
 import { ReplacePipe } from './pipe/replace.pipe';
 import { I18nModule } from '../i18n/i18n.module';
+import { CustomDatePipe } from './pipe/date.pipe';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import { I18nModule } from '../i18n/i18n.module';
         InfoLabelDirective,
         PrettyXml,
         ReplacePipe,
+        CustomDatePipe,
         ContenteditableDirective
     ],
     exports: [
@@ -44,7 +46,8 @@ import { I18nModule } from '../i18n/i18n.module';
         ValidationClassDirective,
         InfoLabelDirective,
         ContenteditableDirective,
-        ReplacePipe
+        ReplacePipe,
+        CustomDatePipe
     ]
 })
 export class SharedModule { }

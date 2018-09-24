@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -58,7 +58,6 @@ import { I18nModule } from './i18n/i18n.module';
         AppRoutingModule
     ],
     providers: [
-        { provide: LOCALE_ID, useValue: getCurrentLocale(null) },
         NavigatorService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {

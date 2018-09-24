@@ -4,6 +4,7 @@ import { EntityItemComponent } from './entity-item.component';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { ResolverItemComponent } from './resolver-item.component';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
 
 describe('Resolver List item', () => {
     let fixture: ComponentFixture<ResolverItemComponent>;
@@ -19,7 +20,8 @@ describe('Resolver List item', () => {
                 MockI18nModule
             ],
             declarations: [
-                ResolverItemComponent
+                ResolverItemComponent,
+                CustomDatePipe
             ],
         });
 
