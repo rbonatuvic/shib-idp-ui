@@ -11,7 +11,7 @@
             "type": "string",
             "widget": {
                 "id": "string",
-                "help": "Must be unique."
+                "help": "message.must-be-unique"
             }
         },
         "@type": {
