@@ -10,7 +10,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let attr of listOfAttributes$ | async; let i=index;">
-                        <td scope="col">{{ attr.label }}</td>
+                        <td scope="col" [translate]="attr.label">{{ attr.label }}</td>
                         <td scope="col">
                             <fieldset>
                                 <div class="custom-control custom-checkbox">
@@ -19,8 +19,8 @@
                                         (change)="onCheck($event, attr.key)"
                                         [checked]="isChecked(attr.key)"
                                         id="input-{{ i }}"
-                                        [attr.name]="attr.label"
-                                        [attr.aria-label]="attr.label"
+                                        [attr.name]="attr.label | translate"
+                                        [attr.aria-label]="attr.label | translate"
                                         role="checkbox"
                                         aria-checked="false"/>
                                     <label class="custom-control-label" for="input-{{ i }}"></label>
