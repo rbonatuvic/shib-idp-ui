@@ -530,6 +530,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     case MDDCConstants.RELEASE_ATTRIBUTES:
                         representation.setAttributeRelease(getStringListOfAttributeValues(attribute.getAttributeValues()));
                         break;
+                    case MDDCConstants.FORCE_AUTHN:
+                        relyingPartyOverridesRepresentation.setForceAuthn(getBooleanValueOfAttribute(jpaAttribute));
+                        break;
                     default:
                         break;
                 }

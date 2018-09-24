@@ -10,11 +10,13 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.boot.test.json.JacksonTester
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -31,7 +33,8 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         it
     }
 
-    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
+    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
+            new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects)))
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
@@ -445,6 +448,46 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
         then:
         !diff.hasDifferences()
+    }
+
+    def "SHIBUI-855, generate forceAuthn XML"() {
+        when:
+
+        def expected = '''
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.example.org/test1">
+  <md:Extensions>
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="forceAuthn" Name="http://shibboleth.net/ns/profiles/forceAuthn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml2:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:boolean">true</saml2:AttributeValue>
+      </saml2:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
+</md:EntityDescriptor>
+'''
+
+        def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
+            it.entityId = 'http://test.example.org/test1'
+            it.relyingPartyOverrides = new RelyingPartyOverridesRepresentation().with {
+                it.forceAuthn = true;
+                it
+            }
+            it
+        }))
+
+        def diff = DiffBuilder.compare(Input.fromString(expected)).withTest(Input.fromString(test)).ignoreComments().ignoreWhitespace().build()
+
+        then:
+        !diff.hasDifferences()
+    }
+
+
+    def "SHIBUI-855, read forceAuthn from json"() {
+        when:
+        def representation = new ObjectMapper().readValue(this.class.getResource('/json/SHIBUI-855.json').bytes, EntityDescriptorRepresentation)
+        def output = service.createRepresentationFromDescriptor(service.createDescriptorFromRepresentation(representation))
+
+        then:
+        assert output.relyingPartyOverrides?.forceAuthn == true
     }
 
     def "test ACS configuration"() {
