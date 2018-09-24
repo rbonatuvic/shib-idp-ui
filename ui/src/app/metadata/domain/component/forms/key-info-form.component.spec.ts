@@ -10,7 +10,7 @@ import { KeyInfoFormComponent } from './key-info-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
     template: `<key-info-form [resolver]="resolver"></key-info-form>`
@@ -48,13 +48,13 @@ describe('Security (Key) Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 KeyInfoFormComponent,
                 TestHostComponent,
-                InputDefaultsDirective,
-                I18nTextComponent
+                InputDefaultsDirective
             ],
         }).compileComponents();
 

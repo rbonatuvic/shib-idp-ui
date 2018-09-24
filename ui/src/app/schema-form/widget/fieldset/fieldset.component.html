@@ -6,8 +6,10 @@
                 [class.d-none]="fieldset.type === 'hidden'"
                 [class.col-lg-6]="fieldset.type === 'group'"
                 [class.col-lg-12]="fieldset.type === 'group-lg'">
-                <legend class="text-primary" *ngIf="fieldset.title">{{ fieldset.title }}</legend>
-                <p *ngIf="fieldset.description">{{ fieldset.description }}</p>
+                <legend class="text-primary" *ngIf="fieldset.title">
+                    <translate-i18n [key]="fieldset.title">{{ fieldset.title }}</translate-i18n>
+                </legend>
+                <p *ngIf="fieldset.description" [translate]="fieldset.description">{{ fieldset.description }}</p>
                 <div [ngClass]="{
                     'bg-light border rounded px-4 pt-4 pb-1': fieldset.type === 'section' || (!fieldset.type && formProperty.schema.widget.id === 'fieldset')
                 }">

@@ -8,6 +8,7 @@ import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/ser
 import { AdvancedInfoFormComponent } from './advanced-info-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
     template: `<adv-info-form [resolver]="resolver" [ids]="ids$"></adv-info-form>`
@@ -50,7 +51,8 @@ describe('Advanced Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 AdvancedInfoFormComponent,

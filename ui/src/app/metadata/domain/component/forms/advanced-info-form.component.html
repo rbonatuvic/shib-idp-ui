@@ -5,16 +5,17 @@
                 <div class="row">
                     <label for="serviceProviderName" class="col-sm-10">
                         <span>
-                            <ng-container i18n="@@label--service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only)</ng-container>
+                            <translate-i18n key="label.service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only)</translate-i18n>
                             <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipServiceProviderNameDashboardDisplayOnly i18n="@@tooltip--service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only) popover</ng-template>
+                        <ng-template #tooltipServiceProviderNameDashboardDisplayOnly>
+                            <translate-i18n key="tooltip.service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only) popover</translate-i18n>
+                        </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipServiceProviderNameDashboardDisplayOnly"
-                           i18n-aria-label="@@tooltip--instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <input type="text"
@@ -28,16 +29,17 @@
                 <div class="row">
                     <label for="entityId" class="col-sm-10">
                         <span>
-                            <ng-container i18n="@@label--service-provider-entity-id">Service Provider Entity ID</ng-container>
+                            <translate-i18n key="label.service-provider-entity-id">Service Provider Entity ID</translate-i18n>
                             <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipServiceProviderEntityID i18n="@@tooltip--service-provider-entity-id">Service Provider Entity ID popover</ng-template>
+                        <ng-template #tooltipServiceProviderEntityID>
+                            <translate-i18n key="tooltip.service-provider-entity-id">Service Provider Entity ID popover</translate-i18n>
+                        </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipServiceProviderEntityID"
-                           i18n-aria-label="@@tooltip--instruction"
-                           aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </div>
                 <input type="text"
@@ -50,7 +52,9 @@
             <div class="form-group">
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse" for="serviceEnabled">
                     <input disableValidation="true" class="custom-control-input" type="checkbox" formControlName="serviceEnabled" id="serviceEnabled" name="serviceEnabled" role="checkbox">
-                    <label class="custom-control-label" i18n="@@label--enable-this-service" for="serviceEnabled" aria-label="Enable this service?">Enable this service?</label>
+                    <label class="custom-control-label" for="serviceEnabled" aria-label="Enable this service?">
+                        <translate-i18n key="label.enable-this-service">Enable this service?</translate-i18n>
+                    </label>
                 </div>
             </div>
             <div formGroupName="organization">
@@ -58,16 +62,17 @@
                     <div class="row">
                         <label for="name" class="col-sm-10">
                             <span>
-                                <ng-container i18n="@@label--organization-name">Organization Name</ng-container>
+                                <translate-i18n key="label.organization-name">Organization Name</translate-i18n>
                                 <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
                             </span>
                         </label>
                         <span class="col-sm-2 text-right">
-                            <ng-template #tooltipOrganizationName i18n="@@tooltip--organization-name">Organization Name popover</ng-template>
+                            <ng-template #tooltipOrganizationName>
+                                <translate-i18n key="tooltip.organization-name">Organization Name popover</translate-i18n>
+                            </ng-template>
                             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                [ngbPopover]="tooltipOrganizationName"
-                               i18n-aria-label="@@tooltip--instruction"
-                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
                         </span>
                     </div>
                     <input type="text"
@@ -81,16 +86,17 @@
                     <div class="row">
                         <label for="displayName" class="col-sm-10">
                             <span>
-                                <ng-container i18n="@@label--organization-display-name">Organization Display Name</ng-container>
+                                <translate-i18n key="label.organization-display-name">Organization Display Name</translate-i18n>
                                 <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
                             </span>
                         </label>
                         <span class="col-sm-2 text-right">
-                            <ng-template #tooltipOrganizationDisplayName i18n="@@tooltip--organization-display-name">Organization Display Name popover</ng-template>
+                            <ng-template #tooltipOrganizationDisplayName>
+                                <translate-i18n key="tooltip.organization-display-name">Organization Display Name popover</translate-i18n>
+                            </ng-template>
                             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                [ngbPopover]="tooltipOrganizationDisplayName"
-                               i18n-aria-label="@@tooltip--instruction"
-                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
                         </span>
                     </div>
                     <input type="text"
@@ -104,16 +110,17 @@
                     <div class="row">
                         <label for="url" class="col-sm-10">
                             <span>
-                                <ng-container i18n="@@label--organization-url">Organization URL</ng-container>
+                                <translate-i18n key="label.organization-url">Organization URL</translate-i18n>
                                 <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true" *ngIf="hasValue$ | async"></i>
                             </span>
                         </label>
                         <span class="col-sm-2 text-right">
-                            <ng-template #tooltipOrganizationURL i18n="@@tooltip--organization-url">Organization URL popover</ng-template>
+                            <ng-template #tooltipOrganizationURL>
+                                <translate-i18n key="tooltip.organization-url">Organization URL popover</translate-i18n>
+                            </ng-template>
                             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                [ngbPopover]="tooltipOrganizationURL"
-                               i18n-aria-label="@@tooltip--instruction"
-                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
                         </span>
                     </div>
                     <input type="text"
@@ -124,12 +131,16 @@
                            role="textbox" />
                 </div>
             </div>
-            <p class="text-danger" *ngIf="form.get('organization').hasError('org')" i18n="@@message--organization-feedback">* These three fields must all be entered if any single field has a value.</p>
+            <p class="text-danger" *ngIf="form.get('organization').hasError('org')">
+                * <translate-i18n key="message.organization-feedback">These three fields must all be entered if any single field has a value.</translate-i18n>
+            </p>
         </fieldset>
         <fieldset class="form-section col">
             <p>
-                <ng-container i18n="@@label--contact-information">Contact Information: &nbsp;</ng-container>
-                <button class="btn btn-success btn-sm" (click)="addContact()" i18n="@@action--add-contacts" aria-label="Add contact to accordion group" role="button">Add Contact</button>
+                <translate-i18n key="label.contact-information">Contact Information:</translate-i18n>&nbsp;&nbsp;
+                <button class="btn btn-success btn-sm" (click)="addContact()" translate="action.add-contact" aria-label="Add contact to accordion group" role="button">
+                    Add Contact
+                </button>
             </p>
             <div formArrayName="contacts" class="bg-light border rounded p-4" *ngIf="contacts.length">
                 <ul class="list-group" id="contactAccordionGroup" aria-label="Contact information accordion group" tabindex="0" role="presentation">
@@ -161,14 +172,16 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label [for]="'name-' + i" class="col-sm-9">
-                                                <ng-container i18n="@@label--name">Name</ng-container>
+                                                <translate-i18n key="label.name">Name</translate-i18n>
                                             </label>
                                             <span class="col-sm-3 text-right">
-                                                <ng-template #tooltipName i18n="@@tooltip--name">Name popover</ng-template>
+                                                <ng-template #tooltipName>
+                                                    <translate-i18n key="tooltip.name">Name popover</translate-i18n>
+                                                </ng-template>
                                                 <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                    [ngbPopover]="tooltipName"
-                                                   i18n-aria-label="@@tooltip--instruction"
-                                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                                  
+                                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
                                             </span>
                                         </div>
                                         <input [id]="'name' + i"
@@ -184,14 +197,16 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label [for]="'type-' + i" class="col-sm-9">
-                                                <ng-container i18n="@@label--type">Type</ng-container>
+                                                <translate-i18n key="label.type">Type</translate-i18n>
                                             </label>
                                             <span class="col-sm-3 text-right">
-                                                <ng-template #tooltipType i18n="@@tooltip--type">Type popover</ng-template>
+                                                <ng-template #tooltipType>
+                                                    <translate-i18n key="tooltip.type">Type popover</translate-i18n>
+                                                </ng-template>
                                                 <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                    [ngbPopover]="tooltipType"
-                                                   i18n-aria-label="@@tooltip--instruction"
-                                                   aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                                  
+                                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
                                             </span>
                                         </div>
                                         <select [id]="'type-' + i" class="form-control" formControlName="type" aria-label="Contact type dropdown" role="listbox">
@@ -207,14 +222,15 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <label [for]="'email-' + i" class="col-sm-10">
-                                                <ng-container i18n="@@label--email-address">Email Address</ng-container>
+                                                <translate-i18n key="label.email-address">Email Address</translate-i18n>
                                             </label>
                                             <span class="col-sm-2 text-right">
-                                                <ng-template #tooltipEmailAddress i18n="@@tooltip--email-address">Email Address popover</ng-template>
+                                                <ng-template #tooltipEmailAddress>
+                                                    <translate-i18n key="tooltip.email-address">Email Address popover</translate-i18n>
+                                                </ng-template>
                                             <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                                                [ngbPopover]="tooltipEmailAddress"
-                                               i18n-aria-label="@@tooltip--instruction"
-                                               aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
                                             </span>
                                         </div>
                                         <input type="email"
@@ -222,10 +238,11 @@
                                                class="form-control"
                                                placeholder=""
                                                formControlName="emailAddress"
+                                               i18n-aria-label="label.contact-email-address"
                                                aria-label="Contact email address"
                                                role="textbox" />
                                         <small class="form-text text-danger" *ngIf="contact.get('emailAddress').touched && contact.get('emailAddress').hasError('email')">
-                                            <ng-container i18n="@@message--valid-email">Must be a valid Email Address</ng-container>
+                                            <translate-i18n key="message.valid-email">Must be a valid Email Address</translate-i18n>
                                         </small>
                                     </div>
                                 </div>

@@ -16,6 +16,7 @@ import { NgbModalStub } from '../../../../testing/modal.stub';
 import { MetadataProvider } from '../../domain/model';
 import { of } from 'rxjs';
 import { DifferentialService } from '../../../core/service/differential.service';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -61,7 +62,8 @@ describe('Provider Edit Component', () => {
                             schemaCollection: []
                         }
                     })
-                })
+                }),
+                MockI18nModule
             ],
             declarations: [
                 ProviderEditComponent,

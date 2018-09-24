@@ -7,17 +7,17 @@
             "type": "object",
             "properties": {
                 "RequiredValidUntil": {
-                    "title": "Required Valid Until Filter",
+                    "title": "label.required-valid-until",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
                         "maxValidityInterval": {
-                            "title": "Max Validity Interval",
-                            "description": "Defines the window within which the metadata is valid.",
+                            "title": "label.max-validity-interval",
+                            "description": "tooltip.max-validity-interval",
                             "type": "string",
-                            "placeholder": "Duration",
+                            "placeholder": "label.duration",
                             "widget": {
                                 "id": "datalist",
                                 "data": [
@@ -38,21 +38,21 @@
                     }
                 },
                 "SignatureValidation": {
-                    "title": "Signature Validation Filter",
+                    "title": "label.signature-validation-filter",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
                         "requireSignedRoot": {
-                            "title": "Require Signed Root",
-                            "description": "If true, this fails to load metadata with no signature on the root XML element.",
+                            "title": "label.require-signed-root",
+                            "description": "tooltip.require-signed-root",
                             "type": "boolean",
                             "default": true
                         },
                         "certificateFile": {
-                            "title": "Certificate File",
-                            "description": "A key used to verify the signature. Conflicts with trustEngineRef and both of the child elements.",
+                            "title": "label.certificate-file",
+                            "description": "tooltip.certificate-file",
                             "type": "string",
                             "widget": "textarea",
                             "default": ""
@@ -79,15 +79,15 @@
                     ]
                 },
                 "EntityRoleWhiteList": {
-                    "title": "Entity Role Whitelist Filter",
+                    "title": "label.entity-role-whitelist",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
                         "retainedRoles": {
-                            "title": "Retained Roles",
-                            "description": "Retained Roles",
+                            "title": "label.retained-roles",
+                            "description": "tooltip.retained-roles",
                             "type": "array",
                             "items": {
                                 "widget": {
@@ -99,26 +99,26 @@
                                         "enum": [
                                             "SPSSODescriptor"
                                         ],
-                                        "description": "SPSSODescriptor"
+                                        "description": "value.spdescriptor"
                                     },
                                     {
                                         "enum": [
                                             "AttributeAuthorityDescriptor"
                                         ],
-                                        "description": "AttributeAuthorityDescriptor"
+                                        "description": "value.attr-auth-descriptor"
                                     }
                                 ]
                             }
                         },
                         "removeRolelessEntityDescriptors": {
-                            "title": "Remove Roleless Entity Descriptors?",
-                            "description": "Controls whether to keep entity descriptors that contain no roles.",
+                            "title": "label.remove-roleless-entity-descriptors",
+                            "description": "tooltip.remove-roleless-entity-descriptors",
                             "type": "boolean",
                             "default": true
                         },
                         "removeEmptyEntitiesDescriptors": {
-                            "title": "Remove Empty Entities Descriptors?",
-                            "description": "Controls whether to keep entities descriptors that contain no entity descriptors.",
+                            "title": "label.remove-empty-entities-descriptors",
+                            "description": "tooltip.remove-empty-entities-descriptors",
                             "type": "boolean",
                             "default": true
                         }

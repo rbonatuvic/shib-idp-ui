@@ -4,6 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import * as fromResolver from '../reducer';
 import { BlankResolverComponent } from './blank-resolver.component';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('Blank Resolver Page', () => {
     let fixture: ComponentFixture<BlankResolverComponent>;
@@ -18,6 +19,7 @@ describe('Blank Resolver Page', () => {
                     resolver: combineReducers(fromResolver.reducers),
                 }),
                 ReactiveFormsModule,
+                MockI18nModule
             ],
             declarations: [
                 BlankResolverComponent

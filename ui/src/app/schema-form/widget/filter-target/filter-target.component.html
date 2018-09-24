@@ -3,13 +3,15 @@
         <div class="col-lg-6">
             <div>
                 <label [attr.for]="id" class="d-flex justify-content-start control-label">
-                    <span>Search By <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></span>
                     <span>
-                        <ng-template #tooltipBy i18n="@@tooltip--description">Search By</ng-template>
+                        <translate-i18n key="action.search-by">Search By</translate-i18n> <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></span>
+                    <span>
+                        <ng-template #tooltipBy>
+                            <translate-i18n key="action.search-by">Search By</translate-i18n>
+                        </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipBy"
-                            i18n-aria-label="@@tooltip--instruction"
-                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                            [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </label>
                 <div ngbDropdown>
@@ -18,14 +20,16 @@
                         type="button"
                         data-toggle="dropdown"
                         aria-haspopup="true"
-                        aria-expanded="false">
+                        aria-expanded="false"
+                        [translate]="this.displayType">
                         {{ this.displayType }}
                     </button>
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <a *ngFor="let option of typeOptions"
                             class="dropdown-item"
                             href="#"
-                            (click)="$event.preventDefault(); select(option.value);">
+                            (click)="$event.preventDefault(); select(option.value);"
+                            [translate]="option.description">
                             {{ option.description }}
                         </a>
                     </div>
@@ -35,19 +39,21 @@
             <div>
                 <label for="targetInput" class="d-flex justify-content-start control-label">
                     <span>
-                        Search Criteria by {{ this.displayType }}
+                        <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">
+                            Search Criteria by {{ this.displayType | translate }}
+                        </translate-i18n>&nbsp;&nbsp;
                         <i class="fa fa-asterisk text-danger"
                             aria-hidden="true"
                             *ngIf="entityAttributesFilterTargetType !== 'ENTITY'"></i>
                     </span>
                     <span>
-                        <ng-template #tooltipCriteria i18n="@@tooltip--description">
-                            Search Criteria by {{ this.displayType }}
-                        </ng-template>
+                        <ng-template #tooltipCriteria>
+                            <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">Search Criteria by {{ this.displayType }}</translate-i18n>
+                        </ng-template>&nbsp;&nbsp;
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                             [ngbPopover]="tooltipCriteria"
-                            i18n-aria-label="@@tooltip--instruction"
-                            aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                           
+                            [attr.aria-label]="'tooltip.instruction' | translate"></i>
                     </span>
                 </label>
                 <div class="d-flex justify-content-between">
@@ -61,21 +67,23 @@
                                 [matches]="ids$ | async"
                                 (keydown.enter)="onSelectValue(search.value)">
                             </auto-complete>
-                            <small [class.text-danger]="search.invalid && search.touched">
+                            <small [class.text-danger]="search.invalid && search.touched" translate="message.entity-id-min-unique">
                                 You must add at least one entity id target and they must each be unique.
                             </small>
                         </ng-container>
                         <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
                             <p id="targetInput" role="textbox" class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
                             <small id="script-help" class="text-danger">
-                                <ng-container *ngIf="script.invalid && script.touched">Required for Scripts</ng-container>
+                                <ng-container *ngIf="script.invalid && script.touched">
+                                    <translate-i18n key="message.required-for-scripts">Required for Scripts</translate-i18n>
+                                </ng-container>
                                 &nbsp;
                             </small>
                         </ng-container>
                         <ng-container *ngSwitchCase="'REGEX'">
                             <input id="targetInput" class="form-control" type="text" [formControl]="script" name="script" />
                             <small id="regex-help" class="text-danger">
-                                <ng-container *ngIf="script.invalid && script.touched">Required for Regex</ng-container>
+                                <translate-i18n key="message.required-for-regex">Required for Regex</translate-i18n>
                                 &nbsp;
                             </small>
                         </ng-container>
@@ -84,7 +92,8 @@
                         <button
                             class="btn btn-success"
                             [disabled]="search.invalid"
-                            (click)="onSelectValue(search.value)">
+                            (click)="onSelectValue(search.value)"
+                            translate="action.add-entity-id">
                             Add Entity ID
                         </button>
                     </div>
@@ -92,7 +101,7 @@
             </div>
         </div>
         <div class="col-lg-6" *ngIf="entityAttributesFilterTargetType === 'ENTITY'">
-            <label class="control-label">Entity Ids Added</label>
+            <label class="control-label" translate="label.entity-ids-added">Entity Ids Added</label>
             <hr />
             <ul class="list-group list-group-sm list-group-scroll">
                 <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let id of targets">

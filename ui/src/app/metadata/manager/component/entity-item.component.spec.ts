@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EntityItemComponent } from './entity-item.component';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('Resolver List item', () => {
     let fixture: ComponentFixture<EntityItemComponent>;
@@ -11,7 +12,8 @@ describe('Resolver List item', () => {
         TestBed.configureTestingModule({
             providers: [],
             imports: [
-                NoopAnimationsModule
+                NoopAnimationsModule,
+                MockI18nModule
             ],
             declarations: [EntityItemComponent],
         });

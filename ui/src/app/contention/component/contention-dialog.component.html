@@ -1,16 +1,17 @@
-<div i18n-aria-label="@@message--data-version-contention" aria-label="Data Version Contention" role="region" tabindex="0">
+<div i18n-aria-label="@@message.data-version-contention" aria-label="Data Version Contention" role="region" tabindex="0">
     <div class="modal-header">
-        <h4 class="modal-title" i18n="@@message--data-version-contention">Data Version Contention</h4>
+        <h4 class="modal-title" translate="message.data-version-contention">Data Version Contention</h4>
     </div>
     <div class="modal-body">
         <div class="d-flex w-100 justify-content-between">
             <i class="fa fa-fw fa-exclamation-triangle fa-3x text-warning"></i>
-            <p class="ml-2" i18n="@message--contention-new-version">A newer version of this metadata source has been saved. Below are a list of changes. You can use your changes or their changes.</p>
+            <p class="ml-2" translate="message.contention-new-version">A newer version of this metadata source has been saved. Below are a list of changes. You can use your changes or their
+            changes.</p>
         </div>
         <div class="row">
             <div class="col col-6">
                 <div class="card">
-                    <div class="card-header bg-info text-white">
+                    <div class="card-header bg-info text-white" translate="label.my-changes">
                         My Changes
                     </div>
                     <div class="list-group list-group-flush">
@@ -20,7 +21,7 @@
             </div>
             <div class="col col-6">
                 <div class="card">
-                    <div class="card-header bg-danger text-white">
+                    <div class="card-header bg-danger text-white" translate="label.their-changes">
                         Their Changes
                     </div>
                     <div class="list-group list-group-flush">
@@ -32,12 +33,12 @@
     </div>
     <div class="modal-footer">
         <button
-            i18n="@@action--use-mine"
+            translate="action.use-mine"
             class="btn btn-info"
             (click)="activeModal.close(resolutionObj)"
             [disabled]="!resolutionObj">Use My Changes</button>
         <button
-            i18n="@@action--use-theirs"
+            translate="action.use-theirs"
             class="btn btn-danger"
             (click)="activeModal.dismiss(rejectionObj)"
             [disabled]="!rejectionObj">Use Their Changes</button>

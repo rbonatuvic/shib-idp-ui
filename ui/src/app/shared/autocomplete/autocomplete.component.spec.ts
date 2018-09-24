@@ -8,6 +8,7 @@ import { AutoCompleteComponent } from './autocomplete.component';
 import { NavigatorService } from '../../core/service/navigator.service';
 import { ValidationClassDirective } from '../validation/validation-class.directive';
 import { HighlightPipe } from '../pipe/highlight.pipe';
+import { MockI18nModule } from '../../../testing/i18n.stub';
 
 const iPodAgent = `Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)
     AppleWebKit/534.46 (KHTML, like Gecko)
@@ -70,7 +71,8 @@ describe('AutoComplete Input Component', () => {
             imports: [
                 NoopAnimationsModule,
                 FormsModule,
-                ReactiveFormsModule
+                ReactiveFormsModule,
+                MockI18nModule
             ],
             declarations: [
                 AutoCompleteComponent,
