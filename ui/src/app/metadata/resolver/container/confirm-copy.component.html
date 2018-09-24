@@ -3,7 +3,7 @@
         <div class="section-header bg-info p-2 text-white">
             <div class="row justify-content-between">
                 <div class="col-md-12">
-                    <span class="display-6" i18n="@@label--add-a-new-metadata-source">Add a new metadata source - Finish Summary</span>
+                    <span class="display-6" translate="label.add-a-new-metadata-source">Add a new metadata source - Finish Summary</span>
                 </div>
             </div>
         </div>
@@ -13,9 +13,9 @@
                     <button class="nav-link previous btn clearfix" role="button" routerLink="/new/copy">
                         <span class="direction pull-left">
                             <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
-                            <ng-container i18n="@@action--back">Back</ng-container>
+                            <translate-i18n key="action.back">Back</translate-i18n>
                         </span>
-                        <span class="label pull-right" i18n="@@label--name-and-entityid">
+                        <span class="label pull-right" translate="label.name-and-entityid">
                             Name and Entity ID.
                         </span>
                     </button>
@@ -23,19 +23,19 @@
                 <li class="nav-item">
                     <h3 class="tag tag-primary">
                         <span class="index"><i class="fa fa-fw fa-check"></i></span>
-                        <ng-container i18n="@@label--finish-summary-validation">Finished!</ng-container>
+                        <translate-i18n key="label.finish-summary-validation">Finished!</translate-i18n>
                     </h3>
                 </li>
                 <li class="nav-item">
                     <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave(resolver)" [disabled]="saving$ | async">
-                        <span class="label pull-left" i18n="@@action--save">Save</span>
+                        <span class="label pull-left" translate="action.save">Save</span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw next d-block fa-2x"
                                 [ngClass]="{
                                     'fa-save': !(saving$ | async),
                                     'fa-spinner fa-pulse': (saving$ | async)
                                 }"></i>
-                            <ng-container i18n="@@action--save">Save</ng-container>
+                            <translate-i18n key="action.save">Save</translate-i18n>
                         </span>
                     </button>
                 </li>

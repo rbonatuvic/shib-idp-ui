@@ -1,0 +1,69 @@
+<ng-container [ngSwitch]="key">
+    <ng-container *ngSwitchDefault>{{ key }}</ng-container>
+    <ng-container *ngSwitchCase="'metadata-ui'" translate="label.ui-mdui-info">User Interface / MDUI Information</ng-container>
+    <ng-container *ngSwitchCase="'descriptor-info'" translate="label.sp-sso-descriptor-info">SP SSO Descriptor Information</ng-container>
+    <ng-container *ngSwitchCase="'logout-endpoints'" translate="label.logout-endpoints">Logout Endpoints</ng-container>
+    <ng-container *ngSwitchCase="'key-info'" translate="label.security-info">Security Information</ng-container>
+    <ng-container *ngSwitchCase="'assertion'" translate="label.assertion-consumer-services">Assertion Consumer Service</ng-container>
+    <ng-container *ngSwitchCase="'relying-party'" translate="label.relying-party-overrides">Relying Party Overrides</ng-container>
+    <ng-container *ngSwitchCase="'attribute'" translate="label.attribute-release">Attribute Release</ng-container>
+    <ng-container *ngSwitchCase="'sp-org-info'" translate="label.sp-org-info">SP/Organization Information</ng-container>
+    <ng-container *ngSwitchCase="'org-info'" translate="label.org-info">Organization Information</ng-container>
+    <ng-container *ngSwitchCase="'finish'" translate="label.finished">Finished!</ng-container>
+    
+    <ng-container *ngSwitchCase="'signing'" translate="label.signing">Signing</ng-container>
+    <ng-container *ngSwitchCase="'encryption'" translate="label.encryption">Encryption</ng-container>
+    <ng-container *ngSwitchCase="'both'" translate="label.both">Both</ng-container>
+    
+    <ng-container *ngSwitchCase="'spSsoDescriptorInfo'" translate="label.sp-sso-descriptor-info">SP SSO Descriptor Information</ng-container>
+    <ng-container *ngSwitchCase="'organizationInfo'" translate="label.sp-sso-descriptor-info">Organization Information</ng-container>
+    <ng-container *ngSwitchCase="'uiMduiInfo'" translate="label.ui-mdui-info">User Interface / MDUI Information</ng-container>
+    <ng-container *ngSwitchCase="'securityDescriptorInfo'" translate="label.security-descriptor-info">Security Descriptor Information</ng-container>
+    
+    <ng-container *ngSwitchCase="'entityId'" translate="label.entity-id">Entity ID</ng-container>
+    <ng-container *ngSwitchCase="'serviceProviderName'" translate="label.service-provider-name">Service Provider Name</ng-container>
+    <ng-container *ngSwitchCase="'organization'" translate="label.organization">Organization</ng-container>
+    <ng-container *ngSwitchCase="'contacts'" translate="label.contacts">Contacts</ng-container>
+    <ng-container *ngSwitchCase="'mdui'" translate="label.mdui">MDUI Information</ng-container>
+    <ng-container *ngSwitchCase="'securityInfo'" translate="label.security-info">Security Information</ng-container>
+    <ng-container *ngSwitchCase="'assertionConsumerServices'" translate="label.assertion-consumer-services">Assertion Consumer Services</ng-container>
+    <ng-container *ngSwitchCase="'serviceProviderSsoDescriptor'" translate="label.service-provider-sso-descriptor">Service Provider Sso Descriptor</ng-container>
+    <ng-container *ngSwitchCase="'logoutEndpoints'" translate="label.logout-endpoints">Logout Endpoints</ng-container>
+    <ng-container *ngSwitchCase="'serviceEnabled'" translate="label.service-enabled">Service Enabled</ng-container>
+    <ng-container *ngSwitchCase="'relyingPartyOverrides'" translate="label.relying-party-overrides">Relying Party Overrides</ng-container>
+    <ng-container *ngSwitchCase="'attributeRelease'" translate="label.attribute-release">Attribute Release</ng-container>
+    <ng-container *ngSwitchCase="'filterName'" translate="label.filter-name">Filter Name</ng-container>
+    <ng-container *ngSwitchCase="'filterEnabled'" translate="label.filter-enabled">Filter Enabled</ng-container>
+    <ng-container *ngSwitchCase="'filterTarget'" translate="label.filter-target">FilterTarget</ng-container>
+    <ng-container *ngSwitchCase="'name'" translate="label.name">Name</ng-container>
+    <ng-container *ngSwitchCase="'type'" translate="label.type">Type</ng-container>
+    <ng-container *ngSwitchCase="'value'" translate="label.value">Value</ng-container>
+    <ng-container *ngSwitchCase="'emailAddress'" translate="label.email-address">Email Address</ng-container>
+    <ng-container *ngSwitchCase="'url'" translate="label.url">URL</ng-container>
+    <ng-container *ngSwitchCase="'bindingType'" translate="label.binding-type">Binding Type</ng-container>
+    <ng-container *ngSwitchCase="'displayName'" translate="label.display-name">Display Name</ng-container>
+    <ng-container *ngSwitchCase="'informationUrl'" translate="label.information-url">Information URL</ng-container>
+    <ng-container *ngSwitchCase="'privacyStatementUrl'" translate="label.privacy-statement-url">Privacy Statement URL</ng-container>
+    <ng-container *ngSwitchCase="'logoUrl'" translate="label.logo-url">Logo URL</ng-container>
+    <ng-container *ngSwitchCase="'logoHeight'" translate="label.logo-height">Logo Height</ng-container>
+    <ng-container *ngSwitchCase="'logoWidth'" translate="label.logo-width">Logo Width</ng-container>
+    <ng-container *ngSwitchCase="'description'" translate="label.description">Description</ng-container>
+    <ng-container *ngSwitchCase="'signAssertion'" translate="label.sign-assertion">Sign Assertions</ng-container>
+    <ng-container *ngSwitchCase="'dontSignResponse'" translate="label.dont-sign-response">Don't Sign Response</ng-container>
+    <ng-container *ngSwitchCase="'turnOffEncryption'" translate="label.turn-off-encryption">Turn off encryption</ng-container>
+    <ng-container *ngSwitchCase="'useSha'" translate="label.use-sha">Use Sha</ng-container>
+    <ng-container *ngSwitchCase="'ignoreAuthenticationMethod'" translate="label.ignore-authentication-method">Ignore Authentication Method</ng-container>
+    <ng-container *ngSwitchCase="'omitNotBefore'" translate="label.omit-not-before">Omit Not Before</ng-container>
+    <ng-container *ngSwitchCase="'responderId'" translate="label.responder-id">Responder ID</ng-container>
+    <ng-container *ngSwitchCase="'nameIdFormats'" translate="label.name-id-formats">Name ID Formats</ng-container>
+    <ng-container *ngSwitchCase="'authenticationMethods'" translate="label.authentication-methods">Authentication Methods</ng-container>
+    <ng-container *ngSwitchCase="'x509CertificateAvailable'" translate="label.x509-certificate-available">x509 Certificate Available</ng-container>
+    <ng-container *ngSwitchCase="'authenticationRequestsSigned'" translate="label.authentication-requests-signed">Authentication Requests Signed</ng-container>
+    <ng-container *ngSwitchCase="'wantAssertionsSigned'" translate="label.want-assertions-signed">Want Assertions Signed</ng-container>
+    <ng-container *ngSwitchCase="'x509Certificates'" translate="label.x509-certificates">x509 Certificates</ng-container>
+    <ng-container *ngSwitchCase="'protocolSupportEnum'" translate="label.protocol-support-enum">Protocol Support Enumeration</ng-container>
+    <ng-container *ngSwitchCase="'nameIdFormats'" translate="label.name-id-formats">Name ID Formats</ng-container>
+    <ng-container *ngSwitchCase="'binding'" translate="label.binding">Binding</ng-container>
+    <ng-container *ngSwitchCase="'locationUrl'" translate="label.location-url">Location URL</ng-container>
+    <ng-container *ngSwitchCase="'makeDefault'" translate="label.make-default">Make Default</ng-container>
+</ng-container>

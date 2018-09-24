@@ -19,6 +19,7 @@ import { ProviderFormFragmentComponent } from './forms/provider-form-fragment.co
 
 import { SharedModule } from '../../../shared/shared.module';
 import { DomainModule } from '../../domain/domain.module';
+import { I18nModule } from '../../../i18n/i18n.module';
 
 export const COMPONENTS = [
     AdvancedInfoFormComponent,
@@ -51,7 +52,8 @@ export const declarations = [
         RouterModule,
         NgbPopoverModule,
         NgbModalModule,
-        SharedModule
+        SharedModule,
+        I18nModule
     ],
     providers: []
 })

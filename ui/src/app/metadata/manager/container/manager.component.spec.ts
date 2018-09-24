@@ -3,6 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ManagerComponent } from './manager.component';
 import { RouterModule, Router } from '@angular/router';
 import { RouterStub, RouterLinkStubDirective, RouterOutletStubComponent } from '../../../../testing/router.stub';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('Metadata Manager Parent Page', () => {
     let fixture: ComponentFixture<ManagerComponent>;
@@ -15,6 +16,7 @@ describe('Metadata Manager Parent Page', () => {
             ],
             imports: [
                 NoopAnimationsModule,
+                MockI18nModule
             ],
             declarations: [
                 ManagerComponent,

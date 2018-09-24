@@ -14,6 +14,7 @@ import { EntityEffects } from './effect/entity.effect';
 import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
 import { AttributesService } from './service/attributes.service';
+import { I18nModule } from '../../i18n/i18n.module';
 
 export const COMPONENTS = [
     PreviewDialogComponent
@@ -28,7 +29,8 @@ export const DECLARATIONS = [
     entryComponents: COMPONENTS,
     imports: [
         HttpModule,
-        CommonModule
+        CommonModule,
+        I18nModule
     ],
     exports: DECLARATIONS,
     providers: []

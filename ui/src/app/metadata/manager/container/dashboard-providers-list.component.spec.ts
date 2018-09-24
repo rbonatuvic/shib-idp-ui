@@ -14,6 +14,7 @@ import { DashboardProvidersListComponent } from './dashboard-providers-list.comp
 import { MetadataProvider } from '../../domain/model';
 import { ProviderItemComponent } from '../component/provider-item.component';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 
 describe('Dashboard Providers List Page', () => {
@@ -41,7 +42,8 @@ describe('Dashboard Providers List Page', () => {
                 }),
                 ReactiveFormsModule,
                 NgbPaginationModule,
-                NgbModalModule
+                NgbModalModule,
+                MockI18nModule
             ],
             declarations: [
                 DashboardProvidersListComponent,

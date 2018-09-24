@@ -11,7 +11,7 @@ import { LogoutFormComponent } from './logout-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 
 @Component({
     template: `<logout-form [resolver]="resolver"></logout-form>`
@@ -46,13 +46,13 @@ describe('Logout Endpoints Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 LogoutFormComponent,
                 TestHostComponent,
-                InputDefaultsDirective,
-                I18nTextComponent
+                InputDefaultsDirective
             ],
         });
 

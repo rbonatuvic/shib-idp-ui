@@ -31,6 +31,7 @@ import { ProviderEditorNavComponent } from './component/provider-editor-nav.comp
 import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 import { ContentionModule } from '../../contention/contention.module';
 import { DeleteFilterComponent } from './component/delete-filter.component';
+import { I18nModule } from '../../i18n/i18n.module';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,8 @@ import { DeleteFilterComponent } from './component/delete-filter.component';
         RouterModule,
         ContentionModule,
         NgbDropdownModule,
-        NgbModalModule
+        NgbModalModule,
+        I18nModule
     ],
     exports: []
 })

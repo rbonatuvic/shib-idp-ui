@@ -5,6 +5,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import * as fromNotifications from '../reducer';
 import { NotificationItemComponent } from './notification-item.component';
 import { Notification, NotificationType } from '../model/notification';
+import { MockI18nModule } from '../../../testing/i18n.stub';
 
 describe('Notification List Component', () => {
     let fixture: ComponentFixture<NotificationItemComponent>;
@@ -17,7 +18,8 @@ describe('Notification List Component', () => {
                 NoopAnimationsModule,
                 StoreModule.forRoot({
                     'notifications': combineReducers(fromNotifications.reducers),
-                })
+                }),
+                MockI18nModule
             ],
             declarations: [
                 NotificationItemComponent

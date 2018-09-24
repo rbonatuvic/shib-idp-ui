@@ -6,8 +6,8 @@
     },
     "properties": {
         "name": {
-            "title": "Filter Name (Dashboard Display Only)",
-            "description": "Filter Name",
+            "title": "label.filter-name",
+            "description": "message.filter-name",
             "type": "string",
             "widget": {
                 "id": "string",
@@ -34,14 +34,14 @@
             }
         },
         "filterEnabled": {
-            "title": "Enable this Filter?",
-            "description": "Enable this Filter?",
+            "title": "label.enable-filter",
+            "description": "label.enable-filter",
             "type": "boolean",
             "default": false
         },
         "entityAttributesFilterTarget": {
-            "title": "Search Criteria",
-            "description": "Filter Name",
+            "title": "label.search-criteria",
+            "description": "label.search-criteria",
             "type": "object",
             "widget": {
                 "id": "filter-target"
@@ -56,19 +56,19 @@
                             "enum": [
                                 "ENTITY"
                             ],
-                            "description": "Entity Id"
+                            "description": "label.entity-id"
                         },
                         {
                             "enum": [
                                 "REGEX"
                             ],
-                            "description": "Regex"
+                            "description": "label.regex"
                         },
                         {
                             "enum": [
                                 "CONDITION_SCRIPT"
                             ],
-                            "description": "Script"
+                            "description": "label.script"
                         }
                     ]
                 },
@@ -77,7 +77,7 @@
                     "buttons": [
                         {
                             "id": "preview",
-                            "label": "Preview",
+                            "label": "action.preview",
                             "widget": "icon-button"
                         }
                     ],
@@ -94,54 +94,54 @@
             "type": "object",
             "properties": {
                 "signAssertion": {
-                    "title": "Sign the Assertion",
-                    "description": "Sign Assertion popover",
+                    "title": "label.sign-the-assertion",
+                    "description": "tooltip.sign-assertion",
                     "type": "boolean",
                     "default": false
                 },
                 "dontSignResponse": {
-                    "title": "Don't sign the Response",
-                    "description": "Don't Sign Response popover",
+                    "title": "label.dont-sign-the-response",
+                    "description": "tooltip.dont-sign-response",
                     "type": "boolean",
                     "default": false
                 },
                 "turnOffEncryption": {
-                    "title": "Turn off Encryption of Response",
-                    "description": "Turn Off Encryption of Response popover",
+                    "title": "label.turn-off-encryption-of-response",
+                    "description": "tooltip.turn-off-encryption",
                     "type": "boolean",
                     "default": false
                 },
                 "useSha": {
-                    "title": "Use SHA1 Algorithm",
-                    "description": "Use SHA1 Signing Algorithm popover",
+                    "title": "label.use-sha1-signing-algorithm",
+                    "description": "tooltip.usa-sha-algorithm",
                     "type": "boolean",
                     "default": false
                 },
                 "ignoreAuthenticationMethod": {
-                    "title": "Ignore any SP-Requested Authentication Method",
-                    "description": "Ignore any SP-Requested Authentication Method popover",
+                    "title": "label.ignore-any-sp-requested-authentication-method",
+                    "description": "tooltip.ignore-auth-method",
                     "type": "boolean",
                     "default": false
                 },
                 "omitNotBefore": {
-                    "title": "Omit Not Before Condition",
+                    "title": "label.omit-not-before-condition",
                     "type": "boolean",
-                    "description": "Omit Not Before Condition popover",
+                    "description": "tooltip.omit-not-before-condition",
                     "default": false
                 },
                 "responderId": {
-                    "title": "ResponderID",
-                    "description": "ResponderId popover",
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
                     "type": "string"
                 },
                 "nameIdFormats": {
-                    "title": "NameID Format to Send",
-                    "placeholder": "NameID Format",
-                    "description": "NameID Format to Send popover",
+                    "title": "label.nameid-format-to-send",
+                    "placeholder": "label.nameid-format",
+                    "description": "tooltip.nameid-format",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
-                        "title": "NameID Format",
+                        "title": "label.nameid-format",
                         "type": "string",
                         "widget": {
                             "id": "datalist",
@@ -156,14 +156,14 @@
                     "default": null
                 },
                 "authenticationMethods": {
-                    "title": "Authentication Method to Use",
-                    "description": "Authentication Methods to Use popover",
+                    "title": "label.authentication-methods-to-use",
+                    "description": "tooltip.authentication-methods-to-use",
                     "type": "array",
-                    "placeholder": "Authentication Method",
+                    "placeholder": "label.authentication-method",
                     "uniqueItems": true,
                     "items": {
                         "type": "string",
-                        "title": "Authentication Method",
+                        "title": "label.authentication-method",
                         "widget": {
                             "id": "datalist",
                             "data": [

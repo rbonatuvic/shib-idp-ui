@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Location } from '@angular/common';
 
 import { of } from 'rxjs';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 
 import * as user from '../action/user.action';
-import { User } from '../model/user';
 import { UserService } from '../service/user.service';
 
 @Injectable()
@@ -36,4 +34,4 @@ export class UserEffects {
         private userService: UserService,
         private actions$: Actions
     ) { }
-} 
+}

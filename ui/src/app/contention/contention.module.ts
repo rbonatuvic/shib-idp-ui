@@ -9,6 +9,7 @@ import { ContentionDialogComponent } from './component/contention-dialog.compone
 import { ChangeItemComponent } from './component/change-item.component';
 import { ContentionService } from './service/contention.service';
 import { SharedModule } from '../shared/shared.module';
+import { I18nModule } from '../i18n/i18n.module';
 
 export const COMPONENTS = [
     ContentionDialogComponent,
@@ -20,7 +21,8 @@ export const COMPONENTS = [
         CommonModule,
         SharedModule,
         StoreModule.forFeature('contention', reducers),
-        EffectsModule.forFeature([ContentionEffects])
+        EffectsModule.forFeature([ContentionEffects]),
+        I18nModule
     ],
     providers: [
         ContentionService

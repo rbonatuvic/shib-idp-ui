@@ -61,6 +61,11 @@ class InternationalizationMessagesControllerTests extends Specification {
             '   "some.test.message": "Je ne sais pas Francais."' +
             '}'
 
+    def expectedDefaultResult =
+            '{' +
+            '   "some.test.message": "This is the default message."' +
+            '}'
+
     def "GET messages with no header or \"lang\" param defaults to returning english messages"() {
         when:
         def result = mockMvc.perform(
@@ -108,6 +113,6 @@ class InternationalizationMessagesControllerTests extends Specification {
                         .header("Accept-Language", "es"))
 
         then:
-        result.andExpect(content().json(expectedEnglishResult))
+        result.andExpect(content().json(expectedDefaultResult))
     }
 }

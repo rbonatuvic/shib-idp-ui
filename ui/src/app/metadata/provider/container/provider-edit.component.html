@@ -26,20 +26,20 @@
                         'fa-spinner': (isSaving$ | async),
                         'fa-pulse': (isSaving$ | async)
                     }"></i>
-                    <ng-container i18n="@@action--save">Save</ng-container>
+                    <translate-i18n key="action.save">Save</translate-i18n>
                 </button>
                 &nbsp;
                 <button class="btn btn-secondary"
                     (click)="cancel()" aria-label="Cancel changes, go back to dashboard"
                     role="button">
-                    <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                    <translate-i18n key="action.cancel">Cancel</translate-i18n>
                 </button>
             </div>
             <div class="col-xs-12 col-lg-9 order-lg-1 order-3">
                 <div class="alert alert-danger alert-compact mt-3 mt-lg-0"
                     *ngIf="(isInvalid$ | async)">
                     <i class="fa fa-fw fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
-                    <ng-container i18n-text="@@message--editor-invalid">All forms must be valid before changes can be saved!</ng-container>
+                    <translate-i18n key="message.editor-invalid">All forms must be valid before changes can be saved!</translate-i18n>
                 </div>
             </div>
         </div>

@@ -65,18 +65,18 @@
     ],
     "properties": {
         "name": {
-            "title": "Metadata Provider Name (Dashboard Display Only)",
-            "description": "Metadata Provider Name",
+            "title": "label.metadata-provider-name",
+            "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
                 "id": "string",
-                "help": "Must be unique."
+                "help": "message.must-be-unique"
             }
         },
         "@type": {
-            "title": "Metadata Provider Type",
-            "description": "Metadata Provider Type",
-            "placeholder": "Select a metadata provider type",
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "placeholder": "label.select-metadata-type",
             "type": "string",
             "readOnly": true,
             "widget": {
@@ -88,33 +88,33 @@
                     "enum": [
                         "FileBackedHttpMetadataResolver"
                     ],
-                    "description": "FileBackedHttpMetadataProvider"
+                    "description": "value.file-backed-http-metadata-provider"
                 }
             ]
         },
         "enabled": {
-            "title": "Enable this service?",
-            "description": "Enable this service?",
+            "title": "label.enable-service",
+            "description": "tooltip.enable-service",
             "type": "boolean",
             "default": false
         },
         "xmlId": {
-            "title": "ID",
-            "description": "Identifier for logging, identification for command line reload, etc.",
+            "title": "label.xml-id",
+            "description": "tooltip.xml-id",
             "type": "string",
             "default": "",
             "minLength": 1
         },
         "metadataURL": {
-            "title": "Metadata URL",
-            "description": "Identifier for logging, identification for command line reload, etc.",
+            "title": "label.metadata-url",
+            "description": "tooltip.metadata-url",
             "type": "string",
             "default": "",
             "minLength": 1
         },
         "initializeFromBackupFile": {
-            "title": "Initialize From Backup File?",
-            "description": "Flag indicating whether initialization should first attempt to load metadata from the backup file.  If true, foreground initialization will be performed by loading the backing file, and then a refresh from the remote HTTP server will be scheduled to execute in a background thread, after a configured delay. This can improve IdP startup times when the remote HTTP file is large in size.",
+            "title": "label.init-from-backup",
+            "description": "tooltip.init-from-backup",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -124,26 +124,26 @@
                     "enum": [
                         true
                     ],
-                    "description": "True"
+                    "description": "value.true"
                 },
                 {
                     "enum": [
                         false
                     ],
-                    "description": "False"
+                    "description": "value.false"
                 }
             ],
             "default": true
         },
         "backingFile": {
-            "title": "Backing File",
-            "description": "Specifies where the backing file is located. If the remote server is unavailable at startup, the backing file is loaded instead.",
+            "title": "label.backing-file",
+            "description": "tooltip.backing-file",
             "type": "string",
             "default": ""
         },
         "backupFileInitNextRefreshDelay": {
-            "title": "Backup File Init Next Refresh Delay",
-            "description": "Delay duration after which to schedule next HTTP refresh when initialized from the backing file.",
+            "title": "label.backup-file-init-refresh-delay",
+            "description": "tooltip.backup-file-init-refresh-delay",
             "type": "string",
             "widget": {
                 "id": "datalist",
@@ -163,8 +163,8 @@
             "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
         },
         "requireValidMetadata": {
-            "title": "Require Valid Metadata?",
-            "description": "Whether candidate metadata found by the resolver must be valid in order to be returned (where validity is implementation specific, but in SAML cases generally depends on a validUntil attribute.) If this flag is true, then invalid candidate metadata will not be returned.",
+            "title": "label.require-valid-metadata",
+            "description": "tooltip.require-valid-metadata",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -174,20 +174,20 @@
                     "enum": [
                         true
                     ],
-                    "description": "True"
+                    "description": "value.true"
                 },
                 {
                     "enum": [
                         false
                     ],
-                    "description": "False"
+                    "description": "value.false"
                 }
             ],
             "default": true
         },
         "failFastInitialization": {
-            "title": "Fail Fast Initialization?",
-            "description": "Whether to fail initialization of the underlying MetadataResolverService (and possibly the IdP as a whole) if the initialization of a metadata provider fails. When false, the IdP may start, and will continue to attempt to reload valid metadata if configured to do so, but operations that require valid metadata will fail until it does.",
+            "title": "label.fail-fast-init",
+            "description": "tooltip.fail-fast-init",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -197,20 +197,20 @@
                     "enum": [
                         true
                     ],
-                    "description": "True"
+                    "description": "value.true"
                 },
                 {
                     "enum": [
                         false
                     ],
-                    "description": "False"
+                    "description": "value.false"
                 }
             ],
             "default": true
         },
         "useDefaultPredicateRegistry": {
-            "title": "Use Default Predicate Registry?",
-            "description": "Whether to fail initialization of the underlying MetadataResolverService (and possibly the IdP as a whole) if the initialization of a metadata provider fails. When false, the IdP may start, and will continue to attempt to reload valid metadata if configured to do so, but operations that require valid metadata will fail until it does.",
+            "title": "label.use-default-predicate-reg",
+            "description": "tooltip.use-default-predicate-reg",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -220,20 +220,20 @@
                     "enum": [
                         true
                     ],
-                    "description": "True"
+                    "description": "value.true"
                 },
                 {
                     "enum": [
                         false
                     ],
-                    "description": "False"
+                    "description": "value.false"
                 }
             ],
             "default": true
         },
         "satisfyAnyPredicates": {
-            "title": "Satisfy Any Predicates?",
-            "description": "Flag which determines whether predicates used in filtering are connected by a logical 'OR' (true) or by logical 'AND' (false).",
+            "title": "label.satisfy-any-predicates",
+            "description": "tooltip.satisfy-any-predicates",
             "type": "boolean",
             "widget": {
                 "id": "boolean-radio"
@@ -243,13 +243,13 @@
                     "enum": [
                         true
                     ],
-                    "description": "True"
+                    "description": "value.true"
                 },
                 {
                     "enum": [
                         false
                     ],
-                    "description": "False"
+                    "description": "value.false"
                 }
             ],
             "default": false

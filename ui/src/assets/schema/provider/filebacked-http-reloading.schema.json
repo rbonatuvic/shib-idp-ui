@@ -5,10 +5,10 @@
             "type": "object",
             "properties": {
                 "minRefreshDelay": {
-                    "title": "Min Refresh Delay",
-                    "description": "Lower bound on the next refresh from the time calculated based on the metadata's expiration.",
+                    "title": "label.min-refresh-delay",
+                    "description": "tooltip.min-refresh-delay",
                     "type": "string",
-                    "placeholder": "Duration",
+                    "placeholder": "label.duration",
                     "widget": {
                         "id": "datalist",
                         "data": [
@@ -27,10 +27,10 @@
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxRefreshDelay": {
-                    "title": "Max Refresh Delay",
-                    "description": "Upper bound on the next refresh from the time calculated based on the metadata's expiration.",
+                    "title": "label.max-refresh-delay",
+                    "description": "tooltip.max-refresh-delay",
                     "type": "string",
-                    "placeholder": "Duration",
+                    "placeholder": "label.duration",
                     "widget": {
                         "id": "datalist",
                         "data": [
@@ -49,21 +49,21 @@
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "refreshDelayFactor": {
-                    "title": "Refresh Delay Factor",
-                    "description": "A factor applied to the initially determined refresh time in order to determine the next refresh time (typically to ensure refresh takes place prior to the metadata's expiration). Attempts to refresh metadata will generally begin around the product of this number and the maximum refresh delay.",
+                    "title": "label.refresh-delay-factor",
+                    "description": "tooltip.refresh-delay-factor",
                     "type": "number",
                     "widget": {
                         "id": "number",
                         "step": 0.01
                     },
-                    "placeholder": "Real Number (between 0.0 and 1.0)",
+                    "placeholder": "label.real-number",
                     "minimum": 0,
                     "maximum": 1,
                     "default": null
                 },
                 "resolveViaPredicatesOnly": {
-                    "title": "Resolve Via Predicates Only?",
-                    "description": "Flag indicating whether resolution may be performed solely by applying predicates to the entire metadata collection, when an entityID input criterion is not supplied.",
+                    "title": "label.resolve-via-predicates-only",
+                    "description": "tooltip.resolve-via-predicates-only",
                     "type": "boolean",
                     "widget": {
                         "id": "boolean-radio"
@@ -73,22 +73,22 @@
                             "enum": [
                                 true
                             ],
-                            "description": "True"
+                            "description": "value.true"
                         },
                         {
                             "enum": [
                                 false
                             ],
-                            "description": "False"
+                            "description": "value.false"
                         }
                     ],
                     "default": true
                 },
                 "expirationWarningThreshold": {
-                    "title": "Expiration Warning Threshold",
-                    "description": "For each attempted metadata refresh (whether or not fresh metadata is obtained), if requireValidMetadata is true, and there is a validUntil XML attribute on the document root element, and the difference between validUntil and the current time is less than expirationWarningThreshold, the system logs a warning about the impending expiration.",
+                    "title": "label.expiration-warning-threshold",
+                    "description": "tooltip.expiration-warning-threshold",
                     "type": "string",
-                    "placeholder": "Duration",
+                    "placeholder": "label.duration",
                     "widget": {
                         "id": "datalist",
                         "data": [
