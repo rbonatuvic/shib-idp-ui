@@ -15,6 +15,7 @@ import { MetadataProvider } from '../../domain/model';
 import { ProviderItemComponent } from '../component/provider-item.component';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
 
 
 describe('Dashboard Providers List Page', () => {
@@ -49,7 +50,8 @@ describe('Dashboard Providers List Page', () => {
                 DashboardProvidersListComponent,
                 ProviderSearchComponent,
                 ProviderItemComponent,
-                DeleteDialogComponent
+                DeleteDialogComponent,
+                CustomDatePipe
             ],
         });
 

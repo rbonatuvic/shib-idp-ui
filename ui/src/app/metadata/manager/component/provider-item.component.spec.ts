@@ -4,6 +4,7 @@ import { ProviderItemComponent } from './provider-item.component';
 import { ViewChild, Component } from '@angular/core';
 import { MetadataProvider } from '../../domain/model';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
 
 @Component({
     template: `
@@ -50,7 +51,8 @@ describe('Provider List item', () => {
             ],
             declarations: [
                 ProviderItemComponent,
-                TestHostComponent
+                TestHostComponent,
+                CustomDatePipe
             ],
         });
 
