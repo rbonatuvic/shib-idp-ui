@@ -24,6 +24,8 @@ import { SharedModule } from './shared/shared.module';
 import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
+import { getCurrentLocale } from './shared/util';
+import { I18nModule } from './i18n/i18n.module';
 
 @NgModule({
     declarations: [
@@ -51,6 +53,8 @@ import { environment } from '../environments/environment.prod';
         HttpClientModule,
         ContentionModule,
         SharedModule,
+        I18nModule.forRoot(),
+        I18nModule,
         AppRoutingModule
     ],
     providers: [

@@ -7,7 +7,7 @@ import * as fromResolver from '../reducer';
 import { CopyResolverComponent } from './copy-resolver.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { NavigatorService } from '../../../core/service/navigator.service';
-import { I18nTextComponent } from '../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `<copy-resolver-form
@@ -33,7 +33,8 @@ describe('Copy Resolver Page', () => {
                     resolver: combineReducers(fromResolver.reducers)
                 }),
                 ReactiveFormsModule,
-                SharedModule
+                SharedModule,
+                MockI18nModule
             ],
             declarations: [
                 CopyResolverComponent,

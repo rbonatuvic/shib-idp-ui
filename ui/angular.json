@@ -91,6 +91,10 @@
                 "input": "src",
                 "output": "/"
               }
+            ],
+            "codeCoverageExclude": [
+              "src/polyfills.ts",
+              "**/*.stub.ts"
             ]
           }
         },

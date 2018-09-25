@@ -8,6 +8,7 @@ import { UploadResolverComponent } from './upload-resolver.component';
 import { FileService } from '../../../core/service/file.service';
 import { FileServiceStub } from '../../../../testing/file.service.stub';
 import * as fromResolver from '../reducer';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `<upload-resolver-form
@@ -43,6 +44,7 @@ describe('Upload Resolver Page', () => {
             imports: [
                 ReactiveFormsModule,
                 StoreModule.forRoot(fromResolver.reducers),
+                MockI18nModule
             ],
             declarations: [
                 UploadResolverComponent,

@@ -12,6 +12,7 @@ import * as fromWizard from '../../../wizard/reducer';
 import { Wizard } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { Property } from '../model/property';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -49,7 +50,8 @@ describe('Summary Property Component', () => {
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),
                     wizard: combineReducers(fromWizard.reducers)
-                })
+                }),
+                MockI18nModule
             ],
             declarations: [
                 SummaryPropertyComponent,

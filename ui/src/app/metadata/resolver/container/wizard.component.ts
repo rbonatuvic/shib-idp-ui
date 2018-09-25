@@ -46,6 +46,7 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
     latest: MetadataResolver;
 
     wizardIndex$: Observable<number>;
+    wizardIndex: number;
     currentPage$: Observable<any>;
     wizard$: Observable<any[]>;
     wizard: EditorFlowDefinition[];
@@ -69,6 +70,8 @@ export class WizardComponent implements OnInit, OnDestroy, CanComponentDeactivat
         this.wizardIndex$ = this.route.params.pipe(map(params => Number(params.index)));
         this.currentPage$ = this.wizardIndex$.pipe(map(index => WizardDef.find(r => r.index === index)));
         this.wizard = WizardDef;
+
+        this.wizardIndex$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(i => this.wizardIndex = i);
 
         this.saved$ = this.store.select(fromEditor.getEditorIsSaved);
 

@@ -13,7 +13,8 @@ import { ActivatedRouteStub } from '../../../../../testing/activated-route.stub'
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../../testing/list-values.stub';
 
 @Component({
     template: `<finish-form [resolver]="resolver"></finish-form>`
@@ -42,19 +43,19 @@ describe('Finished Form Component', () => {
                 ProviderValueEmitter,
                 ProviderStatusEmitter,
                 NgbPopoverConfig,
-                ListValuesService,
+                { provide: ListValuesService, useClass: MockListValueService },
                 { provide: Router, useClass: RouterStub },
                 { provide: ActivatedRoute, useClass: ActivatedRouteStub }
             ],
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 FinishFormComponent,
                 RouterLinkStubDirective,
-                I18nTextComponent,
                 InputDefaultsDirective,
                 TestHostComponent
             ],

@@ -14,6 +14,7 @@ import { MetadataProvider } from '../../domain/model';
 import { SummaryPropertyComponent } from './summary-property.component';
 import { SCHEMA } from '../../../../testing/form-schema.stub';
 import { MetadataProviderWizard } from '../model';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -51,7 +52,8 @@ describe('Provider Wizard Summary Component', () => {
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),
                     wizard: combineReducers(fromWizard.reducers)
-                })
+                }),
+                MockI18nModule
             ],
             declarations: [
                 ProviderWizardSummaryComponent,

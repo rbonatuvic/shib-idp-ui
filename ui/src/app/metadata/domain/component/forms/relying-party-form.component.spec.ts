@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { ListValuesService } from '../../../domain/service/list-values.service';
@@ -10,6 +9,8 @@ import { RelyingPartyFormComponent } from './relying-party-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { SharedModule } from '../../../../shared/shared.module';
 import { FileBackedHttpMetadataResolver } from '../../entity';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../../testing/list-values.stub';
 
 
 @Component({
@@ -48,13 +49,14 @@ describe('Relying Party Form Component', () => {
                 ProviderValueEmitter,
                 ProviderStatusEmitter,
                 NgbPopoverConfig,
-                ListValuesService
+                { provide: ListValuesService, useClass: MockListValueService }
             ],
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
                 NgbPopoverModule,
-                SharedModule
+                SharedModule,
+                MockI18nModule
             ],
             declarations: [
                 RelyingPartyFormComponent,

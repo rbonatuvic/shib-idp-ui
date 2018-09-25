@@ -18,6 +18,8 @@ import { CustomIntegerComponent } from './widget/number/number.component';
 import { FilterTargetComponent } from './widget/filter-target/filter-target.component';
 import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
+import { I18nModule } from '../i18n/i18n.module';
+import { CustomObjectWidget } from './widget/object/object.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
@@ -31,7 +33,8 @@ export const COMPONENTS = [
     CustomIntegerComponent,
     FilterTargetComponent,
     ChecklistComponent,
-    IconButtonComponent
+    IconButtonComponent,
+    CustomObjectWidget
 ];
 
 @NgModule({
@@ -41,6 +44,7 @@ export const COMPONENTS = [
         NgbPopoverModule,
         NgbDropdownModule,
         SharedModule,
+        I18nModule,
         SchemaFormModule.forRoot()
     ],
     declarations: COMPONENTS,

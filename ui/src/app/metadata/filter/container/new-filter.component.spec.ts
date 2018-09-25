@@ -11,6 +11,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;
@@ -37,7 +38,8 @@ describe('New Metadata Filter Page', () => {
                 NgbPopoverModule,
                 SharedModule,
                 HttpClientModule,
-                SchemaFormModule.forRoot()
+                SchemaFormModule.forRoot(),
+                MockI18nModule
             ],
             declarations: [
                 NewFilterComponent

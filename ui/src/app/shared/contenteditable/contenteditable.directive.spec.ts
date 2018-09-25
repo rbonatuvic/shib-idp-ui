@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ContenteditableDirective } from './contenteditable.directive';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MockI18nModule } from '../../../testing/i18n.stub';
 
 
 
@@ -25,7 +26,8 @@ describe('Content Editable Directive', () => {
                 { provide: Renderer2, useClass: Renderer2 }
             ],
             imports: [
-                ReactiveFormsModule
+                ReactiveFormsModule,
+                MockI18nModule
             ],
             declarations: [
                 ContenteditableDirective,

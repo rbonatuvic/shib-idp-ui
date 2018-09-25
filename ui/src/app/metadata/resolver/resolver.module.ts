@@ -30,6 +30,7 @@ import { DraftCollectionEffects } from './effect/draft-collection.effects';
 import { WizardEffects } from './effect/wizard.effect';
 import { EditorEffects } from './effect/editor.effect';
 import { UnsavedDialogComponent } from './component/unsaved-dialog.component';
+import { I18nModule } from '../../i18n/i18n.module';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { UnsavedDialogComponent } from './component/unsaved-dialog.component';
         ReactiveFormsModule,
         FormsModule,
         ProviderEditorFormModule,
-        NgbDropdownModule
+        NgbDropdownModule,
+        I18nModule
     ],
     exports: [
         ProviderEditorFormModule,

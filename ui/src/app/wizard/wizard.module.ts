@@ -5,6 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { WizardComponent } from './component/wizard.component';
 import { reducers } from './reducer';
+import { I18nModule } from '../i18n/i18n.module';
 
 @NgModule({
     declarations: [
@@ -12,7 +13,8 @@ import { reducers } from './reducer';
     ],
     entryComponents: [],
     imports: [
-        CommonModule
+        CommonModule,
+        I18nModule
     ],
     exports: [
         WizardComponent

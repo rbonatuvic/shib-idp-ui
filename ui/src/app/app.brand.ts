@@ -3,42 +3,43 @@ import { Brand } from './core/model/brand';
 
 export const brand: Brand = {
     header: {
-        title: 'Source Management'
+        title: 'brand.header.title'
     },
     logo: {
         default: '/assets/shibboleth_logowordmark_color.png',
         small: '/assets/shibboleth_icon_color_130x130.png',
         large: '/assets/shibboleth_logowordmark_color.png',
-        alt: 'Shibboleth Logo - Click to be directed to www.shibboleth.net',
+        alt: 'brand.logo-alt',
         link: {
-            label: 'Shibboleth',
-            url: 'https://www.shibboleth.net/'
+            label: 'brand.logo-link-label', // shibboleth
+            url: 'https://www.shibboleth.net/',
+            description: 'brand.logo.link-description'
         }
     },
     footer: {
         links: [
             {
-                label: 'Home Page',
+                label: 'brand.footer.links-label-1',
                 url: 'https://www.shibboleth.net/',
-                description: 'Shibboleth.net open-source community home page'
+                description: 'brand.footer.links-desc-1'
             },
             {
-                label: 'Wiki',
+                label: 'brand.footer.links-label-2',
                 url: 'https://wiki.shibboleth.net/',
-                description: 'Shibboleth.net open-source community wiki'
+                description: 'brand.footer.links-desc-2'
             },
             {
-                label: 'Issue Tracker',
+                label: 'brand.footer.links-label-3',
                 url: 'https://issues.shibboleth.net/',
-                description: 'Shibboleth.net open-source community issue tracker'
+                description: 'brand.footer.links-desc-3'
             },
             {
-                label: 'Mailing List',
+                label: 'brand.footer.links-label-4',
                 url: 'https://www.shibboleth.net/community/lists/',
-                description: 'Shibboleth.net open-source community mailing list'
+                description: 'brand.footer.links-desc-4'
             }
         ],
-        text: 'Links to Shibboleth resources:'
+        text: 'brand.footer.text'
     },
     ...customBrand
 };

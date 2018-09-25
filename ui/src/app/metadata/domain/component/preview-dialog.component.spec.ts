@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { PreviewDialogComponent } from './preview-dialog.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbActiveModalStub } from '../../../../testing/modal.stub';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `<preview-dialog></preview-dialog>`
@@ -27,7 +28,8 @@ describe('Advanced Info Form Component', () => {
             ],
             imports: [
                 NoopAnimationsModule,
-                ReactiveFormsModule
+                ReactiveFormsModule,
+                MockI18nModule
             ],
             declarations: [
                 PreviewDialogComponent,

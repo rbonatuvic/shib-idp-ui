@@ -7,6 +7,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ResolverComponent } from './resolver.component';
 import * as fromCollections from '../reducer';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 describe('Resolver Select (Editor) Page', () => {
     let fixture: ComponentFixture<ResolverComponent>;
@@ -27,7 +28,8 @@ describe('Resolver Select (Editor) Page', () => {
                     collections: combineReducers(fromCollections.reducers),
                 }),
                 ReactiveFormsModule,
-                RouterModule.forRoot([])
+                RouterModule.forRoot([]),
+                MockI18nModule
             ],
             declarations: [ResolverComponent],
         });

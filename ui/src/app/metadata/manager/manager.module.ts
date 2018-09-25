@@ -19,6 +19,7 @@ import { SearchEffects } from './effect/search.effects';
 import { DeleteDialogComponent } from './component/delete-dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
         RouterModule,
         NgbModalModule,
         NgbDropdownModule,
-        HttpClientModule
+        HttpClientModule,
+        SharedModule
     ]
 })
 export class ManagerModule {

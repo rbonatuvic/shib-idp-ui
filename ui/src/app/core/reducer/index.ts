@@ -1,11 +1,6 @@
 import {
-    ActionReducerMap,
     createSelector,
-    createFeatureSelector,
-    createSelectorFactory,
-    ActionReducer,
-    MetaReducer,
-    combineReducers
+    createFeatureSelector
 } from '@ngrx/store';
 
 import * as fromUser from './user.reducer';

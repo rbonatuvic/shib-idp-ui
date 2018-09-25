@@ -5,18 +5,18 @@
                 <li class="nav-item">
                     <h3 class="tag tag-primary">
                         <span class="index">1</span>
-                        <ng-container i18n="@@label--name-and-entityid">1. Name and EntityId</ng-container>
+                        1. <translate-i18n key="label.name-and-entityid">Name and EntityId</translate-i18n>
                     </h3>
                 </li>
                 <li class="nav-item">
                     <button class="nav-link next btn clearfix" (click)="next()" [disabled]="providerForm.invalid" aria-label="Next: Step 2, Organization information"
                         role="button">
-                        <span class="label pull-left" i18n="@@label--finish-validate">
+                        <span class="label pull-left" translate="label.finish-summary-validation">
                             Finished!
                         </span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                            <ng-container i18n="@@action--next">Next</ng-container>
+                            <translate-i18n key="action.next">Next</translate-i18n>
                         </span>
                     </button>
                 </li>
@@ -24,7 +24,7 @@
             <fieldset class="bg-light border rounded p-4">
                 <div class="form-group">
                     <label for="serviceProviderName">
-                        <ng-container i18n="@@label--select-entity-id-to-copy">Select the Entity ID to copy</ng-container>
+                        <translate-i18n key="label.select-entity-id-to-copy">Select the Entity ID to copy</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
                     <auto-complete
@@ -33,44 +33,44 @@
                         [matches]="searchResults$ | async"
                         [required]="true"
                         role="textbox"
-                        i18n-aria-label="@@label--select-entity-id-to-copy"
+                        i18n-aria-label="@@label.select-entity-id-to-copy"
                         aria-label="Select the Entity ID to copy">
                     </auto-complete>
                     <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
                         <small class="form-text text-danger" *ngIf="providerForm.get('serviceProviderName').hasError('required')">
-                            <ng-container i18n="@@message--service-resolver-name-required"></ng-container>
+                            <translate-i18n key="message.service-resolver-name-required">Service Resolver Name is Required</translate-i18n>
                         </small>
                     </ng-container>
                 </div>
                 <div class="form-group">
                     <label for="serviceProviderName">
-                        <ng-container i18n="@@label--metadata-source-name-dashboard-display-only">Metadata Source Name (Dashboard Display Only)</ng-container>
+                        <translate-i18n key="label.metadata-source-name-dashboard-display-only">Metadata Source Name (Dashboard Display Only)</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
                     <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
                     <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
                         <small class="form-text text-danger" *ngIf="providerForm.get('serviceProviderName').hasError('required')">
-                            <ng-container i18n="@@message--service-resolver-name-required">Service Resolver Name is required</ng-container>
+                            <translate-i18n key="message.service-resolver-name-required">Service Resolver Name is required</translate-i18n>
                         </small>
                     </ng-container>
                 </div>
                 <div class="form-group">
                     <label for="entityId">
-                        <ng-container i18n="@@label--service-resolver-entity-id">New Entity ID</ng-container>
+                        <translate-i18n key="label.service-resolver-entity-id">New Entity ID</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
                     <input id="entityId" type="text" class="form-control" placeholder="" formControlName="entityId" />
                     <ng-container *ngIf="providerForm.get('entityId').touched && providerForm.get('entityId').invalid">
                         <small class="form-text text-danger" *ngIf="providerForm.get('entityId').hasError('required')">
-                            <ng-container i18n="@@message--entity-id-required">Entity ID is required</ng-container>
+                            <translate-i18n key="message.entity-id-required">Entity ID is required</translate-i18n>
                         </small>
                     </ng-container>
                     <small class="form-text text-danger" *ngIf="providerForm.get('entityId').hasError('unique')">
-                        <ng-container i18n="@@message--entity-id-must-be-unique">Entity ID must be unique</ng-container>
+                        <translate-i18n key="message.entity-id-must-be-unique">Entity ID must be unique</translate-i18n>
                     </small>
                 </div>
                 <button type="submit" class="btn btn-primary sr-only" [disabled]="providerForm.invalid">
-                    <ng-container i18n="@@action--next">Next</ng-container>
+                    <translate-i18n key="action.next">Next</translate-i18n>
                     <i class="fa fa-fw fa-arrow-circle-right fa-lg"></i>
                 </button>
             </fieldset>
@@ -80,8 +80,8 @@
         <table class="table table-striped table-sm">
             <thead>
                 <tr class="table-secondary">
-                    <th i18n="@@label--sections-to-copy">Sections to Copy?</th>
-                    <th i18n="@@label--yes">Yes</th>
+                    <th translate="label.sections-to-copy">Sections to Copy?</th>
+                    <th translate="label.yes">Yes</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,20 +103,20 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col" i18n="@@label--check-all-attributes">Check All Attributes</td>
+                    <td scope="col" translate="label.check-all-attributes">Check All Attributes</td>
                     <td scope="col">
                         <button class="btn btn-text text-success btn-sm" (click)="onCheckAll()">
                             <i class="fa fa-fw fa-check"></i>
-                            <span class="sr-only" i18n="@@label--check-all-attributes">Check All Attributes</span>
+                            <span class="sr-only" translate="label.check-all-attributes">Check All Attributes</span>
                         </button>
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col" i18n="@@label--clear-all-attributes">Clear All Attributes</td>
+                    <td scope="col" translate="label.clear-all-attributes">Clear All Attributes</td>
                     <td scope="col">
                         <button class="btn btn-text text-danger btn-sm" (click)="onCheckNone()">
                             <i class="fa fa-fw fa-times"></i>
-                            <span class="sr-only" i18n="@@label--clear-all-attributes">Clear All Attributes</span>
+                            <span class="sr-only" translate="label.clear-all-attributes">Clear All Attributes</span>
                         </button>
                     </td>
                 </tr>
