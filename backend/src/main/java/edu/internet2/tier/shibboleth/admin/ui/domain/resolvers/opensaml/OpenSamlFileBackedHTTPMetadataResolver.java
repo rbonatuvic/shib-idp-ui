@@ -101,7 +101,6 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
     public synchronized void refresh() throws ResolverException {
         DateTime now = null;
         String mdId = null;
-        // boolean trackRefreshSuccess = false;
 
         try {
             // In case a destroy() thread beat this thread into the monitor.
@@ -109,52 +108,22 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
                 return;
             }
 
-            // A manual refresh() must cancel the previously-scheduled future task, since will (re)schedule its own.
-            // If this execution *is* the task, it's ok to cancel ourself, we're already running.
-            /*if (refreshMetadataTask != null) {
-                refreshMetadataTask.cancel();
-            }*/
-
             now = new DateTime(ISOChronology.getInstanceUTC());
             mdId = getMetadataIdentifier();
 
-            // log.debug("{} Beginning refresh of metadata from '{}'", getLogPrefix(), mdId);
-
             final byte[] mdBytes = fetchMetadata();
             if (mdBytes == null) {
-                // log.info("{} Metadata from '{}' has not changed since last refresh", getLogPrefix(), mdId);
                 processCachedMetadata(mdId, now);
             } else {
-                // log.debug("{} Processing new metadata from '{}'", getLogPrefix(), mdId);
                 processNewMetadata(mdId, now, mdBytes);
             }
         } catch (final Throwable t) {
-            // trackRefreshSuccess = false;
-            // log.error("{} Error occurred while attempting to refresh metadata from '{}'", getLogPrefix(), mdId, t);
-            // nextRefresh = new DateTime(ISOChronology.getInstanceUTC()).plus(minRefreshDelay);
             if (t instanceof Exception) {
                 throw new ResolverException((Exception) t);
             } else {
                 throw new ResolverException(String.format("Saw an error of type '%s' with message '%s'",
                                                           t.getClass().getName(), t.getMessage()));
             }
-        } /*finally {
-            // logCachedMetadataExpiration(now);
-
-            if (trackRefreshSuccess) {
-                wasLastRefreshSuccess = true;
-                lastSuccessfulRefresh = now;
-            } else {
-                wasLastRefreshSuccess = false;
-            }
-
-            refreshMetadataTask = new RefreshMetadataTask();
-            final long nextRefreshDelay = nextRefresh.getMillis() - System.currentTimeMillis();
-            // taskTimer.schedule(refreshMetadataTask, nextRefreshDelay);
-            log.info("{} Next refresh cycle for metadata provider '{}' will occur on '{}' ('{}' local time)",
-                     new Object[] {getLogPrefix(), mdId, nextRefresh,
-                             nextRefresh.toDateTime(DateTimeZone.getDefault()),});
-            lastRefresh = now;
-        }*/
+        }
     }
 }
