@@ -8,7 +8,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ISOChronology;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
@@ -99,17 +98,15 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
     // why the negative refresh is occurring.
     @Override
     public synchronized void refresh() throws ResolverException {
-        DateTime now = null;
-        String mdId = null;
+        // In case a destroy() thread beat this thread into the monitor.
+        if (isDestroyed()) {
+            return;
+        }
 
         try {
-            // In case a destroy() thread beat this thread into the monitor.
-            if (isDestroyed()) {
-                return;
-            }
 
-            now = new DateTime(ISOChronology.getInstanceUTC());
-            mdId = getMetadataIdentifier();
+            DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+            String mdId = getMetadataIdentifier();
 
             final byte[] mdBytes = fetchMetadata();
             if (mdBytes == null) {
