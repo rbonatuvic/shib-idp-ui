@@ -1,6 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 
 import { ArrayWidget } from 'ngx-schema-form';
+import { AttributesService } from '../../../metadata/domain/service/attributes.service';
+import { Observable, of } from 'rxjs';
 
 /* istanbul ignore next */
 @Component({
@@ -10,6 +12,12 @@ import { ArrayWidget } from 'ngx-schema-form';
 export class ChecklistComponent extends ArrayWidget implements AfterViewInit {
     checked: any = {};
 
+    constructor(
+        private attributes: AttributesService
+    ) {
+        super();
+    }
+
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
         this.formProperty.value.forEach(val => this.checked[val] = true);
@@ -17,6 +25,10 @@ export class ChecklistComponent extends ArrayWidget implements AfterViewInit {
 
     private commitValue(): void {
         this.formProperty.setValue(Object.keys(this.checked), false);
+    }
+
+    get data(): Observable<{ key: string, label: string }[]> {
+        return this.schema.widget.data ? of(this.schema.widget.data) : this.attributes.query(this.schema.widget.dataUrl);
     }
 
     onCheck(value) {

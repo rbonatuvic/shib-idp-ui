@@ -475,6 +475,8 @@ class TestObjectGenerator {
             it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+                it.minRefreshDelay = 'PT0M'
+                it.maxRefreshDelay = 'P1D'
                 it
             }
             it
