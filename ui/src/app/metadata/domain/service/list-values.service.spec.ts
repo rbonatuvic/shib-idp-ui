@@ -2,6 +2,8 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { EntityValidators } from './entity-validators.service';
 import { Observable, of } from 'rxjs';
 import { ListValuesService } from './list-values.service';
+import { AttributesService } from './attributes.service';
+import { MockAttributeService } from '../../../../testing/attributes.stub';
 
 describe(`ListValuesService`, () => {
     let service: ListValuesService;
@@ -9,6 +11,7 @@ describe(`ListValuesService`, () => {
         TestBed.configureTestingModule({
             imports: [],
             providers: [
+                { provide: AttributesService, useClass: MockAttributeService },
                 ListValuesService
             ]
         });

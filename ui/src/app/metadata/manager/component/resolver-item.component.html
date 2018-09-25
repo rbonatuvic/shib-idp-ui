@@ -41,7 +41,7 @@
                         </div>
                         <div class="col">{{ entity.name }}</div>
                         <div class="col text-right font-weight-bold" translate="label.created-date">Created Date:</div>
-                        <div class="col" *ngIf="!entity.isDraft()">{{ entity.getCreationDate() | date:'medium' }}</div>
+                        <div class="col" *ngIf="!entity.isDraft()">{{ entity.getCreationDate() | customDate }}</div>
                         <div class="col" *ngIf="entity.isDraft()"> &mdash; </div>
                     </div>
                     <div class="row">

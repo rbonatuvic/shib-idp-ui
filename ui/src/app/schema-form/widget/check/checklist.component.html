@@ -8,8 +8,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let attr of schema.widget.data; let i=index;">
-                <td scope="col">{{ attr.label }}</td>
+            <tr *ngFor="let attr of data | async; let i=index;">
+                <td scope="col">{{ attr.label | translate }}</td>
                 <td scope="col">
                     <fieldset>
                         <div class="custom-control custom-checkbox">
@@ -18,14 +18,14 @@
                                 (change)="onCheck(attr.key)"
                                 [checked]="checked[attr.key]"
                                 id="input-{{ i }}"
-                                [attr.name]="attr.label"
-                                [attr.aria-label]="attr.label"
+                                [attr.name]="attr.label | translate"
+                                [attr.aria-label]="attr.label | translate"
                                 role="checkbox"
                                 aria-checked="false"
                             />
                             <label class="custom-control-label" for="input-{{ i }}">
-                                <span class="sr-only" translate="action.toggle" [translateParams]="{ label: attr.label }">
-                                    Toggle {{ attr.label }}
+                                <span class="sr-only">
+                                    <translate-i18n key="action.toggle">Toggle</translate-i18n> {{ attr.label | translate }}
                                 </span>
                             </label>
                         </div>

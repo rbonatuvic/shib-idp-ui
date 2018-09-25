@@ -6,8 +6,7 @@
             type="text"
             tabindex="0"
             class="form-control"
-            i18n-placeholder="@@message.search-files"
-            placeholder="Search Files"
+            [placeholder]="'label.search-files' | translate"
             aria-label="To search for a source, enter name then press enter"
             formControlName="search"
             (keyup)="search.emit($event.target.value)">

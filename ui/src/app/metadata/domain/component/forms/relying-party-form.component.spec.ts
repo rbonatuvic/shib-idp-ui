@@ -10,6 +10,7 @@ import * as stubs from '../../../../../testing/resolver.stub';
 import { SharedModule } from '../../../../shared/shared.module';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../../testing/list-values.stub';
 
 
 @Component({
@@ -48,7 +49,7 @@ describe('Relying Party Form Component', () => {
                 ProviderValueEmitter,
                 ProviderStatusEmitter,
                 NgbPopoverConfig,
-                ListValuesService
+                { provide: ListValuesService, useClass: MockListValueService }
             ],
             imports: [
                 NoopAnimationsModule,

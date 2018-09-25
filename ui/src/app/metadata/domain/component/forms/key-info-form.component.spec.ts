@@ -11,6 +11,7 @@ import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../../testing/list-values.stub';
 
 @Component({
     template: `<key-info-form [resolver]="resolver"></key-info-form>`
@@ -43,7 +44,7 @@ describe('Security (Key) Info Form Component', () => {
                 ProviderValueEmitter,
                 ProviderStatusEmitter,
                 NgbPopoverConfig,
-                ListValuesService
+                { provide: ListValuesService, useClass: MockListValueService }
             ],
             imports: [
                 NoopAnimationsModule,

@@ -1,15 +1,12 @@
-import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-
+import { Injectable } from '@angular/core';
+import { ReleaseAttribute } from '../app/metadata/domain/model/properties/release-attribute';
 import { debounceTime, distinctUntilChanged, combineLatest } from 'rxjs/operators';
-import { AttributesService } from './attributes.service';
-import { ReleaseAttribute } from '../model/properties/release-attribute';
 
 @Injectable()
-export class ListValuesService {
-    constructor(
-        private attributes: AttributesService
-    ) {}
+export class MockListValueService {
+
+    constructor() { }
 
     readonly nameIdFormats: Observable<string[]> = of([
         'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
@@ -25,7 +22,7 @@ export class ListValuesService {
     ]);
 
     get attributesToRelease(): Observable<ReleaseAttribute[]> {
-        return this.attributes.query();
+        return of([]);
     }
 
     searchStringList = (list: Observable<string[]>): Function =>
@@ -38,7 +35,7 @@ export class ListValuesService {
                     (term, formats) => formats.filter(
                         v => v.toLowerCase().match(term.toLowerCase())
                     )
-                    .slice(0, 4))
+                        .slice(0, 4))
             )
 
     get searchFormats(): Function {
@@ -47,4 +44,4 @@ export class ListValuesService {
     get searchAuthenticationMethods(): Function {
         return this.searchStringList(this.authenticationMethods);
     }
-} /* istanbul ignore next */
+}

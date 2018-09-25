@@ -77,6 +77,9 @@ dependencies {
     // TODO: figure out what this should really be
     runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 
+    //Spring Configuration Annotation Processor - makes IntelliJ happy about @ConfigurationProperties
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+
     // lucene deps
     ['core', 'analyzers-common', 'queryparser'].each {
         compile "org.apache.lucene:lucene-${it}:${project.'lucene.version'}"
