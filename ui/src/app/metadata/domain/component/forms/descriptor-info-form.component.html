@@ -27,7 +27,9 @@
                         <button class="btn btn-success btn-sm" (click)="addFormat()" translate="action.add-nameid-format" role="button">Add NameID Format</button>
                     </span>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipNameIdFormat translate="tooltip.nameid-format">Add NameID Format Popover</ng-template>
+                        <ng-template #tooltipNameIdFormat>
+                            <translate-i18n key="tooltip.nameid-format">Add NameID Format Popover</translate-i18n>
+                        </ng-template>
                         <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                            [ngbPopover]="tooltipNameIdFormat"
                            [attr.aria-label]="'tooltip.instruction' | translate"></i>

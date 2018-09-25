@@ -8,7 +8,7 @@
                         <translate-i18n key="message.add-new-md-resolver">Add a new metadata source</translate-i18n>
                         &ndash; {{ (currentPage$ | async).label }} ({{ (resolver$ | async).serviceProviderName }})
                         <span class="pull-right">
-                            (<translate-i18n key="message.wizard-status" params="{ index: wizardIndex$ | async, length: wizardLength }">
+                            (<translate-i18n key="message.wizard-status" [params]="{ index: wizardIndex$ | async, length: wizard.length + 1 }">
                                 Step {{ wizardIndex }} of {{ wizard.length + 1 }}
                             </translate-i18n>)
                         </span>

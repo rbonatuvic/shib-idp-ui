@@ -38,8 +38,8 @@
             </div>
             <div>
                 <button class="btn btn-primary btn-filter pull-left" (click)="viewFilters.emit(provider)">
-                        <i class="fa fa-filter"></i>&nbsp;
-                        <span class="label">Manage Filters</span>
+                    <i class="fa fa-filter"></i>&nbsp;
+                    <span class="label" translate="action.manage-filters">Manage Filters</span>
                 </button>
                 <button class="btn btn-link pull-right" (click)="select.emit(provider)" aria-label="Edit selected service provider">
                     <i class="fa fa-fw fa-edit fa-2x"></i>
@@ -52,21 +52,21 @@
             <div class="row">
                 <div class="col-10">
                     <div class="row">
-                        <div class="col text-right font-weight-bold">
+                        <div class="col text-right font-weight-bold" translate="label.metadata-provider-name">
                             Metadata Provider Name:
                         </div>
                         <div class="col">{{ provider.name }}</div>
-                        <div class="col text-right font-weight-bold">
+                        <div class="col text-right font-weight-bold" translate="label.created-date">
                             Created Date:
                         </div>
                         <div class="col">{{ provider.createdDate | customDate }}</div>
                     </div>
                     <div class="row">
-                        <div class="col text-right font-weight-bold">
+                        <div class="col text-right font-weight-bold" translate="label.metadata-provider-type">
                             Metadata Provider Type:
                         </div>
                         <div class="col">{{ provider['@type'] }}</div>
-                        <div class="col text-right font-weight-bold">
+                        <div class="col text-right font-weight-bold" translate="label.metadata-provider-status">
                             Metadata Provider Status:
                         </div>
                         <div class="col">

@@ -26,7 +26,7 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
                 const err = namesList.indexOf(value) > -1 ? {
                     code: 'INVALID_NAME',
                     path: `#${property.path}`,
-                    message: 'Name must be unique.',
+                    message: 'message.name-must-be-unique',
                     params: [value]
                 } : null;
                 return err;
@@ -35,7 +35,7 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
                 return !UriValidator.isUri(value) ? {
                     code: 'INVALID_URI',
                     path: `#${property.path}`,
-                    message: 'URI must be valid format.',
+                    message: 'message.uri-valid-format',
                     params: [value]
                 } : null;
             }

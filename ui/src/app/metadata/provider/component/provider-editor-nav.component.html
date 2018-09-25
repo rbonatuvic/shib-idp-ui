@@ -8,7 +8,7 @@
             ngbDropdownToggle>
             <i class="fa fa-fw fa-bars fa-lg" aria-hidden="true"></i>
             <span class="d-inline-block mx-2">
-                <i18n-text [key]="currentLabel$ | async"></i18n-text>
+                <translate-i18n [key]="currentLabel$ | async"></translate-i18n>
             </span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" ngbDropdownMenu>
@@ -19,7 +19,7 @@
                 [ngClass]="{'active': (currentPage$ | async) === route.path}"
                 [attr.aria-label]="route.label"
                 role="button">
-                <i18n-text [key]="route.label"></i18n-text>
+                <translate-i18n [key]="route.label"></translate-i18n>
                 <valid-form-icon *ngIf="(invalidForms$ | async).indexOf(route.path) > -1" status="INVALID"></valid-form-icon>
             </a>
             <div class="dropdown-divider"></div>
@@ -28,8 +28,9 @@
                 [routerLink]="['../', 'filters']"
                 routerLinkActive="active"
                 aria-label="Filter List"
-                role="button">
-                <i18n-text key="Filter List"></i18n-text>
+                role="button"
+                translate="label.filter-list">
+                Filter List
             </a>
         </div>
     </div>
@@ -42,7 +43,7 @@
                 [routerLink]="['../', 'edit', route.path]"
                 role="button"
                 [attr.aria-label]="route.label">
-                <i18n-text [key]="route.label"></i18n-text>
+                <translate-i18n [key]="route.label"></translate-i18n>
                 <valid-form-icon
                     *ngIf="(invalidForms$ | async).indexOf(route.path) > -1"
                     status="INVALID">
@@ -54,9 +55,9 @@
             <a class="nav-link"
                 [routerLink]="['../', 'filters']"
                 routerLinkActive="active"
-                aria-label="Filter List"
+                [attr.aria-label]="'label.filter-list' | translate"
                 role="button">
-                <i18n-text key="Filter List"></i18n-text>
+                <translate-i18n key="label.filter-list"></translate-i18n>
             </a>
         </nav>
     </ng-container>

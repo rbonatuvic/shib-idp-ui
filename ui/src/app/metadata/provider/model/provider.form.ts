@@ -10,7 +10,7 @@ export const MetadataProviderWizard: Wizard<MetadataProvider> = {
     steps: [
         {
             id: 'new',
-            label: 'Select Metadata Provider Type',
+            label: 'label.select-metadata-provider-type',
             index: 1,
             initialValues: [],
             schema: 'assets/schema/provider/metadata-provider.schema.json'

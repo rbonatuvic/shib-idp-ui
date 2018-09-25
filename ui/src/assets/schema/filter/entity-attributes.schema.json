@@ -7,7 +7,7 @@
     "properties": {
         "name": {
             "title": "label.filter-name",
-            "description": "message.filter-name",
+            "description": "tooltip.filter-name",
             "type": "string",
             "widget": {
                 "id": "string",
@@ -35,13 +35,13 @@
         },
         "filterEnabled": {
             "title": "label.enable-filter",
-            "description": "label.enable-filter",
+            "description": "tooltip.enable-filter",
             "type": "boolean",
             "default": false
         },
         "entityAttributesFilterTarget": {
             "title": "label.search-criteria",
-            "description": "label.search-criteria",
+            "description": "tooltip.search-criteria",
             "type": "object",
             "widget": {
                 "id": "filter-target"
@@ -56,19 +56,19 @@
                             "enum": [
                                 "ENTITY"
                             ],
-                            "description": "label.entity-id"
+                            "description": "value.entity-id"
                         },
                         {
                             "enum": [
                                 "REGEX"
                             ],
-                            "description": "label.regex"
+                            "description": "value.regex"
                         },
                         {
                             "enum": [
                                 "CONDITION_SCRIPT"
                             ],
-                            "description": "label.script"
+                            "description": "value.script"
                         }
                     ]
                 },
