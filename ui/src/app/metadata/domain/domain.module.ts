@@ -13,6 +13,7 @@ import { MetadataProviderService } from './service/provider.service';
 import { EntityEffects } from './effect/entity.effect';
 import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
+import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
 
 export const COMPONENTS = [
@@ -46,7 +47,8 @@ export class DomainModule {
                 ProviderStatusEmitter,
                 ProviderValueEmitter,
                 MetadataProviderService,
-                MetadataFilterService
+                MetadataFilterService,
+                AttributesService
             ]
         };
     }

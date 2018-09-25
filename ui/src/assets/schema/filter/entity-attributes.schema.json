@@ -182,21 +182,7 @@
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
             "widget": {
                 "id": "checklist",
-                "data": [
-                    { "key": "eduPersonPrincipalName", "label": "eduPersonPrincipalName (EPPN)" },
-                    { "key": "uid", "label": "uid" },
-                    { "key": "mail", "label": "mail" },
-                    { "key": "surname", "label": "surname" },
-                    { "key": "givenName", "label": "givenName" },
-                    { "key": "displayName", "label": "displayName" },
-                    { "key": "eduPersonAffiliation", "label": "eduPersonAffiliation" },
-                    { "key": "eduPersonScopedAffiliation", "label": "eduPersonScopedAffiliation" },
-                    { "key": "eduPersonPrimaryAffiliation", "label": "eduPersonPrimaryAffiliation" },
-                    { "key": "eduPersonEntitlement", "label": "eduPersonEntitlement" },
-                    { "key": "eduPersonAssurance", "label": "eduPersonAssurance" },
-                    { "key": "eduPersonUniqueId", "label": "eduPersonUniqueId" },
-                    { "key": "employeeNumber", "label": "employeeNumber" }
-                ]
+                "dataUrl": "/customAttributes"
             },
             "items": {
                 "type": "string"

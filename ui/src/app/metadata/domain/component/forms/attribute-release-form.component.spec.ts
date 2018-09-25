@@ -8,6 +8,7 @@ import { AttributeReleaseFormComponent } from './attribute-release-form.componen
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../../testing/list-values.stub';
 
 describe('Attribute Release Form Component', () => {
     let fixture: ComponentFixture<AttributeReleaseFormComponent>;
@@ -19,7 +20,7 @@ describe('Attribute Release Form Component', () => {
                 ProviderValueEmitter,
                 ProviderStatusEmitter,
                 NgbPopoverConfig,
-                ListValuesService
+                { provide: ListValuesService, useClass: MockListValueService }
             ],
             imports: [
                 NoopAnimationsModule,
