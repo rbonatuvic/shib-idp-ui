@@ -4,7 +4,8 @@
         <div class="row justify-content-between">
             <div class="col-md-12">
                 <span class="display-6">
-                    <i class="fa fa-fw fa-gears"></i> Edit Metadata Provider - {{ (provider$ | async).name }}</span>
+                    <i class="fa fa-fw fa-gears"></i> <translate-i18n key="label.edit-metadata-provider">Edit Metadata Provider</translate-i18n> - {{ (provider$ | async).name }}
+                </span>
             </div>
         </div>
     </div>
@@ -19,7 +20,7 @@
                 <a [routerLink]="['../', 'filter', 'new']"
                     class="btn btn-success">
                     <i class="fa fa-plus-circle"></i>
-                    Add Filter
+                    <translate-i18n key="action.add-filter">Add Filter</translate-i18n>
                 </a>
             </div>
         </div>
@@ -36,11 +37,11 @@
                         <tr>
                             <th></th>
                             <th></th>
-                            <th>Filter Name</th>
-                            <th>Filter Type</th>
-                            <th>Enabled?</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th translate="label.filter-name">Filter Name</th>
+                            <th translate="label.filter-type">Filter Type</th>
+                            <th translate="label.filter-enabled">Enabled?</th>
+                            <th translate="action.edit">Edit</th>
+                            <th translate="action.delete">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,11 +49,11 @@
                             <td class="td-sm">
                                 <button class="btn btn-link" (click)="updateOrderUp(filter)" [disabled]="isFirst">
                                     <i class="fa fa-arrow-circle-up fa-lg sr-hidden"></i>
-                                    <span class="sr-only">Move Up</span>
+                                    <span class="sr-only" translate="action.move-up">Move Up</span>
                                 </button>
                                 <button class="btn btn-link" (click)="updateOrderDown(filter)" [disabled]="isLast">
                                     <i class="fa fa-arrow-circle-down fa-lg sr-hidden"></i>
-                                    <span class="sr-only">Move Down</span>
+                                    <span class="sr-only" translate="action.move-up">Move Down</span>
                                 </button>
                             </td>
                             <td class="td-xs">{{ i + 1 }}</td>
@@ -65,8 +66,8 @@
                                             'fa-check-square text-success': filter.filterEnabled,
                                             'fa-square-o text-dark': !filter.filterEnabled
                                         }"></i>
-                                    <span class="sr-only" *ngIf="!filter.filterEnabled">Enable</span>
-                                    <span class="sr-only" *ngIf="filter.filterEnabled">Disable</span>
+                                    <span class="sr-only" *ngIf="!filter.filterEnabled" translate="action.enable">Enable</span>
+                                    <span class="sr-only" *ngIf="filter.filterEnabled" translate="action.disable">Disable</span>
                                 </button>
                                 <i class="fa fa-spinner fa-pulse fa-lg fa-fw" *ngIf="isSaving$ | async"></i>
                             </td>
@@ -75,13 +76,13 @@
                                     [class.disabled]="isSaving$ | async"
                                     [routerLink]="['../', 'filter', filter.resourceId, 'edit']">
                                     <i class="fa fa-edit fa-lg sr-hidden text-info"></i>
-                                    <span class="sr-only">Edit</span>
+                                    <span class="sr-only" translate="action.edit">Edit</span>
                                 </a>
                             </td>
                             <td class="td-sm">
                                 <button class="btn btn-link" (click)="remove(filter.resourceId)">
                                     <i class="fa fa-trash fa-lg sr-hidden text-danger"></i>
-                                    <span class="sr-only">Delete</span>
+                                    <span class="sr-only" translate="action.edit">Delete</span>
                                 </button>
                             </td>
                         </tr>

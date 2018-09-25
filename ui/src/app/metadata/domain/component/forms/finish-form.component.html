@@ -9,10 +9,11 @@
                             translate="label.enable-this-service-opon-saving"
                             for="serviceEnabled">Enable this service upon saving?</label>
                     </div>
-                    <ng-template #tooltipEnableThisServiceUponSaving translate="tooltip.enable-this-service-upon-saving">Enable this service upon saving popover</ng-template>
+                    <ng-template #tooltipEnableThisServiceUponSaving>
+                        <translate-i18n key="tooltip.enable-this-service-upon-saving">Enable this service upon saving popover</translate-i18n>
+                    </ng-template>
                     <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
                        [ngbPopover]="tooltipEnableThisServiceUponSaving"
-                      
                        role="tooltip"></i>
                 </div>
             </section>

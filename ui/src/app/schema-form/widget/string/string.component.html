@@ -26,7 +26,10 @@
         [attr.aria-label]="schema.title">
     <input *ngIf="(schema.widget.id === 'color' && schema.readOnly)" [attr.name]="name" type="hidden" [formControl]="control">
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
-        {{ errorMessages }}
+        <ng-container *ngFor="let error of errorMessages; let first=first;">
+            <ng-container *ngIf="!first">, </ng-container>
+            <translate-i18n [key]="error">error</translate-i18n>
+        </ng-container>
     </small>
     <small class="form-text text-secondary"
         *ngIf="!(control.touched && errorMessages && errorMessages.length) && schema.widget.help"

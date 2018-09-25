@@ -9,7 +9,7 @@
                 </span>
                 <span class="label pull-right">
                     <ng-container *ngIf="(previous$ | async).index">{{ (previous$ | async).index }}. </ng-container>
-                    {{ (previous$ | async).label }}
+                    {{ (previous$ | async).label | translate }}
                 </span>
             </button>
         </li>
@@ -22,8 +22,8 @@
                     </ng-container>
                 </span>
                 <ng-container [ngSwitch]="currentIcon$ | async">
-                    <ng-container *ngSwitchDefault>{{ (current$ | async).index }}. {{ (current$ | async).label }}</ng-container>
-                    <ng-container *ngSwitchCase="icons.CHECK">{{ (current$ | async).label }}</ng-container>
+                    <ng-container *ngSwitchDefault>{{ (current$ | async).index }}. {{ (current$ | async).label | translate }}</ng-container>
+                    <ng-container *ngSwitchCase="icons.CHECK">{{ (current$ | async).label | translate }}</ng-container>
                 </ng-container>
             </h3>
         </li>
@@ -32,7 +32,7 @@
                 role="button">
                 <span class="label pull-left">
                     <ng-container *ngIf="(next$ | async).index">{{ (next$ | async).index }}. </ng-container>
-                    {{ (next$ | async).label }}
+                    {{ (next$ | async).label | translate }}
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>

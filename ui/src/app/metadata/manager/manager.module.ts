@@ -20,6 +20,7 @@ import { DeleteDialogComponent } from './component/delete-dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
+import { I18nModule } from '../../i18n/i18n.module';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { SharedModule } from '../../shared/shared.module';
         NgbModalModule,
         NgbDropdownModule,
         HttpClientModule,
-        SharedModule
+        SharedModule,
+        I18nModule
     ]
 })
 export class ManagerModule {

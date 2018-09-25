@@ -91,7 +91,7 @@
         </div>
         <fieldset class="col form-section">
             <p>
-                <translate-i18n key="label.x509-certificates">X509 Certificates: </translate-i18n>
+                <translate-i18n key="label.x509-certificates">X509 Certificates: </translate-i18n>&nbsp;&nbsp;
                 <button class="btn btn-success btn-sm" (click)="addCert()" [disabled]="!(hasCert$ | async)" translate="action.add-certificate" aria-label="Add certificate to accordion group" role="button">Add Certificate</button>
             </p>
             <div formArrayName="x509Certificates" class="bg-light border rounded p-4" *ngIf="x509Certificates.length">

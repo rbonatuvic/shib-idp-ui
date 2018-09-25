@@ -2,7 +2,7 @@
     <div class="row">
         <fieldset class="col col-xl-6 form-section">
             <p>
-                <translate-i18n key="label.logout-endpoints">Logout Endpoints: </translate-i18n>
+                <translate-i18n key="label.logout-endpoints">Logout Endpoints:</translate-i18n>&nbsp;&nbsp;
                 <button class="btn btn-success btn-sm" (click)="addEndpoint()" translate="action.add-endpoint" aria-label="Add logout endpoint to accordion group">Add Endpoint</button>
             </p>
             <div formArrayName="logoutEndpoints" class="bg-light border rounded p-4" *ngIf="logoutEndpoints.length">
