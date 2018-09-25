@@ -8,6 +8,8 @@ import org.bouncycastle.util.encoders.Hex;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,8 @@ import static java.util.stream.Collectors.toSet;
  *
  * @since 1.0
  */
+@Configuration
+@ConditionalOnProperty(name = "shibui-metadata-dir")
 public class EntityDescriptorFilesScheduledTasks {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityDescriptorFilesScheduledTasks.class);

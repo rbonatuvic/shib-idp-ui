@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -46,9 +47,6 @@ import javax.servlet.http.HttpServletRequest;
 @EnableConfigurationProperties(CustomAttributesConfiguration.class)
 public class CoreShibUiConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(CoreShibUiConfiguration.class);
-
-    @Value("${shibui.metadata-dir:/opt/shibboleth-idp/metadata/generated}")
-    private String metadataDir;
 
     @Bean
     public OpenSamlObjects openSamlObjects() {
@@ -92,8 +90,9 @@ public class CoreShibUiConfiguration {
     ResourceBundleMessageSource messageSource;
 
     @Bean
-    public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository) {
-        return new EntityDescriptorFilesScheduledTasks(this.metadataDir, entityDescriptorRepository, openSamlObjects());
+    @ConditionalOnProperty(name = "shibui.metadata-dir")
+    public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository, @Value("${shibui.metadata-dir}") final String metadataDir) {
+        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects());
     }
 
     @Bean
