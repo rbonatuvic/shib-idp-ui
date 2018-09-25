@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { UnsavedProviderComponent } from './unsaved-provider.dialog';
 import { NgbActiveModalStub } from '../../../../testing/modal.stub';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -24,7 +25,9 @@ describe('Unsaved Provider Dialog Component', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [],
+            imports: [
+                MockI18nModule
+            ],
             declarations: [
                 UnsavedProviderComponent,
                 TestHostComponent

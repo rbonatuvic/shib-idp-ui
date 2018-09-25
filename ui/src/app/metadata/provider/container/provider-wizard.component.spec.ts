@@ -11,6 +11,7 @@ import { WizardModule } from '../../../wizard/wizard.module';
 import { ProviderWizardSummaryComponent } from '../component/provider-wizard-summary.component';
 import { SummaryPropertyComponent } from '../component/summary-property.component';
 import * as fromWizard from '../../../wizard/reducer';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
@@ -38,7 +39,8 @@ describe('Provider Wizard Component', () => {
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),
                     wizard: combineReducers(fromWizard.reducers)
-                })
+                }),
+                MockI18nModule
             ],
             declarations: [
                 ProviderWizardComponent,

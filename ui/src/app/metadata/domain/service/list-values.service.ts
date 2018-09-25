@@ -2,10 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { debounceTime, distinctUntilChanged, combineLatest } from 'rxjs/operators';
+import { AttributesService } from './attributes.service';
+import { ReleaseAttribute } from '../model/properties/release-attribute';
 
 @Injectable()
 export class ListValuesService {
-    constructor() {}
+    constructor(
+        private attributes: AttributesService
+    ) {}
 
     readonly nameIdFormats: Observable<string[]> = of([
         'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
@@ -20,21 +24,9 @@ export class ListValuesService {
         'urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport'
     ]);
 
-    readonly attributesToRelease: Observable<{ key: string, label: string }[]> = of([
-        { key: 'eduPersonPrincipalName', label: 'eduPersonPrincipalName (EPPN)' },
-        { key: 'uid', label: 'uid' },
-        { key: 'mail', label: 'mail' },
-        { key: 'surname', label: 'surname' },
-        { key: 'givenName', label: 'givenName' },
-        { key: 'displayName', label: 'displayName' },
-        { key: 'eduPersonAffiliation', label: 'eduPersonAffiliation' },
-        { key: 'eduPersonScopedAffiliation', label: 'eduPersonScopedAffiliation' },
-        { key: 'eduPersonPrimaryAffiliation', label: 'eduPersonPrimaryAffiliation' },
-        { key: 'eduPersonEntitlement', label: 'eduPersonEntitlement' },
-        { key: 'eduPersonAssurance', label: 'eduPersonAssurance' },
-        { key: 'eduPersonUniqueId', label: 'eduPersonUniqueId' },
-        { key: 'employeeNumber', label: 'employeeNumber' }
-    ]);
+    get attributesToRelease(): Observable<ReleaseAttribute[]> {
+        return this.attributes.query();
+    }
 
     searchStringList = (list: Observable<string[]>): Function =>
         (text$: Observable<string>) =>

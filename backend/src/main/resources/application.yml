@@ -1,0 +1,28 @@
+custom:
+  attributes:
+  # Default attributes
+    - name: eduPersonPrincipalName
+      displayName: label.attribute-eduPersonPrincipalName
+    - name: uid
+      displayName: label.attribute-uid
+    - name: mail
+      displayName: label.attribute-mail
+    - name: surname
+      displayName: label.attribute-surname
+    - name: givenName
+      displayName: label.attribute-givenName
+    - name: eduPersonAffiliation
+      displayName: label.attribute-eduPersonAffiliation
+    - name: eduPersonScopedAffiliation
+      displayName: label.attribute-eduPersonScopedAffiliation
+    - name: eduPersonPrimaryAffiliation
+      displayName: label.attribute-eduPersonPrimaryAffiliation
+    - name: eduPersonEntitlement
+      displayName: label.attribute-eduPersonEntitlement
+    - name: eduPersonAssurance
+      displayName: label.attribute-eduPersonAssurance
+    - name: eduPersonUniqueId
+      displayName: label.attribute-eduPersonUniqueId
+    - name: employeeNumber
+      displayName: label.attribute-employeeNumber
+  # Custom attributes

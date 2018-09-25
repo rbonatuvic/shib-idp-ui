@@ -10,7 +10,8 @@ import { MetadataUiFormComponent } from './metadata-ui-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { I18nTextComponent } from '../../../../shared/component/i18n-text.component';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../../testing/list-values.stub';
 
 @Component({
     template: `<metadata-ui-form [resolver]="resolver"></metadata-ui-form>`
@@ -39,18 +40,18 @@ describe('Metadata UI Form Component', () => {
                 ProviderValueEmitter,
                 ProviderStatusEmitter,
                 NgbPopoverConfig,
-                ListValuesService
+                { provide: ListValuesService, useClass: MockListValueService }
             ],
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule
+                NgbPopoverModule,
+                MockI18nModule
             ],
             declarations: [
                 MetadataUiFormComponent,
                 TestHostComponent,
-                InputDefaultsDirective,
-                I18nTextComponent
+                InputDefaultsDirective
             ],
         });
 

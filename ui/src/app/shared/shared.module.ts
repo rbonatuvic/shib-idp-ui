@@ -5,19 +5,21 @@ import { HighlightPipe } from './pipe/highlight.pipe';
 import { AutoCompleteComponent } from './autocomplete/autocomplete.component';
 import { ValidationClassDirective } from './validation/validation-class.directive';
 import { InputDefaultsDirective } from './directive/input-defaults.directive';
-import { I18nTextComponent } from './component/i18n-text.component';
 import { ValidFormIconComponent } from './component/valid-form-icon.component';
 import { InfoLabelDirective } from './directive/info-label.directive';
 import { PrettyXml } from './pipe/pretty-xml.pipe';
 import { ToggleSwitchComponent } from './switch/switch.component';
 import { ContenteditableDirective } from './contenteditable/contenteditable.directive';
 import { ReplacePipe } from './pipe/replace.pipe';
+import { I18nModule } from '../i18n/i18n.module';
+import { CustomDatePipe } from './pipe/date.pipe';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        I18nModule
     ],
     declarations: [
         HighlightPipe,
@@ -25,11 +27,11 @@ import { ReplacePipe } from './pipe/replace.pipe';
         ToggleSwitchComponent,
         ValidationClassDirective,
         InputDefaultsDirective,
-        I18nTextComponent,
         ValidFormIconComponent,
         InfoLabelDirective,
         PrettyXml,
         ReplacePipe,
+        CustomDatePipe,
         ContenteditableDirective
     ],
     exports: [
@@ -40,12 +42,12 @@ import { ReplacePipe } from './pipe/replace.pipe';
         ReactiveFormsModule,
         FormsModule,
         InputDefaultsDirective,
-        I18nTextComponent,
         ValidFormIconComponent,
         ValidationClassDirective,
         InfoLabelDirective,
         ContenteditableDirective,
-        ReplacePipe
+        ReplacePipe,
+        CustomDatePipe
     ]
 })
 export class SharedModule { }

@@ -2,7 +2,7 @@
     <h5 class="mb-1"><i18n-text [key]="item.label"></i18n-text></h5>
     <small *ngIf="item.conflict">
         <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i>
-        <span class="sr-only">Conflict</span>
+        <span class="sr-only" translate="message.conflict">Conflict</span>
     </small>
 </div>
 <ng-container [ngSwitch]="type">

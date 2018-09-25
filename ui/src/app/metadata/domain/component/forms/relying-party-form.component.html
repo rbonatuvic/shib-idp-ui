@@ -5,11 +5,13 @@
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="signAssertion" id="signAssertion"
                         [value]="true" role="checkbox" aria-checked="false">
-                    <label class="custom-control-label" i18n="@@label--sign-the-assertion" for="signAssertion">Sign the Assertion</label>
+                    <label class="custom-control-label" translate="label.sign-the-assertion" for="signAssertion">Sign the Assertion</label>
                 </div>
-                <ng-template #tooltipSignAssertion i18n="@@tooltip--sign-assertion">Sign Assertion popover</ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipSignAssertion" i18n-aria-label="@@tooltip--instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <ng-template #tooltipSignAssertion>
+                    <translate-i18n key="tooltip.sign-assertion">Sign Assertion popover</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipSignAssertion"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </fieldset>
         </div>
         <div class="form-group">
@@ -17,11 +19,13 @@
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="dontSignResponse" id="dontSignResponse"
                         [value]="true" role="checkbox" aria-checked="false">
-                    <label class="custom-control-label" i18n="@@label--dont-sign-the-response" for="dontSignResponse">Don't Sign the Response</label>
+                    <label class="custom-control-label" translate="label.dont-sign-the-response" for="dontSignResponse">Don't Sign the Response</label>
                 </div>
-                <ng-template #tooltipDontSignResponse i18n="@@tooltip--dont-sign-response">Don't Sign Response popover</ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipDontSignResponse" i18n-aria-label="@@tooltip--instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <ng-template #tooltipDontSignResponse>
+                    <translate-i18n key="tooltip.dont-sign-response">Don't Sign Response popover</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipDontSignResponse"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </fieldset>
         </div>
         <div class="form-group">
@@ -29,11 +33,13 @@
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="turnOffEncryption" id="turnOffEncryption"
                         [value]="true" role="checkbox" aria-checked="false">
-                    <label class="custom-control-label" i18n="@@label--turn-off-encryption-of-response" for="turnOffEncryption">Turn Off Encryption of Response</label>
+                    <label class="custom-control-label" translate="label.turn-off-encryption-of-response" for="turnOffEncryption">Turn Off Encryption of Response</label>
                 </div>
-                <ng-template #tooltipTurnOffEncryption i18n="@@tooltip--turn-off-encryption">Turn Off Encryption of Response popover</ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipTurnOffEncryption" i18n-aria-label="@@tooltip--instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <ng-template #tooltipTurnOffEncryption>
+                    <translate-i18n key="tooltip.turn-off-encryption">Turn Off Encryption of Response popover</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipTurnOffEncryption"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </fieldset>
         </div>
         <div class="form-group">
@@ -41,30 +47,37 @@
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="useSha" [value]="true" id="useSha"
                         role="checkbox" aria-checked="false">
-                    <label class="custom-control-label" i18n="@@label--use-sha1-signing-algorithm" for="useSha">Use SHA1 Signing Algorithm</label>
+                    <label class="custom-control-label" translate="label.use-sha1-signing-algorithm" for="useSha">Use SHA1 Signing Algorithm</label>
                 </div>
-                <ng-template #tooltipUseShaAlgorithm i18n="@@tooltip--usa-sha-algorithm">Use SHA1 Signing Algorithm popover</ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipUseShaAlgorithm" i18n-aria-label="@@tooltip--instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <ng-template #tooltipUseShaAlgorithm>
+                    <translate-i18n key="tooltip.usa-sha-algorithm">Use SHA1 Signing Algorithm popover</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipUseShaAlgorithm"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </fieldset>
         </div>
         <div formArrayName="nameIdFormats" class="form-group">
             <div class="row">
                 <span class="col-sm-10">
-                    <ng-container i18n="@@label--nameid-format-to-send">NameID Format to Send</ng-container>
+                    <translate-i18n key="label.nameid-format-to-send">NameID Format to Send</translate-i18n>
                     &nbsp;
-                    <button class="btn btn-success btn-sm" (click)="addFormat()" i18n="@@action--add-nameid-format" aria-label="Add nameID format"
+                    <button class="btn btn-success btn-sm" (click)="addFormat()" translate="action.add-nameid-format" aria-label="Add nameID format"
                         role="button">Add NameID Format</button>
                 </span>
                 <span class="col-sm-2 text-right">
-                    <ng-template #tooltipNameIdFormat i18n="@@tooltip--nameid-format">Add NameID Format popover</ng-template>
-                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipNameIdFormat" i18n-aria-label="@@tooltip--instruction"
-                        aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    <ng-template #tooltipNameIdFormat>
+                        <translate-i18n key="tooltip.nameid-format">Add NameID Format popover</translate-i18n>
+                    </ng-template>
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipNameIdFormat"
+                        [attr.aria-label]="'tooltip.instruction' | translate"></i>
                 </span>
             </div>
             <div *ngIf="nameIdFormatList.length" class="p-2">
                 <div class="row" *ngFor="let format of nameIdFormatList.controls; let i=index; let isLast=last">
-                    <label [for]="'nameIdFormat-' + i" class="sr-only" i18n="@@label--nameid-format-indexed">NameID Format {{ i + 1 }}</label>
+                    <label [for]="'nameIdFormat-' + i" class="sr-only">
+                        <translate-i18n key="label.nameid-format">NameID Format</translate-i18n>
+                        {{ i + 1 }}
+                    </label>
                     <auto-complete
                         class="col-sm-11"
                         [id]="'nameIdFormat-' + i"
@@ -85,20 +98,24 @@
         <div formArrayName="authenticationMethods" class="form-group">
             <div class="row">
                 <span class="col-sm-10">
-                    <ng-container i18n="@@label--authentication-methods-to-use">Authentication Methods to Use</ng-container>
+                    <translate-i18n key="label.authentication-methods-to-use">Authentication Methods to Use</translate-i18n>
                      &nbsp;
-                    <button class="btn btn-success btn-sm" (click)="addAuthenticationMethod()" i18n="@@action--add-athentication-method" aria-label="Add authentication method"
+                    <button class="btn btn-success btn-sm" (click)="addAuthenticationMethod()" translate="action.add-authentication-method" aria-label="Add authentication method"
                         role="button">Add Authentication Method</button>
                 </span>
                 <span class="col-sm-2 text-right">
-                    <ng-template #tooltipAuthMethod i18n="@@tooltip--authentication-methods-to-use">Authentication Methods to Use popover</ng-template>
-                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipAuthMethod" i18n-aria-label="@@tooltip--instruction"
-                        aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    <ng-template #tooltipAuthMethod>
+                        <translate-i18n key="tooltip.authentication-methods-to-use">Authentication Methods to Use popover</translate-i18n>
+                    </ng-template>
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipAuthMethod"
+                        [attr.aria-label]="'tooltip.instruction' | translate"></i>
                 </span>
             </div>
             <div *ngIf="authenticationMethodList.length" class="p-2">
                 <div class="row" *ngFor="let format of authenticationMethodList.controls; let i=index; let isLast=last">
-                    <label [for]="'authMethod-' + i" class="sr-only" i18n="@@label--auth-method-indexed">Authentication Method {{ i + 1 }}</label>
+                    <label [for]="'authMethod-' + i" class="sr-only">
+                        <translate-i18n key="label.auth-method-indexed">Authentication Method</translate-i18n> {{ i + 1 }}
+                    </label>
                     <auto-complete
                         class="col-sm-11"
                         [id]="'authMethod-' + i"
@@ -121,11 +138,13 @@
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="ignoreAuthenticationMethod"
                         [value]="true" id="ignoreAuthenticationMethod" role="checkbox" aria-checked="false">
-                    <label class="custom-control-label" i18n="@@label--ignore-any-sp-requested-authentication-method" for="ignoreAuthenticationMethod">Ignore any SP-Requested Authentication Method</label>
+                    <label class="custom-control-label" translate="label.ignore-any-sp-requested-authentication-method" for="ignoreAuthenticationMethod">Ignore any SP-Requested Authentication Method</label>
                 </div>
-                <ng-template #tooltipIgnoreAuthMethod i18n="@@tooltip--ignore-auth-method">Ignore any SP-Requested Authentication Method popover</ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipIgnoreAuthMethod" i18n-aria-label="@@tooltip--instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <ng-template #tooltipIgnoreAuthMethod>
+                    <translate-i18n key="tooltip.ignore-auth-method">Ignore any SP-Requested Authentication Method popover</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipIgnoreAuthMethod"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </fieldset>
         </div>
         <div class="form-group">
@@ -133,22 +152,26 @@
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="omitNotBefore" [value]="true"
                         id="omitNotBefore" role="checkbox" aria-checked="false">
-                    <label class="custom-control-label" i18n="@@label--omit-not-before-condition" for="omitNotBefore">Omit Not Before Condition</label>
+                    <label class="custom-control-label" translate="label.omit-not-before-condition" for="omitNotBefore">Omit Not Before Condition</label>
                 </div>
-                <ng-template #tooltipOmitNotBeforeCondition i18n="@@tooltip--omit-not-before-condition">Omit Not Before Condition popover</ng-template>
-                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipOmitNotBeforeCondition" i18n-aria-label="@@tooltip--instruction"
-                    aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                <ng-template #tooltipOmitNotBeforeCondition>
+                    <translate-i18n key="tooltip.omit-not-before-condition">Omit Not Before Condition popover</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipOmitNotBeforeCondition"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
             </fieldset>
         </div>
         <div class="form-group">
             <div class="row">
                 <label for="responderId" class="col-sm-10">
-                    <ng-container i18n="@@label--responder-id">ResponderID</ng-container>
+                    <translate-i18n key="label.responder-id">ResponderID</translate-i18n>
                 </label>
                 <span class="col-sm-2 text-right">
-                    <ng-template #tooltipResponderId i18n="@@tooltip--responder-id">ResponderId popover</ng-template>
-                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipResponderId" i18n-aria-label="@@tooltip--instruction"
-                        aria-label="Information icon - press spacebar to read additional information for this form field"></i>
+                    <ng-template #tooltipResponderId>
+                        <translate-i18n key="tooltip.responder-id">ResponderId popover</translate-i18n>
+                    </ng-template>
+                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipResponderId"
+                        [attr.aria-label]="'tooltip.instruction' | translate"></i>
                 </span>
             </div>
             <input id="responderId" class="form-control" type="text" formControlName="responderId" role="textbox">

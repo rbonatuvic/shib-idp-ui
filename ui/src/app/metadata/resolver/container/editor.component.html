@@ -19,7 +19,7 @@
                             ngbDropdownToggle>
                             <i class="fa fa-fw fa-bars fa-lg" aria-hidden="true"></i>
                             <span class="d-inline-block mx-2">
-                                <i18n-text [key]="(currentPage$ | async).path"></i18n-text>
+                                <translate-i18n [key]="(currentPage$ | async).label"></translate-i18n>
                             </span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" ngbDropdownMenu>
@@ -28,9 +28,9 @@
                                 class="dropdown-item"
                                 [ngClass]="{'active': (editorIndex$ | async) === route.index}"
                                 (click)="go($event, route.index); dropdown.close()"
-                                [attr.aria-label]="route.path"
+                                [attr.aria-label]="route.label"
                                 role="button">
-                                <i18n-text [key]="route.path"></i18n-text>
+                                <translate-i18n [key]="route.label"></translate-i18n>
                                 <valid-form-icon
                                     *ngIf="invalidForms.indexOf(route.path) > -1"
                                     status="INVALID">
@@ -46,19 +46,19 @@
                         aria-label="Save changes to the metadata source. You will return to the dashboard"
                         role="button">
                         <i class="fa fa-fw fa-save"></i>
-                        <ng-container i18n="@@action--save">Save</ng-container>
+                        <translate-i18n key="action.save">Save</translate-i18n>
                     </button>
                     &nbsp;
                     <button class="btn btn-secondary"
                         (click)="cancel()" aria-label="Cancel changes, go back to dashboard"
                         role="button">
-                        <ng-container i18n="@@action--cancel">Cancel</ng-container>
+                        <translate-i18n key="action.cancel">Cancel</translate-i18n>
                     </button>
                 </div>
                 <div class="col-xs-12 col-lg-9 order-lg-1 order-3">
                     <div class="alert alert-danger alert-compact mt-3 mt-lg-0" *ngIf="(wizardIsInvalid$ | async) && (otherPageInvalid$ | async)">
                         <i class="fa fa-fw fa-exclamation-triangle fa-lg" aria-hidden="true"></i>
-                        <ng-container i18n-text="@@message--editor-invalid">All forms must be valid before changes can be saved!</ng-container>
+                        <translate-i18n key="message.editor-invalid">All forms must be valid before changes can be saved!</translate-i18n>
                     </div>
                 </div>
             </div>
@@ -72,8 +72,8 @@
                             [ngClass]="{'active': (editorIndex$ | async) === route.index}"
                             (click)="go($event, route.index)"
                             role="button"
-                            [attr.aria-label]="route.path">
-                            <i18n-text [key]="route.path"></i18n-text>
+                            [attr.aria-label]="route.label">
+                            <translate-i18n [key]="route.label"></translate-i18n>
                             <valid-form-icon
                                 *ngIf="invalidForms.indexOf(route.path) > -1"
                                 status="INVALID">

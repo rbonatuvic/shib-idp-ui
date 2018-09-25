@@ -17,22 +17,22 @@ export interface EditorFlowDefinition {
 }
 
 export const COMMON: EditorFlowDefinition[] = [
-    { index: 3, path: 'metadata-ui', label: 'User Interface / MDUI Information', component: MetadataUiFormComponent },
-    { index: 4, path: 'descriptor-info', label: 'SP SSO Descriptor Information', component: DescriptorInfoFormComponent },
-    { index: 5, path: 'logout-endpoints', label: 'Logout Endpoints', component: LogoutFormComponent },
-    { index: 6, path: 'key-info', label: 'Security Information', component: KeyInfoFormComponent },
-    { index: 7, path: 'assertion', label: 'Assertion Consumer Service', component: AssertionFormComponent },
-    { index: 8, path: 'relying-party', label: 'Relying Party Overrides', component: RelyingPartyFormComponent },
-    { index: 9, path: 'attribute', label: 'Attribute Release', component: AttributeReleaseFormComponent }
+    { index: 3, path: 'metadata-ui', label: 'label.metadata-ui', component: MetadataUiFormComponent },
+    { index: 4, path: 'descriptor-info', label: 'label.descriptor-info', component: DescriptorInfoFormComponent },
+    { index: 5, path: 'logout-endpoints', label: 'label.logout-endpoints', component: LogoutFormComponent },
+    { index: 6, path: 'key-info', label: 'label.key-info', component: KeyInfoFormComponent },
+    { index: 7, path: 'assertion', label: 'label.assertion', component: AssertionFormComponent },
+    { index: 8, path: 'relying-party', label: 'label.relying-party', component: RelyingPartyFormComponent },
+    { index: 9, path: 'attribute', label: 'label.attribute-release', component: AttributeReleaseFormComponent }
 ];
 
 export const EDITOR: EditorFlowDefinition[] = [
-    { index: 2, path: 'sp-org-info', label: 'SP/Organization Information', component: AdvancedInfoFormComponent },
+    { index: 2, path: 'sp-org-info', label: 'label.sp-org-info', component: AdvancedInfoFormComponent },
     ...COMMON
 ];
 
 export const WIZARD: EditorFlowDefinition[] = [
-    { index: 2, path: 'org-info', label: 'Organization Information', component: OrganizationInfoFormComponent },
+    { index: 2, path: 'org-info', label: 'label.org-info', component: OrganizationInfoFormComponent },
     ...COMMON,
-    { index: 10, path: 'finish', label: 'Finished!', component: FinishFormComponent }
+    { index: 10, path: 'finish', label: 'label.finished', component: FinishFormComponent }
 ];

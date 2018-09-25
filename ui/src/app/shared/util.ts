@@ -61,3 +61,53 @@ export function array_move(arr, old_index, new_index): any[] {
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
     return arr;
 }
+
+export function getCurrentLanguage(navigator: any = null): string {
+    return getCurrentLocale(navigator).split('-', 1)[0];
+}
+
+export function getCurrentCountry(navigator: any = null): string {
+    return getCurrentLocale(navigator).split('-', 1)[1];
+}
+
+export function getCurrentLocale(nav: any = null): string {
+    nav = nav || navigator;
+    const getLocaleId = (lang: string) => lang.trim();
+    // supported regional languages
+    const supportedLanguages: string[] = ['en', 'es', 'en-US', 'es-ES'].map(lang => getLocaleId(lang));
+    // language code without regional details
+    const shortSupportedLanguages: string[] = supportedLanguages.map(lang => lang.substring(0, 2));
+
+    // look for an exact match to a regional translation
+    let preferredLanguage = getLocaleId(nav.language);
+    if (supportedLanguages.includes(preferredLanguage)) {
+        return preferredLanguage;
+    }
+
+    // for language only match, no regional details
+    let shortPreferredLanguage: string = preferredLanguage.substring(0, 2);
+    let index = shortSupportedLanguages.indexOf(shortPreferredLanguage);
+    if (index > -1) {
+        return supportedLanguages[index];
+    }
+
+    // not all browsers share full language list
+    if (nav.languages instanceof Array) {
+        // get list of all languages user understands, check for an exact regional match
+        const allPreferredLanugages: string[] = nav.languages.map(lang => getLocaleId(lang));
+        preferredLanguage = allPreferredLanugages.find(language => supportedLanguages.includes(language));
+        if (preferredLanguage) {
+            return preferredLanguage;
+        }
+
+        // from list of all languages user understand, check for language only match
+        const shortAllPreferredLanugages: string[] = allPreferredLanugages.map(language => language.substring(0, 2));
+        index = shortAllPreferredLanugages.findIndex(language => shortSupportedLanguages.includes(language));
+        if (index > -1) {
+            return supportedLanguages[index];
+        }
+    }
+
+    // if no match has been found return first (default) language
+    return supportedLanguages[0];
+}

@@ -5,18 +5,18 @@
                 <li class="nav-item">
                     <h3 class="tag tag-primary">
                         <span class="index">1</span>
-                        <ng-container i18n="@@label--name-and-entityid">1. Name and EntityId</ng-container>
+                        1. <translate-i18n key="label.name-and-entityid">Name and EntityId</translate-i18n>
                     </h3>
                 </li>
                 <li class="nav-item">
                     <button class="nav-link next btn clearfix" (click)="next()" [disabled]="providerForm.invalid" aria-label="Next: Step 2, Organization information" role="button">
                         <span class="label pull-left">
                             2.
-                            <ng-container i18n="@@label--org-info">Organization Information</ng-container>
+                            <translate-i18n key="label.org-info">Organization Information</translate-i18n>
                         </span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
-                            <ng-container i18n="@@action--next">Next</ng-container>
+                            <translate-i18n key="action.next">Next</translate-i18n>
                         </span>
                     </button>
                 </li>
@@ -24,33 +24,33 @@
             <fieldset class="bg-light border rounded p-4">
                 <div class="form-group">
                     <label for="serviceProviderName">
-                        <ng-container i18n="@@label--service-resolver-name-dashboard-display-only">Service Resolver Name (Dashboard Display Only)</ng-container>
+                        <translate-i18n key="label.service-resolver-name-dashboard-display-only">Service Resolver Name (Dashboard Display Only)</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
                     <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
                     <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
                         <small class="form-text text-danger" *ngIf="providerForm.get('serviceProviderName').hasError('required')">
-                            <ng-container i18n="@@message--service-resolver-name-required">Service Resolver Name is required</ng-container>
+                            <translate-i18n key="message.service-resolver-name-required">Service Resolver Name is required</translate-i18n>
                         </small>
                     </ng-container>
                 </div>
                 <div class="form-group">
                     <label for="entityId">
-                        <ng-container i18n="@@label--service-resolver-entity-id">Service Resolver Entity ID</ng-container>
+                        <translate-i18n key="label.service-resolver-entity-id">Service Resolver Entity ID</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
                     <input id="entityId" type="text" class="form-control" placeholder="" formControlName="entityId" />
                     <ng-container *ngIf="providerForm.get('entityId').touched && providerForm.get('entityId').invalid">
                         <small class="form-text text-danger" *ngIf="providerForm.get('entityId').hasError('required')">
-                            <ng-container i18n="@@message--entity-id-required">Entity ID is required</ng-container>
+                            <translate-i18n key="message.entity-id-required">Entity ID is required</translate-i18n>
                         </small>
                     </ng-container>
                     <small class="form-text text-danger" *ngIf="providerForm.get('entityId').hasError('unique')">
-                        <ng-container i18n="@@message--entity-id-must-be-unique">Entity ID must be unique</ng-container>
+                        <translate-i18n key="message.entity-id-must-be-unique">Entity ID must be unique</translate-i18n>
                     </small>
                 </div>
                 <button type="submit" class="btn btn-primary sr-only" [disabled]="providerForm.invalid">
-                    <ng-container i18n="@@action--next">Next</ng-container>
+                    <translate-i18n key="action.next">Next</translate-i18n>
                     <i class="fa fa-fw fa-arrow-circle-right fa-lg"></i>
                 </button>
             </fieldset>

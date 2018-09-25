@@ -8,6 +8,7 @@ import * as fromResolver from '../reducer';
 import { ProviderEditorFormModule } from '../../domain/component';
 import { DomainModule } from '../../domain/domain.module';
 import { SharedModule } from '../../../shared/shared.module';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template:
@@ -51,7 +52,8 @@ describe('Wizard Nav Component', () => {
                 ReactiveFormsModule,
                 DomainModule,
                 SharedModule,
-                ProviderEditorFormModule
+                ProviderEditorFormModule,
+                MockI18nModule
             ],
             declarations: [TestHostComponent, WizardNavComponent],
         }).compileComponents();
