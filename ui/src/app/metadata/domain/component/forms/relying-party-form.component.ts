@@ -46,6 +46,7 @@ export class RelyingPartyFormComponent extends ProviderFormFragmentComponent imp
                 turnOffEncryption: false,
                 useSha: false,
                 ignoreAuthenticationMethod: false,
+                forceAuthn: false,
                 omitNotBefore: false,
                 responderId: '',
                 nameIdFormats: this.nameIdFormatList,
