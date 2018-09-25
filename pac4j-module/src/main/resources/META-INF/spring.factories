@@ -1,1 +1,1 @@
-org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer = net.unicon.shibui.pac4j.WebSecurity.Pac4jSecurityConfigurationAdapter
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=net.unicon.shibui.pac4j.Pac4jConfiguration,net.unicon.shibui.pac4j.WebSecurity,net.unicon.shibui.pac4j.WebSecurity.Pac4jSecurityConfigurationAdapter,net.unicon.shibui.pac4j.Pac4jConfigurationProperties

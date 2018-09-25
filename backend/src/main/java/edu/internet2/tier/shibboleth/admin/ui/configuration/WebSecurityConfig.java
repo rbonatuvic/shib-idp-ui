@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -36,6 +38,7 @@ public class WebSecurityConfig {
 
     @Bean
     @Profile("default")
+    @ConditionalOnMissingBean(value = {WebSecurityConfigurerAdapter.class})
     public WebSecurityConfigurerAdapter defaultAuth() {
         return new WebSecurityConfigurerAdapter() {
 

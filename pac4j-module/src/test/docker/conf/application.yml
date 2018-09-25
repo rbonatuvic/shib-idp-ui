@@ -1,0 +1,9 @@
+shibui:
+  pac4j:
+    keystorePath: "/conf/samlKeystore.jks"
+    keystorePassword: "changeit"
+    privateKeyPassword: "changeit"
+    serviceProviderEntityId: "https://unicon.net/shibui"
+    serviceProviderMetadataPath: "/conf/sp-metadata.xml"
+    forceServiceProviderMetadataGeneration: true
+    callbackUrl: "http://localhost:8080/callback
