@@ -3,10 +3,11 @@ version: "3.7"
 services:
   shibui:
     image: unicon/shibui-pac4j
-    command: "--shibui.pac4j.callbackUrl=http://localhost:8080/callback"
+    entrypoint: ["/usr/bin/java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "app.jar"]
     ports:
       - 8080:8080
       - 5005:5005
+      - 8443:8443
     volumes:
       - ./conf:/conf
       - ./conf/application.yml:/application.yml
