@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
 import org.joda.time.DateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.FileBackedHTTPMetadataResolver;
@@ -90,6 +91,36 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
             this.getBackingStore().setCachedFilteredMetadata(filterMetadata(getCachedOriginalMetadata()));
         } catch (FilterException e) {
             logger.error("An error occurred while attempting to filter metadata!", e);
+        }
+    }
+
+    //TODO: This is a band-aid for the negative refresh issue. This override should go away once we figure out
+    // why the negative refresh is occurring.
+    @Override
+    public synchronized void refresh() throws ResolverException {
+        // In case a destroy() thread beat this thread into the monitor.
+        if (isDestroyed()) {
+            return;
+        }
+
+        try {
+
+            DateTime now = new DateTime(ISOChronology.getInstanceUTC());
+            String mdId = getMetadataIdentifier();
+
+            final byte[] mdBytes = fetchMetadata();
+            if (mdBytes == null) {
+                processCachedMetadata(mdId, now);
+            } else {
+                processNewMetadata(mdId, now, mdBytes);
+            }
+        } catch (final Throwable t) {
+            if (t instanceof Exception) {
+                throw new ResolverException((Exception) t);
+            } else {
+                throw new ResolverException(String.format("Saw an error of type '%s' with message '%s'",
+                                                          t.getClass().getName(), t.getMessage()));
+            }
         }
     }
 }
