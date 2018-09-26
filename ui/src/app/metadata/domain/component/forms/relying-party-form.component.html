@@ -148,6 +148,23 @@
             </fieldset>
         </div>
         <div class="form-group">
+            <fieldset aria-label="Force Authn? Checkbox - select for yes">
+                <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
+                    <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="forceAuthn"
+                        [value]="true" id="forceAuthn" role="checkbox" aria-checked="false">
+                    <label class="custom-control-label" translate="label.force-authn" for="forceAuthn">
+                        Force AuthN
+                    </label>
+                </div>
+                <ng-template #tooltipForceAuthn>
+                    <translate-i18n key="tooltip.force-authn">Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user
+                    presence in the login process</translate-i18n>
+                </ng-template>
+                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg" [ngbPopover]="tooltipForceAuthn"
+                    [attr.aria-label]="'tooltip.instruction' | translate"></i>
+            </fieldset>
+        </div>
+        <div class="form-group">
             <fieldset aria-label="Omit not before condition? Checkbox - select for yes">
                 <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
                     <input disableValidation="true" type="checkbox" class="custom-control-input" formControlName="omitNotBefore" [value]="true"

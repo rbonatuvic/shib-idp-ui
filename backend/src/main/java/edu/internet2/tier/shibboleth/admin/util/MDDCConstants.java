@@ -36,6 +36,9 @@ public class MDDCConstants {
     public static final String DEFAULT_AUTHENTICATION_METHODS = "http://shibboleth.net/ns/profiles/defaultAuthenticationMethods";
     public static final String DEFAULT_AUTHENTICATION_METHODS_FN = "defaultAuthenticationMethods";
 
+    public static final String FORCE_AUTHN = "http://shibboleth.net/ns/profiles/forceAuthn";
+    public static final String FORCE_AUTHN_FN = "forceAuthn";
+
     public static final Map<String, String> PROTOCOL_BINDINGS;
 
     static {

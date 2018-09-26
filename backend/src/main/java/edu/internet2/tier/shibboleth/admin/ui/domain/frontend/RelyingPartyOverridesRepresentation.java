@@ -26,6 +26,8 @@ public class RelyingPartyOverridesRepresentation implements Serializable {
 
     private List<String> authenticationMethods = new ArrayList<>();
 
+    private boolean forceAuthn;
+
     public boolean isSignAssertion() {
         return signAssertion;
     }
@@ -96,5 +98,13 @@ public class RelyingPartyOverridesRepresentation implements Serializable {
 
     public void setAuthenticationMethods(List<String> authenticationMethods) {
         this.authenticationMethods = authenticationMethods;
+    }
+
+    public boolean isForceAuthn() {
+        return forceAuthn;
+    }
+
+    public void setForceAuthn(boolean forceAuthn) {
+        this.forceAuthn = forceAuthn;
     }
 }

@@ -457,7 +457,8 @@ class EntityDescriptorControllerTests extends Specification {
 		"omitNotBefore": false,
 		"responderId": null,
 		"nameIdFormats": [],
-		"authenticationMethods": []
+		"authenticationMethods": [],
+		"forceAuthn": false
 	},
 	"attributeRelease": [
 		"givenName",
@@ -585,7 +586,8 @@ class EntityDescriptorControllerTests extends Specification {
 		"omitNotBefore": false,
 		"responderId": null,
 		"nameIdFormats": [],
-		"authenticationMethods": []
+		"authenticationMethods": [],
+		"forceAuthn": false
 	},
 	"attributeRelease": [
 		"givenName",

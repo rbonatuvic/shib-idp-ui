@@ -123,6 +123,12 @@
                     "type": "boolean",
                     "default": false
                 },
+                "forceAuthn": {
+                    "title": "label.force-authn",
+                    "description": "tooltip.force-authn",
+                    "type": "boolean",
+                    "default": false
+                },
                 "omitNotBefore": {
                     "title": "label.omit-not-before-condition",
                     "type": "boolean",
