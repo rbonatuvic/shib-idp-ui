@@ -250,7 +250,7 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let attr of attributesToRelease$ | async">
-                        <td>{{ attr.label }}</td>
+                        <td [translate]="attr.label">{{ attr.label }}</td>
                         <td>
                             <i class="fa fa-fw fa-check" *ngIf="resolver.attributeRelease.indexOf(attr.key) > -1"></i>
                         </td>

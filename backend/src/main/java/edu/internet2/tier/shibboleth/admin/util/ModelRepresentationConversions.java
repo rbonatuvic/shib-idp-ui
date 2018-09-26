@@ -100,6 +100,9 @@ public abstract class ModelRepresentationConversions {
                 case MDDCConstants.DEFAULT_AUTHENTICATION_METHODS:
                     relyingPartyOverridesRepresentation.setAuthenticationMethods(getStringListValueOfAttribute(jpaAttribute));
                     break;
+                case MDDCConstants.FORCE_AUTHN:
+                    relyingPartyOverridesRepresentation.setForceAuthn(getBooleanValueOfAttribute(jpaAttribute));
+                    break;
                 default:
                     break;
             }
@@ -157,6 +160,9 @@ public abstract class ModelRepresentationConversions {
             if (relyingPartyOverridesRepresentation.getAuthenticationMethods() != null && relyingPartyOverridesRepresentation.getAuthenticationMethods().size() > 0) {
                 list.add(ATTRIBUTE_UTILITY.createAttributeWithArbitraryValues(MDDCConstants.DEFAULT_AUTHENTICATION_METHODS, MDDCConstants
                         .DEFAULT_AUTHENTICATION_METHODS_FN, relyingPartyOverridesRepresentation.getAuthenticationMethods()));
+            }
+            if (relyingPartyOverridesRepresentation.isForceAuthn()) {
+                list.add(ATTRIBUTE_UTILITY.createAttributeWithBooleanValue(MDDCConstants.FORCE_AUTHN, MDDCConstants.FORCE_AUTHN_FN, true));
             }
         }
 

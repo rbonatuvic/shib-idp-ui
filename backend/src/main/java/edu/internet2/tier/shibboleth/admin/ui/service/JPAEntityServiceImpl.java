@@ -26,6 +26,11 @@ public class JPAEntityServiceImpl implements EntityService {
         this.openSamlObjects = openSamlObjects;
     }
 
+    public JPAEntityServiceImpl(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility) {
+        this.openSamlObjects = openSamlObjects;
+        this.attributeUtility = attributeUtility;
+    }
+
     @Override
     public List<Attribute> getAttributeListFromEntityRepresentation(EntityDescriptorRepresentation entityDescriptorRepresentation) {
         List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute> list = new ArrayList<>();
@@ -108,6 +113,9 @@ public class JPAEntityServiceImpl implements EntityService {
             }
             if (relyingPartyOverridesRepresentation.getAuthenticationMethods() != null && relyingPartyOverridesRepresentation.getAuthenticationMethods().size() > 0) {
                 list.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.DEFAULT_AUTHENTICATION_METHODS, MDDCConstants.DEFAULT_AUTHENTICATION_METHODS_FN, relyingPartyOverridesRepresentation.getAuthenticationMethods()));
+            }
+            if (relyingPartyOverridesRepresentation.isForceAuthn()) {
+                list.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.FORCE_AUTHN, MDDCConstants.FORCE_AUTHN_FN, true));
             }
         }
 
