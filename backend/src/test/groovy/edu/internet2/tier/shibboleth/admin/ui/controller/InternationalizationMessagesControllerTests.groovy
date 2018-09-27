@@ -106,13 +106,23 @@ class InternationalizationMessagesControllerTests extends Specification {
         result.andExpect(content().json(expectedFrenchResult))
     }
 
-    def "GET messages with an unsupported Accept-Language returns the default language"() {
+    def "GET messages with an unsupported Accept-Language returns the default (unspecified) language"() {
         when:
         def result = mockMvc.perform(
                 get(messagesUrl)
-                        .header("Accept-Language", "ja_JP"))
+                        .header("Accept-Language", "ja"))
 
         then:
-        result.andExpect(content().json(expectedEnglishResult))
+        result.andExpect(content().json(expectedDefaultResult))
+    }
+
+    def "GET messages with a made-up Accept-Language returns the default (unspecified) language"() {
+        when:
+        def result = mockMvc.perform(
+                get(messagesUrl)
+                        .header("Accept-Language", "foo"))
+
+        then:
+        result.andExpect(content().json(expectedDefaultResult))
     }
 }
