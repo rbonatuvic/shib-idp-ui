@@ -113,6 +113,6 @@ class InternationalizationMessagesControllerTests extends Specification {
                         .header("Accept-Language", "es"))
 
         then:
-        result.andExpect(content().json(expectedDefaultResult))
+        result.andExpect(content().json(expectedEnglishResult))
     }
 }
