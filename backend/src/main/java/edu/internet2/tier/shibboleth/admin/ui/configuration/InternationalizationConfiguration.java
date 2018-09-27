@@ -20,6 +20,7 @@ public class InternationalizationConfiguration {
         MappedResourceBundleMessageSource source = new MappedResourceBundleMessageSource();
         source.setBasenames("i18n/messages");
         source.setUseCodeAsDefaultMessage(true);
+        source.setFallbackToSystemLocale(false);
         return source;
     }
 }

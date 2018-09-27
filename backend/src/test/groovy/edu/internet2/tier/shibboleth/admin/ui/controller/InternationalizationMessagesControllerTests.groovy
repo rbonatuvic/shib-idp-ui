@@ -110,7 +110,7 @@ class InternationalizationMessagesControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 get(messagesUrl)
-                        .header("Accept-Language", "es"))
+                        .header("Accept-Language", "ja_JP"))
 
         then:
         result.andExpect(content().json(expectedEnglishResult))
