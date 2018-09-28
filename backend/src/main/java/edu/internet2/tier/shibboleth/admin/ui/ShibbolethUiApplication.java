@@ -19,8 +19,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Component;
 
-@Configuration
-@EnableAutoConfiguration
+@SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
 @EntityScan(basePackages = "edu.internet2.tier.shibboleth.admin.ui.domain")
 @EnableJpaAuditing

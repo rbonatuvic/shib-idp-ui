@@ -39,6 +39,7 @@ public class WebSecurityConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "webSecurityConfig")
+    @Profile("!no-auth")
     public WebSecurityConfigurerAdapter defaultAuth() {
         return new WebSecurityConfigurerAdapter() {
 
