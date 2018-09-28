@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class Pac4jConfiguration {
     @Bean
     public Config config(final Pac4jConfigurationProperties pac4jConfigurationProperties) {
+        System.setProperty("skipPac4jOpenSAMLinit", "true");
         final SAML2ClientConfiguration saml2ClientConfiguration = new SAML2ClientConfiguration();
         saml2ClientConfiguration.setKeystorePath(pac4jConfigurationProperties.getKeystorePath());
         saml2ClientConfiguration.setKeystorePassword(pac4jConfigurationProperties.getKeystorePassword());

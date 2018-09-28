@@ -83,11 +83,7 @@ public class RoleDescriptor extends AbstractDescriptor implements org.opensaml.s
 
     @Override
     public boolean isSupportedProtocol(String s) {
-        return isSupportedProtocol;
-    }
-
-    public void setIsSupportedProtocol(boolean isSupportedProtocol) {
-        this.isSupportedProtocol = isSupportedProtocol;
+        return this.supportedProtocols.contains(s);
     }
 
     @Override
