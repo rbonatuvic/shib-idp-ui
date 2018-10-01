@@ -2,8 +2,6 @@ import { Component, ViewChild, SimpleChange, ElementRef, SimpleChanges } from '@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
 import { AutoCompleteComponent } from './autocomplete.component';
 import { NavigatorService } from '../../core/service/navigator.service';
 import { ValidationClassDirective } from '../validation/validation-class.directive';

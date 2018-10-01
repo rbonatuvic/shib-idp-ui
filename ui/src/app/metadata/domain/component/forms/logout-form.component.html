@@ -36,13 +36,7 @@
                                         <translate-i18n key="label.url">URL</translate-i18n>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipLogoutEndpointsUrl>
-                                            <translate-i18n key="tooltip.logout-endpoints-url">Logout Endpoints Url popover</translate-i18n>
-                                        </ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                           [ngbPopover]="tooltipLogoutEndpointsUrl"
-                                          
-                                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                        <info-icon [description]="'tooltip.logout-endpoints-url' | translate"></info-icon>
                                     </span>
                                 </div>
                                 <input [id]="'url-' + i" type="text" class="form-control" placeholder="" formControlName="url" aria-label="Logout endpoint URL" role="textbox" />
@@ -54,13 +48,7 @@
                                         <translate-i18n key="label.binding-types">Binding Type</translate-i18n>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipLogoutEndpointsBindingType>
-                                            <translate-i18n key="tooltip.logout-endpoints-binding-type">Logout Endpoints Binding Type popover</translate-i18n>
-                                        </ng-template>
-                                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                       [ngbPopover]="tooltipLogoutEndpointsBindingType"
-                                      
-                                       [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                        <info-icon [description]="'tooltip.logout-endpoints-binding-type' | translate"></info-icon>
                                     </span>
                                 </div>
                                 <select [id]="'binding-' + i" class="form-control" formControlName="bindingType" aria-label="Logout binding type dropdown" role="listbox">

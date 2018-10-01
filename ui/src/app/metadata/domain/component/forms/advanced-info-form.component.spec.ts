@@ -2,13 +2,14 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ViewChild, Component } from '@angular/core';
-import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
+import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, of } from 'rxjs';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { AdvancedInfoFormComponent } from './advanced-info-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../entity';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockSharedModule } from '../../../../../testing/shared.stub';
 
 @Component({
     template: `<adv-info-form [resolver]="resolver" [ids]="ids$"></adv-info-form>`
@@ -51,8 +52,8 @@ describe('Advanced Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule,
-                MockI18nModule
+                MockI18nModule,
+                MockSharedModule
             ],
             declarations: [
                 AdvancedInfoFormComponent,
