@@ -78,17 +78,6 @@ change to...
     header: 'Metadata Management'
 };`
 
-### Sitewide text
-Finally, this project has support for internationalization (i18n). In the folder `backend > src > main > resources > i18n` folder there is a group of files which can be used to modify the text seen throughout the application. In order to change the default value, you can override the text in the messages_en file with the desired text.
-
-For example:
-
-`action.logout=Logout`
-
-change to...
-
-`action.logout=Sign Out`
-
 
 # Development
 
