@@ -13,7 +13,7 @@ import { Observable, Subject, of } from 'rxjs';
 import { combineLatest, map, takeUntil, withLatestFrom, debounceTime, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataResolver } from '../../domain/model/metadata-resolver';
 import * as fromResolver from '../reducer';

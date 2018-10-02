@@ -7,12 +7,7 @@
                         <translate-i18n key="label.protocol-support-enumeration">Protocol Support Enumeration</translate-i18n>
                     </label>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipProtocolSupportEnumeration>
-                            <translate-i18n key="tooltip.protocol-support-enumeration">Protocol Support Enumeration popover</translate-i18n>
-                        </ng-template>
-                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                       [ngbPopover]="tooltipProtocolSupportEnumeration"
-                       [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                        <info-icon [description]="'tooltip.protocol-support-enumeration' | translate"></info-icon>
                     </span>
                 </div>
                 <select id="protocolSupportEnum" class="form-control" formControlName="protocolSupportEnum" aria-label="Protocol support enumeration dropdown" role="listbox">
@@ -27,23 +22,20 @@
                         <button class="btn btn-success btn-sm" (click)="addFormat()" translate="action.add-nameid-format" role="button">Add NameID Format</button>
                     </span>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipNameIdFormat>
-                            <translate-i18n key="tooltip.nameid-format">Add NameID Format Popover</translate-i18n>
-                        </ng-template>
-                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                           [ngbPopover]="tooltipNameIdFormat"
-                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                        <info-icon [description]="'tooltip.nameid-format' | translate"></info-icon>
                     </span>
                 </div>
             </div>
             <div formArrayName="nameIdFormats" class="form-group" *ngIf="nameIdFormats.length">
                 <div *ngFor="let format of nameIdFormats.controls; let i=index; let isLast=last" class="row">
-                    <div class="col">
-                        <label [for]="'nameIdFormat-' + i" class="sr-only">
-                            <translate-i18n key="label.nameid-format">NameID Format</translate-i18n> {{ i + 1 }}
+                    <div class="col mb-2 d-flex">
+                        <label [for]="'nameIdFormat-' + i" class="p-2">
+                            <translate-i18n key="label.nameid-format" class="sr-only">NameID Format</translate-i18n> {{ i + 1 }}.
                         </label>
                         <auto-complete
+                            class="flex-grow-1"
                             [id]="'nameIdFormat-' + i"
+                            [fieldId]="'nameIdFormat-' + i"
                             [formControlName]="i"
                             [matches]="nameIds$ | async"
                             [required]="true"

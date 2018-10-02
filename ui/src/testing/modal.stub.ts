@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap/modal/modal';
+import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class NgbModalStub {

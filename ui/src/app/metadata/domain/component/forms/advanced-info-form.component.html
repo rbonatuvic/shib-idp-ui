@@ -10,12 +10,7 @@
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipServiceProviderNameDashboardDisplayOnly>
-                            <translate-i18n key="tooltip.service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only) popover</translate-i18n>
-                        </ng-template>
-                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                           [ngbPopover]="tooltipServiceProviderNameDashboardDisplayOnly"
-                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                        <info-icon [description]="'tooltip.service-provider-name-dashboard-display-only' | translate"></info-icon>
                     </span>
                 </div>
                 <input type="text"
@@ -34,12 +29,7 @@
                         </span>
                     </label>
                     <span class="col-sm-2 text-right">
-                        <ng-template #tooltipServiceProviderEntityID>
-                            <translate-i18n key="tooltip.service-provider-entity-id">Service Provider Entity ID popover</translate-i18n>
-                        </ng-template>
-                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                           [ngbPopover]="tooltipServiceProviderEntityID"
-                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                        <info-icon [description]="'tooltip.service-provider-entity-id' | translate"></info-icon>
                     </span>
                 </div>
                 <input type="text"
@@ -67,12 +57,7 @@
                             </span>
                         </label>
                         <span class="col-sm-2 text-right">
-                            <ng-template #tooltipOrganizationName>
-                                <translate-i18n key="tooltip.organization-name">Organization Name popover</translate-i18n>
-                            </ng-template>
-                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                               [ngbPopover]="tooltipOrganizationName"
-                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                            <info-icon [description]="'tooltip.organization-name' | translate"></info-icon>
                         </span>
                     </div>
                     <input type="text"
@@ -91,12 +76,7 @@
                             </span>
                         </label>
                         <span class="col-sm-2 text-right">
-                            <ng-template #tooltipOrganizationDisplayName>
-                                <translate-i18n key="tooltip.organization-display-name">Organization Display Name popover</translate-i18n>
-                            </ng-template>
-                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                               [ngbPopover]="tooltipOrganizationDisplayName"
-                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                            <info-icon [description]="'tooltip.organization-display-name' | translate"></info-icon>
                         </span>
                     </div>
                     <input type="text"
@@ -115,12 +95,7 @@
                             </span>
                         </label>
                         <span class="col-sm-2 text-right">
-                            <ng-template #tooltipOrganizationURL>
-                                <translate-i18n key="tooltip.organization-url">Organization URL popover</translate-i18n>
-                            </ng-template>
-                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                               [ngbPopover]="tooltipOrganizationURL"
-                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                            <info-icon [description]="'tooltip.organization-url' | translate"></info-icon>
                         </span>
                     </div>
                     <input type="text"
@@ -175,13 +150,7 @@
                                                 <translate-i18n key="label.name">Name</translate-i18n>
                                             </label>
                                             <span class="col-sm-3 text-right">
-                                                <ng-template #tooltipName>
-                                                    <translate-i18n key="tooltip.name">Name popover</translate-i18n>
-                                                </ng-template>
-                                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                                   [ngbPopover]="tooltipName"
-                                                  
-                                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                                <info-icon [description]="'tooltip.name' | translate"></info-icon>
                                             </span>
                                         </div>
                                         <input [id]="'name' + i"
@@ -200,13 +169,7 @@
                                                 <translate-i18n key="label.type">Type</translate-i18n>
                                             </label>
                                             <span class="col-sm-3 text-right">
-                                                <ng-template #tooltipType>
-                                                    <translate-i18n key="tooltip.type">Type popover</translate-i18n>
-                                                </ng-template>
-                                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                                   [ngbPopover]="tooltipType"
-                                                  
-                                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                                <info-icon [description]="'tooltip.type' | translate"></info-icon>
                                             </span>
                                         </div>
                                         <select [id]="'type-' + i" class="form-control" formControlName="type" aria-label="Contact type dropdown" role="listbox">
@@ -225,12 +188,7 @@
                                                 <translate-i18n key="label.email-address">Email Address</translate-i18n>
                                             </label>
                                             <span class="col-sm-2 text-right">
-                                                <ng-template #tooltipEmailAddress>
-                                                    <translate-i18n key="tooltip.email-address">Email Address popover</translate-i18n>
-                                                </ng-template>
-                                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                               [ngbPopover]="tooltipEmailAddress"
-                                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                                <info-icon [description]="'tooltip.email-address' | translate"></info-icon>
                                             </span>
                                         </div>
                                         <input type="email"
