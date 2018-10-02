@@ -32,10 +32,7 @@ public class SPSSODescriptor extends SSODescriptor implements org.opensaml.saml.
 
     @Override
     public Boolean isAuthnRequestsSigned() {
-        if (isAuthnRequestsSigned == null) {
-            return false;
-        }
-        return isAuthnRequestsSigned;
+        return this.isAuthnRequestsSigned == null ? false : this.isAuthnRequestsSigned;
     }
 
     @Override
