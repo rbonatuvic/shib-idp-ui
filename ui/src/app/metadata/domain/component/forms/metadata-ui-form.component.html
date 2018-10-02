@@ -85,7 +85,15 @@
                                 <info-icon [description]="'tooltip.mdui-logo-width' | translate"></info-icon>
                             </span>
                         </div>
-                        <input id="logoWidth" type="number" class="form-control" placeholder="" formControlName="logoWidth" step="1" role="textbox" />
+                        <input id="logoWidth"
+                            type="number"
+                            class="form-control"
+                            placeholder=""
+                            formControlName="logoWidth"
+                            step="1"
+                            role="textbox"
+                            min="0"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"/>
                         <small class="form-text text-secondary" translate="message.must-be-integer">Must be an integer equal to or greater than 0</small>
                     </div>
                 </div>
@@ -99,7 +107,15 @@
                                 <info-icon [description]="'tooltip.mdui-logo-height' | translate"></info-icon>
                             </span>
                         </div>
-                        <input id="logoHeight" type="number" class="form-control" placeholder="" formControlName="logoHeight" step="1" role="textbox" />
+                        <input id="logoHeight"
+                            type="number"
+                            class="form-control"
+                            placeholder=""
+                            formControlName="logoHeight"
+                            step="1"
+                            role="textbox"
+                            min="0"
+                            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" />
                         <small class="form-text text-secondary" translate="message.must-be-integer">Must be an integer equal to or greater than 0</small>
                     </div>
                 </div>
