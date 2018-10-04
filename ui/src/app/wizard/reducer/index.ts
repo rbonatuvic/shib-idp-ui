@@ -46,13 +46,27 @@ export const getWizardIsDisabled = createSelector(getState, fromWizard.getDisabl
 export const getWizardDefinition = createSelector(getState, fromWizard.getDefinition);
 export const getSchemaCollection = createSelector(getState, fromWizard.getCollection);
 
-export const getSchema = (index: string, wizard: Wizard<any>) => {
+export const getSchemaPath = (index: string, wizard: Wizard<any>) => {
     if (!wizard) { return null; }
     const step = wizard.steps.find(s => s.id === index);
     return step ? step.schema : null;
 };
 
-export const getCurrentWizardSchema = createSelector(getWizardIndex, getWizardDefinition, getSchema);
+export const getSplitSchema = (schema: any, step: WizardStep) => {
+    if (!schema || !step.fields || !step.fields.length) {
+        return schema;
+    }
+    const keys = Object.keys(schema.properties).filter(key => step.fields.indexOf(key) > -1);
+
+    return {
+        ...schema,
+        properties: {
+            ...keys.reduce( (properties, key) => ({ ...properties, [key]: schema.properties[key] }) , {})
+        }
+    };
+};
+
+export const getCurrentWizardSchema = createSelector(getWizardIndex, getWizardDefinition, getSchemaPath);
 
 export const getPreviousFn = (index: string, wizard: Wizard<any>) => {
     if (!wizard) { return null; }
@@ -96,3 +110,5 @@ export const getLocked = createSelector(getCurrent, getLockedStatus, getSchemaLo
 
 export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
 export const getParsedSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
+
+export const getSchema = createSelector(getParsedSchema, getCurrent, getSplitSchema);

@@ -30,8 +30,6 @@ import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 import { ContentionModule } from '../../contention/contention.module';
 import { DeleteFilterComponent } from './component/delete-filter.component';
 import { I18nModule } from '../../i18n/i18n.module';
-import { WidgetRegistry } from 'ngx-schema-form';
-import { CustomWidgetRegistry } from '../../schema-form/registry';
 
 @NgModule({
     declarations: [

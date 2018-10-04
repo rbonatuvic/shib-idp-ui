@@ -13,6 +13,7 @@ import { ConfirmCopyComponent } from './container/confirm-copy.component';
 import { CopyIsSetGuard } from './guard/copy-isset.guard';
 
 import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
+import { ResolverWizardStepComponent } from './container/resolver-wizard-step.component';
 
 export const ResolverRoutes: Routes = [
     {
@@ -25,8 +26,14 @@ export const ResolverRoutes: Routes = [
                     { path: '', redirectTo: 'blank', pathMatch: 'prefix' },
                     {
                         path: 'blank',
-                        component: BlankResolverComponent,
-                        canDeactivate: []
+                        component: ResolverWizardComponent,
+                        canDeactivate: [],
+                        children: [
+                            {
+                                path: '',
+                                component: ResolverWizardStepComponent
+                            }
+                        ]
                     },
                     {
                         path: 'upload',

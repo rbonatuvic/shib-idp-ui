@@ -74,9 +74,16 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             });
 
         this.store.dispatch(new SetDefinition(this.sourceWizard));
-        this.store.dispatch(new SetIndex(this.sourceWizard.steps[0].id));
 
-        this.store.select(fromWizard.getParsedSchema).subscribe(s => console.log(s));
+        this.route.params.subscribe(params => {
+            if (params.index) {
+                this.store.dispatch(new SetIndex(params.index));
+            } else {
+                this.store.dispatch(new SetIndex(this.sourceWizard.steps[0].id));
+            }
+        });
+
+        console.log('hi');
     }
 
     save(): void {
@@ -105,6 +112,8 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
+        return of(true);
+        /*
         if (nextState.url.match('wizard')) { return of(true); }
         if (Object.keys(this.changes).length > 0) {
             let modal = this.modalService.open(UnsavedDialogComponent);
@@ -115,5 +124,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             );
         }
         return this.store.select(fromResolver.getEntityIsSaved);
+        */
     }
-} /* istanbul ignore next */
+}

@@ -38,6 +38,9 @@ export class ProviderWizardComponent implements OnDestroy {
     constructor(
         private store: Store<fromProvider.ProviderState>
     ) {
+
+        
+
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .subscribe(s => {

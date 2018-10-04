@@ -6,6 +6,16 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
     type = '@MetadataProvider';
     steps: WizardStep[] = [
         {
+            index: 1,
+            id: 'common',
+            label: 'label.resolver-common-attributes',
+            schema: 'assets/schema/source/metadata-source.json',
+            fields: [
+                'serviceProviderName',
+                'entityId'
+            ]
+        },
+        {
             index: 2,
             id: 'org-info',
             label: 'label.org-info',

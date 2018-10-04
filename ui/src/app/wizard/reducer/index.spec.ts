@@ -5,12 +5,12 @@ describe('wizard index selectors', () => {
     describe('getSchema method', () => {
         it('should return the schema by index name', () => {
             expect(
-                selectors.getSchema('common', FileBackedHttpMetadataProviderWizard)
+                selectors.getSchemaPath('common', FileBackedHttpMetadataProviderWizard)
             ).toBe(FileBackedHttpMetadataProviderWizard.steps[0].schema);
         });
         it('should return nothing if no schema is found', () => {
             expect(
-                selectors.getSchema('common', null)
+                selectors.getSchemaPath('common', null)
             ).toBeFalsy();
         });
     });

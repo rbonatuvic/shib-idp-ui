@@ -33,6 +33,9 @@ import { I18nModule } from '../../i18n/i18n.module';
 import { MetadataSourceWizard } from '../domain/model/wizards/metadata-source-wizard';
 import { METADATA_SOURCE_WIZARD } from './wizard-definition';
 import { EntityEffects } from './effect/entity.effect';
+import { ResolverWizardStepComponent } from './container/resolver-wizard-step.component';
+import { WizardModule } from '../../wizard/wizard.module';
+import { FormModule } from '../../schema-form/schema-form.module';
 
 @NgModule({
     declarations: [
@@ -44,9 +47,10 @@ import { EntityEffects } from './effect/entity.effect';
         ResolverComponent,
         DraftComponent,
         EditorComponent,
-        ResolverWizardComponent,
         WizardNavComponent,
-        UnsavedDialogComponent
+        UnsavedDialogComponent,
+        ResolverWizardComponent,
+        ResolverWizardStepComponent
     ],
     entryComponents: [
         UnsavedDialogComponent
@@ -61,7 +65,9 @@ import { EntityEffects } from './effect/entity.effect';
         FormsModule,
         ProviderEditorFormModule,
         NgbDropdownModule,
-        I18nModule
+        I18nModule,
+        WizardModule,
+        FormModule
     ],
     exports: [
         ProviderEditorFormModule,
