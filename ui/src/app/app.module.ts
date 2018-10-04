@@ -26,6 +26,8 @@ import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
 import { getCurrentLocale } from './shared/util';
 import { I18nModule } from './i18n/i18n.module';
+import { WidgetRegistry } from 'ngx-schema-form';
+import { CustomWidgetRegistry } from './schema-form/registry';
 
 @NgModule({
     declarations: [
@@ -59,6 +61,7 @@ import { I18nModule } from './i18n/i18n.module';
     ],
     providers: [
         NavigatorService,
+        { provide: WidgetRegistry, useClass: CustomWidgetRegistry },
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {
             provide: HTTP_INTERCEPTORS,

@@ -3,7 +3,11 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import { map, switchMap } from 'rxjs/operators';
 
-import * as editorActions from '../action/editor.action';
+import {
+    UpdateChanges,
+    Clear,
+    ResolverEntityActionTypes
+} from '../action/entity.action';
 import * as provider from '../action/collection.action';
 import { ResolverCollectionActionTypes } from '../action/collection.action';
 import { EntityDraftService } from '../../domain/service/draft.service';
@@ -13,7 +17,7 @@ export class WizardEffects {
 
     @Effect({ dispatch: false })
     updateResolver$ = this.actions$.pipe(
-        ofType<editorActions.SaveChanges>(editorActions.SAVE_CHANGES),
+        ofType<UpdateChanges>(ResolverEntityActionTypes.UPDATE_CHANGES),
         map(action => action.payload),
         switchMap(provider => this.draftService.update(provider))
     );
@@ -22,7 +26,7 @@ export class WizardEffects {
     addResolverSuccessDiscard$ = this.actions$.pipe(
         ofType<provider.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
-        map(provider => new editorActions.ResetChanges())
+        map(provider => new Clear())
     );
 
     constructor(

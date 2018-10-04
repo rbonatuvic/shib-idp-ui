@@ -1,13 +1,16 @@
-import { reducer } from './editor.reducer';
-import * as fromEditor from './editor.reducer';
-import * as actions from '../action/editor.action';
-import * as collectionActions from '../action/collection.action';
+import { reducer } from './entity.reducer';
+import * as fromEntity from './entity.reducer';
+import {
+    UpdateChanges,
+    UpdateStatus,
+    Clear
+} from '../action/entity.action';
 import { MetadataResolver } from '../../domain/model';
 
 describe('Editor Reducer', () => {
-    const initialState: fromEditor.EditorState = {
+    const initialState: fromEntity.EditorState = {
         saving: false,
-        formStatus: {},
+        status: {},
         changes: {} as MetadataResolver
     };
 
@@ -23,43 +26,10 @@ describe('Editor Reducer', () => {
         });
     });
 
-    describe('Editor Add Resolver', () => {
-        it('should update the status when a provider is saved', () => {
-            const action = new collectionActions.AddResolverRequest(changes);
-            const result = reducer(initialState, action);
-            expect(result).toEqual(
-                Object.assign({}, initialState, {
-                    saving: true
-                })
-            );
-        });
-
-        it('should update the status on success', () => {
-            const action = new collectionActions.AddResolverSuccess(changes);
-            const result = reducer({...initialState, changes: {...changes, organization: {name: 'foo'}}}, action);
-            expect(result).toEqual(
-                Object.assign({}, initialState, {
-                    saving: false,
-                    changes: initialState.changes
-                })
-            );
-        });
-
-        it('should update the status on success', () => {
-            const action = new collectionActions.AddResolverFail(changes);
-            const result = reducer(initialState, action);
-            expect(result).toEqual(
-                Object.assign({}, initialState, {
-                    saving: false
-                })
-            );
-        });
-    });
-
-    describe('Editor Update Status', () => {
+    describe('Entity Update Status', () => {
         it('should update the status of the provided form', () => {
             const status = { organization: 'VALID' };
-            const action = new actions.UpdateStatus(status);
+            const action = new UpdateStatus(status);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -71,7 +41,7 @@ describe('Editor Reducer', () => {
 
     describe('Editor Update Changes', () => {
         it('should add changes of the provided form', () => {
-            const action = new actions.UpdateChanges(changes);
+            const action = new UpdateChanges(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -81,9 +51,9 @@ describe('Editor Reducer', () => {
         });
     });
 
-    describe('Editor Reset', () => {
+    describe('Editor Clear', () => {
         it('should remove changes', () => {
-            const action = new actions.ResetChanges();
+            const action = new Clear();
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -95,19 +65,7 @@ describe('Editor Reducer', () => {
 
     describe('Editor Save', () => {
         it('should remove changes', () => {
-            const action = new actions.SaveChanges(changes);
-            const result = reducer(initialState, action);
-            expect(result).toEqual(
-                Object.assign({}, initialState, {
-                    changes: initialState.changes
-                })
-            );
-        });
-    });
-
-    describe('Editor Cancel', () => {
-        it('should remove changes', () => {
-            const action = new actions.CancelChanges();
+            const action = new UpdateChanges(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 Object.assign({}, initialState, {
@@ -119,10 +77,10 @@ describe('Editor Reducer', () => {
 
     describe('Selectors', () => {
         it('should aggregate the status', () => {
-            expect(fromEditor.isEditorValid({
+            expect(fromEntity.isEditorValid({
                 saving: false,
                 changes: {} as MetadataResolver,
-                formStatus: {
+                status: {
                     organization: 'INVALID',
                     foo: 'VALID'
                 }
@@ -130,38 +88,38 @@ describe('Editor Reducer', () => {
         });
 
         it('should calculate a saved status based on changes', () => {
-            expect(fromEditor.isEditorSaved({
+            expect(fromEntity.isEditorSaving({
                 saving: false,
                 changes: {} as MetadataResolver,
-                formStatus: {}
+                status: {}
             })).toBe(true);
 
-            expect(fromEditor.isEditorSaved({
+            expect(fromEntity.isEditorSaving({
                 saving: false,
                 changes: {organization: {}, entityId: 'bar'} as MetadataResolver,
-                formStatus: {}
+                status: {}
             })).toBe(false);
         });
 
         it('should return current changes', () => {
-            expect(fromEditor.getChanges({
+            expect(fromEntity.getChanges({
                 saving: false,
                 changes: {} as MetadataResolver,
-                formStatus: {}
+                status: {}
             })).toEqual({} as MetadataResolver);
         });
 
         it('should return `saving` status', () => {
-            expect(fromEditor.isEditorSaving({
+            expect(fromEntity.isEditorSaving({
                 saving: false,
                 changes: {} as MetadataResolver,
-                formStatus: {}
+                status: {}
             })).toBe(false);
 
-            expect(fromEditor.isEditorSaving({
+            expect(fromEntity.isEditorSaving({
                 saving: true,
                 changes: {} as MetadataResolver,
-                formStatus: {}
+                status: {}
             })).toBe(true);
         });
     });

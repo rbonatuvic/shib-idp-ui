@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { ResolverComponent } from './container/resolver.component';
 import { EditorComponent } from './container/editor.component';
 import { DraftComponent } from './container/draft.component';
-import { WizardComponent } from './container/wizard.component';
+import { ResolverWizardComponent } from './container/resolver-wizard.component';
 
 import { BlankResolverComponent } from './container/blank-resolver.component';
 import { NewResolverComponent } from './container/new-resolver.component';
@@ -66,7 +66,7 @@ export const ResolverRoutes: Routes = [
                     { path: 'wizard', redirectTo: 'wizard/2' },
                     {
                         path: 'wizard/:index',
-                        component: WizardComponent,
+                        component: ResolverWizardComponent,
                         canDeactivate: [CanDeactivateGuard]
                     }
                 ]

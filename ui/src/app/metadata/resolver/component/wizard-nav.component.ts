@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import * as fromEditor from '../reducer';
+import * as fromResolver from '../reducer';
 import { WIZARD as WizardDef, EditorFlowDefinition } from '../editor-definition.const';
 
 @Component({
@@ -27,7 +27,7 @@ export class WizardNavComponent implements OnChanges {
     wizard: EditorFlowDefinition[] = WizardDef;
 
     constructor(
-        private store: Store<fromEditor.State>
+        private store: Store<fromResolver.State>
     ) {}
 
     ngOnChanges(): void {
@@ -38,8 +38,8 @@ export class WizardNavComponent implements OnChanges {
         this.isFirstPage = WizardDef[0].index === this.index;
         this.wizard = WizardDef;
 
-        this.wizardIsValid$ = this.store.select(fromEditor.getEditorIsValid);
-        this.wizardIsSaving$ = this.store.select(fromEditor.getEditorIsSaving);
+        this.wizardIsValid$ = this.store.select(fromResolver.getEntityIsValid);
+        this.wizardIsSaving$ = this.store.select(fromResolver.getEntityIsSaving);
         this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
     }
 } /* istanbul ignore next */

@@ -15,6 +15,28 @@ export interface State extends fromRoot.State {
     'wizard': WizardState;
 }
 
+export function getSchemaParseFn(schema, locked): any {
+    if (!schema) {
+        return null;
+    }
+    return {
+        ...schema,
+        properties: Object.keys(schema.properties).reduce((prev, current) => {
+            return {
+                ...prev,
+                [current]: {
+                    ...schema.properties[current],
+                    readOnly: locked,
+                    ...(schema.properties[current].hasOwnProperty('properties') ?
+                        getSchemaParseFn(schema.properties[current], locked) :
+                        {}
+                    )
+                }
+            };
+        }, {})
+    };
+}
+
 export const getWizardState = createFeatureSelector<WizardState>('wizard');
 export const getWizardStateFn = (state: WizardState) => state.wizard;
 export const getState = createSelector(getWizardState, getWizardStateFn);
@@ -67,3 +89,10 @@ export const getLast = createSelector(getWizardIndex, getWizardDefinition, getLa
 export const getModel = createSelector(getCurrent, getModelFn);
 
 export const getRoutes = createSelector(getWizardDefinition, d => d ? d.steps.map(step => ({ path: step.id, label: step.label })) : [] );
+
+export const getLockedStatus = createSelector(getState, fromWizard.getLocked);
+export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked : false : false;
+export const getLocked = createSelector(getCurrent, getLockedStatus, getSchemaLockedFn);
+
+export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
+export const getParsedSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);

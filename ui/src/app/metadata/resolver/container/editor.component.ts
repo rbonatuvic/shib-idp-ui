@@ -20,7 +20,7 @@ import * as fromResolver from '../reducer';
 import { UpdateResolverRequest } from '../action/collection.action';
 
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
-import { UpdateStatus, UpdateChanges, CancelChanges } from '../action/editor.action';
+import { UpdateStatus, UpdateChanges, Cancel } from '../action/entity.action';
 import { EDITOR as EditorDef, EditorFlowDefinition } from '../editor-definition.const';
 import { UnsavedDialogComponent } from '../component/unsaved-dialog.component';
 
@@ -69,7 +69,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         private modalService: NgbModal
     ) {
         this.resolver$ = this.store.select(fromResolver.getSelectedResolver);
-        this.changes$ = this.store.select(fromResolver.getEditorChanges);
+        this.changes$ = this.store.select(fromResolver.getEntityChanges);
 
         this.latest$ = this.resolver$.pipe(
             combineLatest(this.changes$, (base, changes) => Object.assign({}, base, changes))
@@ -79,11 +79,11 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.editorIndex$ = this.route.params.pipe(map(params => Number(params.index)));
         this.currentPage$ = this.editorIndex$.pipe(map(index => EditorDef.find(r => r.index === index)));
         this.editor = EditorDef;
-        this.store.select(fromResolver.getEditorIsSaving).pipe(
+        this.store.select(fromResolver.getEntityIsSaving).pipe(
             takeUntil(this.ngUnsubscribe)
         ).subscribe(saving => this.saving = saving);
 
-        this.wizardIsValid$ = this.store.select(fromResolver.getEditorIsValid);
+        this.wizardIsValid$ = this.store.select(fromResolver.getEntityIsValid);
         this.wizardIsInvalid$ = this.wizardIsValid$.pipe(map(valid => !valid));
 
         this.ids$ = this.store
@@ -105,7 +105,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     cancel(): void {
-        this.store.dispatch(new CancelChanges());
+        this.store.dispatch(new Cancel());
     }
 
     go(event, index: number): void {
@@ -147,7 +147,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             skipWhile(() => this.saving)
         ).subscribe(latest => this.latest = latest);
 
-        this.invalidForms$ = this.store.select(fromResolver.getInvalidEditorForms);
+        this.invalidForms$ = this.store.select(fromResolver.getInvalidEntityForms);
 
         this.invalidForms$.pipe(
             distinctUntilChanged(),
@@ -176,12 +176,12 @@ export class EditorComponent implements OnInit, OnDestroy {
             let modal = this.modalService.open(UnsavedDialogComponent);
             modal.componentInstance.resolver = this.latest;
             modal.componentInstance.message = 'editor';
-            modal.componentInstance.action = new CancelChanges();
+            modal.componentInstance.action = new Cancel();
             modal.result.then(
                 () => this.router.navigate([nextState.url]),
                 () => console.warn('denied')
             );
         }
-        return this.store.select(fromResolver.getEditorIsSaved);
+        return this.store.select(fromResolver.getEntityIsSaved);
     }
 }

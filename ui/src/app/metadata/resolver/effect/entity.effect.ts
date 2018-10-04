@@ -6,7 +6,11 @@ import { switchMap, map, withLatestFrom, tap } from 'rxjs/operators';
 import * as fromResolver from '../reducer';
 import * as fromRoot from '../../../app.reducer';
 
-import * as editor from '../action/editor.action';
+import {
+    ResolverEntityActionTypes,
+    Clear,
+    Cancel
+} from '../action/entity.action';
 import * as provider from '../action/collection.action';
 
 import { ShowContentionAction } from '../../../contention/action/contention.action';
@@ -18,11 +22,11 @@ import { Store } from '@ngrx/store';
 import { ContentionService } from '../../../contention/service/contention.service';
 
 @Injectable()
-export class EditorEffects {
+export class EntityEffects {
 
     @Effect()
     cancelChanges$ = this.actions$.pipe(
-        ofType<editor.CancelChanges>(editor.CANCEL_CHANGES),
+        ofType<Cancel>(ResolverEntityActionTypes.CANCEL),
         map(() => new provider.LoadResolverRequest()),
         tap(() => this.router.navigate(['metadata']))
     );
@@ -31,7 +35,7 @@ export class EditorEffects {
     updateResolverSuccessRedirect$ = this.actions$.pipe(
         ofType<provider.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
-        map(p => new editor.ResetChanges())
+        map(p => new Clear())
     );
 
     @Effect()
@@ -43,7 +47,7 @@ export class EditorEffects {
             return this.service.find(filter.id).pipe(
                 map(data => new ShowContentionAction(this.contentionService.getContention(current, filter, data, {
                     resolve: (obj) => this.store.dispatch(new provider.UpdateResolverRequest(obj)),
-                    reject: (obj) => this.store.dispatch(new editor.CancelChanges())
+                    reject: (obj) => this.store.dispatch(new Cancel())
                 })))
             );
         })

@@ -3,8 +3,8 @@ import { FileBackedHttpMetadataProvider } from '../../domain/model/providers';
 
 describe('FileBackedHttpMetadataProviderWizard', () => {
 
-    const parser = FileBackedHttpMetadataProviderWizard.translate.parser;
-    const formatter = FileBackedHttpMetadataProviderWizard.translate.formatter;
+    const parser = FileBackedHttpMetadataProviderWizard.parser;
+    const formatter = FileBackedHttpMetadataProviderWizard.formatter;
 
     const requiredValidUntilFilter = {
         maxValidityInterval: 1,

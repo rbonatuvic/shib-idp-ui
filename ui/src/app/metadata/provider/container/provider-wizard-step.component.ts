@@ -42,9 +42,11 @@ export class ProviderWizardStepComponent implements OnDestroy {
     constructor(
         private store: Store<fromProvider.ProviderState>,
     ) {
-        this.schema$ = this.store.select(fromProvider.getSchema);
+        this.schema$ = this.store.select(fromWizard.getParsedSchema);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
+
+        this.schema$.subscribe(s => console.log(s));
 
         this.validators$ = this.definition$.pipe(
             withLatestFrom(
@@ -71,14 +73,14 @@ export class ProviderWizardStepComponent implements OnDestroy {
                 definition
             })),
             skipWhile(({ model, definition }) => !definition || !model),
-            map(({ model, definition }) => definition.translate.formatter(model))
+            map(({ model, definition }) => definition.formatter(model))
         );
 
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.schema$, this.definition$),
             map(([changes, schema, definition]) => this.resetSelectedType(changes, schema, definition)),
             skipWhile(({ changes, definition }) => !definition || !changes),
-            map(({ changes, definition }) => definition.translate.parser(changes))
+            map(({ changes, definition }) => definition.parser(changes))
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 

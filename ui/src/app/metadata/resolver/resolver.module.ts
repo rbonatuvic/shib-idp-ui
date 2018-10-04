@@ -23,14 +23,16 @@ import { CopyResolverEffects } from './effect/copy.effect';
 import { DomainModule } from '../domain/domain.module';
 import { DraftComponent } from './container/draft.component';
 import { EditorComponent } from './container/editor.component';
-import { WizardComponent } from './container/wizard.component';
+import { ResolverWizardComponent } from './container/resolver-wizard.component';
 import { WizardNavComponent } from './component/wizard-nav.component';
 import { ResolverCollectionEffects } from './effect/collection.effects';
 import { DraftCollectionEffects } from './effect/draft-collection.effects';
 import { WizardEffects } from './effect/wizard.effect';
-import { EditorEffects } from './effect/editor.effect';
 import { UnsavedDialogComponent } from './component/unsaved-dialog.component';
 import { I18nModule } from '../../i18n/i18n.module';
+import { MetadataSourceWizard } from '../domain/model/wizards/metadata-source-wizard';
+import { METADATA_SOURCE_WIZARD } from './wizard-definition';
+import { EntityEffects } from './effect/entity.effect';
 
 @NgModule({
     declarations: [
@@ -42,7 +44,7 @@ import { I18nModule } from '../../i18n/i18n.module';
         ResolverComponent,
         DraftComponent,
         EditorComponent,
-        WizardComponent,
+        ResolverWizardComponent,
         WizardNavComponent,
         UnsavedDialogComponent
     ],
@@ -88,8 +90,11 @@ export class ResolverModule {
             ResolverCollectionEffects,
             DraftCollectionEffects,
             WizardEffects,
-            EditorEffects
+            EntityEffects
         ])
     ],
+    providers: [
+        { provide: METADATA_SOURCE_WIZARD, useClass: MetadataSourceWizard }
+    ]
 })
 export class RootResolverModule { }

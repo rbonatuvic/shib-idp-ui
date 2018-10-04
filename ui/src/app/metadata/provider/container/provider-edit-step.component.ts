@@ -3,9 +3,10 @@ import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
-import { UpdateStatus, LockEditor, UnlockEditor } from '../action/editor.action';
+import { UpdateStatus } from '../action/editor.action';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
+import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
 import { withLatestFrom, map, skipWhile, distinctUntilChanged, startWith, combineLatest } from 'rxjs/operators';
@@ -46,7 +47,7 @@ export class ProviderEditStepComponent implements OnDestroy {
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
         this.provider$ = this.store.select(fromProvider.getSelectedProvider);
         this.step$ = this.store.select(fromWizard.getCurrent);
-        this.schema$ = this.store.select(fromProvider.getSchema);
+        this.schema$ = this.store.select(fromWizard.getParsedSchema);
 
         this.step$.subscribe(s => {
             if (s && s.locked) {
@@ -86,14 +87,14 @@ export class ProviderEditStepComponent implements OnDestroy {
                 definition
             })),
             skipWhile(({ model, definition }) => !definition || !model),
-            map(({ model, definition }) => definition.translate.formatter(model))
+            map(({ model, definition }) => definition.formatter(model))
         );
 
         this.valueChangeEmitted$.pipe(
             map(changes => changes.value),
             withLatestFrom(this.definition$),
             skipWhile(([ changes, definition ]) => !definition || !changes),
-            map(([ changes, definition ]) => definition.translate.parser(changes))
+            map(([ changes, definition ]) => definition.parser(changes))
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 

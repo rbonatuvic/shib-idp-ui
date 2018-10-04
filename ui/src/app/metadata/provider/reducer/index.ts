@@ -39,35 +39,6 @@ export const getCollectionState = createSelector(getProviderState, getCollection
 Editor State
 */
 
-export function getSchemaParseFn(schema, locked): any {
-    if (!schema) {
-        return null;
-    }
-    return {
-        ...schema,
-        properties: Object.keys(schema.properties).reduce((prev, current) => {
-            return {
-                ...prev,
-                [current]: {
-                    ...schema.properties[current],
-                    readOnly: locked,
-                    ...(schema.properties[current].hasOwnProperty('properties') ?
-                        getSchemaParseFn(schema.properties[current], locked) :
-                        {}
-                    )
-                }
-            };
-        }, {})
-    };
-}
-
-export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked : false : false;
-export const getLockedStatus = createSelector(getEditorState, fromEditor.getLocked);
-export const getLocked = createSelector(fromWizard.getCurrent, getLockedStatus, getSchemaLockedFn);
-
-export const getSchemaObject = createSelector(getEditorState, fromEditor.getSchema);
-export const getSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
-
 export const getEditorIsValid = createSelector(getEditorState, fromEditor.isEditorValid);
 
 export const getFormStatus = createSelector(getEditorState, fromEditor.getFormStatus);

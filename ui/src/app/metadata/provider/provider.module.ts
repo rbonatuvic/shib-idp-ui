@@ -15,9 +15,7 @@ import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
 import { EditorEffects } from './effect/editor.effect';
 
-import { WidgetRegistry} from 'ngx-schema-form';
 import { FormModule } from '../../schema-form/schema-form.module';
-import { CustomWidgetRegistry } from '../../schema-form/registry';
 import { SummaryPropertyComponent } from './component/summary-property.component';
 import { CollectionEffects } from './effect/collection.effect';
 import { SharedModule } from '../../shared/shared.module';
@@ -32,6 +30,8 @@ import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 import { ContentionModule } from '../../contention/contention.module';
 import { DeleteFilterComponent } from './component/delete-filter.component';
 import { I18nModule } from '../../i18n/i18n.module';
+import { WidgetRegistry } from 'ngx-schema-form';
+import { CustomWidgetRegistry } from '../../schema-form/registry';
 
 @NgModule({
     declarations: [
@@ -70,10 +70,7 @@ import { I18nModule } from '../../i18n/i18n.module';
 export class ProviderModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: RootProviderModule,
-            providers: [
-                { provide: WidgetRegistry, useClass: CustomWidgetRegistry }
-            ]
+            ngModule: RootProviderModule
         };
     }
 }
