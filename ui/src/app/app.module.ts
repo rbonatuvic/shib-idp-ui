@@ -61,7 +61,6 @@ import { CustomWidgetRegistry } from './schema-form/registry';
     ],
     providers: [
         NavigatorService,
-        { provide: WidgetRegistry, useClass: CustomWidgetRegistry },
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {
             provide: HTTP_INTERCEPTORS,
