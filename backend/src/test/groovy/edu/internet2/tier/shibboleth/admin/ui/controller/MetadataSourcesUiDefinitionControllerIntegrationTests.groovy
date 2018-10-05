@@ -18,9 +18,6 @@ class MetadataSourcesUiDefinitionControllerIntegrationTests extends Specificatio
     private TestRestTemplate restTemplate
 
     @Autowired
-    ConfigurableEnvironment environment
-
-    @Autowired
     MetadataSourcesUiDefinitionController controllerUnderTest
 
     static RESOURCE_URI = '/api/ui/MetadataSources'
