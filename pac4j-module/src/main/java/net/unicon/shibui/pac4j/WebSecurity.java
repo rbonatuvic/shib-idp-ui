@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
 public class WebSecurity {
@@ -42,6 +43,15 @@ public class WebSecurity {
 
             http.csrf().disable();
             http.headers().frameOptions().disable();
+        }
+
+        @Override
+        public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
+            super.configure(web);
+
+            StrictHttpFirewall firewall = new StrictHttpFirewall();
+            firewall.setAllowUrlEncodedSlash(true);
+            web.httpFirewall(firewall);
         }
     }
 }
