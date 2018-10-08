@@ -1,8 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,7 +23,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Workaround for slashes in URL from [https://stackoverflow.com/questions/48453980/spring-5-0-3-requestrejectedexception-the-request-was-rejected-because-the-url]
  */
 @Configuration
-@AutoConfigureOrder(Integer.MAX_VALUE - 100)
+@AutoConfigureBefore(SpringBootWebSecurityConfiguration.class)
 @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class WebSecurityConfig {
 

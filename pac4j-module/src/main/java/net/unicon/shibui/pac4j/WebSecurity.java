@@ -1,8 +1,10 @@
 package net.unicon.shibui.pac4j;
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.auto.WebSecurityConfig;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -13,10 +15,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 @Configuration
+@AutoConfigureBefore(WebSecurityConfig.class)
 public class WebSecurity {
     @Bean("webSecurityConfig")
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config) {
         return new Pac4jWebSecurityConfigurerAdapter(config);
+    }
+
+    @Configuration
+    @Order(0)
+    public static class FaviconSecurityConfiguration extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests().antMatchers("/favicon.ico").permitAll();
+        }
     }
 
     @Order(1)
