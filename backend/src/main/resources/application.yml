@@ -26,3 +26,65 @@ custom:
     - name: employeeNumber
       displayName: label.attribute-employeeNumber
   # Custom attributes
+
+# The following contains a map of "relying party overrides".
+# It is imperative when defining them that the "displayType" and "persistType" are known types.
+# Typos or unsupported values here will result in that override being skipped!
+# Supported types are as follows: boolean, integer, string, set, list
+# Note that "persistType" doesn't have to match "displayType". However, the only unmatching combination currently
+# supported is a "displayType" of "boolean" and "persistType" of "string".
+  overrides:
+  # Default overrides
+    - name: signAssertion
+      displayName: Sign the Assertion
+      displayType: boolean
+      helpText: Sign Assertion
+    - name: signResponses
+      displayName: Don't Sign the Response
+      displayType: boolean
+      helpText: Don't Sign Response
+    - name: turnOffEncryption
+      displayName: Turn Off Encryption of Response
+      displayType: boolean
+      helpText: Turn Off Encryption of Response
+    - name: useSha
+      displayName: Use SHA1 Signing Algorithm
+      displayType: boolean
+      helpText: Use SHA1 Signing Algorithm
+      persistType: string
+      persistValue: shibboleth.SecurityConfiguration.SHA1
+    - name: ignoreAuthenticationMethod
+      displayName: Ignore any SP-Requested Authentication Method
+      displayType: boolean
+      helpText: Ignore any SP-Requested Authentication Method
+      persistType: string
+      persistValue: 0x1
+    - name: omitNotBefore
+      displayName: Omit Not Before Condition
+      displayType: boolean
+      helpText: Omit Not Before Condition
+    - name: responderId
+      displayName: responderId
+      displayType: string
+      helpText: ResponderId
+    - name: nameIdFormats
+      displayName: nameIdFormats
+      displayType: list
+      helpText: Add NameID Format
+      defaultValues:
+        - urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+        - urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+        - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+        - urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+    - name: authenticationMethods
+      displayName: authenticationMethods
+      displayType: list
+      helpText: Authentication Methods to Use
+      defaultValues:
+        - https://refeds.org/profile/mfa
+        - urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
+        - urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+    - name: forceAuthn
+      displayName: Force AuthN
+      displayType: boolean
+      helpText: Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process

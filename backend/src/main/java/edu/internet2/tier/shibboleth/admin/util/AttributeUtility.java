@@ -67,4 +67,8 @@ public class AttributeUtility {
     public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithArbitraryValues(String name, String friendlyName, List<String> values) {
         return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
     }
+
+    //TODO createAttributeFromSet
+    // createFromNumber? XSInteger
+    //
 }

@@ -44,7 +44,7 @@ import org.springframework.web.util.UrlPathHelper;
 import javax.servlet.http.HttpServletRequest;
 
 @Configuration
-@EnableConfigurationProperties(CustomAttributesConfiguration.class)
+@EnableConfigurationProperties(CustomPropertiesConfiguration.class)
 public class CoreShibUiConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(CoreShibUiConfiguration.class);
 
@@ -172,8 +172,8 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public CustomAttributesConfiguration customAttributesConfiguration() {
-        return new CustomAttributesConfiguration();
+    public CustomPropertiesConfiguration customAttributesConfiguration() {
+        return new CustomPropertiesConfiguration();
     }
 
     @Bean
