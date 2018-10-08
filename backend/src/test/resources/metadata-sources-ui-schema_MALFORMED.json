@@ -1,4 +1,4 @@
-{
+
     "type": "object",
     "properties": {
         "entityId": {
@@ -262,7 +262,7 @@
                             "enum": [
                                 "support"
                             ],
-                            "description": "value.support" 
+                            "description": "value.support"
                         },
                         {
                             "enum": [
@@ -434,7 +434,7 @@
                             "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
                         }
                     ]
-                    
+
                 }
             }
         }

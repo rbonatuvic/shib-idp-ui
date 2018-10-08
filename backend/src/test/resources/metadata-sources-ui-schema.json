@@ -1,5 +1,5 @@
 {
-    "type": "object"
+    "type": "object",
     "properties": {
         "entityId": {
             "title": "label.entity-id",
@@ -12,7 +12,7 @@
             "type": "string"
         },
         "serviceEnabled": {
-            "title": "label.enable-this-service-upon-saving",
+            "title": "label.enable-this-service-opon-saving",
             "description": "tooltip.enable-this-service-upon-saving",
             "type": "boolean"
         },
@@ -262,7 +262,7 @@
                             "enum": [
                                 "support"
                             ],
-                            "description": "value.support"
+                            "description": "value.support" 
                         },
                         {
                             "enum": [
@@ -434,7 +434,7 @@
                             "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
                         }
                     ]
-
+                    
                 }
             }
         }
