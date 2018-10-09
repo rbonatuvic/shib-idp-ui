@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -48,6 +49,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
     def 'simple test generation of metadata-providers.xml'() {
         when:
         def mr = metadataResolverRepository.findAll().iterator().next()
+        mr.metadataFilters << new SignatureValidationFilter(requireSignedRoot: true, certificateFile: '%{idp.home}/credentials/inc-md-cert.pem')
         mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters << entityRoleWhiteListFilterForXmlGenerationTests()
         metadataResolverRepository.save(mr)
@@ -63,6 +65,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         when:
         //TODO: this might break later
         def mr = metadataResolverRepository.findAll().iterator().next()
+        mr.metadataFilters << new SignatureValidationFilter(requireSignedRoot: true, certificateFile: '%{idp.home}/credentials/inc-md-cert.pem')
         mr.metadataFilters << requiredValidUntilFilterForXmlGenerationTests()
         mr.metadataFilters.add(new EntityAttributesFilter().with {
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
