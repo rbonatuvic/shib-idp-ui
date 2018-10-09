@@ -32,7 +32,7 @@ public class MetadataProvidersScheduledTasks {
         this.metadataResolverService = metadataResolverService;
     }
 
-    @Scheduled(fixedRateString = "${shibui.metadataProviders.taskRunRate}")
+    @Scheduled(fixedRateString = "${shibui.metadataProviders.taskRunRate:30000}")
     @Transactional(readOnly = true)
     public void generateMetadataProvidersFile() {
         try (OutputStream os = ((WritableResource)target).getOutputStream()) {
