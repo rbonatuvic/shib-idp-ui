@@ -18,7 +18,7 @@ export class InfoLabelDirective {
         private element: ElementRef
     ) {
         config.triggers = 'mouseenter:mouseleave';
-        config.placement = ['top'];
+        config.placement = ['top', 'left'];
         config.container = 'body';
         element.nativeElement.setAttribute('tabindex', 0);
     }

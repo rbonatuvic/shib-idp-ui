@@ -3,12 +3,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
+import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeReleaseFormComponent } from './attribute-release-form.component';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 import { MockListValueService } from '../../../../../testing/list-values.stub';
+import { MockSharedModule } from '../../../../../testing/shared.stub';
 
 describe('Attribute Release Form Component', () => {
     let fixture: ComponentFixture<AttributeReleaseFormComponent>;
@@ -25,7 +26,7 @@ describe('Attribute Release Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule,
+                MockSharedModule,
                 MockI18nModule
             ],
             declarations: [

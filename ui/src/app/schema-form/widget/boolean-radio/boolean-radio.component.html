@@ -2,13 +2,7 @@
     <label class="d-flex justify-content-start control-label">
         <span [translate]="schema.title">{{ schema.title }}</span>
         <span *ngIf="schema.description">
-            <ng-template #tooltip>
-                <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
-            </ng-template>&nbsp;&nbsp;
-            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                [ngbPopover]="tooltip"
-                i18n-aria-label="tooltip.instruction"
-                [attr.aria-label]="'tooltip.instruction' | translate"></i>
+            <info-icon [description]="schema.description | translate"></info-icon>
         </span>
     </label>
     <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>

@@ -13,13 +13,16 @@ import { ContenteditableDirective } from './contenteditable/contenteditable.dire
 import { ReplacePipe } from './pipe/replace.pipe';
 import { I18nModule } from '../i18n/i18n.module';
 import { CustomDatePipe } from './pipe/date.pipe';
+import { InfoIconComponent } from './component/info-icon.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        I18nModule
+        I18nModule,
+        NgbPopoverModule
     ],
     declarations: [
         HighlightPipe,
@@ -32,7 +35,8 @@ import { CustomDatePipe } from './pipe/date.pipe';
         PrettyXml,
         ReplacePipe,
         CustomDatePipe,
-        ContenteditableDirective
+        ContenteditableDirective,
+        InfoIconComponent
     ],
     exports: [
         HighlightPipe,
@@ -47,7 +51,8 @@ import { CustomDatePipe } from './pipe/date.pipe';
         InfoLabelDirective,
         ContenteditableDirective,
         ReplacePipe,
-        CustomDatePipe
+        CustomDatePipe,
+        InfoIconComponent
     ]
 })
 export class SharedModule { }

@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdvancedInfoFormComponent } from './forms/advanced-info-form.component';
 import { OrganizationInfoFormComponent } from './forms/organization-info-form.component';

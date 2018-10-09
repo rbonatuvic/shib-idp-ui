@@ -1,0 +1,13 @@
+:host {
+    .btn-nostyle {
+        margin: 0px;
+        padding: 0px;
+        background: none;
+        border: none;
+        display: inline;
+    }
+
+    .popover .popover-body {
+        min-width: 160px;
+    }
+}

@@ -3,7 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
+import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ListValuesService } from '../../../domain/service/list-values.service';
 import { KeyInfoFormComponent } from './key-info-form.component';
 
@@ -12,6 +12,7 @@ import { FileBackedHttpMetadataResolver } from '../../entity';
 import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 import { MockListValueService } from '../../../../../testing/list-values.stub';
+import { MockSharedModule } from '../../../../../testing/shared.stub';
 
 @Component({
     template: `<key-info-form [resolver]="resolver"></key-info-form>`
@@ -49,7 +50,7 @@ describe('Security (Key) Info Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule,
+                MockSharedModule,
                 MockI18nModule
             ],
             declarations: [

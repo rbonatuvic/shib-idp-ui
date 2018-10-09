@@ -8,12 +8,7 @@
                             <translate-i18n key="label.is-there-a-x509-certificate">Is there a X509 Certificate?</translate-i18n>
                         </label>&nbsp;
                         <span>
-                            <ng-template #tooltipIsThereAX509Certificate>
-                                <translate-i18n key="tooltip.authentication-requests-signed">Is there a X509 Certificate popover</translate-i18n>
-                            </ng-template>
-                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                               [ngbPopover]="tooltipIsThereAX509Certificate"
-                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                            <info-icon [description]="'tooltip.authentication-requests-signed' | translate"></info-icon>
                         </span>
                     </div>
                     <div id="x509CertificateAvailableRadioGroup" role="radiogroup" aria-activedescendant="x509CertificateAvailableNo" tabindex="0">
@@ -37,12 +32,7 @@
                             <translate-i18n key="label.authentication-requests-signed">Authentication Requests Signed?</translate-i18n>
                         </label>&nbsp;
                         <span>
-                            <ng-template #tooltipAuthenticationRequestsSigned>
-                                <translate-i18n key="tooltip.authentication-requests-signed">Authentication Requests Signed popover</translate-i18n>
-                            </ng-template>
-                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                           [ngbPopover]="tooltipAuthenticationRequestsSigned"
-                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                            <info-icon [description]="'tooltip.authentication-requests-signed' | translate"></info-icon>
                         </span>
                     </div>
                     <div id="authenticationRequestsSignedRadioGroup" role="radiogroup" aria-activedescendant="authenticationRequestsSignedNo" tabindex="0">
@@ -66,12 +56,7 @@
                             <translate-i18n key="label.want-assertions-signed">Want Assertions Signed?</translate-i18n>
                         </label>&nbsp;
                         <span>
-                            <ng-template #tooltipWantAssertionsSigned>
-                                <translate-i18n key="tooltip.want-assertions-signed">Want Assertions Signed</translate-i18n>
-                            </ng-template>
-                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                [ngbPopover]="tooltipWantAssertionsSigned"
-                                [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                            <info-icon [description]="'tooltip.want-assertions-signed' | translate"></info-icon>
                         </span>
                     </div>
                     <div id="wantAssertionsSignedRadioGroup" role="radiogroup" aria-activedescendant="wantAssertionsSignedNo" tabindex="0">
@@ -131,13 +116,7 @@
                                         </span>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipCertificateName>
-                                            <translate-i18n key="tooltip.certificate-name">Certificate Name Popover</translate-i18n>
-                                        </ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                           [ngbPopover]="tooltipCertificateName"
-                                          
-                                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                        <info-icon [description]="'tooltip.certificate-name' | translate"></info-icon>
                                     </span>
                                 </div>
                                 <input [id]="'name-' + i" type="text" class="form-control" placeholder="" formControlName="name" aria-label="x509 certificate name" role="textbox" />
@@ -152,12 +131,7 @@
                                             </span>
                                         </label>
                                         <span class="col-sm-2 text-right">
-                                            <ng-template #tooltipCertificateType>
-                                                <translate-i18n key="tooltip.certificate-type">Certificate Type Popover</translate-i18n>
-                                            </ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                           [ngbPopover]="tooltipCertificateType"
-                                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                            <info-icon [description]="'tooltip.certificate-type' | translate"></info-icon>
                                         </span>
                                     </div>
                                     <div id="certTypeRadioGroup" role="radiogroup" tabindex="0">
@@ -180,12 +154,7 @@
                                         </span>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipCertificateBody>
-                                            <translate-i18n key="tooltip.certificate">Certificate Popover</translate-i18n>
-                                        </ng-template>
-                                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                               [ngbPopover]="tooltipCertificateBody"
-                                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                        <info-icon [description]="'tooltip.certificate' | translate"></info-icon>
                                     </span>
                                 </div>
                                 <textarea [id]="'cert-' + i" class="form-control" placeholder="" formControlName="value" rows="10" [disableDefaults]="true" role="textbox" aria-multiline="true"></textarea>

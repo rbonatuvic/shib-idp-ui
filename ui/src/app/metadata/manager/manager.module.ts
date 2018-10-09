@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap/pagination/pagination.module';
+import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -17,7 +17,6 @@ import { DashboardProvidersListComponent } from './container/dashboard-providers
 import { reducers } from './reducer';
 import { SearchEffects } from './effect/search.effects';
 import { DeleteDialogComponent } from './component/delete-dialog.component';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
 import { I18nModule } from '../../i18n/i18n.module';

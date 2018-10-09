@@ -9,12 +9,7 @@
                             translate="label.enable-this-service-opon-saving"
                             for="serviceEnabled">Enable this service upon saving?</label>
                     </div>
-                    <ng-template #tooltipEnableThisServiceUponSaving>
-                        <translate-i18n key="tooltip.enable-this-service-upon-saving">Enable this service upon saving popover</translate-i18n>
-                    </ng-template>
-                    <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                       [ngbPopover]="tooltipEnableThisServiceUponSaving"
-                       role="tooltip"></i>
+                    <info-icon [description]="'tooltip.enable-this-service-upon-saving' | translate"></info-icon>
                 </div>
             </section>
             <section class="entity-section">
@@ -57,7 +52,7 @@
                             <tbody>
                             <tr *ngFor="let contact of resolver.contacts">
                                 <td>{{ contact.name }}</td>
-                                <td>{{ contact.emailAddress }}</td>
+                                <td class="br-word">{{ contact.emailAddress }}</td>
                                 <td>{{ contact.type }}</td>
                             </tr>
                             </tbody>
