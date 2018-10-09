@@ -6,12 +6,7 @@
                     <span>
                         <translate-i18n key="action.search-by">Search By</translate-i18n> <i class="fa fa-asterisk text-danger" aria-hidden="true"></i></span>
                     <span>
-                        <ng-template #tooltipBy>
-                            <translate-i18n key="action.search-by">Search By</translate-i18n>
-                        </ng-template>
-                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                            [ngbPopover]="tooltipBy"
-                            [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                        <info-icon [description]="'action.search-by' | translate"></info-icon>
                     </span>
                 </label>
                 <div ngbDropdown>
@@ -47,13 +42,7 @@
                             *ngIf="entityAttributesFilterTargetType !== 'ENTITY'"></i>
                     </span>
                     <span>
-                        <ng-template #tooltipCriteria>
-                            <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">Search Criteria by {{ this.displayType }}</translate-i18n>
-                        </ng-template>&nbsp;&nbsp;
-                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                            [ngbPopover]="tooltipCriteria"
-                           
-                            [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                        <info-icon [description]="'label.search-criteria-by' | translate:{ displayType: (displayType | translate) }"></info-icon>
                     </span>
                 </label>
                 <div class="d-flex justify-content-between">

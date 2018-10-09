@@ -45,12 +45,7 @@
                                         <translate-i18n key="label.assertion-consumer-services-location">Assertion Consumer Service Location</translate-i18n>
                                     </label>
                                     <span class="col-sm-2 text-right">
-                                        <ng-template #tooltipAssertionConsumerServiceLocation>
-                                            <translate-i18n key="tooltip.assertion-consumer-service-location">Assertion Consumer Service Location popover</translate-i18n>
-                                        </ng-template>
-                                        <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                           [ngbPopover]="tooltipAssertionConsumerServiceLocation"
-                                           [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                        <info-icon [description]="'tooltip.assertion-consumer-service-location' | translate"></info-icon>
                                     </span>
                                 </div>
                                 <input [id]="'location-' + i" type="text" class="form-control" placeholder="" formControlName="locationUrl" aria-label="Assertion consumer service endpoint location" role="textbox" />
@@ -66,12 +61,7 @@
                                                 <translate-i18n key="label.assertion-consumer-service-location-binding">Assertion Consumer Service Location Binding</translate-i18n>
                                             </label>
                                             <span class="col-sm-2 text-right">
-                                                <ng-template #tooltipAssertionConsumerServiceLocationBinding>
-                                                    <translate-i18n key="tooltip.assertion-consumer-service-location-binding">Assertion Consumer Service Location Binding</translate-i18n>
-                                                </ng-template>
-                                            <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                               [ngbPopover]="tooltipAssertionConsumerServiceLocationBinding"
-                                               [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                                <info-icon [description]="'tooltip.assertion-consumer-service-location-binding' | translate"></info-icon>
                                             </span>
                                         </div>
                                         <select [id]="'binding-' + i" class="form-control" formControlName="binding" role="listbox" aria-label="Assertion consumer service location binding type">
@@ -87,12 +77,7 @@
                                         <fieldset aria-label="Mark this assertion consumer service endpoint as the default?">
                                             <label class="d-block">
                                                 <translate-i18n key="label.mark-as-default">Mark as Default</translate-i18n>
-                                                <ng-template #tooltipMarkAsDefault>
-                                                    <translate-i18n key="tooltip.mark-as-default">Mark as Default</translate-i18n>
-                                                </ng-template>
-                                                <i class="info-icon fa fa-fw fa-info-circle text-primary fa-lg"
-                                                   [ngbPopover]="tooltipMarkAsDefault"
-                                                   [attr.aria-label]="'tooltip.instruction' | translate"></i>
+                                                <info-icon [description]="'tooltip.mark-as-default' | translate"></info-icon>
                                             </label>
                                             <div class="custom-control custom-checkbox custom-control-inline">
                                                 <input type="checkbox"

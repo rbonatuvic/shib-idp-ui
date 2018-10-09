@@ -2,10 +2,11 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
-import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap/popover/popover.module';
+import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AssertionFormComponent } from './assertion-form.component';
 import * as stubs from '../../../../../testing/resolver.stub';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { MockSharedModule } from '../../../../../testing/shared.stub';
 
 describe('Assertion Form Component', () => {
     let fixture: ComponentFixture<AssertionFormComponent>;
@@ -21,7 +22,7 @@ describe('Assertion Form Component', () => {
             imports: [
                 NoopAnimationsModule,
                 ReactiveFormsModule,
-                NgbPopoverModule,
+                MockSharedModule,
                 MockI18nModule
             ],
             declarations: [
