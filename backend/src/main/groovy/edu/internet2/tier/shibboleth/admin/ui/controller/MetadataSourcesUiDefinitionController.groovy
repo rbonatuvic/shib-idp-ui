@@ -2,7 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration
-import groovy.json.JsonOutput
+
+import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.core.io.ResourceLoader
@@ -19,6 +20,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * interface in terms of JSON schema.
  *
  * @author Dmitriy Kopylenko
+ * @author Bill Smith (wsmith@unicon.net)
  */
 @RestController('/api/ui/MetadataSources')
 @ConfigurationProperties('shibui')
@@ -64,5 +66,17 @@ class MetadataSourcesUiDefinitionController {
     @PostConstruct
     def init() {
         jsonSchemaUrl = this.resourceLoader.getResource(this.metadataSourcesUiSchemaLocation).getURL()
+        //Detect malformed JSON schema early, during application start up and fail fast with useful exception message
+        try {
+            this.jacksonObjectMapper.readValue(this.jsonSchemaUrl, Map)
+        }
+        catch (Exception e) {
+            def msg = """                        
+                        An error is detected during JSON parsing => [${e.message}]
+                        **********************************************************
+                        Offending resource => [${this.jsonSchemaUrl}]
+                      """
+            throw new BeanInitializationException(msg.toString(), e)
+        }
     }
 }
