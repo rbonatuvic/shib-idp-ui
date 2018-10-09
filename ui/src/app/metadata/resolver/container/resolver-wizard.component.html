@@ -1,10 +1,5 @@
-<div class="container-fluid" role="main">
-    <!--<wizard-nav [index]="wizardIndex$ | async"
-                (onNext)="next($event)"
-                (onPrevious)="previous($event)"
-                (onSave)="save($event)"></wizard-nav>-->
-    <hr />
-    <div class="py-4">
-        <router-outlet></router-outlet>
-    </div>
+<wizard (onNext)="next()" (onPrevious)="previous()" (onSave)="save()"></wizard>
+<hr />
+<div class="py-4">
+    <router-outlet></router-outlet>
 </div>

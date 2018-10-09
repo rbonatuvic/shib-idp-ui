@@ -104,6 +104,11 @@ export function reducer(state = initialState, action: WizardActionUnion): State 
                 }
             };
         }
+        case WizardActionTypes.CLEAR: {
+            return {
+                ...initialState
+            };
+        }
         default: {
             return state;
         }

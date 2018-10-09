@@ -44,6 +44,8 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromResolver.getEntityChanges);
 
+        // this.schema$.subscribe(s => console.log(s));
+
         this.validators$ = this.definition$.pipe(
             map((def) => def.getValidators())
         );
@@ -68,9 +70,12 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.definition$),
             skipWhile(([ changes, definition ]) => !definition || !changes),
-            map(([ changes, definition ]) => definition.parser(changes))
+            map(([ changes, definition ]) => definition.parser(changes.value))
         )
-            .subscribe(changes => this.store.dispatch(new UpdateChanges(changes)));
+        .subscribe(changes => {
+            // console.log(changes);
+            this.store.dispatch(new UpdateChanges(changes));
+        });
 
         this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
 

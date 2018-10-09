@@ -13,6 +13,15 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             fields: [
                 'serviceProviderName',
                 'entityId'
+            ],
+            fieldsets: [
+                {
+                    type: 'section',
+                    fields: [
+                        'serviceProviderName',
+                        'entityId'
+                    ]
+                }
             ]
         },
         {
@@ -23,6 +32,20 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             fields: [
                 'organization',
                 'contacts'
+            ],
+            fieldsets: [
+                {
+                    type: 'group',
+                    fields: [
+                        'organization'
+                    ]
+                },
+                {
+                    type: 'group',
+                    fields: [
+                        'contacts'
+                    ]
+                }
             ]
         },
         {
@@ -50,6 +73,14 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             schema: 'assets/schema/source/metadata-source.json',
             fields: [
                 'logoutEndpoints'
+            ],
+            fieldsets: [
+                {
+                    type: 'group',
+                    fields: [
+                        'logoutEndpoints'
+                    ]
+                }
             ]
         },
         {

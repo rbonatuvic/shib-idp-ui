@@ -2,6 +2,7 @@ import * as fromRoot from '../../app.reducer';
 import * as fromWizard from './wizard.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Wizard, WizardStep } from '../model';
+import { diff } from 'deep-object-diff';
 
 export interface WizardState {
     wizard: fromWizard.State;
@@ -57,13 +58,22 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
         return schema;
     }
     const keys = Object.keys(schema.properties).filter(key => step.fields.indexOf(key) > -1);
-
-    return {
+    const required = (schema.required || []).filter(val => keys.indexOf(val) > -1);
+    let s: any = {
         ...schema,
         properties: {
             ...keys.reduce( (properties, key) => ({ ...properties, [key]: schema.properties[key] }) , {})
         }
     };
+
+    if (required && required.length) {
+        s.required = required;
+    }
+    if (step.fieldsets) {
+        s.fieldsets = step.fieldsets;
+    }
+
+    return s;
 };
 
 export const getCurrentWizardSchema = createSelector(getWizardIndex, getWizardDefinition, getSchemaPath);

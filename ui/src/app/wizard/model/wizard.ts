@@ -11,7 +11,8 @@ export interface WizardStep {
     schema?: string;
     index: number;
     locked?: boolean;
-    fields?: (string | WizardFieldset)[];
+    fields?: string[];
+    fieldsets?: WizardFieldset[];
     summary?: boolean;
 }
 

@@ -17,17 +17,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataResolver } from '../../domain/model/metadata-resolver';
 import * as fromCollections from '../reducer';
-import * as draftActions from '../action/draft.action';
 import { AddResolverRequest } from '../action/collection.action';
 import * as fromResolver from '../reducer';
 
-import { UpdateChanges } from '../action/entity.action';
 import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
-
-import { UnsavedDialogComponent } from '../component/unsaved-dialog.component';
 import { METADATA_SOURCE_WIZARD } from '../wizard-definition';
-import { Wizard } from '../../../wizard/model';
-import { SetDefinition, SetIndex } from '../../../wizard/action/wizard.action';
+import { Wizard, WizardStep } from '../../../wizard/model';
+import { SetDefinition, SetIndex, SetDisabled, ClearWizard } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
 import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
@@ -40,6 +36,10 @@ import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivate {
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+    nextStep: WizardStep;
+    previousStep: WizardStep;
+    currentPage: string;
 
     resolver$: Observable<MetadataResolver>;
     resolver: MetadataResolver;
@@ -75,27 +75,32 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
 
         this.store.dispatch(new SetDefinition(this.sourceWizard));
 
-        this.route.params.subscribe(params => {
+        this.store.select(fromWizard.getNext).subscribe(n => this.nextStep = n);
+        this.store.select(fromWizard.getPrevious).subscribe(p => this.previousStep = p);
+        this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
+
+        this.changes$ = this.store.select(fromResolver.getEntityChanges);
+
+        this.route.queryParams.subscribe(params => {
             if (params.index) {
                 this.store.dispatch(new SetIndex(params.index));
             } else {
                 this.store.dispatch(new SetIndex(this.sourceWizard.steps[0].id));
             }
         });
+    }
 
-        console.log('hi');
+    next(): void {
+        this.go(this.nextStep.id);
+    }
+
+    previous(): void {
+        this.go(this.previousStep.id);
     }
 
     save(): void {
-        this.store.dispatch(new AddResolverRequest(this.latest));
-    }
-
-    next(index: number): void {
-        this.go(index.toString());
-    }
-
-    previous(index: number): void {
-        this.go(index.toString());
+        this.store.dispatch(new SetDisabled(true));
+        this.store.dispatch(new AddResolverRequest(this.resolver));
     }
 
     go(index: string): void {
@@ -105,6 +110,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+        this.store.dispatch(new ClearWizard());
     }
 
     canDeactivate(

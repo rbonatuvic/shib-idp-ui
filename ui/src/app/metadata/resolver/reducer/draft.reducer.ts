@@ -7,12 +7,7 @@ export interface DraftState extends EntityState<MetadataResolver> {
     selectedDraftId: string | null;
 }
 
-export function sortByName(a: MetadataResolver, b: MetadataResolver): number {
-    return a.serviceProviderName.localeCompare(b.serviceProviderName);
-}
-
 export const adapter: EntityAdapter<MetadataResolver> = createEntityAdapter<MetadataResolver>({
-    sortComparer: sortByName,
     selectId: (model: MetadataResolver) => model.entityId
 });
 
