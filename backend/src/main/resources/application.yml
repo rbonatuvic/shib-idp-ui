@@ -28,7 +28,17 @@ custom:
   # Custom attributes
 
 # The following contains a map of "relying party overrides".
-# It is imperative when defining them that the "displayType" and "persistType" are known types.
+# The structure of an entry is as follows:
+# - name: The name of the entry. used to uniquely identify this entry.
+#   displayName: This will normally be the label used when displaying this override in the UI
+#   helpText: This is the help-icon hover-over text
+#   persistType: Optional. If it is necessary to persist something different than the override's display type,
+#                set that type here. For example, display a boolean, but persist a string.
+#   persistValue: Required only when persistType is used. Defines the value to be persisted.
+#   attributeName: This is the name of the attribute to be used in the xml. This is assumed to be a URI.
+#   attributeFriendlyName: This is the friendly name associated with the above attributeName.
+#
+# It is imperative when defining these that the "displayType" and "persistType" are known types.
 # Typos or unsupported values here will result in that override being skipped!
 # Supported types are as follows: boolean, integer, string, set, list
 # Note that "persistType" doesn't have to match "displayType". However, the only unmatching combination currently
@@ -39,6 +49,8 @@ custom:
       displayName: Sign the Assertion
       displayType: boolean
       helpText: Sign Assertion
+      attributeName:
+      attributeFriendlyName:
     - name: signResponses
       displayName: Don't Sign the Response
       displayType: boolean

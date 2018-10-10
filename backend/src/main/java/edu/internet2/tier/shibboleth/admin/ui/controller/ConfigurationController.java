@@ -19,7 +19,6 @@ public class ConfigurationController {
 
     @GetMapping(value = "/customAttributes")
     public ResponseEntity<?> getCustomAttributes() {
-        System.out.println("WOO!\n" + customPropertiesConfiguration.getOverrides());
         return ResponseEntity.ok(customPropertiesConfiguration.getAttributes());
     }
 }

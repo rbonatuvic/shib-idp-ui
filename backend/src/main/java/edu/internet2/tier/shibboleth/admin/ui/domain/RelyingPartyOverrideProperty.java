@@ -15,6 +15,8 @@ public class RelyingPartyOverrideProperty {
     private String persistValue;
     private List<String> defaultValues;
     private Collection<String> persistValues;
+    private String attributeName;
+    private String attributeFriendlyName;
 
     public String getName() {
         return name;
@@ -80,8 +82,35 @@ public class RelyingPartyOverrideProperty {
         this.persistValues = persistValues;
     }
 
+    public String getAttributeName() {
+        return attributeName;
+    }
+
+    public void setAttributeName(String attributeName) {
+        this.attributeName = attributeName;
+    }
+
+    public String getAttributeFriendlyName() {
+        return attributeFriendlyName;
+    }
+
+    public void setAttributeFriendlyName(String attributeFriendlyName) {
+        this.attributeFriendlyName = attributeFriendlyName;
+    }
+
     @Override
     public String toString() {
-        return "RelyingPartyOverrideProperty{" + "\nname='" + name + '\'' + ", \ndisplayName='" + displayName + '\'' + ", \ndisplayType='" + displayType + '\'' + ", \nhelpText='" + helpText + '\'' + ", \npersistType='" + persistType + '\'' + ", \npersistValue='" + persistValue + '\'' + ", \ndefaultValues=" + defaultValues + ", \npersistValues=" + persistValues + "\n}";
+        return "RelyingPartyOverrideProperty{"
+                + "\nname='" + name + '\''
+                + ", \ndisplayName='" + displayName + '\''
+                + ", \ndisplayType='" + displayType + '\''
+                + ", \nhelpText='" + helpText + '\''
+                + ", \npersistType='" + persistType + '\''
+                + ", \npersistValue='" + persistValue + '\''
+                + ", \ndefaultValues=" + defaultValues
+                + ", \npersistValues=" + persistValues
+                + ", \nattributeName='" + attributeName + '\''
+                + ", \nattributeFriendlyName='" + attributeFriendlyName + '\''
+                + "\n}";
     }
 }
