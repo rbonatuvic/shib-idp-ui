@@ -65,7 +65,7 @@ public class X509Data extends AbstractXMLObject implements org.opensaml.xmlsec.s
     @Nonnull
     @Override
     public List<X509Certificate> getX509Certificates() {
-        return Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof org.opensaml.xmlsec.signature.X509Certificate).toArray(org.opensaml.xmlsec.signature.X509Certificate[]::new));
+        return new ArrayList<>(Arrays.asList(this.xmlObjects.stream().filter(i -> i instanceof org.opensaml.xmlsec.signature.X509Certificate).toArray(org.opensaml.xmlsec.signature.X509Certificate[]::new)));
     }
 
     public void addX509Certificate(edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate x509Certificate) {

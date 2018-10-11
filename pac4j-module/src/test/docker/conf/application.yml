@@ -1,0 +1,22 @@
+server:
+  port: 8443
+  ssl:
+    key-store: "/conf/keystore.p12"
+    key-store-password: "changeit"
+    keyStoreType: "PKCS12"
+    keyAlias: "tomcat"
+shibui:
+  pac4j:
+    keystorePath: "/conf/samlKeystore.jks"
+    keystorePassword: "changeit"
+    privateKeyPassword: "changeit"
+    serviceProviderEntityId: "https://unicon.net/shibui"
+    serviceProviderMetadataPath: "/conf/sp-metadata.xml"
+    identityProviderMetadataPath: "/conf/idp-metadata.xml"
+    forceServiceProviderMetadataGeneration: true
+    callbackUrl: "https://localhost:8443/callback"
+    maximumAuthenticationLifetime: 3600000
+logging:
+  level:
+    org.pac4j: "TRACE"
+    org.opensaml: "INFO"
