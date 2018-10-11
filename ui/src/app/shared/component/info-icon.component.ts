@@ -12,7 +12,7 @@ export class InfoIconComponent {
 
     id: string = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + Date.now().toString();
 
-    triggers = 'mouseenter:mouseleave';
+    triggers = 'mouseenter:mouseleave focus:blur';
     container = 'body';
     placement = ['top'];
 

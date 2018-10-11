@@ -4,15 +4,12 @@
 <button class="btn btn-nostyle info-icon"
     #toggle="ngbPopover"
     [attr.aria-label]="'tooltip.instruction' | translate"
-    [attr.aria-expanded]="toggle.isOpen()"
     [ngbPopover]="tooltipContent"
     (keydown.space)="toggle.open()"
-    (keyup.space)="toggle.close()"
     [triggers]="triggers"
     [placement]="placement"
-    aria-haspopup="true"
     [attr.aria-flowto]="id"
-    role="button">
+    role="tooltip">
     <i class="fa fa-fw fa-info-circle text-primary fa-lg"></i>
     <span class="sr-only" translate="tooltip.instruction"></span>
 </button>
