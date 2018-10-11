@@ -34,14 +34,34 @@ processResources.dependsOn(':ui:npm_run_buildProd')
 bootWar.dependsOn(':ui:npm_run_buildProd')
 bootWar.baseName = 'shibui'
 bootWar {
-  manifest {
-       attributes("Manifest-Version" : "1.0", "Implementation-Version" : "${project.version}")
-   }
-   from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
+    manifest {
+        attributes(
+                "Manifest-Version" : "1.0",
+                "Implementation-Version" : "${project.version}"
+        )
+    }
+    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
         // into '/'
         into '/public'
     }
     archiveName = "${baseName}.war"
+}
+
+bootJar.dependsOn ':ui:npm_run_buildProd'
+bootJar.baseName = 'shibui'
+bootJar {
+    manifest {
+        attributes(
+                "Manifest-Version" : "1.0",
+                "Implementation-Version" : "${project.version}",
+                'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
+        )
+    }
+    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
+        // into '/'
+        into '/public'
+    }
+    archiveName = "${baseName}.jar"
 }
 
 springBoot {
@@ -213,12 +233,13 @@ jacocoTestReport {
     }
 }
 
-tasks.docker.dependsOn tasks.build
+tasks.docker.dependsOn tasks.bootJar
 docker {
     name 'unicon/shibui'
     tags 'latest'
     pull true
     noCache true
-    files tasks.bootWar.outputs
-    buildArgs(['JAR_FILE': 'shibui.war'])
+    files tasks.bootJar.outputs
+    files 'src/main/docker-files/loader.properties'
+    buildArgs(['JAR_FILE': 'shibui.jar'])
 }

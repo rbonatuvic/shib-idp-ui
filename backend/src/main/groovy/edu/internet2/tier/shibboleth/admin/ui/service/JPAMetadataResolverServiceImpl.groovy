@@ -128,11 +128,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     //TODO: We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
                     if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
                         constructXmlNodeForResolver(mr, delegate) {
-                            MetadataFilter(
-                                    'xsi:type': 'SignatureValidation',
-                                    'requireSignedRoot': 'true',
-                                    'certificateFile': '%{idp.home}/credentials/inc-md-cert.pem'
-                            )
                             //TODO: enhance
                             mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
                                 constructXmlNodeForFilter(filter, delegate)
