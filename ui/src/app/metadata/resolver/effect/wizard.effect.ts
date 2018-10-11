@@ -46,7 +46,8 @@ export class WizardEffects {
             const params = { ...this.activatedRoute.snapshot.queryParams, index };
             this.router.navigate([], {
                 relativeTo: this.activatedRoute,
-                queryParams: params
+                queryParams: params,
+                queryParamsHandling: 'preserve'
             });
         })
     );
@@ -61,7 +62,8 @@ export class WizardEffects {
             const params = { ...this.activatedRoute.snapshot.queryParams, entityId };
             this.router.navigate([], {
                 relativeTo: this.activatedRoute,
-                queryParams: params
+                queryParams: params,
+                queryParamsHandling: 'preserve'
             });
         })
     );

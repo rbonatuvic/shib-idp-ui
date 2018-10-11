@@ -8,17 +8,22 @@
         "entityId": {
             "title": "label.entity-id",
             "description": "tooltip.entity-id",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
         },
         "serviceProviderName": {
             "title": "label.service-provider-name",
             "description": "tooltip.service-provider-name",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
         },
         "serviceEnabled": {
             "title": "label.enable-this-service-upon-saving",
             "description": "tooltip.enable-this-service-upon-saving",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         "organization": {
             "type": "object",
@@ -119,13 +124,15 @@
                     "title": "label.logo-height",
                     "description": "tooltip.mdui-logo-height",
                     "min": 0,
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 0
                 },
                 "logoWidth": {
                     "title": "label.logo-width",
                     "description": "tooltip.mdui-logo-width",
                     "min": 0,
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 0
                 }
             }
         },
@@ -251,6 +258,9 @@
                     ]
                 }
             ],
+            "required": [
+                "nameIdFormats"
+            ],
             "properties": {
                 "protocolSupportEnum": {
                     "title": "label.protocol-support-enumeration",
@@ -361,16 +371,25 @@
     "definitions": {
         "Contact": {
             "type": "object",
+            "required": [
+                "name",
+                "type",
+                "emailAddress"
+            ],
             "properties": {
                 "name": {
                     "title": "label.contact-name",
                     "description": "tooltip.contact-name",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "type": {
                     "title": "label.contact-type",
                     "description": "tooltip.contact-type",
                     "type": "string",
+                    "widget": "select",
+                    "minLength": 1,
                     "oneOf": [
                         {
                             "enum": [
@@ -402,7 +421,9 @@
                     "title": "label.contact-email-address",
                     "description": "tooltip.contact-email",
                     "type": "string",
-                    "pattern": "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$"
+                    "pattern": "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
+                    "minLength": 1,
+                    "maxLength": 255
                 }
             }
         },
@@ -411,16 +432,24 @@
             "widget": {
                 "id": "fieldset"
             },
+            "required": [
+                "name",
+                "type",
+                "value"
+            ],
             "properties": {
                 "name": {
                     "title": "label.certificate-name-display-only",
                     "description": "tooltip.certificate-name",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "type": {
                     "title": "label.type",
                     "description": "tooltip.certificate-type",
                     "type": "string",
+                    "widget": "radio",
                     "oneOf": [
                         {
                             "enum": [
@@ -446,7 +475,8 @@
                 "value": {
                     "title": "label.certificate",
                     "description": "tooltip.certificate",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1
                 }
             }
         },
@@ -460,7 +490,9 @@
                     "widget": {
                         "id": "string",
                         "help": "message.valid-url"
-                    }
+                    },
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "binding": {
                     "title": "label.assertion-consumer-service-location-binding",
@@ -496,13 +528,17 @@
             "uniqueItems": true,
             "items": {
                 "type": "string",
-                "widget": "datalist",
-                "data": [
-                    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-                    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                ]
+                "minLength": 1,
+                "maxLength": 255,
+                "widget": {
+                    "id": "datalist",
+                    "data": [
+                        "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                        "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                    ]
+                }
             },
             "default": null
         },
@@ -515,6 +551,8 @@
             "items": {
                 "type": "string",
                 "title": "label.authentication-method",
+                "minLength": 1,
+                "maxLength": 255,
                 "widget": {
                     "id": "datalist",
                     "data": [
@@ -542,16 +580,23 @@
                     ]
                 }
             ],
+            "required": [
+                "url",
+                "bindingType"
+            ],
             "properties": {
                 "url": {
                     "title": "label.url",
                     "description": "tooltip.url",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "bindingType": {
                     "title": "label.binding-type",
                     "description": "tooltip.binding-type",
                     "type": "string",
+                    "widget": "select",
                     "oneOf": [
                         {
                             "enum": [

@@ -2,7 +2,7 @@ import {
     Component, AfterViewInit, ChangeDetectorRef
 } from '@angular/core';
 import { ButtonWidget } from 'ngx-schema-form';
-import { ɵb as ActionRegistry } from 'ngx-schema-form';
+import { ActionRegistry } from 'ngx-schema-form';
 import { interval } from 'rxjs';
 
 @Component({

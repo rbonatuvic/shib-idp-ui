@@ -6,11 +6,9 @@ import { Store } from '@ngrx/store';
 import * as fromResolver from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 
-import { SetDefinition } from '../../../wizard/action/wizard.action';
 import { UpdateStatus, UpdateChanges } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataResolver } from '../../domain/model';
-import { pick } from '../../../shared/util';
 
 @Component({
     selector: 'resolver-wizard-step',
@@ -70,10 +68,11 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.definition$),
             skipWhile(([ changes, definition ]) => !definition || !changes),
-            map(([ changes, definition ]) => definition.parser(changes.value))
+            map(([ changes, definition ]) => definition.parser(changes.value)),
+            withLatestFrom(this.store.select(fromResolver.getSelectedDraft)),
+            map(([changes, original]) => ({ ...changes }))
         )
         .subscribe(changes => {
-            // console.log(changes);
             this.store.dispatch(new UpdateChanges(changes));
         });
 

@@ -60,7 +60,8 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
     const keys = Object.keys(schema.properties).filter(key => step.fields.indexOf(key) > -1);
     const required = (schema.required || []).filter(val => keys.indexOf(val) > -1);
     let s: any = {
-        ...schema,
+        type: schema.type,
+        definitions: schema.definitions,
         properties: {
             ...keys.reduce( (properties, key) => ({ ...properties, [key]: schema.properties[key] }) , {})
         }

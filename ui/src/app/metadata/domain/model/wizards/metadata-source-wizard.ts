@@ -140,6 +140,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
     }
 
     getValidators(...args: any[]): { [key: string]: any } {
-        return {};
+        const validators = {};
+        return validators;
     }
 }
