@@ -14,7 +14,7 @@ import { MetadataTypes } from '../../domain.type';
 import { MetadataEntity } from '../../model/metadata-entity';
 
 export class FileBackedHttpMetadataResolver implements MetadataResolver, MetadataEntity {
-    id = '';
+    resourceId = '';
     createdDate?: string;
     modifiedDate?: string;
     version: string;
@@ -53,7 +53,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     }
 
     getId(): string {
-        return this.id ? this.id : this.entityId;
+        return this.resourceId;
     }
 
     getDisplayId(): string {
@@ -61,7 +61,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     }
 
     isDraft(): boolean {
-        return this.id ? false : true;
+        return this.createdDate ? false : true;
     }
 
     getCreationDate(): Date {

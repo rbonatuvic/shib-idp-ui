@@ -8,7 +8,7 @@ export interface DraftState extends EntityState<MetadataResolver> {
 }
 
 export const adapter: EntityAdapter<MetadataResolver> = createEntityAdapter<MetadataResolver>({
-    selectId: (model: MetadataResolver) => model.entityId
+    selectId: (model: MetadataResolver) => model.resourceId
 });
 
 export const initialState: DraftState = adapter.getInitialState({
@@ -29,10 +29,10 @@ export function reducer(state = initialState, action: DraftActionsUnion): DraftS
         }
 
         case DraftActionTypes.REMOVE_DRAFT_SUCCESS: {
-            return adapter.removeOne(action.payload.entityId, state);
+            return adapter.removeOne(action.payload.resourceId, state);
         }
 
-        case DraftActionTypes.SELECT: {
+        case DraftActionTypes.SELECT_SUCCESS: {
             return {
                 ...state,
                 selectedDraftId: action.payload,

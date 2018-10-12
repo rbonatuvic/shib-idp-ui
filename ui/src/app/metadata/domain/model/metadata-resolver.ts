@@ -11,8 +11,8 @@ import {
 } from '../model';
 
 export interface MetadataResolver extends MetadataBase {
-    resourceId?: string;
-    entityId: string;
+    resourceId: string;
+    entityId?: string;
     serviceProviderName: string;
     organization?: Organization;
     contacts?: Contact[];
@@ -22,6 +22,6 @@ export interface MetadataResolver extends MetadataBase {
     serviceProviderSsoDescriptor?: IdpSsoDescriptor;
     logoutEndpoints?: LogoutEndpoint[];
     serviceEnabled?: boolean;
-    relyingPartyOverrides: RelyingPartyOverrides;
-    attributeRelease: string[];
+    relyingPartyOverrides?: RelyingPartyOverrides;
+    attributeRelease?: string[];
 }

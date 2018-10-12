@@ -17,8 +17,7 @@ import {
 import * as fromResolver from '../reducer';
 
 import { EntityDraftService } from '../../domain/service/draft.service';
-import { SetIndex, WizardActionTypes } from '../../../wizard/action/wizard.action';
-import { UpdateDraftRequest } from '../action/draft.action';
+import { UpdateDraftRequest, SelectDraftSuccess, DraftActionTypes } from '../action/draft.action';
 
 
 
@@ -41,19 +40,12 @@ export class WizardEffects {
 
     @Effect({ dispatch: false })
     updateEntityIdInUrl$ = this.actions$.pipe(
-        ofType<UpdateChanges>(ResolverEntityActionTypes.UPDATE_CHANGES),
+        ofType<SelectDraftSuccess>(DraftActionTypes.SELECT_SUCCESS),
         map(action => action.payload),
-        withLatestFrom(
-            this.store.select(fromResolver.getEntityChanges),
-            this.activatedRoute.queryParams
-        ),
-        tap(([id, changes, params]) => {
+        tap((id) => {
             this.router.navigate([], {
                 relativeTo: this.activatedRoute,
-                queryParams: {
-                    ...params,
-                    entityId: changes.entityId
-                },
+                queryParams: { id },
                 queryParamsHandling: 'merge'
             });
         })

@@ -4,7 +4,9 @@ import { MetadataResolver } from '../../domain/model';
 
 export enum DraftActionTypes {
     FIND = '[Metadata Draft] Find',
-    SELECT = '[Metadata Draft] Select',
+    SELECT_REQUEST = '[Metadata Draft] Select Request',
+    SELECT_SUCCESS = '[Metadata Draft] Select Success',
+    SELECT_ERROR = '[Metadata Draft] Select Error',
     UPDATE_DRAFT_REQUEST = '[Metadata Draft] Update Request',
     UPDATE_DRAFT_SUCCESS = '[Metadata Draft] Update Success',
     UPDATE_DRAFT_FAIL = '[Metadata Draft] Update Fail',
@@ -19,17 +21,22 @@ export enum DraftActionTypes {
     REMOVE_DRAFT_FAIL = '[Metadata Draft Collection] Remove Draft Fail'
 }
 
-
-export class FindDraft implements Action {
-    readonly type = DraftActionTypes.FIND;
+export class SelectDraftRequest implements Action {
+    readonly type = DraftActionTypes.SELECT_REQUEST;
 
     constructor(public payload: string) { }
 }
 
-export class SelectDraft implements Action {
-    readonly type = DraftActionTypes.SELECT;
+export class SelectDraftSuccess implements Action {
+    readonly type = DraftActionTypes.SELECT_SUCCESS;
 
     constructor(public payload: string) { }
+}
+
+export class SelectDraftError implements Action {
+    readonly type = DraftActionTypes.SELECT_ERROR;
+
+    constructor() { }
 }
 
 export class UpdateDraftRequest implements Action {
@@ -114,8 +121,9 @@ export type DraftActionsUnion =
     | RemoveDraftRequest
     | RemoveDraftSuccess
     | RemoveDraftFail
-    | FindDraft
-    | SelectDraft
+    | SelectDraftRequest
+    | SelectDraftSuccess
+    | SelectDraftError
     | UpdateDraftRequest
     | UpdateDraftSuccess
     | UpdateDraftFail;

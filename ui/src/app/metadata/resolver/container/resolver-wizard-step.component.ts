@@ -75,7 +75,9 @@ export class ResolverWizardStepComponent implements OnDestroy {
             map(([changes, original]) => ({ ...original, ...changes }))
         )
         .subscribe(changes => {
-            this.store.dispatch(new UpdateChanges(changes));
+            if (changes.resourceId) {
+                this.store.dispatch(new UpdateChanges(changes));
+            }
         });
 
         this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));

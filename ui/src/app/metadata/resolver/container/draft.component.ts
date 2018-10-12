@@ -5,7 +5,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { SelectDraft } from '../action/draft.action';
+import { SelectDraftRequest } from '../action/draft.action';
 import * as fromCollection from '../reducer';
 
 @Component({
@@ -23,7 +23,7 @@ export class DraftComponent implements OnDestroy {
     ) {
         this.actionsSubscription = route.params.pipe(
             distinctUntilChanged(),
-            map(params => new SelectDraft(params.entityId))
+            map(params => new SelectDraftRequest(params.entityId))
         ).subscribe(store);
     }
 

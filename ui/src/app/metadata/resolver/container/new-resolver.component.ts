@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
-import { SelectDraft } from '../action/draft.action';
+import { SelectDraftRequest } from '../action/draft.action';
 import { Store } from '@ngrx/store';
 import * as fromCollection from '../reducer';
 
@@ -28,7 +28,7 @@ export class NewResolverComponent {
 
         this.actionsSubscription = this.route.queryParams.pipe(
             distinctUntilChanged(),
-            map(params => new SelectDraft(params.entityId))
-        ).subscribe(store);
+            map(params => new SelectDraftRequest(params.id))
+        ).subscribe(this.store);
     }
 }

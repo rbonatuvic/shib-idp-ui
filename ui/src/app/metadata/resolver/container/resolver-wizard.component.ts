@@ -62,7 +62,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         private store: Store<fromCollections.State>,
         private route: ActivatedRoute,
         private router: Router,
-        private modalService: NgbModal,
         @Inject(METADATA_SOURCE_WIZARD) private sourceWizard: Wizard<MetadataResolver>
     ) {
         this.store

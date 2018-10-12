@@ -9,7 +9,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 1,
             id: 'common',
             label: 'label.resolver-common-attributes',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceProviderName',
                 'entityId'
@@ -28,7 +28,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 2,
             id: 'org-info',
             label: 'label.org-info',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'organization',
                 'contacts'
@@ -52,7 +52,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 3,
             id: 'metadata-ui',
             label: 'label.metadata-ui',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'mdui'
             ]
@@ -61,7 +61,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 4,
             id: 'descriptor-info',
             label: 'label.descriptor-info',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceProviderSsoDescriptor'
             ]
@@ -70,7 +70,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 5,
             id: 'logout-endpoints',
             label: 'label.logout-endpoints',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'logoutEndpoints'
             ],
@@ -87,7 +87,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 6,
             id: 'key-info',
             label: 'label.key-info',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'securityInfo'
             ]
@@ -96,7 +96,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 7,
             id: 'assertion',
             label: 'label.assertion',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'assertionConsumerServices'
             ]
@@ -105,7 +105,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 8,
             id: 'relying-party',
             label: 'label.relying-party',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'relyingPartyOverrides'
             ]
@@ -114,7 +114,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 9,
             id: 'attribute',
             label: 'label.attribute-release',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'attributeRelease'
             ]
@@ -123,7 +123,7 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             index: 10,
             id: 'finish',
             label: 'label.finished',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceEnabled'
             ],

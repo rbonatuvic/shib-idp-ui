@@ -74,7 +74,7 @@ export class DashboardResolversListComponent implements OnInit {
         if (entity.isDraft()) {
             this.router.navigate(['metadata', 'resolver', 'new'], {
                 queryParams: {
-                    entityId: entity.getId()
+                    id: entity.getId()
                 }
             });
         } else {
