@@ -1,4 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Renderer } from '@angular/core';
+import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'info-icon',
@@ -8,4 +9,18 @@ import { Component, Input, ChangeDetectionStrategy, ElementRef, ViewChild } from
 })
 export class InfoIconComponent {
     @Input() description: string;
+
+    id: string = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + Date.now().toString();
+
+    triggers = 'mouseenter:mouseleave focus:blur';
+    container = 'body';
+    placement = ['top'];
+
+    constructor(
+        private renderer: Renderer
+    ) { }
+    focus(element): void {
+        console.log(element.elementRef.nativeElement);
+        this.renderer.invokeElementMethod(element.elementRef.nativeElement, 'focus');
+    }
 }
