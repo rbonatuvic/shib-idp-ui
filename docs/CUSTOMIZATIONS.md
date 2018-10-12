@@ -55,4 +55,6 @@ how one would tie it together using a Docker image.
 
 ## Use Cases and Strategies
 
+Some ideas and strategies for customizing the application.
+
 TBD
