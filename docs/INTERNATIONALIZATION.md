@@ -4,6 +4,11 @@
 
 The Shibboleth UI leverages the messages_*_*.properties files common to Java/Spring applications. The default files are located in `backend > src > main > resources > i18n`.
 
+To use a custom file, it is recommended that you make a copy of the appropriate file and add it to the classpath in the
+`i18n` package. See [CUSTOMIZATIONS] for more information. For instance, if using the executable JAR and wanting to
+customize the English file, one would create a file called `1ibs/i18n/messages_en.properties` in the same directory as the
+JAR file and set the appropriate `loader.properties`.
+
 This will allow any piece of static text in the application to be modified dynamically.
 
 ## Usage

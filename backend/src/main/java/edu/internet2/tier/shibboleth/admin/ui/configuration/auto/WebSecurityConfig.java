@@ -1,12 +1,15 @@
-package edu.internet2.tier.shibboleth.admin.ui.configuration;
+package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
@@ -18,7 +21,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  *
  * Workaround for slashes in URL from [https://stackoverflow.com/questions/48453980/spring-5-0-3-requestrejectedexception-the-request-was-rejected-because-the-url]
  */
-@EnableWebSecurity
+@Configuration
+@AutoConfigureBefore(SpringBootWebSecurityConfiguration.class)
+@ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class WebSecurityConfig {
 
     @Value("${shibui.logout-url:/dashboard}")
@@ -35,7 +40,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    @Profile("default")
+    @Profile("!no-auth")
     public WebSecurityConfigurerAdapter defaultAuth() {
         return new WebSecurityConfigurerAdapter() {
 

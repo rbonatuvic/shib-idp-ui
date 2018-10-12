@@ -13,7 +13,12 @@ public class JPAXMLObjectProviderInitializer extends AbstractXMLObjectProviderIn
                 "/jpa-saml2-assertion-config.xml",
                 "/jpa-schema-config.xml",
                 "/jpa-saml2-metadata-ui-config.xml",
-                "/jpa-signature-config.xml"
+                "/jpa-signature-config.xml",
+                "/encryption-config.xml",
+                "/saml2-metadata-algorithm-config.xml",
+                "/jpa-saml2-metadata-reqinit-config.xml",
+                "/saml2-protocol-config.xml",
+                "/modified-saml2-assertion-config.xml"
         };
     }
 }

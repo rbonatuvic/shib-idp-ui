@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'com.palantir.docker' version '0.20.1'
+    id 'jacoco'
+    id 'io.franzbecker.gradle-lombok' version '1.13'
+    id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://build.shibboleth.net/nexus/content/groups/public'
+        artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
+    }
+}
+
+lombok {
+    version = "1.16.20"
+    sha256 = "c5178b18caaa1a15e17b99ba5e4023d2de2ebc18b58cde0f5a04ca4b31c10e6d"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+dependencies {
+    compileOnly project(':backend')
+
+    compile "org.pac4j:spring-security-pac4j:4.0.0"
+    compile "org.pac4j:pac4j-core:3.3.0"
+    compile "org.pac4j:pac4j-saml:3.3.0", {
+        // opensaml libraries are provided
+        exclude group: 'org.opensaml'
+    }
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+    docker project(':backend')
+}
+
+docker {
+    name 'unicon/shibui-pac4j'
+    tags 'latest-pac4j'
+    files configurations.runtime, tasks.jar.outputs
+    noCache true
+}
+
+task testme(type: Copy) {
+    from configurations.runtime
+    into temporaryDir
+}
+
+tasks.docker.dependsOn(tasks.jar, ':backend:docker')

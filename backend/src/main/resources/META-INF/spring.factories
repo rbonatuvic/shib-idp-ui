@@ -1,2 +1,4 @@
 org.springframework.boot.env.EnvironmentPostProcessor=\
   edu.internet2.tier.shibboleth.admin.ui.configuration.postprocessors.IdpHomeValueSettingEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    edu.internet2.tier.shibboleth.admin.ui.configuration.auto.WebSecurityConfig
