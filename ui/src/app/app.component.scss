@@ -6,3 +6,10 @@ nav.navbar {
         min-width: 12rem;
     }
 }
+
+.logo a {
+    img {
+        display: inline-block;
+        max-height: 60px;
+    }
+}
