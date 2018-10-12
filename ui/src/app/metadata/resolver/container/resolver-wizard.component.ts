@@ -10,7 +10,7 @@ import {
     RouterStateSnapshot
 } from '@angular/router';
 import { Observable, Subject, of } from 'rxjs';
-import { skipWhile, startWith } from 'rxjs/operators';
+import { skipWhile, startWith, distinctUntilChanged, map, defaultIfEmpty } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -93,13 +93,14 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         this.changes$ = this.store.select(fromResolver.getEntityChanges);
         this.schema$ = this.store.select(fromWizard.getSchema);
 
-        this.route.queryParams.subscribe(params => {
-            if (params.index) {
-                this.store.dispatch(new SetIndex(params.index));
-            } else {
-                this.store.dispatch(new SetIndex(this.sourceWizard.steps[0].id));
-            }
-        });
+        this.route.params
+            .pipe(
+                map(params => params.index),
+                distinctUntilChanged()
+            )
+            .subscribe(index => {
+                this.store.dispatch(new SetIndex(index));
+            });
     }
 
     next(): void {
@@ -116,7 +117,16 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
     }
 
     go(index: string): void {
-        this.store.dispatch(new SetIndex(index));
+        this.router.navigate(
+            [
+                '../',
+                index
+            ],
+            {
+                relativeTo: this.route,
+                queryParamsHandling: 'preserve'
+            }
+        );
     }
 
     ngOnDestroy(): void {

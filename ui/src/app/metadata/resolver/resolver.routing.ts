@@ -23,9 +23,9 @@ export const ResolverRoutes: Routes = [
                 path: 'new',
                 component: NewResolverComponent,
                 children: [
-                    { path: '', redirectTo: 'blank', pathMatch: 'prefix' },
+                    { path: '', redirectTo: 'blank/common', pathMatch: 'prefix' },
                     {
-                        path: 'blank',
+                        path: 'blank/:index',
                         component: ResolverWizardComponent,
                         canDeactivate: [],
                         children: [

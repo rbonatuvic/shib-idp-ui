@@ -51,12 +51,14 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.model$ = this.schema$.pipe(
             withLatestFrom(
                 this.store.select(fromWizard.getModel),
+                this.store.select(fromResolver.getSelectedDraft),
                 this.changes$,
                 this.definition$
             ),
-            map(([schema, model, changes, definition]) => ({
+            map(([schema, model, selected, changes, definition]) => ({
                 model: {
                     ...model,
+                    ...selected,
                     ...changes
                 },
                 definition
@@ -70,7 +72,7 @@ export class ResolverWizardStepComponent implements OnDestroy {
             skipWhile(([ changes, definition ]) => !definition || !changes),
             map(([ changes, definition ]) => definition.parser(changes.value)),
             withLatestFrom(this.store.select(fromResolver.getSelectedDraft)),
-            map(([changes, original]) => ({ ...changes }))
+            map(([changes, original]) => ({ ...original, ...changes }))
         )
         .subscribe(changes => {
             this.store.dispatch(new UpdateChanges(changes));
