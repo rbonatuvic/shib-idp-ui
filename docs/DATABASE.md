@@ -1,12 +1,13 @@
-# Server Configuration
-#server.port=8080
+# Database configuration
 
-# Logging Configuration
-#logging.config=classpath:log4j2.xml
+The Shibboleth UI application uses Spring Boot and Spring JPA for database configuration. Out of the box, it ships with
+JDBC drivers for H2, MariaDB and Postgres.
 
-logging.level.org.springframework=INFO
-logging.level.edu.internet2.tier.shibboleth.admin.ui=INFO
+By default, it will use an in-memory H2 database. To change which database is used, one should make changes to the
+`applications.properties` or `application.yml` file as appropriate. For further information, refer to the appropriate
+JDBC driver documentation.
 
+```properties
 # Database Credentials
 spring.datasource.username=shibui
 spring.datasource.password=shibui
@@ -41,20 +42,4 @@ spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=false
 
 spring.jpa.hibernate.use-new-id-generator-mappings=true
-
-# shibui.metadata-dir=/opt/shibboleth-idp/metadata/generated
-shibui.logout-url=/dashboard
-
-# spring.profiles.active=default
-
-#shibui.default-password=
-
-#Actuator endpoints (info)
-# Un-comment to get full git details exposed like author, abbreviated SHA-1, commit message
-#management.info.git.mode=full
-
-###
-# metadata-providers.xml write configuration
-
-# shibui.metadataProviders.target=file:/opt/shibboleth-idp/conf/shibui-metadata-providers.xml
-# shibui.metadataProviders.taskRunRate=30000
+```

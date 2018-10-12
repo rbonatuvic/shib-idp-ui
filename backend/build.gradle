@@ -44,7 +44,7 @@ bootWar {
         // into '/'
         into '/public'
     }
-    archiveName = "${baseName}.war"
+    archiveName = "${baseName}-${version}.war"
 }
 
 bootJar.dependsOn ':ui:npm_run_buildProd'
@@ -61,7 +61,7 @@ bootJar {
         // into '/'
         into '/public'
     }
-    archiveName = "${baseName}.jar"
+    archiveName = "${baseName}-${version}.jar"
 }
 
 springBoot {
@@ -241,5 +241,5 @@ docker {
     noCache true
     files tasks.bootJar.outputs
     files 'src/main/docker-files/loader.properties'
-    buildArgs(['JAR_FILE': 'shibui.jar'])
+    buildArgs(['JAR_FILE': "shibui-${version}.jar"])
 }

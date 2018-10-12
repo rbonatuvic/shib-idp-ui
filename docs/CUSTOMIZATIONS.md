@@ -46,3 +46,13 @@ If deploying a WAR, one would use the standard packaging for providing items to 
 It is highly recommended that a WAR overlay be used to prevent changing the version fingerprint. Overlay
 methods exist for both Maven ([https://maven.apache.org/plugins/maven-war-plugin/overlays.html]) and
 Gradle ([https://github.com/scalding/gradle-waroverlay-plugin]) projects.
+
+## Sample Customization
+
+For an example of a customization, refer to the `pac4j-module` in the project source. This module overrides the delivered
+authentication method to provide a simple SAML authentication method. Along with code changes required, it also shows
+how one would tie it together using a Docker image.
+
+## Use Cases and Strategies
+
+TBD
