@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  shibui:
+    image: unicon/shibui-pac4j
+    entrypoint: ["/usr/bin/java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "app.jar"]
+    ports:
+      - 8080:8080
+      - 5005:5005
+      - 8443:8443
+    volumes:
+      - ./conf:/conf
+      - ./conf/application.yml:/application.yml
+    networks:
+      - front
+networks:
+  front:
+    driver: bridge

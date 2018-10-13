@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
+import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
@@ -35,6 +36,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -94,6 +96,12 @@ public class CoreShibUiConfiguration {
     @ConditionalOnProperty(name = "shibui.metadata-dir")
     public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository, @Value("${shibui.metadata-dir}") final String metadataDir) {
         return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects());
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "shibui.metadataProviders.target")
+    public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(@Value("${shibui.metadataProviders.target}") final Resource resource, final MetadataResolverService metadataResolverService) {
+        return new MetadataProvidersScheduledTasks(resource, metadataResolverService);
     }
 
     @Bean
