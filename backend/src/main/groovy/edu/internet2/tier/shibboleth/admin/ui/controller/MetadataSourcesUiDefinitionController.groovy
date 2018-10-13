@@ -1,8 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration
-import groovy.json.JsonOutput
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.core.io.ResourceLoader
@@ -37,7 +36,7 @@ class MetadataSourcesUiDefinitionController {
     ObjectMapper jacksonObjectMapper
 
     @Autowired
-    CustomAttributesConfiguration customAttributesConfiguration
+    CustomPropertiesConfiguration customPropertiesConfiguration
 
     @GetMapping
     ResponseEntity<?> getUiDefinitionJsonSchema() {
@@ -45,7 +44,7 @@ class MetadataSourcesUiDefinitionController {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaUrl, Map)
             def widget = parsedJson["properties"]["attributeRelease"]["widget"]
             def data = []
-            customAttributesConfiguration.getAttributes().each {
+            customPropertiesConfiguration.getAttributes().each {
                 def attribute = [:]
                 attribute["key"] = it["name"]
                 attribute["label"] = it["displayName"]

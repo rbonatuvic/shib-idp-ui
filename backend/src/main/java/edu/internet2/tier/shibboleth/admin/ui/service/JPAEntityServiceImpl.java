@@ -1,18 +1,23 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue;
+import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class JPAEntityServiceImpl implements EntityService {
 
@@ -21,6 +26,9 @@ public class JPAEntityServiceImpl implements EntityService {
 
     @Autowired
     private AttributeUtility attributeUtility;
+
+    @Autowired
+    private CustomPropertiesConfiguration customPropertiesConfiguration = new CustomPropertiesConfiguration();
 
     public JPAEntityServiceImpl(OpenSamlObjects openSamlObjects) {
         this.openSamlObjects = openSamlObjects;
@@ -81,44 +89,51 @@ public class JPAEntityServiceImpl implements EntityService {
     }
 
     @Override
-    public List<Attribute> getAttributeListFromRelyingPartyOverridesRepresentation(RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation) {
+    public List<Attribute> getAttributeListFromRelyingPartyOverridesRepresentation(Map<String, Object> relyingPartyOverridesRepresentation) {
+        List<RelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
         List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute> list = new ArrayList<>();
 
-        if (relyingPartyOverridesRepresentation != null) {
-            if (relyingPartyOverridesRepresentation.isSignAssertion()) {
-                list.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.SIGN_ASSERTIONS, MDDCConstants.SIGN_ASSERTIONS_FN, true));
-            }
-            if (relyingPartyOverridesRepresentation.isDontSignResponse()) {
-                list.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.SIGN_RESPONSES, MDDCConstants.SIGN_RESPONSES_FN, false));
-            }
-            if (relyingPartyOverridesRepresentation.isTurnOffEncryption()) {
-                list.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.ENCRYPT_ASSERTIONS, MDDCConstants.ENCRYPT_ASSERTIONS_FN, false));
-            }
-            if (relyingPartyOverridesRepresentation.isUseSha()) {
-                list.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.SECURITY_CONFIGURATION, MDDCConstants.SECURITY_CONFIGURATION_FN, "shibboleth.SecurityConfiguration.SHA1"));
-            }
-            if (relyingPartyOverridesRepresentation.isIgnoreAuthenticationMethod()) {
-                // this is actually going to be wrong, but it will work for the time being. this should be a bitmask value that we calculate
-                // TODO: fix
-                list.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.DISALLOWED_FEATURES, MDDCConstants.DISALLOWED_FEATURES_FN, "0x1"));
-            }
-            if (relyingPartyOverridesRepresentation.isOmitNotBefore()) {
-                list.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE, MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE_FN, false));
-            }
-            if (relyingPartyOverridesRepresentation.getResponderId() != null && !"".equals(relyingPartyOverridesRepresentation.getResponderId())) {
-                list.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.RESPONDER_ID, MDDCConstants.RESPONDER_ID_FN, relyingPartyOverridesRepresentation.getResponderId()));
-            }
-            if (relyingPartyOverridesRepresentation.getNameIdFormats() != null && relyingPartyOverridesRepresentation.getNameIdFormats().size() > 0) {
-                list.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.NAME_ID_FORMAT_PRECEDENCE, MDDCConstants.NAME_ID_FORMAT_PRECEDENCE_FN, relyingPartyOverridesRepresentation.getNameIdFormats()));
-            }
-            if (relyingPartyOverridesRepresentation.getAuthenticationMethods() != null && relyingPartyOverridesRepresentation.getAuthenticationMethods().size() > 0) {
-                list.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.DEFAULT_AUTHENTICATION_METHODS, MDDCConstants.DEFAULT_AUTHENTICATION_METHODS_FN, relyingPartyOverridesRepresentation.getAuthenticationMethods()));
-            }
-            if (relyingPartyOverridesRepresentation.isForceAuthn()) {
-                list.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.FORCE_AUTHN, MDDCConstants.FORCE_AUTHN_FN, true));
+        for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
+            String key = (String) entry.getKey();
+            RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getDisplayName().equals(key)).findFirst().get();
+            switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
+                case BOOLEAN:
+                    if (!overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
+                        // we must be persisting a string then
+                        list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                                                                                   overrideProperty.getAttributeFriendlyName(),
+                                                                                   (String) entry.getValue()));
+                    } else {
+                        list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                                                                   overrideProperty.getAttributeFriendlyName(),
+                                                                                   Boolean.valueOf((String) entry.getValue())));
+                    }
+                    break;
+                case INTEGER:
+                    list.add(attributeUtility.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
+                                                                               overrideProperty.getAttributeFriendlyName(),
+                                                                               Integer.valueOf((String) entry.getValue())));
+                    break;
+                case STRING:
+                    list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                                                                               overrideProperty.getAttributeFriendlyName(),
+                                                                               (String) entry.getValue()));
+                    break;
+                case SET:
+                    list.add(attributeUtility.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
+                                                                                  overrideProperty.getAttributeFriendlyName(),
+                                                                                  (Set<String>) entry.getValue()));
+                    break;
+                case LIST:
+                    list.add(attributeUtility.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
+                                                                                  overrideProperty.getAttributeFriendlyName(),
+                                                                                  (List<String>) entry.getValue()));
+                    break;
+                default:
+                    throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
             }
         }
 
-        return (List<Attribute>)(List<? extends Attribute>)list;
+        return (List<org.opensaml.saml.saml2.core.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) list;
     }
 }

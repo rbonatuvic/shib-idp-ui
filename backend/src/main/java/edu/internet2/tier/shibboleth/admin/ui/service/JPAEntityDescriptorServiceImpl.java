@@ -54,7 +54,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getBooleanValueOfAttribute;
@@ -489,54 +491,16 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         // set up extensions
         if (ed.getExtensions() != null && ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME) != null && ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).size() == 1) {
             // we have entity attributes (hopefully), so should have overrides
-            RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation = new RelyingPartyOverridesRepresentation();
-            representation.setRelyingPartyOverrides(relyingPartyOverridesRepresentation);
+            Map<String, Object> relyingPartyOverrides = new HashMap<>();
 
             for (org.opensaml.saml.saml2.core.Attribute attribute : ((EntityAttributes) ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0)).getAttributes()) {
                 Attribute jpaAttribute = (Attribute) attribute;
-                // TODO: this is going to get real ugly real quick. clean it up, future Jj!
-                switch (jpaAttribute.getName()) {
-                    case MDDCConstants.SIGN_ASSERTIONS:
-                        relyingPartyOverridesRepresentation.setSignAssertion(getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.SIGN_RESPONSES:
-                        relyingPartyOverridesRepresentation.setDontSignResponse(!getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.ENCRYPT_ASSERTIONS:
-                        relyingPartyOverridesRepresentation.setTurnOffEncryption(!getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.SECURITY_CONFIGURATION:
-                        if (getStringListValueOfAttribute(jpaAttribute).contains("shibboleth.SecurityConfiguration.SHA1")) {
-                            relyingPartyOverridesRepresentation.setUseSha(true);
-                        }
-                        break;
-                    case MDDCConstants.DISALLOWED_FEATURES:
-                        if ((Integer.decode(getStringListValueOfAttribute(jpaAttribute).get(0)) & 0x1) == 0x1) {
-                            relyingPartyOverridesRepresentation.setIgnoreAuthenticationMethod(true);
-                        }
-                        break;
-                    case MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE:
-                        relyingPartyOverridesRepresentation.setOmitNotBefore(!getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.RESPONDER_ID:
-                        relyingPartyOverridesRepresentation.setResponderId(getStringListValueOfAttribute(jpaAttribute).get(0));
-                        break;
-                    case MDDCConstants.NAME_ID_FORMAT_PRECEDENCE:
-                        relyingPartyOverridesRepresentation.setNameIdFormats(getStringListValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.DEFAULT_AUTHENTICATION_METHODS:
-                        relyingPartyOverridesRepresentation.setAuthenticationMethods(getStringListValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.RELEASE_ATTRIBUTES:
-                        representation.setAttributeRelease(getStringListOfAttributeValues(attribute.getAttributeValues()));
-                        break;
-                    case MDDCConstants.FORCE_AUTHN:
-                        relyingPartyOverridesRepresentation.setForceAuthn(getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    default:
-                        break;
-                }
+
+                relyingPartyOverrides.put(ModelRepresentationConversions.getAttributeNameFromFriendlyName(jpaAttribute.getFriendlyName()),
+                                          jpaAttribute.getAttributeValues());
             }
+
+            representation.setRelyingPartyOverrides(relyingPartyOverrides);
         }
 
         return representation;
@@ -548,7 +512,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public RelyingPartyOverridesRepresentation getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
+    public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
     }
 

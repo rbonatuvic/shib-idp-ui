@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverri
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Main backend facade API that defines operations pertaining to manipulating <code>{@link EntityDescriptor}</code> state.
@@ -52,6 +53,6 @@ public interface EntityDescriptorService {
      * @param attributeList the list of attributes to generate from
      * @return a RelyingPartyOverridesRepresentation based on the given list of attributes
      */
-    RelyingPartyOverridesRepresentation getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
+    Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
 
 }

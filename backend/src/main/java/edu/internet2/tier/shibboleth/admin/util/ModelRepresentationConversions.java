@@ -1,25 +1,38 @@
 package edu.internet2.tier.shibboleth.admin.util;
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import org.opensaml.core.xml.XMLObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * Utility class to deal with model conversions related functionality
  */
-public abstract class ModelRepresentationConversions {
+public class ModelRepresentationConversions {
 
     private static final AttributeUtility ATTRIBUTE_UTILITY;
+
+    private static CustomPropertiesConfiguration customPropertiesConfiguration;
+
+    @Autowired
+    public ModelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
+        ModelRepresentationConversions.customPropertiesConfiguration = customPropertiesConfiguration;
+    }
 
     static {
         OpenSamlObjects openSamlObjects = new OpenSamlObjects();
@@ -65,53 +78,55 @@ public abstract class ModelRepresentationConversions {
         return getStringListOfAttributeValues(attribute.getAttributeValues());
     }
 
-    public static RelyingPartyOverridesRepresentation getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
-        RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation = new RelyingPartyOverridesRepresentation();
+    public static String getAttributeNameFromFriendlyName(String attributeFriendlyName) {
+        Optional override = customPropertiesConfiguration.getOverrides().stream().filter(it -> it.getAttributeFriendlyName().equals(attributeFriendlyName)).findFirst();
+        if (!override.isPresent()) {
+            // WAT? Somehow we persisted a property that we're not configured for. This shouldn't happen.
+            throw new RuntimeException("Persisted attribute with friendlyName \"" + attributeFriendlyName + "\" doesn't have a matching configuration in application.yml!");
+        }
+        return ((RelyingPartyOverrideProperty)override.get()).getName();
+    }
+
+    public static Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
+        Map<String, Object> relyingPartyOverrides = new HashMap<>();
 
         for (org.opensaml.saml.saml2.core.Attribute attribute : attributeList) {
             Attribute jpaAttribute = (Attribute) attribute;
-            // TODO: this is going to get real ugly real quick. clean it up, future Jj!
-            switch (jpaAttribute.getName()) {
-                case MDDCConstants.SIGN_ASSERTIONS:
-                    relyingPartyOverridesRepresentation.setSignAssertion(getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.SIGN_RESPONSES:
-                    relyingPartyOverridesRepresentation.setDontSignResponse(!getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.ENCRYPT_ASSERTIONS:
-                    relyingPartyOverridesRepresentation.setTurnOffEncryption(!getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.SECURITY_CONFIGURATION:
-                    if (getStringListValueOfAttribute(jpaAttribute).contains("shibboleth.SecurityConfiguration.SHA1")) {
-                        relyingPartyOverridesRepresentation.setUseSha(true);
-                    }
-                    break;
-                case MDDCConstants.DISALLOWED_FEATURES:
-                    if ((Integer.decode(getStringListValueOfAttribute(jpaAttribute).get(0)) & 0x1) == 0x1) {
-                        relyingPartyOverridesRepresentation.setIgnoreAuthenticationMethod(true);
-                    }
-                    break;
-                case MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE:
-                    relyingPartyOverridesRepresentation.setOmitNotBefore(!getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.RESPONDER_ID:
-                    relyingPartyOverridesRepresentation.setResponderId(getStringListValueOfAttribute(jpaAttribute).get(0));
-                    break;
-                case MDDCConstants.NAME_ID_FORMAT_PRECEDENCE:
-                    relyingPartyOverridesRepresentation.setNameIdFormats(getStringListValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.DEFAULT_AUTHENTICATION_METHODS:
-                    relyingPartyOverridesRepresentation.setAuthenticationMethods(getStringListValueOfAttribute(jpaAttribute));
-                    break;
-                case MDDCConstants.FORCE_AUTHN:
-                    relyingPartyOverridesRepresentation.setForceAuthn(getBooleanValueOfAttribute(jpaAttribute));
-                    break;
-                default:
-                    break;
-            }
+
+            relyingPartyOverrides.put(getAttributeNameFromFriendlyName(jpaAttribute.getFriendlyName()),
+                                      getOverrideFromAttribute(jpaAttribute));
         }
 
-        return relyingPartyOverridesRepresentation;
+        return relyingPartyOverrides;
+    }
+
+    public static Object getOverrideFromAttribute(Attribute attribute) {
+        RelyingPartyOverrideProperty relyingPartyOverrideProperty = customPropertiesConfiguration.getOverrides().stream()
+                .filter(it -> it.getAttributeFriendlyName().equals(attribute.getFriendlyName())).findFirst().get();
+
+        List<XMLObject> attributeValues = attribute.getAttributeValues();
+        switch(AttributeTypes.valueOf(relyingPartyOverrideProperty.getDisplayType().toUpperCase())) {
+            case BOOLEAN:
+                if (relyingPartyOverrideProperty.getPersistType() != null
+                        && (!relyingPartyOverrideProperty.getPersistType().equalsIgnoreCase("boolean"))) {
+                    return "true";
+                } else {
+                    return ((XSBoolean) attributeValues.get(0)).getStoredValue();
+                }
+            case INTEGER:
+                return ((XSInteger) attributeValues.get(0)).getValue();
+            case STRING:
+                if (attributeValues.get(0) instanceof XSAny) {
+                    return ((XSAny) attributeValues.get(0)).getTextContent();
+                } else {
+                    return ((XSString) attributeValues.get(0)).getValue();
+                }
+            case LIST:
+            case SET:
+                return attributeValues.stream().map(it -> ((XSAny) it).getTextContent()).collect(Collectors.toList());
+            default:
+                throw new UnsupportedOperationException("An unsupported persist type was specified (" + relyingPartyOverrideProperty.getPersistType() + ")!");
+        }
     }
 
     public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromAttributeReleaseList(List<String> attributeReleaseList) {
@@ -125,30 +140,31 @@ public abstract class ModelRepresentationConversions {
     }
 
     public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromRelyingPartyOverridesRepresentation
-            (List<RelyingPartyOverrideProperty> overridePropertyList,
-             Map<String, Object> relyingPartyOverridesRepresentation) {
+            (Map<String, Object> relyingPartyOverridesRepresentation) {
+        List<RelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
         List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute> list = new ArrayList<>();
 
         for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
             String key = (String) entry.getKey();
-            RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getDisplayName().equals(key)).findFirst().get();
-            switch (AttributeTypes.valueOf(overrideProperty.getDisplayType())) {
+            RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
+            switch (AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                 case BOOLEAN:
-                    if (!overrideProperty.getPersistType().equals("boolean")) {
+                    if (overrideProperty.getPersistType() != null &&
+                            !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
                         // we must be persisting a string then
                         list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),
-                                                                                   (String) entry.getValue());
+                                                                                   overrideProperty.getPersistValue()));
                     } else {
                         list.add(ATTRIBUTE_UTILITY.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),
-                                                                                   Boolean.valueOf((String) entry.getValue()));
+                                                                                   (Boolean) entry.getValue()));
                     }
                     break;
                 case INTEGER:
                     list.add(ATTRIBUTE_UTILITY.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
                                                                                overrideProperty.getAttributeFriendlyName(),
-                                                                               Integer.valueOf((String) entry.getValue())));
+                                                                               (Integer) entry.getValue()));
                     break;
                 case STRING:
                     list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
@@ -156,14 +172,20 @@ public abstract class ModelRepresentationConversions {
                                                                                (String) entry.getValue()));
                     break;
                 case SET:
-                    list.add(ATTRIBUTE_UTILITY.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
-                                                                                  overrideProperty.getAttributeFriendlyName(),
-                                                                                  (Set<String>) entry.getValue()));
+                    Set<String> setValues = (Set<String>) entry.getValue();
+                    if (setValues.size() > 0) {
+                        list.add(ATTRIBUTE_UTILITY.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
+                                                                                      overrideProperty.getAttributeFriendlyName(),
+                                                                                      setValues));
+                    }
                     break;
                 case LIST:
-                    list.add(ATTRIBUTE_UTILITY.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
-                                                                                  overrideProperty.getAttributeFriendlyName(),
-                                                                                  (List<String>) entry.getValue()));
+                    List<String> listValues = (List<String>) entry.getValue();
+                    if (listValues.size() > 0) {
+                        list.add(ATTRIBUTE_UTILITY.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
+                                                                                      overrideProperty.getAttributeFriendlyName(),
+                                                                                      listValues));
+                    }
                     break;
                 default:
                     throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
@@ -174,22 +196,11 @@ public abstract class ModelRepresentationConversions {
     }
 
 
-    private enum AttributeTypes {
-        BOOLEAN("boolean"),
-        INTEGER("integer"),
-        STRING("string"),
-        SET("set"),
-        LIST("list");
-
-        private final String type;
-
-        AttributeTypes(final String type) {
-            this.type = type;
-        }
-
-        @Override
-        public String toString() {
-            return type;
-        }
-        }
+    public enum AttributeTypes {
+        BOOLEAN,
+        INTEGER,
+        STRING,
+        SET,
+        LIST
+    }
 }

@@ -31,7 +31,9 @@ custom:
 # The structure of an entry is as follows:
 # - name: The name of the entry. used to uniquely identify this entry.
 #   displayName: This will normally be the label used when displaying this override in the UI
+#   displayType: The type to use when displaying this option
 #   helpText: This is the help-icon hover-over text
+#   defaultValues: One or more values to be displayed as default options in the UI
 #   persistType: Optional. If it is necessary to persist something different than the override's display type,
 #                set that type here. For example, display a boolean, but persist a string.
 #   persistValue: Required only when persistType is used. Defines the value to be persisted.
@@ -49,36 +51,48 @@ custom:
       displayName: Sign the Assertion
       displayType: boolean
       helpText: Sign Assertion
-      attributeName:
-      attributeFriendlyName:
-    - name: signResponses
+      attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signAssertions
+      attributeFriendlyName: signAssertions
+    - name: dontSignResponse
       displayName: Don't Sign the Response
       displayType: boolean
       helpText: Don't Sign Response
+      attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signResponses
+      attributeFriendlyName: signResponses
     - name: turnOffEncryption
       displayName: Turn Off Encryption of Response
       displayType: boolean
       helpText: Turn Off Encryption of Response
+      attributeName: http://shibboleth.net/ns/profiles/encryptAssertions
+      attributeFriendlyName: encryptAssertions
     - name: useSha
       displayName: Use SHA1 Signing Algorithm
       displayType: boolean
       helpText: Use SHA1 Signing Algorithm
       persistType: string
       persistValue: shibboleth.SecurityConfiguration.SHA1
+      attributeName: http://shibboleth.net/ns/profiles/securityConfiguration
+      attributeFriendlyName: securityConfiguration
     - name: ignoreAuthenticationMethod
       displayName: Ignore any SP-Requested Authentication Method
       displayType: boolean
       helpText: Ignore any SP-Requested Authentication Method
       persistType: string
       persistValue: 0x1
+      attributeName: http://shibboleth.net/ns/profiles/disallowedFeatures
+      attributeFriendlyName: disallowedFeatures
     - name: omitNotBefore
       displayName: Omit Not Before Condition
       displayType: boolean
       helpText: Omit Not Before Condition
+      attributeName: http://shibboleth.net/ns/profiles/includeConditionsNotBefore
+      attributeFriendlyName: includeConditionsNotBefore
     - name: responderId
       displayName: responderId
       displayType: string
       helpText: ResponderId
+      attributeName: http://shibboleth.net/ns/profiles/responderId
+      attributeFriendlyName: responderId
     - name: nameIdFormats
       displayName: nameIdFormats
       displayType: list
@@ -88,6 +102,8 @@ custom:
         - urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
         - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
         - urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+      attributeName: http://shibboleth.net/ns/profiles/nameIDFormatPrecedence
+      attributeFriendlyName: nameIDFormatPrecedence
     - name: authenticationMethods
       displayName: authenticationMethods
       displayType: list
@@ -96,7 +112,11 @@ custom:
         - https://refeds.org/profile/mfa
         - urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
         - urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+      attributeName: http://shibboleth.net/ns/profiles/defaultAuthenticationMethods
+      attributeFriendlyName: defaultAuthenticationMethods
     - name: forceAuthn
       displayName: Force AuthN
       displayType: boolean
       helpText: Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process
+      attributeName: http://shibboleth.net/ns/profiles/forceAuthn
+      attributeFriendlyName: forceAuthn
