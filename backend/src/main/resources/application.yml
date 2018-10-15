@@ -48,55 +48,62 @@ custom:
   overrides:
   # Default overrides
     - name: signAssertion
-      displayName: Sign the Assertion
+      displayName: label.sign-the-assertion
       displayType: boolean
-      helpText: Sign Assertion
+      defaultValue: false
+      helpText: tooltip.sign-assertion
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signAssertions
       attributeFriendlyName: signAssertions
     - name: dontSignResponse
-      displayName: Don't Sign the Response
+      displayName: label.dont-sign-the-response
       displayType: boolean
-      helpText: Don't Sign Response
+      defaultValue: false
+      helpText: tooltip.dont-sign-response
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signResponses
       attributeFriendlyName: signResponses
     - name: turnOffEncryption
-      displayName: Turn Off Encryption of Response
+      displayName: label.turn-off-encryption-of-response
       displayType: boolean
-      helpText: Turn Off Encryption of Response
+      defaultValue: false
+      helpText: tooltip.turn-off-encryption
       attributeName: http://shibboleth.net/ns/profiles/encryptAssertions
       attributeFriendlyName: encryptAssertions
     - name: useSha
-      displayName: Use SHA1 Signing Algorithm
+      displayName: label.use-sha1-signing-algorithm
       displayType: boolean
-      helpText: Use SHA1 Signing Algorithm
+      defaultValue: false
+      helpText: tooltip.usa-sha-algorithm
       persistType: string
       persistValue: shibboleth.SecurityConfiguration.SHA1
       attributeName: http://shibboleth.net/ns/profiles/securityConfiguration
       attributeFriendlyName: securityConfiguration
     - name: ignoreAuthenticationMethod
-      displayName: Ignore any SP-Requested Authentication Method
+      displayName: label.ignore-any-sp-requested-authentication-method
       displayType: boolean
-      helpText: Ignore any SP-Requested Authentication Method
+      defaultValue: false
+      helpText: tooltip.ignore-auth-method
       persistType: string
       persistValue: 0x1
       attributeName: http://shibboleth.net/ns/profiles/disallowedFeatures
       attributeFriendlyName: disallowedFeatures
     - name: omitNotBefore
-      displayName: Omit Not Before Condition
+      displayName: label.omit-not-before-condition
       displayType: boolean
-      helpText: Omit Not Before Condition
+      defaultValue: false
+      helpText: tooltip.omit-not-before-condition
       attributeName: http://shibboleth.net/ns/profiles/includeConditionsNotBefore
       attributeFriendlyName: includeConditionsNotBefore
     - name: responderId
-      displayName: responderId
+      displayName: label.responder-id
       displayType: string
-      helpText: ResponderId
+      defaultValue: null
+      helpText: tooltip.responder-id
       attributeName: http://shibboleth.net/ns/profiles/responderId
       attributeFriendlyName: responderId
     - name: nameIdFormats
-      displayName: nameIdFormats
-      displayType: list
-      helpText: Add NameID Format
+      displayName: label.nameid-format-to-send
+      displayType: set
+      helpText: tooltip.nameid-format
       defaultValues:
         - urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
         - urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
@@ -105,9 +112,9 @@ custom:
       attributeName: http://shibboleth.net/ns/profiles/nameIDFormatPrecedence
       attributeFriendlyName: nameIDFormatPrecedence
     - name: authenticationMethods
-      displayName: authenticationMethods
-      displayType: list
-      helpText: Authentication Methods to Use
+      displayName: label.authentication-methods-to-use
+      displayType: set
+      helpText: tooltip.authentication-methods-to-use
       defaultValues:
         - https://refeds.org/profile/mfa
         - urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
@@ -115,8 +122,9 @@ custom:
       attributeName: http://shibboleth.net/ns/profiles/defaultAuthenticationMethods
       attributeFriendlyName: defaultAuthenticationMethods
     - name: forceAuthn
-      displayName: Force AuthN
+      displayName: label.force-authn
       displayType: boolean
-      helpText: Disallows use (or reuse) of authentication results and login flows that don't provide a real-time proof of user presence in the login process
+      defaultValue: false
+      helpText: tooltip.force-authn
       attributeName: http://shibboleth.net/ns/profiles/forceAuthn
       attributeFriendlyName: forceAuthn

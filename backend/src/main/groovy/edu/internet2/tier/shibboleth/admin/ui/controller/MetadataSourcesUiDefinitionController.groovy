@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.core.io.ResourceLoader
@@ -42,21 +43,73 @@ class MetadataSourcesUiDefinitionController {
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaUrl, Map)
-            def widget = parsedJson["properties"]["attributeRelease"]["widget"]
-            def data = []
-            customPropertiesConfiguration.getAttributes().each {
-                def attribute = [:]
-                attribute["key"] = it["name"]
-                attribute["label"] = it["displayName"]
-                data << attribute
-            }
-            widget["data"] = data
+            addReleaseAttributesToJson(parsedJson["properties"]["attributeRelease"]["widget"])
+            addRelyingPartyOverridesToJson(parsedJson["properties"]["relyingPartyOverrides"])
+            addRelyingPartyOverridesCollectionDefinitions(parsedJson["definitions"])
+            println(JsonOutput.prettyPrint(JsonOutput.toJson(parsedJson)))
             return ResponseEntity.ok(parsedJson)
         }
         catch (Exception e) {
+            e.printStackTrace()
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
                            sourceUiSchemaDefinitionFile: this.jsonSchemaUrl])
+        }
+    }
+
+    private void addReleaseAttributesToJson(Object json) {
+        def data = []
+        customPropertiesConfiguration.getAttributes().each {
+            def attribute = [:]
+            attribute["key"] = it["name"]
+            attribute["label"] = it["displayName"]
+            data << attribute
+        }
+        json["data"] = data
+    }
+
+    private void addRelyingPartyOverridesToJson(Object json) {
+        def properties = [:]
+        customPropertiesConfiguration.getOverrides().each {
+            def property = [:]
+            if (it["displayType"] == "list"
+                    || it["displayType"] == "set") {
+                property['$ref'] = "#/definitions/" + it["name"]
+            } else {
+                property["title"] = it["displayName"]
+                property["description"] = it["helpText"]
+                property["type"] = it["displayType"]
+                property["default"] = it["defaultValue"]
+            }
+            properties[it["name"]] = property
+        }
+        json["properties"] = properties
+    }
+
+    private void addRelyingPartyOverridesCollectionDefinitions(Object json) {
+        customPropertiesConfiguration.getOverrides().stream().filter {
+            it -> it["displayType"] && (it["displayType"] == "list" || it["displayType"] == "set")
+        }.each {
+            def definition = [:]
+            definition["title"] = it["displayName"]
+            definition["description"] = it["helpText"]
+            definition["type"] = "array"
+            if (it["displayType"] == "set") {
+                definition["uniqueItems"] = true
+            } else if (it["displayType"] == "list") {
+                definition["uniqueItems"] = false
+            }
+            def items = [:]
+            items["type"] = "string"
+            items["widget"] = "datalist"
+            def data = []
+            it["defaultValues"].each { value ->
+                data << value
+            }
+            items["data"] = data
+            definition["items"] = items
+            definition["default"] = null
+            json[(String)it["name"]] = definition
         }
     }
 
