@@ -2,15 +2,12 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.core.io.ResourceLoader
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-
-import javax.annotation.PostConstruct
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
@@ -21,17 +18,10 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * @author Dmitriy Kopylenko
  */
 @RestController('/api/ui/MetadataSources')
-@ConfigurationProperties('shibui')
 class MetadataSourcesUiDefinitionController {
 
-    //Configured via @ConfigurationProperties with 'shibui.metadata-sources-ui-schema-location' property and default
-    //value set here if that property is not explicitly set in application.properties
-    String metadataSourcesUiSchemaLocation = 'classpath:metadata-sources-ui-schema.json'
-
-    URL jsonSchemaUrl
-
     @Autowired
-    ResourceLoader resourceLoader
+    MetadataSourcesJsonSchemaResourceLocation jsonSchemaLocation
 
     @Autowired
     ObjectMapper jacksonObjectMapper
@@ -42,7 +32,7 @@ class MetadataSourcesUiDefinitionController {
     @GetMapping
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
-            def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaUrl, Map)
+            def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
             addReleaseAttributesToJson(parsedJson["properties"]["attributeRelease"]["widget"])
             addRelyingPartyOverridesToJson(parsedJson["properties"]["relyingPartyOverrides"])
             addRelyingPartyOverridesCollectionDefinitions(parsedJson["definitions"])
@@ -53,7 +43,7 @@ class MetadataSourcesUiDefinitionController {
             e.printStackTrace()
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
-                           sourceUiSchemaDefinitionFile: this.jsonSchemaUrl])
+                           sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
         }
     }
 
@@ -111,10 +101,5 @@ class MetadataSourcesUiDefinitionController {
             definition["default"] = null
             json[(String)it["name"]] = definition
         }
-    }
-
-    @PostConstruct
-    def init() {
-        jsonSchemaUrl = this.resourceLoader.getResource(this.metadataSourcesUiSchemaLocation).getURL()
     }
 }
