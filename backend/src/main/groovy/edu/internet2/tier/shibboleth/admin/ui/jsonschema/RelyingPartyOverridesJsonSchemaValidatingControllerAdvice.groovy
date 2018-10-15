@@ -28,9 +28,6 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
     @Autowired
     MetadataSourcesJsonSchemaResourceLocation schemaLocation
 
-    @Autowired
-    ObjectMapper jacksonMapper
-
     @Override
     boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
         targetType.typeName == EntityDescriptorRepresentation.typeName
