@@ -63,27 +63,36 @@
 </main>
 <footer>
     <div class="row">
-        <div class="col-md-8 copyright">
-            <ul class="list-inline">
-                <li class="list-inline-item" [translate]="brand.footer.text">{{ brand.footer.text }}</li>
-                <li class="list-inline-item" *ngFor="let link of brand.footer.links; let i = index;">
-                    <a [href]="link.url" target="_blank" [attr.aria-label]="link.description" [title]="link.description">
-                        <translate-i18n [key]="link.label">{{ link.label }}</translate-i18n>
-                    </a>
-                </li>
-            </ul>
-            <p>
-                <ng-container *ngIf="version$ | async">
-                {{ formatted$ | async }}
-                &nbsp;|&nbsp;
-                </ng-container>
-                <translate-i18n key="brand.footer.copyright" [params]="{ year: year }">Copyright &copy; Internet2</translate-i18n>
-            </p>
+        <div class="col-md-6 copyright">
+            <div class="d-flex flex-column align-items-start justify-content-between p-2">
+                <ul class="list-inline">
+                    <li class="list-inline-item" [translate]="brand.footer.text">{{ brand.footer.text }}</li>
+                    <li class="list-inline-item" *ngFor="let link of brand.footer.links; let i = index;">
+                        <a [href]="link.url" target="_blank" [attr.aria-label]="link.description" [title]="link.description">
+                            <translate-i18n [key]="link.label">{{ link.label }}</translate-i18n>
+                        </a>
+                    </li>
+                </ul>
+                <p>
+                    <ng-container *ngIf="version$ | async">
+                    {{ formatted$ | async }}
+                    &nbsp;|&nbsp;
+                    </ng-container>
+                    <translate-i18n key="brand.footer.copyright" [params]="{ year: year }">Copyright &copy; Internet2</translate-i18n>
+                </p>
+            </div>
         </div>
-        <div class="col-md-4 logo">
-            <a [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.label">
-                <img [src]="brand.logo.default" class="img-fluid float-right" [alt]="brand.logo.alt">
-            </a>
+        <div class="col-md-6 logo">
+            <div class="d-flex align-items-end justify-content-end p-2">
+                <translate-i18n key="brand.in-partnership-with" class="flex-item mr-2">In partnership with</translate-i18n>&nbsp;
+                <a href="https://www.unicon.net" target="_blank" title="brand.unicon" class="flex-item">
+                    <img src="/assets/logo_unicon.png" class="img-fluid float-right" [alt]="'brand.unicon-logo' | translate">
+                </a>
+                &nbsp;<translate-i18n key="brand.and" class="flex-item mx-2">and</translate-i18n>&nbsp;
+                <a href="https://www.internet2.edu/" target="_blank" title="brand.i2" class="flex-item">
+                    <img src="/assets/logo_internet2.png" class="img-fluid float-right" [alt]="'brand.i2-logo' | translate">
+                </a>
+            </div>
         </div>
     </div>
 </footer>
