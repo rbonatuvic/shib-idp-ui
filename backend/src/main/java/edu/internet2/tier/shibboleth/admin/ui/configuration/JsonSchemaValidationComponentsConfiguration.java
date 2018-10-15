@@ -16,9 +16,4 @@ public class JsonSchemaValidationComponentsConfiguration {
     public MetadataSourcesJsonSchemaResourceLocation metadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader) {
         return new MetadataSourcesJsonSchemaResourceLocation(resourceLoader);
     }
-
-    @Bean
-    public RelyingPartyOverridesJsonSchemaValidatingControllerAdvice relyingPartyOverridesJsonSchemaValidatingControllerAdvice() {
-        return new RelyingPartyOverridesJsonSchemaValidatingControllerAdvice();
-    }
 }

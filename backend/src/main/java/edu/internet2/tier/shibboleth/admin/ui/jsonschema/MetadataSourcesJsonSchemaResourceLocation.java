@@ -33,6 +33,10 @@ public class MetadataSourcesJsonSchemaResourceLocation {
         this.resourceLoader = resourceLoader;
     }
 
+    public void setMetadataSourcesUiSchemaLocation(String metadataSourcesUiSchemaLocation) {
+        this.metadataSourcesUiSchemaLocation = metadataSourcesUiSchemaLocation;
+    }
+
     public URL getUrl() {
         return this.jsonSchemaUrl;
     }
