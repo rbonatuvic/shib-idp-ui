@@ -5,6 +5,8 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService;
+import edu.internet2.tier.shibboleth.admin.ui.service.TokenPlaceholderValueResolvingService;
+import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
@@ -39,7 +41,9 @@ public class MetadataResolverConfiguration {
     MetadataResolverConverterService metadataResolverConverterService;
 
     @Bean
-    public MetadataResolver metadataResolver() throws ResolverException, ComponentInitializationException {
+    //This injected dependency makes sure that this bean has been created and the wrapped placeholder resolver service
+    //is available via static facade accessor method to all the downstream non-Spring managed consumers
+    public MetadataResolver metadataResolver(TokenPlaceholderResolvers tokenPlaceholderResolvers) throws ResolverException, ComponentInitializationException {
         ChainingMetadataResolver metadataResolver = new OpenSamlChainingMetadataResolver();
         metadataResolver.setId("chain");
 
