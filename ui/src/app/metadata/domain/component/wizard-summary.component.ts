@@ -45,7 +45,7 @@ export function getStepProperties(schema: any, model: any, definitions: any = {}
         .map(property => {
             return getStepProperty(
                 schema.properties[property],
-                model[property],
+                model && model.hasOwnProperty(property) ? model[property] : null,
                 definitions
             );
         });

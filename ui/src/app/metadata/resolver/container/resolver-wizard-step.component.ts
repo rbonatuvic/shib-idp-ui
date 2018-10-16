@@ -78,7 +78,7 @@ export class ResolverWizardStepComponent implements OnDestroy {
             map(([changes, original]) => ({ ...original, ...changes }))
         )
         .subscribe(changes => {
-            if (changes.resourceId) {
+            if (changes.id) {
                 this.store.dispatch(new UpdateChanges(changes));
             }
         });

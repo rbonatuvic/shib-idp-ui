@@ -1,16 +1,13 @@
 import { Component, Input } from '@angular/core';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Store, Action } from '@ngrx/store';
 import { Subject } from 'rxjs/Subject';
 
-import * as fromEditor from '../reducer';
-
 @Component({
-    selector: 'unsaved-provider',
-    templateUrl: './unsaved-provider.dialog.html'
+    selector: 'unsaved-entity',
+    templateUrl: './unsaved-entity.dialog.html'
 })
-export class UnsavedProviderComponent {
+export class UnsavedEntityComponent {
     readonly subject: Subject<boolean> = new Subject<boolean>();
 
     constructor(

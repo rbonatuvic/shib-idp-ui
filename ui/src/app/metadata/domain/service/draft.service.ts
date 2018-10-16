@@ -18,7 +18,7 @@ export class EntityDraftService {
         return of(this.storage.query());
     }
 
-    find(id: string, attr: string = 'resourceId'): Observable<MetadataResolver> {
+    find(id: string, attr: string = 'id'): Observable<MetadataResolver> {
         if (!id) {
             return throwError(404);
         }
@@ -35,15 +35,15 @@ export class EntityDraftService {
     }
 
     remove(provider: MetadataResolver): Observable<MetadataResolver> {
-        this.storage.removeByAttr(provider.resourceId, 'resourceId');
+        this.storage.removeByAttr(provider.id, 'id');
         return of(provider);
     }
 
     update(provider: MetadataResolver): Observable<MetadataResolver> {
-        let stored = this.storage.findByAttr(provider.resourceId, 'resourceId');
+        let stored = this.storage.findByAttr(provider.id, 'id');
         if (stored) {
             stored = { ...stored, ...provider };
-            this.storage.removeByAttr(provider.resourceId, 'resourceId');
+            this.storage.removeByAttr(provider.id, 'id');
             this.storage.add(stored);
             return of(stored);
         } else {

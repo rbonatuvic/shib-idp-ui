@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { ResolverComponent } from './container/resolver.component';
-import { EditorComponent } from './container/editor.component';
-import { DraftComponent } from './container/draft.component';
 import { ResolverWizardComponent } from './container/resolver-wizard.component';
 
-import { BlankResolverComponent } from './container/blank-resolver.component';
 import { NewResolverComponent } from './container/new-resolver.component';
 import { UploadResolverComponent } from './container/upload-resolver.component';
 import { CopyResolverComponent } from './container/copy-resolver.component';
@@ -14,6 +10,9 @@ import { CopyIsSetGuard } from './guard/copy-isset.guard';
 
 import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
 import { ResolverWizardStepComponent } from './container/resolver-wizard-step.component';
+import { ResolverEditComponent } from './container/resolver-edit.component';
+import { ResolverEditStepComponent } from './container/resolver-edit-step.component';
+import { ResolverSelectComponent } from './container/resolver-select.component';
 
 export const ResolverRoutes: Routes = [
     {
@@ -54,27 +53,19 @@ export const ResolverRoutes: Routes = [
             },
             {
                 path: ':id',
-                component: ResolverComponent,
+                component: ResolverSelectComponent,
                 canActivate: [],
                 children: [
-                    { path: 'edit', redirectTo: 'edit/2' },
                     {
-                        path: 'edit/:index',
-                        component: EditorComponent,
-                        canDeactivate: [CanDeactivateGuard]
-                    }
-                ]
-            },
-            {
-                path: ':entityId',
-                component: DraftComponent,
-                canActivate: [],
-                children: [
-                    { path: 'wizard', redirectTo: 'wizard/2' },
-                    {
-                        path: 'wizard/:index',
-                        component: ResolverWizardComponent,
-                        canDeactivate: [CanDeactivateGuard]
+                        path: 'edit',
+                        component: ResolverEditComponent,
+                        children: [
+                            {
+                                path: ':form',
+                                component: ResolverEditStepComponent,
+                                canDeactivate: [CanDeactivateGuard]
+                            }
+                        ]
                     }
                 ]
             }

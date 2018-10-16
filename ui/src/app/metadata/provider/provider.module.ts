@@ -23,8 +23,6 @@ import { ProviderEditStepComponent } from './container/provider-edit-step.compon
 import { EntityEffects } from './effect/entity.effect';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
 
-import { ProviderEditorNavComponent } from './component/provider-editor-nav.component';
-import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 import { ContentionModule } from '../../contention/contention.module';
 import { DeleteFilterComponent } from './component/delete-filter.component';
 import { I18nModule } from '../../i18n/i18n.module';
@@ -39,12 +37,9 @@ import { DomainModule } from '../domain/domain.module';
         ProviderEditStepComponent,
         ProviderSelectComponent,
         ProviderFilterListComponent,
-        ProviderEditorNavComponent,
-        UnsavedProviderComponent,
         DeleteFilterComponent
     ],
     entryComponents: [
-        UnsavedProviderComponent,
         DeleteFilterComponent
     ],
     imports: [

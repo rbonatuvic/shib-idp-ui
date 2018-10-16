@@ -20,18 +20,10 @@
                 [attr.aria-label]="route.label"
                 role="button">
                 <translate-i18n [key]="route.label"></translate-i18n>
-                <valid-form-icon *ngIf="(invalidForms$ | async).indexOf(route.path) > -1" status="INVALID"></valid-form-icon>
+                <valid-form-icon *ngIf="status.indexOf(route.path) > -1" status="INVALID"></valid-form-icon>
             </a>
             <div class="dropdown-divider"></div>
-            <a href=""
-                class="dropdown-item"
-                [routerLink]="['../', 'filters']"
-                routerLinkActive="active"
-                aria-label="Filter List"
-                role="button"
-                translate="label.filter-list">
-                Filter List
-            </a>
+            <ng-content select=".dropdown-items"></ng-content>
         </div>
     </div>
     <ng-container *ngSwitchCase="formats.TABS">
@@ -45,13 +37,13 @@
                 [attr.aria-label]="route.label">
                 <translate-i18n [key]="route.label"></translate-i18n>
                 <valid-form-icon
-                    *ngIf="(invalidForms$ | async).indexOf(route.path) > -1"
+                    *ngIf="status.indexOf(route.path) > -1"
                     status="INVALID">
                 </valid-form-icon>
             </a>
         </nav>
         <hr />
-        <nav class="nav nav-pills flex-column" role="navigation">
+        <!--<nav class="nav nav-pills flex-column" role="navigation">
             <a class="nav-link"
                 [routerLink]="['../', 'filters']"
                 routerLinkActive="active"
@@ -59,6 +51,6 @@
                 role="button">
                 <translate-i18n key="label.filter-list"></translate-i18n>
             </a>
-        </nav>
+        </nav>-->
     </ng-container>
 </ng-container>

@@ -4,29 +4,28 @@ import { Observable, of } from 'rxjs';
 import { skipWhile, map, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
-import * as fromProvider from '../reducer';
+import * as fromResolver from '../reducer';
 import { ClearWizard, SetIndex, LoadSchemaRequest } from '../../../wizard/action/wizard.action';
-import { ClearEditor } from '../action/editor.action';
-import { MetadataProvider } from '../../domain/model';
-import { ClearProvider } from '../action/entity.action';
+import { MetadataResolver } from '../../domain/model';
+import { Clear } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
-import { UpdateProviderRequest } from '../action/collection.action';
+import { UpdateResolverRequest } from '../action/collection.action';
 import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
-import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
 import { DifferentialService } from '../../../core/service/differential.service';
 import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
+import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 
 @Component({
-    selector: 'provider-edit',
-    templateUrl: './provider-edit.component.html',
+    selector: 'resolver-edit',
+    templateUrl: './resolver-edit.component.html',
     styleUrls: []
 })
 
-export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate {
+export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate {
 
-    provider$: Observable<MetadataProvider>;
-    definition$: Observable<Wizard<MetadataProvider>>;
+    resolver$: Observable<MetadataResolver>;
+    definition$: Observable<Wizard<MetadataResolver>>;
     index$: Observable<string>;
 
     valid$: Observable<boolean>;
@@ -34,28 +33,28 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
     status$: Observable<any>;
     isSaving$: Observable<boolean>;
 
-    latest: MetadataProvider;
-    provider: MetadataProvider;
+    latest: MetadataResolver;
+    resolver: MetadataResolver;
 
     formats = NAV_FORMATS;
 
     constructor(
-        private store: Store<fromProvider.ProviderState>,
+        private store: Store<fromResolver.ResolverState>,
         private router: Router,
         private route: ActivatedRoute,
         private modalService: NgbModal,
         private diffService: DifferentialService
     ) {
-        this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(d => !d));
+        this.resolver$ = this.store.select(fromResolver.getSelectedResolver).pipe(skipWhile(d => !d));
         this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(skipWhile(d => !d));
         this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(skipWhile(i => !i));
-        this.valid$ = this.store.select(fromProvider.getEditorIsValid);
+        this.valid$ = this.store.select(fromResolver.getEntityIsValid);
         this.isInvalid$ = this.valid$.pipe(map(v => !v));
-        this.status$ = this.store.select(fromProvider.getInvalidEditorForms);
-        this.isSaving$ = this.store.select(fromProvider.getEntityIsSaving);
+        this.status$ = this.store.select(fromResolver.getInvalidEntityForms);
+        this.isSaving$ = this.store.select(fromResolver.getEntityIsSaving);
 
         let startIndex$ = this.route.firstChild ?
-            this.route.firstChild.params.pipe(map(p => p.form || 'filters')) :
+            this.route.firstChild.params.pipe(map(p => p.form)) :
             this.definition$.pipe(map(d => d.steps[0].id));
 
         startIndex$
@@ -68,14 +67,10 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .pipe(skipWhile(s => !s))
-            .subscribe(s => {
-                if (s) {
-                    this.store.dispatch(new LoadSchemaRequest(s));
-                }
-            });
+            .subscribe(s => this.store.dispatch(new LoadSchemaRequest(s)));
 
-        this.provider$.subscribe(p => this.provider = p);
-        this.store.select(fromProvider.getEntityChanges).subscribe(changes => this.latest = changes);
+        this.resolver$.subscribe(p => this.resolver = p);
+        this.store.select(fromResolver.getEntityChanges).subscribe(changes => this.latest = changes);
     }
 
     go(id: string): void {
@@ -91,18 +86,17 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
     }
 
     clear(): void {
-        this.store.dispatch(new ClearProvider());
         this.store.dispatch(new ClearWizard());
-        this.store.dispatch(new ClearEditor());
+        this.store.dispatch(new Clear());
     }
 
     save(): void {
-        this.store.dispatch(new UpdateProviderRequest(this.latest));
+        this.store.dispatch(new UpdateResolverRequest(this.latest));
     }
 
     cancel(): void {
         this.clear();
-        this.router.navigate(['metadata', 'manager', 'providers']);
+        this.router.navigate(['metadata', 'manager', 'resolvers']);
     }
 
     canDeactivate(
@@ -113,7 +107,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         if (nextState.url.match('edit')) {
             return of(true);
         }
-        const diff = this.diffService.updatedDiff(this.provider, this.latest);
+        const diff = this.diffService.updatedDiff(this.resolver, this.latest);
         if (diff && Object.keys(diff).length > 0) {
             let modal = this.modalService.open(UnsavedEntityComponent);
             modal.result.then(
@@ -123,7 +117,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
                 },
                 () => console.warn('denied')
             );
-            return this.store.select(fromProvider.getEntityIsSaved);
+            return this.store.select(fromResolver.getEntityIsSaved);
         }
         return of(true);
     }

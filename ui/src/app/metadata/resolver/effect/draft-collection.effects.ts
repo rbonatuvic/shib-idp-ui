@@ -79,7 +79,7 @@ export class DraftCollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new actions.UpdateDraftSuccess({
-                        id: p.resourceId,
+                        id: p.id,
                         changes: p
                     }))
                 );
@@ -94,7 +94,7 @@ export class DraftCollectionEffects {
             this.draftService
                 .find(id)
                 .pipe(
-                    map(p => new SelectDraftSuccess(p.resourceId)),
+                    map(p => new SelectDraftSuccess(p.id)),
                     catchError(e => of(new SelectDraftError()))
                 )
         )
@@ -113,9 +113,9 @@ export class DraftCollectionEffects {
         map(getPayload),
         switchMap(id =>
             this.draftService
-                .save({ resourceId: `r-${ Date.now() }`, serviceProviderName: '' })
+                .save({ id: `r-${ Date.now() }`, serviceProviderName: '' })
                 .pipe(
-                    map(p => new SelectDraftRequest(p.resourceId)),
+                    map(p => new SelectDraftRequest(p.id)),
                     catchError(e => of(new SelectDraftError()))
                 )
         ),

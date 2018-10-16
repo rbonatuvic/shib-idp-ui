@@ -1,7 +1,7 @@
 import { Wizard, WizardStep } from '../../../../wizard/model';
 import { MetadataResolver } from '../metadata-resolver';
 
-export class MetadataSourceWizard implements Wizard<MetadataResolver> {
+export class MetadataSourceEditor implements Wizard<MetadataResolver> {
     label = 'Metadata Source';
     type = '@MetadataProvider';
     steps: WizardStep[] = [
@@ -12,25 +12,8 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             schema: 'assets/schema/source/metadata-source.json',
             fields: [
                 'serviceProviderName',
-                'entityId'
-            ],
-            fieldsets: [
-                {
-                    type: 'section',
-                    class: ['col-6'],
-                    fields: [
-                        'serviceProviderName',
-                        'entityId'
-                    ]
-                }
-            ]
-        },
-        {
-            index: 2,
-            id: 'org-info',
-            label: 'label.org-info',
-            schema: 'assets/schema/source/metadata-source.json',
-            fields: [
+                'entityId',
+                'serviceEnabled',
                 'organization',
                 'contacts'
             ],
@@ -38,6 +21,9 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
                 {
                     type: 'group',
                     fields: [
+                        'serviceProviderName',
+                        'entityId',
+                        'serviceEnabled',
                         'organization'
                     ]
                 },
@@ -143,24 +129,14 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
                     ]
                 }
             ]
-        },
-        {
-            index: 10,
-            id: 'summary',
-            label: 'label.finished',
-            schema: 'assets/schema/source/metadata-source.json',
-            fields: [
-                'serviceEnabled'
-            ],
-            summary: true
         }
     ];
 
-    parser (changes: Partial<MetadataResolver>, schema?: any): any {
+    parser(changes: Partial<MetadataResolver>, schema?: any): any {
         return changes;
     }
 
-    formatter (changes: Partial < MetadataResolver >, schema ?: any): any {
+    formatter(changes: Partial<MetadataResolver>, schema?: any): any {
         return changes;
     }
 
@@ -169,4 +145,3 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
         return validators;
     }
 }
-

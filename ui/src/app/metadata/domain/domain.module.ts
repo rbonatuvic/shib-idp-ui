@@ -17,12 +17,18 @@ import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
 import { WizardSummaryComponent } from './component/wizard-summary.component';
 import { SummaryPropertyComponent } from './component/summary-property.component';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
+import { EditorNavComponent } from './component/editor-nav.component';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 export const COMPONENTS = [
     PreviewDialogComponent,
     WizardSummaryComponent,
-    SummaryPropertyComponent
+    UnsavedEntityComponent,
+    SummaryPropertyComponent,
+    EditorNavComponent
 ];
 
 export const DECLARATIONS = [
@@ -36,7 +42,10 @@ export const DECLARATIONS = [
         HttpModule,
         CommonModule,
         I18nModule,
-        NgbPopoverModule
+        NgbPopoverModule,
+        RouterModule,
+        NgbDropdownModule,
+        SharedModule
     ],
     exports: DECLARATIONS,
     providers: []

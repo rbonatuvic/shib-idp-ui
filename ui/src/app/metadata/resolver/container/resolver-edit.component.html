@@ -1,9 +1,10 @@
-<section *ngIf="provider$ | async" class="section" [attr.aria-label]="'Edit metadata provider - ' + (provider$ | async).name" tabindex="0">
+<section class="section" [attr.aria-label]="'Edit metadata provider - ' + (resolver$ | async).serviceProviderName" tabindex="0">
     <div class="section-header bg-info p-2 text-white">
         <div class="row justify-content-between">
             <div class="col-md-12">
                 <span class="display-6">
-                    <i class="fa fa-fw fa-gears"></i> Edit Metadata Provider - {{ (provider$ | async).name }}</span>
+                    <i class="fa fa-fw fa-gears"></i> Edit Metadata Resolver - {{ (resolver$ | async).serviceProviderName }}
+                </span>
             </div>
         </div>
     </div>
@@ -49,10 +50,11 @@
             <div class="col-lg-3 d-none d-lg-block">
                 <editor-nav
                     [format]="formats.TABS"
+                    [status]="status$ | async"
                     (onPageSelect)="setIndex($event)">
                 </editor-nav>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-9">
                 <router-outlet></router-outlet>
             </div>
         </div>
