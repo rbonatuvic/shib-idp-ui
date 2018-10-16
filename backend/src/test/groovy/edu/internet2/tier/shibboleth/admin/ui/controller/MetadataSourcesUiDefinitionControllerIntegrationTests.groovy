@@ -19,9 +19,6 @@ class MetadataSourcesUiDefinitionControllerIntegrationTests extends Specificatio
     private TestRestTemplate restTemplate
 
     @Autowired
-    MetadataSourcesUiDefinitionController controllerUnderTest
-
-    @Autowired
     MetadataSourcesJsonSchemaResourceLocation schemaLocation
 
     static RESOURCE_URI = '/api/ui/MetadataSources'
