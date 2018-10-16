@@ -206,7 +206,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         ) {
             filter.retainedRoles.each {
                 // TODO: fix
-                markupBuilderDelegate.RetainedRole(it.startsWith('md:') ?: "md:${it}")
+                markupBuilderDelegate.RetainedRole(it.startsWith('md:') ? it : "md:${it}")
             }
         }
     }
