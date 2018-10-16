@@ -25,6 +25,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL;
+import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
@@ -37,7 +38,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
@@ -57,11 +57,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getBooleanValueOfAttribute;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListValueOfAttribute;
 
 /**
  * Default implementation of {@link EntityDescriptorService}
@@ -496,8 +493,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             for (org.opensaml.saml.saml2.core.Attribute attribute : ((EntityAttributes) ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0)).getAttributes()) {
                 Attribute jpaAttribute = (Attribute) attribute;
 
-                relyingPartyOverrides.put(ModelRepresentationConversions.getAttributeNameFromFriendlyName(jpaAttribute.getFriendlyName()),
-                                          jpaAttribute.getAttributeValues());
+                Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
+                if (override.isPresent()) {
+                    relyingPartyOverrides.put(((RelyingPartyOverrideProperty)override.get()).getName(),
+                                              jpaAttribute.getAttributeValues());
+                }
             }
 
             representation.setRelyingPartyOverrides(relyingPartyOverrides);

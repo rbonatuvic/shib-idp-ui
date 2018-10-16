@@ -78,14 +78,9 @@ public class ModelRepresentationConversions {
         return getStringListOfAttributeValues(attribute.getAttributeValues());
     }
 
-    public static String getAttributeNameFromFriendlyName(String attributeFriendlyName) {
-        Optional override = customPropertiesConfiguration.getOverrides().stream().filter(it -> it.getAttributeFriendlyName().equals(attributeFriendlyName)).findFirst();
-        if (!override.isPresent()) {
-            // WAT? Somehow we persisted a property that we're not configured for. This shouldn't happen.
-            throw new RuntimeException("Persisted attribute with friendlyName \"" + attributeFriendlyName + "\" doesn't have a matching configuration in application.yml!");
-        }
-        return ((RelyingPartyOverrideProperty)override.get()).getName();
-    }
+    public static Optional getOverrideByAttributeName(String attributeName) {
+        return customPropertiesConfiguration.getOverrides().stream().filter(it -> it.getAttributeName().equals(attributeName)).findFirst();
+            }
 
     public static Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         Map<String, Object> relyingPartyOverrides = new HashMap<>();
@@ -93,8 +88,11 @@ public class ModelRepresentationConversions {
         for (org.opensaml.saml.saml2.core.Attribute attribute : attributeList) {
             Attribute jpaAttribute = (Attribute) attribute;
 
-            relyingPartyOverrides.put(getAttributeNameFromFriendlyName(jpaAttribute.getFriendlyName()),
-                                      getOverrideFromAttribute(jpaAttribute));
+            Optional override = getOverrideByAttributeName(jpaAttribute.getName());
+            if (override.isPresent()) {
+                relyingPartyOverrides.put(((RelyingPartyOverrideProperty)override.get()).getName(),
+                                          getOverrideFromAttribute(jpaAttribute));
+            }
         }
 
         return relyingPartyOverrides;
