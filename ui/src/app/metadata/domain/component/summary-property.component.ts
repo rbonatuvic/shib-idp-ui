@@ -9,5 +9,9 @@ import { Property } from '../model/property';
 
 export class SummaryPropertyComponent {
     @Input() property: Property;
+
+    getKeys(schema): string[] {
+        return Object.keys(schema.properties);
+    }
 }
 

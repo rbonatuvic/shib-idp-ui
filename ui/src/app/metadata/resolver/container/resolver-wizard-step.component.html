@@ -2,6 +2,7 @@
     <sf-form
         [schema]="schema$ | async"
         [model]="model$ | async"
+        [bindings]="bindings"
         [validators]="validators$ | async"
         (onChange)="valueChangeSubject.next($event)"
         (onErrorChange)="statusChangeSubject.next($event)"></sf-form>

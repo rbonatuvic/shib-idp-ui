@@ -343,16 +343,16 @@
                     "description": "tooltip.omit-not-before-condition",
                     "default": false
                 },
-                "responderId": {
-                    "title": "label.responder-id",
-                    "description": "tooltip.responder-id",
-                    "type": "string"
-                },
                 "nameIdFormats": {
                     "$ref": "#/definitions/NameIdFormatList"
                 },
                 "authenticationMethods": {
                     "$ref": "#/definitions/AuthenticationMethodList"
+                },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string"
                 }
             }
         },
@@ -429,9 +429,6 @@
         },
         "Certificate": {
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "required": [
                 "name",
                 "type",
@@ -449,7 +446,10 @@
                     "title": "label.type",
                     "description": "tooltip.certificate-type",
                     "type": "string",
-                    "widget": "radio",
+                    "widget": {
+                        "id": "radio",
+                        "class": "form-check-inline"
+                    },
                     "oneOf": [
                         {
                             "enum": [
@@ -498,6 +498,7 @@
                     "title": "label.assertion-consumer-service-location-binding",
                     "description": "tooltip.assertion-consumer-service-location-binding",
                     "type": "string",
+                    "widget": "select",
                     "oneOf": [
                         {
                             "enum": [
@@ -516,7 +517,8 @@
                 "makeDefault": {
                     "title": "label.mark-as-default",
                     "description": "tooltip.mark-as-default",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                 }
             }
         },
@@ -568,12 +570,8 @@
             "title": "label.new-endpoint",
             "description": "tooltip.new-endpoint",
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "fieldsets": [
                 {
-                    "type": "section",
                     "fields": [
                         "url",
                         "bindingType"

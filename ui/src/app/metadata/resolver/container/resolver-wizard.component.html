@@ -3,3 +3,8 @@
 <div class="py-4">
     <router-outlet></router-outlet>
 </div>
+<wizard-summary
+    [summary]="summary$ | async"
+    (onPageSelect)="gotoPage($event)"
+    *ngIf="currentPage === 'summary'">
+</wizard-summary>

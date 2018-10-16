@@ -9,6 +9,9 @@ import * as fromWizard from '../../../wizard/reducer';
 import { UpdateStatus, UpdateChanges } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataResolver } from '../../domain/model';
+import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
+import { ArrayProperty } from 'ngx-schema-form/lib/model/arrayproperty';
+import { ObjectProperty } from 'ngx-schema-form/lib/model/objectproperty';
 
 @Component({
     selector: 'resolver-wizard-step',
@@ -35,14 +38,14 @@ export class ResolverWizardStepComponent implements OnDestroy {
 
     validators$: Observable<{ [key: string]: any }>;
 
+    bindings: any;
+
     constructor(
         private store: Store<fromResolver.ResolverState>,
     ) {
         this.schema$ = this.store.select(fromWizard.getSchema);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromResolver.getEntityChanges);
-
-        // this.schema$.subscribe(s => console.log(s));
 
         this.validators$ = this.definition$.pipe(
             map((def) => def.getValidators())
@@ -83,6 +86,47 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
 
         this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
+
+        this.bindings = {
+            '/securityInfo/x509CertificateAvailable': [
+                {
+                    'input': (event, property: FormProperty) => {
+                        let available = !property.value,
+                            parent = property.parent,
+                            certs = parent.getProperty('x509Certificates');
+                        if (available && !certs.value.length) {
+                            certs.setValue([
+                                {
+                                    name: '',
+                                    type: 'both',
+                                    value: ''
+                                }
+                            ], true);
+                        }
+
+                        if (!available && certs.value.length > 0) {
+                            certs.setValue([], true);
+                        }
+                    }
+                }
+            ],
+            '/assertionConsumerServices/*/makeDefault': [
+                {
+                    'input': (event, property: FormProperty) => {
+                        let parent = property.parent.parent as ArrayProperty;
+                        let props = parent.properties as ObjectProperty[];
+                        props.forEach(prop => {
+                            if (prop !== property) {
+                                prop.setValue({
+                                    ...prop.value,
+                                    makeDefault: false
+                                }, false);
+                            }
+                        });
+                    }
+                }
+            ]
+        };
     }
 
     updateStatus(errors: any): void {

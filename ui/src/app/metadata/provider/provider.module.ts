@@ -9,14 +9,12 @@ import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProviderWizardComponent } from './container/provider-wizard.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
-import { ProviderWizardSummaryComponent } from './component/provider-wizard-summary.component';
 import { ProviderComponent } from './container/provider.component';
 import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
 import { EditorEffects } from './effect/editor.effect';
 
 import { FormModule } from '../../schema-form/schema-form.module';
-import { SummaryPropertyComponent } from './component/summary-property.component';
 import { CollectionEffects } from './effect/collection.effect';
 import { SharedModule } from '../../shared/shared.module';
 import { ProviderEditComponent } from './container/provider-edit.component';
@@ -30,18 +28,17 @@ import { UnsavedProviderComponent } from './component/unsaved-provider.dialog';
 import { ContentionModule } from '../../contention/contention.module';
 import { DeleteFilterComponent } from './component/delete-filter.component';
 import { I18nModule } from '../../i18n/i18n.module';
+import { DomainModule } from '../domain/domain.module';
 
 @NgModule({
     declarations: [
         ProviderComponent,
         ProviderWizardComponent,
         ProviderWizardStepComponent,
-        ProviderWizardSummaryComponent,
         ProviderEditComponent,
         ProviderEditStepComponent,
         ProviderSelectComponent,
         ProviderFilterListComponent,
-        SummaryPropertyComponent,
         ProviderEditorNavComponent,
         UnsavedProviderComponent,
         DeleteFilterComponent
@@ -61,7 +58,8 @@ import { I18nModule } from '../../i18n/i18n.module';
         ContentionModule,
         NgbDropdownModule,
         NgbModalModule,
-        I18nModule
+        I18nModule,
+        DomainModule
     ],
     exports: []
 })

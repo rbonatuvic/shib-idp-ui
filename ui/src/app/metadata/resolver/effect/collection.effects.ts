@@ -78,10 +78,13 @@ export class ResolverCollectionEffects {
     addResolverRequest$ = this.actions$.pipe(
         ofType<providerActions.AddResolverRequest>(ResolverCollectionActionTypes.ADD_RESOLVER),
         map(action => action.payload),
-        map(provider => ({
-            ...provider,
-            relyingPartyOverrides: removeNulls(provider.relyingPartyOverrides)
-        })),
+        map(provider => {
+            console.log(provider);
+            return ({
+                ...provider,
+                relyingPartyOverrides: removeNulls(provider.relyingPartyOverrides)
+            });
+        }),
         switchMap(provider =>
             this.descriptorService
                 .save(provider)

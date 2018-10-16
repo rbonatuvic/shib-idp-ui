@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { map, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
+import { map, startWith, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { SelectDraftRequest } from '../action/draft.action';
 import { Store } from '@ngrx/store';
 import * as fromCollection from '../reducer';
@@ -19,11 +19,16 @@ export class NewResolverComponent {
 
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private store: Store<fromCollection.State>
     ) {
-        this.canSetNewType$ = this.route.queryParams.pipe(
-            withLatestFrom(this.route.url),
-            map(([params, url]) => this.route.snapshot.firstChild.routeConfig.path !== 'blank' || params.index === 'common')
+        this.canSetNewType$ = this.router.events.pipe(
+            startWith(this.route),
+            debounceTime(10),
+            map(url => {
+                let child = this.route.snapshot.firstChild;
+                return child.routeConfig.path.match('blank').length === 0 || child.params.index === 'common';
+            })
         );
 
         this.actionsSubscription = this.route.queryParams.pipe(

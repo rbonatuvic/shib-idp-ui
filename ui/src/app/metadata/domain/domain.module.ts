@@ -15,9 +15,14 @@ import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
 import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
+import { WizardSummaryComponent } from './component/wizard-summary.component';
+import { SummaryPropertyComponent } from './component/summary-property.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 export const COMPONENTS = [
-    PreviewDialogComponent
+    PreviewDialogComponent,
+    WizardSummaryComponent,
+    SummaryPropertyComponent
 ];
 
 export const DECLARATIONS = [
@@ -30,7 +35,8 @@ export const DECLARATIONS = [
     imports: [
         HttpModule,
         CommonModule,
-        I18nModule
+        I18nModule,
+        NgbPopoverModule
     ],
     exports: DECLARATIONS,
     providers: []

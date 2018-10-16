@@ -13,6 +13,10 @@ import {
 } from '../action/draft.action';
 import * as actions from '../action/draft.action';
 import { EntityDraftService } from '../../domain/service/draft.service';
+import * as fromResolver from '../reducer';
+import { Store } from '@ngrx/store';
+import { Clear } from '../action/entity.action';
+import { ClearWizard } from '../../../wizard/action/wizard.action';
 
 export const getPayload = (action: any) => action.payload;
 
@@ -75,7 +79,7 @@ export class DraftCollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new actions.UpdateDraftSuccess({
-                        id: p.entityId,
+                        id: p.resourceId,
                         changes: p
                     }))
                 );
@@ -114,7 +118,11 @@ export class DraftCollectionEffects {
                     map(p => new SelectDraftRequest(p.resourceId)),
                     catchError(e => of(new SelectDraftError()))
                 )
-        )
+        ),
+        tap(() => {
+            this.store.dispatch(new ClearWizard());
+            this.store.dispatch(new Clear());
+        })
     );
 
     @Effect()
@@ -137,6 +145,7 @@ export class DraftCollectionEffects {
     constructor(
         private draftService: EntityDraftService,
         private actions$: Actions,
-        private router: Router
+        private router: Router,
+        private store: Store<fromResolver.ResolverState>
     ) { }
 } /* istanbul ignore next */

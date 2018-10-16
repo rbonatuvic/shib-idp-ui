@@ -18,6 +18,7 @@ export interface WizardStep {
 
 export interface WizardFieldset {
     type: string;
+    class?: string[];
     fields: string[];
 }
 

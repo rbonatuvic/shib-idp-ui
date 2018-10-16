@@ -20,6 +20,7 @@ import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
 import { I18nModule } from '../i18n/i18n.module';
 import { CustomObjectWidget } from './widget/object/object.component';
+import { CustomRadioComponent } from './widget/radio/radio.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
@@ -34,6 +35,7 @@ export const COMPONENTS = [
     FilterTargetComponent,
     ChecklistComponent,
     IconButtonComponent,
+    CustomRadioComponent,
     CustomObjectWidget
 ];
 

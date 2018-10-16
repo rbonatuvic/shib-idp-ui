@@ -9,8 +9,8 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
-import { Observable, Subject, of } from 'rxjs';
-import { skipWhile, startWith, distinctUntilChanged, map, defaultIfEmpty } from 'rxjs/operators';
+import { Observable, Subject, of, combineLatest as combine } from 'rxjs';
+import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -58,6 +58,8 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
     valid$: Observable<boolean>;
     schema$: Observable<any>;
 
+    summary$: Observable<{ definition: Wizard<MetadataResolver>, schema: { [id: string]: any }, model: any }>;
+
     constructor(
         private store: Store<fromCollections.State>,
         private route: ActivatedRoute,
@@ -92,6 +94,8 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         this.changes$ = this.store.select(fromResolver.getEntityChanges);
         this.schema$ = this.store.select(fromWizard.getSchema);
 
+        this.resolver$ = this.store.select(fromCollections.getSelectedDraft);
+
         this.route.params
             .pipe(
                 map(params => params.index),
@@ -100,6 +104,26 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             .subscribe(index => {
                 this.store.dispatch(new SetIndex(index));
             });
+
+        this.changes$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            skipWhile(() => this.saving),
+            combineLatest(this.resolver$, (changes, base) => ({ ...base, ...changes }))
+        ).subscribe(latest => this.latest = latest);
+
+        this.summary$ = combine(
+            this.store.select(fromWizard.getWizardDefinition),
+            this.store.select(fromWizard.getSchemaCollection),
+            this.store.select(fromResolver.getEntityChanges)
+        ).pipe(
+            map(([definition, schema, model]) => (
+                {
+                    definition,
+                    schema,
+                    model
+                }
+            ))
+        );
     }
 
     next(): void {
@@ -112,7 +136,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
 
     save(): void {
         this.store.dispatch(new SetDisabled(true));
-        this.store.dispatch(new AddResolverRequest(this.resolver));
+        this.store.dispatch(new AddResolverRequest(this.latest));
     }
 
     go(index: string): void {
@@ -126,6 +150,10 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
                 queryParamsHandling: 'preserve'
             }
         );
+    }
+
+    gotoPage(page: string): void {
+        this.store.dispatch(new SetIndex(page));
     }
 
     ngOnDestroy(): void {

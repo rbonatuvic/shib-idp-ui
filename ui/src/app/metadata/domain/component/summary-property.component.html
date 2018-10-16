@@ -1,0 +1,54 @@
+<div class="mb-3" *ngIf="property">
+    <ng-container [ngSwitch]="property.type">
+        <ng-container *ngSwitchDefault>
+            <ng-container *ngIf="property.name">
+                <strong class="text-primary d-block" role="term" [translate]="property.name">{{ property.name }}</strong>
+                <span class="d-block" role="definition">{{ property.value || property.value === false ? property.value : '-' }}</span>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'array'">
+            <ng-container *ngIf="property.name">
+                <strong class="text-primary d-block" role="term" [translate]="property.name">{{ property.name }}</strong>
+            </ng-container>
+            <ng-container *ngIf="property.items.type === 'object'">
+                <p class="text-secondary" *ngIf="!property.value || !property.value.length">&mdash;</p>
+                <table class="table table-sm table-bordered table-striped" *ngIf="property.value && property.value.length">
+                    <thead>
+                        <tr class="table-secondary">
+                            <th *ngFor="let prop of getKeys(property.items)">
+                                <translate-i18n [key]="property.items.properties[prop].title"></translate-i18n>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let value of property.value">
+                            <td *ngFor="let prop of getKeys(property.items)"
+                                [ngbPopover]="value[prop]"
+                                triggers="mouseenter:mouseleave"
+                                container="body"
+                                placement="top">
+                                {{ value[prop] }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+            <ng-container *ngIf="property.items.type === 'string'">
+                <p class="text-secondary" *ngIf="!property.value || !property.value.length">&mdash;</p>
+                <ul class="list-unstyled" *ngIf="property.value && property.value.length">
+                    <li *ngFor="let item of property.value">
+                        {{ item }}
+                    </li>
+                </ul>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngSwitchCase="'object'">
+            <ng-container *ngIf="property.name">
+                <span class="text-primary d-block" role="term" [translate]="property.name">{{ property.name }}</span>
+            </ng-container>
+            <ng-container *ngIf="property.properties">
+                <summary-property *ngFor="let prop of property.properties" [property]="prop"></summary-property>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>
