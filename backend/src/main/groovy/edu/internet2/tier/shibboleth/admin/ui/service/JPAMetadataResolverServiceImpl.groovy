@@ -205,7 +205,8 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
         ) {
             filter.retainedRoles.each {
-                markupBuilderDelegate.RetainedRole(it)
+                // TODO: fix
+                markupBuilderDelegate.RetainedRole(it.startsWith('md:') ? it : "md:${it}")
             }
         }
     }
