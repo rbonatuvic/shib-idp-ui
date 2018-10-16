@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation;
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.RelyingPartyOverridesJsonSchemaValidatingControllerAdvice;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
@@ -13,7 +13,7 @@ import org.springframework.core.io.ResourceLoader;
 public class JsonSchemaValidationComponentsConfiguration {
 
     @Bean
-    public MetadataSourcesJsonSchemaResourceLocation metadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader) {
-        return new MetadataSourcesJsonSchemaResourceLocation(resourceLoader);
+    public MetadataSourcesJsonSchemaResourceLocation metadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
+        return new MetadataSourcesJsonSchemaResourceLocation(resourceLoader, jacksonMapper);
     }
 }

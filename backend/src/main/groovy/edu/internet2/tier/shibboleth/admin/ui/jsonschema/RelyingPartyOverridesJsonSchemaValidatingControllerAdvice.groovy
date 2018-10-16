@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import mjson.Json
 import org.springframework.beans.factory.annotation.Autowired

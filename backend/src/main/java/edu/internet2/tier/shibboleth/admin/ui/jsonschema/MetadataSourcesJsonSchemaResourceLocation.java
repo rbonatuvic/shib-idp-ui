@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Encapsulates metadata sources JSON schema location.
@@ -27,10 +30,15 @@ public class MetadataSourcesJsonSchemaResourceLocation {
 
     private URL jsonSchemaUrl;
 
-    ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
 
-    public MetadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader) {
+    private ObjectMapper jacksonMapper;
+
+
+
+    public MetadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
         this.resourceLoader = resourceLoader;
+        this.jacksonMapper = jacksonMapper;
     }
 
     public void setMetadataSourcesUiSchemaLocation(String metadataSourcesUiSchemaLocation) {
@@ -54,9 +62,15 @@ public class MetadataSourcesJsonSchemaResourceLocation {
     public void init() {
         try {
             this.jsonSchemaUrl = this.resourceLoader.getResource(this.metadataSourcesUiSchemaLocation).getURL();
+            //Detect malformed JSON schema early, during application start up and fail fast with useful exception message
+            this.jacksonMapper.readValue(this.jsonSchemaUrl, Map.class);
         }
-        catch (IOException ex) {
-            throw new BeanCreationException(ex.getMessage(), ex);
+        catch (Exception ex) {
+            StringBuilder msg =
+                    new StringBuilder(String.format("An error is detected during JSON parsing => [%s]", ex.getMessage()));
+            msg.append(String.format("Offending resource => [%s]", this.metadataSourcesUiSchemaLocation));
+
+            throw new BeanInitializationException(msg.toString(), ex);
         }
     }
 }
