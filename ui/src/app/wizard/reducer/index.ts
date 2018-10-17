@@ -54,7 +54,7 @@ export const getSchemaPath = (index: string, wizard: Wizard<any>) => {
 };
 
 export const getSplitSchema = (schema: any, step: WizardStep) => {
-    if (!schema || !step.fields || !step.fields.length) {
+    if (!schema || !step.fields || !step.fields.length || !schema.properties) {
         return schema;
     }
     const keys = Object.keys(schema.properties).filter(key => step.fields.indexOf(key) > -1);

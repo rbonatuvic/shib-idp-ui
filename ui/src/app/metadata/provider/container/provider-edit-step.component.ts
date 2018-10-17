@@ -9,7 +9,7 @@ import { MetadataProvider } from '../../domain/model';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
-import { withLatestFrom, map, skipWhile, distinctUntilChanged, startWith, combineLatest } from 'rxjs/operators';
+import { withLatestFrom, map, skipWhile, distinctUntilChanged, takeUntil, filter } from 'rxjs/operators';
 import { UpdateProvider } from '../action/entity.action';
 import { FormControl } from '@angular/forms';
 
@@ -19,6 +19,8 @@ import { FormControl } from '@angular/forms';
     styleUrls: []
 })
 export class ProviderEditStepComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
 
@@ -65,10 +67,11 @@ export class ProviderEditStepComponent implements OnDestroy {
                 this.store.select(fromProvider.getProviderXmlIds),
                 this.provider$
             ),
-            map(([def, names, ids, provider]) => def.getValidators(
+            filter(([def, names, ids, provider]) => !def),
+            map(([def, names, ids, provider]) => def ? def.getValidators(
                 names.filter(n => n !== provider.name),
                 ids.filter(id => id !== provider.xmlId)
-            ))
+            ) : {})
         );
 
         this.model$ = this.schema$.pipe(
@@ -86,8 +89,8 @@ export class ProviderEditStepComponent implements OnDestroy {
                 },
                 definition
             })),
-            skipWhile(({ model, definition }) => !definition || !model),
-            map(({ model, definition }) => definition.formatter(model))
+            filter(({ model, definition }) => !definition || !model),
+            map(({ model, definition }) => definition ? definition.formatter(model) : {})
         );
 
         this.valueChangeEmitted$.pipe(
@@ -114,6 +117,8 @@ export class ProviderEditStepComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.valueChangeSubject.complete();
+        this.statusChangeSubject.complete();
+        this.ngUnsubscribe.unsubscribe();
     }
 }
 

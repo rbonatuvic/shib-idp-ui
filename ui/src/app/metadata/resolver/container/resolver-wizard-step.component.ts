@@ -9,9 +9,6 @@ import * as fromWizard from '../../../wizard/reducer';
 import { UpdateStatus, UpdateChanges } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataResolver } from '../../domain/model';
-import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
-import { ArrayProperty } from 'ngx-schema-form/lib/model/arrayproperty';
-import { ObjectProperty } from 'ngx-schema-form/lib/model/objectproperty';
 
 @Component({
     selector: 'resolver-wizard-step',
@@ -38,7 +35,7 @@ export class ResolverWizardStepComponent implements OnDestroy {
 
     validators$: Observable<{ [key: string]: any }>;
 
-    bindings: any;
+    bindings$: Observable<any>;
 
     constructor(
         private store: Store<fromResolver.ResolverState>,
@@ -46,10 +43,7 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.schema$ = this.store.select(fromWizard.getSchema);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromResolver.getEntityChanges);
-
-        this.validators$ = this.definition$.pipe(
-            map((def) => def.getValidators())
-        );
+        this.bindings$ = this.definition$.pipe(map(d => d.bindings));
 
         this.model$ = this.schema$.pipe(
             withLatestFrom(
@@ -70,6 +64,16 @@ export class ResolverWizardStepComponent implements OnDestroy {
             map(({ model, definition }) => definition.formatter(model))
         );
 
+        this.validators$ = this.definition$.pipe(
+            withLatestFrom(
+                this.store.select(fromResolver.getAllEntityIds),
+                this.model$
+            ),
+            map(([def, ids, resolver]) => def.getValidators(
+                ids.filter(id => id !== resolver.entityId)
+            ))
+        );
+
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.definition$),
             skipWhile(([ changes, definition ]) => !definition || !changes),
@@ -86,47 +90,6 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
 
         this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
-
-        this.bindings = {
-            '/securityInfo/x509CertificateAvailable': [
-                {
-                    'input': (event, property: FormProperty) => {
-                        let available = !property.value,
-                            parent = property.parent,
-                            certs = parent.getProperty('x509Certificates');
-                        if (available && !certs.value.length) {
-                            certs.setValue([
-                                {
-                                    name: '',
-                                    type: 'both',
-                                    value: ''
-                                }
-                            ], true);
-                        }
-
-                        if (!available && certs.value.length > 0) {
-                            certs.setValue([], true);
-                        }
-                    }
-                }
-            ],
-            '/assertionConsumerServices/*/makeDefault': [
-                {
-                    'input': (event, property: FormProperty) => {
-                        let parent = property.parent.parent as ArrayProperty;
-                        let props = parent.properties as ObjectProperty[];
-                        props.forEach(prop => {
-                            if (prop !== property) {
-                                prop.setValue({
-                                    ...prop.value,
-                                    makeDefault: false
-                                }, false);
-                            }
-                        });
-                    }
-                }
-            ]
-        };
     }
 
     updateStatus(errors: any): void {

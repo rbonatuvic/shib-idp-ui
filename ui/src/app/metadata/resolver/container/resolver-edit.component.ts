@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { skipWhile, map, combineLatest } from 'rxjs/operators';
+import { skipWhile, map, combineLatest, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromResolver from '../reducer';
@@ -55,26 +55,23 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
 
         let startIndex$ = this.route.firstChild ?
             this.route.firstChild.params.pipe(map(p => p.form)) :
-            this.definition$.pipe(map(d => d.steps[0].id));
+            this.definition$.pipe(filter(d => !!d), map(d => d.steps[0].id));
 
-        startIndex$
-            .subscribe(index => {
-                this.store.dispatch(new SetIndex(index));
-            });
+        startIndex$.subscribe(index => this.setIndex(index));
 
-        this.index$.subscribe(id => this.go(id));
+        this.index$.subscribe(index => index && this.go(index));
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
-            .pipe(skipWhile(s => !s))
+            .pipe(filter(s => !!s))
             .subscribe(s => this.store.dispatch(new LoadSchemaRequest(s)));
 
         this.resolver$.subscribe(p => this.resolver = p);
         this.store.select(fromResolver.getEntityChanges).subscribe(changes => this.latest = changes);
     }
 
-    go(id: string): void {
-        this.router.navigate(['./', id], { relativeTo: this.route });
+    go(index: string): void {
+        this.router.navigate(['./', index], { relativeTo: this.route });
     }
 
     setIndex(id: string): void {

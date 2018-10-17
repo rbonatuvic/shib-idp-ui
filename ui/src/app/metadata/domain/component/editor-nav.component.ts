@@ -20,7 +20,7 @@ export enum NAV_FORMATS {
 
 export class EditorNavComponent {
     @Input() format: string;
-    @Input() status: string[];
+    @Input() status: string[] = [];
 
     @Output() onPageSelect: EventEmitter<string> = new EventEmitter();
 
@@ -43,7 +43,6 @@ export class EditorNavComponent {
         this.routes$ = this.store.select(fromWizard.getRoutes);
         this.current$ = this.store.select(fromWizard.getCurrent);
         this.currentPage$ = this.current$.pipe(map(this.getFilterId));
-
         this.currentLabel$ = this.current$.pipe(map(this.getFilterLabel));
     }
 

@@ -4,6 +4,7 @@ import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider, MetadataResolver } from '../../domain/model';
 import { Property } from '../model/property';
 import { getSplitSchema } from '../../../wizard/reducer';
+import merge from 'deepmerge';
 
 interface Section {
     id: string;
@@ -12,7 +13,7 @@ interface Section {
     properties: Property[];
 }
 
-export function getDefinition(path: string, definitions): any {
+export function getDefinition(path: string, definitions: any): any {
     let def = path.split('/').pop();
     return definitions[def];
 }
@@ -23,7 +24,8 @@ export function getPropertyItemSchema(items: any, definitions: any): any {
 }
 
 export function getStepProperty(property, model, definitions): Property {
-    property = property.$ref ? getDefinition(property.$ref, definitions) : property;
+    if (!property) { return null; }
+    property = property.$ref ? { ...property, ...getDefinition(property.$ref, definitions) } : property;
     return {
         name: property.title,
         value: model,
@@ -66,7 +68,8 @@ export class WizardSummaryComponent implements OnChanges {
     columns: Array<Section>[];
     steps: WizardStep[];
 
-    constructor() {}
+    constructor() {
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.summary && this.summary) {
@@ -74,6 +77,10 @@ export class WizardSummaryComponent implements OnChanges {
             const model = this.summary.model;
             const def = this.summary.definition;
             const steps = def.steps;
+
+            const schema = Object.keys(schemas).reduce((coll, key) => ({
+                ...merge(coll, schemas[key])
+            }), {} as any);
 
             this.sections = steps
                 .filter(step => step.id !== 'summary')
@@ -84,9 +91,9 @@ export class WizardSummaryComponent implements OnChanges {
                             index: step.index,
                             label: step.label,
                             properties: getStepProperties(
-                                schemas[step.id] || getSplitSchema(schemas['summary'], step),
+                                getSplitSchema(schema, step),
                                 def.formatter(model),
-                                schemas.definitions || schemas.hasOwnProperty('summary') ? schemas['summary'].definitions : {}
+                                schema.definitions || {}
                             )
                         });
                     }

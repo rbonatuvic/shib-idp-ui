@@ -9,7 +9,7 @@ import { MetadataResolver } from '../../domain/model';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
-import { withLatestFrom, map, skipWhile, distinctUntilChanged, startWith, combineLatest } from 'rxjs/operators';
+import { withLatestFrom, map, skipWhile, distinctUntilChanged, startWith, combineLatest, filter } from 'rxjs/operators';
 import { UpdateChanges } from '../action/entity.action';
 import { FormControl } from '@angular/forms';
 
@@ -19,6 +19,8 @@ import { FormControl } from '@angular/forms';
     styleUrls: []
 })
 export class ResolverEditStepComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
 
@@ -35,6 +37,7 @@ export class ResolverEditStepComponent implements OnDestroy {
     definition$: Observable<Wizard<MetadataResolver>>;
     changes$: Observable<MetadataResolver>;
     step$: Observable<WizardStep>;
+    bindings$: Observable<any>;
 
     validators$: Observable<{ [key: string]: any }>;
 
@@ -48,6 +51,7 @@ export class ResolverEditStepComponent implements OnDestroy {
         this.resolver$ = this.store.select(fromResolver.getSelectedResolver);
         this.step$ = this.store.select(fromWizard.getCurrent);
         this.schema$ = this.store.select(fromWizard.getSchema);
+        this.bindings$ = this.definition$.pipe(filter(d => !!d), map(d => d.bindings));
 
         this.step$.subscribe(s => {
             if (s && s.locked) {
@@ -64,6 +68,7 @@ export class ResolverEditStepComponent implements OnDestroy {
                 this.store.select(fromResolver.getAllEntityIds),
                 this.resolver$
             ),
+            filter(([def, ids, resolver]) => !!def),
             map(([def, ids, resolver]) => def.getValidators(
                 ids.filter(id => id !== resolver.entityId)
             ))
@@ -84,17 +89,17 @@ export class ResolverEditStepComponent implements OnDestroy {
                 },
                 definition
             })),
-            skipWhile(({ model, definition }) => !definition || !model),
+            filter(({ model, definition }) => definition && model),
             map(({ model, definition }) => definition.formatter(model))
         );
 
         this.valueChangeEmitted$.pipe(
             map(changes => changes.value),
             withLatestFrom(this.definition$, this.store.select(fromResolver.getSelectedResolver)),
-            skipWhile(([changes, definition]) => !definition || !changes),
+            filter(([changes, definition]) => !definition || !changes),
             map(([changes, definition, resolver]) => definition.parser({ ...resolver, ...changes }))
         )
-            .subscribe(changes => this.store.dispatch(new UpdateChanges(changes)));
+        .subscribe(changes => this.store.dispatch(new UpdateChanges(changes)));
 
         this.statusChangeEmitted$
             .pipe(distinctUntilChanged())
@@ -112,6 +117,8 @@ export class ResolverEditStepComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.valueChangeSubject.complete();
+        this.statusChangeSubject.complete();
+        this.ngUnsubscribe.unsubscribe();
     }
 }
 

@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { skipWhile, map, combineLatest } from 'rxjs/operators';
+import { skipWhile, map, combineLatest, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromProvider from '../reducer';
@@ -63,11 +63,11 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
                 this.store.dispatch(new SetIndex(index));
             });
 
-        this.index$.subscribe(id => this.go(id));
+        this.index$.subscribe(id => id && this.go(id));
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
-            .pipe(skipWhile(s => !s))
+            .pipe(filter(s => !!s))
             .subscribe(s => {
                 if (s) {
                     this.store.dispatch(new LoadSchemaRequest(s));
@@ -92,7 +92,6 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
 
     clear(): void {
         this.store.dispatch(new ClearProvider());
-        this.store.dispatch(new ClearWizard());
         this.store.dispatch(new ClearEditor());
     }
 

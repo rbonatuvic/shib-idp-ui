@@ -23,7 +23,7 @@
                 <valid-form-icon *ngIf="status.indexOf(route.path) > -1" status="INVALID"></valid-form-icon>
             </a>
             <div class="dropdown-divider"></div>
-            <ng-content select=".dropdown-items"></ng-content>
+            <ng-content select=".dropdown-item"></ng-content>
         </div>
     </div>
     <ng-container *ngSwitchCase="formats.TABS">
@@ -43,14 +43,8 @@
             </a>
         </nav>
         <hr />
-        <!--<nav class="nav nav-pills flex-column" role="navigation">
-            <a class="nav-link"
-                [routerLink]="['../', 'filters']"
-                routerLinkActive="active"
-                [attr.aria-label]="'label.filter-list' | translate"
-                role="button">
-                <translate-i18n key="label.filter-list"></translate-i18n>
-            </a>
-        </nav>-->
+        <nav class="nav nav-pills flex-column" role="navigation">
+            <ng-content select=".nav-link"></ng-content>
+        </nav>
     </ng-container>
 </ng-container>

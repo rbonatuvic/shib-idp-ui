@@ -14,6 +14,13 @@
                     [format]="formats.DROPDOWN"
                     [status]="status$ | async"
                     (onPageSelect)="setIndex($event)">
+                    <a class="dropdown-item"
+                        [routerLink]="['../', 'filters']"
+                        routerLinkActive="active"
+                        [attr.aria-label]="'label.filter-list' | translate"
+                        role="button">
+                        <translate-i18n key="label.filter-list"></translate-i18n>
+                    </a>
                 </editor-nav>
             </div>
             <div class="col-6 col-lg-3 order-2 text-right">
@@ -50,6 +57,13 @@
                 <editor-nav
                     [format]="formats.TABS"
                     (onPageSelect)="setIndex($event)">
+                    <a class="nav-link"
+                        [routerLink]="['../', 'filters']"
+                        routerLinkActive="active"
+                        [attr.aria-label]="'label.filter-list' | translate"
+                        role="button">
+                        <translate-i18n key="label.filter-list"></translate-i18n>
+                    </a>
                 </editor-nav>
             </div>
             <div class="col-lg-6">

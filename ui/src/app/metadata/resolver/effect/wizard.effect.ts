@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, filter, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {
@@ -28,6 +28,7 @@ export class WizardEffects {
     updateResolver$ = this.actions$.pipe(
         ofType<UpdateChanges>(ResolverEntityActionTypes.UPDATE_CHANGES),
         map(action => action.payload),
+        filter(provider => !provider.createdDate),
         map(provider => new UpdateDraftRequest(provider))
     );
 

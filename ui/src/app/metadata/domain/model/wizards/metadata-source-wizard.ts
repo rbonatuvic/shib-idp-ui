@@ -1,9 +1,8 @@
 import { Wizard, WizardStep } from '../../../../wizard/model';
 import { MetadataResolver } from '../metadata-resolver';
+import { MetadataSourceBase } from './metadata-source-base';
 
-export class MetadataSourceWizard implements Wizard<MetadataResolver> {
-    label = 'Metadata Source';
-    type = '@MetadataProvider';
+export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<MetadataResolver> {
     steps: WizardStep[] = [
         {
             index: 1,
@@ -155,18 +154,5 @@ export class MetadataSourceWizard implements Wizard<MetadataResolver> {
             summary: true
         }
     ];
-
-    parser (changes: Partial<MetadataResolver>, schema?: any): any {
-        return changes;
-    }
-
-    formatter (changes: Partial < MetadataResolver >, schema ?: any): any {
-        return changes;
-    }
-
-    getValidators(...args: any[]): { [key: string]: any } {
-        const validators = {};
-        return validators;
-    }
 }
 
