@@ -448,18 +448,7 @@ class EntityDescriptorControllerTests extends Specification {
 	"serviceEnabled": false,
 	"createdDate": null,
 	"modifiedDate": null,
-	"relyingPartyOverrides": {
-		"signAssertion": false,
-		"dontSignResponse": false,
-		"turnOffEncryption": false,
-		"useSha": false,
-		"ignoreAuthenticationMethod": false,
-		"omitNotBefore": false,
-		"responderId": null,
-		"nameIdFormats": [],
-		"authenticationMethods": [],
-		"forceAuthn": false
-	},
+	"relyingPartyOverrides": {},
 	"attributeRelease": [
 		"givenName",
 		"employeeNumber"
@@ -577,18 +566,7 @@ class EntityDescriptorControllerTests extends Specification {
 	"serviceEnabled": false,
 	"createdDate": null,
 	"modifiedDate": null,
-	"relyingPartyOverrides": {
-		"signAssertion": false,
-		"dontSignResponse": false,
-		"turnOffEncryption": false,
-		"useSha": false,
-		"ignoreAuthenticationMethod": false,
-		"omitNotBefore": false,
-		"responderId": null,
-		"nameIdFormats": [],
-		"authenticationMethods": [],
-		"forceAuthn": false
-	},
+	"relyingPartyOverrides": {},
 	"attributeRelease": [
 		"givenName",
 		"employeeNumber"

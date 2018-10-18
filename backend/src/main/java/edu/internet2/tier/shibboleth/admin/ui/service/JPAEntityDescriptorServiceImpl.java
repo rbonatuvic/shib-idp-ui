@@ -60,6 +60,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
+
 /**
  * Default implementation of {@link EntityDescriptorService}
  *
@@ -493,10 +495,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             for (org.opensaml.saml.saml2.core.Attribute attribute : ((EntityAttributes) ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0)).getAttributes()) {
                 Attribute jpaAttribute = (Attribute) attribute;
 
-                Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
-                if (override.isPresent()) {
-                    relyingPartyOverrides.put(((RelyingPartyOverrideProperty)override.get()).getName(),
-                                              jpaAttribute.getAttributeValues());
+                if (jpaAttribute.getName().equals(MDDCConstants.RELEASE_ATTRIBUTES)) {
+                    representation.setAttributeRelease(getStringListOfAttributeValues(attribute.getAttributeValues()));
+                } else {
+                    Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
+                    if (override.isPresent()) {
+                        relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(),
+                                                  jpaAttribute.getAttributeValues());
+                    }
                 }
             }
 

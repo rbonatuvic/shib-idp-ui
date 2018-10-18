@@ -28,7 +28,7 @@ public class JPAEntityServiceImpl implements EntityService {
     private AttributeUtility attributeUtility;
 
     @Autowired
-    private CustomPropertiesConfiguration customPropertiesConfiguration = new CustomPropertiesConfiguration();
+    private CustomPropertiesConfiguration customPropertiesConfiguration;
 
     public JPAEntityServiceImpl(OpenSamlObjects openSamlObjects) {
         this.openSamlObjects = openSamlObjects;
@@ -37,6 +37,14 @@ public class JPAEntityServiceImpl implements EntityService {
     public JPAEntityServiceImpl(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility) {
         this.openSamlObjects = openSamlObjects;
         this.attributeUtility = attributeUtility;
+    }
+
+    public JPAEntityServiceImpl(OpenSamlObjects openSamlObjects,
+                                AttributeUtility attributeUtility,
+                                CustomPropertiesConfiguration customPropertiesConfiguration) {
+        this.openSamlObjects = openSamlObjects;
+        this.attributeUtility = attributeUtility;
+        this.customPropertiesConfiguration = customPropertiesConfiguration;
     }
 
     @Override
@@ -95,7 +103,7 @@ public class JPAEntityServiceImpl implements EntityService {
 
         for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
             String key = (String) entry.getKey();
-            RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getDisplayName().equals(key)).findFirst().get();
+            RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
             switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                 case BOOLEAN:
                     if (!overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
@@ -120,12 +128,12 @@ public class JPAEntityServiceImpl implements EntityService {
                                                                                (String) entry.getValue()));
                     break;
                 case SET:
-                    list.add(attributeUtility.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
+                    list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                   overrideProperty.getAttributeFriendlyName(),
-                                                                                  (Set<String>) entry.getValue()));
+                                                                              (List<String>) entry.getValue()));
                     break;
                 case LIST:
-                    list.add(attributeUtility.createAttributeWithArbitraryValues(overrideProperty.getAttributeName(),
+                    list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                   overrideProperty.getAttributeFriendlyName(),
                                                                                   (List<String>) entry.getValue()));
                     break;

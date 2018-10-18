@@ -1,7 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
+import groovy.xml.XmlUtil
 import org.apache.commons.lang.StringUtils
+import org.codehaus.groovy.tools.xml.DomToGroovy
 import org.w3c.dom.Document
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -34,5 +36,9 @@ class TestHelpers {
                 .ignoreWhitespace()
                 .build()
                 .hasDifferences()
+    }
+
+    static String XmlDocumentToString(Document document) {
+        return XmlUtil.serialize(document.documentElement)
     }
 }

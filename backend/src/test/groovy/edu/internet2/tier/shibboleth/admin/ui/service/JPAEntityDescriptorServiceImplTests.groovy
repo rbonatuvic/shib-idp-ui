@@ -1,30 +1,56 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import org.assertj.core.api.Assertions
+import org.spockframework.spring.SpringBean
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer
+import org.springframework.boot.test.context.SpringBootContextLoader
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.json.JacksonTester
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.PropertySource
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.web.WebAppConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
 import spock.lang.Specification
 
+//@TestPropertySource("/application.yml")
+//@ContextConfiguration(classes = [CoreShibUiConfiguration, CustomPropertiesConfiguration], initializers = ConfigFileApplicationContextInitializer.class)
+@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
+@SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@PropertySource("classpath:application.yml")
 class JPAEntityDescriptorServiceImplTests extends Specification {
+
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
+    @Autowired
+    FilterService filterService
+
+    @Autowired
+    ApplicationContext context
 
     def testObjectGenerator
 
@@ -34,7 +60,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
     }
 
     def service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
-            new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects)))
+            new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration))
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
@@ -634,8 +660,8 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
         then:
         // TODO: finish
-        // Assertions.assertThat(actualOutputJson).isEqualToJson('/json/SHIBUI-219-3.json')
-        assert true
+        Assertions.assertThat(actualOutputJson).isEqualToJson('/json/SHIBUI-219-3.json')
+//        assert true
     }
 
     def "SHIBUI-223"() {

@@ -34,7 +34,6 @@ public class AttributeUtility {
         return attribute;
     }
 
-
     public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithIntegerValue(String name, String friendlyName, Integer value) {
         edu.internet2.tier.shibboleth.admin.ui.domain.Attribute attribute = createNewAttribute(name, friendlyName);
 
@@ -44,7 +43,6 @@ public class AttributeUtility {
 
         return attribute;
     }
-
 
     public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithStringValues(String name, String friendlyName, String... values) {
         edu.internet2.tier.shibboleth.admin.ui.domain.Attribute attribute = createNewAttribute(name, friendlyName);
@@ -58,7 +56,6 @@ public class AttributeUtility {
         return attribute;
     }
 
-
     /*
      * Provided for calling with name = MDDCConstants.RELEASE_ATTRIBUTES.
      */
@@ -69,27 +66,6 @@ public class AttributeUtility {
     public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithStringValues(String name, String friendlyName, List<String> values) {
         return createAttributeWithStringValues(name, friendlyName, values.toArray(new String[]{}));
     }
-
-    public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithArbitraryValues(String name, String friendlyName, String... values) {
-        edu.internet2.tier.shibboleth.admin.ui.domain.Attribute attribute = createNewAttribute(name, friendlyName);
-
-        for (String value : values) {
-            XSAny xsAny = (XSAny) openSamlObjects.getBuilderFactory().getBuilder(XSAny.TYPE_NAME).buildObject(AttributeValue.DEFAULT_ELEMENT_NAME);
-            xsAny.setTextContent(value);
-            attribute.getAttributeValues().add(xsAny);
-        }
-
-        return attribute;
-    }
-
-    public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithArbitraryValues(String name, String friendlyName, List<String> values) {
-        return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
-    }
-
-    public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithArbitraryValues(String name, String friendlyName, Set<String> values) {
-        return createAttributeWithStringValues(name, friendlyName, values.toArray(new String[]{}));
-    }
-
 
     /* Calling this method with name = MDDCConstants.RELEASE_ATTRIBUTES seems to be a special case. In this case,
      * we haven't been setting the friendlyName or nameFormat. Hence the null check.

@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
@@ -12,6 +13,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import groovy.xml.XmlUtil
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,11 +75,11 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
                 it.value = ['https://sp1.example.org']
                 it
             }
-            def attribute = attributeUtility.createAttributeWithArbitraryValues('here', null, 'there')
+            def attribute = attributeUtility.createAttributeWithStringValues('here', null, 'there')
             attribute.nameFormat = null
             attribute.namespacePrefix = 'saml'
             attribute.attributeValues.each { val ->
-                val.namespacePrefix = 'saml'
+                ((XSString)val).namespacePrefix = 'saml'
             }
             it.attributes = [attribute]
             it
