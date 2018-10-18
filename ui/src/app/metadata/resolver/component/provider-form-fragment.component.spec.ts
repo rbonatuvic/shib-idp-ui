@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
-import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
+import { ProviderValueEmitter, ProviderStatusEmitter } from '../../domain/service/provider-change-emitter.service';
 
 
 describe('Resolver Form Fragment Component', () => {

@@ -17,8 +17,8 @@ export interface State extends fromRoot.State {
 }
 
 export function getSchemaParseFn(schema, locked): any {
-    if (!schema) {
-        return null;
+    if (!schema || !schema.properties) {
+        return schema;
     }
     return {
         ...schema,

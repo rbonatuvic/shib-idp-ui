@@ -3,19 +3,19 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProviderValueEmitter, ProviderStatusEmitter } from '../../../domain/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ListValuesService } from '../../../domain/service/list-values.service';
-import { FinishFormComponent } from './finish-form.component';
-import { RouterStub, RouterLinkStubDirective } from '../../../../../testing/router.stub';
-import { ActivatedRouteStub } from '../../../../../testing/activated-route.stub';
 
-import * as stubs from '../../../../../testing/resolver.stub';
-import { FileBackedHttpMetadataResolver } from '../../entity';
-import { InputDefaultsDirective } from '../../../../shared/directive/input-defaults.directive';
-import { MockI18nModule } from '../../../../../testing/i18n.stub';
-import { MockListValueService } from '../../../../../testing/list-values.stub';
-import { MockSharedModule } from '../../../../../testing/shared.stub';
+import { ProviderValueEmitter, ProviderStatusEmitter } from '../../domain/service/provider-change-emitter.service';
+import { ListValuesService } from '../../domain/service/list-values.service';
+import { FinishFormComponent } from './finish-form.component';
+import { RouterStub, RouterLinkStubDirective } from '../../../../testing/router.stub';
+import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
+import * as stubs from '../../../../testing/resolver.stub';
+import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { InputDefaultsDirective } from '../../../shared/directive/input-defaults.directive';
+import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { MockListValueService } from '../../../../testing/list-values.stub';
+import { MockSharedModule } from '../../../../testing/shared.stub';
 
 @Component({
     template: `<finish-form [resolver]="resolver"></finish-form>`

@@ -11,7 +11,7 @@ import * as fromWizard from '../../../wizard/reducer';
 import { SharedModule } from '../../../shared/shared.module';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import { FileBackedHttpMetadataProviderEditor } from '../model';
-import { ProviderEditorNavComponent } from '../component/provider-editor-nav.component';
+import { EditorNavComponent } from '../../domain/component/editor-nav.component';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { MetadataProvider } from '../../domain/model';
 import { of } from 'rxjs';
@@ -59,6 +59,10 @@ describe('Provider Edit Component', () => {
                             index: 'common',
                             disabled: false,
                             definition: FileBackedHttpMetadataProviderEditor,
+                            schemaPath: '',
+                            loading: false,
+                            schema: {},
+                            locked: false,
                             schemaCollection: []
                         }
                     })
@@ -68,7 +72,7 @@ describe('Provider Edit Component', () => {
             declarations: [
                 ProviderEditComponent,
                 TestHostComponent,
-                ProviderEditorNavComponent
+                EditorNavComponent
             ],
             providers: [
                 DifferentialService,

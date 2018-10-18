@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { EffectsModule } from '@ngrx/effects';
 import { CommonModule } from '@angular/common';
+import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ResolverService } from './service/resolver.service';
 import { ListValuesService } from './service/list-values.service';
@@ -17,7 +18,7 @@ import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
 import { WizardSummaryComponent } from './component/wizard-summary.component';
 import { SummaryPropertyComponent } from './component/summary-property.component';
-import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
 import { EditorNavComponent } from './component/editor-nav.component';
 import { RouterModule } from '@angular/router';

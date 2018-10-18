@@ -2,9 +2,9 @@ import { Component, Input, OnInit, OnChanges, OnDestroy, ChangeDetectionStrategy
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ProviderFormFragmentComponent } from './provider-form-fragment.component';
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
-import { MetadataResolver } from '../../../domain/model';
-import { ListValuesService } from '../../../domain/service/list-values.service';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
+import { MetadataResolver } from '../../domain/model';
+import { ListValuesService } from '../../domain/service/list-values.service';
 
 @Component({
     selector: 'finish-form',

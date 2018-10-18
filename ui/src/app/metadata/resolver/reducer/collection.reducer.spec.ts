@@ -7,14 +7,14 @@ let resolvers: MetadataResolver[] = [
     { id: '1', entityId: 'foo', serviceProviderName: 'bar', createdDate: 'Tue Apr 17 2018 13:33:54 GMT-0700 (MST)' } as MetadataResolver,
     { id: '2', entityId: 'baz', serviceProviderName: 'fin', createdDate: 'Tue Apr 17 2018 13:34:07 GMT-0700 (MST)' } as MetadataResolver
 ],
-    snapshot: fromCollection.CollectionState = {
-        ids: [resolvers[0].id, resolvers[1].id],
-        entities: {
-            [resolvers[0].id]: resolvers[0],
-            [resolvers[1].id]: resolvers[1]
-        },
-        selectedResolverId: null
-    };
+snapshot: fromCollection.CollectionState = {
+    ids: [resolvers[0].id, resolvers[1].id],
+    entities: {
+        [resolvers[0].id]: resolvers[0],
+        [resolvers[1].id]: resolvers[1]
+    },
+    selectedResolverId: null
+};
 
 describe('Resolver Reducer', () => {
     const initialState: fromCollection.CollectionState = {

@@ -31,6 +31,10 @@ export class ActivatedRouteStub {
         return this.paramMap;
     }
 
+    get queryParams() {
+        return this.paramMap;
+    }
+
     get firstChild(): ActivatedRouteStub {
         return this._firstChild;
     }

@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup, FormControlName } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil, startWith } from 'rxjs/operators';
 
-import { ProviderStatusEmitter, ProviderValueEmitter } from '../../../domain/service/provider-change-emitter.service';
-import { MetadataResolver } from '../../../domain/model';
+import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
+import { MetadataResolver } from '../../domain/model';
 
-import * as constants from '../../../../shared/constant';
-import { removeNulls } from '../../../../shared/util';
+import * as constants from '../../../shared/constant';
+import { removeNulls } from '../../../shared/util';
 
 @Component({
     selector: 'provider-form-fragment',

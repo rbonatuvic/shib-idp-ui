@@ -37,9 +37,9 @@ describe('Domain Utility methods', () => {
 
     describe('mergeProviderOrderFn', () => {
         const providers = <MetadataProvider[]>[
-            { resourceId: 'foo', name: 'foo', '@type': 'foo', enabled: true, xmlId: 'id', sortKey: 1, metadataFilters: [] },
-            { resourceId: 'bar', name: 'bar', '@type': 'bar', enabled: false, xmlId: 'id2', sortKey: 2, metadataFilters: [] },
-            { resourceId: 'baz', name: 'baz', '@type': 'baz', enabled: false, xmlId: 'id3', sortKey: 3, metadataFilters: [] }
+            { id: 'foo', name: 'foo', '@type': 'foo', enabled: true, xmlId: 'id', sortKey: 1, metadataFilters: [] },
+            { id: 'bar', name: 'bar', '@type': 'bar', enabled: false, xmlId: 'id2', sortKey: 2, metadataFilters: [] },
+            { id: 'baz', name: 'baz', '@type': 'baz', enabled: false, xmlId: 'id3', sortKey: 3, metadataFilters: [] }
         ];
         it('1 should sort the list accordingly', () => {
             let order = ['bar', 'foo', 'baz'],

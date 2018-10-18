@@ -1,9 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NewFilterComponent } from './new-filter.component';
 import * as fromFilter from '../reducer';
-import { ProviderEditorFormModule } from '../../domain/component';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NavigatorService } from '../../../core/service/navigator.service';
@@ -35,7 +33,6 @@ describe('New Metadata Filter Page', () => {
                     'filter': combineReducers(fromFilter.reducers),
                 }),
                 ReactiveFormsModule,
-                ProviderEditorFormModule,
                 NgbPopoverModule,
                 SharedModule,
                 HttpClientModule,

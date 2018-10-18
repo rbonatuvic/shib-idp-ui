@@ -1,29 +1,26 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ProviderWizardSummaryComponent, getStepProperties } from './provider-wizard-summary.component';
-import * as fromRoot from '../reducer';
+import { getStepProperties, WizardSummaryComponent } from './wizard-summary.component';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
-import * as fromWizard from '../../../wizard/reducer';
 import { Wizard } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { SummaryPropertyComponent } from './summary-property.component';
 import { SCHEMA } from '../../../../testing/form-schema.stub';
-import { MetadataProviderWizard } from '../model';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { MetadataProviderWizard } from '../../provider/model';
 
 @Component({
     template: `
-        <provider-wizard-summary [summary]="summary"></provider-wizard-summary>
+        <wizard-summary [summary]="summary"></wizard-summary>
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderWizardSummaryComponent)
-    public componentUnderTest: ProviderWizardSummaryComponent;
+    @ViewChild(WizardSummaryComponent)
+    public componentUnderTest: WizardSummaryComponent;
 
     private _summary;
 
@@ -40,23 +37,19 @@ describe('Provider Wizard Summary Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let app: ProviderWizardSummaryComponent;
-    let store: Store<fromRoot.State>;
+    let app: WizardSummaryComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule.forRoot(),
+                NgbPopoverModule.forRoot(),
                 RouterTestingModule,
                 SchemaFormModule.forRoot(),
-                StoreModule.forRoot({
-                    provider: combineReducers(fromRoot.reducers),
-                    wizard: combineReducers(fromWizard.reducers)
-                }),
                 MockI18nModule
             ],
             declarations: [
-                ProviderWizardSummaryComponent,
+                WizardSummaryComponent,
                 SummaryPropertyComponent,
                 TestHostComponent
             ],
@@ -64,9 +57,6 @@ describe('Provider Wizard Summary Component', () => {
                 { provide: WidgetRegistry, useClass: DefaultWidgetRegistry }
             ]
         }).compileComponents();
-
-        store = TestBed.get(Store);
-        spyOn(store, 'dispatch');
 
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;

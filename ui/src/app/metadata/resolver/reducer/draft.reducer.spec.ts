@@ -4,14 +4,14 @@ import * as draftActions from '../action/draft.action';
 import { MetadataResolver } from '../../domain/model';
 
 let drafts: MetadataResolver[] = [
-        { entityId: 'foo', serviceProviderName: 'bar' } as MetadataResolver,
-        { entityId: 'baz', serviceProviderName: 'fin' } as MetadataResolver
+        { id: 'foo', serviceProviderName: 'bar' } as MetadataResolver,
+        { id: 'baz', serviceProviderName: 'fin' } as MetadataResolver
     ],
     snapshot: fromDrafts.DraftState = {
-        ids: [drafts[0].entityId, drafts[1].entityId],
+        ids: [drafts[0].id, drafts[1].id],
         entities: {
-            [drafts[0].entityId]: drafts[0],
-            [drafts[1].entityId]: drafts[1]
+            [drafts[0].id]: drafts[0],
+            [drafts[1].id]: drafts[1]
         },
         selectedDraftId: null
     };
@@ -46,10 +46,10 @@ describe('Draft Reducer', () => {
         it('should update the draft of the specified entityId', () => {
             let changes = { ...drafts[1], serviceProviderName: 'foo' },
                 expected = {
-                    ids: [drafts[0].entityId, drafts[1].entityId],
+                    ids: [drafts[0].id, drafts[1].entityId],
                     entities: {
-                        [drafts[0].entityId]: drafts[0],
-                        [drafts[1].entityId]: changes
+                        [drafts[0].id]: drafts[0],
+                        [drafts[1].id]: changes
                     },
                     selectedDraftId: null
                 };
@@ -61,7 +61,7 @@ describe('Draft Reducer', () => {
         });
 
         it('should return state if the entityId is not found', () => {
-            let changes = { ...drafts[1], serviceEnabled: true, entityId: 'bar' };
+            let changes = { ...drafts[1], serviceEnabled: true, id: 'bar' };
             const action = new draftActions.UpdateDraftSuccess({id: changes.id, changes});
             const result = reducer({ ...snapshot }, action);
 
@@ -73,11 +73,11 @@ describe('Draft Reducer', () => {
         it('should update the selected draft id', () => {
             let id = 'foo',
                 expected = { ...snapshot, selectedDraftId: id };
-            const action = new draftActions.SelectDraft(id);
+            const action = new draftActions.SelectDraftSuccess(id);
             const result = reducer({ ...snapshot }, action);
 
             expect(result).toEqual(
-                Object.assign({}, initialState, expected)
+                { ...initialState, ...expected }
             );
         });
     });

@@ -87,4 +87,79 @@ describe('wizard index selectors', () => {
             expect(selectors.getModelFn(step)).toEqual({});
         });
     });
+
+    describe(`reducer/selector logic functions`, () => {
+
+        describe('getSchemaParseFn', () => {
+            const schema = {
+                properties: {
+                    foo: {
+                        type: 'string'
+                    }
+                }
+            };
+            const schema2 = {
+                properties: {
+                    foo: {
+                        type: 'object',
+                        properties: {
+                            bar: {
+                                type: 'string'
+                            }
+                        }
+                    }
+                }
+            };
+            it('should lock all properties', () => {
+                expect(selectors.getSchemaParseFn(schema, true)).toEqual({
+                    ...schema,
+                    properties: {
+                        ...schema.properties,
+                        foo: {
+                            ...schema.properties.foo,
+                            readOnly: true
+                        }
+                    }
+                });
+            });
+
+            it('should unlock all properties', () => {
+                expect(selectors.getSchemaParseFn(schema, false)).toEqual({
+                    ...schema,
+                    properties: {
+                        ...schema.properties,
+                        foo: {
+                            type: 'string',
+                            readOnly: false
+                        }
+                    }
+                });
+            });
+
+            it('should lock child properties properties', () => {
+                expect(selectors.getSchemaParseFn(schema2, true)).toEqual({
+                    ...schema,
+                    properties: {
+                        ...schema2.properties,
+                        foo: {
+                            ...schema2.properties.foo,
+                            readOnly: true,
+                            properties: {
+                                bar: {
+                                    ...schema2.properties.foo.properties.bar,
+                                    readOnly: true
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        describe('getSchemaLockedFn', () => {
+            it('should return true if the step is locked', () => {
+                expect(selectors.getSchemaLockedFn({ locked: true }, false)).toEqual(false);
+            });
+        });
+    });
 });

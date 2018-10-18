@@ -5,32 +5,31 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import * as fromRoot from '../reducer';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import * as fromWizard from '../../../wizard/reducer';
-import { ProviderEditorNavComponent, NAV_FORMATS } from './provider-editor-nav.component';
+import { EditorNavComponent, NAV_FORMATS } from './editor-nav.component';
 import { ValidFormIconComponent } from '../../../shared/component/valid-form-icon.component';
 import { WizardStep } from '../../../wizard/model';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
-        <provider-editor-nav [format]="format.TABS"></provider-editor-nav>
+        <editor-nav [format]="format.TABS"></editor-nav>
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderEditorNavComponent)
-    public componentUnderTest: ProviderEditorNavComponent;
+    @ViewChild(EditorNavComponent)
+    public componentUnderTest: EditorNavComponent;
 
     public format = NAV_FORMATS;
 }
 
-describe('Provider Editor Nav Component', () => {
+describe('Editor Nav Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let app: ProviderEditorNavComponent;
-    let store: Store<fromRoot.State>;
+    let app: EditorNavComponent;
+    let store: Store<fromWizard.State>;
 
     let step: WizardStep = {
         id: 'common',
@@ -47,13 +46,12 @@ describe('Provider Editor Nav Component', () => {
                 RouterTestingModule,
                 SchemaFormModule.forRoot(),
                 StoreModule.forRoot({
-                    provider: combineReducers(fromRoot.reducers),
                     wizard: combineReducers(fromWizard.reducers)
                 }),
                 MockI18nModule
             ],
             declarations: [
-                ProviderEditorNavComponent,
+                EditorNavComponent,
                 ValidFormIconComponent,
                 TestHostComponent
             ],

@@ -68,8 +68,7 @@ export class WizardSummaryComponent implements OnChanges {
     columns: Array<Section>[];
     steps: WizardStep[];
 
-    constructor() {
-    }
+    constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.summary && this.summary) {
