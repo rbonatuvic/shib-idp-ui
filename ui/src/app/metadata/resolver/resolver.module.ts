@@ -1,11 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NewResolverComponent } from './container/new-resolver.component';
 import { UploadResolverComponent } from './container/upload-resolver.component';
@@ -64,7 +64,8 @@ import { ProviderFormFragmentComponent } from './component/provider-form-fragmen
         I18nModule,
         WizardModule,
         FormModule,
-        NgbPopoverModule
+        NgbPopoverModule,
+        NgbModalModule
     ],
     exports: [],
     providers: []

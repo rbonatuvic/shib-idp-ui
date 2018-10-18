@@ -20,7 +20,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { ProviderEditComponent } from './container/provider-edit.component';
 import { ProviderSelectComponent } from './container/provider-select.component';
 import { ProviderEditStepComponent } from './container/provider-edit-step.component';
-import { EntityEffects } from './effect/entity.effect';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
 
 import { ContentionModule } from '../../contention/contention.module';
@@ -70,7 +69,7 @@ export class ProviderModule {
     imports: [
         ProviderModule,
         StoreModule.forFeature('provider', fromProvider.reducers),
-        EffectsModule.forFeature([EntityEffects, EditorEffects, CollectionEffects])
+        EffectsModule.forFeature([EditorEffects, CollectionEffects])
     ]
 })
 export class RootProviderModule { }

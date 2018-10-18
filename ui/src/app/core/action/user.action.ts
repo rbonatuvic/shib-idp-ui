@@ -24,7 +24,7 @@ export class UserLoadSuccessAction implements Action {
 export class UserLoadErrorAction implements Action {
     readonly type = USER_LOAD_ERROR;
 
-    constructor(public payload: { message: string, type: string }) { }
+    constructor(public payload: { message: string }) { }
 }
 
 export class UserRedirect implements Action {

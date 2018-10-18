@@ -1,10 +1,10 @@
 import { FileBackedHttpMetadataProviderWizard } from './file-backed-http.provider.form';
-import { FileBackedHttpMetadataProvider } from '../../domain/model/providers';
 
 describe('FileBackedHttpMetadataProviderWizard', () => {
 
     const parser = FileBackedHttpMetadataProviderWizard.parser;
     const formatter = FileBackedHttpMetadataProviderWizard.formatter;
+    const getValidators = FileBackedHttpMetadataProviderWizard.getValidators;
 
     const requiredValidUntilFilter = {
         maxValidityInterval: 1,
@@ -105,6 +105,17 @@ describe('FileBackedHttpMetadataProviderWizard', () => {
             ).toEqual(
                 model
             );
+        });
+    });
+
+    describe('getValidators method', () => {
+        it('should return a list of validators for the ngx-schema-form', () => {
+            expect(Object.keys(getValidators([]))).toEqual([
+                '/',
+                '/name',
+                '/metadataURL',
+                '/xmlId'
+            ]);
         });
     });
 });

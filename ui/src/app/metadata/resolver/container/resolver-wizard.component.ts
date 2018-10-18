@@ -13,8 +13,6 @@ import { Observable, Subject, of, combineLatest as combine } from 'rxjs';
 import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { MetadataResolver } from '../../domain/model/metadata-resolver';
 import * as fromCollections from '../reducer';
 import { AddResolverRequest } from '../action/collection.action';
@@ -27,6 +25,10 @@ import { SetDefinition, SetIndex, SetDisabled, ClearWizard } from '../../../wiza
 
 import * as fromWizard from '../../../wizard/reducer';
 import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
+import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
+import { ModalService } from '../../../core/service/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UpdateChanges } from '../action/entity.action';
 
 @Component({
     selector: 'resolver-wizard-page',
@@ -64,6 +66,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         private store: Store<fromCollections.State>,
         private route: ActivatedRoute,
         private router: Router,
+        private modalService: NgbModal,
         @Inject(METADATA_SOURCE_WIZARD) private sourceWizard: Wizard<MetadataResolver>
     ) {
         this.store
@@ -167,11 +170,9 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        return of(true);
-        /*
         if (nextState.url.match('wizard')) { return of(true); }
         if (Object.keys(this.changes).length > 0) {
-            let modal = this.modalService.open(UnsavedDialogComponent);
+            let modal = this.modalService.open(UnsavedEntityComponent);
             modal.componentInstance.action = new UpdateChanges(this.latest);
             modal.result.then(
                 () => this.router.navigate([nextState.url]),
@@ -179,6 +180,5 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             );
         }
         return this.store.select(fromResolver.getEntityIsSaved);
-        */
     }
 }

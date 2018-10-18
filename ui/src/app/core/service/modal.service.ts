@@ -19,7 +19,9 @@ export class ModalService {
         let modal = this.modal.open(content, {
             ...options
         });
-        Object.keys(inputs).forEach(key => modal.componentInstance[key] = inputs[key]);
+        if (modal.hasOwnProperty('componentInstance')) {
+            Object.keys(inputs).forEach(key => modal.componentInstance[key] = inputs[key]);
+        }
         return fromPromise(modal.result);
     }
 } /* istanbul ignore next */

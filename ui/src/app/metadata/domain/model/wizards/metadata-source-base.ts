@@ -4,6 +4,7 @@ import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
 import { ArrayProperty } from 'ngx-schema-form/lib/model/arrayproperty';
 import { ObjectProperty } from 'ngx-schema-form/lib/model/objectproperty';
 
+/*istanbul ignore next */
 export class MetadataSourceBase implements Wizard<MetadataResolver> {
     label = 'Metadata Source';
     type = '@MetadataProvider';
