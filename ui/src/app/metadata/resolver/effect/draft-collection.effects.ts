@@ -75,7 +75,6 @@ export class DraftCollectionEffects {
         ofType<actions.UpdateDraftRequest>(DraftActionTypes.UPDATE_DRAFT_REQUEST),
         map(getPayload),
         switchMap(provider => {
-            console.log(provider);
             return this.draftService
                 .update(provider)
                 .pipe(

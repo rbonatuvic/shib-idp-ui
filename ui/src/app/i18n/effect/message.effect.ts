@@ -29,7 +29,6 @@ export class MessageEffects {
         ),
         map(([action, locale]) => locale.replace('-', '_')),
         switchMap(locale => {
-            console.log(locale);
             return this.i18nService.get(locale)
                 .pipe(
                     map(u => new MessagesLoadSuccessAction({ ...u })),

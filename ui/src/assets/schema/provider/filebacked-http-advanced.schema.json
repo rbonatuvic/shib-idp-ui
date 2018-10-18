@@ -18,6 +18,7 @@
                 {
                     "title": "label.http-security-attributes",
                     "type": "section",
+                    "class": "col-12",
                     "fields": [
                         "disregardTLSCertificate"
                     ]
@@ -25,6 +26,7 @@
                 {
                     "title": "label.http-proxy-attributes",
                     "type": "section",
+                    "class": "col-12",
                     "fields": [
                         "proxyHost",
                         "proxyPort",
@@ -35,6 +37,7 @@
                 {
                     "title": "label.http-caching-attributes",
                     "type": "section",
+                    "class": "col-12",
                     "fields": [
                         "httpCaching",
                         "httpCacheDirectory",
@@ -45,6 +48,7 @@
                 {
                     "title": "",
                     "type": "hidden",
+                    "class": "col-12",
                     "fields": [
                         "tlsTrustEngineRef",
                         "httpClientSecurityParametersRef",
