@@ -16,7 +16,6 @@ import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.assertj.core.api.Assertions
-import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -59,14 +58,15 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         it
     }
 
-    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
-            new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration))
+    def service
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
     RandomGenerator generator
 
     def setup() {
+        service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
+                new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration))
         JacksonTester.initFields(this, new ObjectMapper())
         generator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator()
