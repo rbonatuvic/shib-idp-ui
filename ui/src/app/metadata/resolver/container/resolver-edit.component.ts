@@ -45,19 +45,16 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
         private modalService: NgbModal,
         private diffService: DifferentialService
     ) {
-        this.resolver$ = this.store.select(fromResolver.getSelectedResolver).pipe(skipWhile(d => !d));
-        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(skipWhile(d => !d));
-        this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(skipWhile(i => !i));
+        this.resolver$ = this.store.select(fromResolver.getSelectedResolver).pipe(filter(d => !!d));
+        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d));
+        this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(filter(i => !!i));
         this.valid$ = this.store.select(fromResolver.getEntityIsValid);
         this.isInvalid$ = this.valid$.pipe(map(v => !v));
         this.status$ = this.store.select(fromResolver.getInvalidEntityForms);
         this.isSaving$ = this.store.select(fromResolver.getEntityIsSaving);
 
-        let startIndex$ = this.route.firstChild ?
-            this.route.firstChild.params.pipe(map(p => p.form)) :
-            this.definition$.pipe(filter(d => !!d), map(d => d.steps[0].id));
-
-        startIndex$.subscribe(index => this.setIndex(index));
+        let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form));
+        startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
 
         this.index$.subscribe(index => index && this.go(index));
 
@@ -74,16 +71,11 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
         this.router.navigate(['./', index], { relativeTo: this.route });
     }
 
-    setIndex(id: string): void {
-        this.store.dispatch(new SetIndex(id));
-    }
-
     ngOnDestroy() {
         this.clear();
     }
 
     clear(): void {
-        this.store.dispatch(new ClearWizard());
         this.store.dispatch(new Clear());
     }
 
@@ -105,6 +97,7 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
             return of(true);
         }
         const diff = this.diffService.updatedDiff(this.resolver, this.latest);
+        console.log(diff, this.resolver, this.latest);
         if (diff && Object.keys(diff).length > 0) {
             let modal = this.modalService.open(UnsavedEntityComponent);
             modal.result.then(

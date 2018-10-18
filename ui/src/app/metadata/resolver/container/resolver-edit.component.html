@@ -13,8 +13,7 @@
             <div class="col-6 d-lg-none order-1">
                 <editor-nav
                     [format]="formats.DROPDOWN"
-                    [status]="status$ | async"
-                    (onPageSelect)="setIndex($event)">
+                    [status]="status$ | async">
                 </editor-nav>
             </div>
             <div class="col-6 col-lg-3 order-2 text-right">
@@ -50,8 +49,7 @@
             <div class="col-lg-3 d-none d-lg-block">
                 <editor-nav
                     [format]="formats.TABS"
-                    [status]="status$ | async"
-                    (onPageSelect)="setIndex($event)">
+                    [status]="status$ | async">
                 </editor-nav>
             </div>
             <div class="col-lg-9">

@@ -45,9 +45,5 @@ export class EditorNavComponent {
         this.currentPage$ = this.current$.pipe(map(this.getFilterId));
         this.currentLabel$ = this.current$.pipe(map(this.getFilterLabel));
     }
-
-    gotoPage(page: string = ''): void {
-        this.onPageSelect.emit(page);
-    }
 }
 

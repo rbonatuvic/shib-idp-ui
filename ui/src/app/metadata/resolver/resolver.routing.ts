@@ -60,11 +60,14 @@ export const ResolverRoutes: Routes = [
                         path: 'edit',
                         component: ResolverEditComponent,
                         children: [
+                            { path: '', redirectTo: 'common', pathMatch: 'prefix' },
                             {
                                 path: ':form',
-                                component: ResolverEditStepComponent,
-                                canDeactivate: [CanDeactivateGuard]
+                                component: ResolverEditStepComponent
                             }
+                        ],
+                        canDeactivate: [
+                            CanDeactivateGuard
                         ]
                     }
                 ]

@@ -97,13 +97,6 @@ describe('Provider Edit Component', () => {
         expect(app).toBeTruthy();
     }));
 
-    describe('setIndex method', () => {
-        it('should interrupt event default and dispatch an event', () => {
-            app.setIndex('common');
-            expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
     describe('go method', () => {
         it('should route to the given child form', () => {
             spyOn(router, 'navigate');

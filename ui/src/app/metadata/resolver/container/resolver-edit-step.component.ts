@@ -9,7 +9,7 @@ import { MetadataResolver } from '../../domain/model';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
-import { withLatestFrom, map, skipWhile, distinctUntilChanged, startWith, combineLatest, filter } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { UpdateChanges } from '../action/entity.action';
 import { FormControl } from '@angular/forms';
 
@@ -96,7 +96,7 @@ export class ResolverEditStepComponent implements OnDestroy {
         this.valueChangeEmitted$.pipe(
             map(changes => changes.value),
             withLatestFrom(this.definition$, this.store.select(fromResolver.getSelectedResolver)),
-            filter(([changes, definition]) => !definition || !changes),
+            filter(([changes, definition]) => definition && changes),
             map(([changes, definition, resolver]) => definition.parser({ ...resolver, ...changes }))
         )
         .subscribe(changes => this.store.dispatch(new UpdateChanges(changes)));

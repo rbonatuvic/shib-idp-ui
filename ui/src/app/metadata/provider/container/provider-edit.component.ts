@@ -46,22 +46,16 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         private modalService: NgbModal,
         private diffService: DifferentialService
     ) {
-        this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(d => !d));
-        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(skipWhile(d => !d));
-        this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(skipWhile(i => !i));
+        this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(filter(d => !!d));
+        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d));
+        this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(filter(i => !!i));
         this.valid$ = this.store.select(fromProvider.getEditorIsValid);
         this.isInvalid$ = this.valid$.pipe(map(v => !v));
         this.status$ = this.store.select(fromProvider.getInvalidEditorForms);
         this.isSaving$ = this.store.select(fromProvider.getEntityIsSaving);
 
-        let startIndex$ = this.route.firstChild ?
-            this.route.firstChild.params.pipe(map(p => p.form || 'filters')) :
-            this.definition$.pipe(map(d => d.steps[0].id));
-
-        startIndex$
-            .subscribe(index => {
-                this.store.dispatch(new SetIndex(index));
-            });
+        let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form || 'filters'));
+        startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
 
         this.index$.subscribe(id => id && this.go(id));
 
@@ -80,10 +74,6 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
 
     go(id: string): void {
         this.router.navigate(['./', id], { relativeTo: this.route });
-    }
-
-    setIndex(id: string): void {
-        this.store.dispatch(new SetIndex(id));
     }
 
     ngOnDestroy() {
