@@ -20,7 +20,7 @@
             "maxLength": 255
         },
         "serviceEnabled": {
-            "title": "label.enable-this-service-upon-saving",
+            "title": "label.enable-this-service",
             "description": "tooltip.enable-this-service-upon-saving",
             "type": "boolean",
             "default": false
@@ -343,16 +343,16 @@
                     "description": "tooltip.omit-not-before-condition",
                     "default": false
                 },
-                "responderId": {
-                    "title": "label.responder-id",
-                    "description": "tooltip.responder-id",
-                    "type": "string"
-                },
                 "nameIdFormats": {
                     "$ref": "#/definitions/NameIdFormatList"
                 },
                 "authenticationMethods": {
                     "$ref": "#/definitions/AuthenticationMethodList"
+                },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string"
                 }
             }
         },
@@ -429,9 +429,7 @@
         },
         "Certificate": {
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
+            "title": "label.certificate",
             "required": [
                 "name",
                 "type",
@@ -446,10 +444,13 @@
                     "maxLength": 255
                 },
                 "type": {
-                    "title": "label.type",
+                    "title": "label.certificate-type",
                     "description": "tooltip.certificate-type",
                     "type": "string",
-                    "widget": "radio",
+                    "widget": {
+                        "id": "radio",
+                        "class": "form-check-inline"
+                    },
                     "oneOf": [
                         {
                             "enum": [
@@ -476,15 +477,17 @@
                     "title": "label.certificate",
                     "description": "tooltip.certificate",
                     "type": "string",
+                    "widget": "textarea",
                     "minLength": 1
                 }
             }
         },
         "AssertionConsumerService": {
             "type": "object",
+            "title": "label.assertion-consumer-service-endpoint",
             "properties": {
                 "locationUrl": {
-                    "title": "label.assertion-consumer-services-location",
+                    "title": "label.assertion-consumer-service-location",
                     "description": "tooltip.assertion-consumer-service-location",
                     "type": "string",
                     "widget": {
@@ -498,6 +501,7 @@
                     "title": "label.assertion-consumer-service-location-binding",
                     "description": "tooltip.assertion-consumer-service-location-binding",
                     "type": "string",
+                    "widget": "select",
                     "oneOf": [
                         {
                             "enum": [
@@ -516,7 +520,8 @@
                 "makeDefault": {
                     "title": "label.mark-as-default",
                     "description": "tooltip.mark-as-default",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                 }
             }
         },
@@ -568,12 +573,8 @@
             "title": "label.new-endpoint",
             "description": "tooltip.new-endpoint",
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "fieldsets": [
                 {
-                    "type": "section",
                     "fields": [
                         "url",
                         "bindingType"

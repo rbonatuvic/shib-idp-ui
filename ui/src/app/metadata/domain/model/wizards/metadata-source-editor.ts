@@ -8,7 +8,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 1,
             id: 'common',
             label: 'label.sp-org-info',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceProviderName',
                 'entityId',
@@ -38,7 +38,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 3,
             id: 'metadata-ui',
             label: 'label.metadata-ui',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'mdui'
             ]
@@ -47,7 +47,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 4,
             id: 'descriptor-info',
             label: 'label.descriptor-info',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceProviderSsoDescriptor'
             ]
@@ -56,7 +56,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 5,
             id: 'logout-endpoints',
             label: 'label.logout-endpoints',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'logoutEndpoints'
             ],
@@ -73,7 +73,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 6,
             id: 'key-info',
             label: 'label.key-info',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'securityInfo'
             ]
@@ -82,7 +82,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 7,
             id: 'assertion',
             label: 'label.assertion',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'assertionConsumerServices'
             ],
@@ -99,7 +99,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 8,
             id: 'relying-party',
             label: 'label.relying-party',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'relyingPartyOverrides'
             ],
@@ -116,7 +116,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
             index: 9,
             id: 'attribute',
             label: 'label.attribute-release',
-            schema: 'assets/schema/source/metadata-source.json',
+            schema: '/api/ui/MetadataSources',
             fields: [
                 'attributeRelease'
             ],
