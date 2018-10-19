@@ -7,7 +7,7 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
         {
             index: 1,
             id: 'common',
-            label: 'label.resolver-common-attributes',
+            label: 'label.name-and-entity-id',
             schema: 'assets/schema/source/metadata-source.json',
             fields: [
                 'serviceProviderName',

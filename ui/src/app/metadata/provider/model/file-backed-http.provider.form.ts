@@ -25,14 +25,28 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/filebacked-http-common.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-common.schema.json',
+            fields: [
+                'xmlId',
+                'metadataURL',
+                'initializeFromBackupFile',
+                'backingFile',
+                'backupFileInitNextRefreshDelay',
+                'requireValidMetadata',
+                'failFastInitialization',
+                'useDefaultPredicateRegistry',
+                'satisfyAnyPredicates'
+            ]
         },
         {
             id: 'reloading',
             label: 'label.reloading-attributes',
             index: 3,
             initialValues: [],
-            schema: 'assets/schema/provider/filebacked-http-reloading.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-reloading.schema.json',
+            fields: [
+                'reloadableMetadataResolverAttributes'
+            ]
         },
         {
             id: 'plugins',
@@ -41,14 +55,20 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
             initialValues: [
                 { key: 'metadataFilters', value: [] }
             ],
-            schema: 'assets/schema/provider/filebacked-http-filters.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-filters.schema.json',
+            fields: [
+                'metadataFilters'
+            ]
         },
         {
             id: 'summary',
             label: 'label.finished',
             index: 5,
             initialValues: [],
-            schema: 'assets/schema/provider/metadata-provider-summary.schema.json'
+            schema: 'assets/schema/provider/metadata-provider-summary.schema.json',
+            fields: [
+                'enabled'
+            ]
         }
     ]
 };
@@ -62,14 +82,29 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: 'assets/schema/provider/filebacked-http-common.editor.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-common.editor.schema.json',
+            fields: [
+                'enabled',
+                'xmlId',
+                'metadataURL',
+                'initializeFromBackupFile',
+                'backingFile',
+                'backupFileInitNextRefreshDelay',
+                'requireValidMetadata',
+                'failFastInitialization',
+                'useDefaultPredicateRegistry',
+                'satisfyAnyPredicates'
+            ]
         },
         {
             id: 'reloading',
             label: 'label.reloading-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/filebacked-http-reloading.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-reloading.schema.json',
+            fields: [
+                'reloadableMetadataResolverAttributes'
+            ]
         },
         {
             id: 'plugins',
@@ -78,7 +113,10 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             initialValues: [
                 { key: 'metadataFilters', value: [] }
             ],
-            schema: 'assets/schema/provider/filebacked-http-filters.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-filters.schema.json',
+            fields: [
+                'metadataFilters'
+            ]
         },
         {
             id: 'advanced',
@@ -86,7 +124,10 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             index: 4,
             initialValues: [],
             locked: true,
-            schema: 'assets/schema/provider/filebacked-http-advanced.schema.json'
+            schema: 'assets/schema/provider/filebacked-http-advanced.schema.json',
+            fields: [
+                'httpMetadataResolverAttributes'
+            ]
         }
     ]
 };

@@ -20,7 +20,7 @@
             "maxLength": 255
         },
         "serviceEnabled": {
-            "title": "label.enable-this-service-upon-saving",
+            "title": "label.enable-this-service",
             "description": "tooltip.enable-this-service-upon-saving",
             "type": "boolean",
             "default": false
@@ -429,6 +429,7 @@
         },
         "Certificate": {
             "type": "object",
+            "title": "label.certificate",
             "required": [
                 "name",
                 "type",
@@ -443,7 +444,7 @@
                     "maxLength": 255
                 },
                 "type": {
-                    "title": "label.type",
+                    "title": "label.certificate-type",
                     "description": "tooltip.certificate-type",
                     "type": "string",
                     "widget": {
@@ -476,15 +477,17 @@
                     "title": "label.certificate",
                     "description": "tooltip.certificate",
                     "type": "string",
+                    "widget": "textarea",
                     "minLength": 1
                 }
             }
         },
         "AssertionConsumerService": {
             "type": "object",
+            "title": "label.assertion-consumer-service-endpoint",
             "properties": {
                 "locationUrl": {
-                    "title": "label.assertion-consumer-services-location",
+                    "title": "label.assertion-consumer-service-location",
                     "description": "tooltip.assertion-consumer-service-location",
                     "type": "string",
                     "widget": {

@@ -7,7 +7,7 @@ export class MetadataSourceEditor extends  MetadataSourceBase implements Wizard<
         {
             index: 1,
             id: 'common',
-            label: 'label.resolver-common-attributes',
+            label: 'label.sp-org-info',
             schema: 'assets/schema/source/metadata-source.json',
             fields: [
                 'serviceProviderName',

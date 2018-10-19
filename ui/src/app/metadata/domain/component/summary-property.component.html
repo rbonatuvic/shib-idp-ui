@@ -33,13 +33,45 @@
                     </tbody>
                 </table>
             </ng-container>
-            <ng-container *ngIf="property.items.type === 'string'">
-                <p class="text-secondary" *ngIf="!property.value || !property.value.length">&mdash;</p>
-                <ul class="list-unstyled" *ngIf="property.value && property.value.length">
-                    <li *ngFor="let item of property.value">
-                        {{ item }}
-                    </li>
-                </ul>
+            <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property.items)">
+                <ng-container *ngSwitchCase="'datalist'">
+                    <p class="text-secondary" *ngIf="!property.value || !property.value.length">&mdash;</p>
+                    <ul class="list-unstyled" *ngIf="property.value && property.value.length">
+                        <li *ngFor="let item of property.value">
+                            {{ item }}
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngSwitchCase="'select'">
+                    <p class="text-secondary" *ngIf="!property.value || !property.value.length">&mdash;</p>
+                    <ul class="list-unstyled" *ngIf="property.value && property.value.length">
+                        <li *ngFor="let item of property.value">
+                            {{ item }}
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead>
+                            <tr class="table-secondary">
+                                <th scope="col" translate="label.name">Name</th>
+                                <th scope="col" translate="label.true">True</th>
+                                <th scope="col" translate="label.false">False</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let attr of attributeList$ | async">
+                                <td [translate]="attr.label">{{ attr.label }}</td>
+                                <td>
+                                    <i class="fa fa-fw fa-check" *ngIf="property.value.indexOf(attr.key) > -1"></i>
+                                </td>
+                                <td>
+                                    <i class="fa fa-fw fa-check" *ngIf="!(property.value.indexOf(attr.key) > -1)"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
             </ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'object'">

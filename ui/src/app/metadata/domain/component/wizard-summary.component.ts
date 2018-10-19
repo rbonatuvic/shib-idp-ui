@@ -10,6 +10,7 @@ interface Section {
     id: string;
     index: number;
     label: string;
+    pageNumber: number;
     properties: Property[];
 }
 
@@ -35,7 +36,8 @@ export function getStepProperty(property, model, definitions): Property {
             property,
             model,
             definitions
-        )
+        ),
+        widget: property.widget instanceof String ? { id: property.widget } : { ...property.widget }
     };
 }
 
@@ -84,9 +86,10 @@ export class WizardSummaryComponent implements OnChanges {
             this.sections = steps
                 .filter(step => step.id !== 'summary')
                 .map(
-                    (step: WizardStep) => {
+                    (step: WizardStep, num: number) => {
                         return ({
                             id: step.id,
+                            pageNumber: num + 1,
                             index: step.index,
                             label: step.label,
                             properties: getStepProperties(

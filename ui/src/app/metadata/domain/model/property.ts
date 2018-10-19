@@ -4,4 +4,8 @@ export interface Property {
     value: string[];
     items: Property;
     properties: Property[];
+    widget?: {
+        id: string;
+        [propertyName: string]: any;
+    };
 }
