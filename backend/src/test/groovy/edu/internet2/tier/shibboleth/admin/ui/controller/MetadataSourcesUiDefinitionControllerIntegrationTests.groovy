@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
 import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -18,7 +19,7 @@ class MetadataSourcesUiDefinitionControllerIntegrationTests extends Specificatio
     private TestRestTemplate restTemplate
 
     @Autowired
-    MetadataSourcesUiDefinitionController controllerUnderTest
+    MetadataSourcesJsonSchemaResourceLocation schemaLocation
 
     static RESOURCE_URI = '/api/ui/MetadataSources'
 
@@ -54,9 +55,9 @@ class MetadataSourcesUiDefinitionControllerIntegrationTests extends Specificatio
     }
 
     private configureMalformedJsonInput(boolean simulateApplicationStartup) {
-        controllerUnderTest.metadataSourcesUiSchemaLocation = 'classpath:metadata-sources-ui-schema_MALFORMED.json'
+        schemaLocation.metadataSourcesUiSchemaLocation = 'classpath:metadata-sources-ui-schema_MALFORMED.json'
         try {
-            controllerUnderTest.init()
+            schemaLocation.init()
         }
         catch (Exception e) {
             if (simulateApplicationStartup) {

@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration
-
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
 import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -23,17 +23,10 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * @author Bill Smith (wsmith@unicon.net)
  */
 @RestController('/api/ui/MetadataSources')
-@ConfigurationProperties('shibui')
 class MetadataSourcesUiDefinitionController {
 
-    //Configured via @ConfigurationProperties with 'shibui.metadata-sources-ui-schema-location' property and default
-    //value set here if that property is not explicitly set in application.properties
-    String metadataSourcesUiSchemaLocation = 'classpath:metadata-sources-ui-schema.json'
-
-    URL jsonSchemaUrl
-
     @Autowired
-    ResourceLoader resourceLoader
+    MetadataSourcesJsonSchemaResourceLocation jsonSchemaLocation
 
     @Autowired
     ObjectMapper jacksonObjectMapper
@@ -44,7 +37,7 @@ class MetadataSourcesUiDefinitionController {
     @GetMapping
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
-            def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaUrl, Map)
+            def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
             def widget = parsedJson["properties"]["attributeRelease"]["widget"]
             def data = []
             customAttributesConfiguration.getAttributes().each {
@@ -59,24 +52,7 @@ class MetadataSourcesUiDefinitionController {
         catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
-                           sourceUiSchemaDefinitionFile: this.jsonSchemaUrl])
-        }
-    }
-
-    @PostConstruct
-    def init() {
-        jsonSchemaUrl = this.resourceLoader.getResource(this.metadataSourcesUiSchemaLocation).getURL()
-        //Detect malformed JSON schema early, during application start up and fail fast with useful exception message
-        try {
-            this.jacksonObjectMapper.readValue(this.jsonSchemaUrl, Map)
-        }
-        catch (Exception e) {
-            def msg = """                        
-                        An error is detected during JSON parsing => [${e.message}]
-                        **********************************************************
-                        Offending resource => [${this.jsonSchemaUrl}]
-                      """
-            throw new BeanInitializationException(msg.toString(), e)
+                           sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
         }
     }
 }
