@@ -150,8 +150,7 @@ public class ModelRepresentationConversions {
                 switch (AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                     case BOOLEAN:
                         if (overrideProperty.getPersistType() != null &&
-                                !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
-                            // we must be persisting a string then
+                                !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
                             list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                        overrideProperty.getAttributeFriendlyName(),
                                                                                        overrideProperty.getPersistValue()));

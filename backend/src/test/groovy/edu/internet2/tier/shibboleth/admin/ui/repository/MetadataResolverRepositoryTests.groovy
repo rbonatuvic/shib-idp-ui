@@ -80,10 +80,8 @@ class MetadataResolverRepositoryTests extends Specification {
             it.name = 'original'
             it.resourceId = 'new-filter-UUID'
             it.attributeRelease = ['attr-for-release']
-            it.relyingPartyOverrides = new RelyingPartyOverridesRepresentation().with {
-                it.signAssertion = true
-                it
-            }
+            it.relyingPartyOverrides = [:]
+            it.relyingPartyOverrides.put("signAssertion", true)
             it
         }
         MetadataResolver metadataResolver = metadataResolverRepository.findAll().iterator().next()

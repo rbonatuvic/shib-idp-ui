@@ -106,15 +106,15 @@ public class JPAEntityServiceImpl implements EntityService {
             RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
             switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                 case BOOLEAN:
-                    if (!overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
-                        // we must be persisting a string then
+                    if (overrideProperty.getPersistType() != null &&
+                        !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
                         list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),
                                                                                    (String) entry.getValue()));
                     } else {
                         list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),
-                                                                                   Boolean.valueOf((String) entry.getValue())));
+                                                                                   (Boolean) entry.getValue()));
                     }
                     break;
                 case INTEGER:

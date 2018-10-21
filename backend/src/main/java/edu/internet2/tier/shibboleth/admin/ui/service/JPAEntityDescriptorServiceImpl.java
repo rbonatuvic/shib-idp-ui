@@ -32,6 +32,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
@@ -44,6 +46,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
@@ -500,8 +503,40 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 } else {
                     Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
                     if (override.isPresent()) {
-                        relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(),
-                                                  jpaAttribute.getAttributeValues());
+                        RelyingPartyOverrideProperty overrideProperty = (RelyingPartyOverrideProperty)override.get();
+                        Object attributeValues = null;
+                        switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
+                            case STRING:
+                                if (jpaAttribute.getAttributeValues().size() != 1) {
+                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                }
+                                attributeValues = getValueFromXSStringOrXSAny(jpaAttribute.getAttributeValues().get(0));
+                                break;
+                            case INTEGER:
+                                if (jpaAttribute.getAttributeValues().size() != 1) {
+                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                }
+                                attributeValues = ((XSInteger)jpaAttribute.getAttributeValues().get(0)).getValue();
+                                break;
+                            case BOOLEAN:
+                                if (jpaAttribute.getAttributeValues().size() != 1) {
+                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                }
+                                if (overrideProperty.getPersistType() != null &&
+                                    !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
+                                    attributeValues = getValueFromXSStringOrXSAny(jpaAttribute.getAttributeValues().get(0));
+                                } else {
+                                    attributeValues = Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
+                                            .get(0)).getStoredValue());
+                                }
+                                break;
+                            case SET:
+                            case LIST:
+                                attributeValues = jpaAttribute.getAttributeValues().stream()
+                                        .map(attributeValue -> getValueFromXSStringOrXSAny(attributeValue))
+                                        .collect(Collectors.toList());
+                        }
+                        relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
                     }
                 }
             }
@@ -510,6 +545,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
 
         return representation;
+    }
+
+    private String getValueFromXSStringOrXSAny(XMLObject xmlObject) {
+        if (xmlObject instanceof XSAny) {
+            return ((XSAny)xmlObject).getTextContent();
+        } else {
+            return ((XSString)xmlObject).getValue();
+        }
     }
 
     @Override
