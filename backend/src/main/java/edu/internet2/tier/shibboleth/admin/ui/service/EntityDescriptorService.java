@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import java.util.List;
@@ -48,10 +47,10 @@ public interface EntityDescriptorService {
     List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList);
 
     /**
-     * Given a list of attributes, generate a RelyingPartyOverridesRepresentation
+     * Given a list of attributes, generate a map of relying party overrides
      *
      * @param attributeList the list of attributes to generate from
-     * @return a RelyingPartyOverridesRepresentation based on the given list of attributes
+     * @return a map of String->Object (property name -> property value) based on the given list of attributes
      */
     Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
 

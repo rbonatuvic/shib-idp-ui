@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import org.opensaml.saml.saml2.core.Attribute;
 
 import java.util.List;
