@@ -108,9 +108,9 @@ public class ModelRepresentationConversions {
             case BOOLEAN:
                 if (relyingPartyOverrideProperty.getPersistType() != null
                         && (!relyingPartyOverrideProperty.getPersistType().equalsIgnoreCase("boolean"))) {
-                    return "true";
+                    return true;
                 } else {
-                    return ((XSBoolean) attributeValues.get(0)).getStoredValue();
+                    return Boolean.valueOf(((XSBoolean) attributeValues.get(0)).getStoredValue());
                 }
             case INTEGER:
                 return ((XSInteger) attributeValues.get(0)).getValue();
