@@ -34,7 +34,7 @@ class MetadataSourcesUiDefinitionController {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
             addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['widget'])
-            addRelyingPartyOverridesToJson(parsedJson["properties"]["relyingPartyOverrides"])
+            addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'])
             addRelyingPartyOverridesCollectionDefinitions(parsedJson["definitions"])
             return ResponseEntity.ok(parsedJson)
         }
@@ -48,52 +48,49 @@ class MetadataSourcesUiDefinitionController {
 
     private void addReleaseAttributesToJson(Object json) {
         json['data'] = customPropertiesConfiguration.getAttributes().collect {
-            ['key': it['name'], 'label': it['displayName']]
+            [key: it['name'], label: it['displayName']]
         }
     }
 
     private void addRelyingPartyOverridesToJson(Object json) {
         def properties = [:]
         customPropertiesConfiguration.getOverrides().each {
-            def property = [:]
-            if (it["displayType"] == "list"
-                    || it["displayType"] == "set") {
-                property['$ref'] = "#/definitions/" + it["name"]
+            def property
+            if (it['displayType'] == 'list'
+                    || it['displayType'] == 'set') {
+                property = [$ref: '#/definitions/' + it['name']]
             } else {
-                property["title"] = it["displayName"]
-                property["description"] = it["helpText"]
-                property["type"] = it["displayType"]
-                property["default"] = it["defaultValue"]
+                property =
+                [title: it['displayName'],
+                description: it['helpText'],
+                type: it['displayType'],
+                default: it['defaultValue']]
             }
-            properties[it["name"]] = property
+            properties[(String)it['name']] = property
         }
-        json["properties"] = properties
+        json['properties'] = properties
     }
 
     private void addRelyingPartyOverridesCollectionDefinitions(Object json) {
         customPropertiesConfiguration.getOverrides().stream().filter {
-            it -> it["displayType"] && (it["displayType"] == "list" || it["displayType"] == "set")
+            it -> it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set')
         }.each {
-            def definition = [:]
-            definition["title"] = it["displayName"]
-            definition["description"] = it["helpText"]
-            definition["type"] = "array"
-            if (it["displayType"] == "set") {
-                definition["uniqueItems"] = true
-            } else if (it["displayType"] == "list") {
-                definition["uniqueItems"] = false
+            def definition = [title: it['displayName'],
+            description: it['helpText'],
+            type: 'array',
+            default: null]
+            if (it['displayType'] == 'set') {
+                definition['uniqueItems'] = true
+            } else if (it['displayType'] == 'list') {
+                definition['uniqueItems'] = false
             }
-            def items = [:]
-            items["type"] = "string"
-            items["widget"] = "datalist"
-            def data = []
-            it["defaultValues"].each { value ->
-                data << value
-            }
-            items["data"] = data
-            definition["items"] = items
-            definition["default"] = null
-            json[(String)it["name"]] = definition
+            def items = [type: 'string',
+                         minLength: '1', // TODO: should this be configurable?
+                         maxLength: '255'] //TODO: or this?
+            items.widget = [id: 'datalist', data: it['defaultValues']]
+
+            definition['items'] = items
+            json[(String)it['name']] = definition
         }
     }
 }
