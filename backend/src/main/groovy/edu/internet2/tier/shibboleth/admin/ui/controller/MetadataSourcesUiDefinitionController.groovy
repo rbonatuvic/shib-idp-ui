@@ -33,7 +33,7 @@ class MetadataSourcesUiDefinitionController {
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
-            addReleaseAttributesToJson(parsedJson["properties"]["attributeRelease"]["widget"])
+            addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['widget'])
             addRelyingPartyOverridesToJson(parsedJson["properties"]["relyingPartyOverrides"])
             addRelyingPartyOverridesCollectionDefinitions(parsedJson["definitions"])
             return ResponseEntity.ok(parsedJson)
@@ -47,14 +47,9 @@ class MetadataSourcesUiDefinitionController {
     }
 
     private void addReleaseAttributesToJson(Object json) {
-        def data = []
-        customPropertiesConfiguration.getAttributes().each {
-            def attribute = [:]
-            attribute["key"] = it["name"]
-            attribute["label"] = it["displayName"]
-            data << attribute
+        json['data'] = customPropertiesConfiguration.getAttributes().collect {
+            ['key': it['name'], 'label': it['displayName']]
         }
-        json["data"] = data
     }
 
     private void addRelyingPartyOverridesToJson(Object json) {
