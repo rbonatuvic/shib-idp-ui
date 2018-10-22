@@ -15,8 +15,9 @@
         [formControl]="control"
         [attr.name]="name"
         class="form-control"
-        [attr.aria-label]="schema.title">
-        <option disabled selected>
+        [attr.aria-label]="schema.title"
+        [ngClass]="{'text-muted': !this.formProperty.value}">
+        <option selected value="">
             <translate-i18n *ngIf="schema.placeholder" [key]="schema.placeholder">{{ schema.placeholder }}</translate-i18n>
             <translate-i18n *ngIf="!schema.placeholder" [key]="schema.title">{{ schema.title }}</translate-i18n>
         </option>
