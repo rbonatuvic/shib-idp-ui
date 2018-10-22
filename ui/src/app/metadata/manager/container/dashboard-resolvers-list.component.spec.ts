@@ -26,12 +26,14 @@ describe('Dashboard Resolvers List Page', () => {
 
     let draft = new FileBackedHttpMetadataResolver({
             entityId: 'foo',
-            serviceProviderName: 'bar'
+            serviceProviderName: 'bar',
+            id: '1'
         }),
         resolver = new FileBackedHttpMetadataResolver({
             entityId: 'foo',
             serviceProviderName: 'foo',
-            id: '1'
+            id: '1',
+            createdDate: new Date().toDateString()
         });
 
     beforeEach(() => {
@@ -125,7 +127,9 @@ describe('Dashboard Resolvers List Page', () => {
         it('should route to the wizard page', () => {
             spyOn(router, 'navigate');
             instance.edit(draft);
-            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', draft.entityId, 'wizard']);
+            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', 'new'], {
+                queryParams: { id: '1' }
+            });
         });
     });
 

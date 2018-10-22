@@ -24,7 +24,6 @@ import { SharedModule } from './shared/shared.module';
 import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
-import { getCurrentLocale } from './shared/util';
 import { I18nModule } from './i18n/i18n.module';
 
 @NgModule({

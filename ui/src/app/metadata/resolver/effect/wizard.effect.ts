@@ -1,32 +1,62 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, filter, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
-import { map, switchMap } from 'rxjs/operators';
+import {
+    UpdateChanges,
+    Clear,
+    ResolverEntityActionTypes
+} from '../action/entity.action';
+import {
+    ResolverCollectionActionTypes,
+    AddResolverSuccess
+} from '../action/collection.action';
 
-import * as editorActions from '../action/editor.action';
-import * as provider from '../action/collection.action';
-import { ResolverCollectionActionTypes } from '../action/collection.action';
+import * as fromResolver from '../reducer';
+
 import { EntityDraftService } from '../../domain/service/draft.service';
+import { UpdateDraftRequest, SelectDraftSuccess, DraftActionTypes } from '../action/draft.action';
+
+
 
 @Injectable()
 export class WizardEffects {
 
-    @Effect({ dispatch: false })
+    @Effect()
     updateResolver$ = this.actions$.pipe(
-        ofType<editorActions.SaveChanges>(editorActions.SAVE_CHANGES),
+        ofType<UpdateChanges>(ResolverEntityActionTypes.UPDATE_CHANGES),
         map(action => action.payload),
-        switchMap(provider => this.draftService.update(provider))
+        filter(provider => !provider.createdDate),
+        map(provider => new UpdateDraftRequest(provider))
     );
 
     @Effect()
     addResolverSuccessDiscard$ = this.actions$.pipe(
-        ofType<provider.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
+        ofType<AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
-        map(provider => new editorActions.ResetChanges())
+        map(provider => new Clear())
+    );
+
+    @Effect({ dispatch: false })
+    updateEntityIdInUrl$ = this.actions$.pipe(
+        ofType<SelectDraftSuccess>(DraftActionTypes.SELECT_SUCCESS),
+        map(action => action.payload),
+        tap((id) => {
+            this.router.navigate([], {
+                relativeTo: this.activatedRoute,
+                queryParams: { id },
+                queryParamsHandling: 'merge'
+            });
+        })
     );
 
     constructor(
+        private store: Store<fromResolver.State>,
         private actions$: Actions,
-        private draftService: EntityDraftService
+        private draftService: EntityDraftService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router
     ) { }
 }

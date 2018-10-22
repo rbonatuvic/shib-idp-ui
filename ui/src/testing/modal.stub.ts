@@ -3,8 +3,9 @@ import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class NgbModalStub {
-    open(content: any, options: NgbModalOptions): {result: Promise<boolean>} {
+    open(content: any, options: NgbModalOptions): {result: Promise<boolean>, componentInstance: any} {
         return {
+            componentInstance: {},
             result: Promise.resolve(true)
         };
     }

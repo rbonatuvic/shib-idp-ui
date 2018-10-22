@@ -16,7 +16,6 @@ import { SearchIds } from '../action/search.action';
 import * as fromProvider from '../reducer';
 import { CreateResolverCopyRequest, UpdateResolverCopySections } from '../action/copy.action';
 
-
 @Component({
     selector: 'copy-resolver-form',
     templateUrl: './copy-resolver.component.html'

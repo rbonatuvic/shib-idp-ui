@@ -1,0 +1,11 @@
+<div class="widget form-group">
+    <label [translate]="schema.title">{{schema.title}}</label>
+    <span *ngIf="schema.description" class="formHelp" [translate]="schema.description">{{schema.description}}</span>
+    <ng-container *ngFor="let option of schema.oneOf">
+        <div class="form-check" [ngClass]="schema.widget.class">
+            <input class="form-check-input" [formControl]="control" type="radio" [attr.name]="name" [id]="name" value="{{option.enum[0]}}" [attr.disabled]="schema.readOnly">
+            <label class="form-check-label" [for]="name" [translate]="option.description">{{option.description}}</label>
+        </div>
+    </ng-container>
+    <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
+</div>

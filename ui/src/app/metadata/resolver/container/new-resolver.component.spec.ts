@@ -15,13 +15,14 @@ import { NavigatorService } from '../../../core/service/navigator.service';
 import * as fromResolver from '../reducer';
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { of } from 'rxjs';
 
 describe('New Resolver Page', () => {
     let fixture: ComponentFixture<NewResolverComponent>;
     let store: Store<fromResolver.State>;
     let instance: NewResolverComponent;
     let activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
-    activatedRoute.testParamMap = { id: 'foo' };
+    activatedRoute.testParamMap = { id: 'foo', events: of({}) };
 
     beforeEach(() => {
         TestBed.configureTestingModule({

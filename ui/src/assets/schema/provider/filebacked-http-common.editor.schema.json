@@ -50,6 +50,7 @@
             ]
         },
         {
+            "type": "group-lg",
             "fields": [
                 "xmlId",
                 "metadataURL",

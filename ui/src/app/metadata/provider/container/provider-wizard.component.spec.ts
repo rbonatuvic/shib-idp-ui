@@ -3,13 +3,13 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProviderWizardComponent } from './provider-wizard.component';
 import * as fromRoot from '../reducer';
 import { WizardModule } from '../../../wizard/wizard.module';
-import { ProviderWizardSummaryComponent } from '../component/provider-wizard-summary.component';
-import { SummaryPropertyComponent } from '../component/summary-property.component';
+import { WizardSummaryComponent } from '../../domain/component/wizard-summary.component';
+import { SummaryPropertyComponent } from '../../domain/component/summary-property.component';
 import * as fromWizard from '../../../wizard/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 
@@ -35,6 +35,7 @@ describe('Provider Wizard Component', () => {
             imports: [
                 WizardModule,
                 NgbDropdownModule.forRoot(),
+                NgbPopoverModule.forRoot(),
                 RouterTestingModule,
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),
@@ -45,7 +46,7 @@ describe('Provider Wizard Component', () => {
             declarations: [
                 ProviderWizardComponent,
                 SummaryPropertyComponent,
-                ProviderWizardSummaryComponent,
+                WizardSummaryComponent,
                 TestHostComponent
             ]
         }).compileComponents();

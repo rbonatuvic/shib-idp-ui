@@ -1,0 +1,261 @@
+<form [formGroup]="form" role="form">
+    <div class="row">
+        <fieldset class="col-xl-6 form-section">
+            <section class="entity-section">
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse">
+                        <input class="custom-control-input" type="checkbox" id="serviceEnabled" formControlName="serviceEnabled">
+                        <label class="custom-control-label"
+                            translate="label.enable-this-service-opon-saving"
+                            for="serviceEnabled">Enable this service upon saving?</label>
+                    </div>
+                    <info-icon [description]="'tooltip.enable-this-service-upon-saving' | translate"></info-icon>
+                </div>
+            </section>
+            <section class="entity-section">
+                <h3 class="tag tag-success tag-sm my-4">
+                    <span class="index">1</span>
+                    <translate-i18n key="label.name-and-entity-id">Name and Entity ID</translate-i18n>
+                </h3>
+                <dl>
+                    <dt class="text-primary" translate="label.service-provider-name-dashboard-display-only">Service Provider Name (Dashboard Display Only)</dt>
+                    <dd class="value">{{ resolver.serviceProviderName }}</dd>
+                    <dt class="text-primary" translate="label.service-provider-entity-id">Service Provider Entity ID</dt>
+                    <dd class="value">{{ resolver.entityId }}</dd>
+                    <dt class="text-primary" translate="label.enable-this-service">Enable this service?</dt>
+                    <dd class="value">{{ resolver.serviceEnabled ? 'Yes' : 'No' }}</dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 2]" class="tag tag-success tag-sm my-4" aria-label="Organization Information wizard page, step 2 - click to go back and make updates" role="button">
+                    <span class="index">2</span>
+                    <translate-i18n key="label.organization-information">Organization Information</translate-i18n>
+                </a>
+                <dl *ngIf="resolver.organization">
+                    <dt class="text-primary" translate="label.organization-name">Organization Name</dt>
+                    <dd class="value">{{ resolver.organization.name }}</dd>
+                    <dt class="text-primary" translate="label.organization-display-name">Organization Display Name</dt>
+                    <dd class="value">{{ resolver.organization.displayName }}</dd>
+                    <dt class="text-primary" translate="label.organization-url">Organization URL</dt>
+                    <dd class="value">{{ resolver.organization.url }}</dd>
+                    <dt class="text-primary" translate="label.contact-information">Contact Information</dt>
+                    <dd class="value">
+                        <p class="text-secondary" *ngIf="!resolver.contacts.length">&mdash;</p>
+                        <table class="table table-sm table-bordered table-striped" *ngIf="resolver.contacts.length">
+                            <thead>
+                            <tr class="table-secondary">
+                                <th scope="col" translate="label.given-name">Given Name</th>
+                                <th scope="col" translate="label.email-address">Email Address</th>
+                                <th scope="col" translate="label.contact-type">Contact Type</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let contact of resolver.contacts">
+                                <td>{{ contact.name }}</td>
+                                <td class="br-word">{{ contact.emailAddress }}</td>
+                                <td>{{ contact.type }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 3]" class="tag tag-success tag-sm my-4" aria-label="User Interface / MDUI Information wizard page, step 3 - click to go back and make updates" role="button">
+                    <span class="index">3</span>
+                    <translate-i18n key="label.user-interface-mdui-infromation">User Interface / MDUI Information</translate-i18n>
+                </a>
+                <dl *ngIf="resolver.mdui">
+                    <dt class="text-primary" translate="label.display-name">Display Name</dt>
+                    <dd class="value">{{ resolver.mdui.displayName }}</dd>
+                    <dt class="text-primary" translate="label.information-url">Information URL</dt>
+                    <dd class="value">{{ resolver.mdui.informationUrl }}</dd>
+                    <dt class="text-primary" translate="label.description">Description</dt>
+                    <dd class="value">{{ resolver.mdui.description }}</dd>
+                    <dt class="text-primary" translate="label.privacy-statement">Privacy Statement URL</dt>
+                    <dd class="value">{{ resolver.mdui.privacyStatementUrl }}</dd>
+                    <dt class="text-primary" translate="label.logo-url">Logo URL</dt>
+                    <dd class="value">{{ resolver.mdui.logoUrl }}</dd>
+                    <dt class="text-primary" translate="label.logo-width">Logo Width</dt>
+                    <dd class="value">{{ resolver.mdui.logoWidth }}</dd>
+                    <dt class="text-primary" translate="label.logo-height">Logo Height</dt>
+                    <dd class="value">{{ resolver.mdui.logoHeight }}</dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 4]" class="tag tag-success tag-sm my-4" aria-label="SP SSO Descriptor Information wizard page, step 4 - click to go back and make updates" role="button">
+                    <span class="index">4</span>
+                    <translate-i18n key="label.sp-sso-descriptor-information">SP SSO Descriptor Information</translate-i18n>
+                </a>
+                <dl *ngIf="resolver.serviceProviderSsoDescriptor">
+                    <dt class="text-primary" translate="label.protocol-support-enumeration">Protocol Support Enumeration</dt>
+                    <dd class="value">{{ resolver.serviceProviderSsoDescriptor.protocolSupportEnum }}</dd>
+                    <dt class="text-primary" translate="label.nameid-format">NameID Format</dt>
+                    <dd class="value">
+                        <p class="text-secondary" *ngIf="!resolver.serviceProviderSsoDescriptor.nameIdFormats.length">&mdash;</p>
+                        <ul class="list-unstyled" *ngIf="resolver.serviceProviderSsoDescriptor.nameIdFormats.length">
+                            <li *ngFor="let format of resolver.serviceProviderSsoDescriptor.nameIdFormats">
+                                {{ format }}
+                            </li>
+                        </ul>
+                    </dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 5]" class="tag tag-success tag-sm my-4" aria-label="Logout Endpoints wizard page, step 5 - click to go back and make updates" role="button">
+                    <span class="index">5</span>
+                    <translate-i18n key="label.logout-endpoints">Logout Endpoints</translate-i18n>
+                </a>
+                <p class="text-secondary" *ngIf="!resolver.logoutEndpoints.length">&mdash;</p>
+                <table class="table table-sm table-bordered table-striped"  *ngIf="resolver.logoutEndpoints.length">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th scope="col" translate="label.logout-endpoints">Logout Endpoint</th>
+                        <th scope="col" translate="label.binding-types">Binding Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let endpoint of resolver.logoutEndpoints">
+                        <td>{{ endpoint.url }}</td>
+                        <td>{{ endpoint.bindingType }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </fieldset>
+        <fieldset class="col form-section">
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 6]" class="tag tag-success tag-sm my-4" aria-label="Security Information wizard page, step 6 - click to go back and make updates" role="button">
+                    <span class="index">6</span>
+                    <translate-i18n key="label.security-information">Security Information</translate-i18n>
+                </a>
+                <dl *ngIf="resolver.securityInfo">
+                    <dt class="text-primary" translate="label.is-there-a-x509-certificate">Is there a X509 Certificate?</dt>
+                    <dd class="value">{{ resolver.securityInfo.x509CertificateAvailable ? 'Yes' : 'No' }}</dd>
+                    <dt class="text-primary" translate="label.authentication-requests-signed">Authentication Requests Signed?</dt>
+                    <dd class="value">{{ resolver.securityInfo.authenticationRequestsSigned ? 'Yes' : 'No' }}</dd>
+                    <dt class="text-primary" translate="label.want-assertions-signed">Want Assertions Signed?</dt>
+                    <dd class="value">{{ resolver.securityInfo.wantAssertionsSigned ? 'Yes' : 'No' }}</dd>
+                    <dt class="text-primary" translate="label.x509-certificates">X509 Certificates</dt>
+                    <dd class="value">
+                        <p class="text-secondary" *ngIf="!resolver.securityInfo.x509Certificates.length">&mdash;</p>
+                        <table class="table table-sm table-bordered table-striped" *ngIf="resolver.securityInfo.x509Certificates.length">
+                            <caption class="sr-only" translate="label.x509-certificates">X509 Certificates</caption>
+                            <thead>
+                            <tr class="table-secondary">
+                                <th scope="col" translate="label.certificate-name-display-only">Certificate Name (Display Only)</th>
+                                <th scope="col" translate="label.type">Type</th>
+                                <th scope="col" translate="label.certificate">Certificate</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let cert of resolver.securityInfo.x509Certificates; let i = index;">
+                                <td>{{ cert.name }}</td>
+                                <td>{{ cert.type }}</td>
+                                <td [ngbPopover]="cert.value"
+                                    triggers="mouseenter:mouseleave"
+                                    container="body"
+                                    placement="top">{{ cert.value | slice:0:9 }}&hellip;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 7]" class="tag tag-success tag-sm my-4" aria-label="Assertion Consumer Services wizard page, step 7 - click to go back and make updates" role="button">
+                    <span class="index">7</span>
+                    <translate-i18n key="label.assertion-consumer-services">Assertion Consumer Services</translate-i18n>
+                </a>
+                <dl>
+                    <dt class="text-primary" translate="label.assertion-consumer-service-endpoints">Assertion Consumer Service Endpoints</dt>
+                    <dd class="value">
+                        <p class="text-secondary" *ngIf="!resolver.assertionConsumerServices.length">&mdash;</p>
+                        <table class="table table-sm table-bordered table-striped" *ngIf="resolver.assertionConsumerServices.length">
+                            <thead>
+                            <tr class="table-secondary">
+                                <th scope="col">#</th>
+                                <th scope="col" translate="label.assertion-consumer-service-location">Assertion Consumer Service Location</th>
+                                <th scope="col" translate="label.assertion-consumer-service-location-binding">Assertion Consumer Service Binding</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let service of resolver.assertionConsumerServices; let i=index;">
+                                <th scope="row">{{ i + 1 }}</th>
+                                <td>{{ service.locationUrl }}</td>
+                                <td>{{ service.binding }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 8]" class="tag tag-success tag-sm my-4" aria-label="Relying Party Overrides wizard page, step 8 - click to go back and make updates" role="button">
+                    <span class="index">8</span>
+                    <translate-i18n key="label.relying-party-overrides">Relying Party Overrides</translate-i18n>
+                </a>
+                <dl *ngIf="resolver.relyingPartyOverrides">
+                    <dt class="text-primary" translate="label.sign-the-assertion">Sign the Assertion?</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.signAssertion ? 'True' : 'False' }}</dd>
+                    <dt class="text-primary" translate="label.dont-sign-the-response">Don't Sign the Response?</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.dontSignResponse ? 'True' : 'False' }}</dd>
+                    <dt class="text-primary" translate="label.turn-off-encryption-of-response">Turn off Encryption of Response?</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.turnOffEncryption ? 'True' : 'False' }}</dd>
+                    <dt class="text-primary" translate="label.use-sha1-signing-algorithm">Use SHA1 Signing Algorithm?</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.useSha ? 'True' : 'False' }}</dd>
+                    <dt class="text-primary" translate="label.nameid-format-to-send">NameID Format to Send</dt>
+                    <dd class="value">
+                        <p class="text-secondary" *ngIf="!resolver.relyingPartyOverrides.nameIdFormats.length">&mdash;</p>
+                        <ul class="list-unstyled" *ngIf="resolver.relyingPartyOverrides.nameIdFormats.length">
+                            <li *ngFor="let format of resolver.relyingPartyOverrides.nameIdFormats">
+                                {{ format }}
+                            </li>
+                        </ul>
+                    </dd>
+                    <dt class="text-primary" translate="label.default-authentication-methods">Default Authentication Method(s)</dt>
+                    <dd class="value">
+                        <p class="text-secondary" *ngIf="!resolver.relyingPartyOverrides.authenticationMethods.length">&mdash;</p>
+                        <ol class="list-unstyled" *ngIf="resolver.relyingPartyOverrides.authenticationMethods.length">
+                            <li *ngFor="let method of resolver.relyingPartyOverrides.authenticationMethods">
+                                {{ method }}
+                            </li>
+                        </ol>
+                    </dd>
+                    <dt class="text-primary" translate="label.ignore-any-sp-requested-authentication-method">Ignore any SP-Requested Authentication Method?</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.ignoreAuthenticationMethod ? 'True' : 'False' }}</dd>
+                    <dt class="text-primary" translate="label.omit-not-before-condition">Omit Not Before Condition?</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.omitNotBefore ? 'True' : 'False' }}</dd>
+                    <dt class="text-primary" translate="label.responderid">ResponderID</dt>
+                    <dd class="value">{{ resolver.relyingPartyOverrides.responderId }}</dd>
+                </dl>
+            </section>
+            <section class="entity-section">
+                <a href="" [routerLink]="['../', 9]" class="tag tag-success tag-sm my-4" aria-label="Attribute Release wizard page, step 9 - click to go back and make updates" role="button">
+                    <span class="index">9</span>
+                    <translate-i18n key="label.attribute-release">Attribute Release</translate-i18n>
+                </a>
+                <table class="table table-sm table-bordered table-striped" *ngIf="resolver.attributeRelease">
+                    <thead>
+                    <tr class="table-secondary">
+                        <th scope="col" translate="label.attribute-name">Attribute Name</th>
+                        <th scope="col" translate="label.true">True</th>
+                        <th scope="col" translate="label.false">False</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let attr of attributesToRelease$ | async">
+                        <td [translate]="attr.label">{{ attr.label }}</td>
+                        <td>
+                            <i class="fa fa-fw fa-check" *ngIf="resolver.attributeRelease.indexOf(attr.key) > -1"></i>
+                        </td>
+                        <td>
+                            <i class="fa fa-fw fa-check" *ngIf="!(resolver.attributeRelease.indexOf(attr.key) > -1)"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </fieldset>
+    </div>
+</form>

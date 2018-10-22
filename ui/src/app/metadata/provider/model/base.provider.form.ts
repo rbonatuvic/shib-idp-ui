@@ -42,28 +42,26 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
         };
         return validators;
     },
-    translate: {
-        parser: (changes: any): BaseMetadataProvider => changes.metadataFilters ? ({
-            ...changes,
-            metadataFilters: [
-                ...Object.keys(changes.metadataFilters).reduce((collection, filterName) => ([
-                    ...collection,
-                    {
-                        ...changes.metadataFilters[filterName],
-                        '@type': filterName
-                    }
-                ]), [])
-            ]
-        }) : changes,
-        formatter: (changes: BaseMetadataProvider): any => changes.metadataFilters ? ({
-            ...changes,
-            metadataFilters: {
-                ...(changes.metadataFilters || []).reduce((collection, filter) => ({
-                    ...collection,
-                    [filter['@type']]: filter
-                }), {})
-            }
-        }) : changes
-    },
+    parser: (changes: any): BaseMetadataProvider => (changes.metadataFilters ? ({
+        ...changes,
+        metadataFilters: [
+            ...Object.keys(changes.metadataFilters).reduce((collection, filterName) => ([
+                ...collection,
+                {
+                    ...changes.metadataFilters[filterName],
+                    '@type': filterName
+                }
+            ]), [])
+        ]
+    }) : changes),
+    formatter: (changes: BaseMetadataProvider): any => (changes.metadataFilters ? ({
+        ...changes,
+        metadataFilters: {
+            ...(changes.metadataFilters || []).reduce((collection, filter) => ({
+                ...collection,
+                [filter['@type']]: filter
+            }), {})
+        }
+    }) : changes),
     steps: []
 };

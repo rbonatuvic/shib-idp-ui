@@ -18,6 +18,7 @@ import { FilterTargetComponent } from './widget/filter-target/filter-target.comp
 import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
 import { CustomObjectWidget } from './widget/object/object.component';
+import { CustomRadioComponent } from './widget/radio/radio.component';
 
 export class CustomWidgetRegistry extends WidgetRegistry {
     constructor() {
@@ -58,12 +59,12 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('icon-button', IconButtonComponent);
 
+        this.register('radio', CustomRadioComponent);
+
         /* NGX-Form */
         this.register('range', RangeWidget);
 
         this.register('file', FileWidget);
-        this.register('radio', RadioWidget);
-
         this.register('button', ButtonWidget);
 
         this.setDefaultWidget(CustomStringComponent);

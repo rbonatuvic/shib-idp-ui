@@ -53,7 +53,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     }
 
     getId(): string {
-        return this.id ? this.id : this.entityId;
+        return this.id;
     }
 
     getDisplayId(): string {
@@ -61,7 +61,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     }
 
     isDraft(): boolean {
-        return this.id ? false : true;
+        return this.createdDate ? false : true;
     }
 
     getCreationDate(): Date {

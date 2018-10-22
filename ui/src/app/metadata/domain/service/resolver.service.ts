@@ -33,7 +33,8 @@ export class ResolverService {
     }
 
     save(provider: MetadataResolver): Observable<MetadataResolver> {
-        return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, provider);
+        const { id, ...p } = provider;
+        return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, p);
     }
 
     remove(provider: MetadataResolver): Observable<MetadataResolver> {

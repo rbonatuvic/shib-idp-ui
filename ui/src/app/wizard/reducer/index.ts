@@ -2,6 +2,7 @@ import * as fromRoot from '../../app.reducer';
 import * as fromWizard from './wizard.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Wizard, WizardStep } from '../model';
+import { diff } from 'deep-object-diff';
 
 export interface WizardState {
     wizard: fromWizard.State;
@@ -15,6 +16,28 @@ export interface State extends fromRoot.State {
     'wizard': WizardState;
 }
 
+export function getSchemaParseFn(schema, locked): any {
+    if (!schema || !schema.properties) {
+        return schema;
+    }
+    return {
+        ...schema,
+        properties: Object.keys(schema.properties).reduce((prev, current) => {
+            return {
+                ...prev,
+                [current]: {
+                    ...schema.properties[current],
+                    readOnly: locked,
+                    ...(schema.properties[current].hasOwnProperty('properties') ?
+                        getSchemaParseFn(schema.properties[current], locked) :
+                        {}
+                    )
+                }
+            };
+        }, {})
+    };
+}
+
 export const getWizardState = createFeatureSelector<WizardState>('wizard');
 export const getWizardStateFn = (state: WizardState) => state.wizard;
 export const getState = createSelector(getWizardState, getWizardStateFn);
@@ -24,13 +47,37 @@ export const getWizardIsDisabled = createSelector(getState, fromWizard.getDisabl
 export const getWizardDefinition = createSelector(getState, fromWizard.getDefinition);
 export const getSchemaCollection = createSelector(getState, fromWizard.getCollection);
 
-export const getSchema = (index: string, wizard: Wizard<any>) => {
+export const getSchemaPath = (index: string, wizard: Wizard<any>) => {
     if (!wizard) { return null; }
     const step = wizard.steps.find(s => s.id === index);
     return step ? step.schema : null;
 };
 
-export const getCurrentWizardSchema = createSelector(getWizardIndex, getWizardDefinition, getSchema);
+export const getSplitSchema = (schema: any, step: WizardStep) => {
+    if (!schema || !step.fields || !step.fields.length || !schema.properties) {
+        return schema;
+    }
+    const keys = Object.keys(schema.properties).filter(key => step.fields.indexOf(key) > -1);
+    const required = (schema.required || []).filter(val => keys.indexOf(val) > -1);
+    let s: any = {
+        type: schema.type,
+        definitions: schema.definitions,
+        properties: {
+            ...keys.reduce( (properties, key) => ({ ...properties, [key]: schema.properties[key] }) , {})
+        }
+    };
+
+    if (required && required.length) {
+        s.required = required;
+    }
+    if (step.fieldsets) {
+        s.fieldsets = step.fieldsets;
+    }
+
+    return s;
+};
+
+export const getCurrentWizardSchema = createSelector(getWizardIndex, getWizardDefinition, getSchemaPath);
 
 export const getPreviousFn = (index: string, wizard: Wizard<any>) => {
     if (!wizard) { return null; }
@@ -67,3 +114,12 @@ export const getLast = createSelector(getWizardIndex, getWizardDefinition, getLa
 export const getModel = createSelector(getCurrent, getModelFn);
 
 export const getRoutes = createSelector(getWizardDefinition, d => d ? d.steps.map(step => ({ path: step.id, label: step.label })) : [] );
+
+export const getLockedStatus = createSelector(getState, fromWizard.getLocked);
+export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked : false : false;
+export const getLocked = createSelector(getCurrent, getLockedStatus, getSchemaLockedFn);
+
+export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
+export const getParsedSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
+
+export const getSchema = createSelector(getParsedSchema, getCurrent, getSplitSchema);

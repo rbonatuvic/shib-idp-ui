@@ -6,7 +6,7 @@ import { NgbDropdownModule, NgbModalModule, NgbModal } from '@ng-bootstrap/ng-bo
 import { ProviderFilterListComponent } from './provider-filter-list.component';
 import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
-import { ProviderEditorNavComponent } from '../component/provider-editor-nav.component';
+import { EditorNavComponent } from '../../domain/component/editor-nav.component';
 import { ValidFormIconComponent } from '../../../shared/component/valid-form-icon.component';
 import { DeleteFilterComponent } from '../component/delete-filter.component';
 import { NgbModalStub } from '../../../../testing/modal.stub';
@@ -42,7 +42,7 @@ describe('Provider Filter List Component', () => {
             ],
             declarations: [
                 ProviderFilterListComponent,
-                ProviderEditorNavComponent,
+                EditorNavComponent,
                 ValidFormIconComponent,
                 DeleteFilterComponent,
                 TestHostComponent

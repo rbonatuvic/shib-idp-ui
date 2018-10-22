@@ -2,8 +2,8 @@ import { BaseMetadataProviderEditor } from './base.provider.form';
 
 describe('BaseMetadataProviderForm', () => {
 
-    const parser = BaseMetadataProviderEditor.translate.parser;
-    const formatter = BaseMetadataProviderEditor.translate.formatter;
+    const parser = BaseMetadataProviderEditor.parser;
+    const formatter = BaseMetadataProviderEditor.formatter;
 
     const requiredValidUntilFilter = {
         maxValidityInterval: 1,

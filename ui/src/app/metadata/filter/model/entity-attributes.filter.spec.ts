@@ -7,8 +7,8 @@ describe('Entity Attributes filter form', () => {
 
     describe('transformer', () => {
         it('should not modify the object', () => {
-            expect(EntityAttributesFilter.translate.formatter({})).toEqual({});
-            expect(EntityAttributesFilter.translate.parser({})).toEqual({});
+            expect(EntityAttributesFilter.formatter({})).toEqual({});
+            expect(EntityAttributesFilter.parser({})).toEqual({});
         });
     });
 });

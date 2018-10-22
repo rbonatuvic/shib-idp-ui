@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { EffectsModule } from '@ngrx/effects';
 import { CommonModule } from '@angular/common';
+import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ResolverService } from './service/resolver.service';
 import { ListValuesService } from './service/list-values.service';
@@ -15,9 +16,20 @@ import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
 import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
+import { WizardSummaryComponent } from './component/wizard-summary.component';
+import { SummaryPropertyComponent } from './component/summary-property.component';
+
+import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
+import { EditorNavComponent } from './component/editor-nav.component';
+import { RouterModule } from '@angular/router';
+import { SharedModule } from '../../shared/shared.module';
 
 export const COMPONENTS = [
-    PreviewDialogComponent
+    PreviewDialogComponent,
+    WizardSummaryComponent,
+    UnsavedEntityComponent,
+    SummaryPropertyComponent,
+    EditorNavComponent
 ];
 
 export const DECLARATIONS = [
@@ -30,7 +42,11 @@ export const DECLARATIONS = [
     imports: [
         HttpModule,
         CommonModule,
-        I18nModule
+        I18nModule,
+        NgbPopoverModule,
+        RouterModule,
+        NgbDropdownModule,
+        SharedModule
     ],
     exports: DECLARATIONS,
     providers: []

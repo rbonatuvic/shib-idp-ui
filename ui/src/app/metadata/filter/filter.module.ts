@@ -8,7 +8,6 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { NewFilterComponent } from './container/new-filter.component';
 import { reducers } from './reducer';
-import { ProviderEditorFormModule } from '../domain/component';
 import { FilterEffects } from './effect/filter.effect';
 import { NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchDialogComponent } from './component/search-dialog.component';
@@ -36,7 +35,6 @@ import { I18nModule } from '../../i18n/i18n.module';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        ProviderEditorFormModule,
         NgbPopoverModule,
         NgbModalModule,
         SharedModule,
