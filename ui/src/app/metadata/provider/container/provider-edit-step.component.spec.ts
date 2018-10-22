@@ -8,7 +8,6 @@ import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import { SharedModule } from '../../../shared/shared.module';
-import { SetDefinition } from '../../../wizard/action/wizard.action';
 import { FileBackedHttpMetadataProviderEditor } from '../model';
 
 @Component({
@@ -27,6 +26,7 @@ describe('Provider Edit Step Component', () => {
     let instance: TestHostComponent;
     let app: ProviderEditStepComponent;
     let store: Store<fromRoot.State>;
+    let storeSpy: any;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -42,6 +42,17 @@ describe('Provider Edit Step Component', () => {
                             index: 'common',
                             disabled: false,
                             definition: FileBackedHttpMetadataProviderEditor,
+                            schemaPath: '',
+                            loading: false,
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    foo: {
+                                        type: 'string'
+                                    }
+                                }
+                            },
+                            locked: false,
                             schemaCollection: []
                         }
                     })
@@ -57,7 +68,7 @@ describe('Provider Edit Step Component', () => {
         }).compileComponents();
 
         store = TestBed.get(Store);
-        spyOn(store, 'dispatch');
+        storeSpy = spyOn(store, 'dispatch');
 
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;
@@ -71,10 +82,10 @@ describe('Provider Edit Step Component', () => {
 
     describe('updateStatus method', () => {
         it('should update the status with provided errors', () => {
+            storeSpy.calls.reset();
             app.currentPage = 'common';
             app.updateStatus({value: 'common'});
-            app.updateStatus({value: 'foo'});
-            expect(store.dispatch).toHaveBeenCalledTimes(3);
+            expect(store.dispatch).toHaveBeenCalledTimes(1);
         });
     });
 

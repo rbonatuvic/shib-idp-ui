@@ -11,6 +11,15 @@ export interface WizardStep {
     schema?: string;
     index: number;
     locked?: boolean;
+    fields?: string[];
+    fieldsets?: WizardFieldset[];
+    summary?: boolean;
+}
+
+export interface WizardFieldset {
+    type: string;
+    class?: string[];
+    fields: string[];
 }
 
 export interface WizardValue {

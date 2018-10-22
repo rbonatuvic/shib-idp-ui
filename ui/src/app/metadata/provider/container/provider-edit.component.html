@@ -10,10 +10,17 @@
     <div class="section-body p-4 border border-top-0 border-info">
         <div class="row">
             <div class="col-6 d-lg-none order-1">
-                <provider-editor-nav
+                <editor-nav
                     [format]="formats.DROPDOWN"
-                    (onPageSelect)="setIndex($event)">
-                </provider-editor-nav>
+                    [status]="status$ | async">
+                    <a class="dropdown-item"
+                        [routerLink]="['../', 'filters']"
+                        routerLinkActive="active"
+                        [attr.aria-label]="'label.filter-list' | translate"
+                        role="button">
+                        <translate-i18n key="label.filter-list"></translate-i18n>
+                    </a>
+                </editor-nav>
             </div>
             <div class="col-6 col-lg-3 order-2 text-right">
                 <button class="btn btn-info"
@@ -46,10 +53,16 @@
         <hr />
         <div class="row">
             <div class="col-lg-3 d-none d-lg-block">
-                <provider-editor-nav
-                    [format]="formats.TABS"
-                    (onPageSelect)="setIndex($event)">
-                </provider-editor-nav>
+                <editor-nav
+                    [format]="formats.TABS">
+                    <a class="nav-link"
+                        [routerLink]="['../', 'filters']"
+                        routerLinkActive="active"
+                        [attr.aria-label]="'label.filter-list' | translate"
+                        role="button">
+                        <translate-i18n key="label.filter-list"></translate-i18n>
+                    </a>
+                </editor-nav>
             </div>
             <div class="col-lg-6">
                 <router-outlet></router-outlet>

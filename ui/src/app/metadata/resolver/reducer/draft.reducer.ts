@@ -7,13 +7,8 @@ export interface DraftState extends EntityState<MetadataResolver> {
     selectedDraftId: string | null;
 }
 
-export function sortByName(a: MetadataResolver, b: MetadataResolver): number {
-    return a.serviceProviderName.localeCompare(b.serviceProviderName);
-}
-
 export const adapter: EntityAdapter<MetadataResolver> = createEntityAdapter<MetadataResolver>({
-    sortComparer: sortByName,
-    selectId: (model: MetadataResolver) => model.entityId
+    selectId: (model: MetadataResolver) => model.id
 });
 
 export const initialState: DraftState = adapter.getInitialState({
@@ -34,10 +29,10 @@ export function reducer(state = initialState, action: DraftActionsUnion): DraftS
         }
 
         case DraftActionTypes.REMOVE_DRAFT_SUCCESS: {
-            return adapter.removeOne(action.payload.entityId, state);
+            return adapter.removeOne(action.payload.id, state);
         }
 
-        case DraftActionTypes.SELECT: {
+        case DraftActionTypes.SELECT_SUCCESS: {
             return {
                 ...state,
                 selectedDraftId: action.payload,

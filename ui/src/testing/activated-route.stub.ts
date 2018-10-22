@@ -24,10 +24,16 @@ export class ActivatedRouteStub {
 
     // ActivatedRoute.snapshot.paramMap
     get snapshot() {
-        return { paramMap: this.testParamMap };
+        return {
+            paramMap: this.testParamMap
+        };
     }
 
     get params() {
+        return this.paramMap;
+    }
+
+    get queryParams() {
         return this.paramMap;
     }
 

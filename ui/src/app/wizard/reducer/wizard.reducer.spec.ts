@@ -1,6 +1,19 @@
 import { reducer, initialState as snapshot } from './wizard.reducer';
 import * as selectors from './wizard.reducer';
-import { WizardActionTypes, ClearWizard, AddSchema, SetDisabled, SetDefinition, SetIndex, UpdateDefinition } from '../action/wizard.action';
+import {
+    WizardActionTypes,
+    ClearWizard,
+    AddSchema,
+    SetDisabled,
+    SetDefinition,
+    SetIndex,
+    LockEditor,
+    LoadSchemaRequest,
+    LoadSchemaFail,
+    LoadSchemaSuccess,
+    UnlockEditor,
+    UpdateDefinition
+} from '../action/wizard.action';
 import { SCHEMA } from '../../../testing/form-schema.stub';
 import { MetadataProviderWizard, FileBackedHttpMetadataProviderWizard } from '../../metadata/provider/model';
 
@@ -60,6 +73,36 @@ describe('Wizard Reducer', () => {
                     ]
                 }
             });
+        });
+    });
+
+    describe(`${WizardActionTypes.LOCK}`, () => {
+        it('should reset to initial state', () => {
+            expect(reducer(snapshot, new LockEditor())).toEqual({ ...snapshot, locked: true });
+        });
+    });
+
+    describe(`${WizardActionTypes.UNLOCK}`, () => {
+        it('should reset to initial state', () => {
+            expect(reducer(snapshot, new UnlockEditor())).toEqual({ ...snapshot, locked: false });
+        });
+    });
+
+    describe(`${WizardActionTypes.LOAD_SCHEMA_REQUEST}`, () => {
+        it('should reset to initial state', () => {
+            expect(reducer(snapshot, new LoadSchemaRequest('foo'))).toEqual({ ...snapshot, schemaPath: 'foo', loading: true });
+        });
+    });
+
+    describe(`${WizardActionTypes.LOAD_SCHEMA_FAIL}`, () => {
+        it('should reset to initial state', () => {
+            expect(reducer(snapshot, new LoadSchemaFail(new Error('fail')))).toEqual({ ...snapshot });
+        });
+    });
+
+    describe(`${WizardActionTypes.LOAD_SCHEMA_REQUEST}`, () => {
+        it('should reset to initial state', () => {
+            expect(reducer(snapshot, new LoadSchemaSuccess({}))).toEqual({ ...snapshot, schema: {} });
         });
     });
 

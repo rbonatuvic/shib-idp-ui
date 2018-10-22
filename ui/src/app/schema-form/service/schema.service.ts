@@ -15,7 +15,7 @@ export class SchemaService {
 
     isRequired(formProperty: any): boolean {
         let required = false;
-        if (!formProperty) {
+        if (!formProperty || !formProperty.parent) {
             return false;
         }
         let requiredFields = formProperty.parent.schema.required || [];

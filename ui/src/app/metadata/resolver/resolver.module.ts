@@ -1,19 +1,16 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NewResolverComponent } from './container/new-resolver.component';
-
-import { ProviderEditorFormModule } from '../domain/component';
 import { UploadResolverComponent } from './container/upload-resolver.component';
 import { BlankResolverComponent } from './container/blank-resolver.component';
 import { CopyResolverComponent } from './container/copy-resolver.component';
-import { ResolverComponent } from './container/resolver.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchIdEffects } from './effect/search.effect';
 import * as fromResolver from './reducer';
@@ -21,16 +18,23 @@ import { ConfirmCopyComponent } from './container/confirm-copy.component';
 import { CopyIsSetGuard } from './guard/copy-isset.guard';
 import { CopyResolverEffects } from './effect/copy.effect';
 import { DomainModule } from '../domain/domain.module';
-import { DraftComponent } from './container/draft.component';
-import { EditorComponent } from './container/editor.component';
-import { WizardComponent } from './container/wizard.component';
-import { WizardNavComponent } from './component/wizard-nav.component';
+import { ResolverWizardComponent } from './container/resolver-wizard.component';
 import { ResolverCollectionEffects } from './effect/collection.effects';
 import { DraftCollectionEffects } from './effect/draft-collection.effects';
 import { WizardEffects } from './effect/wizard.effect';
-import { EditorEffects } from './effect/editor.effect';
-import { UnsavedDialogComponent } from './component/unsaved-dialog.component';
 import { I18nModule } from '../../i18n/i18n.module';
+import { MetadataSourceWizard } from '../domain/model/wizards/metadata-source-wizard';
+import { METADATA_SOURCE_WIZARD, METADATA_SOURCE_EDITOR } from './wizard-definition';
+import { EntityEffects } from './effect/entity.effect';
+import { ResolverWizardStepComponent } from './container/resolver-wizard-step.component';
+import { WizardModule } from '../../wizard/wizard.module';
+import { FormModule } from '../../schema-form/schema-form.module';
+import { ResolverEditComponent } from './container/resolver-edit.component';
+import { ResolverEditStepComponent } from './container/resolver-edit-step.component';
+import { ResolverSelectComponent } from './container/resolver-select.component';
+import { MetadataSourceEditor } from '../domain/model/wizards/metadata-source-editor';
+import { FinishFormComponent } from './component/finish-form.component';
+import { ProviderFormFragmentComponent } from './component/provider-form-fragment.component';
 
 @NgModule({
     declarations: [
@@ -39,16 +43,15 @@ import { I18nModule } from '../../i18n/i18n.module';
         BlankResolverComponent,
         CopyResolverComponent,
         ConfirmCopyComponent,
-        ResolverComponent,
-        DraftComponent,
-        EditorComponent,
-        WizardComponent,
-        WizardNavComponent,
-        UnsavedDialogComponent
+        ResolverEditComponent,
+        ResolverEditStepComponent,
+        ResolverSelectComponent,
+        ResolverWizardComponent,
+        ResolverWizardStepComponent,
+        FinishFormComponent,
+        ProviderFormFragmentComponent
     ],
-    entryComponents: [
-        UnsavedDialogComponent
-    ],
+    entryComponents: [],
     imports: [
         DomainModule,
         SharedModule,
@@ -57,14 +60,14 @@ import { I18nModule } from '../../i18n/i18n.module';
         RouterModule,
         ReactiveFormsModule,
         FormsModule,
-        ProviderEditorFormModule,
         NgbDropdownModule,
-        I18nModule
+        I18nModule,
+        WizardModule,
+        FormModule,
+        NgbPopoverModule,
+        NgbModalModule
     ],
-    exports: [
-        ProviderEditorFormModule,
-        WizardNavComponent
-    ],
+    exports: [],
     providers: []
 })
 export class ResolverModule {
@@ -88,8 +91,12 @@ export class ResolverModule {
             ResolverCollectionEffects,
             DraftCollectionEffects,
             WizardEffects,
-            EditorEffects
+            EntityEffects
         ])
     ],
+    providers: [
+        { provide: METADATA_SOURCE_WIZARD, useClass: MetadataSourceWizard },
+        { provide: METADATA_SOURCE_EDITOR, useClass: MetadataSourceEditor }
+    ]
 })
 export class RootResolverModule { }

@@ -5,9 +5,18 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { switchMap, map, catchError, tap } from 'rxjs/operators';
 
-import { DraftActionTypes } from '../action/draft.action';
+import {
+    DraftActionTypes,
+    SelectDraftRequest,
+    SelectDraftError,
+    SelectDraftSuccess
+} from '../action/draft.action';
 import * as actions from '../action/draft.action';
 import { EntityDraftService } from '../../domain/service/draft.service';
+import * as fromResolver from '../reducer';
+import { Store } from '@ngrx/store';
+import { Clear } from '../action/entity.action';
+import { ClearWizard } from '../../../wizard/action/wizard.action';
 
 export const getPayload = (action: any) => action.payload;
 
@@ -70,7 +79,7 @@ export class DraftCollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new actions.UpdateDraftSuccess({
-                        id: p.entityId,
+                        id: p.id,
                         changes: p
                     }))
                 );
@@ -79,27 +88,51 @@ export class DraftCollectionEffects {
 
     @Effect()
     selectDraft$ = this.actions$.pipe(
-        ofType<actions.SelectDraft>(DraftActionTypes.SELECT),
+        ofType<SelectDraftRequest>(DraftActionTypes.SELECT_REQUEST),
         map(getPayload),
         switchMap(id =>
             this.draftService
                 .find(id)
                 .pipe(
-                    map(p => new actions.FindDraft(p.entityId))
+                    map(p => new SelectDraftSuccess(p.id)),
+                    catchError(e => of(new SelectDraftError()))
                 )
         )
+    );
+
+    @Effect()
+    selectDraftReload$ = this.actions$.pipe(
+        ofType<SelectDraftRequest>(DraftActionTypes.SELECT_REQUEST),
+        map(getPayload),
+        map(id => new actions.LoadDraftRequest())
+    );
+
+    @Effect()
+    selectDraftError$ = this.actions$.pipe(
+        ofType<SelectDraftError>(DraftActionTypes.SELECT_ERROR),
+        map(getPayload),
+        switchMap(id =>
+            this.draftService
+                .save({ id: `r-${ Date.now() }`, serviceProviderName: '' })
+                .pipe(
+                    map(p => new SelectDraftRequest(p.id)),
+                    catchError(e => of(new SelectDraftError()))
+                )
+        ),
+        tap(() => {
+            this.store.dispatch(new ClearWizard());
+            this.store.dispatch(new Clear());
+        })
     );
 
     @Effect()
     removeDraft$ = this.actions$.pipe(
         ofType<actions.RemoveDraftRequest>(DraftActionTypes.REMOVE_DRAFT),
         map(getPayload),
-        switchMap(provider =>
-            this.draftService
-                .remove(provider)
-                .pipe(
-                    map(p => new actions.RemoveDraftSuccess(p))
-                )
+            switchMap(provider => this.draftService.find(provider.entityId, 'entityId').pipe(
+                switchMap(selected => this.draftService.remove(selected)),
+                map(p => new actions.RemoveDraftSuccess(p))
+            )
         )
     );
     @Effect()
@@ -112,6 +145,7 @@ export class DraftCollectionEffects {
     constructor(
         private draftService: EntityDraftService,
         private actions$: Actions,
-        private router: Router
+        private router: Router,
+        private store: Store<fromResolver.ResolverState>
     ) { }
 } /* istanbul ignore next */

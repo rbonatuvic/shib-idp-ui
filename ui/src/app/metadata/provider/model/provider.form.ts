@@ -13,7 +13,11 @@ export const MetadataProviderWizard: Wizard<MetadataProvider> = {
             label: 'label.select-metadata-provider-type',
             index: 1,
             initialValues: [],
-            schema: 'assets/schema/provider/metadata-provider.schema.json'
+            schema: 'assets/schema/provider/metadata-provider.schema.json',
+            fields: [
+                'name',
+                '@type'
+            ]
         }
     ] as WizardStep[]
 };

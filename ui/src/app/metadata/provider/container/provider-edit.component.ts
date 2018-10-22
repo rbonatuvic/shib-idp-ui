@@ -1,22 +1,21 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { skipWhile, map, combineLatest } from 'rxjs/operators';
+import { skipWhile, map, combineLatest, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromProvider from '../reducer';
-import { ClearWizard, SetDefinition, SetIndex } from '../../../wizard/action/wizard.action';
-import { ClearEditor, LoadSchemaRequest } from '../action/editor.action';
+import { ClearWizard, SetIndex, LoadSchemaRequest } from '../../../wizard/action/wizard.action';
+import { ClearEditor } from '../action/editor.action';
 import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
 import { UpdateProviderRequest } from '../action/collection.action';
-import { NAV_FORMATS } from '../component/provider-editor-nav.component';
 import { NgbModal } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
-import { UnsavedDialogComponent } from '../../resolver/component/unsaved-dialog.component';
-import { UnsavedProviderComponent } from '../component/unsaved-provider.dialog';
+import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
 import { DifferentialService } from '../../../core/service/differential.service';
+import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
 
 @Component({
     selector: 'provider-edit',
@@ -47,28 +46,22 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         private modalService: NgbModal,
         private diffService: DifferentialService
     ) {
-        this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(d => !d));
-        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(skipWhile(d => !d));
-        this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(skipWhile(i => !i));
+        this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(filter(d => !!d));
+        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d));
+        this.index$ = this.store.select(fromWizard.getWizardIndex).pipe(filter(i => !!i));
         this.valid$ = this.store.select(fromProvider.getEditorIsValid);
         this.isInvalid$ = this.valid$.pipe(map(v => !v));
         this.status$ = this.store.select(fromProvider.getInvalidEditorForms);
         this.isSaving$ = this.store.select(fromProvider.getEntityIsSaving);
 
-        let startIndex$ = this.route.firstChild ?
-            this.route.firstChild.params.pipe(map(p => p.form || 'filters')) :
-            this.definition$.pipe(map(d => d.steps[0].id));
+        let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form || 'filters'));
+        startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
 
-        startIndex$
-            .subscribe(index => {
-                this.store.dispatch(new SetIndex(index));
-            });
-
-        this.index$.subscribe(id => this.go(id));
+        this.index$.subscribe(id => id && this.go(id));
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
-            .pipe(skipWhile(s => !s))
+            .pipe(filter(s => !!s))
             .subscribe(s => {
                 if (s) {
                     this.store.dispatch(new LoadSchemaRequest(s));
@@ -83,17 +76,12 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         this.router.navigate(['./', id], { relativeTo: this.route });
     }
 
-    setIndex(id: string): void {
-        this.store.dispatch(new SetIndex(id));
-    }
-
     ngOnDestroy() {
         this.clear();
     }
 
     clear(): void {
         this.store.dispatch(new ClearProvider());
-        this.store.dispatch(new ClearWizard());
         this.store.dispatch(new ClearEditor());
     }
 
@@ -116,7 +104,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         }
         const diff = this.diffService.updatedDiff(this.provider, this.latest);
         if (diff && Object.keys(diff).length > 0) {
-            let modal = this.modalService.open(UnsavedProviderComponent);
+            let modal = this.modalService.open(UnsavedEntityComponent);
             modal.result.then(
                 () => {
                     this.clear();

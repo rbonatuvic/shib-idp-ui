@@ -3,14 +3,18 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 
 import {
-    LoadSchemaRequest,
-    LoadSchemaSuccess,
-    LoadSchemaFail,
     EditorActionTypes
 } from '../action/editor.action';
 import { map, switchMap, catchError, withLatestFrom, debounceTime } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { SetDefinition, WizardActionTypes, AddSchema } from '../../../wizard/action/wizard.action';
+import {
+    LoadSchemaRequest,
+    LoadSchemaSuccess,
+    LoadSchemaFail,
+    SetDefinition,
+    WizardActionTypes,
+    AddSchema
+} from '../../../wizard/action/wizard.action';
 import { ResetChanges } from '../action/entity.action';
 
 import * as fromWizard from '../../../wizard/reducer';
@@ -21,7 +25,7 @@ export class EditorEffects {
 
     @Effect()
     $loadSchemaRequest = this.actions$.pipe(
-        ofType<LoadSchemaRequest>(EditorActionTypes.LOAD_SCHEMA_REQUEST),
+        ofType<LoadSchemaRequest>(WizardActionTypes.LOAD_SCHEMA_REQUEST),
         map(action => action.payload),
         debounceTime(100),
         switchMap((schemaPath: string) =>
@@ -36,7 +40,7 @@ export class EditorEffects {
 
     @Effect()
     $loadSchemaSuccess = this.actions$.pipe(
-        ofType<LoadSchemaSuccess>(EditorActionTypes.LOAD_SCHEMA_SUCCESS),
+        ofType<LoadSchemaSuccess>(WizardActionTypes.LOAD_SCHEMA_SUCCESS),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromWizard.getWizardIndex)),
         map(([schema, id]) => new AddSchema({ id, schema }))

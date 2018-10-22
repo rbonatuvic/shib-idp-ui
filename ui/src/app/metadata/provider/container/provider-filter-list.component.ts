@@ -7,7 +7,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as fromProvider from '../reducer';
 import * as fromFilter from '../../filter/reducer';
 import { MetadataFilter, MetadataProvider } from '../../domain/model';
-import { NAV_FORMATS } from '../component/provider-editor-nav.component';
 import { SetIndex } from '../../../wizard/action/wizard.action';
 
 import {
@@ -19,6 +18,7 @@ import {
     ClearFilters
 } from '../../filter/action/collection.action';
 import { DeleteFilterComponent } from '../component/delete-filter.component';
+import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
 
 @Component({
     selector: 'provider-filter-list',

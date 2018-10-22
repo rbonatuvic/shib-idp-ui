@@ -9,8 +9,6 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
         const validators = {};
         return validators;
     },
-    translate: {
-        parser: (changes: any): MetadataFilter => changes,
-        formatter: (changes: MetadataFilter): any => changes
-    }
+    parser: (changes: any): MetadataFilter => changes,
+    formatter: (changes: MetadataFilter): any => changes
 };

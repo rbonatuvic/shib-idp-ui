@@ -3,7 +3,7 @@
         <label [attr.for]="id" class="m-0 pt-1 control-label">
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
         </label>
-        &nbsp;
+        &nbsp;&nbsp;
         <button (click)="addItem()" class="btn btn-success btn-sm array-add-button">
             <translate-i18n key="action.add">Add</translate-i18n>&nbsp;&nbsp;
             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -13,17 +13,50 @@
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
     </div>
-    <div *ngFor="let itemProperty of formProperty.properties; let i=index; trackBy:trackByIndex" class="mt-2">
-        <div class="d-flex justify-content-between">
-            <sf-form-element class="flex-grow-1" [formProperty]="itemProperty"></sf-form-element>
-            <div class="py-2">
-                <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
-                    <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
-                    <span class="sr-only" translate="action.remove">Remove</span>
-                </button>
+    <ul class="mt-2"
+        [ngClass]="{'bg-light border rounded p-3 list-group': getListType(formProperty) === 'object'}"
+        [class.no-style]="getListType(formProperty) !== 'object'">
+        <li *ngFor="let itemProperty of formProperty.properties; let i=index; trackBy:trackByIndex"
+            [class.mt-2]="i > 0"
+            [class.list-group-item]="itemProperty.type === 'object'">
+            <div [ngClass]="{ 'd-flex justify-content-between': itemProperty.type !== 'object' }">
+                <ng-container [ngSwitch]="itemProperty.type">
+                    <ng-container *ngSwitchDefault>
+                        <sf-form-element class="flex-grow-1" [formProperty]="itemProperty"></sf-form-element>
+                        <div class="py-2">
+                            <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                                <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
+                                <span class="sr-only" translate="action.remove">Remove</span>
+                            </button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'object'">
+                        <div #acc>
+                            <div class="d-flex justify-content-between" (click)="acc.isHidden = !acc.isHidden">
+                                <span>
+                                    <i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
+                                    &nbsp;
+                                    <translate-i18n key="label.new-of-type" [params]="{ type: (itemProperty.schema.title | translate) }"></translate-i18n>
+                                    <ng-container *ngIf="itemProperty.schema.properties.makeDefault">
+                                        <i class="fa fa-fw fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="itemProperty.value.makeDefault === true"></i>
+                                        <small class="sr-only" *ngIf="itemProperty.value.makeDefault === true" translate="label.default">(default)</small>
+                                    </ng-container>
+                                </span>
+                                <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                                    <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
+                                    <span class="sr-only" translate="action.remove">Remove</span>
+                                </button>
+                            </div>
+                            <div class="collapse" [ngClass]="{'show': !acc.isHidden}">
+                                <hr />
+                                <sf-form-element [formProperty]="itemProperty"></sf-form-element>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
             </div>
-        </div>
-    </div>
+        </li>
+    </ul>
     <span *ngIf="schema.description" class="sr-only">
         <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
     </span>

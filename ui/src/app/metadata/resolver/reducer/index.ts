@@ -1,6 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../../app.reducer';
-import * as fromEditor from './editor.reducer';
+import * as fromEntity from './entity.reducer';
 import * as fromSearch from './search.reducer';
 import * as fromCopy from './copy.reducer';
 import * as fromDraft from './draft.reducer';
@@ -9,7 +9,7 @@ import * as fromCollection from './collection.reducer';
 import { combineAllFn, getEntityIdsFn, getInCollectionFn, doesExistFn } from '../../domain/domain.util';
 
 export interface ResolverState {
-    editor: fromEditor.EditorState;
+    entity: fromEntity.EntityState;
     copy: fromCopy.CopyState;
     search: fromSearch.SearchState;
     draft: fromDraft.DraftState;
@@ -18,10 +18,10 @@ export interface ResolverState {
 
 export const reducers = {
     copy: fromCopy.reducer,
-    search: fromSearch.reducer,
-    editor: fromEditor.reducer,
+    entity: fromEntity.reducer,
     collection: fromCollection.reducer,
-    draft: fromDraft.reducer
+    draft: fromDraft.reducer,
+    search: fromSearch.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -32,26 +32,26 @@ export const getResolverState = createFeatureSelector<ResolverState>('resolver')
 
 export const getCollectionStateFn = (state: ResolverState) => state.collection;
 export const getDraftStateFn = (state: ResolverState) => state.draft;
-export const getEditorStateFn = (state: ResolverState) => state.editor;
+export const getEntityStateFn = (state: ResolverState) => state.entity;
 export const getCopyStateFn = (state: ResolverState) => state.copy;
 export const getSearchStateFn = (state: ResolverState) => state.search;
 
 export const getCollectionState = createSelector(getResolverState, getCollectionStateFn);
 export const getDraftState = createSelector(getResolverState, getDraftStateFn);
-export const getEditorState = createSelector(getResolverState, getEditorStateFn);
+export const getEntityState = createSelector(getResolverState, getEntityStateFn);
 export const getCopyState = createSelector(getResolverState, getCopyStateFn);
 export const getSearchState = createSelector(getResolverState, getSearchStateFn);
 
 /*
-Editor State
+Entity State
 */
 
-export const getEditorIsValid = createSelector(getEditorState, fromEditor.isEditorValid);
-export const getEditorIsSaved = createSelector(getEditorState, fromEditor.isEditorSaved);
-export const getEditorChanges = createSelector(getEditorState, fromEditor.getChanges);
-export const getEditorIsSaving = createSelector(getEditorState, fromEditor.isEditorSaving);
-export const getFormStatus = createSelector(getEditorState, fromEditor.getFormStatus);
-export const getInvalidEditorForms = createSelector(getEditorState, fromEditor.getInvalidForms);
+export const getEntityIsValid = createSelector(getEntityState, fromEntity.isEntityValid);
+export const getEntityIsSaved = createSelector(getEntityState, fromEntity.isEntitySaved);
+export const getEntityChanges = createSelector(getEntityState, fromEntity.getChanges);
+export const getEntityIsSaving = createSelector(getEntityState, fromEntity.isEntitySaving);
+export const getFormStatus = createSelector(getEntityState, fromEntity.getFormStatus);
+export const getInvalidEntityForms = createSelector(getEntityState, fromEntity.getInvalidForms);
 
 /*
 Copy State

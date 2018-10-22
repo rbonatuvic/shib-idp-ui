@@ -14,3 +14,11 @@
         }
     }
 }
+
+.no-style {
+    list-style: none;
+    padding: 0px;
+    & > li {
+        padding: 0px;
+    }
+}

@@ -23,7 +23,7 @@ export class MessagesLoadSuccessAction implements Action {
 export class MessagesLoadErrorAction implements Action {
     readonly type = MessagesActionTypes.MESSAGES_LOAD_ERROR;
 
-    constructor(public payload: { message: string, type: string }) { }
+    constructor(public payload: { message: string }) { }
 }
 
 export class SetLocale implements Action {

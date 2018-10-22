@@ -3,12 +3,13 @@ import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
-import { UpdateStatus, LockEditor, UnlockEditor } from '../action/editor.action';
+import { UpdateStatus } from '../action/editor.action';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
+import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
-import { withLatestFrom, map, skipWhile, distinctUntilChanged, startWith, combineLatest } from 'rxjs/operators';
+import { withLatestFrom, map, skipWhile, distinctUntilChanged, takeUntil, filter } from 'rxjs/operators';
 import { UpdateProvider } from '../action/entity.action';
 import { FormControl } from '@angular/forms';
 
@@ -18,6 +19,8 @@ import { FormControl } from '@angular/forms';
     styleUrls: []
 })
 export class ProviderEditStepComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
 
@@ -46,7 +49,7 @@ export class ProviderEditStepComponent implements OnDestroy {
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
         this.provider$ = this.store.select(fromProvider.getSelectedProvider);
         this.step$ = this.store.select(fromWizard.getCurrent);
-        this.schema$ = this.store.select(fromProvider.getSchema);
+        this.schema$ = this.store.select(fromWizard.getParsedSchema);
 
         this.step$.subscribe(s => {
             if (s && s.locked) {
@@ -64,10 +67,11 @@ export class ProviderEditStepComponent implements OnDestroy {
                 this.store.select(fromProvider.getProviderXmlIds),
                 this.provider$
             ),
-            map(([def, names, ids, provider]) => def.getValidators(
+            filter(([def, names, ids, provider]) => !def),
+            map(([def, names, ids, provider]) => def ? def.getValidators(
                 names.filter(n => n !== provider.name),
                 ids.filter(id => id !== provider.xmlId)
-            ))
+            ) : {})
         );
 
         this.model$ = this.schema$.pipe(
@@ -77,23 +81,27 @@ export class ProviderEditStepComponent implements OnDestroy {
                 this.changes$,
                 this.definition$
             ),
-            map(([schema, provider, model, changes, definition]) => ({
-                model: {
-                    ...model,
-                    ...provider,
-                    ...changes
-                },
-                definition
-            })),
-            skipWhile(({ model, definition }) => !definition || !model),
-            map(({ model, definition }) => definition.translate.formatter(model))
+            map(([schema, provider, model, changes, definition]) => {
+                return ({
+                    model: {
+                        ...model,
+                        ...provider,
+                        ...changes
+                    },
+                    definition
+                });
+            }),
+            filter(({ model, definition }) => definition && model),
+            map(({ model, definition }) => {
+                return definition ? definition.formatter(model) : {};
+            })
         );
 
         this.valueChangeEmitted$.pipe(
             map(changes => changes.value),
             withLatestFrom(this.definition$),
             skipWhile(([ changes, definition ]) => !definition || !changes),
-            map(([ changes, definition ]) => definition.translate.parser(changes))
+            map(([ changes, definition ]) => definition.parser(changes))
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 
@@ -113,6 +121,8 @@ export class ProviderEditStepComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.valueChangeSubject.complete();
+        this.statusChangeSubject.complete();
+        this.ngUnsubscribe.unsubscribe();
     }
 }
 

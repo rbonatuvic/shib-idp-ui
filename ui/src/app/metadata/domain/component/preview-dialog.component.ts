@@ -22,4 +22,4 @@ export class PreviewDialogComponent {
         const blob = new Blob([xml], { type: 'text/xml;charset=utf-8' });
         FileSaver.saveAs(blob, `${ this.entity.name }.xml`);
     }
-} /* istanbul ignore next */
+}

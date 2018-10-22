@@ -18,11 +18,11 @@
                     <router-outlet></router-outlet>
                 </div>
             </div>
-            <provider-wizard-summary
+            <wizard-summary
                 [summary]="summary$ | async"
                 (onPageSelect)="gotoPage($event)"
                 *ngIf="currentPage === 'summary'">
-            </provider-wizard-summary>
+            </wizard-summary>
         </div>
     </div>
 </section>

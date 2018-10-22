@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { MetadataResolver } from '../../domain/model';
@@ -18,12 +18,13 @@ export class EntityDraftService {
         return of(this.storage.query());
     }
 
-    find(entityId: string): Observable<MetadataResolver> {
+    find(id: string, attr: string = 'id'): Observable<MetadataResolver> {
+        if (!id) {
+            return throwError(404);
+        }
         return this.query().pipe(
             switchMap(
-                list => of(
-                    list.find(entity => entity.entityId === entityId)
-                )
+                list => of(list.find(entity => entity[attr] === id))
             )
         );
     }
@@ -34,15 +35,19 @@ export class EntityDraftService {
     }
 
     remove(provider: MetadataResolver): Observable<MetadataResolver> {
-        this.storage.removeByAttr(provider.entityId, 'entityId');
+        this.storage.removeByAttr(provider.id, 'id');
         return of(provider);
     }
 
     update(provider: MetadataResolver): Observable<MetadataResolver> {
-        let stored = this.storage.findByAttr(provider.id, 'entityId');
-        stored = Object.assign({}, stored, provider);
-        this.storage.removeByAttr(provider.entityId, 'entityId');
-        this.storage.add(stored);
-        return of(stored);
+        let stored = this.storage.findByAttr(provider.id, 'id');
+        if (stored) {
+            stored = { ...stored, ...provider };
+            this.storage.removeByAttr(provider.id, 'id');
+            this.storage.add(stored);
+            return of(stored);
+        } else {
+            return throwError(404);
+        }
     }
 } /* istanbul ignore next */

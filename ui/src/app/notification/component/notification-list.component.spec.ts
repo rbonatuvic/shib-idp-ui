@@ -49,13 +49,13 @@ describe('Notification List Component', () => {
         it('should return -1 if the first parameter was created first', () => {
             const a = new Notification();
             const b = new Notification();
-            b.createdAt = Date.now() + 1;
+            b.createdAt = Date.now() + 100;
             expect(instance.sorter(a, b)).toBe(-1);
         });
         it('should return -1 if the first parameter was created first', () => {
             const a = new Notification();
             const b = new Notification();
-            a.createdAt = Date.now() + 1;
+            a.createdAt = Date.now() + 100;
             expect(instance.sorter(a, b)).toBe(1);
         });
         it('should return -1 if the first parameter was created first', () => {

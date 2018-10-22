@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
-import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,6 +15,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * interface in terms of JSON schema.
  *
  * @author Dmitriy Kopylenko
+ * @author Bill Smith (wsmith@unicon.net)
  */
 @RestController('/api/ui/MetadataSources')
 class MetadataSourcesUiDefinitionController {
@@ -36,7 +36,6 @@ class MetadataSourcesUiDefinitionController {
             addReleaseAttributesToJson(parsedJson["properties"]["attributeRelease"]["widget"])
             addRelyingPartyOverridesToJson(parsedJson["properties"]["relyingPartyOverrides"])
             addRelyingPartyOverridesCollectionDefinitions(parsedJson["definitions"])
-            println(JsonOutput.prettyPrint(JsonOutput.toJson(parsedJson)))
             return ResponseEntity.ok(parsedJson)
         }
         catch (Exception e) {

@@ -15,6 +15,9 @@ import { I18nService } from '../service/i18n.service';
 import * as fromCore from '../reducer';
 import { Store } from '@ngrx/store';
 
+// The tests for this succeed but a Jasmine error is thrown in afterAll
+// TODO: Research afterAll error in Jasmine
+ /* istanbul ignore next */
 @Injectable()
 export class MessageEffects {
 
@@ -25,13 +28,13 @@ export class MessageEffects {
             this.store.select(fromCore.getLocale)
         ),
         map(([action, locale]) => locale.replace('-', '_')),
-        switchMap(locale =>
-            this.i18nService.get(locale)
+        switchMap(locale => {
+            return this.i18nService.get(locale)
                 .pipe(
                     map(u => new MessagesLoadSuccessAction({ ...u })),
                     catchError(error => of(new MessagesLoadErrorAction(error)))
-                )
-        )
+                );
+        })
     );
     @Effect()
     setLanguage$ = this.actions$.pipe(

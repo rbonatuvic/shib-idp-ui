@@ -28,7 +28,7 @@ describe(`EntityDraftService`, () => {
     describe('find', () => {
         it(`should return an observable of the list from the store`, (done: DoneFn) => {
             let id = 'foo';
-            let e = new FileBackedHttpMetadataResolver({ entityId: id });
+            let e = new FileBackedHttpMetadataResolver({ id: id });
             let list = [e];
             spyOn(service.storage, 'query').and.returnValue(list);
             service.find(id).subscribe(entity => {
