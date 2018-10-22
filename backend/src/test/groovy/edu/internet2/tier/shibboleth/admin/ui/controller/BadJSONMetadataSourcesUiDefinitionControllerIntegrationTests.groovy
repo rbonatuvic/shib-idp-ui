@@ -21,9 +21,6 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
     @Autowired
     private TestRestTemplate restTemplate
 
-    @Autowired
-    MetadataSourcesJsonSchemaResourceLocation schemaLocation
-
     static RESOURCE_URI = '/api/ui/MetadataSources'
 
     def "GET Malformed Metadata Sources UI definition schema"() {
