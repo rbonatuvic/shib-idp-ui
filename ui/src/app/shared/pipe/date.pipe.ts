@@ -8,6 +8,12 @@ export class CustomDatePipe implements PipeTransform {
         this.pipe = new DatePipe('en');
     }
     transform(value: string, format: string): string {
-        return this.pipe.transform(value, format);
+        let transformed: string;
+        try {
+            transformed = this.pipe.transform(value, format);
+        } catch (err) {
+            transformed = value;
+        }
+        return transformed;
     }
 }
