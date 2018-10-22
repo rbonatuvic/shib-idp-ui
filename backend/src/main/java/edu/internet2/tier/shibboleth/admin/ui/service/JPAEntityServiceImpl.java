@@ -6,7 +6,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue;
 import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class JPAEntityServiceImpl implements EntityService {
 
