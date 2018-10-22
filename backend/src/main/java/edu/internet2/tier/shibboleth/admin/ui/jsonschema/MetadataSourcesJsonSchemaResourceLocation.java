@@ -1,16 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,28 +15,33 @@ import java.util.Map;
  *
  * @author Dmitriy Kopylenko
  */
-@ConfigurationProperties("shibui")
 public class MetadataSourcesJsonSchemaResourceLocation {
 
-    //Configured via @ConfigurationProperties with 'shibui.metadata-sources-ui-schema-location' property and default
-    //value set here if that property is not explicitly set in application.properties
-    private String metadataSourcesUiSchemaLocation = "classpath:metadata-sources-ui-schema.json";
+    private final String metadataSourcesUiSchemaLocation;
 
     private URL jsonSchemaUrl;
 
-    private ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
 
-    private ObjectMapper jacksonMapper;
+    private final ObjectMapper jacksonMapper;
 
+    private boolean detectMalformedJsonDuringInit = true;
 
-
-    public MetadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
+    public MetadataSourcesJsonSchemaResourceLocation(String metadataSourcesUiSchemaLocation, ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
+        this.metadataSourcesUiSchemaLocation = metadataSourcesUiSchemaLocation;
         this.resourceLoader = resourceLoader;
         this.jacksonMapper = jacksonMapper;
     }
 
-    public void setMetadataSourcesUiSchemaLocation(String metadataSourcesUiSchemaLocation) {
+    //This constructor is used in tests
+    public MetadataSourcesJsonSchemaResourceLocation(String metadataSourcesUiSchemaLocation,
+                                                     ResourceLoader resourceLoader,
+                                                     ObjectMapper jacksonMapper,
+                                                     boolean detectMalformedJsonDuringInit) {
         this.metadataSourcesUiSchemaLocation = metadataSourcesUiSchemaLocation;
+        this.resourceLoader = resourceLoader;
+        this.jacksonMapper = jacksonMapper;
+        this.detectMalformedJsonDuringInit = detectMalformedJsonDuringInit;
     }
 
     public URL getUrl() {
@@ -62,8 +61,10 @@ public class MetadataSourcesJsonSchemaResourceLocation {
     public void init() {
         try {
             this.jsonSchemaUrl = this.resourceLoader.getResource(this.metadataSourcesUiSchemaLocation).getURL();
-            //Detect malformed JSON schema early, during application start up and fail fast with useful exception message
-            this.jacksonMapper.readValue(this.jsonSchemaUrl, Map.class);
+            if(this.detectMalformedJsonDuringInit) {
+                //Detect malformed JSON schema early, during application start up and fail fast with useful exception message
+                this.jacksonMapper.readValue(this.jsonSchemaUrl, Map.class);
+            }
         }
         catch (Exception ex) {
             StringBuilder msg =

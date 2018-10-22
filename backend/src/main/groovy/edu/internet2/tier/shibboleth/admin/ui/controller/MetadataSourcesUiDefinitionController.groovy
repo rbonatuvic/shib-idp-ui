@@ -38,15 +38,10 @@ class MetadataSourcesUiDefinitionController {
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
-            def widget = parsedJson["properties"]["attributeRelease"]["widget"]
-            def data = []
-            customAttributesConfiguration.getAttributes().each {
-                def attribute = [:]
-                attribute["key"] = it["name"]
-                attribute["label"] = it["displayName"]
-                data << attribute
+            parsedJson['properties']['attributeRelease']['widget']['data'] =
+                    customAttributesConfiguration.getAttributes().collect {
+                [key: it['name'], label: it['displayName']]
             }
-            widget["data"] = data
             return ResponseEntity.ok(parsedJson)
         }
         catch (Exception e) {
