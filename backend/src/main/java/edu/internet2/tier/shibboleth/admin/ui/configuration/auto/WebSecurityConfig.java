@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecu
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -75,6 +77,12 @@ public class WebSecurityConfig {
                 web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
             }
         };
+    }
+
+    @Bean
+    @Profile("!no-auth")
+    public AuditorAware<String> defaultAuditorAware() {
+        return new DefaultAuditorAware();
     }
 
     @Bean

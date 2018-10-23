@@ -1,8 +1,11 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="horizontal control-label" *ngIf="schema.title">
-        <span>
+    <label [attr.for]="id" class="horizontal control-label">
+        <span *ngIf="schema.title">
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+        </span>
+        <span *ngIf="!schema.title" class="sr-only" [translate]="formProperty.parent.schema.title">
+            {{ formProperty.parent.schema.title }}
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
@@ -12,11 +15,13 @@
         {{ schema.description }}
     </span>
     <select *ngIf="schema.type !== 'array'"
+        [id]="id"
         [formControl]="control"
         [attr.name]="name"
         class="form-control"
-        [attr.aria-label]="schema.title">
-        <option disabled selected>
+        [attr.aria-label]="schema.title"
+        [ngClass]="{'text-muted': !this.formProperty.value}">
+        <option selected value="">
             <translate-i18n *ngIf="schema.placeholder" [key]="schema.placeholder">{{ schema.placeholder }}</translate-i18n>
             <translate-i18n *ngIf="!schema.placeholder" [key]="schema.title">{{ schema.title }}</translate-i18n>
         </option>

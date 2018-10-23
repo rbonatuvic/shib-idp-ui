@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSche
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
@@ -17,7 +18,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * @author Dmitriy Kopylenko
  * @author Bill Smith (wsmith@unicon.net)
  */
-@RestController('/api/ui/MetadataSources')
+@RestController
+@RequestMapping('/api/ui/MetadataSources')
 class MetadataSourcesUiDefinitionController {
 
     @Autowired

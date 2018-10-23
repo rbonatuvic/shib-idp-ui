@@ -1,12 +1,14 @@
 <ng-template #tooltipContent>
-    <span #content>{{ description }}</span>
+    <span #content [attr.aria-label]="description" [id]="id">{{ description }}</span>
 </ng-template>
 <button class="btn btn-nostyle info-icon"
     #toggle="ngbPopover"
     [attr.aria-label]="'tooltip.instruction' | translate"
-    [attr.aria-expanded]="toggle.isOpen()"
     [ngbPopover]="tooltipContent"
-    aria-haspopup="true">
+    [triggers]="triggers"
+    [placement]="placement"
+    [attr.aria-flowto]="id"
+    role="tooltip">
     <i class="fa fa-fw fa-info-circle text-primary fa-lg"></i>
     <span class="sr-only" translate="tooltip.instruction"></span>
 </button>
