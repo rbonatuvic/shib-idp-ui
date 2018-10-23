@@ -3,15 +3,11 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
-import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.core.io.ResourceLoader
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-
-import javax.annotation.PostConstruct
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
@@ -22,7 +18,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * @author Dmitriy Kopylenko
  * @author Bill Smith (wsmith@unicon.net)
  */
-@RestController('/api/ui/MetadataSources')
+@RestController
+@RequestMapping('/api/ui/MetadataSources')
 class MetadataSourcesUiDefinitionController {
 
     @Autowired
