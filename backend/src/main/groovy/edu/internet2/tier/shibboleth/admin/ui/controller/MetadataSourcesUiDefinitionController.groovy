@@ -2,13 +2,20 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
+import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.annotation.PostConstruct
+
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.ShemaType.METADATA_SOURCES
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
@@ -23,7 +30,9 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 class MetadataSourcesUiDefinitionController {
 
     @Autowired
-    MetadataSourcesJsonSchemaResourceLocation jsonSchemaLocation
+    JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
+
+    JsonSchemaResourceLocation jsonSchemaLocation
 
     @Autowired
     ObjectMapper jacksonObjectMapper
@@ -48,6 +57,11 @@ class MetadataSourcesUiDefinitionController {
         }
     }
 
+    @PostConstruct
+    void init() {
+        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
+    }
+
     private void addReleaseAttributesToJson(Object json) {
         json['data'] = customPropertiesConfiguration.getAttributes().collect {
             [key: it['name'], label: it['displayName']]
@@ -63,12 +77,12 @@ class MetadataSourcesUiDefinitionController {
                 property = [$ref: '#/definitions/' + it['name']]
             } else {
                 property =
-                [title: it['displayName'],
-                description: it['helpText'],
-                type: it['displayType'],
-                default: it['defaultValue']]
+                        [title      : it['displayName'],
+                         description: it['helpText'],
+                         type       : it['displayType'],
+                         default    : it['defaultValue']]
             }
-            properties[(String)it['name']] = property
+            properties[(String) it['name']] = property
         }
         json['properties'] = properties
     }
@@ -77,22 +91,22 @@ class MetadataSourcesUiDefinitionController {
         customPropertiesConfiguration.getOverrides().stream().filter {
             it -> it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set')
         }.each {
-            def definition = [title: it['displayName'],
-            description: it['helpText'],
-            type: 'array',
-            default: null]
+            def definition = [title      : it['displayName'],
+                              description: it['helpText'],
+                              type       : 'array',
+                              default    : null]
             if (it['displayType'] == 'set') {
                 definition['uniqueItems'] = true
             } else if (it['displayType'] == 'list') {
                 definition['uniqueItems'] = false
             }
-            def items = [type: 'string',
+            def items = [type     : 'string',
                          minLength: '1', // TODO: should this be configurable?
                          maxLength: '255'] //TODO: or this?
             items.widget = [id: 'datalist', data: it['defaultValues']]
 
             definition['items'] = items
-            json[(String)it['name']] = definition
+            json[(String) it['name']] = definition
         }
     }
 }
