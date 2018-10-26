@@ -21,15 +21,13 @@
                             "widget": {
                                 "id": "datalist",
                                 "data": [
-                                    "PT0S",
-                                    "PT30S",
-                                    "PT1M",
-                                    "PT10M",
-                                    "PT30M",
-                                    "PT1H",
-                                    "PT4H",
-                                    "PT12H",
-                                    "PT24H"
+                                    "1H",
+                                    "8H",
+                                    "1D",
+                                    "5D",
+                                    "7D",
+                                    "14D",
+                                    "30D"
                                 ]
                             },
                             "default": null,
