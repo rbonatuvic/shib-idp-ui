@@ -22,10 +22,10 @@
                                 "id": "datalist",
                                 "data": [
                                     "PT0S",
-                                    "PT14D",
-                                    "PT7D",
-                                    "PT1D",
-                                    "PT12H"
+                                    "P14D",
+                                    "P7D",
+                                    "P1D",
+                                    "P12H"
                                 ]
                             },
                             "default": null,
