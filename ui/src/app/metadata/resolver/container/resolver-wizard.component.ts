@@ -28,7 +28,7 @@ import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 import { ModalService } from '../../../core/service/modal.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UpdateChanges } from '../action/entity.action';
+import { UpdateChanges, Clear } from '../action/entity.action';
 
 @Component({
     selector: 'resolver-wizard-page',
@@ -127,6 +127,8 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
                 }
             ))
         );
+
+        this.changes$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(c => this.changes = c);
     }
 
     next(): void {
@@ -173,9 +175,12 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         if (nextState.url.match('wizard')) { return of(true); }
         if (Object.keys(this.changes).length > 0) {
             let modal = this.modalService.open(UnsavedEntityComponent);
-            modal.componentInstance.action = new UpdateChanges(this.latest);
+            modal.componentInstance.message = 'resolver';
             modal.result.then(
-                () => this.router.navigate([nextState.url]),
+                () => {
+                    this.store.dispatch(new Clear());
+                    this.router.navigate([nextState.url]);
+                },
                 () => console.warn('denied')
             );
         }
