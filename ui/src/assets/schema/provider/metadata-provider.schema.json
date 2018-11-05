@@ -28,6 +28,12 @@
                         "FileBackedHttpMetadataResolver"
                     ],
                     "description": "value.file-backed-http-metadata-provider"
+                },
+                {
+                    "enum": [
+                        "FileSystemMetadataResolver"
+                    ],
+                    "description": "value.file-system-metadata-provider"
                 }
             ]
         }
@@ -35,14 +41,5 @@
     "required": [
         "name",
         "@type"
-    ],
-    "fieldsets": [
-        {
-            "type": "section",
-            "fields": [
-                "name",
-                "@type"
-            ]
-        }
     ]
 }
