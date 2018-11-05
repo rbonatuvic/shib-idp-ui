@@ -26,7 +26,9 @@ export const ResolverRoutes: Routes = [
                     {
                         path: 'blank/:index',
                         component: ResolverWizardComponent,
-                        canDeactivate: [],
+                        canDeactivate: [
+                            CanDeactivateGuard
+                        ],
                         children: [
                             {
                                 path: '',
