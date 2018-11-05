@@ -172,7 +172,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        if (nextState.url.match('wizard')) { return of(true); }
+        if (nextState.url.match('blank')) { return of(true); }
         if (Object.keys(this.changes).length > 0) {
             let modal = this.modalService.open(UnsavedEntityComponent);
             modal.componentInstance.message = 'resolver';
