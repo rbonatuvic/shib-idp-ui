@@ -113,8 +113,8 @@ describe('FileBackedHttpMetadataProviderWizard', () => {
             expect(Object.keys(getValidators([]))).toEqual([
                 '/',
                 '/name',
-                '/metadataURL',
-                '/xmlId'
+                '/xmlId',
+                '/metadataURL'
             ]);
         });
     });

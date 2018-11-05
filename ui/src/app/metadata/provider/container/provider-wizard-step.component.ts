@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -42,7 +42,9 @@ export class ProviderWizardStepComponent implements OnDestroy {
     constructor(
         private store: Store<fromProvider.ProviderState>,
     ) {
-        this.schema$ = this.store.select(fromWizard.getParsedSchema);
+        this.schema$ = this.store.select(fromWizard.getSchema).pipe(
+            filter(s => s && Object.keys(s.properties).length > 0)
+        );
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
 

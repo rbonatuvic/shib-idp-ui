@@ -1,6 +1,5 @@
 import { Wizard } from '../../../wizard/model';
 import { BaseMetadataProvider } from '../../domain/model/providers';
-import { UriValidator } from '../../../shared/validation/uri.validator';
 
 export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
     label: 'BaseMetadataProvider',
@@ -30,14 +29,6 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
                     params: [value]
                 } : null;
                 return err;
-            },
-            '/metadataURL': (value, property, form) => {
-                return !UriValidator.isUri(value) ? {
-                    code: 'INVALID_URI',
-                    path: `#${property.path}`,
-                    message: 'message.uri-valid-format',
-                    params: [value]
-                } : null;
             }
         };
         return validators;

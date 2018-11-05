@@ -17,6 +17,16 @@ export const MetadataProviderWizard: Wizard<MetadataProvider> = {
             fields: [
                 'name',
                 '@type'
+            ],
+            fieldsets: [
+                {
+                    type: 'section',
+                    class: ['col-12'],
+                    fields: [
+                        'name',
+                        '@type'
+                    ]
+                }
             ]
         }
     ] as WizardStep[]
