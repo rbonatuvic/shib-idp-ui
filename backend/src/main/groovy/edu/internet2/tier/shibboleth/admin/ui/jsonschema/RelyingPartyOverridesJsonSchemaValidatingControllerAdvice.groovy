@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import mjson.Json
-import org.springframework.beans.factory.BeanInitializationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpInputMessage
@@ -18,7 +17,6 @@ import javax.annotation.PostConstruct
 import java.lang.reflect.Type
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.ShemaType.METADATA_SOURCES
 
 /**
  * Controller advice implementation for validating relying party overrides payload coming from UI layer

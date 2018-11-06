@@ -222,5 +222,7 @@
                 "attributeRelease"
             ]
         }
-    ]
+    ],
+    "definitions": {
+    }
 }

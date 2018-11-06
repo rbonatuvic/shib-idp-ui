@@ -16,7 +16,7 @@ public interface JsonSchemaResourceLocationRegistry {
      * @param type     of JSON schema
      * @param location of JSON schema resource
      */
-    JsonSchemaResourceLocationRegistry register(JsonSchemaResourceLocation.ShemaType type, JsonSchemaResourceLocation location);
+    JsonSchemaResourceLocationRegistry register(JsonSchemaResourceLocation.SchemaType type, JsonSchemaResourceLocation location);
 
     /**
      * Look up json schema resource location by given schema type.
@@ -24,7 +24,7 @@ public interface JsonSchemaResourceLocationRegistry {
      * @param type type of JSON schema
      * @return optional location of JSON schema resource
      */
-    Optional<JsonSchemaResourceLocation> lookup(JsonSchemaResourceLocation.ShemaType type);
+    Optional<JsonSchemaResourceLocation> lookup(JsonSchemaResourceLocation.SchemaType type);
 
     /**
      * Factory method.

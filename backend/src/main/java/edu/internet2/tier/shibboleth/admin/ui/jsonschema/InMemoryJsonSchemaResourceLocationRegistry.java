@@ -14,18 +14,18 @@ import java.util.Optional;
  */
 class InMemoryJsonSchemaResourceLocationRegistry implements JsonSchemaResourceLocationRegistry {
 
-    private Map<JsonSchemaResourceLocation.ShemaType, JsonSchemaResourceLocation> schemaLocations =
-            new EnumMap<>(JsonSchemaResourceLocation.ShemaType.class);
+    private Map<JsonSchemaResourceLocation.SchemaType, JsonSchemaResourceLocation> schemaLocations =
+            new EnumMap<>(JsonSchemaResourceLocation.SchemaType.class);
 
 
     @Override
-    public JsonSchemaResourceLocationRegistry register(JsonSchemaResourceLocation.ShemaType type, JsonSchemaResourceLocation location) {
+    public JsonSchemaResourceLocationRegistry register(JsonSchemaResourceLocation.SchemaType type, JsonSchemaResourceLocation location) {
         this.schemaLocations.put(type, location);
         return this;
     }
 
     @Override
-    public Optional<JsonSchemaResourceLocation> lookup(JsonSchemaResourceLocation.ShemaType type) {
+    public Optional<JsonSchemaResourceLocation> lookup(JsonSchemaResourceLocation.SchemaType type) {
         return Optional.ofNullable(this.schemaLocations.get(type));
     }
 }

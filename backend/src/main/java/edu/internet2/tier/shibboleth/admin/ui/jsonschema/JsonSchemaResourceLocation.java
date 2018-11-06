@@ -90,7 +90,7 @@ public class JsonSchemaResourceLocation {
         }
     }
 
-    public enum ShemaType {
+    public enum SchemaType {
         METADATA_SOURCES, ENTITY_ATTRIBUTES_FILTERS
     }
 }
