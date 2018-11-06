@@ -19,10 +19,15 @@ export interface WizardStep {
 export interface WizardFieldset {
     type: string;
     class?: string[];
-    fields: string[];
+    fields: (string | WizardFieldsubset)[];
 }
 
 export interface WizardValue {
     key: string;
     value: any;
+}
+
+export interface WizardFieldsubset {
+    parent: string;
+    children: string[];
 }

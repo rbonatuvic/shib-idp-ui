@@ -1,12 +1,15 @@
 import { FileBackedHttpMetadataProviderWizard } from './file-backed-http.provider.form';
 import { FileBackedHttpMetadataProviderEditor } from './file-backed-http.provider.form';
+import { DynamicHttpMetadataProviderWizard, DynamicHttpMetadataProviderEditor } from './dynamic-http.provider.form';
 
 export const MetadataProviderWizardTypes = [
-    FileBackedHttpMetadataProviderWizard
+    FileBackedHttpMetadataProviderWizard,
+    DynamicHttpMetadataProviderWizard
 ];
 
 export const MetadataProviderEditorTypes = [
-    FileBackedHttpMetadataProviderEditor
+    FileBackedHttpMetadataProviderEditor,
+    DynamicHttpMetadataProviderEditor
 ];
 
 export * from './file-backed-http.provider.form';

@@ -69,7 +69,6 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
     if (schema.definitions) {
         s.definitions = schema.definitions;
     }
-
     if (required && required.length) {
         s.required = required;
     }
