@@ -61,11 +61,14 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
     const required = (schema.required || []).filter(val => keys.indexOf(val) > -1);
     let s: any = {
         type: schema.type,
-        definitions: schema.definitions,
         properties: {
             ...keys.reduce( (properties, key) => ({ ...properties, [key]: schema.properties[key] }) , {})
         }
     };
+
+    if (schema.definitions) {
+        s.definitions = schema.definitions;
+    }
 
     if (required && required.length) {
         s.required = required;
