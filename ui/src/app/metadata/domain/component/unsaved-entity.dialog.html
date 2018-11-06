@@ -1,14 +1,28 @@
-<ng-container>
+<ng-container [ngSwitch]="message">
     <div aria-label="Save your information? modal" role="region" tabindex="0">
         <div class="modal-header">
             <h4 class="modal-title" translate="message.unsaved-dialog-title">Save your information?</h4>
         </div>
         <div class="modal-body">
-            <p translate="message.unsaved-editor">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
+            <p *ngSwitchCase="'resolver'">
+                <translate-i18n key="message.unsaved-source-1">
+                    You have not completed the wizard!
+                    Do you wish to save this information?
+                    You can finish the wizard later by clicking the "Edit"
+                </translate-i18n>
+                <i class="fa fa-fw fa-edit"></i>
+                <translate-i18n key="message.unsaved-source-2">icon on the dashboard.</translate-i18n>
+            </p>
+            <p *ngSwitchDefault [translate]="message">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" (click)="this.close()">
-                <span translate="action.discard-changes" aria-label="Discard changes, go back to dashboard">Discard Changes</span>
+                <span *ngSwitchCase="'resolver'" translate="action.finish-later" [attr.aria-label]="'action.finish-later' | translate">
+                    Finish Later
+                </span>
+                <span *ngSwitchDefault translate="action.discard-changes" [attr.aria-label]="'action.discard-changes' | translate">
+                    Discard Changes
+                </span>
             </button>
             <button type="button" class="btn btn-secondary" (click)="this.dismiss()" translate="action.cancel" aria-label="Close modal and go back to editing">Cancel</button>
         </div>

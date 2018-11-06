@@ -10,6 +10,8 @@ import { Subject } from 'rxjs/Subject';
 export class UnsavedEntityComponent {
     readonly subject: Subject<boolean> = new Subject<boolean>();
 
+    @Input() message;
+
     constructor(
         public activeModal: NgbActiveModal
     ) { }
