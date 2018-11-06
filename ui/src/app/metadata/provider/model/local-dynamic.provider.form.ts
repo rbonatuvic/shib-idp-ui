@@ -35,7 +35,7 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
                     type: 'group-lg',
                     class: ['col-12'],
                     fields: [
-                        'xmlid',
+                        'xmlId',
                         'sourceDirectory'
                     ]
                 }
@@ -65,7 +65,7 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            schema: 'assets/schema/provider/file-system.schema.json',
+            schema: 'assets/schema/provider/local-dynamic.schema.json',
             fields: [
                 'enabled'
             ],

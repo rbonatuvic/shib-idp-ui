@@ -28,6 +28,12 @@
                         "FileBackedHttpMetadataResolver"
                     ],
                     "description": "value.file-backed-http-metadata-provider"
+                },
+                {
+                    "enum": [
+                        "LocalDynamicMetadataResolver"
+                    ],
+                    "description": "value.local-dynamic-metadata-provider"
                 }
             ]
         }
