@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
-import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,25 +10,22 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-import javax.annotation.PostConstruct
-
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.filesystemMetadataProviderSchema
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+//import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
+//import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType
 
 /**
- * Controller implementing REST resource responsible for exposing structure definition for metadata sources user
+ * Controller implementing REST resource responsible for exposing structure definition for metadata resolvers user
  * interface in terms of JSON schema.
  *
  * @author Dmitriy Kopylenko
  * @author Bill Smith (wsmith@unicon.net)
  */
 @RestController
-@RequestMapping('/api/ui/MetadataProvider')
-class MetadataProviderUiDefinitionController {
+@RequestMapping('/api/ui/MetadataResolver')
+class MetadataResolverUiDefinitionController {
 
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
@@ -39,20 +35,20 @@ class MetadataProviderUiDefinitionController {
     @Autowired
     ObjectMapper jacksonObjectMapper
 
-    @GetMapping(value = "/{providerType}")
-    ResponseEntity<?> getUiDefinitionJsonSchema(@PathVariable String providerType) {
-        switch (JsonSchemaResourceLocation.SchemaType.valueOf(providerType)) {
-            case SchemaType.LOCAL_DYNAMIC_METADATA_PROVIDER:
-                jsonSchemaLocation = localDynamicMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
-                break
-            case SchemaType.FILESYSTEM_METADATA_PROVIDER:
+    @GetMapping(value = "/{resolverType}")
+    ResponseEntity<?> getUiDefinitionJsonSchema(@PathVariable String resolverType) {
+        switch (SchemaType.valueOf(resolverType)) {
+            case SchemaType.FILESYSTEM_METADATA_RESOLVER:
                 jsonSchemaLocation = filesystemMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
                 break
-            case SchemaType.DYNAMIC_HTTP_METADATA_PROVIDER:
+/*            case SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER:
+                jsonSchemaLocation = localDynamicMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
+                break*/
+/*            case SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER:
                 jsonSchemaLocation = dynamicHttpMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
-                break
+                break*/
             default:
-                throw new UnsupportedOperationException("Json schema for an unsupported metadata provider (" + providerType + ") was requested")
+                throw new UnsupportedOperationException("Json schema for an unsupported metadata resolver (" + resolverType + ") was requested")
         }
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
@@ -66,8 +62,8 @@ class MetadataProviderUiDefinitionController {
         }
     }
 
-    @PostConstruct
-    void init() {
-        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry)
+    @GetMapping(value = "/types")
+    ResponseEntity<?> getResolverTypes() {
+        return ResponseEntity.ok(SchemaType.getResolverTypes())
     }
 }

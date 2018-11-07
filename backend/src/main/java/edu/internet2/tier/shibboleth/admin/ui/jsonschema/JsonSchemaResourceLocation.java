@@ -9,7 +9,10 @@ import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Encapsulates arbitrary JSON schema location.
@@ -91,7 +94,19 @@ public class JsonSchemaResourceLocation {
     }
 
     public enum SchemaType {
-        METADATA_SOURCES, ENTITY_ATTRIBUTES_FILTERS,
-        FILESYSTEM_METADATA_PROVIDER, LOCAL_DYNAMIC_METADATA_PROVIDER, DYNAMIC_HTTP_METADATA_PROVIDER
+        // common types
+        METADATA_SOURCES,
+
+        // filter types
+        ENTITY_ATTRIBUTES_FILTERS,
+
+         // resolver types
+        FILESYSTEM_METADATA_RESOLVER;
+//        LOCAL_DYNAMIC_METADATA_RESOLVER,
+//        DYNAMIC_HTTP_METADATA_RESOLVER;
+
+        public static List<String> getResolverTypes() {
+            return Stream.of(SchemaType.values()).map(SchemaType::name).filter(it -> it.endsWith("RESOLVER")).collect(Collectors.toList());
+        }
     }
 }
