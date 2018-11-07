@@ -11,6 +11,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_PROVIDER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 
 /**
@@ -30,6 +31,9 @@ public class JsonSchemaComponentsConfiguration {
     @Setter
     private String entityAttributesFiltersUiSchemaLocation = "classpath:entity-attributes-filters-ui-schema.json";
 
+    @Setter
+    private String filesystemMetadtaProviderUiSchemaLocation = "classpath:file-system-metadata-provider.schema.json";
+
     @Bean
     public JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
         return JsonSchemaResourceLocationRegistry.inMemory()
@@ -41,6 +45,12 @@ public class JsonSchemaComponentsConfiguration {
                         .build())
                 .register(ENTITY_ATTRIBUTES_FILTERS, JsonSchemaLocationBuilder.with()
                         .jsonSchemaLocation(entityAttributesFiltersUiSchemaLocation)
+                        .resourceLoader(resourceLoader)
+                        .jacksonMapper(jacksonMapper)
+                        .detectMalformedJson(true)
+                        .build())
+                .register(FILESYSTEM_METADATA_PROVIDER, JsonSchemaLocationBuilder.with()
+                        .jsonSchemaLocation(filesystemMetadtaProviderUiSchemaLocation)
                         .resourceLoader(resourceLoader)
                         .jacksonMapper(jacksonMapper)
                         .detectMalformedJson(true)

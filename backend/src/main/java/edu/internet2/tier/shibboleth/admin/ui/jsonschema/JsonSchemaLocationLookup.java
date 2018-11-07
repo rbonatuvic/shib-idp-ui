@@ -2,6 +2,9 @@ package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_PROVIDER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_PROVIDER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_PROVIDER;
 
 /**
  * Utility methods for common JSON schema types lookups.
@@ -33,6 +36,24 @@ public abstract class JsonSchemaLocationLookup {
     public static JsonSchemaResourceLocation entityAttributesFiltersSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
         return resourceLocationRegistry
                 .lookup(ENTITY_ATTRIBUTES_FILTERS)
+                .orElseThrow(() -> new IllegalStateException("JSON schema resource location for metadata sources is not registered."));
+    }
+
+    public static JsonSchemaResourceLocation filesystemMetadataProviderSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+        return resourceLocationRegistry
+                .lookup(FILESYSTEM_METADATA_PROVIDER)
+                .orElseThrow(() -> new IllegalStateException("JSON schema resource location for metadata sources is not registered."));
+    }
+
+    public static JsonSchemaResourceLocation localDynamicMetadataProviderSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+        return resourceLocationRegistry
+                .lookup(LOCAL_DYNAMIC_METADATA_PROVIDER)
+                .orElseThrow(() -> new IllegalStateException("JSON schema resource location for metadata sources is not registered."));
+    }
+
+    public static JsonSchemaResourceLocation dynamicHttpMetadataProviderSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+        return resourceLocationRegistry
+                .lookup(DYNAMIC_HTTP_METADATA_PROVIDER)
                 .orElseThrow(() -> new IllegalStateException("JSON schema resource location for metadata sources is not registered."));
     }
 }
