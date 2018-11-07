@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES
 
 /**
@@ -45,6 +46,12 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
             JsonSchemaResourceLocationRegistry.inMemory()
                     .register(METADATA_SOURCES, JsonSchemaLocationBuilder.with()
                     .jsonSchemaLocation('classpath:metadata-sources-ui-schema_MALFORMED.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+                    .register(ENTITY_ATTRIBUTES_FILTERS, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:entity-attributes-filters-ui-schema.json')
                     .resourceLoader(resourceLoader)
                     .jacksonMapper(jacksonMapper)
                     .detectMalformedJson(false)
