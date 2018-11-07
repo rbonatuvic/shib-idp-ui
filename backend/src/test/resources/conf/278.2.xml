@@ -28,7 +28,7 @@
         <MetadataFilter xsi:type="EntityAttributes">
             <saml:Attribute
                     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="here">
-                <saml:AttributeValue>there</saml:AttributeValue>
+                <saml:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="xsd:string">there</saml:AttributeValue>
             </saml:Attribute>
             <Entity>https://sp1.example.org</Entity>
         </MetadataFilter>

@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
@@ -44,6 +45,9 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     @Autowired
     AttributeUtility attributeUtility
 
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
     ObjectMapper mapper
     TestObjectGenerator generator
 
@@ -52,7 +56,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     static BASE_URI = '/api/MetadataResolvers'
 
     def setup() {
-        generator = new TestObjectGenerator(attributeUtility)
+        generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
         mapper.registerModule(new JavaTimeModule())

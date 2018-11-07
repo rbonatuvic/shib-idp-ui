@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import javax.annotation.PostConstruct
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.entityAttributesFiltersSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
@@ -23,8 +23,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * @author Bill Smith (wsmith@unicon.net)
  */
 @RestController
-@RequestMapping('/api/ui/MetadataSources')
-class MetadataSourcesUiDefinitionController {
+@RequestMapping('/api/ui/EntityAttributesFilters')
+class EntityAttributesFiltersUiDefinitionController {
 
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
@@ -56,6 +56,6 @@ class MetadataSourcesUiDefinitionController {
 
     @PostConstruct
     void init() {
-        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
+        this.jsonSchemaLocation = entityAttributesFiltersSchema(this.jsonSchemaResourceLocationRegistry);
     }
 }

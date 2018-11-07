@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService
@@ -41,6 +42,9 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
     AttributeUtility attributeUtility
 
     @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
+    @Autowired
     MetadataResolverConverterService metadataResolverConverterService
 
     @Autowired
@@ -54,7 +58,7 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
     static BASE_URI = '/api/MetadataResolvers'
 
     def setup() {
-        generator = new TestObjectGenerator(attributeUtility)
+        generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
         mapper.registerModule(new JavaTimeModule())

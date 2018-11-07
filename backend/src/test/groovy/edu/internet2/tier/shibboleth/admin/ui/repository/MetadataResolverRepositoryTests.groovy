@@ -6,7 +6,6 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -80,10 +79,9 @@ class MetadataResolverRepositoryTests extends Specification {
             it.name = 'original'
             it.resourceId = 'new-filter-UUID'
             it.attributeRelease = ['attr-for-release']
-            it.relyingPartyOverrides = new RelyingPartyOverridesRepresentation().with {
-                it.signAssertion = true
-                it
-            }
+            def overrides = [:]
+            overrides["signAssertion"] = true
+            it.setRelyingPartyOverrides(overrides) // to make sure it.rebuildAttributes() is called
             it
         }
         MetadataResolver metadataResolver = metadataResolverRepository.findAll().iterator().next()
@@ -113,7 +111,7 @@ class MetadataResolverRepositoryTests extends Specification {
                 it.value == 'attr-for-release'
             }
         }
-        persistedFilter.relyingPartyOverrides.signAssertion
+        persistedFilter.relyingPartyOverrides["signAssertion"]
 
         when:
         entityManager.flush()
@@ -123,10 +121,8 @@ class MetadataResolverRepositoryTests extends Specification {
             it.name = 'updated'
             it.resourceId = 'new-filter-UUID'
             it.attributeRelease = ['attr-for-release', 'attr-for-release2']
-            it.relyingPartyOverrides = new RelyingPartyOverridesRepresentation().with {
-                it.signAssertion = false
-                it
-            }
+            it.relyingPartyOverrides = [:]
+            it.relyingPartyOverrides.put("signAssertion", false)
             it
         }
         metadataResolver = metadataResolverRepository.findAll().iterator().next()
@@ -166,7 +162,7 @@ class MetadataResolverRepositoryTests extends Specification {
                 it.value == 'attr-for-release2'
             }
         }
-        !persistedFilter.relyingPartyOverrides.signAssertion
+        !persistedFilter.relyingPartyOverrides["signAssertion"]
     }
 
     def "test persisting DynamicHttpMetadataResolver "() {

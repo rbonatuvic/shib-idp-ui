@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -14,6 +15,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
@@ -42,7 +44,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 
 @SpringBootTest
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, MetadataResolverConverterConfiguration, SearchConfiguration, InternationalizationConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, MetadataResolverConverterConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
@@ -295,7 +297,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         OpenSamlObjects openSamlObjects
 
         @Bean
-        MetadataResolver metadataResolver() {
+        MetadataResolver metadataResolver(TokenPlaceholderResolvers tokenPlaceholderResolvers) {
             def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
             def aggregate = new ResourceBackedMetadataResolver(resource){
                 @Override

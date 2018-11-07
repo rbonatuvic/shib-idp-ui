@@ -25,25 +25,28 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL;
+import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
@@ -54,12 +57,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getBooleanValueOfAttribute;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListValueOfAttribute;
 
 /**
  * Default implementation of {@link EntityDescriptorService}
@@ -489,57 +493,66 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         // set up extensions
         if (ed.getExtensions() != null && ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME) != null && ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).size() == 1) {
             // we have entity attributes (hopefully), so should have overrides
-            RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation = new RelyingPartyOverridesRepresentation();
-            representation.setRelyingPartyOverrides(relyingPartyOverridesRepresentation);
+            Map<String, Object> relyingPartyOverrides = new HashMap<>();
 
             for (org.opensaml.saml.saml2.core.Attribute attribute : ((EntityAttributes) ed.getExtensions().getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0)).getAttributes()) {
                 Attribute jpaAttribute = (Attribute) attribute;
-                // TODO: this is going to get real ugly real quick. clean it up, future Jj!
-                switch (jpaAttribute.getName()) {
-                    case MDDCConstants.SIGN_ASSERTIONS:
-                        relyingPartyOverridesRepresentation.setSignAssertion(getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.SIGN_RESPONSES:
-                        relyingPartyOverridesRepresentation.setDontSignResponse(!getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.ENCRYPT_ASSERTIONS:
-                        relyingPartyOverridesRepresentation.setTurnOffEncryption(!getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.SECURITY_CONFIGURATION:
-                        if (getStringListValueOfAttribute(jpaAttribute).contains("shibboleth.SecurityConfiguration.SHA1")) {
-                            relyingPartyOverridesRepresentation.setUseSha(true);
+
+                if (jpaAttribute.getName().equals(MDDCConstants.RELEASE_ATTRIBUTES)) {
+                    representation.setAttributeRelease(getStringListOfAttributeValues(attribute.getAttributeValues()));
+                } else {
+                    Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
+                    if (override.isPresent()) {
+                        RelyingPartyOverrideProperty overrideProperty = (RelyingPartyOverrideProperty)override.get();
+                        Object attributeValues = null;
+                        switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
+                            case STRING:
+                                if (jpaAttribute.getAttributeValues().size() != 1) {
+                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                }
+                                attributeValues = getValueFromXSStringOrXSAny(jpaAttribute.getAttributeValues().get(0));
+                                break;
+                            case INTEGER:
+                                if (jpaAttribute.getAttributeValues().size() != 1) {
+                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                }
+                                attributeValues = ((XSInteger)jpaAttribute.getAttributeValues().get(0)).getValue();
+                                break;
+                            case BOOLEAN:
+                                if (jpaAttribute.getAttributeValues().size() != 1) {
+                                    throw new RuntimeException("Multiple/No values detected where one is expected!");
+                                }
+                                if (overrideProperty.getPersistType() != null &&
+                                    !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
+                                    attributeValues = getValueFromXSStringOrXSAny(jpaAttribute.getAttributeValues().get(0));
+                                } else {
+                                    attributeValues = Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
+                                            .get(0)).getStoredValue());
+                                }
+                                break;
+                            case SET:
+                            case LIST:
+                                attributeValues = jpaAttribute.getAttributeValues().stream()
+                                        .map(attributeValue -> getValueFromXSStringOrXSAny(attributeValue))
+                                        .collect(Collectors.toList());
                         }
-                        break;
-                    case MDDCConstants.DISALLOWED_FEATURES:
-                        if ((Integer.decode(getStringListValueOfAttribute(jpaAttribute).get(0)) & 0x1) == 0x1) {
-                            relyingPartyOverridesRepresentation.setIgnoreAuthenticationMethod(true);
-                        }
-                        break;
-                    case MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE:
-                        relyingPartyOverridesRepresentation.setOmitNotBefore(!getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.RESPONDER_ID:
-                        relyingPartyOverridesRepresentation.setResponderId(getStringListValueOfAttribute(jpaAttribute).get(0));
-                        break;
-                    case MDDCConstants.NAME_ID_FORMAT_PRECEDENCE:
-                        relyingPartyOverridesRepresentation.setNameIdFormats(getStringListValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.DEFAULT_AUTHENTICATION_METHODS:
-                        relyingPartyOverridesRepresentation.setAuthenticationMethods(getStringListValueOfAttribute(jpaAttribute));
-                        break;
-                    case MDDCConstants.RELEASE_ATTRIBUTES:
-                        representation.setAttributeRelease(getStringListOfAttributeValues(attribute.getAttributeValues()));
-                        break;
-                    case MDDCConstants.FORCE_AUTHN:
-                        relyingPartyOverridesRepresentation.setForceAuthn(getBooleanValueOfAttribute(jpaAttribute));
-                        break;
-                    default:
-                        break;
+                        relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
+                    }
                 }
             }
+
+            representation.setRelyingPartyOverrides(relyingPartyOverrides);
         }
 
         return representation;
+    }
+
+    private String getValueFromXSStringOrXSAny(XMLObject xmlObject) {
+        if (xmlObject instanceof XSAny) {
+            return ((XSAny)xmlObject).getTextContent();
+        } else {
+            return ((XSString)xmlObject).getValue();
+        }
     }
 
     @Override
@@ -548,7 +561,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public RelyingPartyOverridesRepresentation getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
+    public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
     }
 
