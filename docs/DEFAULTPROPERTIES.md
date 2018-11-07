@@ -1,3 +1,12 @@
+# Default properties
+
+This is a reflection of the default `application.properties` file included in the distribution. Note that lines
+beginning with `#` are commented out.
+
+Please refer to the Spring Boot documentation [https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html]
+for more information.
+
+```properties
 # Server Configuration
 #server.port=8080
 
@@ -50,8 +59,6 @@ shibui.logout-url=/dashboard
 
 #shibui.default-password=
 
-shibui.metadata-sources-ui-schema-location=classpath:metadata-sources-ui-schema.json
-
 #Actuator endpoints (info)
 # Un-comment to get full git details exposed like author, abbreviated SHA-1, commit message
 #management.info.git.mode=full
@@ -62,3 +69,4 @@ shibui.metadata-sources-ui-schema-location=classpath:metadata-sources-ui-schema.
 # Set the following property to periodically write out metadata providers configuration. There is no default value; the following is just an example
 # shibui.metadataProviders.target=file:/opt/shibboleth-idp/conf/shibui-metadata-providers.xml
 # shibui.metadataProviders.taskRunRate=30000
+```
