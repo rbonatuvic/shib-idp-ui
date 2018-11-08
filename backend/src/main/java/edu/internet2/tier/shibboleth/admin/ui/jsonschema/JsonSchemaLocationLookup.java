@@ -36,7 +36,7 @@ public abstract class JsonSchemaLocationLookup {
     public static JsonSchemaResourceLocation entityAttributesFiltersSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
         return resourceLocationRegistry
                 .lookup(ENTITY_ATTRIBUTES_FILTERS)
-                .orElseThrow(() -> new IllegalStateException("JSON schema resource location for metadata sources is not registered."));
+                .orElseThrow(() -> new IllegalStateException("JSON schema resource location for entity attributes filters is not registered."));
     }
 
     /**
