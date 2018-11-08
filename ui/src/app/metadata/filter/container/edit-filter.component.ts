@@ -11,6 +11,7 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
     selector: 'edit-filter-page',
@@ -40,7 +41,7 @@ export class EditFilterComponent {
     ) {
         this.definition = MetadataFilterTypes.EntityAttributesFilter;
 
-        this.schema$ = this.schemaService.get(this.definition.schema);
+        this.schema$ = this.schemaService.get(this.definition.schema).pipe(shareReplay());
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
 
