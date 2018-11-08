@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
@@ -47,6 +48,9 @@ class MetadataFiltersControllerTests extends Specification {
     AttributeUtility attributeUtility
 
     @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
+    @Autowired
     FilterService filterService
 
     TestObjectGenerator testObjectGenerator
@@ -65,7 +69,7 @@ class MetadataFiltersControllerTests extends Specification {
 
     def setup() {
         randomGenerator = new RandomGenerator()
-        testObjectGenerator = new TestObjectGenerator(attributeUtility)
+        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
 

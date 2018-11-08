@@ -300,61 +300,7 @@
         },
         "relyingPartyOverrides": {
             "type": "object",
-            "properties": {
-                "signAssertion": {
-                    "title": "label.sign-the-assertion",
-                    "description": "tooltip.sign-assertion",
-                    "type": "boolean",
-                    "default": false
-                },
-                "dontSignResponse": {
-                    "title": "label.dont-sign-the-response",
-                    "description": "tooltip.dont-sign-response",
-                    "type": "boolean",
-                    "default": false
-                },
-                "turnOffEncryption": {
-                    "title": "label.turn-off-encryption-of-response",
-                    "description": "tooltip.turn-off-encryption",
-                    "type": "boolean",
-                    "default": false
-                },
-                "useSha": {
-                    "title": "label.use-sha1-signing-algorithm",
-                    "description": "tooltip.usa-sha-algorithm",
-                    "type": "boolean",
-                    "default": false
-                },
-                "ignoreAuthenticationMethod": {
-                    "title": "label.ignore-any-sp-requested-authentication-method",
-                    "description": "tooltip.ignore-auth-method",
-                    "type": "boolean",
-                    "default": false
-                },
-                "forceAuthn": {
-                    "title": "label.force-authn",
-                    "description": "tooltip.force-authn",
-                    "type": "boolean",
-                    "default": false
-                },
-                "omitNotBefore": {
-                    "title": "label.omit-not-before-condition",
-                    "type": "boolean",
-                    "description": "tooltip.omit-not-before-condition",
-                    "default": false
-                },
-                "nameIdFormats": {
-                    "$ref": "#/definitions/NameIdFormatList"
-                },
-                "authenticationMethods": {
-                    "$ref": "#/definitions/AuthenticationMethodList"
-                },
-                "responderId": {
-                    "title": "label.responder-id",
-                    "description": "tooltip.responder-id",
-                    "type": "string"
-                }
-            }
+            "properties": {}
         },
         "attributeRelease": {
             "type": "array",
@@ -525,50 +471,6 @@
                     "default": false
                 }
             }
-        },
-        "NameIdFormatList": {
-            "title": "label.nameid-format-to-send",
-            "placeholder": "label.nameid-format",
-            "description": "tooltip.nameid-format",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255,
-                "widget": {
-                    "id": "datalist",
-                    "data": [
-                        "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-                        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                        "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                    ]
-                }
-            },
-            "default": null
-        },
-        "AuthenticationMethodList": {
-            "title": "label.authentication-methods-to-use",
-            "description": "tooltip.authentication-methods-to-use",
-            "type": "array",
-            "placeholder": "label.authentication-method",
-            "uniqueItems": true,
-            "items": {
-                "type": "string",
-                "title": "label.authentication-method",
-                "minLength": 1,
-                "maxLength": 255,
-                "widget": {
-                    "id": "datalist",
-                    "data": [
-                        "https://refeds.org/profile/mfa",
-                        "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
-                        "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
-                    ]
-                }
-            },
-            "default": null
         },
         "LogoutEndpoint": {
             "title": "label.new-endpoint",

@@ -1,14 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.opensaml.saml.saml2.metadata.Organization
 
 import java.nio.file.Files
@@ -21,10 +22,19 @@ class TestObjectGenerator {
 
     AttributeUtility attributeUtility
 
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
     RandomGenerator generator = new RandomGenerator()
+
+    TestObjectGenerator() {}
 
     TestObjectGenerator(AttributeUtility attributeUtility) {
         this.attributeUtility = attributeUtility
+    }
+
+    TestObjectGenerator(AttributeUtility attributeUtility, CustomPropertiesConfiguration customPropertiesConfiguration) {
+        this.attributeUtility = attributeUtility
+        this.customPropertiesConfiguration = customPropertiesConfiguration
     }
 
     DynamicHttpMetadataResolver buildDynamicHttpMetadataResolver() {
@@ -258,34 +268,29 @@ class TestObjectGenerator {
     List<Attribute> buildAttributesList() {
         List<Attribute> attributes = new ArrayList<>()
 
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.SIGN_ASSERTIONS, MDDCConstants.SIGN_ASSERTIONS_FN, true))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.SIGN_RESPONSES, MDDCConstants.SIGN_RESPONSES_FN, false))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.ENCRYPT_ASSERTIONS, MDDCConstants.ENCRYPT_ASSERTIONS_FN, false))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.SECURITY_CONFIGURATION, MDDCConstants.SECURITY_CONFIGURATION_FN, "shibboleth.SecurityConfiguration.SHA1"))
-        }
-        if (generator.randomBoolean()) {
-            // this is actually going to be wrong, but it will work for the time being. this should be a bitmask value that we calculate
-            // TODO: fix
-            attributes.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.DISALLOWED_FEATURES, MDDCConstants.DISALLOWED_FEATURES_FN, "0x1"))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithBooleanValue(MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE, MDDCConstants.INCLUDE_CONDITIONS_NOT_BEFORE_FN, false))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.RESPONDER_ID, MDDCConstants.RESPONDER_ID_FN, generator.randomId()))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.NAME_ID_FORMAT_PRECEDENCE, MDDCConstants.NAME_ID_FORMAT_PRECEDENCE_FN, generator.randomStringList()))
-        }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithArbitraryValues(MDDCConstants.DEFAULT_AUTHENTICATION_METHODS, MDDCConstants.DEFAULT_AUTHENTICATION_METHODS_FN, generator.randomStringList()))
+        customPropertiesConfiguration.getOverrides().each {override ->
+            if (generator.randomBoolean()) {
+                switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
+                    case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
+                        if (override.getPersistType() != null &&
+                            override.getPersistType() != override.getDisplayType()) {
+                            attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
+                        } else {
+                            attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomBoolean()))
+                        }
+                        break
+                    case ModelRepresentationConversions.AttributeTypes.INTEGER:
+                        attributes.add(attributeUtility.createAttributeWithIntegerValue(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomInt(0, 999999)))
+                        break
+                    case ModelRepresentationConversions.AttributeTypes.STRING:
+                        attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
+                        break
+                    case ModelRepresentationConversions.AttributeTypes.SET:
+                    case ModelRepresentationConversions.AttributeTypes.LIST:
+                        attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomStringList()))
+                        break
+                }
+            }
         }
         if (generator.randomBoolean()) {
             attributes.add(attributeUtility.createAttributeWithStringValues(MDDCConstants.RELEASE_ATTRIBUTES, generator.randomStringList()))
@@ -306,20 +311,37 @@ class TestObjectGenerator {
         return representation
     }
 
-    RelyingPartyOverridesRepresentation buildRelyingPartyOverridesRepresentation() {
-        RelyingPartyOverridesRepresentation representation = new RelyingPartyOverridesRepresentation()
+    Map<String, Object> buildRelyingPartyOverridesRepresentation() {
+        def representation = [:]
 
-        representation.setAuthenticationMethods(generator.randomStringList())
-        representation.setDontSignResponse(generator.randomBoolean())
-        representation.setIgnoreAuthenticationMethod(generator.randomBoolean())
-        representation.setNameIdFormats(generator.randomStringList())
-        representation.setOmitNotBefore(generator.randomBoolean())
-        representation.setSignAssertion(generator.randomBoolean())
-        representation.setTurnOffEncryption(generator.randomBoolean())
-        representation.setUseSha(generator.randomBoolean())
-        representation.setResponderId(generator.randomId())
+        customPropertiesConfiguration.getOverrides().each { override ->
+            switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
+                case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
+                    if (override.getPersistType() != null &&
+                        override.getPersistType() != override.getDisplayType()) {
+                        representation.put(override.getName(), generator.randomString(30))
+                    } else {
+                        representation.put(override.getName(), generator.randomBoolean())
+                    }
+                    break
+                case ModelRepresentationConversions.AttributeTypes.INTEGER:
+                    representation.put(override.getName(), generator.randomInt(0, 999999))
+                    break
+                case ModelRepresentationConversions.AttributeTypes.STRING:
+                    representation.put(override.getName(), generator.randomString(30))
+                    break
+                case ModelRepresentationConversions.AttributeTypes.SET:
+                case ModelRepresentationConversions.AttributeTypes.LIST:
+                    def someStrings = new ArrayList<String>()
+                    (0..generator.randomInt(1, 5)).each {
+                        someStrings << generator.randomString(20)
+                    }
+                    representation.put(override.getName(), someStrings)
+                    break
+            }
+        }
 
-        return representation
+        representation
     }
 
     String buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType type) {

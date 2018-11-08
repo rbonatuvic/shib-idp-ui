@@ -125,15 +125,15 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
                 resolversPositionOrderContainerService.allMetadataResolversInDefinedOrderOrUnordered.each {
                     edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                    //TODO: We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
-                    if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
-                        constructXmlNodeForResolver(mr, delegate) {
-                            //TODO: enhance
-                            mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                                constructXmlNodeForFilter(filter, delegate)
+                        //TODO: We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
+                        if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
+                            constructXmlNodeForResolver(mr, delegate) {
+                                //TODO: enhance
+                                mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
+                                    constructXmlNodeForFilter(filter, delegate)
+                                }
                             }
                         }
-                    }
                 }
             }
             return DOMBuilder.newInstance().parseText(writer.toString())

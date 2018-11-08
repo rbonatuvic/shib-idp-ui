@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ResourceLoader
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
+
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES
 
 /**
  * @author Dmitriy Kopylenko
@@ -36,11 +40,22 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
     @TestConfiguration
     static class Config {
         @Bean
-        MetadataSourcesJsonSchemaResourceLocation metadataSourcesJsonSchemaResourceLocation(ResourceLoader resourceLoader,
-                                                                                            ObjectMapper jacksonMapper) {
+        JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader,
+                                                                          ObjectMapper jacksonMapper) {
 
-            new MetadataSourcesJsonSchemaResourceLocation('classpath:metadata-sources-ui-schema_MALFORMED.json',
-                    resourceLoader, jacksonMapper, false)
+            JsonSchemaResourceLocationRegistry.inMemory()
+                    .register(METADATA_SOURCES, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:metadata-sources-ui-schema_MALFORMED.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+                    .register(ENTITY_ATTRIBUTES_FILTERS, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:entity-attributes-filters-ui-schema.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
         }
     }
 }

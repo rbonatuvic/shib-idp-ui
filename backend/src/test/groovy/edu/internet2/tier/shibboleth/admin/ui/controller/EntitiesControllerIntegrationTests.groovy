@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import groovy.json.JsonOutput
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import org.joda.time.DateTime
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.web.util.DefaultUriBuilderFactory
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -59,17 +61,7 @@ class EntitiesControllerIntegrationTests extends Specification {
                 "serviceEnabled":false,
                 "createdDate":null,
                 "modifiedDate":null,
-                "relyingPartyOverrides":{
-                    "signAssertion":false,
-                    "dontSignResponse":false,
-                    "turnOffEncryption":false,
-                    "useSha":false,
-                    "ignoreAuthenticationMethod":false,
-                    "omitNotBefore":false,
-                    "responderId":null,
-                    "nameIdFormats":[],
-                    "authenticationMethods":[]
-                },
+                "relyingPartyOverrides":{},
                 "attributeRelease":["givenName","employeeNumber"]
             }
         '''

@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
@@ -33,17 +34,19 @@ class JPAEntityServiceImplTests extends Specification {
     @Autowired
     AttributeUtility attributeUtility
 
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
     def randomGenerator
     def testObjectGenerator
 
     def service
 
     def setup() {
-        service = new JPAEntityServiceImpl(openSamlObjects)
-        service.attributeUtility = attributeUtility
+        service = new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
 
         randomGenerator = new RandomGenerator()
-        testObjectGenerator = new TestObjectGenerator(attributeUtility)
+        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     def "getAttributeListFromEntityRepresentation builds an appropriate attribute list"() {

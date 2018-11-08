@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EntityDescriptorRepresentation implements Serializable {
 
@@ -58,7 +59,7 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     private LocalDateTime modifiedDate;
 
-    private RelyingPartyOverridesRepresentation relyingPartyOverrides;
+    private Map<String, Object> relyingPartyOverrides;
 
     private List<String> attributeRelease;
 
@@ -180,11 +181,11 @@ public class EntityDescriptorRepresentation implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public RelyingPartyOverridesRepresentation getRelyingPartyOverrides() {
+    public Map<String, Object> getRelyingPartyOverrides() {
         return relyingPartyOverrides;
     }
 
-    public void setRelyingPartyOverrides(RelyingPartyOverridesRepresentation relyingPartyOverrides) {
+    public void setRelyingPartyOverrides(Map<String, Object> relyingPartyOverrides) {
         this.relyingPartyOverrides = relyingPartyOverrides;
     }
 
