@@ -7,7 +7,14 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConf
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -473,8 +480,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
         def test = openSamlObjects.marshalToXmlString(service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
-            it.relyingPartyOverrides = [:]
-            it.relyingPartyOverrides["forceAuthn"] = true
+            it.relyingPartyOverrides = ['forceAuthn': true]
             it
         }))
 

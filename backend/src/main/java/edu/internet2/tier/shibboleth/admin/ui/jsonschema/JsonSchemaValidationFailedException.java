@@ -1,4 +1,6 @@
-package edu.internet2.tier.shibboleth.admin.ui.jsonschema
+package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
+
+import java.util.List;
 
 /**
  * Indicates JSON schema validation failure. Encapsulates a list of error messages produced by JSON schema validator
@@ -8,9 +10,9 @@ package edu.internet2.tier.shibboleth.admin.ui.jsonschema
  */
 class JsonSchemaValidationFailedException extends RuntimeException {
 
-    def errors
+    List<String> errors;
 
     JsonSchemaValidationFailedException(List<String> errors) {
-        this.errors = errors
+        this.errors = errors;
     }
 }
