@@ -30,9 +30,9 @@ class JsonSchemaBuilderService {
                          description: it['helpText'],
                          type       : it['displayType']]
                 if (it['displayType'] == 'boolean') {
-                    property['defaultValue'] = (Boolean)(it['defaultValue'])
+                    property['default'] = (Boolean)(it['defaultValue'])
                 } else {
-                    property['defaultValue'] = it['defaultValue']
+                    property['default'] = it['defaultValue']
                 }
             }
             properties[(String) it['name']] = property
