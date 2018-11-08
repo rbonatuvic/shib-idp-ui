@@ -1,8 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry;
+import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*;
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.ShemaType.ENTITY_ATTRIBUTES_FILTERS;
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.ShemaType.METADATA_SOURCES;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 
 /**
  * @author Dmitriy Kopylenko
@@ -46,5 +46,10 @@ public class JsonSchemaComponentsConfiguration {
                         .detectMalformedJson(true)
                         .build());
 
+    }
+
+    @Bean
+    public JsonSchemaBuilderService jsonSchemaBuilderService() {
+        return new JsonSchemaBuilderService();
     }
 }
