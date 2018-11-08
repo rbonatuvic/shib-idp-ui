@@ -28,8 +28,12 @@ class JsonSchemaBuilderService {
                 property =
                         [title      : it['displayName'],
                          description: it['helpText'],
-                         type       : it['displayType'],
-                         default    : it['defaultValue']]
+                         type       : it['displayType']]
+                if (it['displayType'] == 'boolean') {
+                    property['defaultValue'] = (Boolean)(it['defaultValue'])
+                } else {
+                    property['defaultValue'] = it['defaultValue']
+                }
             }
             properties[(String) it['name']] = property
         }
