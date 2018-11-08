@@ -316,6 +316,7 @@
     },
     "definitions": {
         "Contact": {
+            "title": "label.contact",
             "type": "object",
             "required": [
                 "name",
