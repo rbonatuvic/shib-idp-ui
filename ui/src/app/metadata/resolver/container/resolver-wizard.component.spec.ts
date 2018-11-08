@@ -16,7 +16,7 @@ import { METADATA_SOURCE_WIZARD } from '../wizard-definition';
 import { MetadataSourceWizard } from '../../domain/model/wizards/metadata-source-wizard';
 import { initialState } from '../reducer/entity.reducer';
 import { MockWizardModule } from '../../../../testing/wizard.stub';
-import { RouterStateSnapshot } from '@angular/router';
+import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { of } from 'rxjs';
 import { MetadataResolver } from '../../domain/model';
@@ -115,9 +115,12 @@ describe('Resolver Wizard Component', () => {
     }));
 
     describe('canDeactivate method', () => {
-        it('should return true if moving to another edit page', async(() => {
+        it('should return true if moving to another page', async(() => {
             app.canDeactivate(null, null, {
-                url: 'wizard'
+                url: 'blank',
+                root: <any>{
+                    queryParams: { id: 'foo' }
+                }
             } as RouterStateSnapshot).subscribe((can) => {
                 expect(can).toBe(true);
             });
