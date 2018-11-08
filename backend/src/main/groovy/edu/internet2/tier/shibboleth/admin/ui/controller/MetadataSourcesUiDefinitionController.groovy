@@ -50,8 +50,8 @@ class MetadataSourcesUiDefinitionController {
             jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"])
             return ResponseEntity.ok(parsedJson)
         }
-        catch (Exception e) {
-            logger.error("An error occured while attempting to get json schema for metadata sources!", e)
+        catch (IOException e) {
+            logger.error("An error occurred while attempting to get json schema for metadata sources!", e)
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
                            sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
