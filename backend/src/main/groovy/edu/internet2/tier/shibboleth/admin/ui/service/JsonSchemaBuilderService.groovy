@@ -50,8 +50,8 @@ class JsonSchemaBuilderService {
                 definition['uniqueItems'] = false
             }
             def items = [type     : 'string',
-                         minLength: '1', // TODO: should this be configurable?
-                         maxLength: '255'] //TODO: or this?
+                         minLength: 1, // TODO: should this be configurable?
+                         maxLength: 255] //TODO: or this?
             items.widget = [id: 'datalist', data: it['defaultValues']]
 
             definition['items'] = items
