@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,6 +28,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 @RequestMapping('/api/ui/MetadataSources')
 class MetadataSourcesUiDefinitionController {
 
+    private static final Logger logger = LoggerFactory.getLogger(MetadataSourcesUiDefinitionController.class);
+
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
 
@@ -47,7 +51,7 @@ class MetadataSourcesUiDefinitionController {
             return ResponseEntity.ok(parsedJson)
         }
         catch (Exception e) {
-            e.printStackTrace()
+            logger.error("An error occured while attempting to get json schema for metadata sources!", e)
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
                            sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
