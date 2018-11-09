@@ -20,22 +20,9 @@
             "placeholder": "label.select-metadata-type",
             "type": "string",
             "widget": {
-                "id": "select"
-            },
-            "oneOf": [
-                {
-                    "enum": [
-                        "FileBackedHttpMetadataResolver"
-                    ],
-                    "description": "value.file-backed-http-metadata-provider"
-                },
-                {
-                    "enum": [
-                        "FileSystemMetadataResolver"
-                    ],
-                    "description": "value.file-system-metadata-provider"
-                }
-            ]
+                "id": "select",
+                "dataUrl": "/api/ui/MetadataResolver/types"
+            }
         }
     },
     "required": [

@@ -37,6 +37,9 @@ import { ClearProvider, ResetChanges } from '../action/entity.action';
 import { ShowContentionAction } from '../../../contention/action/contention.action';
 import { ContentionService } from '../../../contention/service/contention.service';
 import { MetadataProvider } from '../../domain/model';
+import { AddNotification } from '../../../notification/action/notification.action';
+import { Notification, NotificationType } from '../../../notification/model/notification';
+import { WizardActionTypes, SetDisabled } from '../../../wizard/action/wizard.action';
 
 
 /* istanbul ignore next */
@@ -96,9 +99,28 @@ export class CollectionEffects {
                 .save(provider)
                 .pipe(
                     map(p => new AddProviderSuccess(p)),
-                    catchError((e) => of(new AddProviderFail(e)))
+                    catchError((e) => of(new AddProviderFail(e.error)))
                 )
         )
+    );
+
+    @Effect()
+    createProviderFailDispatchNotification$ = this.actions$.pipe(
+        ofType<AddProviderFail>(ProviderCollectionActionTypes.ADD_PROVIDER_FAIL),
+        map(action => action.payload),
+        map(error => new AddNotification(
+            new Notification(
+                NotificationType.Danger,
+                `${error.errorCode}: ${ error.errorMessage }`,
+                8000
+            )
+        ))
+    );
+    @Effect()
+    createProviderFailEnableForm$ = this.actions$.pipe(
+        ofType<AddProviderFail>(ProviderCollectionActionTypes.ADD_PROVIDER_FAIL),
+        map(action => action.payload),
+        map(error => new SetDisabled(false))
     );
 
     @Effect({ dispatch: false })

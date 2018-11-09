@@ -4,8 +4,8 @@ import { BaseMetadataProviderEditor } from './base.provider.form';
 
 export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider> = {
     ...BaseMetadataProviderEditor,
-    label: 'FileSystemMetadataProvider',
-    type: 'FileSystemMetadataResolver',
+    label: 'FilesystemMetadataProvider',
+    type: 'FilesystemMetadataResolver',
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {
@@ -25,7 +25,7 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/file-system.schema.json',
+            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'xmlId',
                 'metadataFile'
@@ -46,7 +46,7 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             label: 'label.reloading-attributes',
             index: 3,
             initialValues: [],
-            schema: 'assets/schema/provider/file-system.schema.json',
+            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'reloadableMetadataResolverAttributes'
             ],
@@ -65,7 +65,7 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            schema: 'assets/schema/provider/file-system.schema.json',
+            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'enabled'
             ],
