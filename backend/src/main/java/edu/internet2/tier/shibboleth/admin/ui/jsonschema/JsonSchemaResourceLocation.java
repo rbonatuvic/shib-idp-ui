@@ -119,5 +119,14 @@ public class JsonSchemaResourceLocation {
         public static List<String> getResolverTypes() {
             return Stream.of(SchemaType.values()).map(SchemaType::getJsonType).filter(it -> it.endsWith("Resolver")).collect(Collectors.toList());
         }
+
+        public static SchemaType getSchemaType(String jsonType) {
+            List<SchemaType> schemaTypes = Stream.of(SchemaType.values()).filter(it -> it.getJsonType().equals(jsonType)).collect(Collectors.toList());
+            if (schemaTypes.size() != 1) {
+                throw new RuntimeException("Found two schema types for jsonType (" + jsonType + ")! How did this even happen?");
+            } else {
+                return schemaTypes.get(0);
+            }
+        }
     }
 }
