@@ -28,7 +28,8 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'xmlId',
-                'metadataFile'
+                'metadataFile',
+                'doInitialization'
             ],
             fieldsets: [
                 {
@@ -36,7 +37,8 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
                     class: ['col-12'],
                     fields: [
                         'xmlId',
-                        'metadataFile'
+                        'metadataFile',
+                        'doInitialization'
                     ]
                 }
             ]
@@ -93,9 +95,40 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             initialValues: [],
             schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
-                'enabled',
+                'name',
                 'xmlId',
-                'metadataFile'
+                '@type',
+                'metadataFile',
+                'enabled',
+                'doInitialization'
+            ],
+            override: {
+                '@type': {
+                    type: 'string',
+                    readOnly: true,
+                    widget: 'string',
+                    oneOf: [{ enum: ['FilesystemMetadataResolver'], description: 'value.file-system-metadata-provider'}]
+                }
+            },
+            fieldsets: [
+                {
+                    type: 'section',
+                    class: ['mb-3'],
+                    fields: [
+                        'name',
+                        '@type',
+                        'enabled'
+                    ]
+                },
+                {
+                    type: 'group-lg',
+                    class: ['col-12'],
+                    fields: [
+                        'xmlId',
+                        'metadataFile',
+                        'doInitialization'
+                    ]
+                }
             ]
         },
         {
@@ -106,6 +139,15 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'reloadableMetadataResolverAttributes'
+            ],
+            fieldsets: [
+                {
+                    type: 'group-lg',
+                    class: ['col-12'],
+                    fields: [
+                        'reloadableMetadataResolverAttributes'
+                    ]
+                }
             ]
         }
     ]
