@@ -2,7 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 
 import { SelectWidget } from 'ngx-schema-form';
 import { SchemaService } from '../../service/schema.service';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Component({
     selector: 'select-component',
@@ -30,6 +30,7 @@ export class CustomSelectComponent extends SelectWidget implements AfterViewInit
             this.options$ = this.widgetService
                 .get(this.schema.widget.dataUrl)
                 .pipe(
+                    shareReplay(),
                     map(opts =>
                         opts.map(opt =>
                             ({ label: opt.replace('Resolver', 'Provider'), value: opt })

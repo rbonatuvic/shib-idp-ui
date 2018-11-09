@@ -91,7 +91,7 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: 'assets/schema/provider/filebacked-http-common.editor.schema.json',
+            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'enabled',
                 'xmlId',
@@ -103,7 +103,7 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             label: 'label.reloading-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/filebacked-http-reloading.schema.json',
+            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'reloadableMetadataResolverAttributes'
             ]
