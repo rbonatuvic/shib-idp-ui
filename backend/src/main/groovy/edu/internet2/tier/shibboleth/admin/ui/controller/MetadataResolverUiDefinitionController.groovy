@@ -37,7 +37,7 @@ class MetadataResolverUiDefinitionController {
 
     @GetMapping(value = "/{resolverType}")
     ResponseEntity<?> getUiDefinitionJsonSchema(@PathVariable String resolverType) {
-        switch (SchemaType.valueOf(resolverType)) {
+        switch (SchemaType.getSchemaType(resolverType)) {
             case SchemaType.FILESYSTEM_METADATA_RESOLVER:
                 jsonSchemaLocation = filesystemMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
                 break
