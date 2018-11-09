@@ -95,18 +95,29 @@ public class JsonSchemaResourceLocation {
 
     public enum SchemaType {
         // common types
-        METADATA_SOURCES,
+        METADATA_SOURCES("MetadataSources"),
 
         // filter types
-        ENTITY_ATTRIBUTES_FILTERS,
+        ENTITY_ATTRIBUTES_FILTERS("EntityAttributesFilters"),
 
          // resolver types
-        FILESYSTEM_METADATA_RESOLVER;
+        FILE_BACKED_HTTP_METADATA_RESOLVER("FileBackedHttpMetadataResolver"),
+        FILESYSTEM_METADATA_RESOLVER("FilesystemMetadataResolver");
 //        LOCAL_DYNAMIC_METADATA_RESOLVER,
 //        DYNAMIC_HTTP_METADATA_RESOLVER;
 
+        String jsonType;
+
+        SchemaType(String jsonType) {
+            this.jsonType = jsonType;
+        }
+
+        String getJsonType() {
+            return jsonType;
+        }
+
         public static List<String> getResolverTypes() {
-            return Stream.of(SchemaType.values()).map(SchemaType::name).filter(it -> it.endsWith("RESOLVER")).collect(Collectors.toList());
+            return Stream.of(SchemaType.values()).map(SchemaType::getJsonType).filter(it -> it.endsWith("Resolver")).collect(Collectors.toList());
         }
     }
 }
