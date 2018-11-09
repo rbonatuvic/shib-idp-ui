@@ -22,14 +22,10 @@
                                 "id": "datalist",
                                 "data": [
                                     "PT0S",
-                                    "PT30S",
-                                    "PT1M",
-                                    "PT10M",
-                                    "PT30M",
-                                    "PT1H",
-                                    "PT4H",
-                                    "PT12H",
-                                    "PT24H"
+                                    "P14D",
+                                    "P7D",
+                                    "P1D",
+                                    "PT12H"
                                 ]
                             },
                             "default": null,
@@ -54,7 +50,7 @@
                             "title": "label.certificate-file",
                             "description": "tooltip.certificate-file",
                             "type": "string",
-                            "widget": "textarea",
+                            "widget": "textline",
                             "default": ""
                         }
                     },

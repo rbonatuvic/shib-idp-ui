@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromResolver from '../reducer';
@@ -60,7 +60,7 @@ export class ResolverWizardStepComponent implements OnDestroy {
                 },
                 definition
             })),
-            skipWhile(({ model, definition }) => !definition || !model),
+            filter(({ model, definition }) => (definition && model)),
             map(({ model, definition }) => definition.formatter(model))
         );
 
@@ -76,7 +76,7 @@ export class ResolverWizardStepComponent implements OnDestroy {
 
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.definition$),
-            skipWhile(([ changes, definition ]) => !definition || !changes),
+            filter(([ changes, definition ]) => (!!definition && !!changes)),
             map(([ changes, definition ]) => definition.parser(changes.value)),
             withLatestFrom(this.store.select(fromResolver.getSelectedDraft)),
             map(([changes, original]) => ({ ...original, ...changes }))

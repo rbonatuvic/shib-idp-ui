@@ -79,9 +79,7 @@ class MetadataResolverRepositoryTests extends Specification {
             it.name = 'original'
             it.resourceId = 'new-filter-UUID'
             it.attributeRelease = ['attr-for-release']
-            def overrides = [:]
-            overrides["signAssertion"] = true
-            it.setRelyingPartyOverrides(overrides) // to make sure it.rebuildAttributes() is called
+            it.setRelyingPartyOverrides(['signAssertion': true]) // to make sure it.rebuildAttributes() is called
             it
         }
         MetadataResolver metadataResolver = metadataResolverRepository.findAll().iterator().next()
@@ -121,8 +119,7 @@ class MetadataResolverRepositoryTests extends Specification {
             it.name = 'updated'
             it.resourceId = 'new-filter-UUID'
             it.attributeRelease = ['attr-for-release', 'attr-for-release2']
-            it.relyingPartyOverrides = [:]
-            it.relyingPartyOverrides.put("signAssertion", false)
+            it.relyingPartyOverrides = ['signAssertion': false]
             it
         }
         metadataResolver = metadataResolverRepository.findAll().iterator().next()
