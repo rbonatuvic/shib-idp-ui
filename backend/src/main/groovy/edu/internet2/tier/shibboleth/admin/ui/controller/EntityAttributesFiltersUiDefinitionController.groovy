@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import javax.annotation.PostConstruct
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.entityAttributesFiltersSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
@@ -25,10 +23,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  * @author Bill Smith (wsmith@unicon.net)
  */
 @RestController
-@RequestMapping('/api/ui/MetadataSources')
-class MetadataSourcesUiDefinitionController {
-
-    private static final Logger logger = LoggerFactory.getLogger(MetadataSourcesUiDefinitionController.class);
+@RequestMapping('/api/ui/EntityAttributesFilters')
+class EntityAttributesFiltersUiDefinitionController {
 
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
@@ -50,8 +46,8 @@ class MetadataSourcesUiDefinitionController {
             jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"])
             return ResponseEntity.ok(parsedJson)
         }
-        catch (IOException e) {
-            logger.error("An error occurred while attempting to get json schema for metadata sources!", e)
+        catch (Exception e) {
+            e.printStackTrace()
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
                            sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
@@ -60,6 +56,6 @@ class MetadataSourcesUiDefinitionController {
 
     @PostConstruct
     void init() {
-        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
+        this.jsonSchemaLocation = entityAttributesFiltersSchema(this.jsonSchemaResourceLocationRegistry);
     }
 }

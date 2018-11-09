@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
@@ -33,9 +34,12 @@ class JPAFilterServiceImplTests extends Specification {
     @Autowired
     AttributeUtility attributeUtility
 
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
     def setup() {
         randomGenerator = new RandomGenerator()
-        testObjectGenerator = new TestObjectGenerator(attributeUtility)
+        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     def "createFilterFromRepresentation properly creates a filter from a representation"() {

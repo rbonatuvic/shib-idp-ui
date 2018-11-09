@@ -1,4 +1,4 @@
-<nav *ngIf="index$ | async">
+<nav *ngIf="(current$ | async) && (index$ | async)">
     <ul class="nav nav-wizard">
         <li class="nav-item" *ngIf="(previous$ | async)">
             <button class="nav-link previous btn clearfix" (click)="onPrevious.emit(previousPage.index)" [disabled]="disabled$ | async"

@@ -2,20 +2,23 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
+@SpringBootTest
 class PolymorphicFiltersJacksonHandlingTests extends Specification {
 
     ObjectMapper mapper
 
     AttributeUtility attributeUtility
+
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
 
     TestObjectGenerator testObjectGenerator
 
@@ -27,7 +30,7 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
             it.init()
             it
         })
-        testObjectGenerator = new TestObjectGenerator(attributeUtility)
+        testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     def "Correct polymorphic serialization of EntityRoleWhiteListFilter"() {

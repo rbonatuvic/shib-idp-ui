@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.core.io.ResourceLoader;
 
@@ -11,13 +12,13 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * Encapsulates metadata sources JSON schema location.
+ * Encapsulates arbitrary JSON schema location.
  *
  * @author Dmitriy Kopylenko
  */
-public class MetadataSourcesJsonSchemaResourceLocation {
+public class JsonSchemaResourceLocation {
 
-    private final String metadataSourcesUiSchemaLocation;
+    private final String jsonSchemaLocation;
 
     private URL jsonSchemaUrl;
 
@@ -27,18 +28,19 @@ public class MetadataSourcesJsonSchemaResourceLocation {
 
     private boolean detectMalformedJsonDuringInit = true;
 
-    public MetadataSourcesJsonSchemaResourceLocation(String metadataSourcesUiSchemaLocation, ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
-        this.metadataSourcesUiSchemaLocation = metadataSourcesUiSchemaLocation;
+    public JsonSchemaResourceLocation(String jsonSchemaLocation, ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
+        this.jsonSchemaLocation = jsonSchemaLocation;
         this.resourceLoader = resourceLoader;
         this.jacksonMapper = jacksonMapper;
     }
 
     //This constructor is used in tests
-    public MetadataSourcesJsonSchemaResourceLocation(String metadataSourcesUiSchemaLocation,
-                                                     ResourceLoader resourceLoader,
-                                                     ObjectMapper jacksonMapper,
-                                                     boolean detectMalformedJsonDuringInit) {
-        this.metadataSourcesUiSchemaLocation = metadataSourcesUiSchemaLocation;
+    public JsonSchemaResourceLocation(String jsonSchemaLocation,
+                                      ResourceLoader resourceLoader,
+                                      ObjectMapper jacksonMapper,
+                                      boolean detectMalformedJsonDuringInit) {
+
+        this.jsonSchemaLocation = jsonSchemaLocation;
         this.resourceLoader = resourceLoader;
         this.jacksonMapper = jacksonMapper;
         this.detectMalformedJsonDuringInit = detectMalformedJsonDuringInit;
@@ -60,7 +62,7 @@ public class MetadataSourcesJsonSchemaResourceLocation {
     @PostConstruct
     public void init() {
         try {
-            this.jsonSchemaUrl = this.resourceLoader.getResource(this.metadataSourcesUiSchemaLocation).getURL();
+            this.jsonSchemaUrl = this.resourceLoader.getResource(this.jsonSchemaLocation).getURL();
             if(this.detectMalformedJsonDuringInit) {
                 //Detect malformed JSON schema early, during application start up and fail fast with useful exception message
                 this.jacksonMapper.readValue(this.jsonSchemaUrl, Map.class);
@@ -69,9 +71,26 @@ public class MetadataSourcesJsonSchemaResourceLocation {
         catch (Exception ex) {
             StringBuilder msg =
                     new StringBuilder(String.format("An error is detected during JSON parsing => [%s]", ex.getMessage()));
-            msg.append(String.format("Offending resource => [%s]", this.metadataSourcesUiSchemaLocation));
+            msg.append(String.format("Offending resource => [%s]", this.jsonSchemaLocation));
 
             throw new BeanInitializationException(msg.toString(), ex);
         }
+    }
+
+    public static class JsonSchemaLocationBuilder {
+
+        @Builder(builderMethodName = "with")
+        public static JsonSchemaResourceLocation newSchemaLocation(String jsonSchemaLocation,
+                                                                   ResourceLoader resourceLoader,
+                                                                   ObjectMapper jacksonMapper,
+                                                                   boolean detectMalformedJson) {
+            JsonSchemaResourceLocation location = new JsonSchemaResourceLocation(jsonSchemaLocation, resourceLoader, jacksonMapper, detectMalformedJson);
+            location.init();
+            return location;
+        }
+    }
+
+    public enum SchemaType {
+        METADATA_SOURCES, ENTITY_ATTRIBUTES_FILTERS
     }
 }
