@@ -66,6 +66,8 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean satisfyAnyPredicates = false;
 
+    private Boolean doInitialization = true;
+
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
     private List<MetadataFilter> metadataFilters = new ArrayList<>();

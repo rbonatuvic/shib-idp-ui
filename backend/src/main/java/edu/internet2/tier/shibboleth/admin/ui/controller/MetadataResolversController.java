@@ -120,8 +120,10 @@ public class MetadataResolversController {
 
         //TODO: currently, the update call might explode, but the save works.. in which case, the UI never gets
         // n valid response. This operation is not atomic. Should we return an error here?
-        org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        if (persistedResolver.getDoInitialization()) {
+            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
+            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        }
 
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
@@ -148,8 +150,10 @@ public class MetadataResolversController {
 
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
 
-        org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        if (persistedResolver.getDoInitialization()) {
+            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
+            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        }
 
         return ResponseEntity.ok(persistedResolver);
     }

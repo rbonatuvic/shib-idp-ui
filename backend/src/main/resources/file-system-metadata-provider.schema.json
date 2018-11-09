@@ -55,6 +55,12 @@
             "type": "boolean",
             "default": false
         },
+        "doInitialization": {
+            "title": "label.do-resolver-initialization",
+            "description": "tooltip.do-resolver-initialization",
+            "type": "boolean",
+            "default": false
+        },
         "reloadableMetadataResolverAttributes": {
             "type": "object",
             "properties": {
