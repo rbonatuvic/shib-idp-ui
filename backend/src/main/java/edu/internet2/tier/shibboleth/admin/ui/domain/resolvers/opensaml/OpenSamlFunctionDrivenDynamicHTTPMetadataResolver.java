@@ -41,11 +41,13 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
 
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
-        super.initMetadataResolver();
+        if (sourceResolver.getDoInitialization()) {
+            super.initMetadataResolver();
 
-        delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
-                                                       this.sourceResolver.getResourceId(),
-                                                       indexWriter);
+            delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
+                                                           this.sourceResolver.getResourceId(),
+                                                           indexWriter);
+        }
     }
 
     public void refresh() throws ComponentInitializationException {

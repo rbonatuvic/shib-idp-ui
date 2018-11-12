@@ -4,7 +4,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResour
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER;
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER;
-//import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER;
 
 /**
  * Utility methods for common JSON schema types lookups.
@@ -65,9 +65,16 @@ public abstract class JsonSchemaLocationLookup {
                 .orElseThrow(() -> new IllegalStateException("JSON schema resource location for local dynamic metadata resolver is not registered."));
     }
 
-/*    public static JsonSchemaResourceLocation dynamicHttpMetadataProviderSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
+    /**
+     * Searches dynamic http metadata resolver JSON schema resource location object in the given location registry.
+     *
+     * @param resourceLocationRegistry
+     * @return dynamic http metadata resolver JSON schema resource location object
+     * @throws IllegalStateException if schema is not found in the given registry
+     */
+    public static JsonSchemaResourceLocation dynamicHttpMetadataProviderSchema(JsonSchemaResourceLocationRegistry resourceLocationRegistry) {
         return resourceLocationRegistry
                 .lookup(DYNAMIC_HTTP_METADATA_RESOLVER)
                 .orElseThrow(() -> new IllegalStateException("JSON schema resource location for dynamic http metadata resolver is not registered."));
-    }*/
+    }
 }
