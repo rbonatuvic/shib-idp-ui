@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration;
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ConfigurationController {
 
     @Autowired
-    CustomAttributesConfiguration customAttributesConfiguration;
+    CustomPropertiesConfiguration customPropertiesConfiguration;
 
     @GetMapping(value = "/customAttributes")
     public ResponseEntity<?> getCustomAttributes() {
-        return ResponseEntity.ok(customAttributesConfiguration.getAttributes());
+        return ResponseEntity.ok(customPropertiesConfiguration.getAttributes());
     }
 }

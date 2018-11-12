@@ -60,51 +60,6 @@
                     "minimum": 0,
                     "maximum": 1,
                     "default": null
-                },
-                "resolveViaPredicatesOnly": {
-                    "title": "label.resolve-via-predicates-only",
-                    "description": "tooltip.resolve-via-predicates-only",
-                    "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
-                    ],
-                    "default": true
-                },
-                "expirationWarningThreshold": {
-                    "title": "label.expiration-warning-threshold",
-                    "description": "tooltip.expiration-warning-threshold",
-                    "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "default": null,
-                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 }
             }
         }

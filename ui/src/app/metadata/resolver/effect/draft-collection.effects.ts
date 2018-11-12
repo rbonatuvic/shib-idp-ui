@@ -120,7 +120,7 @@ export class DraftCollectionEffects {
                 )
         ),
         tap(() => {
-            this.store.dispatch(new ClearWizard());
+            // this.store.dispatch(new ClearWizard());
             this.store.dispatch(new Clear());
         })
     );

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, shareReplay } from 'rxjs/operators';
 
 import * as fromFilter from '../reducer';
 import { MetadataFilterTypes } from '../model';
@@ -39,7 +39,7 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     ) {
         this.definition = MetadataFilterTypes.EntityAttributesFilter;
 
-        this.schema$ = this.schemaService.get(this.definition.schema);
+        this.schema$ = this.schemaService.get(this.definition.schema).pipe(shareReplay());
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = of(<MetadataFilter>{});
     }
@@ -51,6 +51,7 @@ export class NewFilterComponent implements OnDestroy, OnInit {
         this.statusChangeEmitted$
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(valid => {
+                console.log(valid);
                 this.isValid = valid.value ? valid.value.length === 0 : true;
             });
 

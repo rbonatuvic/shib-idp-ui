@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-primary btn-filter pull-left" (click)="viewFilters.emit(provider)">
+                <button class="btn btn-primary btn-filter pull-left" (click)="viewFilters.emit(provider)" *ngIf="hasFilters(provider)">
                     <i class="fa fa-filter"></i>&nbsp;
                     <span class="label" translate="action.manage-filters">Manage Filters</span>
                 </button>

@@ -51,11 +51,13 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
 
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
-        super.initMetadataResolver();
+        if (this.sourceResolver.getDoInitialization()) {
+            super.initMetadataResolver();
 
-        delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
-                                                       this.sourceResolver.getResourceId(),
-                                                       indexWriter);
+            delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
+                    this.sourceResolver.getResourceId(),
+                    indexWriter);
+        }
     }
 
     /**

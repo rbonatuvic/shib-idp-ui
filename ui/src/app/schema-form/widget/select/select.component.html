@@ -25,7 +25,16 @@
             <translate-i18n *ngIf="schema.placeholder" [key]="schema.placeholder">{{ schema.placeholder }}</translate-i18n>
             <translate-i18n *ngIf="!schema.placeholder" [key]="schema.title">{{ schema.title }}</translate-i18n>
         </option>
-        <option *ngFor="let option of schema.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
+        <ng-container *ngIf="schema.oneOf">
+            <option *ngFor="let option of schema.oneOf"
+                [ngValue]="option.enum[0]"
+                [translate]="option.description">
+                {{ option.description }}
+            </option>
+        </ng-container>
+        <ng-container *ngIf="options$ | async">
+            <option *ngFor="let option of options$ | async" [ngValue]="option.value" [translate]="option.label">{{ option.label }}</option>
+        </ng-container>
     </select>
     <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
         <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>

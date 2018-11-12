@@ -1,0 +1,121 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "@type",
+        "xmlId",
+        "metadataFile"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.metadata-provider-name",
+            "description": "tooltip.metadata-provider-name",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "placeholder": "label.select-metadata-type",
+            "type": "string",
+            "readOnly": true,
+            "widget": {
+                "id": "select",
+                "disabled": true
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        "FileSystemMetadataResolver"
+                    ],
+                    "description": "value.file-system-metadata-provider"
+                }
+            ]
+        },
+        "xmlId": {
+            "title": "label.xml-id",
+            "description": "tooltip.xml-id",
+            "type": "string",
+            "default": "",
+            "minLength": 1
+        },
+        "metadataFile": {
+            "title": "label.metadata-file",
+            "description": "tooltip.metadata-file",
+            "type": "string",
+            "default": "",
+            "minLength": 1
+        },
+        "enabled": {
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
+            "type": "boolean",
+            "default": false
+        },
+        "reloadableMetadataResolverAttributes": {
+            "type": "object",
+            "properties": {
+                "minRefreshDelay": {
+                    "title": "label.min-refresh-delay",
+                    "description": "tooltip.min-refresh-delay",
+                    "type": "string",
+                    "placeholder": "label.duration",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "default": null,
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "maxRefreshDelay": {
+                    "title": "label.max-refresh-delay",
+                    "description": "tooltip.max-refresh-delay",
+                    "type": "string",
+                    "placeholder": "label.duration",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "default": null,
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "refreshDelayFactor": {
+                    "title": "label.refresh-delay-factor",
+                    "description": "tooltip.refresh-delay-factor",
+                    "type": "number",
+                    "widget": {
+                        "id": "number",
+                        "step": 0.01
+                    },
+                    "placeholder": "label.real-number",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "default": null
+                }
+            }
+        }
+    }
+}
