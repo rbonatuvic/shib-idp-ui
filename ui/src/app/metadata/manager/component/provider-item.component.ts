@@ -2,6 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from 
 
 import { MetadataProvider } from '../../domain/model';
 import { EntityItemComponent } from './entity-item.component';
+import { FilterableProviders } from '../../provider/model';
 
 @Component({
     selector: 'provider-item',
@@ -20,4 +21,8 @@ export class ProviderItemComponent extends EntityItemComponent {
 
     @Output() changeOrderUp: EventEmitter<MetadataProvider> = new EventEmitter();
     @Output() changeOrderDown: EventEmitter<MetadataProvider> = new EventEmitter();
+
+    hasFilters(provider: MetadataProvider): boolean {
+        return FilterableProviders.indexOf(provider['@type']) > -1;
+    }
 }

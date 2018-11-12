@@ -16,6 +16,7 @@ import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.di
 import { CanComponentDeactivate } from '../../../core/service/can-deactivate.guard';
 import { DifferentialService } from '../../../core/service/differential.service';
 import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
+import { FilterableProviders } from '../model';
 
 @Component({
     selector: 'provider-edit',
@@ -33,6 +34,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
     isInvalid$: Observable<boolean>;
     status$: Observable<any>;
     isSaving$: Observable<boolean>;
+    canFilter$: Observable<boolean>;
 
     latest: MetadataProvider;
     provider: MetadataProvider;
@@ -70,6 +72,8 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
 
         this.provider$.subscribe(p => this.provider = p);
         this.store.select(fromProvider.getEntityChanges).subscribe(changes => this.latest = changes);
+
+        this.canFilter$ = this.definition$.pipe(map(def => FilterableProviders.indexOf(def.type) > -1));
     }
 
     go(id: string): void {

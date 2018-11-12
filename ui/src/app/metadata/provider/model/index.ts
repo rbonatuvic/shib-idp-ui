@@ -12,5 +12,9 @@ export const MetadataProviderEditorTypes = [
     FileSystemMetadataProviderEditor
 ];
 
+export const FilterableProviders = [
+    FileBackedHttpMetadataProviderEditor.type
+];
+
 export * from './file-backed-http.provider.form';
 export * from './provider.form';
