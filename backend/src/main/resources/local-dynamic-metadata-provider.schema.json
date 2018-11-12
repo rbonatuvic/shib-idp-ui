@@ -55,7 +55,7 @@
             "type": "boolean",
             "default": false
         },
-        "reloadableMetadataResolverAttributes": {
+        "dynamicMetadataResolverAttributes": {
             "type": "object",
             "properties": {
                 "refreshDelayFactor": {
@@ -68,7 +68,7 @@
                     },
                     "placeholder": "label.real-number",
                     "minimum": 0,
-                    "maximum": 1,
+                    "maximum": 0.99,
                     "default": null
                 },
                 "minCacheDuration": {

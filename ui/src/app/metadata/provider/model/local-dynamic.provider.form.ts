@@ -25,7 +25,7 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/local-dynamic.schema.json',
+            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'xmlId',
                 'sourceDirectory'
@@ -46,16 +46,16 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             label: 'label.reloading-attributes',
             index: 3,
             initialValues: [],
-            schema: 'assets/schema/provider/local-dynamic.schema.json',
+            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
-                'reloadableMetadataResolverAttributes'
+                'dynamicMetadataResolverAttributes'
             ],
             fieldsets: [
                 {
                     type: 'group-lg',
                     class: ['col-12'],
                     fields: [
-                        'reloadableMetadataResolverAttributes'
+                        'dynamicMetadataResolverAttributes'
                     ]
                 }
             ]
@@ -65,7 +65,7 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            schema: 'assets/schema/provider/local-dynamic.schema.json',
+            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'enabled'
             ],
@@ -91,7 +91,7 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: 'assets/schema/provider/local-dynamic.schema.json',
+            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'enabled',
                 'xmlId',
@@ -103,9 +103,9 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
             label: 'label.reloading-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/local-dynamic.schema.json',
+            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
-                'reloadableMetadataResolverAttributes'
+                'dynamicMetadataResolverAttributes'
             ]
         }
     ]
