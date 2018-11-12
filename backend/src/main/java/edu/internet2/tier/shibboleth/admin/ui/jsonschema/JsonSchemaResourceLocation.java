@@ -122,8 +122,10 @@ public class JsonSchemaResourceLocation {
 
         public static SchemaType getSchemaType(String jsonType) {
             List<SchemaType> schemaTypes = Stream.of(SchemaType.values()).filter(it -> it.getJsonType().equals(jsonType)).collect(Collectors.toList());
-            if (schemaTypes.size() != 1) {
-                throw new RuntimeException("Found two schema types for jsonType (" + jsonType + ")! How did this even happen?");
+            if (schemaTypes.size() > 1) {
+                throw new RuntimeException("Found multiple schema types for jsonType (" + jsonType + ")!");
+            } else if (schemaTypes.size() == 0) {
+                throw new RuntimeException("Found no schema types for jsonType (" + jsonType + ")! Verify that the code supports all schema types.");
             } else {
                 return schemaTypes.get(0);
             }
