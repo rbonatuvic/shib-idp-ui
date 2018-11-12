@@ -59,6 +59,23 @@
             "title": "label.do-resolver-initialization",
             "description": "tooltip.do-resolver-initialization",
             "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "value.true"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "value.false"
+                }
+            ],
             "default": false
         },
         "reloadableMetadataResolverAttributes": {
