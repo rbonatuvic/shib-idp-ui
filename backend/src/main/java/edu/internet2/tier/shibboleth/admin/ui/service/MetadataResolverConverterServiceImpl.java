@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
@@ -62,6 +63,9 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
     private OpenSamlFilesystemMetadataResolver convertToOpenSamlRepresentation(FilesystemMetadataResolver resolver) throws IOException, ResolverException, ComponentInitializationException {
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
         File metadataFile = new File(resolver.getMetadataFile());
+        if (resolver.getDoInitialization() && !metadataFile.exists()) {
+            throw new FileNotFoundException("No file was found on the fileysystem for provided filename: " + resolver.getMetadataFile());
+        }
 
         OpenSamlFilesystemMetadataResolver openSamlResolver = new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
                                                       indexWriter,
