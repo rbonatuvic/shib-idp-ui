@@ -69,7 +69,7 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
                     .jsonSchemaLocation('classpath:local-dynamic-metadata-provider.schema.json')
                     .resourceLoader(resourceLoader)
                     .jacksonMapper(jacksonMapper)
-                    .detectMalformedJson(true)
+                    .detectMalformedJson(false)
                     .build())
         }
     }
