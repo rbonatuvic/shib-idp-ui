@@ -37,6 +37,11 @@ import { ClearProvider, ResetChanges } from '../action/entity.action';
 import { ShowContentionAction } from '../../../contention/action/contention.action';
 import { ContentionService } from '../../../contention/service/contention.service';
 import { MetadataProvider } from '../../domain/model';
+import { AddNotification } from '../../../notification/action/notification.action';
+import { Notification, NotificationType } from '../../../notification/model/notification';
+import { WizardActionTypes, SetDisabled } from '../../../wizard/action/wizard.action';
+import { I18nService } from '../../../i18n/service/i18n.service';
+import * as fromI18n from '../../../i18n/reducer';
 
 
 /* istanbul ignore next */
@@ -96,9 +101,29 @@ export class CollectionEffects {
                 .save(provider)
                 .pipe(
                     map(p => new AddProviderSuccess(p)),
-                    catchError((e) => of(new AddProviderFail(e)))
+                    catchError((e) => of(new AddProviderFail(e.error)))
                 )
         )
+    );
+
+    @Effect()
+    createProviderFailDispatchNotification$ = this.actions$.pipe(
+        ofType<AddProviderFail>(ProviderCollectionActionTypes.ADD_PROVIDER_FAIL),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromI18n.getMessages)),
+        map(([error, messages]) => new AddNotification(
+            new Notification(
+                NotificationType.Danger,
+                `${error.errorCode}: ${ this.i18nService.translate(error.errorMessage, null, messages) }`,
+                8000
+            )
+        ))
+    );
+    @Effect()
+    createProviderFailEnableForm$ = this.actions$.pipe(
+        ofType<AddProviderFail>(ProviderCollectionActionTypes.ADD_PROVIDER_FAIL),
+        map(action => action.payload),
+        map(error => new SetDisabled(false))
     );
 
     @Effect({ dispatch: false })
@@ -220,6 +245,7 @@ export class CollectionEffects {
         private router: Router,
         private store: Store<fromRoot.State>,
         private providerService: MetadataProviderService,
-        private contentionService: ContentionService
+        private contentionService: ContentionService,
+        private i18nService: I18nService
     ) { }
 }

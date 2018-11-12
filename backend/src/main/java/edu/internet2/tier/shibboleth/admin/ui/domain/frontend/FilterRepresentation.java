@@ -3,13 +3,14 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class FilterRepresentation implements Serializable {
     private String id;
     private String filterName;
     private boolean filterEnabled;
     private FilterTargetRepresentation filterTarget;
-    private RelyingPartyOverridesRepresentation relyingPartyOverrides;
+    private Map<String, Object> relyingPartyOverrides;
     private List<String> attributeRelease;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -57,11 +58,11 @@ public class FilterRepresentation implements Serializable {
         this.filterTarget = filterTarget;
     }
 
-    public RelyingPartyOverridesRepresentation getRelyingPartyOverrides() {
+    public Map<String, Object> getRelyingPartyOverrides() {
         return relyingPartyOverrides;
     }
 
-    public void setRelyingPartyOverrides(RelyingPartyOverridesRepresentation relyingPartyOverrides) {
+    public void setRelyingPartyOverrides(Map<String, Object> relyingPartyOverrides) {
         this.relyingPartyOverrides = relyingPartyOverrides;
     }
 

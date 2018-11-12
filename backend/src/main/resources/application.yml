@@ -26,3 +26,105 @@ custom:
     - name: employeeNumber
       displayName: label.attribute-employeeNumber
   # Custom attributes
+
+# The following contains a map of "relying party overrides".
+# The structure of an entry is as follows:
+# - name: The name of the entry. used to uniquely identify this entry.
+#   displayName: This will normally be the label used when displaying this override in the UI
+#   displayType: The type to use when displaying this option
+#   helpText: This is the help-icon hover-over text
+#   defaultValues: One or more values to be displayed as default options in the UI
+#   persistType: Optional. If it is necessary to persist something different than the override's display type,
+#                set that type here. For example, display a boolean, but persist a string.
+#   persistValue: Required only when persistType is used. Defines the value to be persisted.
+#   attributeName: This is the name of the attribute to be used in the xml. This is assumed to be a URI.
+#   attributeFriendlyName: This is the friendly name associated with the above attributeName.
+#
+# It is imperative when defining these that the "displayType" and "persistType" are known types.
+# Typos or unsupported values here will result in that override being skipped!
+# Supported types are as follows: boolean, integer, string, set, list
+# Note that "persistType" doesn't have to match "displayType". However, the only unmatching combination currently
+# supported is a "displayType" of "boolean" and "persistType" of "string".
+  overrides:
+  # Default overrides
+    - name: signAssertion
+      displayName: label.sign-the-assertion
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.sign-assertion
+      attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signAssertions
+      attributeFriendlyName: signAssertions
+    - name: dontSignResponse
+      displayName: label.dont-sign-the-response
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.dont-sign-response
+      attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signResponses
+      attributeFriendlyName: signResponses
+    - name: turnOffEncryption
+      displayName: label.turn-off-encryption-of-response
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.turn-off-encryption
+      attributeName: http://shibboleth.net/ns/profiles/encryptAssertions
+      attributeFriendlyName: encryptAssertions
+    - name: useSha
+      displayName: label.use-sha1-signing-algorithm
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.usa-sha-algorithm
+      persistType: string
+      persistValue: shibboleth.SecurityConfiguration.SHA1
+      attributeName: http://shibboleth.net/ns/profiles/securityConfiguration
+      attributeFriendlyName: securityConfiguration
+    - name: ignoreAuthenticationMethod
+      displayName: label.ignore-any-sp-requested-authentication-method
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.ignore-auth-method
+      persistType: string
+      persistValue: 0x1
+      attributeName: http://shibboleth.net/ns/profiles/disallowedFeatures
+      attributeFriendlyName: disallowedFeatures
+    - name: omitNotBefore
+      displayName: label.omit-not-before-condition
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.omit-not-before-condition
+      attributeName: http://shibboleth.net/ns/profiles/includeConditionsNotBefore
+      attributeFriendlyName: includeConditionsNotBefore
+    - name: responderId
+      displayName: label.responder-id
+      displayType: string
+      defaultValue: null
+      helpText: tooltip.responder-id
+      attributeName: http://shibboleth.net/ns/profiles/responderId
+      attributeFriendlyName: responderId
+    - name: nameIdFormats
+      displayName: label.nameid-format-to-send
+      displayType: set
+      helpText: tooltip.nameid-format
+      defaultValues:
+        - urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+        - urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+        - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+        - urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+      attributeName: http://shibboleth.net/ns/profiles/nameIDFormatPrecedence
+      attributeFriendlyName: nameIDFormatPrecedence
+    - name: authenticationMethods
+      displayName: label.authentication-methods-to-use
+      displayType: set
+      helpText: tooltip.authentication-methods-to-use
+      defaultValues:
+        - https://refeds.org/profile/mfa
+        - urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
+        - urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
+      attributeName: http://shibboleth.net/ns/profiles/defaultAuthenticationMethods
+      attributeFriendlyName: defaultAuthenticationMethods
+    - name: forceAuthn
+      displayName: label.force-authn
+      displayType: boolean
+      defaultValue: false
+      helpText: tooltip.force-authn
+      attributeName: http://shibboleth.net/ns/profiles/forceAuthn
+      attributeFriendlyName: forceAuthn

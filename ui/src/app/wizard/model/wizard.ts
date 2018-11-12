@@ -14,6 +14,7 @@ export interface WizardStep {
     fields?: string[];
     fieldsets?: WizardFieldset[];
     summary?: boolean;
+    override?: any;
 }
 
 export interface WizardFieldset {

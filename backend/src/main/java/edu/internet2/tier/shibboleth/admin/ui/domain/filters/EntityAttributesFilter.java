@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.RelyingPartyOverridesRepresentation;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +15,8 @@ import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 import java.util.ArrayList;
-
 import java.util.List;
+import java.util.Map;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromAttributeReleaseList;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromRelyingPartyOverridesRepresentation;
@@ -52,9 +51,9 @@ public class EntityAttributesFilter extends MetadataFilter {
     }
 
     @Transient
-    private RelyingPartyOverridesRepresentation relyingPartyOverrides;
+    private Map<String, Object> relyingPartyOverrides;
 
-    public void setRelyingPartyOverrides(RelyingPartyOverridesRepresentation relyingPartyOverridesRepresentation) {
+    public void setRelyingPartyOverrides(Map<String, Object> relyingPartyOverridesRepresentation) {
         this.relyingPartyOverrides = relyingPartyOverridesRepresentation;
         this.rebuildAttributes();
     }

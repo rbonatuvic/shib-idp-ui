@@ -25,13 +25,14 @@ import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import org.apache.lucene.analysis.Analyzer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -46,7 +47,7 @@ import org.springframework.web.util.UrlPathHelper;
 import javax.servlet.http.HttpServletRequest;
 
 @Configuration
-@EnableConfigurationProperties(CustomAttributesConfiguration.class)
+@EnableConfigurationProperties(CustomPropertiesConfiguration.class)
 public class CoreShibUiConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(CoreShibUiConfiguration.class);
 
@@ -180,12 +181,17 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public CustomAttributesConfiguration customAttributesConfiguration() {
-        return new CustomAttributesConfiguration();
+    public CustomPropertiesConfiguration customPropertiesConfiguration() {
+        return new CustomPropertiesConfiguration();
     }
 
     @Bean
     public Module stringTrimModule() {
         return new StringTrimModule();
+    }
+
+    @Bean
+    public ModelRepresentationConversions modelRepresentationConversions() {
+        return new ModelRepresentationConversions(customPropertiesConfiguration());
     }
 }

@@ -66,6 +66,15 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
         }
     };
 
+    if (step.override) {
+        Object.keys(step.override).forEach(key => {
+            let override = step.override[key];
+            if (s.properties.hasOwnProperty(key)) {
+                s.properties[key] = { ...s.properties[key], ...override };
+            }
+        });
+    }
+
     if (schema.definitions) {
         s.definitions = schema.definitions;
     }

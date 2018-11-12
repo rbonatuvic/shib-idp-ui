@@ -1,14 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomAttributesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.jsonschema.MetadataSourcesJsonSchemaResourceLocation
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
+import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.annotation.PostConstruct
+
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
 /**
@@ -22,29 +28,38 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 @RequestMapping('/api/ui/MetadataSources')
 class MetadataSourcesUiDefinitionController {
 
+    private static final Logger logger = LoggerFactory.getLogger(MetadataSourcesUiDefinitionController.class);
+
     @Autowired
-    MetadataSourcesJsonSchemaResourceLocation jsonSchemaLocation
+    JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
+
+    JsonSchemaResourceLocation jsonSchemaLocation
 
     @Autowired
     ObjectMapper jacksonObjectMapper
 
     @Autowired
-    CustomAttributesConfiguration customAttributesConfiguration
+    JsonSchemaBuilderService jsonSchemaBuilderService
 
     @GetMapping
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
-            parsedJson['properties']['attributeRelease']['widget']['data'] =
-                    customAttributesConfiguration.getAttributes().collect {
-                [key: it['name'], label: it['displayName']]
-            }
+            jsonSchemaBuilderService.addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['widget'])
+            jsonSchemaBuilderService.addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'])
+            jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"])
             return ResponseEntity.ok(parsedJson)
         }
-        catch (Exception e) {
+        catch (IOException e) {
+            logger.error("An error occurred while attempting to get json schema for metadata sources!", e)
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
                            sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
         }
+    }
+
+    @PostConstruct
+    void init() {
+        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
     }
 }
