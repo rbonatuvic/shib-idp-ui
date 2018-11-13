@@ -69,21 +69,22 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
         @Autowired
         AdminRoleRepository adminRoleRepository;
 
+        @Transactional
         @EventListener
         void createSampleAdminUsers(ApplicationStartedEvent e) {
-            //TODO: this is wip. Having a hard time with many-to-many saving with Hibernate's detatched entity exceptions, etc.
             if(adminUserRepository.count() == 0L) {
                 AdminRole role = new AdminRole();
-                role.setName("ADMIN");
+                role.setName("ROLE_ADMIN");
+                AdminUser user = new AdminUser();
+                user.setUsername("admin");
+                user.setPassword("{noop}adminpass");
 
-                Arrays.asList("1", "2").forEach(it -> {
-                    AdminUser user = new AdminUser();
-                    user.setUsername(String.format("admin%s", it));
-                    user.setPassword(String.format("{noop}adminpass%s", it));
-                    //role.getAdmins().add(user);
-                    //user.getRoles().add(role);
-                    adminUserRepository.save(user);
-                });
+                //The complexity of managing bi-directional many-to-many. TODO: to encapsulate this association
+                //managing logic into domain model itself
+                role.getAdmins().add(user);
+                user.getRoles().add(role);
+
+                adminUserRepository.save(user);
             }
         }
     }
