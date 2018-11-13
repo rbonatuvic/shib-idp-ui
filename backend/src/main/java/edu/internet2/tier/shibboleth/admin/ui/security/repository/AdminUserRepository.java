@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.security.repository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * Spring Data repository to manage entities of type {@link AdminUser}.
  *
@@ -10,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AdminUserRepository extends JpaRepository<AdminUser, Long> {
 
-    AdminUser findByUsername(String username);
+    Optional<AdminUser> findByUsername(String username);
 }

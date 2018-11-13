@@ -6,13 +6,14 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminUserRepos
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Set;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Spring Security {@link UserDetailsService} implementation for local administration of admin users ins the system.
@@ -27,14 +28,20 @@ public class AdminUserService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AdminUser user = adminUserRepository.findByUsername(username);
+        AdminUser user = adminUserRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User [%s] is not found", username)));
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (AdminRole role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        Set<GrantedAuthority> grantedAuthorities = user.getRoles().stream()
+                .map(AdminRole::getName)
+                .map(SimpleGrantedAuthority::new)
+                .collect(toSet());
+
+        if (grantedAuthorities.isEmpty()) {
+            throw new UsernameNotFoundException(String.format("No roles are defined for user [%s]", username));
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
 

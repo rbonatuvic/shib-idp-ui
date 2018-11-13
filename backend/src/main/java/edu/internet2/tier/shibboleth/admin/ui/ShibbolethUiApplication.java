@@ -1,6 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui;
 
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminRole;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminUser;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminRoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -18,10 +22,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
-@EntityScan(basePackages = "edu.internet2.tier.shibboleth.admin.ui.domain")
+@EntityScan(basePackages = {"edu.internet2.tier.shibboleth.admin.ui.domain", "edu.internet2.tier.shibboleth.admin.ui.security.model"})
 @EnableJpaAuditing
 @EnableScheduling
 @EnableWebSecurity
@@ -50,4 +59,32 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
         }
     }
 
+    @Component
+    @Profile("dev")
+    public static class SampleAdminUsersCreator {
+
+        @Autowired
+        AdminUserRepository adminUserRepository;
+
+        @Autowired
+        AdminRoleRepository adminRoleRepository;
+
+        @EventListener
+        void createSampleAdminUsers(ApplicationStartedEvent e) {
+            //TODO: this is wip. Having a hard time with many-to-many saving with Hibernate's detatched entity exceptions, etc.
+            if(adminUserRepository.count() == 0L) {
+                AdminRole role = new AdminRole();
+                role.setName("ADMIN");
+
+                Arrays.asList("1", "2").forEach(it -> {
+                    AdminUser user = new AdminUser();
+                    user.setUsername(String.format("admin%s", it));
+                    user.setPassword(String.format("{noop}adminpass%s", it));
+                    //role.getAdmins().add(user);
+                    //user.getRoles().add(role);
+                    adminUserRepository.save(user);
+                });
+            }
+        }
+    }
 }

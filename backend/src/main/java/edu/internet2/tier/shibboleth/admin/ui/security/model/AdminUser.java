@@ -7,9 +7,11 @@ import lombok.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,7 +39,7 @@ public class AdminUser extends AbstractAuditable {
     private String lastName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "adminuser_role", joinColumns = @JoinColumn(name = "admin_user_id"), inverseJoinColumns = @JoinColumn(name = "admin_role_id"))
-    private Set<AdminRole> roles;
+    private Set<AdminRole> roles = new HashSet<>();
 }

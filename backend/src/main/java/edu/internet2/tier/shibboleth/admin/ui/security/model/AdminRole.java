@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,8 +35,7 @@ public class AdminRole extends AbstractAuditable {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.EAGER)
-    private Set<AdminUser> admins;
-
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "roles", fetch = FetchType.EAGER)
+    private Set<AdminUser> admins = new HashSet<>();
 
 }
