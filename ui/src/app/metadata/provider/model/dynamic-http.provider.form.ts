@@ -35,7 +35,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'xmlId',
                 'metadataURL',
@@ -48,7 +48,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'dynamicMetadataResolverAttributes'
             ]
@@ -60,7 +60,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             initialValues: [
                 { key: 'metadataFilters', value: [] }
             ],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'metadataFilters'
             ]
@@ -70,7 +70,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.finished',
             index: 5,
             initialValues: [],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'enabled'
             ]
@@ -87,7 +87,7 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'enabled',
                 'xmlId',
@@ -101,7 +101,7 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'dynamicMetadataResolverAttributes'
             ]
@@ -113,18 +113,18 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             initialValues: [
                 { key: 'metadataFilters', value: [] }
             ],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'metadataFilters'
             ]
         },
         {
             id: 'advanced',
-            label: 'label.advanced-settings',
+            label: 'label.http-settings-advanced',
             index: 4,
             initialValues: [],
             locked: true,
-            schema: 'assets/schema/provider/filebacked-http-advanced.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'httpMetadataResolverAttributes'
             ]
