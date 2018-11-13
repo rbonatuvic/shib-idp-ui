@@ -22,12 +22,33 @@
             "default": "",
             "minLength": 1
         },
-        "metadataURL": {
-            "title": "label.metadata-url",
-            "description": "tooltip.metadata-url",
-            "type": "string",
-            "default": "",
-            "minLength": 1
+        "requestURL": {
+            "title": "label.request-url",
+            "description": "tooltip.request-url",
+            "type": "object",
+            "widget": {
+                "id": "select"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        "mdq"
+                    ],
+                    "description": "value.mdq-protocol"
+                },
+                {
+                    "enum": [
+                        "template"
+                    ],
+                    "description": "value.template"
+                },
+                {
+                    "enum": [
+                        "regex"
+                    ],
+                    "description": "value.regex"
+                }
+            ]
         },
         "requireValidMetadata": {
             "title": "label.require-valid-metadata",
@@ -613,6 +634,95 @@
                             "default": true
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "MetadataQueryProtocol": {
+            "title": "label.mdq-protocol",
+            "description": "tooltip.mdq-protocol",
+            "type": "object",
+            "properties": {
+                "baseURL": {
+                    "title": "label.mdq-base-url",
+                    "description": "label.mdq-base-url",
+                    "type": "string"
+                }
+            },
+            "required": ["baseURL"]
+        },
+        "Template": {
+            "title": "label.template",
+            "description": "tooltip.template",
+            "type": "object",
+            "required": ["encodingStyle", "encoded"],
+            "properties": {
+                "encodingStyle": {
+                    "title": "label.template-encoding-style",
+                    "description": "tooltip.template-encoding-style",
+                    "type": "string",
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "none"
+                            ],
+                            "description": "value.none"
+                        },
+                        {
+                            "enum": [
+                                "form"
+                            ],
+                            "description": "value.form"
+                        },
+                        {
+                            "enum": [
+                                "path"
+                            ],
+                            "description": "value.path"
+                        },
+                        {
+                            "enum": [
+                                "fragment"
+                            ],
+                            "description": "value.fragment"
+                        }
+                    ]
+                },
+                "encoded": {
+                    "title": "label.template-encoded",
+                    "description": "tooltip.template-encoded",
+                    "type": "boolean",
+                    "widget": {
+                        "id": "boolean-radio"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                true
+                            ],
+                            "description": "value.true"
+                        },
+                        {
+                            "enum": [
+                                false
+                            ],
+                            "description": "value.false"
+                        }
+                    ]
+                }
+            }
+        },
+        "Regex": {
+            "title": "label.regex",
+            "description": "tooltip.regex",
+            "type": "object",
+            "required": ["match"],
+            "properties": {
+                "match": {
+                    "title": "label.regex-match",
+                    "description": "tooltip.regex-match",
+                    "type": "string"
                 }
             }
         }

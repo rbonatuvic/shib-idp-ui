@@ -35,12 +35,13 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
+            schema: 'assets/schema/provider/dynamic-http.schema.json',
             fields: [
                 'xmlId',
                 'metadataURL',
                 'requireValidMetadata',
-                'failFastInitialization'
+                'failFastInitialization',
+                'requestURL'
             ]
         },
         {
