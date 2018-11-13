@@ -1,7 +1,7 @@
 import { Wizard } from '../../../wizard/model';
 import { FileBackedHttpMetadataProvider } from '../../domain/model/providers/file-backed-http-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
-import UriValidator from '../../../shared/validation/uri.validator';
+import { UriValidator } from '../../../shared/validation/uri.validator';
 
 export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadataProvider> = {
     ...BaseMetadataProviderEditor,
@@ -20,13 +20,12 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
         };
         validators['/metadataURL'] = (value, property, form) => {
             return !UriValidator.isUri(value) ? {
-                code : 'INVALID_URI',
+                code: 'INVALID_URI',
                 path: `#${property.path}`,
                 message: 'message.uri-valid-format',
                 params: [value]
             } : null;
         };
-
         return validators;
     },
     steps: [

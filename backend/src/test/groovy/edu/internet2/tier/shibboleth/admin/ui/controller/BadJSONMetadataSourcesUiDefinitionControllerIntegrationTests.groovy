@@ -13,6 +13,7 @@ import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES
 
 /**
@@ -50,8 +51,15 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
                     .jacksonMapper(jacksonMapper)
                     .detectMalformedJson(false)
                     .build())
-                    .register(ENTITY_ATTRIBUTES_FILTERS, JsonSchemaLocationBuilder.with()
+                //TODO Maybe we need a separate test config here so we don't have to define all of the locations?
+                .register(ENTITY_ATTRIBUTES_FILTERS, JsonSchemaLocationBuilder.with()
                     .jsonSchemaLocation('classpath:entity-attributes-filters-ui-schema.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+                .register(FILESYSTEM_METADATA_RESOLVER, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:file-system-metadata-provider.schema.json')
                     .resourceLoader(resourceLoader)
                     .jacksonMapper(jacksonMapper)
                     .detectMalformedJson(false)

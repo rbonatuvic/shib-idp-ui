@@ -49,7 +49,7 @@ export class ProviderEditStepComponent implements OnDestroy {
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
         this.provider$ = this.store.select(fromProvider.getSelectedProvider);
         this.step$ = this.store.select(fromWizard.getCurrent);
-        this.schema$ = this.store.select(fromWizard.getParsedSchema);
+        this.schema$ = this.store.select(fromWizard.getSchema);
 
         this.step$.subscribe(s => {
             if (s && s.locked) {

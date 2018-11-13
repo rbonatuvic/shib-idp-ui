@@ -9,7 +9,10 @@ import javax.annotation.PostConstruct;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Encapsulates arbitrary JSON schema location.
@@ -91,6 +94,41 @@ public class JsonSchemaResourceLocation {
     }
 
     public enum SchemaType {
-        METADATA_SOURCES, ENTITY_ATTRIBUTES_FILTERS
+        // common types
+        METADATA_SOURCES("MetadataSources"),
+
+        // filter types
+        ENTITY_ATTRIBUTES_FILTERS("EntityAttributesFilters"),
+
+         // resolver types
+        FILE_BACKED_HTTP_METADATA_RESOLVER("FileBackedHttpMetadataResolver"),
+        FILESYSTEM_METADATA_RESOLVER("FilesystemMetadataResolver");
+//        LOCAL_DYNAMIC_METADATA_RESOLVER,
+//        DYNAMIC_HTTP_METADATA_RESOLVER;
+
+        String jsonType;
+
+        SchemaType(String jsonType) {
+            this.jsonType = jsonType;
+        }
+
+        String getJsonType() {
+            return jsonType;
+        }
+
+        public static List<String> getResolverTypes() {
+            return Stream.of(SchemaType.values()).map(SchemaType::getJsonType).filter(it -> it.endsWith("Resolver")).collect(Collectors.toList());
+        }
+
+        public static SchemaType getSchemaType(String jsonType) {
+            List<SchemaType> schemaTypes = Stream.of(SchemaType.values()).filter(it -> it.getJsonType().equals(jsonType)).collect(Collectors.toList());
+            if (schemaTypes.size() > 1) {
+                throw new RuntimeException("Found multiple schema types for jsonType (" + jsonType + ")!");
+            } else if (schemaTypes.size() == 0) {
+                throw new RuntimeException("Found no schema types for jsonType (" + jsonType + ")! Verify that the code supports all schema types.");
+            } else {
+                return schemaTypes.get(0);
+            }
+        }
     }
 }
