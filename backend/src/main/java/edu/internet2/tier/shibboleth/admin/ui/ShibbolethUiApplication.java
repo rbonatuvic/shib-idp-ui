@@ -66,9 +66,6 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
         @Autowired
         AdminUserRepository adminUserRepository;
 
-        @Autowired
-        AdminRoleRepository adminRoleRepository;
-
         @Transactional
         @EventListener
         void createSampleAdminUsers(ApplicationStartedEvent e) {
@@ -79,7 +76,7 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
                 user.setUsername("admin");
                 user.setPassword("{noop}adminpass");
 
-                //The complexity of managing bi-directional many-to-many. TODO: to encapsulate this association
+                //The complexity of managing bi-directional many-to-many. TODO: encapsulate this association
                 //managing logic into domain model itself
                 role.getAdmins().add(user);
                 user.getRoles().add(role);

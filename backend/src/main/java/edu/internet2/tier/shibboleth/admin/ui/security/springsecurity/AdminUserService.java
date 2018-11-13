@@ -16,7 +16,7 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * Spring Security {@link UserDetailsService} implementation for local administration of admin users ins the system.
+ * Spring Security {@link UserDetailsService} implementation for local administration of admin users in the system.
  *
  * @author Dmitriy Kopylenko
  */
@@ -38,6 +38,7 @@ public class AdminUserService implements UserDetailsService {
                 .collect(toSet());
 
         if (grantedAuthorities.isEmpty()) {
+            //As defined by the UserDetailsService API contract
             throw new UsernameNotFoundException(String.format("No roles are defined for user [%s]", username));
         }
 

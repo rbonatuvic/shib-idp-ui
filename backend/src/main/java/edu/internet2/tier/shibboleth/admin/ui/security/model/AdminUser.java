@@ -39,7 +39,7 @@ public class AdminUser extends AbstractAuditable {
     private String lastName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "adminuser_role", joinColumns = @JoinColumn(name = "admin_user_id"), inverseJoinColumns = @JoinColumn(name = "admin_role_id"))
     private Set<AdminRole> roles = new HashSet<>();
 }
