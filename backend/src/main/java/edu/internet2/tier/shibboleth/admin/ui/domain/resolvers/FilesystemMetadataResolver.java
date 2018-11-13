@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 public class FilesystemMetadataResolver extends MetadataResolver {
     public FilesystemMetadataResolver() {
         type = "FilesystemMetadataResolver";
+        this.setDoInitialization(false);
     }
 
     private String metadataFile;

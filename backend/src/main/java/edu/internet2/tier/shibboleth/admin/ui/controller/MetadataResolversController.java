@@ -34,6 +34,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
@@ -120,8 +121,10 @@ public class MetadataResolversController {
 
         //TODO: currently, the update call might explode, but the save works.. in which case, the UI never gets
         // n valid response. This operation is not atomic. Should we return an error here?
-        org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        if (persistedResolver.getDoInitialization()) {
+            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
+            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        }
 
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
@@ -148,8 +151,16 @@ public class MetadataResolversController {
 
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
 
-        org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        if (persistedResolver.getDoInitialization()) {
+            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = null;
+            try {
+                openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
+            } catch (FileNotFoundException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "label.file-doesnt-exist"));
+            }
+            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        }
 
         return ResponseEntity.ok(persistedResolver);
     }
