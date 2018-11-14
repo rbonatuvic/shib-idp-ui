@@ -31,9 +31,9 @@ export class NewResolverComponent {
             })
         );
 
-        this.actionsSubscription = this.route.queryParams.pipe(
+        this.actionsSubscription = this.route.data.pipe(
             distinctUntilChanged(),
-            map(params => new SelectDraftRequest(params.id))
+            map(data => new SelectDraftRequest(data.draft))
         ).subscribe(this.store);
     }
 }

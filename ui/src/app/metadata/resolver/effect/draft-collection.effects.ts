@@ -63,13 +63,6 @@ export class DraftCollectionEffects {
         )
     );
 
-    @Effect({ dispatch: false })
-    addDraftSuccessRedirect$ = this.actions$.pipe(
-        ofType<actions.AddDraftSuccess>(DraftActionTypes.ADD_DRAFT_SUCCESS),
-        map(getPayload),
-        tap(provider => this.router.navigate(['metadata', 'resolver', provider.entityId, 'wizard']))
-    );
-
     @Effect()
     updateDraft$ = this.actions$.pipe(
         ofType<actions.UpdateDraftRequest>(DraftActionTypes.UPDATE_DRAFT_REQUEST),
@@ -105,24 +98,6 @@ export class DraftCollectionEffects {
         ofType<SelectDraftRequest>(DraftActionTypes.SELECT_REQUEST),
         map(getPayload),
         map(id => new actions.LoadDraftRequest())
-    );
-
-    @Effect()
-    selectDraftError$ = this.actions$.pipe(
-        ofType<SelectDraftError>(DraftActionTypes.SELECT_ERROR),
-        map(getPayload),
-        switchMap(id =>
-            this.draftService
-                .save({ id: `r-${ Date.now() }`, serviceProviderName: '' })
-                .pipe(
-                    map(p => new SelectDraftRequest(p.id)),
-                    catchError(e => of(new SelectDraftError()))
-                )
-        ),
-        tap(() => {
-            // this.store.dispatch(new ClearWizard());
-            this.store.dispatch(new Clear());
-        })
     );
 
     @Effect()

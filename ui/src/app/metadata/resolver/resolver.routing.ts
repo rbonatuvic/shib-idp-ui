@@ -13,6 +13,7 @@ import { ResolverWizardStepComponent } from './container/resolver-wizard-step.co
 import { ResolverEditComponent } from './container/resolver-edit.component';
 import { ResolverEditStepComponent } from './container/resolver-edit-step.component';
 import { ResolverSelectComponent } from './container/resolver-select.component';
+import { CreateDraftResolverService } from './service/create-draft.resolver';
 
 export const ResolverRoutes: Routes = [
     {
@@ -21,6 +22,9 @@ export const ResolverRoutes: Routes = [
             {
                 path: 'new',
                 component: NewResolverComponent,
+                resolve: {
+                    draft: CreateDraftResolverService
+                },
                 children: [
                     { path: '', redirectTo: 'blank/common', pathMatch: 'prefix' },
                     {
