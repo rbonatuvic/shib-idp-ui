@@ -2,10 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import mjson.Json
-import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
-import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpInputMessage
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -43,26 +41,18 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
     HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter,
                                            Type targetType, Class<? extends HttpMessageConverter<?>> converterType)
             throws IOException {
-        def baos = new ByteArrayOutputStream()
-        IOUtils.copy(inputMessage.body, baos)
-        def bytes = baos.toByteArray()
+        def bytes = inputMessage.body.bytes
         def schema = Json.schema(this.jsonSchemaLocation.uri)
+
         def stream = new ByteArrayInputStream(bytes)
         def validationResult = schema.validate(Json.read(stream.getText()))
         if (!validationResult.at('ok')) {
             throw new JsonSchemaValidationFailedException(validationResult.at('errors').asList())
         }
-        return new HttpInputMessage() {
-            @Override
-            InputStream getBody() throws IOException {
-                return new ByteArrayInputStream(bytes)
-            }
-
-            @Override
-            HttpHeaders getHeaders() {
-                return inputMessage.getHeaders()
-            }
-        }
+        return [
+                getBody: { new ByteArrayInputStream(bytes) },
+                getHeaders: { inputMessage.headers }
+        ] as HttpInputMessage
     }
 
     @ExceptionHandler(JsonSchemaValidationFailedException)
