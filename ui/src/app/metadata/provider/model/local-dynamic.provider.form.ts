@@ -93,9 +93,38 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
             initialValues: [],
             schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
+                'name',
+                '@type',
                 'enabled',
                 'xmlId',
                 'sourceDirectory',
+            ],
+            override: {
+                '@type': {
+                    type: 'string',
+                    readOnly: true,
+                    widget: 'string',
+                    oneOf: [{ enum: ['LocalDynamicMetadataResolver'], description: 'value.local-dynamic-metadata-provider' }]
+                }
+            },
+            fieldsets: [
+                {
+                    type: 'section',
+                    class: ['mb-3'],
+                    fields: [
+                        'name',
+                        '@type',
+                        'enabled'
+                    ]
+                },
+                {
+                    type: 'group-lg',
+                    class: ['col-12'],
+                    fields: [
+                        'xmlId',
+                        'sourceDirectory',
+                    ]
+                }
             ]
         },
         {
