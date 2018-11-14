@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.filesystemMetadataProviderSchema
-//import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
 //import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType
@@ -41,9 +41,9 @@ class MetadataResolverUiDefinitionController {
             case SchemaType.FILESYSTEM_METADATA_RESOLVER:
                 jsonSchemaLocation = filesystemMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
                 break
-/*            case SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER:
+            case SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER:
                 jsonSchemaLocation = localDynamicMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
-                break*/
+                break
 /*            case SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER:
                 jsonSchemaLocation = dynamicHttpMetadataProviderSchema(this.jsonSchemaResourceLocationRegistry)
                 break*/

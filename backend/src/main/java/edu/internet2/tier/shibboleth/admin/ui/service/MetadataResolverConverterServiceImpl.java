@@ -79,12 +79,15 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
         XMLObjectLoadSaveManager manager = null;
-        try {
-            manager = new FilesystemLoadSaveManager(placeholderResolverService()
-                    .resolveValueFromPossibleTokenPlaceholder(resolver.getSourceDirectory()));
-        } catch (ConstraintViolationException e) {
-            // the base directory string instance was null or empty
-            //TODO: What should we do here? Currently, this causes a test to fail.
+        if (resolver.getDoInitialization()) {
+            try {
+                manager = new FilesystemLoadSaveManager(placeholderResolverService()
+                        .resolveValueFromPossibleTokenPlaceholder(resolver.getSourceDirectory()));
+            } catch (ConstraintViolationException e) {
+                // the base directory string instance was null or empty
+                //TODO: What should we do here? Currently, this causes a test to fail.
+                throw new RuntimeException("An exception occurred while attempting to instantiate a FilesystemLoadSaveManger for the path: " + resolver.getSourceDirectory(), e);
+            }
         }
 
         OpenSamlLocalDynamicMetadataResolver openSamlResolver = new OpenSamlLocalDynamicMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver, manager);
