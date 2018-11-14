@@ -105,10 +105,11 @@ public class JPAEntityServiceImpl implements EntityService {
             switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                 case BOOLEAN:
                     if (overrideProperty.getPersistType() != null &&
-                        !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
+                        !overrideProperty.getPersistType().equalsIgnoreCase("boolean") &&
+                            (Boolean) entry.getValue()) {
                         list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),
-                                                                                   (String) entry.getValue()));
+                                                                                   overrideProperty.getPersistValue()));
                     } else {
                         list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),

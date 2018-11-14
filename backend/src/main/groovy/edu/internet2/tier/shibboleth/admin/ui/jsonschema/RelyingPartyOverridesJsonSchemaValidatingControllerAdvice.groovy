@@ -1,9 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import groovy.json.JsonBuilder
 import mjson.Json
+import org.apache.commons.io.IOUtils
+import org.apache.commons.io.input.CloseShieldInputStream
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpInputMessage
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,6 +15,7 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
+import org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodArgumentResolver
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter
 
 import javax.annotation.PostConstruct
@@ -38,15 +43,29 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
     }
 
     @Override
-    Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
-        def relyingPartyOverrides = EntityDescriptorRepresentation.cast(body).relyingPartyOverrides
-        def relyingPartyOverridesJson = Json.make([relyingPartyOverrides: relyingPartyOverrides])
+    HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter,
+                                           Type targetType, Class<? extends HttpMessageConverter<?>> converterType)
+            throws IOException {
+        def baos = new ByteArrayOutputStream()
+        IOUtils.copy(inputMessage.body, baos)
+        def bytes = baos.toByteArray()
         def schema = Json.schema(this.jsonSchemaLocation.uri)
-        def validationResult = schema.validate(relyingPartyOverridesJson)
+        def stream = new ByteArrayInputStream(bytes)
+        def validationResult = schema.validate(Json.read(stream.getText()))
         if (!validationResult.at('ok')) {
             throw new JsonSchemaValidationFailedException(validationResult.at('errors').asList())
         }
-        body
+        return new HttpInputMessage() {
+            @Override
+            InputStream getBody() throws IOException {
+                return new ByteArrayInputStream(bytes)
+            }
+
+            @Override
+            HttpHeaders getHeaders() {
+                return inputMessage.getHeaders()
+            }
+        }
     }
 
     @ExceptionHandler(JsonSchemaValidationFailedException)

@@ -139,6 +139,9 @@ dependencies {
     
     //JSON schema validator
     compile 'org.sharegov:mjson:1.4.1'
+
+    //Apache commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 def generatedSrcDir = new File(buildDir, 'generated/src/main/java')
