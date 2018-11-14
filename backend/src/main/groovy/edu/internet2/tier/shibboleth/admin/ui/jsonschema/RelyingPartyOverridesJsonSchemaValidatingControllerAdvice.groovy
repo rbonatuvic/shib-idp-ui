@@ -1,10 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import groovy.json.JsonBuilder
 import mjson.Json
 import org.apache.commons.io.IOUtils
-import org.apache.commons.io.input.CloseShieldInputStream
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpHeaders
@@ -15,7 +13,6 @@ import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
-import org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodArgumentResolver
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter
 
 import javax.annotation.PostConstruct
