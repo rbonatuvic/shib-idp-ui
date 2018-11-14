@@ -58,31 +58,4 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
                     .forEach(it -> System.out.println(String.format("MetadataResolver [%s: %s]", it.getName(), it.getResourceId())));
         }
     }
-
-    @Component
-    @Profile("dev")
-    public static class SampleAdminUsersCreator {
-
-        @Autowired
-        AdminUserRepository adminUserRepository;
-
-        @Transactional
-        @EventListener
-        void createSampleAdminUsers(ApplicationStartedEvent e) {
-            if(adminUserRepository.count() == 0L) {
-                AdminRole role = new AdminRole();
-                role.setName("ROLE_ADMIN");
-                AdminUser user = new AdminUser();
-                user.setUsername("admin");
-                user.setPassword("{noop}adminpass");
-
-                //The complexity of managing bi-directional many-to-many. TODO: encapsulate this association
-                //managing logic into domain model itself
-                role.getAdmins().add(user);
-                user.getRoles().add(role);
-
-                adminUserRepository.save(user);
-            }
-        }
-    }
 }

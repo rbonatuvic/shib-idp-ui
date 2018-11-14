@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminRole;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminUser;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminUserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,14 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Web security configuration.
- *
+ * <p>
  * Workaround for slashes in URL from [https://stackoverflow.com/questions/48453980/spring-5-0-3-requestrejectedexception-the-request-was-rejected-because-the-url]
  */
 @Configuration
@@ -75,7 +81,7 @@ public class WebSecurityConfig {
                     auth
                             .inMemoryAuthentication()
                             .withUser("user")
-                            .password(passwordEncoder.encode(defaultPassword))
+                            .password(defaultPassword)
                             .roles("USER");
                 } else {
                     auth.userDetailsService(adminUserService(adminUserRepository)).passwordEncoder(passwordEncoder);
@@ -119,4 +125,32 @@ public class WebSecurityConfig {
             }
         };
     }
+
+    @Component
+    @Profile("dev")
+    public static class SampleAdminUsersCreator {
+
+        @Autowired
+        AdminUserRepository adminUserRepository;
+
+        @Transactional
+        @PostConstruct
+        public void createSampleAdminUsers() {
+            if (adminUserRepository.count() == 0L) {
+                AdminRole role = new AdminRole();
+                role.setName("ROLE_ADMIN");
+                AdminUser user = new AdminUser();
+                user.setUsername("admin");
+                user.setPassword("{noop}adminpass");
+
+                //The complexity of managing bi-directional many-to-many. TODO: encapsulate this association
+                //managing logic into domain model itself
+                role.getAdmins().add(user);
+                user.getRoles().add(role);
+
+                adminUserRepository.save(user);
+            }
+        }
+    }
 }
+
