@@ -12,6 +12,12 @@
         <span class="text-right" *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
+        <small class="form-text text-danger px-2" *ngIf="hasErrors">
+            <ng-container *ngFor="let error of errors$ | async; let first=first;">
+                <ng-container *ngIf="!first">, </ng-container>
+                <translate-i18n [key]="messages[error.code]">{{ error.message }}</translate-i18n>
+            </ng-container>
+        </small>
     </div>
     <ul class="mt-2"
         [ngClass]="{'bg-light border rounded p-3 list-group': getListType(formProperty) === 'object'}"
