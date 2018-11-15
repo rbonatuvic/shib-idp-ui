@@ -83,9 +83,8 @@ public class WebSecurityConfig {
                             .withUser("user")
                             .password(defaultPassword)
                             .roles("USER");
-                } else {
-                    auth.userDetailsService(adminUserService(adminUserRepository)).passwordEncoder(passwordEncoder);
                 }
+                auth.userDetailsService(adminUserService(adminUserRepository)).passwordEncoder(passwordEncoder);
             }
 
             @Override
