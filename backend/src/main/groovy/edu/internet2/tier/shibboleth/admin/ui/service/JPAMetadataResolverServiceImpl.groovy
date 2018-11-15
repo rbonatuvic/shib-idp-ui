@@ -295,7 +295,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 case MetadataRequestURLConstructionScheme.SchemeType.METADATA_QUERY_PROTOCOL:
                     MetadataQueryProtocolScheme scheme = (MetadataQueryProtocolScheme) resolver.metadataRequestURLConstructionScheme
                     MetadataQueryProtocol(transformRef: scheme.transformRef) {
-                        mkp.yield(scheme.content)
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
                     }
                     break
                 case MetadataRequestURLConstructionScheme.SchemeType.TEMPLATE:
@@ -303,13 +305,17 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     Template(encodingStyle: scheme.encodingStyle,
                             transformRef: scheme.transformRef,
                             velocityEngine: scheme.velocityEngine) {
-                        mkp.yield(scheme.content)
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
                     }
                     break
                 case MetadataRequestURLConstructionScheme.SchemeType.REGEX:
                     RegexScheme scheme = (RegexScheme) resolver.metadataRequestURLConstructionScheme
                     Regex(match: scheme.match) {
-                        mkp.yield(scheme.content)
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
                     }
                     break
                 default:
