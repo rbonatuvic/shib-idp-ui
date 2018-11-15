@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -23,6 +25,33 @@ import javax.persistence.Transient;
                @JsonSubTypes.Type(value=TemplateScheme.class, name="Template"),
                @JsonSubTypes.Type(value=RegexScheme.class, name="Regex")})
 public abstract class MetadataRequestURLConstructionScheme extends AbstractAuditable {
+    public enum SchemeType {
+        METADATA_QUERY_PROTOCOL("MetadataQueryProtocol"),
+        TEMPLATE("Template"),
+        REGEX("Regex");
+
+        private String schemeType;
+        private static final Map<String, SchemeType> lookup = new HashMap<>();
+
+        static {
+            for (SchemeType schemeType : SchemeType.values()) {
+                lookup.put(schemeType.toString(), schemeType);
+            }
+        }
+
+        SchemeType(String schemeType) {
+            this.schemeType = schemeType;
+        }
+
+        public static SchemeType get(String schemeType) {
+            return lookup.get(schemeType);
+        }
+
+        @Override
+        public String toString() {
+            return schemeType;
+        }
+    }
 
     @JsonProperty("@type")
     @Transient
