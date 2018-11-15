@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 public class LocalDynamicMetadataResolver extends MetadataResolver {
     public LocalDynamicMetadataResolver() {
         type = "LocalDynamicMetadataResolver";
+        setDoInitialization(false);
     }
 
     private String sourceDirectory;

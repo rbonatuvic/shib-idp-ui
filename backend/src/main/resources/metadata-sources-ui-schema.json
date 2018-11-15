@@ -286,7 +286,7 @@
                     ]
                 },
                 "nameIdFormats": {
-                    "$ref": "#/definitions/NameIdFormatList"
+                    "$ref": "#/definitions/nameIdFormats"
                 }
             }
         },
