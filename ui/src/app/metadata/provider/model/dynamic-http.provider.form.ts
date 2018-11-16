@@ -109,13 +109,13 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             initialValues: [],
             schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
-                'enabled',
                 'xmlId',
-                'metadataURL',
+                'metadataRequestURLConstructionScheme',
+                'enabled',
                 'requireValidMetadata',
-                'failFastInitialization',
-                'metadataRequestURLConstructionScheme'
-            ]
+                'failFastInitialization'
+            ],
+            order: ['xmlId', 'metadataRequestURLConstructionScheme', 'enabled', 'requireValidMetadata', 'failFastInitialization']
         },
         {
             id: 'dynamic',
