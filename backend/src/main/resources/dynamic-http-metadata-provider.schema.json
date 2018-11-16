@@ -22,12 +22,114 @@
             "default": "",
             "minLength": 1
         },
-        "metadataURL": {
-            "title": "label.metadata-url",
-            "description": "tooltip.metadata-url",
-            "type": "string",
-            "default": "",
-            "minLength": 1
+        "metadataRequestURLConstructionScheme": {
+            "type": "object",
+            "properties": {
+                "@type": {
+                    "title": "label.md-request-type",
+                    "description": "tooltip.md-request-type",
+                    "type": "string",
+                    "widget": {
+                        "id": "select"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "MetadataQueryProtocol"
+                            ],
+                            "description": "value.md-query-protocol"
+                        },
+                        {
+                            "enum": [
+                                "Template"
+                            ],
+                            "description": "value.template"
+                        },
+                        {
+                            "enum": [
+                                "Regex"
+                            ],
+                            "description": "value.regex"
+                        }
+                    ]
+                },
+                "content": {
+                    "title": "label.md-request-value",
+                    "description": "tooltip.md-request-value",
+                    "type": "string"
+                },
+                "transformRef": {
+                    "title": "label.transform-ref",
+                    "description": "tooltip.transform-ref",
+                    "type": "string",
+                    "visibleIf": {
+                        "content": [
+                            ""
+                        ]
+                    }
+                },
+                "encodingStyle": {
+                    "title": "label.encoding-style",
+                    "description": "tooltip.encoding-style",
+                    "type": "string",
+                    "widget": {
+                        "id": "select"
+                    },
+                    "default": "FORM",
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "NONE"
+                            ],
+                            "description": "None"
+                        },
+                        {
+                            "enum": [
+                                "FORM"
+                            ],
+                            "description": "Form"
+                        },
+                        {
+                            "enum": [
+                                "PATH"
+                            ],
+                            "description": "Path"
+                        },
+                        {
+                            "enum": [
+                                "FRAGMENT"
+                            ],
+                            "description": "Fragment"
+                        }
+                    ],
+                    "visibleIf": {
+                        "@type": [
+                            "Template"
+                        ]
+                    }
+                },
+                "velocityEngine": {
+                    "title": "label.velocity-engine",
+                    "description": "tooltip.velocity-engine",
+                    "type": "string",
+                    "default": "shibboleth.VelocityEngine",
+                    "visibleIf": {
+                        "@type": [
+                            "Template"
+                        ]
+                    }
+                },
+                "match": {
+                    "title": "label.match",
+                    "description": "tooltip.match",
+                    "type": "string",
+                    "visibleIf": {
+                        "@type": [
+                            "Regex"
+                        ]
+                    }
+                }
+            }
         },
         "requireValidMetadata": {
             "title": "label.require-valid-metadata",

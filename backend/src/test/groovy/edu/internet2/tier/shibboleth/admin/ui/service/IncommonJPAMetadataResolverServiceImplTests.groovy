@@ -57,8 +57,6 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         metadataResolverRepository.save(mr)
         def output = metadataResolverService.generateConfiguration()
 
-        println(output.documentElement)
-
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/278.xml', output)
     }

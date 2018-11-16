@@ -1,3 +1,7 @@
+import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
+import { ArrayProperty } from 'ngx-schema-form/lib/model/arrayproperty';
+import { ObjectProperty } from 'ngx-schema-form/lib/model/objectproperty';
+
 import { Wizard } from '../../../wizard/model';
 import { DynamicHttpMetadataProvider } from '../../domain/model/providers/dynamic-http-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
@@ -7,6 +11,21 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
     ...BaseMetadataProviderEditor,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
+    bindings: {
+        '/metadataRequestURLConstructionScheme/@type': [
+            {
+                'input': (event, property: FormProperty) => {
+                    let transform = property.parent.getProperty('transformRef');
+                    let content = property.parent.getProperty('content');
+                    if (!content.value && property.value !== 'Regex') {
+                        transform.setVisible(true);
+                    } else {
+                        transform.setVisible(false);
+                    }
+                }
+            }
+        ]
+    },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {
@@ -35,13 +54,13 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: 'assets/schema/provider/dynamic-http.schema.json',
+            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'xmlId',
                 'metadataURL',
                 'requireValidMetadata',
                 'failFastInitialization',
-                'requestURL'
+                'metadataRequestURLConstructionScheme'
             ]
         },
         {
@@ -94,7 +113,8 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
                 'xmlId',
                 'metadataURL',
                 'requireValidMetadata',
-                'failFastInitialization'
+                'failFastInitialization',
+                'metadataRequestURLConstructionScheme'
             ]
         },
         {
