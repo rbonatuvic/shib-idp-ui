@@ -29,6 +29,11 @@ public class OpenSamlMetadataResolverDelegate extends AbstractMetadataResolver {
     }
 
     void addIndexedDescriptorsFromBackingStore(AbstractMetadataResolver.EntityBackingStore backingStore, String resourceId, IndexWriter indexWriter) throws ComponentInitializationException {
+        try {
+            indexWriter.deleteAll();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
         for (String entityId : backingStore.getIndexedDescriptors().keySet()) {
             Document document = new Document();
             document.add(new StringField("id", entityId, Field.Store.YES));
