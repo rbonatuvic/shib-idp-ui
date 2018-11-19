@@ -1,12 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.springsecurity
 
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminRoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminUserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Profile
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
@@ -23,10 +21,10 @@ class AdminUserServiceTests extends Specification {
     AdminUserService adminUserService
 
     @Autowired
-    AdminRoleRepository adminRoleRepository
+    RoleRepository adminRoleRepository
 
     @Autowired
-    AdminUserRepository adminUserRepository
+    UserRepository adminUserRepository
 
 
     def "Loading existing admin user with admin role"() {

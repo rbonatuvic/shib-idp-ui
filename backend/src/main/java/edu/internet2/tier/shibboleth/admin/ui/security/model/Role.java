@@ -24,14 +24,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true, exclude = "admins")
-@ToString(exclude = "admins")
-public class AdminRole extends AbstractAuditable {
+@EqualsAndHashCode(callSuper = true, exclude = "users")
+@ToString(exclude = "users")
+public class Role extends AbstractAuditable {
 
     @Column(unique = true)
     private String name;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.EAGER)
-    private Set<AdminUser> admins = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
 }

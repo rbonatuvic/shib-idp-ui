@@ -1,9 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminRole;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.AdminUser;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.AdminUserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,10 +22,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Web security configuration.
@@ -46,7 +40,7 @@ public class WebSecurityConfig {
     private String defaultPassword;
 
     @Autowired
-    private AdminUserRepository adminUserRepository;
+    private UserRepository userRepository;
 
     @Bean
     public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
@@ -80,11 +74,11 @@ public class WebSecurityConfig {
                 if (defaultPassword != null && !"".equals(defaultPassword)) {
                     auth
                             .inMemoryAuthentication()
-                            .withUser("user")
+                            .withUser("root")
                             .password(defaultPassword)
-                            .roles("USER");
+                            .roles("ADMIN");
                 }
-                auth.userDetailsService(adminUserService(adminUserRepository)).passwordEncoder(passwordEncoder);
+                auth.userDetailsService(adminUserService(userRepository)).passwordEncoder(passwordEncoder);
             }
 
             @Override
@@ -103,8 +97,8 @@ public class WebSecurityConfig {
 
     @Bean
     @Profile("!no-auth")
-    public AdminUserService adminUserService(AdminUserRepository adminUserRepository) {
-        return new AdminUserService(adminUserRepository);
+    public AdminUserService adminUserService(UserRepository userRepository) {
+        return new AdminUserService(userRepository);
     }
 
     @Bean
@@ -123,33 +117,6 @@ public class WebSecurityConfig {
                 web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
             }
         };
-    }
-
-    @Component
-    @Profile("dev")
-    public static class SampleAdminUsersCreator {
-
-        @Autowired
-        AdminUserRepository adminUserRepository;
-
-        @Transactional
-        @PostConstruct
-        public void createSampleAdminUsers() {
-            if (adminUserRepository.count() == 0L) {
-                AdminRole role = new AdminRole();
-                role.setName("ROLE_ADMIN");
-                AdminUser user = new AdminUser();
-                user.setUsername("admin");
-                user.setPassword("{noop}adminpass");
-
-                //The complexity of managing bi-directional many-to-many. TODO: encapsulate this association
-                //managing logic into domain model itself
-                role.getAdmins().add(user);
-                user.getRoles().add(role);
-
-                adminUserRepository.save(user);
-            }
-        }
     }
 }
 
