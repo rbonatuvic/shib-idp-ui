@@ -3,14 +3,12 @@ package edu.internet2.tier.shibboleth.admin.ui;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -21,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
-@EntityScan(basePackages = "edu.internet2.tier.shibboleth.admin.ui.domain")
+@EntityScan(basePackages = {"edu.internet2.tier.shibboleth.admin.ui.domain", "edu.internet2.tier.shibboleth.admin.ui.security.model"})
 @EnableJpaAuditing
 @EnableScheduling
 @EnableWebSecurity
@@ -49,5 +47,4 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
                     .forEach(it -> System.out.println(String.format("MetadataResolver [%s: %s]", it.getName(), it.getResourceId())));
         }
     }
-
 }

@@ -1,6 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.AdminUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,6 +16,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
@@ -20,7 +25,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Web security configuration.
- *
+ * <p>
  * Workaround for slashes in URL from [https://stackoverflow.com/questions/48453980/spring-5-0-3-requestrejectedexception-the-request-was-rejected-because-the-url]
  */
 @Configuration
@@ -33,6 +38,9 @@ public class WebSecurityConfig {
 
     @Value("${shibui.default-password:}")
     private String defaultPassword;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
@@ -62,13 +70,15 @@ public class WebSecurityConfig {
             @Override
             protected void configure(AuthenticationManagerBuilder auth) throws Exception {
                 // TODO: more configurable authentication
+                PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 if (defaultPassword != null && !"".equals(defaultPassword)) {
                     auth
                             .inMemoryAuthentication()
-                            .withUser("user").password(defaultPassword).roles("USER");
-                } else {
-                    super.configure(auth);
+                            .withUser("root")
+                            .password(defaultPassword)
+                            .roles("ADMIN");
                 }
+                auth.userDetailsService(adminUserService(userRepository)).passwordEncoder(passwordEncoder);
             }
 
             @Override
@@ -83,6 +93,12 @@ public class WebSecurityConfig {
     @Profile("!no-auth")
     public AuditorAware<String> defaultAuditorAware() {
         return new DefaultAuditorAware();
+    }
+
+    @Bean
+    @Profile("!no-auth")
+    public AdminUserService adminUserService(UserRepository userRepository) {
+        return new AdminUserService(userRepository);
     }
 
     @Bean
@@ -103,3 +119,4 @@ public class WebSecurityConfig {
         };
     }
 }
+
