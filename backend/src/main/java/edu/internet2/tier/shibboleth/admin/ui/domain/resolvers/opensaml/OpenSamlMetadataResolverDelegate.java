@@ -29,20 +29,17 @@ public class OpenSamlMetadataResolverDelegate extends AbstractMetadataResolver {
     }
 
     void addIndexedDescriptorsFromBackingStore(AbstractMetadataResolver.EntityBackingStore backingStore, String resourceId, IndexWriter indexWriter) throws ComponentInitializationException {
-        for (String entityId : backingStore.getIndexedDescriptors().keySet()) {
-            Document document = new Document();
-            document.add(new StringField("id", entityId, Field.Store.YES));
-            document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
-            document.add(new StringField("tag", resourceId, Field.Store.YES));
-            try {
-                indexWriter.addDocument(document);
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
         try {
-            indexWriter.commit();
+            indexWriter.deleteAll();
+            for (String entityId : backingStore.getIndexedDescriptors().keySet()) {
+                Document document = new Document();
+                document.add(new StringField("id", entityId, Field.Store.YES));
+                document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
+                document.add(new StringField("tag", resourceId, Field.Store.YES));
+                indexWriter.addDocument(document);
+            }
         } catch (IOException e) {
+            logger.error(e.getMessage(), e);
             throw new ComponentInitializationException(e);
         }
     }

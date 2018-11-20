@@ -93,13 +93,13 @@
                                 "oneOf": [
                                     {
                                         "enum": [
-                                            "SPSSODescriptor"
+                                            "md:SPSSODescriptor"
                                         ],
                                         "description": "value.spdescriptor"
                                     },
                                     {
                                         "enum": [
-                                            "AttributeAuthorityDescriptor"
+                                            "md:AttributeAuthorityDescriptor"
                                         ],
                                         "description": "value.attr-auth-descriptor"
                                     }
