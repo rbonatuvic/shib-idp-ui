@@ -74,7 +74,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
                 it
             }
             def attribute = attributeUtility.createAttributeWithStringValues('here', null, 'there')
-            attribute.nameFormat = null
+            attribute.nameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
             attribute.namespacePrefix = 'saml'
             attribute.attributeValues.each { val ->
                 ((XSString)val).namespacePrefix = 'saml'
