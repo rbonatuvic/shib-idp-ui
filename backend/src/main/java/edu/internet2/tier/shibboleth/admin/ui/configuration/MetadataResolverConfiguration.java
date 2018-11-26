@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -45,7 +46,7 @@ public class MetadataResolverConfiguration {
     @Transactional
     //This injected dependency makes sure that this bean has been created and the wrapped placeholder resolver service
     //is available via static facade accessor method to all the downstream non-Spring managed consumers
-    public MetadataResolver metadataResolver(TokenPlaceholderResolvers tokenPlaceholderResolvers, Set<edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver> metadataResolvers) throws ResolverException, ComponentInitializationException {
+    public MetadataResolver metadataResolver(TokenPlaceholderResolvers tokenPlaceholderResolvers, Optional<Set<edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver>> metadataResolvers) throws ResolverException, ComponentInitializationException {
         ChainingMetadataResolver metadataResolver = new OpenSamlChainingMetadataResolver();
         metadataResolver.setId("chain");
 
