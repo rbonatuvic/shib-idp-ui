@@ -130,6 +130,7 @@ class TestObjectGenerator {
             filterList.add(buildFilter { entityRoleWhitelistFilter() })
             filterList.add(buildFilter { signatureValidationFilter() })
             filterList.add(buildFilter { requiredValidUntilFilter() })
+            filterList.add(buildFilter { nameIdFormatFilter() })
         }
         return filterList
     }
@@ -208,6 +209,13 @@ class TestObjectGenerator {
     RequiredValidUntilFilter requiredValidUntilFilter() {
         return new RequiredValidUntilFilter().with {
             it.maxValidityInterval = 'P14D'
+            it
+        }
+    }
+
+    NameIdFormatFilter nameIdFormatFilter() {
+        return new NameIdFormatFilter().with {
+            it.name = "NameIDFormat"
             it
         }
     }

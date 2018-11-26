@@ -125,6 +125,7 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         json.contains('EntityAttributes')
         json.contains('RequiredValidUntil')
         json.contains('EntityAttributes')
+        json.contains('NameIDFormat')
 
     }
 
