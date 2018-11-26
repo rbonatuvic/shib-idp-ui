@@ -15,6 +15,11 @@ import org.opensaml.saml.saml2.metadata.Organization
 import java.nio.file.Files
 import java.util.function.Supplier
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.*
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.*
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.*
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.*
+
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
@@ -169,6 +174,7 @@ class TestObjectGenerator {
             it
         }
     }
+
     EntityRoleWhiteListFilter entityRoleWhitelistFilter() {
         new EntityRoleWhiteListFilter().with {
             it.name = 'EntityRoleWhiteList'
@@ -213,9 +219,20 @@ class TestObjectGenerator {
         }
     }
 
-    NameIdFormatFilter nameIdFormatFilter() {
+    static NameIdFormatFilter nameIdFormatFilter() {
         return new NameIdFormatFilter().with {
             it.name = "NameIDFormat"
+            it.formats = [
+                    new FormatAndTarget(
+                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
+                            type: Type.ENTITY, value: 'https://sp1.example.org'),
+                    new FormatAndTarget(
+                            format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+                            type: Type.ENTITY, value: 'https://sp2.example.org'),
+                    new FormatAndTarget(
+                            format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+                            type: Type.CONDITION_SCRIPT, value: 'input.getEntityID().equals("https://sp1.example.org");')
+            ]
             it
         }
     }
@@ -276,12 +293,12 @@ class TestObjectGenerator {
     List<Attribute> buildAttributesList() {
         List<Attribute> attributes = new ArrayList<>()
 
-        customPropertiesConfiguration.getOverrides().each {override ->
+        customPropertiesConfiguration.getOverrides().each { override ->
             if (generator.randomBoolean()) {
                 switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
                     case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
                         if (override.getPersistType() != null &&
-                            override.getPersistType() != override.getDisplayType()) {
+                                override.getPersistType() != override.getDisplayType()) {
                             attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
                         } else {
                             attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomBoolean()))
@@ -326,7 +343,7 @@ class TestObjectGenerator {
             switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
                 case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
                     if (override.getPersistType() != null &&
-                        override.getPersistType() != override.getDisplayType()) {
+                            override.getPersistType() != override.getDisplayType()) {
                         representation.put(override.getName(), generator.randomString(30))
                     } else {
                         representation.put(override.getName(), generator.randomBoolean())

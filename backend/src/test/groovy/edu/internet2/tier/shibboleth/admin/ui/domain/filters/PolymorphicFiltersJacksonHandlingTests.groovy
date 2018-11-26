@@ -175,4 +175,42 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.entityAttributesFilterTargetType.name() == 'ENTITY'
         EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.value == ['GATCCLk32V']
     }
+
+    def "Correct polymorphic serialization of NameIdFormatFilter"() {
+        given:
+        def givenFilterJson = """
+            {
+                "@type" : "NameIDFormat",
+                "name" : "NameIDFormat",
+                "resourceId" : "20147f53-e368-4911-921a-2e24598e37f8",
+                "filterEnabled" : true,
+                "removeExistingFormats" : false,
+                "formats" : [ {
+                  "format" : "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                  "value" : "https://sp1.example.org",
+                  "type" : "ENTITY"
+                }, {
+                  "format" : "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                  "value" : "https://sp2.example.org",
+                  "type" : "ENTITY"
+                }, {
+                  "format" : "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                  "value" : "input.getEntityID().equals(\\"https://sp1.example.org\\");",
+                  "type" : "CONDITION_SCRIPT"
+                } ]  
+            }"""
+
+        when:
+        def deSerializedFilter = mapper.readValue(givenFilterJson, MetadataFilter)
+        def json = mapper.writeValueAsString(deSerializedFilter)
+        println(json)
+        def roundTripFilter = mapper.readValue(json, MetadataFilter)
+
+        then:
+        roundTripFilter == deSerializedFilter
+
+        and:
+        deSerializedFilter instanceof NameIdFormatFilter
+        roundTripFilter instanceof NameIdFormatFilter
+    }
 }

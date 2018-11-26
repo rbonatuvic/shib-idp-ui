@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -14,6 +15,8 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
+
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator.*
 
 @DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
@@ -69,5 +72,17 @@ class FilterRepositoryTests extends Specification {
         def item2 = repositoryUnderTest.findByResourceId(persistedFilter.resourceId)
 
         item1.hashCode() == item2.hashCode()
+    }
+
+    def "NameIdFormatFilter is able to be persisted to RDBMS"() {
+        given:
+        def nameIdFormatFilter = TestObjectGenerator.nameIdFormatFilter()
+
+        when:
+        def persistedFilter = repositoryUnderTest.save(nameIdFormatFilter)
+
+        then:
+        persistedFilter.audId > 0L
+        persistedFilter.formats.size() == 3
     }
 }
