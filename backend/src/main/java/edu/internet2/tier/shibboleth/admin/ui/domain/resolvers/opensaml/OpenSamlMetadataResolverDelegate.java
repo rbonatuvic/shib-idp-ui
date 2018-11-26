@@ -38,6 +38,7 @@ public class OpenSamlMetadataResolverDelegate extends AbstractMetadataResolver {
                 document.add(new StringField("tag", resourceId, Field.Store.YES));
                 indexWriter.addDocument(document);
             }
+            indexWriter.commit();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             throw new ComponentInitializationException(e);
