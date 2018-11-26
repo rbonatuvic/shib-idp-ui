@@ -1,11 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRequestURLConstructionScheme;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
 import org.opensaml.saml.metadata.resolver.impl.FunctionDrivenDynamicHTTPMetadataResolver;
+import org.opensaml.saml.metadata.resolver.impl.MetadataQueryProtocolRequestURLBuilder;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -37,6 +39,15 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
         // In the parser, if not null, a warning is logged .. but nothing else happens with them.
         // sourceResolver.getMaxConnectionsPerRoute();
         // sourceResolver.getMaxConnectionsTotal();
+
+        switch (MetadataRequestURLConstructionScheme.SchemeType.get(sourceResolver.getMetadataRequestURLConstructionScheme().getType())) {
+            case METADATA_QUERY_PROTOCOL:
+                this.setRequestURLBuilder(new MetadataQueryProtocolRequestURLBuilder(sourceResolver.getMetadataRequestURLConstructionScheme().getContent()));
+                break;
+            // TODO: write other cases
+            default:
+                break;
+        }
     }
 
     @Override
