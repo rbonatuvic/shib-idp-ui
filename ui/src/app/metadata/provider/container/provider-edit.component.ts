@@ -107,7 +107,6 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
             return of(true);
         }
         const diff = this.diffService.updatedDiff(this.provider, this.latest);
-        console.log(diff, this.provider, this.latest);
         if (diff && Object.keys(diff).length > 0) {
             let modal = this.modalService.open(UnsavedEntityComponent);
             modal.result.then(
