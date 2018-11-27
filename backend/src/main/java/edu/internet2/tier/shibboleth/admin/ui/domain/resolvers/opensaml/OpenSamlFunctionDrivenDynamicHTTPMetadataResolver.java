@@ -2,12 +2,17 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRequestURLConstructionScheme;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.saml.metadata.resolver.impl.FunctionDrivenDynamicHTTPMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.MetadataQueryProtocolRequestURLBuilder;
+import org.opensaml.saml.metadata.resolver.impl.RegexRequestURLBuilder;
+import org.opensaml.saml.metadata.resolver.impl.TemplateRequestURLBuilder;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -44,7 +49,18 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
             case METADATA_QUERY_PROTOCOL:
                 this.setRequestURLBuilder(new MetadataQueryProtocolRequestURLBuilder(sourceResolver.getMetadataRequestURLConstructionScheme().getContent()));
                 break;
-            // TODO: write other cases
+            case TEMPLATE:
+                TemplateScheme templateScheme = (TemplateScheme) sourceResolver.getMetadataRequestURLConstructionScheme();
+                this.setRequestURLBuilder(new TemplateRequestURLBuilder(
+                        new VelocityEngine(), // we may want to do something with this here: templateScheme.getVelocityEngine()
+                        templateScheme.getContent(),
+                        TemplateRequestURLBuilder.EncodingStyle.valueOf(templateScheme.getEncodingStyle().toString().toLowerCase()),
+                        null)); // this may need to be an actual Function, but all we have is a ref
+                break;
+            case REGEX:
+                RegexScheme regexScheme = (RegexScheme) sourceResolver.getMetadataRequestURLConstructionScheme();
+                this.setRequestURLBuilder(new RegexRequestURLBuilder(regexScheme.getMatch(), regexScheme.getContent()));
+                break;
             default:
                 break;
         }
