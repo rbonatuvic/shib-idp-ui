@@ -4,6 +4,7 @@ import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
@@ -30,6 +31,9 @@ import org.w3c.dom.Document
 
 import javax.annotation.Nonnull
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.CONDITION_REF
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.CONDITION_SCRIPT
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.ENTITY
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
@@ -217,6 +221,31 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'xsi:type': 'RequiredValidUntil',
                     maxValidityInterval: filter.maxValidityInterval
             )
+        }
+    }
+
+    void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'NameIDFormat',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                'removeExistingFormats': filter.removeExistingFormats ?: null
+        ) {
+            filter.formats.each {
+                Format(it.format)
+                if(it.type == ENTITY) {
+                    Entity(it.value)
+                }
+                else if(it.type == CONDITION_REF) {
+                    ConditionRef(it.value)
+                }
+                else if(it.type == CONDITION_SCRIPT) {
+                    ConditionScript() {
+                        Script() {
+                            mkp.yieldUnescaped("\n<![CDATA[\n${it.value}\n]]>\n")
+                        }
+                    }
+                }
+            }
         }
     }
 

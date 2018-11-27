@@ -41,7 +41,7 @@ public class NameIdFormatFilter extends MetadataFilter {
         private String value;
         private Type type;
 
-        private enum Type {
+        public enum Type {
             ENTITY, CONDITION_REF, CONDITION_SCRIPT
         }
     }
