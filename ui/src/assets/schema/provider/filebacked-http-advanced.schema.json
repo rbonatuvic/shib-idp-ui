@@ -62,8 +62,7 @@
                     "title": "",
                     "description": "",
                     "placeholder": "",
-                    "widget": "hidden",
-                    "default": ""
+                    "widget": "hidden"
                 },
                 "connectionRequestTimeout": {
                     "type": "string",
@@ -84,7 +83,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "connectionTimeout": {
@@ -106,7 +104,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "socketTimeout": {
@@ -128,7 +125,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "disregardTLSCertificate": {
@@ -151,52 +147,45 @@
                             ],
                             "description": "False"
                         }
-                    ],
-                    "default": false
+                    ]
                 },
                 "tlsTrustEngineRef": {
                     "type": "string",
                     "title": "",
                     "description": "",
                     "placeholder": "",
-                    "widget": "hidden",
-                    "default": ""
+                    "widget": "hidden"
                 },
                 "httpClientSecurityParametersRef": {
                     "type": "string",
                     "title": "",
                     "description": "",
                     "placeholder": "",
-                    "widget": "hidden",
-                    "default": ""
+                    "widget": "hidden"
                 },
                 "proxyHost": {
                     "type": "string",
                     "title": "label.proxy-host",
                     "description": "tooltip.proxy-host",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "proxyPort": {
                     "type": "string",
                     "title": "label.proxy-port",
                     "description": "tooltip.proxy-port",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "proxyUser": {
                     "type": "string",
                     "title": "label.proxy-user",
                     "description": "tooltip.proxy-user",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "proxyPassword": {
                     "type": "string",
                     "title": "label.proxy-password",
                     "description": "tooltip.proxy-password",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "httpCaching": {
                     "type": "string",
@@ -238,7 +227,6 @@
                     "title": "label.http-max-cache-entries",
                     "description": "tooltip.http-max-cache-entries",
                     "placeholder": "",
-                    "default": 0,
                     "minimum": 0
                 },
                 "httpMaxCacheEntrySize": {
@@ -246,7 +234,6 @@
                     "title": "label.max-cache-entry-size",
                     "description": "tooltip.max-cache-entry-size",
                     "placeholder": "",
-                    "default": 0,
                     "minimum": 0
                 }
             }
