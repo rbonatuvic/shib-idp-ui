@@ -83,6 +83,6 @@ class FilterRepositoryTests extends Specification {
 
         then:
         persistedFilter.audId > 0L
-        persistedFilter.formats.size() == 3
+        persistedFilter.formats.size() == 4
     }
 }

@@ -194,6 +194,10 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
                   "value" : "https://sp2.example.org",
                   "type" : "ENTITY"
                 }, {
+                  "format" : "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                  "value" : "conditionRefBeanId",
+                  "type" : "CONDITION_REF"
+                }, {
                   "format" : "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
                   "value" : "input.getEntityID().equals(\\"https://sp1.example.org\\");",
                   "type" : "CONDITION_SCRIPT"

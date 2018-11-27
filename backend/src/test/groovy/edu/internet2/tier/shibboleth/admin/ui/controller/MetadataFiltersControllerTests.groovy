@@ -177,6 +177,7 @@ class MetadataFiltersControllerTests extends Specification {
         'entityRoleWhiteList' | _
         'signatureValidation' | _
         'requiredValidUntil'  | _
+        'nameIdFormat'        | _
     }
 
     @Unroll
@@ -222,6 +223,7 @@ class MetadataFiltersControllerTests extends Specification {
         'entityRoleWhiteList' | _
         'signatureValidation' | _
         'requiredValidUntil'  | _
+        'nameIdFormat'        | _
     }
 
     def "FilterController.update filter 409's if the version numbers don't match"() {

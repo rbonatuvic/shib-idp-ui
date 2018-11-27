@@ -155,6 +155,9 @@ class TestObjectGenerator {
             case 'requiredValidUntil':
                 randomFilter = requiredValidUntilFilter()
                 break
+            case 'nameIdFormat':
+                randomFilter = nameIdFormatFilter()
+                break
             default:
                 throw new RuntimeException("Did you forget to create a TestObjectGenerator.copyOf method for filtertype: ${filterType} ?");
         }
@@ -230,6 +233,9 @@ class TestObjectGenerator {
                             format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
                             type: Type.ENTITY, value: 'https://sp2.example.org'),
                     new FormatAndTarget(
+                            format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:persistent',
+                            type: Type.CONDITION_REF, value: 'conditionRefBeanId'),
+                    new FormatAndTarget(
                             format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
                             type: Type.CONDITION_SCRIPT, value: 'input.getEntityID().equals("https://sp1.example.org");')
             ]
@@ -279,6 +285,16 @@ class TestObjectGenerator {
             it.setEntityAttributesFilterTarget(entityAttributesFilter.entityAttributesFilterTarget)
             it.setAttributes(entityAttributesFilter.attributes)
             it.intoTransientRepresentation()
+            it
+        }
+    }
+
+    static NameIdFormatFilter copyOf(NameIdFormatFilter nameIdFormatFilter) {
+        new NameIdFormatFilter().with {
+            it.name = nameIdFormatFilter.name
+            it.resourceId = nameIdFormatFilter.resourceId
+            it.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+            it.formats = nameIdFormatFilter.formats
             it
         }
     }
