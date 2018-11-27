@@ -31,6 +31,8 @@ export class ProviderSelectComponent implements OnDestroy {
             map(params => new SelectProviderRequest(params.providerId))
         ).subscribe(store);
 
+        this.route.params.subscribe(params => console.log(params));
+
         this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(skipWhile(p => !p));
 
         this.provider$.subscribe(provider => this.setDefinition(provider));

@@ -103,6 +103,14 @@ export class FilterCollectionEffects {
     );
 
     @Effect()
+    addFilterSuccessReloadParent$ = this.actions$.pipe(
+        ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
+        map(([filter, provider]) => new SelectProviderRequest(provider))
+    );
+
+    @Effect()
     updateFilter$ = this.actions$.pipe(
         ofType<UpdateFilterRequest>(FilterCollectionActionTypes.UPDATE_FILTER_REQUEST),
         map(action => action.payload),
