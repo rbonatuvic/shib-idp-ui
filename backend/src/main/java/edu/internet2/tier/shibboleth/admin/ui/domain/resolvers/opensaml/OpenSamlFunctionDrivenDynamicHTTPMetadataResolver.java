@@ -9,6 +9,7 @@ import net.shibboleth.utilities.java.support.xml.ParserPool;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.velocity.app.VelocityEngine;
+import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain;
 import org.opensaml.saml.metadata.resolver.impl.FunctionDrivenDynamicHTTPMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.MetadataQueryProtocolRequestURLBuilder;
 import org.opensaml.saml.metadata.resolver.impl.RegexRequestURLBuilder;
@@ -39,6 +40,8 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
                 this, sourceResolver.getHttpMetadataResolverAttributes());
 
         this.setSupportedContentTypes(sourceResolver.getSupportedContentTypes());
+
+        this.setMetadataFilter(new MetadataFilterChain());
 
         //TODO: These don't seem to be used anywhere.
         // In the parser, if not null, a warning is logged .. but nothing else happens with them.

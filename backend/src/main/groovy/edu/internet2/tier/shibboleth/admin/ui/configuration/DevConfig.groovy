@@ -68,6 +68,7 @@ class DevConfig {
                     return it
                 }
                 it.attributeRelease = ['eduPersonPrincipalName', 'givenName', 'surname', 'mail']
+                it.relyingPartyOverrides = null
                 return it
             })
             return it
@@ -88,10 +89,11 @@ class DevConfig {
                 it.filterEnabled = true
                 it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                     it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.value = ["https://carmenwiki.osu.edu/shibboleth"]
+                    it.value = ["https://issues.shibboleth.net/shibboleth"]
                     return it
                 }
                 it.attributeRelease = ['eduPersonPrincipalName', 'givenName', 'surname', 'mail']
+                it.relyingPartyOverrides = null
                 return it
             })
             return it
