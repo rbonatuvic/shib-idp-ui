@@ -230,13 +230,13 @@ class TestObjectGenerator {
                             format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
                             type: Type.ENTITY, value: 'https://sp1.example.org'),
                     new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:emailAddress',
                             type: Type.ENTITY, value: 'https://sp2.example.org'),
                     new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:persistent',
+                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
                             type: Type.CONDITION_REF, value: 'conditionRefBeanId'),
                     new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
                             type: Type.CONDITION_SCRIPT, value: 'input.getEntityID().equals("https://sp1.example.org");')
             ]
             it

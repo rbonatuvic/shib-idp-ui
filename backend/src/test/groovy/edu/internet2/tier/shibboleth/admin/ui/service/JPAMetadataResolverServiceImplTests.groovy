@@ -199,6 +199,17 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         generatedXmlIsTheSameAsExpectedXml('/conf/552.xml', domBuilder.parseText(writer.toString()))
     }
 
+    def 'test generating NameIdFormatFilter xml snippet'() {
+        given:
+        def filter = TestObjectGenerator.nameIdFormatFilter()
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/799.xml', domBuilder.parseText(writer.toString()))
+    }
+
     def 'test generating FileBackedHttMetadataResolver xml snippet'() {
         given:
         def resolver = testObjectGenerator.fileBackedHttpMetadataResolver()

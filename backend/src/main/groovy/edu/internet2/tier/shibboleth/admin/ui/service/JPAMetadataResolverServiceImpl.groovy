@@ -239,9 +239,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     ConditionRef(it.value)
                 }
                 else if(it.type == CONDITION_SCRIPT) {
+                    def scriptText = it.value
                     ConditionScript() {
                         Script() {
-                            mkp.yieldUnescaped("\n<![CDATA[\n${it.value}\n]]>\n")
+                            mkp.yieldUnescaped("\n<![CDATA[\n${scriptText}\n]]>\n")
                         }
                     }
                 }
