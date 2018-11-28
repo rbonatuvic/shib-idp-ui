@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./gradlew -Dshibui.logout-url=/dashboard "$@" clean bootRun npm_run_start --parallel
+./gradlew -Dspring.profiles.active=no-auth -Dshibui.logout-url=/dashboard "$@" clean bootRun npm_run_start --parallel
