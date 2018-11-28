@@ -53,12 +53,13 @@ public class OpenSamlFunctionDrivenDynamicHTTPMetadataResolver extends FunctionD
                 this.setRequestURLBuilder(new MetadataQueryProtocolRequestURLBuilder(sourceResolver.getMetadataRequestURLConstructionScheme().getContent()));
                 break;
             case TEMPLATE:
+                //TODO: address this later with a prebuilt configuration
                 TemplateScheme templateScheme = (TemplateScheme) sourceResolver.getMetadataRequestURLConstructionScheme();
                 this.setRequestURLBuilder(new TemplateRequestURLBuilder(
-                        new VelocityEngine(), // we may want to do something with this here: templateScheme.getVelocityEngine()
+                        new VelocityEngine(), //TODO: we may want to do something with this here: templateScheme.getVelocityEngine()
                         templateScheme.getContent(),
                         TemplateRequestURLBuilder.EncodingStyle.valueOf(templateScheme.getEncodingStyle().toString().toLowerCase()),
-                        null)); // this may need to be an actual Function, but all we have is a ref
+                        null)); //TODO: this may need to be an actual Function, but all we have is a ref
                 break;
             case REGEX:
                 RegexScheme regexScheme = (RegexScheme) sourceResolver.getMetadataRequestURLConstructionScheme();
