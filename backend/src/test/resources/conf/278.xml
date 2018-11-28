@@ -23,6 +23,7 @@
                       socketTimeout="PT5S"
                       supportedContentTypes="[]"
                       xsi:type="DynamicHttpMetadataProvider">
+        <MetadataQueryProtocol transformRef="transformRef">content</MetadataQueryProtocol>
         <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" xsi:type="SignatureValidation"/>
         <MetadataFilter maxValidityInterval="P14D" xsi:type="RequiredValidUntil"/>
         <MetadataFilter xsi:type="EntityRoleWhiteList" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">

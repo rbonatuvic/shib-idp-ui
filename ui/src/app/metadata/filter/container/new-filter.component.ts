@@ -51,7 +51,6 @@ export class NewFilterComponent implements OnDestroy, OnInit {
         this.statusChangeEmitted$
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(valid => {
-                console.log(valid);
                 this.isValid = valid.value ? valid.value.length === 0 : true;
             });
 

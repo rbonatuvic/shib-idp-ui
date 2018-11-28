@@ -28,6 +28,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
     private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
 
     schema$: Observable<any>;
+    bindings$: Observable<any>;
     schema: any;
     definition$: Observable<Wizard<MetadataProvider>>;
     changes$: Observable<MetadataProvider>;
@@ -46,6 +47,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
             filter(s => s && Object.keys(s.properties).length > 0)
         );
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
+        this.bindings$ = this.definition$.pipe(map(d => d.bindings));
         this.changes$ = this.store.select(fromProvider.getEntityChanges);
 
         this.validators$ = this.definition$.pipe(
