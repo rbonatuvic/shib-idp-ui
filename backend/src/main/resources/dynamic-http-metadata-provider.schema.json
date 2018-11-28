@@ -2,7 +2,8 @@
     "type": "object",
     "required": [
         "xmlId",
-        "metadataURL"
+        "metadataURL",
+        "metadataRequestURLConstructionScheme"
     ],
     "properties": {
         "enabled": {
@@ -20,6 +21,10 @@
         },
         "metadataRequestURLConstructionScheme": {
             "type": "object",
+            "required": [
+                "@type",
+                "content"
+            ],
             "properties": {
                 "@type": {
                     "title": "label.md-request-type",
@@ -58,11 +63,7 @@
                     "title": "label.transform-ref",
                     "description": "tooltip.transform-ref",
                     "type": "string",
-                    "visibleIf": {
-                        "content": [
-                            ""
-                        ]
-                    }
+                    "widget": "hidden"
                 },
                 "encodingStyle": {
                     "title": "label.encoding-style",
@@ -108,12 +109,7 @@
                     "title": "label.velocity-engine",
                     "description": "tooltip.velocity-engine",
                     "type": "string",
-                    "default": "shibboleth.VelocityEngine",
-                    "visibleIf": {
-                        "@type": [
-                            "Template"
-                        ]
-                    }
+                    "widget": "hidden"
                 },
                 "match": {
                     "title": "label.match",
