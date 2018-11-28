@@ -219,9 +219,11 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
 
     }
 
+    private transient final LockableClassToInstanceMultiMap<Object> objectMetadata = new LockableClassToInstanceMultiMap<>(true);
+
     @Nonnull
     public LockableClassToInstanceMultiMap<Object> getObjectMetadata() {
-        return null;
+        return objectMetadata;
     }
 
     public String getSchemaTypeNamespaceURI() {

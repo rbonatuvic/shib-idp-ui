@@ -10,6 +10,7 @@
         [schema]="schema$ | async"
         [model]="model$ | async"
         [validators]="validators$ | async"
+        [bindings]="bindings$ | async"
         (onChange)="valueChangeSubject.next($event)"
         (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
 </ng-container>

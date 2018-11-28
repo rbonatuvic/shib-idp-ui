@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import java.util.List;
 
@@ -35,6 +37,9 @@ public class DynamicHttpMetadataResolver extends MetadataResolver {
     @ElementCollection
     @OrderColumn
     private List<String> supportedContentTypes;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private MetadataRequestURLConstructionScheme metadataRequestURLConstructionScheme;
 
     public DynamicHttpMetadataResolver() {
         type = "DynamicHttpMetadataResolver";

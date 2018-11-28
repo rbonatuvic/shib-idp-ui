@@ -103,8 +103,8 @@ public class JsonSchemaResourceLocation {
          // resolver types
         FILE_BACKED_HTTP_METADATA_RESOLVER("FileBackedHttpMetadataResolver"),
         FILESYSTEM_METADATA_RESOLVER("FilesystemMetadataResolver"),
-        LOCAL_DYNAMIC_METADATA_RESOLVER("LocalDynamicMetadataResolver");
-//        DYNAMIC_HTTP_METADATA_RESOLVER;
+        LOCAL_DYNAMIC_METADATA_RESOLVER("LocalDynamicMetadataResolver"),
+        DYNAMIC_HTTP_METADATA_RESOLVER("DynamicHttpMetadataResolver");
 
         String jsonType;
 
