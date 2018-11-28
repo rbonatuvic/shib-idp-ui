@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +18,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
@@ -42,9 +47,31 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
         MetadataResolverRepository metadataResolverRepository;
 
         @EventListener
-        void showMetadataResolversResourceIds(ApplicationStartedEvent e) {
+        public void showMetadataResolversResourceIds(ApplicationStartedEvent e) {
             metadataResolverRepository.findAll()
                     .forEach(it -> System.out.println(String.format("MetadataResolver [%s: %s]", it.getName(), it.getResourceId())));
+        }
+    }
+
+    @Component
+    public static class MetadataResolverInitializingApplicationStartupListener {
+
+        @Autowired
+        MetadataResolverService metadataResolverService;
+
+        @Autowired
+        MetadataResolverRepository metadataResolverRepository;
+
+        @Transactional
+        @EventListener
+        public void initializeResolvers(ApplicationStartedEvent e) {
+            metadataResolverRepository.findAll()
+                    .forEach(it -> {
+                        System.out.println(String.format("Reloading filters for resolver [%s: %s]", it.getName(), it.getResourceId()));
+//                        List<MetadataFilter> filters = it.getMetadataFilters();
+//                        filters.forEach(System.out::println);
+                        metadataResolverService.reloadFilters(it.getResourceId());
+                    });
         }
     }
 }
