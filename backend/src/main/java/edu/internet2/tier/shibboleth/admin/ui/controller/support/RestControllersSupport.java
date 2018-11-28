@@ -1,9 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller.support;
 
 import com.google.common.collect.ImmutableMap;
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,12 +32,17 @@ public class RestControllersSupport {
         return resolver;
     }
 
-
-    @ExceptionHandler
+    @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
         if(ex.getStatusCode() == NOT_FOUND) {
             return ResponseEntity.status(NOT_FOUND).body(ex.getStatusText());
         }
         throw ex;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ErrorResponse> handleAllOtherExceptions(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse("400", ex.getLocalizedMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
