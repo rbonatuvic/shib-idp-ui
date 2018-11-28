@@ -1,0 +1,102 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "The Root Schema",
+    "required": [
+        "name",
+        "resourceId",
+        "filterEnabled",
+        "removeExistingFormats",
+        "formats",
+        "@type",
+        "version"
+    ],
+    "properties": {
+        "name": {
+            "$id": "#/properties/name",
+            "type": "string",
+            "title": "label.name",
+            "pattern": "^(.*)$"
+        },
+        "filterEnabled": {
+            "$id": "#/properties/filterEnabled",
+            "type": "boolean",
+            "title": "The Filterenabled Schema"
+        },
+        "removeExistingFormats": {
+            "$id": "#/properties/removeExistingFormats",
+            "type": "boolean",
+            "title": "The Removeexistingformats Schema",
+            "default": false
+        },
+        "formats": {
+            "$id": "#/properties/formats",
+            "type": "array",
+            "title": "The Formats Schema",
+            "items": {
+                "$id": "#/properties/formats/items",
+                "type": "object",
+                "title": "The Items Schema",
+                "required": [
+                    "format",
+                    "value",
+                    "type"
+                ],
+                "properties": {
+                    "format": {
+                        "$id": "#/properties/formats/items/properties/format",
+                        "type": "string",
+                        "title": "The Format Schema",
+                        "pattern": "^(.*)$"
+                    },
+                    "value": {
+                        "$id": "#/properties/formats/items/properties/value",
+                        "type": "string",
+                        "title": "The Value Schema"
+                    },
+                    "type": {
+                        "$id": "#/properties/formats/items/properties/type",
+                        "type": "string",
+                        "title": "The Type Schema",
+                        "widget": "select",
+                        "oneOf": [
+                            {
+                                "enum": [
+                                    "ENTITY"
+                                ],
+                                "description": "value.entity"
+                            },
+                            {
+                                "enum": [
+                                    "CONDITION_REF"
+                                ],
+                                "description": "value.condition-ref"
+                            },
+                            {
+                                "enum": [
+                                    "CONDITION_SCRIPT"
+                                ],
+                                "description": "value.condition-script"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "@type": {
+            "$id": "#/properties/@type",
+            "type": "string",
+            "title": "The @type Schema",
+            "pattern": "^(.*)$"
+        },
+        "version": {
+            "type": "integer",
+            "widget": "hidden"
+        },
+        "resourceId": {
+            "type": "string",
+            "widget": "hidden"
+        }
+    }
+}
