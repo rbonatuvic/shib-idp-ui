@@ -11,7 +11,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetada
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRequestURLConstructionScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -317,6 +321,36 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
                 httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
 
+            switch (MetadataRequestURLConstructionScheme.SchemeType.get(resolver.metadataRequestURLConstructionScheme.type)) {
+                case MetadataRequestURLConstructionScheme.SchemeType.METADATA_QUERY_PROTOCOL:
+                    MetadataQueryProtocolScheme scheme = (MetadataQueryProtocolScheme) resolver.metadataRequestURLConstructionScheme
+                    MetadataQueryProtocol(transformRef: scheme.transformRef) {
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
+                    }
+                    break
+                case MetadataRequestURLConstructionScheme.SchemeType.TEMPLATE:
+                    TemplateScheme scheme = (TemplateScheme) resolver.metadataRequestURLConstructionScheme
+                    Template(encodingStyle: scheme.encodingStyle,
+                            transformRef: scheme.transformRef,
+                            velocityEngine: scheme.velocityEngine) {
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
+                    }
+                    break
+                case MetadataRequestURLConstructionScheme.SchemeType.REGEX:
+                    RegexScheme scheme = (RegexScheme) resolver.metadataRequestURLConstructionScheme
+                    Regex(match: scheme.match) {
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
+                    }
+                    break
+                default:
+                    break
+            }
             childNodes()
         }
     }

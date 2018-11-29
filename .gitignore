@@ -382,3 +382,6 @@ gradle-app.setting
 
 # Do not ignore typescript config
 !tsconfig.json
+
+# pac4j
+pac4j-module/out/

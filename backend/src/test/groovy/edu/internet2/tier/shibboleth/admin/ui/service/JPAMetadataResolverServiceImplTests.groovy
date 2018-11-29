@@ -9,7 +9,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
@@ -289,6 +293,71 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/670.xml', generatedXmlDocument)
+    }
+
+    def 'test generating DynamicHttpMetadataResolver xml snippet with MetadataQueryProtocolScheme'() {
+        given:
+        def resolver = new DynamicHttpMetadataResolver().with {
+            it.xmlId = 'DynamicHttpMetadataResolver'
+            it.metadataRequestURLConstructionScheme = new MetadataQueryProtocolScheme().with {
+                it.transformRef = 'This is a transformRef'
+                it.content = 'some content'
+                it
+            }
+            it
+        }
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/704.1.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating DynamicHttpMetadataResolver xml snippet with TemplateScheme'() {
+        given:
+        def resolver = new DynamicHttpMetadataResolver().with {
+            it.xmlId = 'DynamicHttpMetadataResolver'
+            it.metadataRequestURLConstructionScheme = new TemplateScheme().with {
+                it.encodingStyle = TemplateScheme.EncodingStyle.FORM
+                it.transformRef = 'This is a transformRef'
+                it.velocityEngine = 'This is a velocityEngine'
+                it.content = 'some content'
+                it
+            }
+            it
+        }
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/704.2.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating DynamicHttpMetadataResolver xml snippet with RegexScheme'() {
+        given:
+        def resolver = new DynamicHttpMetadataResolver().with {
+            it.xmlId = 'DynamicHttpMetadataResolver'
+            it.metadataRequestURLConstructionScheme = new RegexScheme().with {
+                it.match = 'This is the match field'
+                it.content = 'some content'
+                it
+            }
+            it
+        }
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/704.3.xml', domBuilder.parseText(writer.toString()))
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {
