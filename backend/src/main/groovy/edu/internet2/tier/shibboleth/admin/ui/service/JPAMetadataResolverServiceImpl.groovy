@@ -28,6 +28,7 @@ import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
+import org.opensaml.saml.metadata.resolver.filter.impl.NameIDFormatFilter
 import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
@@ -95,6 +96,26 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     }
                     target.setRules(rules)
                     metadataFilters.add(target)
+                }
+                if(metadataFilter instanceof NameIdFormatFilter) {
+                    NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
+                    NameIDFormatFilter openSamlTargetFilter = new NameIDFormatFilter()
+                    Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
+                    nameIdFormatFilter.formats.each {
+                        switch (it.type) {
+                            case ENTITY:
+                                predicateRules.put(new EntityIdPredicate([it.value]), [it.format])
+                                break
+                            case CONDITION_SCRIPT:
+                                predicateRules.put(new ScriptedPredicate(new EvaluableScript(it.value)), [it.format])
+                                break
+                            default:
+                                // do nothing, we'd have exploded elsewhere previously.
+                                break
+                        }
+                    }
+                    openSamlTargetFilter.rules = predicateRules
+                    metadataFilters << openSamlTargetFilter
                 }
             }
             metadataFilterChain.setFilters(metadataFilters)
