@@ -32,6 +32,7 @@ public class RestControllersSupport {
         return resolver;
     }
 
+    //TODO: Review this handler and update accordingly. Do we still need it?
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
         if(ex.getStatusCode() == NOT_FOUND) {
