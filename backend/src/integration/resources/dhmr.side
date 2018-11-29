@@ -7,6 +7,13 @@
     "id": "be39a393-4d08-45ed-b09a-782ec26c9968",
     "name": "create test-dhmr",
     "commands": [{
+      "id": "d95540e7-36b9-4d1a-a664-ba45d9a9d792",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "ee5fb7bf-b12e-485e-95bd-98bb41ea7072",
       "comment": "",
       "command": "open",
