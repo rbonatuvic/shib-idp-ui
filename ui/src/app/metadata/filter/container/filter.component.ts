@@ -3,35 +3,31 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataFilter } from '../../domain/model/metadata-filter';
-import { SelectFilter } from '../action/collection.action';
+import { LoadFilterRequest } from '../action/collection.action';
 import * as fromFilter from '../reducer';
-
 
 @Component({
     selector: 'filter-page',
     templateUrl: './filter.component.html',
-    styleUrls: ['./filter.component.scss'],
-    providers: [NgbPopoverConfig]
+    styleUrls: [],
+    providers: []
 })
 export class FilterComponent implements OnDestroy {
     actionsSubscription: Subscription;
-    filter$: Observable<MetadataFilter>;
+    filters$: Observable<MetadataFilter[]>;
 
     constructor(
         private store: Store<fromFilter.State>,
         private route: ActivatedRoute
     ) {
-        this.actionsSubscription = this.route.params.pipe(
+        this.actionsSubscription = this.route.parent.params.pipe(
             distinctUntilChanged(),
             map(params => {
-                return new SelectFilter(params.id);
+                return new LoadFilterRequest(params.providerId);
             })
         ).subscribe(store);
-
-        this.filter$ = this.store.select(fromFilter.getSelectedFilter);
     }
 
     ngOnDestroy() {

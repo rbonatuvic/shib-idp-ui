@@ -8,9 +8,10 @@ import { ProviderEditStepComponent } from './container/provider-edit-step.compon
 import { ProviderSelectComponent } from './container/provider-select.component';
 import { ProviderFilterListComponent } from './container/provider-filter-list.component';
 import { NewFilterComponent } from '../filter/container/new-filter.component';
-import { FilterComponent } from '../filter/container/filter.component';
+import { SelectFilterComponent } from '../filter/container/select-filter.component';
 import { EditFilterComponent } from '../filter/container/edit-filter.component';
 import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
+import { FilterComponent } from '../filter/container/filter.component';
 
 export const ProviderRoutes: Routes = [
     {
@@ -37,6 +38,31 @@ export const ProviderRoutes: Routes = [
                 component: ProviderSelectComponent,
                 children: [
                     {
+                        path: '',
+                        component: FilterComponent,
+                        children: [
+                            {
+                                path: 'filters',
+                                component: ProviderFilterListComponent
+                            },
+                            {
+                                path: 'filter/new',
+                                component: NewFilterComponent
+                            },
+                            {
+                                path: 'filter/:id',
+                                component: SelectFilterComponent,
+                                canActivate: [],
+                                children: [
+                                    {
+                                        path: 'edit',
+                                        component: EditFilterComponent
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         path: 'edit',
                         component: ProviderEditComponent,
                         children: [
@@ -48,25 +74,6 @@ export const ProviderRoutes: Routes = [
                         ],
                         canDeactivate: [
                             CanDeactivateGuard
-                        ]
-                    },
-                    {
-                        path: 'filters',
-                        component: ProviderFilterListComponent
-                    },
-                    {
-                        path: 'filter/new',
-                        component: NewFilterComponent
-                    },
-                    {
-                        path: 'filter/:id',
-                        component: FilterComponent,
-                        canActivate: [],
-                        children: [
-                            {
-                                path: 'edit',
-                                component: EditFilterComponent
-                            }
                         ]
                     }
                 ]
