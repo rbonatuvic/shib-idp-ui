@@ -15,15 +15,21 @@ export interface WizardStep {
     fieldsets?: WizardFieldset[];
     summary?: boolean;
     override?: any;
+    order?: string[];
 }
 
 export interface WizardFieldset {
     type: string;
     class?: string[];
-    fields: string[];
+    fields: (string | WizardFieldsubset)[];
 }
 
 export interface WizardValue {
     key: string;
     value: any;
+}
+
+export interface WizardFieldsubset {
+    parent: string;
+    children: string[];
 }

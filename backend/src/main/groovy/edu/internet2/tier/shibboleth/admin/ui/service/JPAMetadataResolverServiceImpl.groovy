@@ -11,7 +11,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetada
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRequestURLConstructionScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -24,6 +28,7 @@ import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
+import org.opensaml.saml.metadata.resolver.filter.impl.NameIDFormatFilter
 import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
@@ -91,6 +96,26 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     }
                     target.setRules(rules)
                     metadataFilters.add(target)
+                }
+                if(metadataFilter instanceof NameIdFormatFilter) {
+                    NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
+                    NameIDFormatFilter openSamlTargetFilter = new NameIDFormatFilter()
+                    Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
+                    nameIdFormatFilter.formats.each {
+                        switch (it.type) {
+                            case ENTITY:
+                                predicateRules.put(new EntityIdPredicate([it.value]), [it.format])
+                                break
+                            case CONDITION_SCRIPT:
+                                predicateRules.put(new ScriptedPredicate(new EvaluableScript(it.value)), [it.format])
+                                break
+                            default:
+                                // do nothing, we'd have exploded elsewhere previously.
+                                break
+                        }
+                    }
+                    openSamlTargetFilter.rules = predicateRules
+                    metadataFilters << openSamlTargetFilter
                 }
             }
             metadataFilterChain.setFilters(metadataFilters)
@@ -239,9 +264,10 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     ConditionRef(it.value)
                 }
                 else if(it.type == CONDITION_SCRIPT) {
+                    def scriptText = it.value
                     ConditionScript() {
                         Script() {
-                            mkp.yieldUnescaped("\n<![CDATA[\n${it.value}\n]]>\n")
+                            mkp.yieldUnescaped("\n<![CDATA[\n${scriptText}\n]]>\n")
                         }
                     }
                 }
@@ -316,6 +342,36 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 httpMaxCacheEntries: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntries,
                 httpMaxCacheEntrySize: resolver.httpMetadataResolverAttributes?.httpMaxCacheEntrySize) {
 
+            switch (MetadataRequestURLConstructionScheme.SchemeType.get(resolver.metadataRequestURLConstructionScheme.type)) {
+                case MetadataRequestURLConstructionScheme.SchemeType.METADATA_QUERY_PROTOCOL:
+                    MetadataQueryProtocolScheme scheme = (MetadataQueryProtocolScheme) resolver.metadataRequestURLConstructionScheme
+                    MetadataQueryProtocol(transformRef: scheme.transformRef) {
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
+                    }
+                    break
+                case MetadataRequestURLConstructionScheme.SchemeType.TEMPLATE:
+                    TemplateScheme scheme = (TemplateScheme) resolver.metadataRequestURLConstructionScheme
+                    Template(encodingStyle: scheme.encodingStyle,
+                            transformRef: scheme.transformRef,
+                            velocityEngine: scheme.velocityEngine) {
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
+                    }
+                    break
+                case MetadataRequestURLConstructionScheme.SchemeType.REGEX:
+                    RegexScheme scheme = (RegexScheme) resolver.metadataRequestURLConstructionScheme
+                    Regex(match: scheme.match) {
+                        if (scheme.content != null) {
+                            mkp.yield(scheme.content)
+                        }
+                    }
+                    break
+                default:
+                    break
+            }
             childNodes()
         }
     }

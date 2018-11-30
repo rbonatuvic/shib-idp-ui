@@ -3,6 +3,7 @@ import * as fromWizard from './wizard.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Wizard, WizardStep } from '../model';
 import { diff } from 'deep-object-diff';
+import { SchemaService } from '../../schema-form/service/schema.service';
 
 export interface WizardState {
     wizard: fromWizard.State;
@@ -73,6 +74,10 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
                 s.properties[key] = { ...s.properties[key], ...override };
             }
         });
+    }
+
+    if (step.order) {
+        s.order = step.order;
     }
 
     if (schema.definitions) {
