@@ -18,7 +18,8 @@ export class MetadataProviderService {
     ) {}
     query(): Observable<MetadataProvider[]> {
         return this.http.get<MetadataProvider[]>(`${this.base}${this.endpoint}`).pipe(
-            map(providers => providers.filter(p => p['@type'] !== 'BaseMetadataResolver'))
+            map(providers => providers.filter(p => p['@type'] !== 'BaseMetadataResolver')),
+            map(providers => providers.map(p => ({ ...p, id: p.resourceId })))
         );
     }
 

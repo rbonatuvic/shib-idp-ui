@@ -12,8 +12,10 @@ import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.*
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.DYNAMIC_HTTP_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.ENTITY_ATTRIBUTES_FILTERS
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES
 
 /**
@@ -60,6 +62,18 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
                     .build())
                 .register(FILESYSTEM_METADATA_RESOLVER, JsonSchemaLocationBuilder.with()
                     .jsonSchemaLocation('classpath:file-system-metadata-provider.schema.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+                .register(LOCAL_DYNAMIC_METADATA_RESOLVER, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:local-dynamic-metadata-provider.schema.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+                .register(DYNAMIC_HTTP_METADATA_RESOLVER, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:dynamic-http-metadata-provider.schema.json')
                     .resourceLoader(resourceLoader)
                     .jacksonMapper(jacksonMapper)
                     .detectMalformedJson(false)

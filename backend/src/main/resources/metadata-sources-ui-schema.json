@@ -45,18 +45,24 @@
                 }
             },
             "dependencies": {
-                "name": [
-                    "displayName",
-                    "url"
-                ],
-                "displayName": [
-                    "name",
-                    "url"
-                ],
-                "url": [
-                    "name",
-                    "displayName"
-                ]
+                "name": {
+                    "required": [
+                        "displayName",
+                        "url"
+                    ]
+                },
+                "displayName": {
+                    "required": [
+                        "name",
+                        "url"
+                    ]
+                },
+                "url": {
+                    "required": [
+                        "name",
+                        "displayName"
+                    ]
+                }
             }
         },
         "contacts": {

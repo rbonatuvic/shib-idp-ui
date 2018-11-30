@@ -1,6 +1,6 @@
-import { TestBed, async, inject } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClientModule, HttpRequest } from '@angular/common/http';
+import { TestBed, inject } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientModule } from '@angular/common/http';
 import { SchemaService } from './schema.service';
 
 describe(`Schema Service`, () => {
@@ -171,5 +171,91 @@ describe(`Schema Service`, () => {
                 })).toBe(true);
             })
         );
+
+        it(`should return true if dependency is active`,
+            inject([SchemaService], (service: SchemaService) => {
+                expect(service.isRequired({
+                    parent: {
+                        schema: {
+                            properties: {
+                                foo: { type: 'string' },
+                                bar: { type: 'string' },
+                                baz: { type: 'string' }
+                            },
+                            dependencies: {
+                                foo: { required: ['bar', 'baz'] },
+                                bar: { required: ['foo', 'baz'] },
+                                baz: { required: ['foo', 'bar'] }
+                            }
+                        },
+                        value: {
+                            foo: 'abcdef'
+                        }
+                    },
+                    path: '/bar'
+                })).toBe(true);
+            })
+        );
+
+        it(`should return true if the property has an active dependency`,
+            inject([SchemaService], (service: SchemaService) => {
+                expect(service.isRequired({
+                    parent: {
+                        schema: {
+                            properties: {
+                                foo: { type: 'string' },
+                                bar: { type: 'string' },
+                                baz: { type: 'string' }
+                            },
+                            dependencies: {
+                                foo: { required: ['bar', 'baz'] },
+                                bar: { required: ['foo', 'baz'] },
+                                baz: { required: ['foo', 'bar'] }
+                            }
+                        },
+                        value: {
+                            foo: 'abc',
+                            bar: '123'
+                        }
+                    },
+                    path: '/foo'
+                })).toBe(true);
+            })
+        );
+
+        it(`should return false if no dependencies are defined`,
+            inject([SchemaService], (service: SchemaService) => {
+                expect(service.isRequired({
+                    parent: {
+                        schema: {
+                            properties: {
+                                foo: { type: 'string' },
+                                bar: { type: 'string' },
+                                baz: { type: 'string' }
+                            }
+                        },
+                        value: {
+                            foo: true,
+                            baz: true
+                        }
+                    },
+                    path: '/bar'
+                })).toBe(false);
+            })
+        );
+    });
+
+    describe('getRequiredDependencies method', () => {
+        it('should return the provided result if an array', inject([SchemaService], (service: SchemaService) => {
+            expect(service.getRequiredDependencies(['foo', 'bar'])).toEqual(['foo', 'bar']);
+        }));
+
+        it('should return the content of the required attribute if provided', inject([SchemaService], (service: SchemaService) => {
+            expect(service.getRequiredDependencies({required: ['foo', 'bar'] })).toEqual(['foo', 'bar']);
+        }));
+
+        it('should return an empty array if not provided with required property', inject([SchemaService], (service: SchemaService) => {
+            expect(service.getRequiredDependencies({ foo: 'bar' })).toEqual([]);
+        }));
     });
 });

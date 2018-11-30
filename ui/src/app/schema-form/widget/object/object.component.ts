@@ -7,4 +7,4 @@ import { ObjectWidget } from 'ngx-schema-form';
     selector: 'custom-object',
     templateUrl: `./object.component.html`
 })
-export class CustomObjectWidget extends ObjectWidget { }
+export class CustomObjectWidget extends ObjectWidget {}

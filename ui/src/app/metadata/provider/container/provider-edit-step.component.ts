@@ -37,6 +37,7 @@ export class ProviderEditStepComponent implements OnDestroy {
     definition$: Observable<Wizard<MetadataProvider>>;
     changes$: Observable<MetadataProvider>;
     step$: Observable<WizardStep>;
+    bindings$: Observable<any>;
 
     validators$: Observable<{ [key: string]: any }>;
 
@@ -50,6 +51,7 @@ export class ProviderEditStepComponent implements OnDestroy {
         this.provider$ = this.store.select(fromProvider.getSelectedProvider);
         this.step$ = this.store.select(fromWizard.getCurrent);
         this.schema$ = this.store.select(fromWizard.getSchema);
+        this.bindings$ = this.definition$.pipe(map(d => d.bindings));
 
         this.step$.subscribe(s => {
             if (s && s.locked) {
@@ -99,9 +101,18 @@ export class ProviderEditStepComponent implements OnDestroy {
 
         this.valueChangeEmitted$.pipe(
             map(changes => changes.value),
-            withLatestFrom(this.definition$),
-            skipWhile(([ changes, definition ]) => !definition || !changes),
-            map(([ changes, definition ]) => definition.parser(changes))
+            withLatestFrom(this.definition$, this.store.select(fromProvider.getSelectedProvider)),
+            filter(([ changes, definition, provider ]) => definition && changes && provider),
+            map(([ changes, definition, provider ]) => {
+                const parsed = definition.parser(changes);
+                return ({
+                    ...parsed,
+                    metadataFilters: [
+                        ...provider.metadataFilters,
+                        ...(parsed.metadataFilters || [])
+                    ]
+                });
+            })
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 

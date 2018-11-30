@@ -23,11 +23,12 @@
                       socketTimeout="PT5S"
                       supportedContentTypes="[]"
                       xsi:type="DynamicHttpMetadataProvider">
+        <MetadataQueryProtocol transformRef="transformRef">content</MetadataQueryProtocol>
         <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" xsi:type="SignatureValidation"/>
         <MetadataFilter maxValidityInterval="P14D" xsi:type="RequiredValidUntil"/>
         <MetadataFilter xsi:type="EntityAttributes">
             <saml:Attribute
-                    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="here">
+                    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="here" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
                 <saml:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="xsd:string">there</saml:AttributeValue>
             </saml:Attribute>
             <Entity>https://sp1.example.org</Entity>

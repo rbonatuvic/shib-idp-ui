@@ -38,15 +38,21 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
     }
 
     @Override
-    Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
-        def relyingPartyOverrides = EntityDescriptorRepresentation.cast(body).relyingPartyOverrides
-        def relyingPartyOverridesJson = Json.make([relyingPartyOverrides: relyingPartyOverrides])
+    HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter,
+                                           Type targetType, Class<? extends HttpMessageConverter<?>> converterType)
+            throws IOException {
+        def bytes = inputMessage.body.bytes
         def schema = Json.schema(this.jsonSchemaLocation.uri)
-        def validationResult = schema.validate(relyingPartyOverridesJson)
+
+        def stream = new ByteArrayInputStream(bytes)
+        def validationResult = schema.validate(Json.read(stream.getText()))
         if (!validationResult.at('ok')) {
             throw new JsonSchemaValidationFailedException(validationResult.at('errors').asList())
         }
-        body
+        return [
+                getBody: { new ByteArrayInputStream(bytes) },
+                getHeaders: { inputMessage.headers }
+        ] as HttpInputMessage
     }
 
     @ExceptionHandler(JsonSchemaValidationFailedException)

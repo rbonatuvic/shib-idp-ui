@@ -512,6 +512,11 @@ class TestObjectGenerator {
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
             }
+            it.metadataRequestURLConstructionScheme = new MetadataQueryProtocolScheme().with {
+                it.transformRef = 'transformRef'
+                it.content = 'content'
+                it
+            }
             it
         }
     }
