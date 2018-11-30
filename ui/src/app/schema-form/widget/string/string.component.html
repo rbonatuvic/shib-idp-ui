@@ -1,7 +1,9 @@
 <div class="widget form-group" [class.d-none]="this.getInputType() === 'hidden'">
     <label [attr.for]="id" class="d-flex justify-content-between control-label">
         <span>
-            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n> <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i></span>
+            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>&nbsp;
+            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+        </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>

@@ -60,6 +60,17 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     }
 
     getValidators(entityIdList: string[]): { [key: string]: any } {
+        const checkOrg = (value, property, form) => {
+            const org = property.parent;
+            const orgValue = org.value || {};
+            const err = Object.keys(orgValue) && !value ? {
+                code: 'ORG_INCOMPLETE',
+                path: `#${property.path}`,
+                message: `message.org-incomplete`,
+                params: [value]
+            } : null;
+            return err;
+        };
         const validators = {
             '/': (value, property, form_current) => {
                 let errors;
@@ -68,12 +79,13 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     const item = value[key];
                     const validatorKey = `/${key}`;
                     const validator = validators.hasOwnProperty(validatorKey) ? validators[validatorKey] : null;
-                    const error = validator ? validator(item, { path: `/${key}` }, form_current) : null;
+                    const error = validator ? validator(item, form_current.getProperty(key), form_current) : null;
                     if (error) {
                         errors = errors || [];
                         errors.push(error);
                     }
                 });
+                console.log(errors, form_current);
                 return errors;
             },
             '/entityId': (value, property, form) => {
@@ -84,7 +96,10 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     params: [value]
                 } : null;
                 return err;
-            }
+            },
+            '/organization/name': checkOrg,
+            '/organization/displayName': checkOrg,
+            '/organization/url': checkOrg
         };
         return validators;
     }
