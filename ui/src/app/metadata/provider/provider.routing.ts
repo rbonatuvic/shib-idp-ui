@@ -42,10 +42,6 @@ export const ProviderRoutes: Routes = [
                         component: FilterComponent,
                         children: [
                             {
-                                path: 'filters',
-                                component: ProviderFilterListComponent
-                            },
-                            {
                                 path: 'filter/new',
                                 component: NewFilterComponent
                             },
@@ -61,6 +57,10 @@ export const ProviderRoutes: Routes = [
                                 ]
                             }
                         ]
+                    },
+                    {
+                        path: 'filters',
+                        component: ProviderFilterListComponent
                     },
                     {
                         path: 'edit',
