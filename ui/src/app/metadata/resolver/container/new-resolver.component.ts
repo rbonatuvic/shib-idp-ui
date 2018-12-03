@@ -27,7 +27,7 @@ export class NewResolverComponent {
             debounceTime(10),
             map(url => {
                 let child = this.route.snapshot.firstChild;
-                return child.routeConfig.path.match('blank').length === 0 || child.params.index === 'common';
+                return !child.routeConfig.path.match('blank') || child.params.index === 'common';
             })
         );
 

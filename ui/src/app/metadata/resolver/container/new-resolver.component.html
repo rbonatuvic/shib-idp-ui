@@ -19,7 +19,8 @@
                                     class="btn btn-lg btn-block btn-secondary"
                                     aria-label="Upload local metadata file or use a metadata URL"
                                     role="button"
-                                    routerLink="upload"
+                                    [routerLink]="['./', 'upload']"
+                                    queryParamsHandling="merge"
                                     routerLinkActive="btn-success">
                                     <translate-i18n key="label.upload-url">Upload/URL</translate-i18n>
                                     <i class="fa fa-link fa-2x d-block"></i>
@@ -33,7 +34,8 @@
                                     class="btn btn-lg btn-block btn-secondary"
                                     aria-label="Create metadata source using the wizard"
                                     role="button"
-                                    [routerLink]="['./']"
+                                    [routerLink]="['./', 'blank', 'common']"
+                                    queryParamsHandling="merge"
                                     routerLinkActive="btn-info">
                                     <translate-i18n key="action.create">Create</translate-i18n>
                                     <i class="fa fa-plus-square fa-2x d-block"></i>
@@ -47,7 +49,8 @@
                                     class="btn btn-lg btn-block btn-secondary"
                                     aria-label="Copy a metadata source"
                                     role="button"
-                                    routerLink="copy"
+                                    [routerLink]="['./', 'copy']"
+                                    queryParamsHandling="merge"
                                     routerLinkActive="btn-warning">
                                     <translate-i18n key="action.copy">Copy</translate-i18n>
                                     <i class="fa fa-copy fa-2x d-block"></i>
