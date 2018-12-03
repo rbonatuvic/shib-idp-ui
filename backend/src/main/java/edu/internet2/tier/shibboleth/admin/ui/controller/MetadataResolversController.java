@@ -119,11 +119,9 @@ public class MetadataResolversController {
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
 
-        //TODO: currently, the update call might explode, but the save works.. in which case, the UI never gets
-        // n valid response. This operation is not atomic. Should we return an error here?
-        if (persistedResolver.getDoInitialization()) {
-            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        ResponseEntity initializationError = doResolverInitialization(persistedResolver);
+        if (initializationError != null) {
+            return initializationError;
         }
 
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
@@ -151,15 +149,9 @@ public class MetadataResolversController {
 
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
 
-        if (persistedResolver.getDoInitialization()) {
-            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = null;
-            try {
-                openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
-            } catch (FileNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "label.file-doesnt-exist"));
-            }
-            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        ResponseEntity initializationError = doResolverInitialization(persistedResolver);
+        if (initializationError != null) {
+            return initializationError;
         }
 
         return ResponseEntity.ok(persistedResolver);
@@ -180,5 +172,19 @@ public class MetadataResolversController {
                 .pathSegment(resolver.getResourceId())
                 .build()
                 .toUri();
+    }
+
+    private ResponseEntity<?> doResolverInitialization(MetadataResolver persistedResolver) throws ComponentInitializationException, ResolverException, IOException {
+        if (persistedResolver.getDoInitialization()) {
+            org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = null;
+            try {
+                openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
+            } catch (FileNotFoundException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "message.file-doesnt-exist"));
+            }
+            OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+        }
+        return null;
     }
 }
