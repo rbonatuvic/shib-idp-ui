@@ -11,7 +11,7 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, map, withLatestFrom } from 'rxjs/operators';
 
 @Component({
     selector: 'edit-filter-page',
@@ -33,6 +33,8 @@ export class EditFilterComponent {
     filter: MetadataFilter;
     isValid: boolean;
 
+    validators$: Observable<{ [key: string]: any }>;
+
     actions: any;
 
     constructor(
@@ -49,6 +51,15 @@ export class EditFilterComponent {
         this.statusChangeEmitted$.subscribe(valid => {
             this.isValid = valid.value ? valid.value.length === 0 : true;
         });
+
+        this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
+            withLatestFrom(
+                this.store.select(fromFilter.getSelectedFilter)
+            ),
+            map(([names, provider]) => this.definition.getValidators(
+                names.filter(n => n !== provider.name)
+            ))
+        );
 
         this.store
             .select(fromFilter.getFilter)

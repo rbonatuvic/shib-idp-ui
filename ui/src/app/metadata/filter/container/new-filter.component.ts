@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, of } from 'rxjs';
-import { takeUntil, shareReplay } from 'rxjs/operators';
+import { takeUntil, shareReplay, withLatestFrom, map, filter } from 'rxjs/operators';
 
 import * as fromFilter from '../reducer';
 import { MetadataFilterTypes } from '../model';
@@ -33,6 +33,8 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     filter: MetadataFilter;
     isValid: boolean;
 
+    validators$: Observable<{ [key: string]: any }>;
+
     constructor(
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
@@ -42,6 +44,10 @@ export class NewFilterComponent implements OnDestroy, OnInit {
         this.schema$ = this.schemaService.get(this.definition.schema).pipe(shareReplay());
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = of(<MetadataFilter>{});
+
+        this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
+            map((names) => this.definition.getValidators(names))
+        );
     }
 
     ngOnInit(): void {

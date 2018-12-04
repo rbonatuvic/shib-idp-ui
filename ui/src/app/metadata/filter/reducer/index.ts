@@ -4,6 +4,7 @@ import * as fromFilter from './filter.reducer';
 import * as fromSearch from './search.reducer';
 import * as fromCollection from './collection.reducer';
 import * as utils from '../../domain/domain.util';
+import { MetadataFilter } from '../../domain/model';
 
 export interface FilterState {
     filter: fromFilter.FilterState;
@@ -70,6 +71,8 @@ export const getFilterList = createSelector(getAllFilters, filterTypeFn);
 export const getAdditionalFilterOrder = createSelector(getFilterEntities, getCollectionOrder, filterOrderFn);
 export const getAdditionalFilters = createSelector(getFilterList, getAdditionalFilterOrder, utils.mergeOrderFn);
 export const getPluginFilterOrder = createSelector(getFilterEntities, getCollectionOrder, pluginOrderFn);
+
+export const getFilterNames = createSelector(getAllFilters, (filters: MetadataFilter[]) => filters.map(f => f.name).filter(f => !!f));
 
 /*
  *   Combine pieces of State
