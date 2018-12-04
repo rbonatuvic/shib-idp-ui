@@ -9,14 +9,19 @@ import spock.lang.Unroll
 class SeleniumSIDETest extends Specification {
     @Unroll
     def "#name"() {
-        expect:
+        setup:
         def main = new Main()
-        def config = new DefaultConfig([] as String[])
+        def config = new DefaultConfig([] as String[]).with {
+            it.baseurl = 'http://localhost:10101'
+            it
+        }
         def runner = new Runner()
         main.setupRunner(runner, config, [] as String[])
 
+        expect:
         def result = runner.run(file, this.class.getResourceAsStream(file))
         runner.finish()
+
         assert result.level.exitCode == 0
 
         where:

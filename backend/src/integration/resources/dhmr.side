@@ -2,7 +2,7 @@
   "id": "67487cd1-1e43-4000-ba49-524002c96fb0",
   "version": "1.1",
   "name": "shibui",
-  "url": "http://localhost:8080",
+  "url": "http://localhost:10101",
   "tests": [{
     "id": "be39a393-4d08-45ed-b09a-782ec26c9968",
     "name": "create test-dhmr",
@@ -13,6 +13,17 @@
       "target": "/api/heheheheheheheWipeout",
       "targets": [],
       "value": ""
+    }, {
+      "id": "a01fba64-9612-41ec-bd53-f731464a1d52",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css"],
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": "yes, you did it"
     }, {
       "id": "ee5fb7bf-b12e-485e-95bd-98bb41ea7072",
       "comment": "",
@@ -307,16 +318,26 @@
       ],
       "value": ""
     }, {
-      "id": "03e17d1a-8352-4c55-a4dd-fe06c6fab011",
+      "id": "8a4e4432-8f5a-41c2-a905-8fac5ce01527",
       "comment": "",
-      "command": "verifyText",
-      "target": "css=div.px-2",
+      "command": "click",
+      "target": "css=div.flex-grow-1",
       "targets": [
-        ["css=div.px-2", "css"],
-        ["css=.px-2", "css:finder"],
-        ["xpath=//div[2]/div[2]", "xpath:position"]
+        ["css=div.flex-grow-1", "css"],
+        ["css=.flex-grow-1", "css:finder"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
       ],
-      "value": "test-dhmr\\nDynamicHttpMetadataResolver"
+      "value": ""
+    }, {
+      "id": "baad0142-b169-4534-b4ad-f3096ded31ad",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
+      "targets": [
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
+      ],
+      "value": "test-dhmr"
     }]
   }],
   "suites": [{
@@ -327,6 +348,6 @@
     "timeout": 300,
     "tests": ["be39a393-4d08-45ed-b09a-782ec26c9968"]
   }],
-  "urls": ["http://localhost:8080/"],
+  "urls": ["http://localhost:8080/", "http://localhost:10101/"],
   "plugins": []
 }

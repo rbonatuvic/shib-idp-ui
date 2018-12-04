@@ -293,9 +293,9 @@ tasks.dockerRun.dependsOn tasks.docker
 dockerRun {
     name 'shibuiint'
     image 'unicon/shibui'
-    ports '8080:8080'
+    ports '10101:8080'
     daemonize true
-    command '--spring.profiles.include=no-auth'
+    command '--spring.profiles.include=no-auth,very-dangerous'
     clean true
 }
 
@@ -303,7 +303,7 @@ task runChecker << {
     def ready = false
     while (!ready) {
         try {
-            ready = 'http://localhost:8080'.toURL().text.length() > 0
+            ready = 'http://localhost:10101'.toURL().text.length() > 0
         } catch (IOException e) {
             println 'cannot reach site'
             sleep 5000
