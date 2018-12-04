@@ -166,14 +166,6 @@ export class FilterCollectionEffects {
         )
     );
 
-    /*
-    @Effect()
-    reloadOrderAfterChange$ = this.actions$.pipe(
-        ofType<SetOrderFilterSuccess>(FilterCollectionActionTypes.SET_ORDER_FILTER_SUCCESS),
-        map(() => new GetOrderFilterRequest())
-    );
-    */
-
     @Effect()
     setOrder$ = this.actions$.pipe(
         ofType<SetOrderFilterRequest>(FilterCollectionActionTypes.SET_ORDER_FILTER_REQUEST),
