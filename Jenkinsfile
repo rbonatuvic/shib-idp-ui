@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh './gradlew clean build integrationTest'
+        sh './gradlew clean build'
       }
       post {
         always {
