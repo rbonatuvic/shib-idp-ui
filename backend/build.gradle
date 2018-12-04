@@ -193,7 +193,9 @@ task integrationTest(type: Test) {
     finalizedBy 'dockerStop'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
-    systemProperties = ['webdriver.gecko.driver': 'C:\\Users\\jj-unicon\\Downloads\\geckodriver-v0.21.0-win64\\geckodriver.exe']
+    if (project.hasProperty('webdriver.gecko.driver')) {
+        systemProperties['webdriver.gecko.driver'] = project.'webdriver.gecko.driver'
+    }
 }
 
 task generateSources {
