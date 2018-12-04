@@ -111,7 +111,10 @@ export class ResolverCollectionEffects {
     addResolverSuccessRemoveDraft$ = this.actions$.pipe(
         ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
-        map(provider => new draftActions.RemoveDraftRequest(provider))
+        map(provider => {
+            console.log(provider);
+            return new draftActions.RemoveDraftRequest(provider);
+        })
     );
 
     @Effect()

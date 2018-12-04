@@ -85,7 +85,6 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                         errors.push(error);
                     }
                 });
-                console.log(errors, form_current);
                 return errors;
             },
             '/entityId': (value, property, form) => {

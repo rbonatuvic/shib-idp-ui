@@ -2,24 +2,22 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-
-import { NgbDropdownModule, NgbPopoverModule, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterStateSnapshot } from '@angular/router';
+import { NgbDropdownModule, NgbPopoverModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from 'rxjs';
 
 import { ResolverWizardComponent } from './resolver-wizard.component';
 import * as fromRoot from '../reducer';
-import { WizardModule } from '../../../wizard/wizard.module';
-import { WizardSummaryComponent } from '../../domain/component/wizard-summary.component';
-import { SummaryPropertyComponent } from '../../domain/component/summary-property.component';
 import * as fromWizard from '../../../wizard/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { METADATA_SOURCE_WIZARD } from '../wizard-definition';
 import { MetadataSourceWizard } from '../../domain/model/wizards/metadata-source-wizard';
 import { initialState } from '../reducer/entity.reducer';
 import { MockWizardModule } from '../../../../testing/wizard.stub';
-import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+
 import { NgbModalStub } from '../../../../testing/modal.stub';
-import { of } from 'rxjs';
 import { MetadataResolver } from '../../domain/model';
+import { DifferentialService } from '../../../core/service/differential.service';
 
 @Component({
     template: `
@@ -94,6 +92,7 @@ describe('Resolver Wizard Component', () => {
                 TestHostComponent
             ],
             providers: [
+                DifferentialService,
                 { provide: NgbModal, useClass: NgbModalStub },
                 { provide: METADATA_SOURCE_WIZARD, useValue: MetadataSourceWizard }
             ]

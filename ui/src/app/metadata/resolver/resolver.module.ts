@@ -35,6 +35,7 @@ import { ResolverSelectComponent } from './container/resolver-select.component';
 import { MetadataSourceEditor } from '../domain/model/wizards/metadata-source-editor';
 import { FinishFormComponent } from './component/finish-form.component';
 import { ProviderFormFragmentComponent } from './component/provider-form-fragment.component';
+import { CreateDraftResolverService } from './service/create-draft.resolver';
 
 @NgModule({
     declarations: [
@@ -75,7 +76,8 @@ export class ResolverModule {
         return {
             ngModule: RootResolverModule,
             providers: [
-                CopyIsSetGuard
+                CopyIsSetGuard,
+                CreateDraftResolverService
             ]
         };
     }
