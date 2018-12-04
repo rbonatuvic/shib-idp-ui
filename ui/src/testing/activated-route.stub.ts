@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { convertToParamMap, ParamMap, ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ActivatedRouteStub {
@@ -15,6 +16,8 @@ export class ActivatedRouteStub {
     private _testParamMap: ParamMap;
 
     private _firstChild: ActivatedRouteStub;
+
+    private _data: Observable<any>;
 
     get testParamMap() { return this._testParamMap; }
     set testParamMap(params: {}) {
@@ -43,5 +46,13 @@ export class ActivatedRouteStub {
 
     set firstChild(stub: ActivatedRouteStub) {
         this._firstChild = stub;
+    }
+
+    get data(): Observable<any> {
+        return this._data;
+    }
+
+    set data(d: Observable<any>) {
+        this._data = d;
     }
 }

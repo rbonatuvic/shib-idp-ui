@@ -29,6 +29,10 @@ export class EntityDraftService {
         );
     }
 
+    exists(id: string, attr: string = 'id'): boolean {
+        return this.storage.query().some(entity => entity[attr] === id);
+    }
+
     save(provider: MetadataResolver): Observable<MetadataResolver> {
         this.storage.add(provider);
         return of(provider);

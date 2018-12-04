@@ -77,14 +77,10 @@ export class ResolverWizardStepComponent implements OnDestroy {
         this.valueChangeEmitted$.pipe(
             withLatestFrom(this.definition$),
             filter(([ changes, definition ]) => (!!definition && !!changes)),
-            map(([ changes, definition ]) => definition.parser(changes.value)),
-            withLatestFrom(this.store.select(fromResolver.getSelectedDraft)),
-            map(([changes, original]) => ({ ...original, ...changes }))
+            map(([ changes, definition ]) => definition.parser(changes.value))
         )
         .subscribe(changes => {
-            if (changes.id) {
-                this.store.dispatch(new UpdateChanges(changes));
-            }
+            this.store.dispatch(new UpdateChanges(changes));
         });
 
         this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));

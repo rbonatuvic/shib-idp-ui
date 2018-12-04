@@ -27,13 +27,13 @@ export class NewResolverComponent {
             debounceTime(10),
             map(url => {
                 let child = this.route.snapshot.firstChild;
-                return child.routeConfig.path.match('blank').length === 0 || child.params.index === 'common';
+                return !child.routeConfig.path.match('blank') || child.params.index === 'common';
             })
         );
 
-        this.actionsSubscription = this.route.queryParams.pipe(
+        this.actionsSubscription = this.route.data.pipe(
             distinctUntilChanged(),
-            map(params => new SelectDraftRequest(params.id))
+            map(data => new SelectDraftRequest(data.draft))
         ).subscribe(this.store);
     }
 }

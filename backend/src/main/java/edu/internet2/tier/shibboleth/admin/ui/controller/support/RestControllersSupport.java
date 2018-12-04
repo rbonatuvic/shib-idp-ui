@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,8 +34,8 @@ public class RestControllersSupport {
         return resolver;
     }
 
-
-    @ExceptionHandler
+    //TODO: Review this handler and update accordingly. Do we still need it?
+    @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
         if(ex.getStatusCode() == NOT_FOUND) {
             return ResponseEntity.status(NOT_FOUND).body(ex.getStatusText());
@@ -45,5 +46,11 @@ public class RestControllersSupport {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleDatabaseConstraintViolation(ConstraintViolationException ex) {
         return ResponseEntity.status(BAD_REQUEST).body(new ErrorResponse("400", "message.database-constraint"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ErrorResponse> handleAllOtherExceptions(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse("400", ex.getLocalizedMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
