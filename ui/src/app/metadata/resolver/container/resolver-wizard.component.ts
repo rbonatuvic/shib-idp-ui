@@ -12,6 +12,7 @@ import {
 import { Observable, Subject, of, combineLatest as combine } from 'rxjs';
 import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataResolver } from '../../domain/model/metadata-resolver';
 import * as fromCollections from '../reducer';
@@ -26,8 +27,8 @@ import { SetDefinition, SetIndex, SetDisabled, ClearWizard } from '../../../wiza
 import * as fromWizard from '../../../wizard/reducer';
 import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Clear } from '../action/entity.action';
+import { DifferentialService } from '../../../core/service/differential.service';
 
 @Component({
     selector: 'resolver-wizard-page',
@@ -66,6 +67,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NgbModal,
+        private diffService: DifferentialService,
         @Inject(METADATA_SOURCE_WIZARD) private sourceWizard: Wizard<MetadataResolver>
     ) {
         this.store
@@ -113,6 +115,8 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             combineLatest(this.resolver$, (changes, base) => ({ ...base, ...changes }))
         ).subscribe(latest => this.latest = latest);
 
+        // this.changes$.subscribe(c => console.log(c));
+
         this.summary$ = combine(
             this.store.select(fromWizard.getWizardDefinition),
             this.store.select(fromWizard.getSchemaCollection),
@@ -128,6 +132,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         );
 
         this.changes$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(c => this.changes = c);
+        this.resolver$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(r => this.resolver = r);
     }
 
     next(): void {
@@ -160,6 +165,18 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         this.store.dispatch(new SetIndex(page));
     }
 
+    hasChanges(changes: MetadataResolver): boolean {
+        // const updated = this.diffService.updatedDiff(this.resolver, changes);
+        // const deleted = this.diffService.deletedDiff(this.resolver, changes);
+        let blacklist = ['id', 'resourceId'];
+        return Object.keys(changes).filter(key => !(blacklist.indexOf(key) > -1)).length > 0;
+    }
+
+    isNew(changes: MetadataResolver): boolean {
+        let blacklist = ['id', 'resourceId'];
+        return Object.keys(changes).filter(key => !(blacklist.indexOf(key) > -1)).length === 0;
+    }
+
     ngOnDestroy(): void {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
@@ -171,17 +188,22 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        if (nextState.url.match('blank') && !!nextState.root.queryParams.id) { return of(true); }
-        if (Object.keys(this.changes).length > 0) {
+        if (nextState.url.match('blank') && !!nextState.root.queryParams.id) {
+            return of(true);
+        }
+        if (this.hasChanges(this.changes)) {
             let modal = this.modalService.open(UnsavedEntityComponent);
             modal.componentInstance.message = 'resolver';
             modal.result.then(
                 () => {
                     this.store.dispatch(new Clear());
-                    this.router.navigate([nextState.url]);
+                    this.router.navigateByUrl(nextState.url);
                 },
                 () => console.warn('denied')
             );
+        }
+        if (this.isNew(this.latest)) {
+            return of(true);
         }
         return this.store.select(fromResolver.getEntityIsSaved);
     }
