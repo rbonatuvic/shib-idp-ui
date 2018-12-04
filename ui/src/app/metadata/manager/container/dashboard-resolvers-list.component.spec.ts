@@ -127,7 +127,7 @@ describe('Dashboard Resolvers List Page', () => {
         it('should route to the wizard page', () => {
             spyOn(router, 'navigate');
             instance.edit(draft);
-            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', 'new', 'blank', 'org-info'], {
+            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', 'new', 'blank', 'common'], {
                 queryParams: { id: '1' }
             });
         });

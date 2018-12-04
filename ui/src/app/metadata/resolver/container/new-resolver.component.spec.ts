@@ -23,6 +23,7 @@ describe('New Resolver Page', () => {
     let instance: NewResolverComponent;
     let activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
     activatedRoute.testParamMap = { id: 'foo', events: of({}) };
+    activatedRoute.data = of('foo');
 
     beforeEach(() => {
         TestBed.configureTestingModule({
