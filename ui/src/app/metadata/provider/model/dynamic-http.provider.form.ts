@@ -11,21 +11,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
     ...BaseMetadataProviderEditor,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
-    bindings: {
-        '/metadataRequestURLConstructionScheme/@type': [
-            {
-                'input': (event, property: FormProperty) => {
-                    let transform = property.parent.getProperty('transformRef');
-                    let content = property.parent.getProperty('content');
-                    if (!content.value && property.value !== 'Regex') {
-                        transform.setVisible(true);
-                    } else {
-                        transform.setVisible(false);
-                    }
-                }
-            }
-        ]
-    },
+    bindings: {},
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {

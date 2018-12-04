@@ -40,7 +40,10 @@ describe('Metadata Source Base class', () => {
         it('should return a list of validators for the ngx-schema-form', () => {
             expect(Object.keys(getValidators([]))).toEqual([
                 '/',
-                '/entityId'
+                '/entityId',
+                '/organization/name',
+                '/organization/displayName',
+                '/organization/url'
             ]);
         });
     });
