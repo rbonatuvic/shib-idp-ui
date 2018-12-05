@@ -41,7 +41,7 @@ export class EditFilterComponent {
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
     ) {
-        this.definition = MetadataFilterTypes.EntityAttributesFilter;
+        this.definition = MetadataFilterTypes.EntityAttributes;
 
         this.schema$ = this.schemaService.get(this.definition.schema).pipe(shareReplay());
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);

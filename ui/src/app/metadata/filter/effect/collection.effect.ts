@@ -78,12 +78,6 @@ export class FilterCollectionEffects {
     addFilter$ = this.actions$.pipe(
         ofType<AddFilterRequest>(FilterCollectionActionTypes.ADD_FILTER_REQUEST),
         map(action => action.payload),
-        map(filter => {
-            return {
-                ...filter,
-                relyingPartyOverrides: removeNulls(new EntityAttributesFilterEntity(filter).relyingPartyOverrides)
-            };
-        }),
         withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         switchMap(([unsaved, providerId]) => {
             return this.filterService

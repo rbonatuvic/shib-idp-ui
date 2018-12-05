@@ -1,5 +1,7 @@
 import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
+import { removeNulls } from '../../../shared/util';
+import { EntityAttributesFilterEntity } from '../../domain/entity';
 
 export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     label: 'EntityAttributes',
@@ -35,6 +37,11 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
         };
         return validators;
     },
-    parser: (changes: any): MetadataFilter => changes,
+    parser: (changes: any): MetadataFilter => {
+        return {
+            ...changes,
+            relyingPartyOverrides: removeNulls(new EntityAttributesFilterEntity(changes).relyingPartyOverrides)
+        };
+    },
     formatter: (changes: MetadataFilter): any => changes
 };

@@ -1,65 +1,84 @@
 {
-    "definitions": {},
-    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "title": "The Root Schema",
-    "required": [
-        "name",
-        "resourceId",
-        "filterEnabled",
-        "removeExistingFormats",
-        "formats",
-        "@type",
-        "version"
+    "fieldsets": [
+        {
+            "type": "group",
+            "fields": [
+                "name",
+                "filterEnabled",
+                "@type",
+                "resourceId",
+                "version",
+                "removeExistingFormats",
+                "formats"
+            ]
+        }
     ],
     "properties": {
         "name": {
-            "$id": "#/properties/name",
+            "title": "label.filter-name",
+            "description": "tooltip.filter-name",
             "type": "string",
-            "title": "label.name",
-            "pattern": "^(.*)$"
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
         },
         "filterEnabled": {
-            "$id": "#/properties/filterEnabled",
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
             "type": "boolean",
-            "title": "The Filterenabled Schema"
+            "default": false
+        },
+        "@type": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            },
+            "default": "NameIDFormat"
+        },
+        "version": {
+            "type": "integer",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "resourceId": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            }
         },
         "removeExistingFormats": {
-            "$id": "#/properties/removeExistingFormats",
             "type": "boolean",
-            "title": "The Removeexistingformats Schema",
+            "title": "label.remove-existing-formats",
+            "description": "tooltip.remove-existing-formats",
             "default": false
         },
         "formats": {
-            "$id": "#/properties/formats",
             "type": "array",
-            "title": "The Formats Schema",
+            "title": "label.nameid-formats",
+            "description": "tooltip.nameid-formats",
             "items": {
-                "$id": "#/properties/formats/items",
                 "type": "object",
-                "title": "The Items Schema",
-                "required": [
-                    "format",
-                    "value",
-                    "type"
-                ],
                 "properties": {
                     "format": {
-                        "$id": "#/properties/formats/items/properties/format",
                         "type": "string",
-                        "title": "The Format Schema",
-                        "pattern": "^(.*)$"
+                        "title": "label.nameid-formats-format",
+                        "description": "tooltip.nameid-formats-format"
                     },
                     "value": {
-                        "$id": "#/properties/formats/items/properties/value",
                         "type": "string",
-                        "title": "The Value Schema"
+                        "title": "label.nameid-formats-value",
+                        "description": "tooltip.nameid-formats-value"
                     },
                     "type": {
-                        "$id": "#/properties/formats/items/properties/type",
                         "type": "string",
-                        "title": "The Type Schema",
-                        "widget": "select",
+                        "title": "label.nameid-formats-type",
+                        "description": "tooltip.nameid-formats-type",
+                        "widget": {
+                            "id": "select"
+                        },
                         "oneOf": [
                             {
                                 "enum": [
@@ -83,20 +102,6 @@
                     }
                 }
             }
-        },
-        "@type": {
-            "$id": "#/properties/@type",
-            "type": "string",
-            "title": "The @type Schema",
-            "pattern": "^(.*)$"
-        },
-        "version": {
-            "type": "integer",
-            "widget": "hidden"
-        },
-        "resourceId": {
-            "type": "string",
-            "widget": "hidden"
         }
     }
 }

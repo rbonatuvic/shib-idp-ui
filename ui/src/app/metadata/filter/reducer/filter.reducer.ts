@@ -2,11 +2,6 @@ import {
     FilterActionTypes,
     FilterActionsUnion
 } from '../action/filter.action';
-import {
-    SearchActionTypes,
-    SearchActionsUnion
-} from '../action/search.action';
-import { FilterCollectionActionTypes, FilterCollectionActionsUnion } from '../action/collection.action';
 import { MetadataFilter, MDUI } from '../../domain/model';
 
 export interface FilterState {
@@ -21,12 +16,20 @@ export const initialState: FilterState = {
     preview: null
 };
 
-export function reducer(state = initialState, action: FilterActionsUnion | SearchActionsUnion | FilterCollectionActionsUnion): FilterState {
+export function reducer(state = initialState, action: FilterActionsUnion): FilterState {
     switch (action.type) {
         case FilterActionTypes.SELECT_ID: {
             return {
                 ...state,
                 selected: action.payload
+            };
+        }
+        case FilterActionTypes.SELECT_FILTER_TYPE: {
+            return {
+                ...state,
+                changes: <MetadataFilter>{
+                    type: action.payload
+                }
             };
         }
         case FilterActionTypes.LOAD_ENTITY_PREVIEW_SUCCESS: {

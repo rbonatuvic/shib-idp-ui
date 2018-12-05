@@ -81,3 +81,5 @@ export const getFilterNames = createSelector(getAllFilters, (filters: MetadataFi
 export const mergeFn = (changes, filter) => ({ ...filter, ...changes });
 
 export const getFilterWithChanges = createSelector(getFilter, getSelectedFilter, mergeFn);
+export const getFilterType = createSelector(getFilter, (changes: MetadataFilter) => changes ? changes.type : null);
+
