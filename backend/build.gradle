@@ -194,6 +194,7 @@ task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     systemProperties = System.properties
+    systemProperties['user.dir'] = workingDir
 }
 
 task generateSources {
