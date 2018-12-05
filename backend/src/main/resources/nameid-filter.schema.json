@@ -1,0 +1,107 @@
+{
+    "type": "object",
+    "fieldsets": [
+        {
+            "type": "group",
+            "fields": [
+                "name",
+                "filterEnabled",
+                "@type",
+                "resourceId",
+                "version",
+                "removeExistingFormats",
+                "formats"
+            ]
+        }
+    ],
+    "properties": {
+        "name": {
+            "title": "label.filter-name",
+            "description": "tooltip.filter-name",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "filterEnabled": {
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
+            "type": "boolean",
+            "default": false
+        },
+        "@type": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            },
+            "default": "NameIDFormat"
+        },
+        "version": {
+            "type": "integer",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "resourceId": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "removeExistingFormats": {
+            "type": "boolean",
+            "title": "label.remove-existing-formats",
+            "description": "tooltip.remove-existing-formats",
+            "default": false
+        },
+        "formats": {
+            "type": "array",
+            "title": "label.nameid-formats",
+            "description": "tooltip.nameid-formats",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "format": {
+                        "type": "string",
+                        "title": "label.nameid-formats-format",
+                        "description": "tooltip.nameid-formats-format"
+                    },
+                    "value": {
+                        "type": "string",
+                        "title": "label.nameid-formats-value",
+                        "description": "tooltip.nameid-formats-value"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "label.nameid-formats-type",
+                        "description": "tooltip.nameid-formats-type",
+                        "widget": {
+                            "id": "select"
+                        },
+                        "oneOf": [
+                            {
+                                "enum": [
+                                    "ENTITY"
+                                ],
+                                "description": "value.entity"
+                            },
+                            {
+                                "enum": [
+                                    "CONDITION_REF"
+                                ],
+                                "description": "value.condition-ref"
+                            },
+                            {
+                                "enum": [
+                                    "CONDITION_SCRIPT"
+                                ],
+                                "description": "value.condition-script"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
