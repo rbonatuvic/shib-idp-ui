@@ -1,7 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller.support;
 
-import com.google.common.collect.ImmutableMap;
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -45,5 +46,11 @@ public class RestControllersSupport {
     public final ResponseEntity<ErrorResponse> handleAllOtherExceptions(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse("400", ex.getLocalizedMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MetadataFileNotFoundException.class)
+    public final ResponseEntity<ErrorResponse> metadataFileNotFoundHandler(MetadataFileNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(INTERNAL_SERVER_ERROR.toString(), ex.getLocalizedMessage());
+        return new ResponseEntity<>(errorResponse, INTERNAL_SERVER_ERROR);
     }
 }

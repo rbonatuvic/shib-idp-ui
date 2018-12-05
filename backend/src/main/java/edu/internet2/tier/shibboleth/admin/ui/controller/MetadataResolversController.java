@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver;
@@ -105,30 +106,26 @@ public class MetadataResolversController {
     }
 
     @PostMapping("/MetadataResolvers")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> create(@RequestBody MetadataResolver newResolver) throws IOException, ResolverException, ComponentInitializationException {
         if (resolverRepository.findByName(newResolver.getName()) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
         ResponseEntity<?> validationErrorResponse = validate(newResolver);
-        if(validationErrorResponse != null) {
+        if (validationErrorResponse != null) {
             return validationErrorResponse;
         }
 
         MetadataResolver persistedResolver = resolverRepository.save(newResolver);
         positionOrderContainerService.appendPositionOrderForNew(persistedResolver);
-
-        ResponseEntity initializationError = doResolverInitialization(persistedResolver);
-        if (initializationError != null) {
-            return initializationError;
-        }
+        doResolverInitialization(persistedResolver);
 
         return ResponseEntity.created(getResourceUriFor(persistedResolver)).body(persistedResolver);
     }
 
     @PutMapping("/MetadataResolvers/{resourceId}")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<?> update(@PathVariable String resourceId, @RequestBody MetadataResolver updatedResolver) throws IOException, ResolverException, ComponentInitializationException {
         MetadataResolver existingResolver = resolverRepository.findByResourceId(resourceId);
         if (existingResolver == null) {
@@ -141,18 +138,13 @@ public class MetadataResolversController {
         }
 
         ResponseEntity<?> validationErrorResponse = validate(updatedResolver);
-        if(validationErrorResponse != null) {
+        if (validationErrorResponse != null) {
             return validationErrorResponse;
         }
 
         updatedResolver.setAudId(existingResolver.getAudId());
-
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
-
-        ResponseEntity initializationError = doResolverInitialization(persistedResolver);
-        if (initializationError != null) {
-            return initializationError;
-        }
+        doResolverInitialization(persistedResolver);
 
         return ResponseEntity.ok(persistedResolver);
     }
@@ -160,7 +152,7 @@ public class MetadataResolversController {
     @SuppressWarnings("Unchecked")
     private ResponseEntity<?> validate(MetadataResolver metadataResolver) {
         ValidationResult validationResult = metadataResolverValidationService.validateIfNecessary(metadataResolver);
-        if(!validationResult.isValid()) {
+        if (!validationResult.isValid()) {
             return ResponseEntity.badRequest().body(validationResult.getErrorMessage());
         }
         return null;
@@ -174,17 +166,16 @@ public class MetadataResolversController {
                 .toUri();
     }
 
-    private ResponseEntity<?> doResolverInitialization(MetadataResolver persistedResolver) throws ComponentInitializationException, ResolverException, IOException {
+    private void doResolverInitialization(MetadataResolver persistedResolver) throws
+            ComponentInitializationException, ResolverException, IOException {
         if (persistedResolver.getDoInitialization()) {
             org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = null;
             try {
                 openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
             } catch (FileNotFoundException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "message.file-doesnt-exist"));
+                throw new MetadataFileNotFoundException("message.file-doesnt-exist");
             }
             OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
         }
-        return null;
     }
 }
