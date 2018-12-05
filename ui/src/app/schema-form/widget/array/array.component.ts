@@ -28,7 +28,7 @@ export class CustomArrayComponent extends ArrayWidget implements AfterViewInit, 
 
     ngAfterViewInit(): void {
         this.errors$ = this.formProperty.errorsChanges.pipe(
-            map(errors => errors ? errors.reduce((coll, err) => {
+            map(errors => errors ? errors.filter(err => err.code !== 'UNRESOLVABLE_REFERENCE').reduce((coll, err) => {
                 coll[err.code] = err;
                 return coll;
             }, {}) : {}),

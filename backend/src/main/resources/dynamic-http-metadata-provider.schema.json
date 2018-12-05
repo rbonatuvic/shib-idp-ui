@@ -2,7 +2,8 @@
     "type": "object",
     "required": [
         "xmlId",
-        "metadataURL"
+        "metadataURL",
+        "metadataRequestURLConstructionScheme"
     ],
     "properties": {
         "enabled": {
@@ -20,6 +21,39 @@
         },
         "metadataRequestURLConstructionScheme": {
             "type": "object",
+            "required": [
+                "@type",
+                "content"
+            ],
+            "anyOf": [
+                {
+                    "properties": {
+                        "@type": {
+                            "enum": [
+                                "Regex"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "@type",
+                        "content",
+                        "match"
+                    ]
+                },
+                {
+                    "properties": {
+                        "@type": {
+                            "enum": [
+                                "MetadataQueryProtocol"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "@type",
+                        "content"
+                    ]
+                }
+            ],
             "properties": {
                 "@type": {
                     "title": "label.md-request-type",
@@ -37,12 +71,6 @@
                         },
                         {
                             "enum": [
-                                "Template"
-                            ],
-                            "description": "value.template"
-                        },
-                        {
-                            "enum": [
                                 "Regex"
                             ],
                             "description": "value.regex"
@@ -53,67 +81,6 @@
                     "title": "label.md-request-value",
                     "description": "tooltip.md-request-value",
                     "type": "string"
-                },
-                "transformRef": {
-                    "title": "label.transform-ref",
-                    "description": "tooltip.transform-ref",
-                    "type": "string",
-                    "visibleIf": {
-                        "content": [
-                            ""
-                        ]
-                    }
-                },
-                "encodingStyle": {
-                    "title": "label.encoding-style",
-                    "description": "tooltip.encoding-style",
-                    "type": "string",
-                    "widget": {
-                        "id": "select"
-                    },
-                    "default": "FORM",
-                    "oneOf": [
-                        {
-                            "enum": [
-                                "NONE"
-                            ],
-                            "description": "None"
-                        },
-                        {
-                            "enum": [
-                                "FORM"
-                            ],
-                            "description": "Form"
-                        },
-                        {
-                            "enum": [
-                                "PATH"
-                            ],
-                            "description": "Path"
-                        },
-                        {
-                            "enum": [
-                                "FRAGMENT"
-                            ],
-                            "description": "Fragment"
-                        }
-                    ],
-                    "visibleIf": {
-                        "@type": [
-                            "Template"
-                        ]
-                    }
-                },
-                "velocityEngine": {
-                    "title": "label.velocity-engine",
-                    "description": "tooltip.velocity-engine",
-                    "type": "string",
-                    "default": "shibboleth.VelocityEngine",
-                    "visibleIf": {
-                        "@type": [
-                            "Template"
-                        ]
-                    }
                 },
                 "match": {
                     "title": "label.match",
@@ -638,7 +605,6 @@
                             "title": "label.certificate-file",
                             "description": "tooltip.certificate-file",
                             "type": "string",
-                            "widget": "textarea",
                             "default": ""
                         }
                     },

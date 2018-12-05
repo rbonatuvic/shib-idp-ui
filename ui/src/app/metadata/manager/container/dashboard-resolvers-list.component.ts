@@ -72,7 +72,7 @@ export class DashboardResolversListComponent implements OnInit {
 
     edit(entity: MetadataEntity): void {
         if (entity.isDraft()) {
-            this.router.navigate(['metadata', 'resolver', 'new', 'blank', 'org-info'], {
+            this.router.navigate(['metadata', 'resolver', 'new', 'blank', 'common'], {
                 queryParams: {
                     id: entity.getId()
                 }
