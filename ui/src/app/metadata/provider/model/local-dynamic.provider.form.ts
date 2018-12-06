@@ -42,8 +42,8 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             ]
         },
         {
-            id: 'reloading',
-            label: 'label.reloading-attributes',
+            id: 'dynamic',
+            label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
             schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
@@ -113,14 +113,14 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
                     class: ['mb-3'],
                     fields: [
                         'name',
-                        '@type',
-                        'enabled'
+                        '@type'
                     ]
                 },
                 {
                     type: 'group-lg',
                     class: ['col-12'],
                     fields: [
+                        'enabled',
                         'xmlId',
                         'sourceDirectory',
                     ]
@@ -128,8 +128,8 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
             ]
         },
         {
-            id: 'reloading',
-            label: 'label.reloading-attributes',
+            id: 'dynamic',
+            label: 'label.dynamic-attributes',
             index: 2,
             initialValues: [],
             schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
