@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteList
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
@@ -99,7 +100,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 }
                 if(metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
-                    NameIDFormatFilter openSamlTargetFilter = new NameIDFormatFilter()
+                    NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
                     nameIdFormatFilter.formats.each {
                         switch (it.type) {
