@@ -12,6 +12,10 @@ class SeleniumSIDETest extends Specification {
         setup:
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
+            System.properties.contains('')
+            if (System.properties.getProperty('webdriver.driver')) {
+                it.driver = System.properties.getProperty('webdriver.driver')
+            }
             it.baseurl = 'http://localhost:10101'
             it
         }
