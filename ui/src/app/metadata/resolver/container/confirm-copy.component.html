@@ -1,4 +1,4 @@
-<div class="container-fluid p-3" role="main">
+<div class="container-fluid p-3" role="section">
     <section class="section" aria-label="Add a new metadata source - how are you adding the metadata information?" tabindex="0">
         <div class="section-header bg-info p-2 text-white">
             <div class="row justify-content-between">
@@ -10,7 +10,7 @@
         <div class="section-body p-4 border border-top-0 border-info">
             <ul class="nav nav-wizard m-3">
                 <li class="nav-item">
-                    <button class="nav-link previous btn clearfix" role="button" [routerLink]="['../']">
+                    <button class="nav-link previous btn clearfix" [routerLink]="['../']">
                         <span class="direction pull-left">
                             <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
                             <translate-i18n key="action.back">Back</translate-i18n>
@@ -27,7 +27,7 @@
                     </h3>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link save btn" aria-label="Save" role="button" (click)="onSave(resolver)" [disabled]="saving$ | async">
+                    <button class="nav-link save btn" aria-label="Save" (click)="onSave(resolver)" [disabled]="saving$ | async">
                         <span class="label pull-left" translate="action.save">Save</span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw next d-block fa-2x"
