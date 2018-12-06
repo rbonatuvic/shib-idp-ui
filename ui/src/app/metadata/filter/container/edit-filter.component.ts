@@ -11,7 +11,7 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
-import { shareReplay, map, withLatestFrom } from 'rxjs/operators';
+import { shareReplay, map, withLatestFrom, filter, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'edit-filter-page',
@@ -25,7 +25,7 @@ export class EditFilterComponent {
     statusChangeSubject = new Subject<{ value: any[] }>();
     private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
 
-    definition: FormDefinition<MetadataFilter>;
+    definition$: Observable<FormDefinition<MetadataFilter>>;
     schema$: Observable<any>;
 
     model$: Observable<MetadataFilter>;
@@ -41,9 +41,17 @@ export class EditFilterComponent {
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
     ) {
-        this.definition = MetadataFilterTypes.EntityAttributes;
-
-        this.schema$ = this.schemaService.get(this.definition.schema).pipe(shareReplay());
+        this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
+            filter(t => !!t),
+            map(t => MetadataFilterTypes[t])
+        );
+        this.schema$ = this.definition$.pipe(
+            filter(d => !!d),
+            switchMap(d => {
+                return this.schemaService.get(d.schema);
+            }),
+            shareReplay()
+        );
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
 
@@ -54,9 +62,10 @@ export class EditFilterComponent {
 
         this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
             withLatestFrom(
-                this.store.select(fromFilter.getSelectedFilter)
+                this.store.select(fromFilter.getSelectedFilter),
+                this.definition$
             ),
-            map(([names, provider]) => this.definition.getValidators(
+            map(([names, provider, definition]) => definition.getValidators(
                 names.filter(n => n !== provider.name)
             ))
         );
@@ -70,6 +79,8 @@ export class EditFilterComponent {
                 this.preview(parameters.id);
             }
         };
+
+        this.definition$.subscribe(d => console.log(d));
     }
 
     save(): void {

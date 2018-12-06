@@ -69,14 +69,13 @@
             "description": "tooltip.nameid-formats",
             "items": {
                 "type": "object",
+                "title": "label.nameid-format",
                 "widget": {
                     "id": "inline-obj"
                 },
                 "properties": {
                     "format": {
-                        "type": "string",
-                        "title": "label.nameid-formats-format",
-                        "description": "tooltip.nameid-formats-format"
+                        "$ref": "#/definitions/NameIDFormat"
                     },
                     "value": {
                         "type": "string",
@@ -112,6 +111,24 @@
                         ]
                     }
                 }
+            }
+        }
+    },
+    "definitions": {
+        "NameIDFormat": {
+            "type": "string",
+            "title": "label.nameid-formats-format",
+            "description": "tooltip.nameid-formats-format",
+            "minLength": 1,
+            "maxLength": 255,
+            "widget": {
+                "id": "datalist",
+                "data": [
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                ]
             }
         }
     }

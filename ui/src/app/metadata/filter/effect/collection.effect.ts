@@ -39,6 +39,7 @@ import { removeNulls, array_move } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 import { MetadataFilterService } from '../../domain/service/filter.service';
 import { SelectProviderRequest } from '../../provider/action/collection.action';
+import { UpdateFilterChanges } from '../action/filter.action';
 
 /* istanbul ignore next */
 @Injectable()
@@ -72,6 +73,13 @@ export class FilterCollectionEffects {
                 );
             }
         )
+    );
+
+    @Effect()
+    selectFilterRequestSetChanges$ = this.actions$.pipe(
+        ofType<SelectFilterSuccess>(FilterCollectionActionTypes.SELECT_FILTER_SUCCESS),
+        map(action => action.payload),
+            map(filter => new UpdateFilterChanges({...filter, type: filter['@type']}))
     );
 
     @Effect()
