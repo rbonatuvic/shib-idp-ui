@@ -9,7 +9,12 @@
                 "@type",
                 "resourceId",
                 "version",
-                "removeExistingFormats",
+                "removeExistingFormats"
+            ]
+        },
+        {
+            "type": "group-lg",
+            "fields": [
                 "formats"
             ]
         }
@@ -57,10 +62,16 @@
         },
         "formats": {
             "type": "array",
+            "widget": {
+                "id": "inline-obj-list"
+            },
             "title": "label.nameid-formats",
             "description": "tooltip.nameid-formats",
             "items": {
                 "type": "object",
+                "widget": {
+                    "id": "inline-obj"
+                },
                 "properties": {
                     "format": {
                         "type": "string",
