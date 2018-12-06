@@ -18,6 +18,8 @@ import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
 import { CustomObjectWidget } from './widget/object/object.component';
 import { CustomRadioComponent } from './widget/radio/radio.component';
+import { InlineObjectListComponent } from './widget/array/inline-obj-list.component';
+import { InlineObjectComponent } from './widget/object/inline-obj.component';
 
 export class CustomWidgetRegistry extends WidgetRegistry {
     constructor() {
@@ -39,6 +41,8 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('fieldset', FieldsetComponent);
         this.register('object', CustomObjectWidget);
+        this.register('inline-obj-list', InlineObjectListComponent);
+        this.register('inline-obj', InlineObjectComponent);
 
         this.register('array', CustomArrayComponent);
         this.register('checklist', ChecklistComponent);

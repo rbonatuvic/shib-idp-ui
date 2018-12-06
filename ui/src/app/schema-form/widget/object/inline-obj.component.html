@@ -1,0 +1,9 @@
+<div class="flex-column">
+<ng-container *ngFor="let fieldset of formProperty.schema.fieldsets; let i = index;">
+    <fieldset class="d-flex flex-row justify-content-between">
+        <div *ngFor="let fieldId of fieldset.fields" class="flex-fill">
+            <sf-form-element [formProperty]="formProperty.getProperty(fieldId)"></sf-form-element>
+        </div>
+    </fieldset>
+</ng-container>
+</div>
