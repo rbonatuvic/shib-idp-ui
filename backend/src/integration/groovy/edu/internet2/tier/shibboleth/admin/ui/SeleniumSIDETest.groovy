@@ -27,5 +27,16 @@ class SeleniumSIDETest extends Specification {
         where:
         name | file
         'Create Dynamic HTTP Metadata Resolver' | '/dhmr.side'
+        'Metadata Source Happy Path Save'       | '/MetadataSourceHappyPathSAVE.side'
+        'Metadata Provider Happy Path Save'     | '/MetadataProviderHappyPathSAVE.side'
+        'Create Filter Entity ID'               | '/CreateFilterEntityID.side'
+        'Create Filter REGEX'                   | '/CreateFilterREGEX.side'
+        'Create Filter Script'                  | '/CreateFilterScript.side'
+        'Create Metadata Source From XML'       | '/CreateMetadataSourceFromXML.side'
+        'Create Metadata Source From Copy'      | '/CreatemetaSourceFromCopy.side'
+        'Delete Entity ID Filter'               | '/DeleteEntityIDFilter.side'
+        'Delete REGEX Filter'                   | '/DeleteREGEXFilter_Incomplete.side' // incomplete
+        'Create Metadata Source from URL'       | '/CreateMetadataSourceFromURL.side'
+        'Delete Incomplete Source'              | '/DeleteIncompleteSource_Incomplete.side' // incomplete
     }
 }

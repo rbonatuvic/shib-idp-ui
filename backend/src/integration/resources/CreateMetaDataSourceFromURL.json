@@ -5,6 +5,26 @@
   "steps": [
     {
       "type": "get",
+      "url": "http://localhost:10101/api/heheheheheheheWipeout",
+    },
+    {
+      "type": "waitForElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": "body"
+      }
+    },
+    {
+      "type": "assertText",
+      "locator": {
+        "type": "css selector",
+        "value": "body"
+      },
+      "text": "yes, you did it",
+      "negated": false
+    },
+    {
+      "type": "get",
       "url": "http://localhost:10101"
     },
     {

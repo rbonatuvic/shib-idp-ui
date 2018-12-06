@@ -4,11 +4,13 @@ import com.sebuilder.interpreter.Script
 import com.sebuilder.interpreter.factory.ScriptFactory
 import com.sebuilder.interpreter.factory.StepTypeFactory
 import com.sebuilder.interpreter.factory.TestRunFactory
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class SeleniumTest extends Specification {
     @Unroll
+    @Ignore
     def "#name"() {
         expect:
         ScriptFactory scriptFactory = new ScriptFactory().with {
@@ -26,5 +28,6 @@ class SeleniumTest extends Specification {
         where:
         name | file
         'Create metadata source from url' | '/CreateMetaDataSourceFromURL.json'
+        'Create filter entity ID'         | '/CreateFilterEntityID.json'
     }
 }
