@@ -728,13 +728,6 @@
       ],
       "value": "eval(true);"
     }, {
-      "id": "d7ba08bc-52bc-4ef1-8c9e-a5ecbdcf75bb",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "",
-      "targets": [],
-      "value": "30000ms"
-    }, {
       "id": "38c76223-9080-4938-81b0-2f3c4706e943",
       "comment": "",
       "command": "click",
