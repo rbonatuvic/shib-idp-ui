@@ -2,9 +2,10 @@
     "type": "object",
     "fieldsets": [
         {
-            "type": "group",
+            "type": "group-lg",
             "fields": [
                 "name",
+                "entityAttributesFilterTarget",
                 "filterEnabled",
                 "@type",
                 "resourceId",
@@ -13,7 +14,7 @@
             ]
         },
         {
-            "type": "group-lg",
+            "type": "group",
             "fields": [
                 "formats"
             ]
@@ -34,6 +35,60 @@
             "description": "tooltip.enable-filter",
             "type": "boolean",
             "default": false
+        },
+        "entityAttributesFilterTarget": {
+            "title": "label.search-criteria",
+            "description": "tooltip.search-criteria",
+            "type": "object",
+            "widget": {
+                "id": "filter-target"
+            },
+            "properties": {
+                "entityAttributesFilterTargetType": {
+                    "title": "",
+                    "type": "string",
+                    "default": "ENTITY",
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "ENTITY"
+                            ],
+                            "description": "value.entity-id"
+                        },
+                        {
+                            "enum": [
+                                "REGEX"
+                            ],
+                            "description": "value.regex"
+                        },
+                        {
+                            "enum": [
+                                "CONDITION_SCRIPT"
+                            ],
+                            "description": "value.script"
+                        }
+                    ]
+                },
+                "value": {
+                    "type": "array",
+                    "buttons": [
+                        {
+                            "id": "preview",
+                            "label": "action.preview",
+                            "widget": "icon-button"
+                        }
+                    ],
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value",
+                "entityAttributesFilterTargetType"
+            ]
         },
         "@type": {
             "type": "string",
@@ -61,74 +116,29 @@
             "default": false
         },
         "formats": {
-            "type": "array",
-            "widget": {
-                "id": "inline-obj-list"
-            },
-            "title": "label.nameid-formats",
-            "description": "tooltip.nameid-formats",
-            "items": {
-                "type": "object",
-                "title": "label.nameid-format",
-                "widget": {
-                    "id": "inline-obj"
-                },
-                "properties": {
-                    "format": {
-                        "$ref": "#/definitions/NameIDFormat"
-                    },
-                    "value": {
-                        "type": "string",
-                        "title": "label.nameid-formats-value",
-                        "description": "tooltip.nameid-formats-value"
-                    },
-                    "type": {
-                        "type": "string",
-                        "title": "label.nameid-formats-type",
-                        "description": "tooltip.nameid-formats-type",
-                        "widget": {
-                            "id": "select"
-                        },
-                        "oneOf": [
-                            {
-                                "enum": [
-                                    "ENTITY"
-                                ],
-                                "description": "value.entity"
-                            },
-                            {
-                                "enum": [
-                                    "CONDITION_REF"
-                                ],
-                                "description": "value.condition-ref"
-                            },
-                            {
-                                "enum": [
-                                    "CONDITION_SCRIPT"
-                                ],
-                                "description": "value.condition-script"
-                            }
-                        ]
-                    }
-                }
-            }
+            "$ref": "#/definitions/NameIdFormatList"
         }
     },
     "definitions": {
-        "NameIDFormat": {
-            "type": "string",
-            "title": "label.nameid-formats-format",
-            "description": "tooltip.nameid-formats-format",
-            "minLength": 1,
-            "maxLength": 255,
-            "widget": {
-                "id": "datalist",
-                "data": [
-                    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-                    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                ]
+        "NameIdFormatList": {
+            "title": "label.nameid-format-to-send",
+            "placeholder": "label.nameid-format",
+            "description": "tooltip.nameid-format",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "widget": {
+                    "id": "datalist",
+                    "data": [
+                        "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                        "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                    ]
+                }
             }
         }
     }

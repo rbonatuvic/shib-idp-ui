@@ -5,33 +5,45 @@
                 <div class="col-md-12">
                     <span class="display-6">
                         <i class="fa fa-fw fa-gears"></i>&nbsp;&nbsp;
-                        <translate-i18n key="label.new-filter">Edit EntityAttributesFilter</translate-i18n>
+                        <translate-i18n key="label.edit-filter">Edit Filter</translate-i18n> {{ type$ | async }}
                     </span>
                 </div>
             </div>
         </div>
         <div class="section-body p-4 border border-top-0 border-info" *ngIf="schema$ | async">
-            <div class="mx-3 my-2 d-flex justify-content-end">
-                <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="!isValid || (isSaving$ | async)">
-                    <i class="fa fa-fw fa-lg" [ngClass]="{
-                        'fa-save': !(isSaving$ | async),
-                        'fa-spinner': (isSaving$ | async),
-                        'fa-pulse': (isSaving$ | async)
-                    }"></i>
-                    <translate-i18n key="action.save">Save</translate-i18n>
-                </button>
-                &nbsp;
-                <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
-                    <translate-i18n key="action.cancel">Cancel</translate-i18n>
-                </button>
+            <div class="mx-3 my-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-block w-50">
+                        <div class="form-group">
+                            <label for="type">Filter Type</label>
+                            <input class="form-control" type="text" readonly [value]="type$ | async" />
+                        </div>
+                    </div>
+                    <div class="py-2">
+                        <ng-container *ngIf="schema$ | async">
+                            <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="!isValid || (isSaving$ | async)">
+                                <i class="fa fa-fw fa-lg" [ngClass]="{
+                                    'fa-save': !(isSaving$ | async),
+                                    'fa-spinner': (isSaving$ | async),
+                                    'fa-pulse': (isSaving$ | async)
+                                }"></i>
+                                <translate-i18n key="action.save">Save</translate-i18n>
+                            </button>
+                            &nbsp;
+                            <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
+                                <translate-i18n key="action.cancel">Cancel</translate-i18n>
+                            </button>
+                        </ng-container>
+                    </div>
+                </div>
+                <sf-form
+                    [schema]="schema$ | async"
+                    [model]="model$ | async"
+                    [validators]="validators$ | async"
+                    [actions]="actions"
+                    (onChange)="valueChangeSubject.next($event)"
+                    (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
             </div>
-            <sf-form
-                [schema]="schema$ | async"
-                [model]="model$ | async"
-                [validators]="validators$ | async"
-                [actions]="actions"
-                (onChange)="valueChangeSubject.next($event)"
-                (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
         </div>
     </section>
 </div>

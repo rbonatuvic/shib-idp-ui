@@ -84,7 +84,6 @@ export const detectFilterType = (changes) => changes.type ? changes.type : chang
 export const getFilterWithChanges = createSelector(getFilter, getSelectedFilter, mergeFn);
 export const getFilterType = createSelector(getFilter, (changes: MetadataFilter) => {
     const type = changes ? detectFilterType(changes) : null;
-    console.log(type, changes);
     return type;
 });
 

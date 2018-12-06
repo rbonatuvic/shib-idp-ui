@@ -32,6 +32,7 @@ export class EditFilterComponent {
     isSaving$: Observable<boolean>;
     filter: MetadataFilter;
     isValid: boolean;
+    type$: Observable<string>;
 
     validators$: Observable<{ [key: string]: any }>;
 
@@ -80,7 +81,7 @@ export class EditFilterComponent {
             }
         };
 
-        this.definition$.subscribe(d => console.log(d));
+        this.type$ = this.model$.pipe(map(f => f['@type']));
     }
 
     save(): void {
