@@ -400,7 +400,6 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         when:
         metadataResolverService.reloadFilters('testme984')
         def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
-        def x2 = openSamlObjects.marshalToXmlString(ed)
 
         then:
         !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/metadata/984-3-expected.xml'))).withTest(Input.fromString(openSamlObjects.marshalToXmlString(ed))).ignoreComments().ignoreWhitespace().build().hasDifferences()
