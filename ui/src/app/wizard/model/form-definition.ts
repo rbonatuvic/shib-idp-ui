@@ -3,6 +3,7 @@ export interface FormDefinition<T> {
     type: string;
     schema?: string;
     bindings?: any;
+    getEntity?(entity: any): any;
     parser(changes: Partial<T>, schema?: any);
     formatter(changes: Partial<T>, schema?: any);
     getValidators?(...args: any[]): { [key: string]: any };

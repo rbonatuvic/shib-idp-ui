@@ -1,10 +1,14 @@
 import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
+import { NameIDFormatFilterEntity } from '../../domain/entity/filter/nameid-format-filter';
 
 export const NameIDFilter: FormDefinition<MetadataFilter> = {
     label: 'NameIDFilter',
     type: 'NameIDFormat',
     schema: '/api/ui/NameIdFormatFilter',
+    getEntity(filter: MetadataFilter): NameIDFormatFilterEntity {
+        return new NameIDFormatFilterEntity(filter);
+    },
     getValidators(namesList: string[] = []): any {
         const validators = {
             '/': (value, property, form_current) => {

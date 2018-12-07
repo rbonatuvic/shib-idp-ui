@@ -11,6 +11,7 @@ import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-sch
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { MetadataFilterTypes } from '../model';
 
 describe('Edit Metadata Filter Page', () => {
     let fixture: ComponentFixture<EditFilterComponent>;
@@ -67,6 +68,7 @@ describe('Edit Metadata Filter Page', () => {
     describe('preview method', () => {
         it('should dispatch a preview action', () => {
             fixture.detectChanges();
+            instance.definition = MetadataFilterTypes.EntityAttributes;
             instance.preview('foo');
             expect(store.dispatch).toHaveBeenCalled();
         });

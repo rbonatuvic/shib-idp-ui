@@ -7,6 +7,9 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     label: 'EntityAttributes',
     type: 'EntityAttributes',
     schema: '/api/ui/EntityAttributesFilters',
+    getEntity(filter: MetadataFilter): EntityAttributesFilterEntity {
+        return new EntityAttributesFilterEntity(filter);
+    },
     getValidators(namesList: string[] = []): any {
         const validators = {
             '/': (value, property, form_current) => {
@@ -25,7 +28,6 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
                 return errors;
             },
             '/name': (value, property, form) => {
-                console.log(namesList);
                 const err = namesList.indexOf(value) > -1 ? {
                     code: 'INVALID_NAME',
                     path: `#${property.path}`,

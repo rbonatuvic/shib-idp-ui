@@ -26,6 +26,7 @@ export class EditFilterComponent {
     private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
 
     definition$: Observable<FormDefinition<MetadataFilter>>;
+    definition: FormDefinition<MetadataFilter>;
     schema$: Observable<any>;
 
     model$: Observable<MetadataFilter>;
@@ -46,6 +47,9 @@ export class EditFilterComponent {
             filter(t => !!t),
             map(t => MetadataFilterTypes[t])
         );
+
+        this.definition$.subscribe(d => this.definition = d);
+
         this.schema$ = this.definition$.pipe(
             filter(d => !!d),
             switchMap(d => {
@@ -94,7 +98,7 @@ export class EditFilterComponent {
     preview(id: string): void {
         this.store.dispatch(new PreviewEntity({
             id,
-            entity: new EntityAttributesFilterEntity(this.filter)
+            entity: this.definition.getEntity(this.filter)
         }));
     }
 }
