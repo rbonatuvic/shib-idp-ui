@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController
 
 import javax.annotation.PostConstruct
 
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.entityAttributesFiltersSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.nameIdFormatFilterSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 
