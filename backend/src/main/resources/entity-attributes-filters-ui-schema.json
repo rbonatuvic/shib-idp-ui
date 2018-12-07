@@ -44,7 +44,8 @@
             "description": "tooltip.search-criteria",
             "type": "object",
             "widget": {
-                "id": "filter-target"
+                "id": "filter-target",
+                "target": "entityAttributesFilterTargetType"
             },
             "properties": {
                 "entityAttributesFilterTargetType": {

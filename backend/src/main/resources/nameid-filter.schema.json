@@ -5,7 +5,7 @@
             "type": "group-lg",
             "fields": [
                 "name",
-                "entityAttributesFilterTarget",
+                "nameIdFormatFilterTarget",
                 "filterEnabled",
                 "@type",
                 "resourceId",
@@ -36,15 +36,16 @@
             "type": "boolean",
             "default": false
         },
-        "entityAttributesFilterTarget": {
+        "nameIdFormatFilterTarget": {
             "title": "label.search-criteria",
             "description": "tooltip.search-criteria",
             "type": "object",
             "widget": {
-                "id": "filter-target"
+                "id": "filter-target",
+                "target": "nameIdFormatFilterTargetType"
             },
             "properties": {
-                "entityAttributesFilterTargetType": {
+                "nameIdFormatFilterTargetType": {
                     "title": "",
                     "type": "string",
                     "default": "ENTITY",
@@ -87,7 +88,7 @@
             },
             "required": [
                 "value",
-                "entityAttributesFilterTargetType"
+                "nameIdFormatFilterTargetType"
             ]
         },
         "@type": {
