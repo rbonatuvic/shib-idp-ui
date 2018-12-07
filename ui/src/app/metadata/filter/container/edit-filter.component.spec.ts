@@ -12,7 +12,7 @@ import { SchemaService } from '../../../schema-form/service/schema.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 
-describe('New Metadata Filter Page', () => {
+describe('Edit Metadata Filter Page', () => {
     let fixture: ComponentFixture<EditFilterComponent>;
     let store: Store<fromFilter.State>;
     let instance: EditFilterComponent;
@@ -25,8 +25,7 @@ describe('New Metadata Filter Page', () => {
                 FormBuilder,
                 NgbPopoverConfig,
                 NavigatorService,
-                SchemaService,
-                { provide: WidgetRegistry, useClass: DefaultWidgetRegistry }
+                SchemaService
             ],
             imports: [
                 StoreModule.forRoot({
@@ -48,7 +47,7 @@ describe('New Metadata Filter Page', () => {
         instance = fixture.componentInstance;
         store = TestBed.get(Store);
 
-        spyOn(store, 'dispatch').and.callThrough();
+        spyOn(store, 'dispatch');
     });
 
     it('should compile', () => {
@@ -66,9 +65,9 @@ describe('New Metadata Filter Page', () => {
     });
 
     describe('preview method', () => {
-        it('should dispatch a cancel changes action', () => {
+        it('should dispatch a preview action', () => {
             fixture.detectChanges();
-            instance.cancel();
+            instance.preview('foo');
             expect(store.dispatch).toHaveBeenCalled();
         });
     });
@@ -77,21 +76,18 @@ describe('New Metadata Filter Page', () => {
         it('should set the isValid property to true', () => {
             fixture.detectChanges();
             instance.statusChangeSubject.next({value: []});
-            fixture.detectChanges();
             expect(instance.isValid).toBe(true);
         });
 
         it('should set the isValid property to true if value is undefined', () => {
             fixture.detectChanges();
             instance.statusChangeSubject.next({value: null});
-            fixture.detectChanges();
             expect(instance.isValid).toBe(true);
         });
 
         it('should set the isValid property to false', () => {
             fixture.detectChanges();
             instance.statusChangeSubject.next({ value: [{control: 'foo'}] });
-            fixture.detectChanges();
             expect(instance.isValid).toBe(false);
         });
     });

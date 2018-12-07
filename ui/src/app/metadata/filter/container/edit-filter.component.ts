@@ -11,7 +11,7 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
-import { shareReplay, map, withLatestFrom, filter, switchMap } from 'rxjs/operators';
+import { shareReplay, map, withLatestFrom, filter, switchMap, startWith, defaultIfEmpty } from 'rxjs/operators';
 
 @Component({
     selector: 'edit-filter-page',
@@ -55,6 +55,7 @@ export class EditFilterComponent {
         );
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
+        this.type$ = this.model$.pipe(map(f => f && f.hasOwnProperty('@type') ? f['@type'] : ''));
 
         this.valueChangeEmitted$.subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
         this.statusChangeEmitted$.subscribe(valid => {
@@ -80,8 +81,6 @@ export class EditFilterComponent {
                 this.preview(parameters.id);
             }
         };
-
-        this.type$ = this.model$.pipe(map(f => f['@type']));
     }
 
     save(): void {
