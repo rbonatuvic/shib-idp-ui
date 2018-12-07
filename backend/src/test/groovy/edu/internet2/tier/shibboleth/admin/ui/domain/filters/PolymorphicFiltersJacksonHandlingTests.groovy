@@ -180,28 +180,27 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         given:
         def givenFilterJson = """
             {
-                "@type" : "NameIDFormat",
-                "name" : "NameIDFormat",
-                "resourceId" : "20147f53-e368-4911-921a-2e24598e37f8",
-                "filterEnabled" : true,
-                "removeExistingFormats" : false,
-                "formats" : [ {
-                  "format" : "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                  "value" : "https://sp1.example.org",
-                  "type" : "ENTITY"
-                }, {
-                  "format" : "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                  "value" : "https://sp2.example.org",
-                  "type" : "ENTITY"
-                }, {
-                  "format" : "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                  "value" : "conditionRefBeanId",
-                  "type" : "CONDITION_REF"
-                }, {
-                  "format" : "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                  "value" : "input.getEntityID().equals(\\"https://sp1.example.org\\");",
-                  "type" : "CONDITION_SCRIPT"
-                } ]  
+              "createdDate" : null,
+              "modifiedDate" : null,
+              "createdBy" : null,
+              "modifiedBy" : null,
+              "name" : "NameIDFormat",
+              "resourceId" : "ab95b80f-102b-494c-a3b8-27b625553977",
+              "filterEnabled" : false,
+              "removeExistingFormats" : false,
+              "formats" : [ "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" ],
+              "nameIdFormatFilterTarget" : {
+                "createdDate" : null,
+                "modifiedDate" : null,
+                "createdBy" : null,
+                "modifiedBy" : null,
+                "nameIdFormatFilterTargetType" : "ENTITY",
+                "value" : [ "https://sp1.example.org" ],
+                "audId" : null
+              },
+              "audId" : null,
+              "@type" : "NameIDFormat",
+              "version" : 1896953777
             }"""
 
         when:

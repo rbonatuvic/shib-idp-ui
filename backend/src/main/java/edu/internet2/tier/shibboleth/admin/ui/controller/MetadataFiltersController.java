@@ -230,6 +230,7 @@ public class MetadataFiltersController {
             NameIdFormatFilter fromFilter = NameIdFormatFilter.class.cast(filterWithUpdatedData);
             toFilter.setRemoveExistingFormats(fromFilter.getRemoveExistingFormats());
             toFilter.setFormats(fromFilter.getFormats());
+            toFilter.setNameIdFormatFilterTarget(fromFilter.getNameIdFormatFilterTarget());
         }
         //TODO: add other types of concrete filters update here
     }

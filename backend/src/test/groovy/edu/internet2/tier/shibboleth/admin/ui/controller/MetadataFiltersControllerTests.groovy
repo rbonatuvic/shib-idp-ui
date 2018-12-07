@@ -167,6 +167,7 @@ class MetadataFiltersControllerTests extends Specification {
                         .content(postedJsonBody))
 
         then:
+        println postedJsonBody
         result.andExpect(status().isCreated())
                 .andExpect(content().json(expectedJsonBody, true))
                 .andExpect(header().string(expectedResponseHeader, containsString(expectedResponseHeaderValue)))

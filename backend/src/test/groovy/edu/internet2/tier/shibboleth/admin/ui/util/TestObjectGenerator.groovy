@@ -15,10 +15,7 @@ import org.opensaml.saml.saml2.metadata.Organization
 import java.nio.file.Files
 import java.util.function.Supplier
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.*
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.*
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.*
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.*
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -225,20 +222,13 @@ class TestObjectGenerator {
     static NameIdFormatFilter nameIdFormatFilter() {
         return new NameIdFormatFilter().with {
             it.name = "NameIDFormat"
-            it.formats = [
-                    new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
-                            type: Type.ENTITY, value: 'https://sp1.example.org'),
-                    new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:emailAddress',
-                            type: Type.ENTITY, value: 'https://sp2.example.org'),
-                    new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
-                            type: Type.CONDITION_REF, value: 'conditionRefBeanId'),
-                    new FormatAndTarget(
-                            format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
-                            type: Type.CONDITION_SCRIPT, value: 'input.getEntityID().equals("https://sp1.example.org");')
-            ]
+            it.formats = ['urn:oasis:names:tc:SAML:2.0:nameid-format:persistent']
+            it.nameIdFormatFilterTarget = new NameIdFormatFilterTarget(nameIdFormatFilterTargetType: ENTITY, singleValue: 'https://sp1.example.org')
+
+            /*it.name = "NameIDFormat"
+            it.formats = ['urn:oasis:names:tc:SAML:2.0:nameid-format:persistent', 'urn:oasis:names:tc:SAML:2.0:nameid-format:email']
+            it.nameIdFormatFilterTarget = new NameIdFormatFilterTarget(nameIdFormatFilterTargetType: CONDITION_SCRIPT, singleValue: 'eval(true);')*/
+
             it
         }
     }

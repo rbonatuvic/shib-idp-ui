@@ -8,17 +8,5 @@
     <MetadataFilter xsi:type="NameIDFormat" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
         <Format>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</Format>
         <Entity>https://sp1.example.org</Entity>
-        <Format>urn:oasis:names:tc:SAML:2.0:nameid-format:emailAddress</Format>
-        <Entity>https://sp2.example.org</Entity>
-        <Format>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</Format>
-        <ConditionRef>conditionRefBeanId</ConditionRef>
-        <Format>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</Format>
-        <ConditionScript>
-            <Script>
-                <![CDATA[
-            input.getEntityID().equals("https://sp1.example.org");
-        ]]>
-            </Script>
-        </ConditionScript>
     </MetadataFilter>
 </MetadataProvider>

@@ -37,9 +37,9 @@ import org.w3c.dom.Document
 
 import javax.annotation.Nonnull
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.CONDITION_REF
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.CONDITION_SCRIPT
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter.FormatAndTarget.Type.ENTITY
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.CONDITION_SCRIPT
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.REGEX
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
@@ -62,7 +62,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     @Override
     void reloadFilters(String metadataResolverResourceId) {
         OpenSamlChainingMetadataResolver chainingMetadataResolver = (OpenSamlChainingMetadataResolver) metadataResolver
-        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverResourceId }
+        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find {
+            it.id == metadataResolverResourceId
+        }
         edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverResourceId)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
@@ -98,22 +100,25 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     target.setRules(rules)
                     metadataFilters.add(target)
                 }
-                if(metadataFilter instanceof NameIdFormatFilter) {
+                if (metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
                     NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
-                    nameIdFormatFilter.formats.each {
-                        switch (it.type) {
-                            case ENTITY:
-                                predicateRules.put(new EntityIdPredicate([it.value]), [it.format])
-                                break
-                            case CONDITION_SCRIPT:
-                                predicateRules.put(new ScriptedPredicate(new EvaluableScript(it.value)), [it.format])
-                                break
-                            default:
-                                // do nothing, we'd have exploded elsewhere previously.
-                                break
-                        }
+                    def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
+                    def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
+                    switch (type) {
+                        case ENTITY:
+                            predicateRules[new EntityIdPredicate(values)] = nameIdFormatFilter.formats
+                            break
+                        case CONDITION_SCRIPT:
+                            predicateRules[new ScriptedPredicate(new EvaluableScript(values[0]))] = nameIdFormatFilter.formats
+                            break
+                        case REGEX:
+                            predicateRules[new ScriptedPredicate(new EvaluableScript(generateJavaScriptRegexScript(values[0])))] = nameIdFormatFilter.formats
+                            break
+                        default:
+                            // do nothing, we'd have exploded elsewhere previously.
+                            break
                     }
                     openSamlTargetFilter.rules = predicateRules
                     metadataFilters << openSamlTargetFilter
@@ -171,7 +176,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(SignatureValidationFilter filter, def markupBuilderDelegate) {
-        if(filter.xmlShouldBeGenerated()) {
+        if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(id: filter.name,
                     'xsi:type': 'SignatureValidation',
                     'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
@@ -242,7 +247,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
-        if(filter.xmlShouldBeGenerated()) {
+        if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(
                     'xsi:type': 'RequiredValidUntil',
                     maxValidityInterval: filter.maxValidityInterval
@@ -251,27 +256,39 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
+        def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
         markupBuilderDelegate.MetadataFilter(
                 'xsi:type': 'NameIDFormat',
                 'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
                 'removeExistingFormats': filter.removeExistingFormats ?: null
         ) {
             filter.formats.each {
-                Format(it.format)
-                if(it.type == ENTITY) {
-                    Entity(it.value)
-                }
-                else if(it.type == CONDITION_REF) {
-                    ConditionRef(it.value)
-                }
-                else if(it.type == CONDITION_SCRIPT) {
-                    def scriptText = it.value
+                Format(it)
+            }
+            switch (type) {
+                case ENTITY:
+                    filter.nameIdFormatFilterTarget.value.each {
+                        Entity(it)
+                    }
+                    break
+                case CONDITION_SCRIPT:
+                case REGEX:
                     ConditionScript() {
                         Script() {
-                            mkp.yieldUnescaped("\n<![CDATA[\n${scriptText}\n]]>\n")
+                            def script
+                            def scriptValue = filter.nameIdFormatFilterTarget.value[0]
+                            if (type == CONDITION_SCRIPT) {
+                                script = scriptValue
+                            } else if (type == REGEX) {
+                                script = generateJavaScriptRegexScript(scriptValue)
+                            }
+                            mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
                         }
                     }
-                }
+                    break
+                default:
+                    // do nothing, we'd have exploded elsewhere previously.
+                    break
             }
         }
     }
@@ -493,4 +510,5 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
 
     }
+
 }

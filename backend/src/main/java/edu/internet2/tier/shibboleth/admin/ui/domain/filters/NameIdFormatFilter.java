@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import java.util.List;
 
@@ -28,21 +30,9 @@ public class NameIdFormatFilter extends MetadataFilter {
 
     @ElementCollection
     @OrderColumn
-    private List<FormatAndTarget> formats;
+    private List<String> formats;
 
-    @Embeddable
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    @EqualsAndHashCode
-    public static class FormatAndTarget {
-        private String format;
-        private String value;
-        private Type type;
+    @OneToOne(cascade = CascadeType.ALL)
+    private NameIdFormatFilterTarget nameIdFormatFilterTarget;
 
-        public enum Type {
-            ENTITY, CONDITION_REF, CONDITION_SCRIPT
-        }
-    }
 }
