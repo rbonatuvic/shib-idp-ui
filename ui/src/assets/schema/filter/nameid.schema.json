@@ -20,6 +20,9 @@
             ]
         }
     ],
+    "required": [
+        "name"
+    ],
     "properties": {
         "name": {
             "title": "label.filter-name",

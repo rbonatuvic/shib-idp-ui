@@ -15,9 +15,13 @@
                 <div class="d-flex justify-content-between">
                     <form [formGroup]="form" class="d-block w-50">
                         <div class="form-group">
-                            <label for="type">Filter Type</label>
+                            <label for="type">
+                                <translate-i18n key="label.select-filter-type">Select Filter Type</translate-i18n>
+                            </label>
                             <select class="form-control" formControlName="type" name="type">
-                                <option>Select Filter Type</option>
+                                <option value="" disabled>
+                                    <translate-i18n key="label.select-filter-type">Select Filter Type</translate-i18n>
+                                </option>
                                 <option *ngFor="let opt of options$ | async" [value]="opt.type">{{ opt.label }}</option>
                             </select>
                         </div>

@@ -41,7 +41,7 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     validators$: Observable<{ [key: string]: any }>;
 
     form: FormGroup = this.fb.group({
-        type: [null, Validators.required]
+        type: ['', Validators.required]
     });
 
     options$: Observable<FormDefinition<MetadataFilter>[]>;
