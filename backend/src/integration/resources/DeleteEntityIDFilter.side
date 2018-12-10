@@ -681,27 +681,6 @@
       ],
       "value": ""
     }, {
-      "id": "a453edf2-c8c5-47d1-86a2-c59d30d0935f",
-      "comment": "",
-      "command": "click",
-      "target": "id=undefined__option--0",
-      "targets": [
-        ["id=undefined__option--0", "id"],
-        ["css=#undefined__option--0", "css"],
-        ["css=#undefined__option--0", "css:finder"],
-        ["xpath=//li[@id='undefined__option--0']", "xpath:attributes"],
-        ["xpath=//ul[@id='__listbox']/li", "xpath:idRelative"],
-        ["xpath=//auto-complete/div/ul/li", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "33ec8649-f59a-440d-acb5-352f1d294565",
-      "comment": "",
-      "command": "waitForElementPresent",
-      "target": "",
-      "targets": [],
-      "value": "100ms"
-    }, {
       "id": "ce6087c0-3e43-40cb-ba03-b6b0fc34ea60",
       "comment": "",
       "command": "type",
@@ -715,13 +694,6 @@
         ["xpath=//div/div/input", "xpath:position"]
       ],
       "value": "https://idp.unicon.net/idp/shibboleth"
-    }, {
-      "id": "6a3b3643-c344-4f93-9360-056885816773",
-      "comment": "",
-      "command": "waitForElementPresent",
-      "target": "",
-      "targets": [],
-      "value": "100ms"
     }, {
       "id": "450a6b01-4fbb-4bf0-ab2a-21fc48e7f6db",
       "comment": "",
@@ -918,13 +890,6 @@
       ],
       "value": ""
     }, {
-      "id": "f8e1bb98-7d71-46e4-b6b7-3590086bbf5b",
-      "comment": "",
-      "command": "",
-      "target": "",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "9a1fc000-43a5-4bee-8aba-34f0ba89915f",
       "comment": "",
       "command": "click",
@@ -966,16 +931,6 @@
         ["css=.btn-danger", "css:finder"],
         ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
         ["xpath=//div[3]/button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "8a2ac7e8-f3f5-4e4f-aad1-0eaf87e15915",
-      "comment": "",
-      "command": "wait",
-      "target": "css=.fa-save",
-      "targets": [
-        ["css=.fa-save", "css:finder"],
-        ["xpath=//div/button/i", "xpath:position"]
       ],
       "value": ""
     }]

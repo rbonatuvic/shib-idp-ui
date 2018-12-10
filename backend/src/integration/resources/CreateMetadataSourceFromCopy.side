@@ -1298,7 +1298,7 @@
         ["css=.col-9 > div:nth-child(2)", "css:finder"],
         ["xpath=//div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Source Happy Path\\nMetadata Source Happy Path"
+      "value": "Metadata Source Happy Path Metadata Source Happy Path"
     }, {
       "id": "42ec39b0-db7b-4f35-9f09-921fb986ed37",
       "comment": "",
