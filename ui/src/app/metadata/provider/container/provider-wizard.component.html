@@ -7,11 +7,12 @@
         </div>
     </div>
     <div class="section-body p-4 border border-top-0 border-info">
-        <div class="container-fluid p-3" role="main">
+        <div class="container-fluid p-3">
             <wizard
                 (onNext)="next()"
                 (onPrevious)="previous()"
-                (onSave)="save()"></wizard>
+                (onSave)="save()"
+                role="navigation"></wizard>
             <hr />
             <div class="row">
                 <div class="col col-xl-6 col-lg-9 col-xs-12">
