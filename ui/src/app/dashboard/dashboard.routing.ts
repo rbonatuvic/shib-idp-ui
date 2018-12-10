@@ -14,10 +14,12 @@ const routes: Routes = [
         path: '',
         component: DashboardPageComponent,
         children: [
+            { path: '', redirectTo: 'metadata', pathMatch: 'prefix' },
             {
                 path: 'metadata',
                 component: MetadataPageComponent,
                 children: [
+                    { path: '', redirectTo: 'manager', pathMatch: 'prefix' },
                     {
                         path: 'manager',
                         component: ManagerComponent,
