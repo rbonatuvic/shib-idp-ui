@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import mjson.Json
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter
 
 import javax.annotation.PostConstruct
@@ -56,8 +56,8 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
     }
 
     @ExceptionHandler(JsonSchemaValidationFailedException)
-    final ResponseEntity<?> handleUserNotFoundException(JsonSchemaValidationFailedException ex, WebRequest request) {
-        new ResponseEntity<>([errors: ex.errors], HttpStatus.BAD_REQUEST)
+    final ResponseEntity<?> handleJsonSchemaValidationFailedException(JsonSchemaValidationFailedException ex) {
+        ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("400", String.join('\n', ex.errors)))
     }
 
     @PostConstruct
