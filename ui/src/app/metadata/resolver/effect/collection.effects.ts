@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
-
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { map, catchError, switchMap, tap } from 'rxjs/operators';
+import { map, catchError, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import * as providerActions from '../action/collection.action';
 import * as draftActions from '../action/draft.action';
 import { ResolverCollectionActionTypes } from '../action/collection.action';
 import { ResolverService } from '../../domain/service/resolver.service';
 import { removeNulls } from '../../../shared/util';
+import { AddNotification } from '../../../notification/action/notification.action';
+import { Notification, NotificationType } from '../../../notification/model/notification';
+import { I18nService } from '../../../i18n/service/i18n.service';
+import * as fromRoot from '../../../app.reducer';
+import * as fromI18n from '../../../i18n/reducer';
+
 
 /* istanbul ignore next */
 @Injectable()
@@ -112,9 +118,22 @@ export class ResolverCollectionEffects {
         ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
         map(provider => {
-            console.log(provider);
             return new draftActions.RemoveDraftRequest(provider);
         })
+    );
+
+    @Effect()
+    addResolverFailNotification$ = this.actions$.pipe(
+        ofType<providerActions.AddResolverFail>(ResolverCollectionActionTypes.ADD_RESOLVER_FAIL),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromI18n.getMessages)),
+        map(([error, messages]) => new AddNotification(
+            new Notification(
+                NotificationType.Danger,
+                `${error.errorCode}: ${this.i18nService.translate(error.errorMessage, null, messages)}`,
+                8000
+            )
+        ))
     );
 
     @Effect()
@@ -126,7 +145,7 @@ export class ResolverCollectionEffects {
                 .upload(file.name, file.body)
                 .pipe(
                     map(p => new providerActions.AddResolverSuccess(p)),
-                    catchError(() => of(new providerActions.AddResolverFail(file)))
+                    catchError((error) => of(new providerActions.AddResolverFail(error)))
                 )
         )
     );
@@ -140,7 +159,7 @@ export class ResolverCollectionEffects {
                 .createFromUrl(file.name, file.url)
                 .pipe(
                     map(p => new providerActions.AddResolverSuccess(p)),
-                    catchError(() => of(new providerActions.AddResolverFail(file)))
+                    catchError((error) => of(new providerActions.AddResolverFail(error)))
                 )
         )
     );
@@ -148,6 +167,8 @@ export class ResolverCollectionEffects {
     constructor(
         private descriptorService: ResolverService,
         private actions$: Actions,
-        private router: Router
+        private router: Router,
+        private store: Store<fromRoot.State>,
+        private i18nService: I18nService
     ) { }
 } /* istanbul ignore next */
