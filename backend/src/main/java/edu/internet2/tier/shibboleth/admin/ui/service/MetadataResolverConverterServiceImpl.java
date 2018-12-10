@@ -64,7 +64,7 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
         File metadataFile = new File(resolver.getMetadataFile());
         if (resolver.getDoInitialization() && !metadataFile.exists()) {
-            throw new FileNotFoundException("No file was found on the fileysystem for provided filename: " + resolver.getMetadataFile());
+            throw new FileNotFoundException("No file was found on the file system for provided filename: " + resolver.getMetadataFile());
         }
 
         OpenSamlFilesystemMetadataResolver openSamlResolver = new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
