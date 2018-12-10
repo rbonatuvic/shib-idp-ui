@@ -23,7 +23,7 @@
             </ul>
             <fieldset class="bg-light border rounded p-4">
                 <div class="form-group">
-                    <label for="serviceProviderName">
+                    <label for="target">
                         <translate-i18n key="label.select-entity-id-to-copy">Select the Entity ID to copy</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
@@ -97,7 +97,9 @@
                                     [id]="'section-' + i"
                                     [name]="'section-' + i"
                                     role="checkbox" />
-                                <label class="custom-control-label" for="section-{{ i }}"></label>
+                                <label class="custom-control-label"
+                                    [for]="'section-' + i"
+                                    [attr.aria-label]="item.i18nKey"></label>
                             </div>
                         </fieldset>
                     </td>
