@@ -5,7 +5,6 @@ import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocat
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
 import groovy.util.logging.Slf4j
-import lombok.extern.java.Log
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
