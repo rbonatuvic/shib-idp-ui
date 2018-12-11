@@ -11,12 +11,17 @@ export const getInCollectionFn = (entities, selectedId) => {
 };
 export const getEntityIdsFn = list => list.map(entity => entity.entityId);
 
+export const getId = (entity: Metadata): string => {
+    return entity.resourceId ? entity.resourceId : entity.id;
+};
+
 export const mergeOrderFn = (entities: Metadata[], order: string[]): Metadata[] => {
-    return [...entities.sort(
+    const ordered = [...entities.sort(
         (a: Metadata, b: Metadata) => {
-            const aIndex = order.indexOf(a.id);
-            const bIndex = order.indexOf(b.id);
+            const aIndex = order.indexOf(getId(a));
+            const bIndex = order.indexOf(getId(b));
             return aIndex > bIndex ? 1 : bIndex > aIndex ? -1 : 0;
         }
     )];
+    return ordered;
 };

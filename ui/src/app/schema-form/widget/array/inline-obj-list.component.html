@@ -1,0 +1,54 @@
+<div class="widget form-group">
+    <div class="d-flex justify-content-start">
+        <label [attr.for]="id" class="m-0 pt-1 control-label">
+            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
+        </label>
+        &nbsp;&nbsp;
+        <button (click)="addItem()" class="btn btn-success btn-sm array-add-button">
+            <translate-i18n key="action.add">Add</translate-i18n>&nbsp;&nbsp;
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+        &nbsp;
+        <span class="text-right" *ngIf="schema.description">
+            <info-icon [description]="schema.description | translate"></info-icon>
+        </span>
+        <small class="form-text text-danger px-2" *ngIf="hasErrors">
+            <ng-container *ngFor="let error of errors$ | async; let first=first;">
+                <ng-container *ngIf="!first">, </ng-container>
+                <translate-i18n [key]="messages[error.code]">{{ error.message }}</translate-i18n>
+            </ng-container>
+        </small>
+    </div>
+    <ul class="mt-2 no-style d-flex justify-content-between flex-wrap">
+        <li *ngFor="let itemProperty of formProperty.properties; let i=index; trackBy:trackByIndex" class="w-50">
+            <div class="d-flex flex-row justify-content-between m-3 bg-light p-3 border rounded">
+                <div class="flex-grow-1 bg-white border rounded p-3">
+                    <div #acc>
+                        <div class="d-flex justify-content-between" (click)="acc.isHidden = !acc.isHidden">
+                            <span>
+                                <i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
+                                &nbsp;
+                                <translate-i18n key="label.new-of-type" [params]="{ type: (itemProperty.schema.title | translate) }"></translate-i18n>
+                                <ng-container *ngIf="itemProperty.schema.properties.makeDefault">
+                                    <i class="fa fa-fw fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="itemProperty.value.makeDefault === true"></i>
+                                    <small class="sr-only" *ngIf="itemProperty.value.makeDefault === true" translate="label.default">(default)</small>
+                                </ng-container>
+                            </span>
+                            <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                                <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
+                                <span class="sr-only" translate="action.remove">Remove</span>
+                            </button>
+                        </div>
+                        <div class="collapse" [ngClass]="{'show': !acc.isHidden}">
+                            <hr />
+                            <sf-form-element [formProperty]="itemProperty"></sf-form-element>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <span *ngIf="schema.description" class="sr-only">
+        <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
+    </span>
+</div>

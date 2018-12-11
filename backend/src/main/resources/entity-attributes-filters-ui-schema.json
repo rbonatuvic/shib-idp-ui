@@ -1,9 +1,6 @@
 {
     "title": "EntityAttributes Filter",
     "type": "object",
-    "widget": {
-        "id": "fieldset"
-    },
     "properties": {
         "name": {
             "title": "label.filter-name",
@@ -44,7 +41,8 @@
             "description": "tooltip.search-criteria",
             "type": "object",
             "widget": {
-                "id": "filter-target"
+                "id": "filter-target",
+                "target": "entityAttributesFilterTargetType"
             },
             "properties": {
                 "entityAttributesFilterTargetType": {

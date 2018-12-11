@@ -167,6 +167,7 @@ class MetadataFiltersControllerTests extends Specification {
                         .content(postedJsonBody))
 
         then:
+        println postedJsonBody
         result.andExpect(status().isCreated())
                 .andExpect(content().json(expectedJsonBody, true))
                 .andExpect(header().string(expectedResponseHeader, containsString(expectedResponseHeaderValue)))
@@ -177,6 +178,7 @@ class MetadataFiltersControllerTests extends Specification {
         'entityRoleWhiteList' | _
         'signatureValidation' | _
         'requiredValidUntil'  | _
+        'nameIdFormat'        | _
     }
 
     @Unroll
@@ -222,6 +224,7 @@ class MetadataFiltersControllerTests extends Specification {
         'entityRoleWhiteList' | _
         'signatureValidation' | _
         'requiredValidUntil'  | _
+        'nameIdFormat'        | _
     }
 
     def "FilterController.update filter 409's if the version numbers don't match"() {

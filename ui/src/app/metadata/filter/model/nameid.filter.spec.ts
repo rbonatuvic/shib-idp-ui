@@ -1,16 +1,16 @@
-import { EntityAttributesFilter } from './entity-attributes.filter';
+import { NameIDFilter } from './nameid.filter';
 
-describe('Entity Attributes filter form', () => {
+describe('NameID Format filter form', () => {
     describe('getValidators', () => {
         it('should return an empty object for validators', () => {
-            expect(Object.keys(EntityAttributesFilter.getValidators())).toEqual([
+            expect(Object.keys(NameIDFilter.getValidators())).toEqual([
                 '/',
                 '/name'
             ]);
         });
 
         describe('name `/name` validator', () => {
-            const validators = EntityAttributesFilter.getValidators(['foo', 'bar']);
+            const validators = NameIDFilter.getValidators(['foo', 'bar']);
 
             it('should return an invalid object when provided values are invalid based on name', () => {
                 expect(validators['/name']('foo', { path: '/name' })).toBeDefined();
@@ -22,7 +22,7 @@ describe('Entity Attributes filter form', () => {
         });
 
         describe('parent `/` validator', () => {
-            const validators = EntityAttributesFilter.getValidators(['foo', 'bar']);
+            const validators = NameIDFilter.getValidators(['foo', 'bar']);
 
             it('should return a list of child errors', () => {
                 expect(validators['/']({ name: 'foo' }, { path: '/name' }, {}).length).toBe(1);
@@ -36,8 +36,8 @@ describe('Entity Attributes filter form', () => {
 
     describe('transformer', () => {
         it('should add modify the object', () => {
-            expect(EntityAttributesFilter.formatter({})).toEqual({});
-            expect(EntityAttributesFilter.parser({}).relyingPartyOverrides).toBeDefined();
+            expect(NameIDFilter.formatter({})).toEqual({});
+            expect(NameIDFilter.parser({})).toEqual({});
         });
     });
 });
