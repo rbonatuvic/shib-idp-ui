@@ -34,9 +34,9 @@ public class User extends AbstractAuditable {
     @Column(nullable = false)
     private String password;
 
-    private String firstName;
+    private String name;
 
-    private String lastName;
+    private String emailAddress;
 
     //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
     @JsonIgnoreProperties("users")
