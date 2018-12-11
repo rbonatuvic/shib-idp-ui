@@ -59,7 +59,9 @@ public class OpenSamlNameIdFormatFilter extends NameIDFormatFilter {
         return metadata;
     }
 
-    /**Overridden to get rid of log statements which result in NPE in the base class with parent being null**/
+    /**Overridden to get rid of log statements which result in NPE in the base class with parent being null
+     * TODO: remove this method once the parent mapping in AbstractXmlObject is implemented.
+     */
     @Override
     protected void filterRoleDescriptor(@Nonnull final RoleDescriptor role,
                                         @Nonnull @NonnullElements final Collection<String> formats) {
