@@ -8,8 +8,8 @@
     ],
     "properties": {
         "name": {
-            "title": "label.metadata-provider-name",
-            "description": "tooltip.metadata-provider-name",
+            "title": "label.metadata-provider-name-display-only",
+            "description": "tooltip.metadata-provider-name-display-only",
             "type": "string",
             "widget": {
                 "id": "string",
