@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,6 +32,8 @@ public class Role extends AbstractAuditable {
     @Column(unique = true)
     private String name;
 
+    //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
+    @JsonIgnoreProperties("roles")
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
