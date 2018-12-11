@@ -1,8 +1,7 @@
 <nav *ngIf="(current$ | async) && (index$ | async)">
     <ul class="nav nav-wizard">
         <li class="nav-item" *ngIf="(previous$ | async)">
-            <button class="nav-link previous btn clearfix" (click)="onPrevious.emit(previousPage.index)" [disabled]="disabled$ | async"
-                [attr.aria-label]="previousPage.path" role="button">
+            <button class="nav-link previous btn clearfix" (click)="onPrevious.emit(previousPage.index)" [disabled]="disabled$ | async" [attr.aria-label]="previousPage.path">
                 <span class="direction pull-left">
                     <i class="fa fa-fw fa-arrow-circle-left d-block fa-2x"></i>
                     <translate-i18n key="action.back">Back</translate-i18n>
@@ -28,8 +27,7 @@
             </h3>
         </li>
         <li class="nav-item" *ngIf="(next$ | async)">
-            <button class="nav-link next btn clearfix" (click)="onNext.emit(nextPage.index)" [disabled]="disabled$ | async" [attr.aria-label]="nextPage.path"
-                role="button">
+            <button class="nav-link next btn clearfix" (click)="onNext.emit(nextPage.index)" [disabled]="disabled$ | async" [attr.aria-label]="nextPage.path">
                 <span class="label pull-left">
                     <ng-container *ngIf="(next$ | async).index">{{ (next$ | async).index }}. </ng-container>
                     {{ (next$ | async).label | translate }}
@@ -43,7 +41,6 @@
         <li class="nav-item" *ngIf="(last$ | async)">
             <button class="nav-link save btn"
                 aria-label="Save"
-                role="button"
                 [disabled]="disabled$ | async"
                 (click)="onSave.emit()">
                 <span class="label pull-left" translate="action.save">

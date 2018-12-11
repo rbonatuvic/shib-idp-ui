@@ -1,6 +1,6 @@
 <form [formGroup]="searchForm">
-    <label for="search" class="sr-only" translate="action.search">Search</label>
     <div class="input-group input-group-sm">
+        <label [for]="search" class="sr-only" translate="action.search">Search</label>
         <input
             id="search"
             type="text"
@@ -9,6 +9,7 @@
             [placeholder]="'label.search-files' | translate"
             aria-label="To search for a source, enter name then press enter"
             formControlName="search"
+            role="textbox"
             (keyup)="search.emit($event.target.value)">
         <div class="input-group-append">
             <button class="btn btn-light"
