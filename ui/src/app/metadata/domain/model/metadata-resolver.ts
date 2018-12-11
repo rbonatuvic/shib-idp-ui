@@ -12,6 +12,7 @@ import {
 
 export interface MetadataResolver extends MetadataBase {
     id: string;
+    resourceId?: string;
     entityId?: string;
     serviceProviderName: string;
     organization?: Organization;

@@ -37,7 +37,6 @@ public class JsonSchemaResourceLocation {
         this.jacksonMapper = jacksonMapper;
     }
 
-    //This constructor is used in tests
     public JsonSchemaResourceLocation(String jsonSchemaLocation,
                                       ResourceLoader resourceLoader,
                                       ObjectMapper jacksonMapper,
@@ -99,6 +98,7 @@ public class JsonSchemaResourceLocation {
 
         // filter types
         ENTITY_ATTRIBUTES_FILTERS("EntityAttributesFilters"),
+        NAME_ID_FORMAT_FILTER("NameIdFormatFilter"),
 
          // resolver types
         FILE_BACKED_HTTP_METADATA_RESOLVER("FileBackedHttpMetadataResolver"),

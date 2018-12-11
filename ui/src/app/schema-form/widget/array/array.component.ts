@@ -41,6 +41,12 @@ export class CustomArrayComponent extends ArrayWidget implements AfterViewInit, 
     ngOnDestroy(): void {
         this.hasErrorSub.unsubscribe();
     }
+
+    addItem(): void {
+        super.addItem();
+        console.log(this.formProperty.schemaValidator(this.schema));
+    }
+
     getListType(property: any): string {
         return property.properties.length ? property.properties[0].type : null;
     }
