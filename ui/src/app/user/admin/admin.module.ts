@@ -1,24 +1,28 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../../shared/shared.module';
 import { I18nModule } from '../../i18n/i18n.module';
 import { AdminManagementPageComponent } from './container/admin-management.component';
 import { AdminComponent } from './admin.component';
+import { reducers } from './reducer';
+import { AdminService } from './service/admin.service';
+import { AdminCollectionEffects } from './effect/collection.effect';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
     declarations: [
         AdminManagementPageComponent,
         AdminComponent
     ],
-    entryComponents: [
-    ],
+    entryComponents: [],
     imports: [
         CommonModule,
-        ReactiveFormsModule,
+        FormsModule,
         RouterModule,
         HttpClientModule,
         SharedModule,
@@ -29,7 +33,9 @@ export class UserAdminModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: RootUserAdminModule,
-            providers: []
+            providers: [
+                AdminService
+            ]
         };
     }
 }
@@ -37,8 +43,8 @@ export class UserAdminModule {
 @NgModule({
     imports: [
         UserAdminModule,
-        // StoreModule.forFeature('admin', reducers),
-        // EffectsModule.forFeature([]),
+        StoreModule.forFeature('admin', reducers),
+        EffectsModule.forFeature([AdminCollectionEffects]),
     ],
 })
 export class RootUserAdminModule { }
