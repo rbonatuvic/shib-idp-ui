@@ -11,30 +11,29 @@
             <table class="table table-striped">
                 <thead class="thead-primary">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">UserId</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Delete?</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
+                    <tr *ngFor="let user of users$ | async">
+                        <th>{{ user.resourceId }}</th>
+                        <td>{{ user.name.first }} {{ user.name.last }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <select [name]="user.resourceId" [ngModel]="user.role" class="form-control" (change)="setUserRole(user, $event.target.value)">
+                                <option *ngFor="let role of roles$ | async">{{ role }}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-link" (click)="deleteUser(user.resourceId)">
+                                <span class="sr-only">Delete User</span>
+                                <i class="fa fa-trash fa-lg text-danger"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
