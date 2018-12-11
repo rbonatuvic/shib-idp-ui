@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService
+import groovy.util.logging.Slf4j
+import lombok.extern.java.Log
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -23,6 +25,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
  */
 @RestController
 @RequestMapping('/api/ui/NameIdFormatFilter')
+@Slf4j
 class NameIdFormatFilterUiDefinitionController {
 
     @Autowired
@@ -44,7 +47,7 @@ class NameIdFormatFilterUiDefinitionController {
             return ResponseEntity.ok(parsedJson)
         }
         catch (Exception e) {
-            e.printStackTrace()
+            log.error(e.getMessage(), e)
             return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                     .body([jsonParseError              : e.getMessage(),
                            sourceUiSchemaDefinitionFile: this.jsonSchemaLocation.url])
