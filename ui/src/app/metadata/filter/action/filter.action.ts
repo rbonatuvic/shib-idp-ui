@@ -4,6 +4,7 @@ import { MDUI } from '../../domain/model';
 
 export enum FilterActionTypes {
     SELECT_ID = '[Filter] Select Entity ID',
+    SELECT_FILTER_TYPE = '[Filter] Select Filter Type',
     UPDATE_FILTER = '[Filter] Update Filter',
     CANCEL_CREATE_FILTER = '[Filter] Cancel Create Filter',
     LOAD_ENTITY_PREVIEW = '[Filter] Load Preview data',
@@ -43,8 +44,15 @@ export class UpdateFilterChanges implements Action {
     constructor(public payload: Partial<MetadataFilter>) { }
 }
 
+export class SelectFilterType implements Action {
+    readonly type = FilterActionTypes.SELECT_FILTER_TYPE;
+
+    constructor(public payload: string) { }
+}
+
 export type FilterActionsUnion =
     | SelectId
+    | SelectFilterType
     | UpdateFilterChanges
     | CancelCreateFilter
     | LoadEntityPreview

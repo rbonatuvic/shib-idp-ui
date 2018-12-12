@@ -21,6 +21,8 @@ import { IconButtonComponent } from './widget/button/icon-button.component';
 import { I18nModule } from '../i18n/i18n.module';
 import { CustomObjectWidget } from './widget/object/object.component';
 import { CustomRadioComponent } from './widget/radio/radio.component';
+import { InlineObjectListComponent } from './widget/array/inline-obj-list.component';
+import { InlineObjectComponent } from './widget/object/inline-obj.component';
 
 export const COMPONENTS = [
     BooleanRadioComponent,
@@ -36,7 +38,9 @@ export const COMPONENTS = [
     ChecklistComponent,
     IconButtonComponent,
     CustomRadioComponent,
-    CustomObjectWidget
+    CustomObjectWidget,
+    InlineObjectListComponent,
+    InlineObjectComponent
 ];
 
 @NgModule({

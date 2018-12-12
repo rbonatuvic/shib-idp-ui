@@ -1,14 +1,13 @@
 import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
-import { removeNulls } from '../../../shared/util';
-import { EntityAttributesFilterEntity } from '../../domain/entity';
+import { NameIDFormatFilterEntity } from '../../domain/entity/filter/nameid-format-filter';
 
-export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
-    label: 'EntityAttributes',
-    type: 'EntityAttributes',
-    schema: '/api/ui/EntityAttributesFilters',
-    getEntity(filter: MetadataFilter): EntityAttributesFilterEntity {
-        return new EntityAttributesFilterEntity(filter);
+export const NameIDFilter: FormDefinition<MetadataFilter> = {
+    label: 'NameIDFilter',
+    type: 'NameIDFormat',
+    schema: '/api/ui/NameIdFormatFilter',
+    getEntity(filter: MetadataFilter): NameIDFormatFilterEntity {
+        return new NameIDFormatFilterEntity(filter);
     },
     getValidators(namesList: string[] = []): any {
         const validators = {
@@ -39,11 +38,6 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
         };
         return validators;
     },
-    parser: (changes: any): MetadataFilter => {
-        return {
-            ...changes,
-            relyingPartyOverrides: removeNulls(new EntityAttributesFilterEntity(changes).relyingPartyOverrides)
-        };
-    },
+    parser: (changes: any): MetadataFilter => changes,
     formatter: (changes: MetadataFilter): any => changes
 };

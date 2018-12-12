@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
@@ -223,6 +224,13 @@ public class MetadataFiltersController {
             RequiredValidUntilFilter toFilter = RequiredValidUntilFilter.class.cast(filterToBeUpdated);
             RequiredValidUntilFilter fromFilter = RequiredValidUntilFilter.class.cast(filterWithUpdatedData);
             toFilter.setMaxValidityInterval(fromFilter.getMaxValidityInterval());
+        }
+        else if (filterWithUpdatedData instanceof NameIdFormatFilter) {
+            NameIdFormatFilter toFilter = NameIdFormatFilter.class.cast(filterToBeUpdated);
+            NameIdFormatFilter fromFilter = NameIdFormatFilter.class.cast(filterWithUpdatedData);
+            toFilter.setRemoveExistingFormats(fromFilter.getRemoveExistingFormats());
+            toFilter.setFormats(fromFilter.getFormats());
+            toFilter.setNameIdFormatFilterTarget(fromFilter.getNameIdFormatFilterTarget());
         }
         //TODO: add other types of concrete filters update here
     }
