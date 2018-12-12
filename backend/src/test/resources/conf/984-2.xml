@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MetadataProvider xmlns="urn:mace:shibboleth:2.0:metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  id="ShibbolethMetadata"
+                  xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd"
+                  xsi:type="ChainingMetadataProvider">
+    <MetadataProvider backgroundInitializationFromCacheDelay="PT2S" cleanupTaskInterval="PT30M"
+                      connectionRequestTimeout="PT5S" connectionTimeout="PT5S" id="DynamicHttpMetadataResolver"
+                      maxCacheDuration="PT8H" maxConnectionsPerRoute="100" maxConnectionsTotal="100"
+                      maxIdleEntityData="PT8H" minCacheDuration="PT10M" refreshDelayFactor="0.75"
+                      removeIdleEntityData="true" socketTimeout="PT5S" xsi:type="DynamicHttpMetadataProvider">
+        <MetadataQueryProtocol>http://mdq-beta.incommon.org/global</MetadataQueryProtocol>
+        <MetadataFilter xsi:type="EntityAttributes">
+            <AttributeFilterScript>
+                <Script>
+                    <![CDATA[
+            (function (attribute) {
+                "use strict";
+                var namespaces = ["http://shibboleth.net/ns/profiles", "http://scaldingspoon.com/iam"];
+                // check the parameter
+                if (attribute === null) { return true; }
+                for (var i in namespaces) {
+                    if (attribute.getName().startsWith(namespaces[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            }(input));
+]]>
+                </Script>
+            </AttributeFilterScript>
+        </MetadataFilter>
+    </MetadataProvider>
+</MetadataProvider>

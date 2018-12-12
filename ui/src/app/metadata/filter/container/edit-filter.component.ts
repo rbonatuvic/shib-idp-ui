@@ -11,7 +11,7 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
-import { shareReplay, map, withLatestFrom } from 'rxjs/operators';
+import { shareReplay, map, withLatestFrom, filter, switchMap, startWith, defaultIfEmpty } from 'rxjs/operators';
 
 @Component({
     selector: 'edit-filter-page',
@@ -25,6 +25,7 @@ export class EditFilterComponent {
     statusChangeSubject = new Subject<{ value: any[] }>();
     private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
 
+    definition$: Observable<FormDefinition<MetadataFilter>>;
     definition: FormDefinition<MetadataFilter>;
     schema$: Observable<any>;
 
@@ -32,6 +33,7 @@ export class EditFilterComponent {
     isSaving$: Observable<boolean>;
     filter: MetadataFilter;
     isValid: boolean;
+    type$: Observable<string>;
 
     validators$: Observable<{ [key: string]: any }>;
 
@@ -41,11 +43,23 @@ export class EditFilterComponent {
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
     ) {
-        this.definition = MetadataFilterTypes.EntityAttributesFilter;
+        this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
+            filter(t => !!t),
+            map(t => MetadataFilterTypes[t])
+        );
 
-        this.schema$ = this.schemaService.get(this.definition.schema).pipe(shareReplay());
+        this.definition$.subscribe(d => this.definition = d);
+
+        this.schema$ = this.definition$.pipe(
+            filter(d => !!d),
+            switchMap(d => {
+                return this.schemaService.get(d.schema);
+            }),
+            shareReplay()
+        );
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
+        this.type$ = this.model$.pipe(map(f => f && f.hasOwnProperty('@type') ? f['@type'] : ''));
 
         this.valueChangeEmitted$.subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
         this.statusChangeEmitted$.subscribe(valid => {
@@ -54,9 +68,10 @@ export class EditFilterComponent {
 
         this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
             withLatestFrom(
-                this.store.select(fromFilter.getSelectedFilter)
+                this.store.select(fromFilter.getSelectedFilter),
+                this.definition$
             ),
-            map(([names, provider]) => this.definition.getValidators(
+            map(([names, provider, definition]) => definition.getValidators(
                 names.filter(n => n !== provider.name)
             ))
         );
@@ -83,7 +98,7 @@ export class EditFilterComponent {
     preview(id: string): void {
         this.store.dispatch(new PreviewEntity({
             id,
-            entity: new EntityAttributesFilterEntity(this.filter)
+            entity: this.definition.getEntity(this.filter)
         }));
     }
 }

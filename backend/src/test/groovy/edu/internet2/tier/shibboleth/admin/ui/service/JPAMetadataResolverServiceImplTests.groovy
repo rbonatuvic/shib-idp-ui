@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
@@ -42,7 +43,14 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
+import spock.lang.Ignore
 import spock.lang.Specification
+import spock.lang.Unroll
+
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
@@ -73,6 +81,9 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
     @Autowired
     MetadataResolverConverterService mdrConverterService
+
+    @Autowired
+    ShibUIConfiguration shibUIConfiguration
 
     TestObjectGenerator testObjectGenerator
 
@@ -201,6 +212,17 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/552.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'test generating NameIdFormatFilter xml snippet'() {
+        given:
+        def filter = TestObjectGenerator.nameIdFormatFilter()
+
+        when:
+        genXmlSnippet(markupBuilder) { JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, it) }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/799.xml', domBuilder.parseText(writer.toString()))
     }
 
     def 'test generating FileBackedHttMetadataResolver xml snippet'() {
@@ -347,6 +369,51 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/704.3.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    @Unroll
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    def 'test namespace protection [#namespaces]'() {
+        setup:
+        shibUIConfiguration.protectedAttributeNamespaces = namespaces
+        def resolver = new DynamicHttpMetadataResolver().with {
+            it.xmlId = 'DynamicHttpMetadataResolver'
+            it.metadataRequestURLConstructionScheme = new MetadataQueryProtocolScheme().with {
+                it.content = 'http://mdq-beta.incommon.org/global'
+                it
+            }
+            it
+        }
+        metadataResolverRepository.save(resolver)
+
+        expect:
+        generatedXmlIsTheSameAsExpectedXml(filename, metadataResolverService.generateConfiguration())
+
+        where:
+        namespaces | filename
+        ['http://shibboleth.net/ns/profiles'] | '/conf/984.xml'
+        ['http://shibboleth.net/ns/profiles', 'http://scaldingspoon.com/iam'] | '/conf/984-2.xml'
+    }
+
+    @Ignore('there is a bug in org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter.applyFilter')
+    def 'test namespace protection internal filtering'() {
+        setup:
+        shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
+        def resolver = new edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver().with {
+            it.resourceId = 'testme984'
+            it.name = 'testme984'
+            it.classpathMetadataResource = new ClasspathMetadataResource('metadata/984-3.xml')
+            it
+        }
+        def x = metadataResolverRepository.save(resolver)
+        ((OpenSamlChainingMetadataResolver)metadataResolver).resolvers.add(mdrConverterService.convertToOpenSamlRepresentation(x))
+
+        when:
+        metadataResolverService.reloadFilters('testme984')
+        def ed = metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion('http://test.scaldingspoon.org/test1')))
+
+        then:
+        !DiffBuilder.compare(Input.fromStream(this.class.getResourceAsStream('/metadata/984-3-expected.xml'))).withTest(Input.fromString(openSamlObjects.marshalToXmlString(ed))).ignoreComments().ignoreWhitespace().build().hasDifferences()
     }
 
     static genXmlSnippet(MarkupBuilder xml, Closure xmlNodeGenerator) {

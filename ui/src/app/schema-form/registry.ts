@@ -2,11 +2,10 @@ import { BooleanRadioComponent } from './widget/boolean-radio/boolean-radio.comp
 import { FieldsetComponent } from './widget/fieldset/fieldset.component';
 import { CustomStringComponent } from './widget/string/string.component';
 
-import { WidgetRegistry, ObjectWidget } from 'ngx-schema-form';
+import { WidgetRegistry } from 'ngx-schema-form';
 
 import { ButtonWidget } from 'ngx-schema-form';
 import { FileWidget } from 'ngx-schema-form';
-import { RadioWidget } from 'ngx-schema-form';
 import { RangeWidget } from 'ngx-schema-form';
 import { CustomSelectComponent } from './widget/select/select.component';
 import { DatalistComponent } from './widget/datalist/datalist.component';
@@ -19,6 +18,8 @@ import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
 import { CustomObjectWidget } from './widget/object/object.component';
 import { CustomRadioComponent } from './widget/radio/radio.component';
+import { InlineObjectListComponent } from './widget/array/inline-obj-list.component';
+import { InlineObjectComponent } from './widget/object/inline-obj.component';
 
 export class CustomWidgetRegistry extends WidgetRegistry {
     constructor() {
@@ -40,6 +41,8 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('fieldset', FieldsetComponent);
         this.register('object', CustomObjectWidget);
+        this.register('inline-obj-list', InlineObjectListComponent);
+        this.register('inline-obj', InlineObjectComponent);
 
         this.register('array', CustomArrayComponent);
         this.register('checklist', ChecklistComponent);

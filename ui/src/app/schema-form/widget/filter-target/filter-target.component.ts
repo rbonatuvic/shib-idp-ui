@@ -50,7 +50,7 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
             .valueChanges
             .pipe(
                 distinctUntilChanged(),
-                skipWhile(() => this.entityAttributesFilterTargetType === 'ENTITY')
+                skipWhile(() => this.targetType === 'ENTITY')
             )
             .subscribe(script => {
                 this.setTargetValue([script]);
@@ -92,24 +92,31 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         return this.formProperty.getProperty('value').value;
     }
 
-    get entityAttributesFilterTargetType(): string {
-        return this.formProperty.getProperty('entityAttributesFilterTargetType').value;
+    get targetType(): string {
+        return this.formProperty.getProperty(this.targetAttribute).value;
     }
 
     get displayType(): string {
-        return this.typeOptions.find(opt => opt.value === this.entityAttributesFilterTargetType).description;
+        if (!this.targetAttribute) {
+            return null;
+        }
+        return this.typeOptions.find(opt => opt.value === this.targetType).description;
+    }
+
+    get targetAttribute(): string {
+        return this.formProperty.schema.widget.target;
     }
 
     get typeOptions(): any[] {
         return this.formProperty
-                    .getProperty('entityAttributesFilterTargetType')
+                    .getProperty(this.targetAttribute)
                     .schema
                     .oneOf
                     .map(option => ({ ...option, value: option.enum[0] }));
     }
 
     select(value: string): void {
-        this.formProperty.getProperty('entityAttributesFilterTargetType').setValue(value);
+        this.formProperty.getProperty(this.targetAttribute).setValue(value);
         this.setTargetValue([]);
         this.script.reset();
         this.search.reset();
