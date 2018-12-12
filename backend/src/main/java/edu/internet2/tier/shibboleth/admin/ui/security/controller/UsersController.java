@@ -74,7 +74,7 @@ public class UsersController {
 
     @Transactional
     @PostMapping("/user")
-    ResponseEntity<?> saveUser(@RequestParam User user) {
+    ResponseEntity<?> saveOne(@RequestParam User user) {
         Optional<User> persistedUser = userRepository.findByUsername(user.getUsername());
         if (persistedUser.isPresent()) {
             return ResponseEntity
@@ -89,7 +89,7 @@ public class UsersController {
 
     @Transactional
     @PutMapping("/user/{username}")
-    ResponseEntity<?> updateUser(@PathVariable(value = "username") String username, @RequestParam User user) {
+    ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestParam User user) {
         Optional<User> userSearchResult = userRepository.findByUsername(username);
         if (!userSearchResult.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
