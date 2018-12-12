@@ -28,5 +28,5 @@ public class ShibUIConfiguration {
      * Note that the password must be encrypted in the file using the system configured password encryption (by default,
      * BCrypt)
      */
-    private Optional<Resource> userBootstrapResource;
+    private Optional<Resource> userBootstrapResource = Optional.empty();
 }
