@@ -47,4 +47,19 @@ class UsersControllerIntegrationTests extends Specification {
         result.body.errorCode == '404'
         result.body.errorMessage == 'User with username [bogus] not found'
     }
+
+    def 'DELETE ONE existing user'() {
+        when: 'GET request is made for one existing user'
+        def result = this.restTemplate.getForEntity("$RESOURCE_URI/admin", Map)
+
+        then: 'Request completed with HTTP 200'
+        result.statusCodeValue == 200
+
+        when: 'DELETE request is made'
+        this.restTemplate.delete("$RESOURCE_URI/admin")
+        result = this.restTemplate.getForEntity("$RESOURCE_URI/admin", Map)
+
+        then: 'The deleted user is gone'
+        result.statusCodeValue == 404
+    }
 }
