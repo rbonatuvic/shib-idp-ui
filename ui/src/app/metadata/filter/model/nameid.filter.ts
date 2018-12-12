@@ -3,7 +3,7 @@ import { MetadataFilter } from '../../domain/model';
 import { NameIDFormatFilterEntity } from '../../domain/entity/filter/nameid-format-filter';
 
 export const NameIDFilter: FormDefinition<MetadataFilter> = {
-    label: 'NameIDFilter',
+    label: 'NameIDFormat',
     type: 'NameIDFormat',
     schema: '/api/ui/NameIdFormatFilter',
     getEntity(filter: MetadataFilter): NameIDFormatFilterEntity {

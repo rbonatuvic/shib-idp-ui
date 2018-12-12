@@ -46,7 +46,7 @@ export class ResolverService {
             headers: new HttpHeaders().set('Content-Type', 'application/xml'),
             params: new HttpParams().set('spName', name)
         }).pipe(catchError(error => {
-            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error}` });
+            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error.errorMessage}` });
         }));
     }
 
@@ -56,7 +56,7 @@ export class ResolverService {
             headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
             params: new HttpParams().set('spName', name)
         }).pipe(catchError(error => {
-            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error}` });
+            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error.errorMessage}` });
         }));
     }
 

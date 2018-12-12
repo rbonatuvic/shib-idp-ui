@@ -129,13 +129,14 @@ describe('BaseMetadataProviderForm', () => {
 
         describe('parent `/` validator', () => {
             const validators = BaseMetadataProviderEditor.getValidators(['foo', 'bar']);
+            const prop = { path: '/name', properties: { name: { type: 'string' } } };
 
             it('should return a list of child errors', () => {
-                expect(validators['/']({name: 'foo'}, { path: '/name' }, {}).length).toBe(1);
+                expect(validators['/']({name: 'foo'}, prop, {}).length).toBe(1);
             });
 
             it('should ignore properties that don\'t exist a list of child errors', () => {
-                expect(validators['/']({ foo: 'bar' }, { path: '/foo' }, {})).toBeUndefined();
+                expect(validators['/']({ foo: 'bar' }, prop, {})).toBeUndefined();
             });
         });
     });

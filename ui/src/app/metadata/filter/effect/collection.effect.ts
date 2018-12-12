@@ -39,7 +39,7 @@ import { removeNulls, array_move } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-attributes-filter';
 import { MetadataFilterService } from '../../domain/service/filter.service';
 import { SelectProviderRequest } from '../../provider/action/collection.action';
-import { UpdateFilterChanges } from '../action/filter.action';
+import { UpdateFilterChanges, ClearFilter } from '../action/filter.action';
 
 /* istanbul ignore next */
 @Injectable()
@@ -110,6 +110,12 @@ export class FilterCollectionEffects {
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
         map(([filter, provider]) => new SelectProviderRequest(provider))
+    );
+
+    @Effect()
+    addFilterSuccessResetState$ = this.actions$.pipe(
+        ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
+        map(() => new ClearFilter())
     );
 
     @Effect()
