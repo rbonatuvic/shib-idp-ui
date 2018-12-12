@@ -23,13 +23,54 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             } : null;
             return err;
         };
-        validators['/metadataURL'] = (value, property, form) => {
-            return !UriValidator.isUri(value) ? {
-                code: 'INVALID_URI',
+
+        validators['/metadataRequestURLConstructionScheme'] = (value, property, form) => {
+            let errors;
+            let keys = Object.keys(property.schema.properties);
+
+            keys.forEach((item) => {
+                const path = `/metadataRequestURLConstructionScheme/${item}`;
+                const error = validators[path](value[item], property.properties[item], form);
+                if (error) {
+                    errors = errors || [];
+                    errors.push(error);
+                }
+            });
+            return errors;
+        };
+
+        validators['/metadataRequestURLConstructionScheme/content'] = (value, property, form) => {
+            const err = !value ? {
+                code: 'REQUIRED',
                 path: `#${property.path}`,
-                message: 'message.uri-valid-format',
+                message: 'message.value-required',
                 params: [value]
             } : null;
+            return err;
+        };
+
+        validators['/metadataRequestURLConstructionScheme/@type'] = (value, property, form) => {
+            const err = !value ? {
+                code: 'REQUIRED',
+                path: `#${property.path}`,
+                message: 'message.type-required',
+                params: [value]
+            } : null;
+            return err;
+        };
+
+        validators['/metadataRequestURLConstructionScheme/match'] = (value, property, form) => {
+            if (!property.parent || !property.parent.value) {
+                return null;
+            }
+            const isRegex = property.parent.value['@type'] === 'Regex';
+            const err = isRegex && !value ? {
+                code: 'REQUIRED',
+                path: `#${property.path}`,
+                message: 'message.match-required',
+                params: [value]
+            } : null;
+            return err;
         };
 
         return validators;
@@ -40,10 +81,10 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
+            // schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
+            schema: 'assets/schema/provider/dynamic-http.schema.json',
             fields: [
                 'xmlId',
-                'metadataURL',
                 'requireValidMetadata',
                 'failFastInitialization',
                 'metadataRequestURLConstructionScheme'

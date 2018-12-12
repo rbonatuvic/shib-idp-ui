@@ -35,8 +35,6 @@
                         }
                     },
                     "required": [
-                        "@type",
-                        "content",
                         "match"
                     ]
                 },
@@ -48,10 +46,7 @@
                             ]
                         }
                     },
-                    "required": [
-                        "@type",
-                        "content"
-                    ]
+                    "required": []
                 }
             ],
             "properties": {
