@@ -23,10 +23,15 @@ public class ShibUIConfiguration {
     /**
      * A Resource containing a CSV of users to bootstrap into the system. Currently, this must be in format
      *
+     * <code>
      * username,password,firstName,lastName,role
+     * </code>
      *
-     * Note that the password must be encrypted in the file using the system configured password encryption (by default,
-     * BCrypt)
+     * Note that the password must be encrypted in the file. Ensure that you prepend the encoder to the value, e.g.
+     *
+     * <code>
+     * {bcrypt}$2a$10$ssM2LpFqceRQ/ta0JehGcu0BawFQDbxjQGSyVmKS6qa09hHLigtAO
+     * </code>
      */
-    private Optional<Resource> userBootstrapResource = Optional.empty();
+    private Resource userBootstrapResource;
 }

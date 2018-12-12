@@ -29,9 +29,9 @@ class UserBootstrap {
     @Transactional
     @EventListener
     void bootstrapUsersAndRoles(ApplicationStartedEvent e) {
-        if (shibUIConfiguration.userBootstrapResource.isPresent()) {
-            log.info("configuring users from ${shibUIConfiguration.userBootstrapResource.get().URI}")
-            new CSVReader(new InputStreamReader(shibUIConfiguration.userBootstrapResource.get().inputStream)).each { it ->
+        if (shibUIConfiguration.userBootstrapResource) {
+            log.info("configuring users from ${shibUIConfiguration.userBootstrapResource.URI}")
+            new CSVReader(new InputStreamReader(shibUIConfiguration.userBootstrapResource.inputStream)).each { it ->
                 def (username, password, firstName, lastName, roleName) = it
                 def role = roleRepository.findByName(roleName).orElse(roleRepository.save(new Role(name: roleName)))
                 def user = userRepository.findByUsername(username).orElse(new User(username: username)).with {

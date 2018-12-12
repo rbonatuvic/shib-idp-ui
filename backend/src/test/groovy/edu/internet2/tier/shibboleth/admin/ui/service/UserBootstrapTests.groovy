@@ -33,7 +33,7 @@ class UserBootstrapTests extends Specification {
 
     def "simple test"() {
         setup:
-        shibUIConfiguration.userBootstrapResource = Optional.of(new ClassPathResource('/conf/1044.csv'))
+        shibUIConfiguration.userBootstrapResource = new ClassPathResource('/conf/1044.csv')
         def userBootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository)
 
         when:
