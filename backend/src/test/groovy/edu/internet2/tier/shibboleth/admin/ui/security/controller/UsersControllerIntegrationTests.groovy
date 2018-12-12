@@ -16,7 +16,7 @@ class UsersControllerIntegrationTests extends Specification {
     @Autowired
     private TestRestTemplate restTemplate
 
-    static RESOURCE_URI = '/api/security/users'
+    static RESOURCE_URI = '/api/admin/users'
 
     def "GET users"() {
         when: 'GET request is made for ALL users in the system'

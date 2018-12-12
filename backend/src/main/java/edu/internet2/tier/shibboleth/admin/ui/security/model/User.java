@@ -34,7 +34,9 @@ public class User extends AbstractAuditable {
     @Column(nullable = false)
     private String password;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
 
     private String emailAddress;
 

@@ -14,7 +14,7 @@ import java.util.List;
  * @author Dmitriy Kopylenko
  */
 @RestController
-@RequestMapping("/api/security/users")
+@RequestMapping("/api/admin/users")
 public class UsersController {
 
     private UserRepository userRepository;

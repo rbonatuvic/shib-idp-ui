@@ -39,14 +39,16 @@ class DevConfig {
             def users = [new User().with {
                 username = 'admin'
                 password = '{noop}adminpass'
-                name = 'Joe the admin'
+                firstName = 'Joe'
+                lastName = 'Doe'
                 emailAddress = 'joe@institution.edu'
                 roles.add(new Role(name: 'ROLE_ADMIN'))
                 it
             }, new User().with {
                 username = 'nonadmin'
                 password = '{noop}nonadminpass'
-                name = 'Peter non admin'
+                firstName = 'Peter'
+                lastName = 'Vandelay'
                 emailAddress = 'peter@institution.edu'
                 roles.add(new Role(name: 'ROLE_USER'))
                 it
