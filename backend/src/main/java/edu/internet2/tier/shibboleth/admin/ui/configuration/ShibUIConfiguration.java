@@ -26,7 +26,7 @@ public class ShibUIConfiguration {
      * username,password,firstName,lastName,role
      *
      * Note that the password must be encrypted in the file using the system configured password encryption (by default,
-     * bcrypt)
+     * BCrypt)
      */
     private Optional<Resource> userBootstrapResource;
 }
