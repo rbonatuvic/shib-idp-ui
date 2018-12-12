@@ -4,7 +4,7 @@ For more information, see `docs`
 
 ## Requirements
 
-* Java 8 (note that ONLY Java 8 is supported at this time)
+* Java 8 (note that ONLY Java 8 is supported at this time; other later versions might work)
 
 ## Running
 
