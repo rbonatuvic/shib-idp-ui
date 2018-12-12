@@ -118,10 +118,5 @@ public class WebSecurityConfig {
             }
         };
     }
-
-    public enum SupportedRoles {
-        ROLE_ADMIN,
-        ROLE_USER
-    }
 }
 
