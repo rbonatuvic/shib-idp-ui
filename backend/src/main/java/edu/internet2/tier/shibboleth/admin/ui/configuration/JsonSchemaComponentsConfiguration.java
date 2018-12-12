@@ -47,7 +47,7 @@ public class JsonSchemaComponentsConfiguration {
     //Configured via @ConfigurationProperties (using setter method) with 'shibui.dynamic-http-metadata-provider-ui-schema-location' property and
     // default value set here if that property is not explicitly set in application.properties
     @Setter
-    private String dynamicHttpMetadataResolverUiSchemaLocation = "classpath:nameid-filter.schema.json";
+    private String dynamicHttpMetadataResolverUiSchemaLocation = "classpath:dynamic-http-metadata-provider.schema.json";
 
     //Configured via @ConfigurationProperties (using setter method) with 'shibui.nameid-filter-ui-schema-location' property and
     // default value set here if that property is not explicitly set in application.properties
