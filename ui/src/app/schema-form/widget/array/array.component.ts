@@ -44,7 +44,6 @@ export class CustomArrayComponent extends ArrayWidget implements AfterViewInit, 
 
     addItem(): void {
         super.addItem();
-        console.log(this.formProperty.schemaValidator(this.schema));
     }
 
     getListType(property: any): string {

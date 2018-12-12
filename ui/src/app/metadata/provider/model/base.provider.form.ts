@@ -8,12 +8,11 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
         const validators = {
             '/': (value, property, form_current) => {
                 let errors;
-                // iterate all customer
                 Object.keys(value).forEach((key) => {
                     const item = value[key];
                     const validatorKey = `/${key}`;
                     const validator = validators.hasOwnProperty(validatorKey) ? validators[validatorKey] : null;
-                    const error = validator ? validator(item, { path: `/${key}` }, form_current) : null;
+                    const error = validator ? validator(item, property.properties[key], form_current) : null;
                     if (error) {
                         errors = errors || [];
                         errors.push(error);

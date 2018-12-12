@@ -39,5 +39,11 @@
     <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
         <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
     </select>
+    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
+        <ng-container *ngFor="let error of errorMessages; let first=first;">
+            <ng-container *ngIf="!first">, </ng-container>
+            <translate-i18n [key]="error">error</translate-i18n>
+        </ng-container>
+    </small>
     <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
 </div>
