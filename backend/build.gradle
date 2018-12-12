@@ -139,6 +139,9 @@ dependencies {
     
     //JSON schema validator
     compile 'org.sharegov:mjson:1.4.1'
+    
+    // CSV file support
+    compile 'com.opencsv:opencsv:4.4'
 }
 
 def generatedSrcDir = new File(buildDir, 'generated/src/main/java')
