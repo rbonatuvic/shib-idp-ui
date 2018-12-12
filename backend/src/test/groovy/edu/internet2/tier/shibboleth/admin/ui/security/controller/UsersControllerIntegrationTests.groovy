@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.security.controller
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
@@ -48,6 +49,7 @@ class UsersControllerIntegrationTests extends Specification {
         result.body.errorMessage == 'User with username [bogus] not found'
     }
 
+    @DirtiesContext
     def 'DELETE ONE existing user'() {
         when: 'GET request is made for one existing user'
         def result = this.restTemplate.getForEntity("$RESOURCE_URI/admin", Map)
