@@ -58,18 +58,21 @@ export class NewFilterComponent implements OnDestroy, OnInit {
         this.model = {};
 
         this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
+            takeUntil(this.ngUnsubscribe),
             filter(t => !!t),
             map(t => MetadataFilterTypes[t])
         );
         this.schema$ = this.definition$.pipe(
+            takeUntil(this.ngUnsubscribe),
             filter(d => !!d),
             switchMap(d => {
-                return this.schemaService.get(d.schema);
+                return this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe));
             }),
             shareReplay()
         );
 
         this.validators$ = this.definition$.pipe(
+            takeUntil(this.ngUnsubscribe),
             withLatestFrom(this.store.select(fromFilter.getFilterNames)),
             map(([definition, names]) => definition.getValidators(names))
         );
@@ -107,7 +110,6 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     }
 
     save(): void {
-        console.log(this.filter);
         this.store.dispatch(new AddFilterRequest(this.filter));
     }
 
