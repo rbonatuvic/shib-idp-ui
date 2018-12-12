@@ -25,30 +25,6 @@
                 "@type",
                 "content"
             ],
-            "anyOf": [
-                {
-                    "properties": {
-                        "@type": {
-                            "enum": [
-                                "Regex"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "match"
-                    ]
-                },
-                {
-                    "properties": {
-                        "@type": {
-                            "enum": [
-                                "MetadataQueryProtocol"
-                            ]
-                        }
-                    },
-                    "required": []
-                }
-            ],
             "properties": {
                 "@type": {
                     "title": "label.md-request-type",
