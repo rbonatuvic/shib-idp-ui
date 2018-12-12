@@ -1,7 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui;
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.auto.WebSecurityConfig;
+import edu.internet2.tier.shibboleth.admin.ui.configuration.auto.WebSecurityConfig.SupportedRoles;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.UsersCsvParserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +25,15 @@ import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
@@ -71,6 +85,60 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
                         logger.info(String.format("Reloading filters for resolver [%s: %s]", it.getName(), it.getResourceId()));
                         metadataResolverService.reloadFilters(it.getResourceId());
                     });
+        }
+    }
+
+    @Component
+    public static class UsersBootstrapStartupListener {
+
+        @Autowired
+        UsersCsvParserService usersCsvParserService;
+
+        @Autowired
+        UserRepository userRepository;
+
+        @Autowired
+        RoleRepository roleRepository;
+
+        private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
+
+        @Transactional
+        @EventListener
+        public void bootstrapUsersAndRoles(ApplicationStartedEvent e) {
+            bootstrapRoles();
+            List<User> users = usersCsvParserService.parseUsersFromCsv();
+            for (User user : users) {
+                User toBePersistedUser;
+                Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+                if (existingUser.isPresent()) {
+                    toBePersistedUser = existingUser.get();
+                } else {
+                    toBePersistedUser = new User();
+                    toBePersistedUser.setUsername(user.getUsername());
+                }
+                toBePersistedUser.setFirstName(user.getFirstName());
+                toBePersistedUser.setLastName(user.getLastName());
+                toBePersistedUser.setPassword(ENCODER.encode(user.getPassword()));
+                Set<Role> toBePersistedRoles = new HashSet<>();
+                for (Role role : user.getRoles()) {
+                    Optional<Role> existingRole = roleRepository.findByName(role.getName());
+                    if (existingRole.isPresent()) {
+                        toBePersistedRoles.add(existingRole.get());
+                    }
+                }
+                toBePersistedUser.setRoles(toBePersistedRoles);
+                userRepository.save(toBePersistedUser);
+            }
+        }
+
+        private void bootstrapRoles() {
+            for (SupportedRoles role : SupportedRoles.values()) {
+                if (!roleRepository.findByName(role.name()).isPresent()) {
+                    Role toBePersistedRole = new Role();
+                    toBePersistedRole.setName(role.name());
+                    roleRepository.save(toBePersistedRole);
+                }
+            }
         }
     }
 }

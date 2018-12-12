@@ -23,6 +23,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
+import edu.internet2.tier.shibboleth.admin.ui.service.UsersCsvParserService;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
@@ -193,5 +194,10 @@ public class CoreShibUiConfiguration {
     @Bean
     public ModelRepresentationConversions modelRepresentationConversions() {
         return new ModelRepresentationConversions(customPropertiesConfiguration());
+    }
+
+    @Bean
+    public UsersCsvParserService usersCsvParserService() {
+        return new UsersCsvParserService();
     }
 }
