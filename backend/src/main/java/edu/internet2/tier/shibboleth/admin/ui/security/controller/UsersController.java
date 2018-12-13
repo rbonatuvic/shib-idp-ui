@@ -3,24 +3,16 @@ package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-<<<<<<< Updated upstream
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-=======
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
->>>>>>> Stashed changes
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,7 +90,7 @@ public class UsersController {
         }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User persistedUser = userSearchResult.get();
-        persistedUser.setPassword(passwordEncoder.encode(user.getPassword());
+        persistedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         persistedUser.setFirstName(user.getFirstName());
         persistedUser.setLastName(user.getLastName());
         persistedUser.setRoles(user.getRoles());
