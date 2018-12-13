@@ -77,7 +77,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             List<MetadataFilter> metadataFilters = new ArrayList<>()
 
             // set up namespace protection
-            if (shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0) {
+            if (shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0 && targetMetadataResolver && jpaMetadataResolver.type in ['FileBackedMetadataResolver', 'DynamicHttpMetadataResolver']) {
                 def target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
                 target.attributeFilter = new ScriptedPredicate(new EvaluableScript(protectedNamespaceScript()))
                 metadataFilters.add(target)
@@ -192,17 +192,17 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                             constructXmlNodeForResolver(mr, delegate) {
                                 //TODO: enhance
                                 def didNamespaceProtectionFilter = !(shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0)
-                                mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                                    if (filter instanceof EntityAttributesFilter && !didNamespaceProtectionFilter) {
+                                def doNamespaceProtectionFilter = { def filter ->
+                                    if (mr.type in ['FileBackedMetadataResolver', 'DynamicHttpMetadataResolver'] && (filter == null || filter instanceof EntityAttributesFilter) && !didNamespaceProtectionFilter) {
                                         constructXmlNodeForEntityAttributeNamespaceProtection(delegate)
                                         didNamespaceProtectionFilter = true
                                     }
+                                }
+                                mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
+                                    doNamespaceProtectionFilter()
                                     constructXmlNodeForFilter(filter, delegate)
                                 }
-                                if (!didNamespaceProtectionFilter) {
-                                    constructXmlNodeForEntityAttributeNamespaceProtection(delegate)
-                                    didNamespaceProtectionFilter = true
-                                }
+                                doNamespaceProtectionFilter()
                             }
                         }
                 }
