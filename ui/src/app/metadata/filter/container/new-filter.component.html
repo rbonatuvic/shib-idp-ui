@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <span class="display-6">
                         <i class="fa fa-fw fa-gears"></i>&nbsp;&nbsp;
-                        <translate-i18n key="label.new-filter">New Filter - EntityAttributes</translate-i18n>
+                        <translate-i18n key="label.new-filter">New Filter</translate-i18n>
                     </span>
                 </div>
             </div>
@@ -15,8 +15,11 @@
                 <div class="d-flex justify-content-between">
                     <form [formGroup]="form" class="d-block w-50">
                         <div class="form-group">
-                            <label for="type">
-                                <translate-i18n key="label.select-filter-type">Select Filter Type</translate-i18n>
+                            <label for="type" class="d-flex justify-content-start control-label">
+                                <span>
+                                    <translate-i18n key="label.select-filter-type">Select Filter Type</translate-i18n>
+                                    <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                </span>
                             </label>
                             <select class="form-control" formControlName="type" name="type">
                                 <option value="" disabled>
