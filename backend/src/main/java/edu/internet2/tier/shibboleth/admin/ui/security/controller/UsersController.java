@@ -45,28 +45,22 @@ public class UsersController {
     }
 
     @Transactional(readOnly = true)
-    @GetMapping("/user/{username}")
+    @GetMapping("/users/{username}")
     public ResponseEntity<?> getOne(@PathVariable String username) {
         return ResponseEntity.ok(findUserOrThrowHttp404(username));
     }
 
     @Transactional
-    @DeleteMapping("/user/{username}")
+    @DeleteMapping("/users/{username}")
     public ResponseEntity<?> deleteOne(@PathVariable String username) {
         User user = findUserOrThrowHttp404(username);
         userRepository.delete(user);
         return ResponseEntity.noContent().build();
     }
 
-
-    private User findUserOrThrowHttp404(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username)));
-    }
-
     @Transactional
-    @PostMapping("/user")
-    ResponseEntity<?> saveUser(@RequestParam User user) {
+    @PostMapping("/users")
+    ResponseEntity<?> saveOne(@RequestParam User user) {
         Optional<User> persistedUser = userRepository.findByUsername(user.getUsername());
         if (persistedUser.isPresent()) {
             return ResponseEntity
@@ -80,8 +74,8 @@ public class UsersController {
     }
 
     @Transactional
-    @PutMapping("/user/{username}")
-    ResponseEntity<?> updateUser(@PathVariable(value = "username") String username, @RequestParam User user) {
+    @PutMapping("/users/{username}")
+    ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestParam User user) {
         Optional<User> userSearchResult = userRepository.findByUsername(username);
         if (!userSearchResult.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -96,5 +90,10 @@ public class UsersController {
         persistedUser.setRoles(user.getRoles());
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);
+    }
+
+    private User findUserOrThrowHttp404(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username)));
     }
  }

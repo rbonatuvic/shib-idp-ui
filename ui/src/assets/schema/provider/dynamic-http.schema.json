@@ -25,35 +25,6 @@
                 "@type",
                 "content"
             ],
-            "anyOf": [
-                {
-                    "properties": {
-                        "@type": {
-                            "enum": [
-                                "Regex"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "@type",
-                        "content",
-                        "match"
-                    ]
-                },
-                {
-                    "properties": {
-                        "@type": {
-                            "enum": [
-                                "MetadataQueryProtocol"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "@type",
-                        "content"
-                    ]
-                }
-            ],
             "properties": {
                 "@type": {
                     "title": "label.md-request-type",
@@ -152,8 +123,8 @@
                         "step": 0.01
                     },
                     "placeholder": "label.real-number",
-                    "minimum": 0,
-                    "maximum": 1,
+                    "minimum": 0.01,
+                    "maximum": 0.99,
                     "default": null
                 },
                 "minCacheDuration": {
@@ -221,6 +192,29 @@
                     },
                     "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "removeIdleEntityData": {
+                    "title": "label.remove-idle-entity-data",
+                    "description": "tooltip.remove-idle-entity-data",
+                    "type": "boolean",
+                    "widget": {
+                        "id": "boolean-radio"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                true
+                            ],
+                            "description": "value.true"
+                        },
+                        {
+                            "enum": [
+                                false
+                            ],
+                            "description": "value.false"
+                        }
+                    ],
+                    "default": true
                 },
                 "cleanupTaskInterval": {
                     "title": "label.cleanup-task-interval",
