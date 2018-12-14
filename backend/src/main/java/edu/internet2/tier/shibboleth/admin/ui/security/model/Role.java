@@ -33,8 +33,15 @@ public class Role extends AbstractAuditable {
         this.name = name;
     }
 
+    public Role(String name, int rank) {
+        this.name = name;
+        this.rank = rank;
+    }
+
     @Column(unique = true)
     private String name;
+
+    private int rank;
 
     //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
     @JsonIgnoreProperties("roles")
