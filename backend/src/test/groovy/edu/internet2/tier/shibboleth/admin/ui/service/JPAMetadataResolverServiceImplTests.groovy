@@ -408,14 +408,6 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
         when:
         metadataResolverRepository.save(resolver)
-        def x = new StringWriter().with {
-            TransformerFactory.newInstance().newTransformer().with {
-                it.setOutputProperty(OutputKeys.INDENT, "yes")
-                it.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2")
-                it
-            }.transform(new DOMSource(metadataResolverService.generateConfiguration()), new StreamResult(it))
-            it
-        }.toString()
 
         then:
         generatedXmlIsTheSameAsExpectedXml('/conf/1059.xml', metadataResolverService.generateConfiguration())
