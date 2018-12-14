@@ -7,7 +7,7 @@ import * as fromAdmin from '../reducer';
 
 import { UserService } from '../../../core/service/user.service';
 import { LoadAdminRequest, UpdateAdminRequest, RemoveAdminRequest } from '../action/collection.action';
-import { Admin } from '../model/admin';
+import { Admin, Role } from '../model/admin';
 
 @Component({
     selector: 'admin-management-page',
@@ -18,7 +18,7 @@ import { Admin } from '../model/admin';
 export class AdminManagementPageComponent {
 
     users$: Observable<Admin[]>;
-    roles$: Observable<string[]> = of(['SUPER_ADMIN', 'DELEGATED_ADMIN']);
+    roles$: Observable<Role[]> = of([{name: 'ROLE_ADMIN' },  {name: 'ROLE_USER'}]);
 
     constructor(
         private store: Store<fromRoot.State>
@@ -28,7 +28,7 @@ export class AdminManagementPageComponent {
         this.users$ = this.store.select(fromAdmin.getAllAdmins);
     }
 
-    setUserRole(user: Admin, change: string): void {
+    setUserRole(user: Admin, change: Role): void {
         this.store.dispatch(new UpdateAdminRequest({
             ...user,
             role: change

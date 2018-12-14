@@ -8,7 +8,7 @@ export interface CollectionState extends EntityState<Admin> {
 }
 
 export const adapter: EntityAdapter<Admin> = createEntityAdapter<Admin>({
-    selectId: (model: Admin) => model.resourceId
+    selectId: (model: Admin) => model.username
 });
 
 export const initialState: CollectionState = adapter.getInitialState({
