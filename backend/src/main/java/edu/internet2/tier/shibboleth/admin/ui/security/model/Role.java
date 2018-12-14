@@ -29,6 +29,10 @@ import java.util.Set;
 @ToString(exclude = "users")
 public class Role extends AbstractAuditable {
 
+    public Role(String name) {
+        this.name = name;
+    }
+
     @Column(unique = true)
     private String name;
 
