@@ -141,7 +141,7 @@ class UsersControllerIntegrationTests extends Specification {
         def newUser = new User().with {
             it.firstName = 'Foo'
             it.lastName = 'Bar'
-            it.username = 'FooBar'
+            it.username = 'UnknownUsername'
             it.password = 'somepass'
             it.roles = [new Role().with {it.name = 'ROLE_USER'}] as Set<Role>
             it
