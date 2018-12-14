@@ -77,7 +77,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             List<MetadataFilter> metadataFilters = new ArrayList<>()
 
             // set up namespace protection
-            if (shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0 && targetMetadataResolver && jpaMetadataResolver.type in ['FileBackedMetadataResolver', 'DynamicHttpMetadataResolver']) {
+            if (shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0 && targetMetadataResolver && jpaMetadataResolver.type in ['FileBackedHttpMetadataResolver', 'DynamicHttpMetadataResolver']) {
                 def target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
                 target.attributeFilter = new ScriptedPredicate(new EvaluableScript(protectedNamespaceScript()))
                 metadataFilters.add(target)
