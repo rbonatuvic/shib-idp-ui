@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,9 +46,24 @@ public class User extends AbstractAuditable {
 
     private String emailAddress;
 
+    @Transient
+    private String role;
+
     //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
-    @JsonIgnoreProperties("users")
+    @JsonIgnore
+//    @JsonIgnoreProperties("users")
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public String getRole() {
+        Set<Role> roles = this.getRoles();
+        if (roles.size() != 1) {
+            if (StringUtils.isNotBlank(this.role)) {
+                return this.role;
+            }
+            throw new RuntimeException(String.format("User with username [%s] does not have exactly one role!", this.getUsername()));
+        }
+        return roles.iterator().next().getName();
+    }
 }

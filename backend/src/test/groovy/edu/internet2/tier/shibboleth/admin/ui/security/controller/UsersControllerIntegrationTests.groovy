@@ -2,11 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -42,7 +38,7 @@ class UsersControllerIntegrationTests extends Specification {
         then: 'Request completed with HTTP 200 and returned a list of users'
         result.statusCodeValue == 200
         result.body[0].username == 'admin'
-        result.body[0].roles[0].name == 'ROLE_ADMIN'
+        result.body[0].role == 'ROLE_ADMIN'
     }
 
     def 'GET ONE existing user'() {
@@ -52,7 +48,7 @@ class UsersControllerIntegrationTests extends Specification {
         then: 'Request completed with HTTP 200 and returned one user'
         result.statusCodeValue == 200
         result.body.username == 'admin'
-        result.body.roles[0].name == 'ROLE_ADMIN'
+        result.body.role == 'ROLE_ADMIN'
     }
 
     def 'GET ONE NON-existing user'() {
@@ -88,7 +84,7 @@ class UsersControllerIntegrationTests extends Specification {
                        username: 'FooBar',
                        password: 'somepass',
                        emailAddress: 'foo@institution.edu',
-                       roles: ['ROLE_USER']]
+                       role: 'ROLE_USER']
 
         when:
         def result = this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
@@ -104,7 +100,7 @@ class UsersControllerIntegrationTests extends Specification {
                        username: 'DuplicateUser',
                        password: 'somepass',
                        emailAddress: 'foo@institution.edu',
-                       roles: ['ROLE_USER']]
+                       role: 'ROLE_USER']
 
         when:
         this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
@@ -121,7 +117,7 @@ class UsersControllerIntegrationTests extends Specification {
                        username: 'FooBar',
                        password: 'somepass',
                        emailAddress: 'foo@institution.edu',
-                       roles: ['ROLE_USER']]
+                       role: 'ROLE_USER']
 
         when:
         this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
@@ -134,14 +130,12 @@ class UsersControllerIntegrationTests extends Specification {
 
     def 'PUT detects unknown username'() {
         given:
-        def newUser = new User().with {
-            it.firstName = 'Foo'
-            it.lastName = 'Bar'
-            it.username = 'UnknownUsername'
-            it.password = 'somepass'
-            it.roles = [new Role().with {it.name = 'ROLE_USER'}] as Set<Role>
-            it
-        }
+        def newUser = [firstName: 'Foo',
+                       lastName: 'Bar',
+                       username: 'UnknownUser',
+                       password: 'somepass',
+                       emailAddress: 'foo@institution.edu',
+                       role: 'ROLE_USER']
 
         when:
         def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", org.springframework.http.HttpMethod.PUT, createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)

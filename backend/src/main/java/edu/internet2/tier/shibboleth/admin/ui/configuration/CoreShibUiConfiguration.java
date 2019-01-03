@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserRoleService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
@@ -193,5 +194,10 @@ public class CoreShibUiConfiguration {
     @Bean
     public ModelRepresentationConversions modelRepresentationConversions() {
         return new ModelRepresentationConversions(customPropertiesConfiguration());
+    }
+
+    @Bean
+    public UserRoleService userRoleService() {
+        return new UserRoleService();
     }
 }
