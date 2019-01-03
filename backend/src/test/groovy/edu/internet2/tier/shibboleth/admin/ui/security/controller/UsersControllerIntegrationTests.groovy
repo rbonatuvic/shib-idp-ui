@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -80,37 +83,32 @@ class UsersControllerIntegrationTests extends Specification {
 
     def 'POST new user persists properly'() {
         given:
-        def newUser = new User().with {
-            it.firstName = 'Foo'
-            it.lastName = 'Bar'
-            it.username = 'FooBar'
-            it.password = 'somepass'
-            it.roles = [new Role().with {it.name = 'ROLE_USER'}] as Set<Role>
-            it
-        }
+        def newUser = [firstName: 'Foo',
+                       lastName: 'Bar',
+                       username: 'FooBar',
+                       password: 'somepass',
+                       emailAddress: 'foo@institution.edu',
+                       roles: ['ROLE_USER']]
 
         when:
-        def result = this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
+        def result = this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
 
         then:
         result.statusCodeValue == 200
-        //TODO: Compare body? Or do that in a service-level unit test?
     }
 
     def 'POST new duplicate username returns 409'() {
         given:
-        def newUser = new User().with {
-            it.firstName = 'Foo'
-            it.lastName = 'Bar'
-            it.username = 'DuplicateUser'
-            it.password = 'somepass'
-            it.roles = [new Role().with {it.name = 'ROLE_USER'}] as Set<Role>
-            it
-        }
+        def newUser = [firstName: 'Foo',
+                       lastName: 'Bar',
+                       username: 'DuplicateUser',
+                       password: 'somepass',
+                       emailAddress: 'foo@institution.edu',
+                       roles: ['ROLE_USER']]
 
         when:
-        this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
-        def result = this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
+        this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
+        def result = this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
 
         then:
         result.statusCodeValue == 409
@@ -118,19 +116,17 @@ class UsersControllerIntegrationTests extends Specification {
 
     def 'PUT updates user properly'() {
         given:
-        def newUser = new User().with {
-            it.firstName = 'Foo'
-            it.lastName = 'Bar'
-            it.username = 'FooBar'
-            it.password = 'somepass'
-            it.roles = [new Role().with {it.name = 'ROLE_USER'}] as Set<Role>
-            it
-        }
+        def newUser = [firstName: 'Foo',
+                       lastName: 'Bar',
+                       username: 'FooBar',
+                       password: 'somepass',
+                       emailAddress: 'foo@institution.edu',
+                       roles: ['ROLE_USER']]
 
         when:
-        this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
-        newUser.setFirstName('Bob')
-        def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", org.springframework.http.HttpMethod.PUT, createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
+        this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
+        newUser['firstName'] = 'Bob'
+        def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", org.springframework.http.HttpMethod.PUT, createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
 
         then:
         result.statusCodeValue == 200

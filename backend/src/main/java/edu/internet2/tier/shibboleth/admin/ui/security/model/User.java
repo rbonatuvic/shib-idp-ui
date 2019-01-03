@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,8 +34,7 @@ public class User extends AbstractAuditable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    //TODO: Need to figure out the right way to protect this property
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
