@@ -100,7 +100,10 @@ public class UsersController {
         if (StringUtils.isNotBlank(user.getPassword())) {
             persistedUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         }
-        userRoleService.updateUserRole(persistedUser);
+        if (StringUtils.isNotBlank(user.getRole())) {
+            persistedUser.setRole(user.getRole());
+            userRoleService.updateUserRole(persistedUser);
+        }
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);
     }
