@@ -5,10 +5,12 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserRoleService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,8 +78,8 @@ public class UsersController {
                     .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()),
                             String.format("A user with username [%s] already exists within the system.", user.getUsername())));
         }
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRoleService.updateUserRole(user);
-        //TODO: encrypt password? Or is it sent to us encrypted?
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -86,10 +88,18 @@ public class UsersController {
     @PutMapping("/{username}")
     ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestBody User user) {
         User persistedUser = findUserOrThrowHttp404(username);
-        persistedUser.setPassword(user.getPassword()); //TODO: encrypt password?
-        persistedUser.setFirstName(user.getFirstName());
-        persistedUser.setLastName(user.getLastName());
-        persistedUser.setEmailAddress(user.getEmailAddress());
+        if (StringUtils.isNotBlank(user.getFirstName())) {
+            persistedUser.setFirstName(user.getFirstName());
+        }
+        if (StringUtils.isNotBlank(user.getLastName())) {
+            persistedUser.setLastName(user.getLastName());
+        }
+        if (StringUtils.isNotBlank(user.getEmailAddress())) {
+            persistedUser.setEmailAddress(user.getEmailAddress());
+        }
+        if (StringUtils.isNotBlank(user.getPassword())) {
+            persistedUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        }
         userRoleService.updateUserRole(persistedUser);
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);
