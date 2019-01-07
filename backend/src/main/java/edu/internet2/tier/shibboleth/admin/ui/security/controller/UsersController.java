@@ -1,10 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserRoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -40,10 +38,12 @@ public class UsersController {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private UserRoleService userRoleService;
 
-    public UsersController(UserRepository userRepository, RoleRepository roleRepository) {
+    public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserRoleService userRoleService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.userRoleService = userRoleService;
     }
 
     @Transactional(readOnly = true)
@@ -76,7 +76,7 @@ public class UsersController {
                     .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()),
                             String.format("A user with username [%s] already exists within the system.", user.getUsername())));
         }
-        user.setRoles(getPersistedRoles(user.getUsername(), user.getRoles()));
+        userRoleService.updateUserRole(user);
         //TODO: encrypt password? Or is it sent to us encrypted?
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
@@ -90,22 +90,9 @@ public class UsersController {
         persistedUser.setFirstName(user.getFirstName());
         persistedUser.setLastName(user.getLastName());
         persistedUser.setEmailAddress(user.getEmailAddress());
-        persistedUser.setRoles(getPersistedRoles(user.getUsername(), user.getRoles()));
+        userRoleService.updateUserRole(persistedUser);
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);
-    }
-
-    private Set<Role> getPersistedRoles(String username, Set<Role> userRolesToBeUpdated) {
-        Set<Role> newRoles = new HashSet<>();
-        for (Role role : userRolesToBeUpdated) {
-            Optional<Role> persistedRole = roleRepository.findByName(role.getName());
-            if (!persistedRole.isPresent()) {
-                logger.warn("Role [%s] is not present in the system. Not setting role for user [%s].", role.getName(), username);
-                continue;
-            }
-            newRoles.add(persistedRole.get());
-        }
-       return newRoles;
     }
 
     private User findUserOrThrowHttp404(String username) {
