@@ -45,7 +45,7 @@ public class Role extends AbstractAuditable {
 
     //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
     @JsonIgnoreProperties("roles")
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
 }
