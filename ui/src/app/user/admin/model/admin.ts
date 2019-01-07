@@ -1,9 +1,11 @@
-import { User } from '../../../core/model/user';
-
-export interface Admin extends User {
+export interface Admin {
     createdDate?: string;
     updatedDate?: string;
-    resourceId: string;
+    username: string;
+    firstName: string;
+    lastName: string;
 
-    email: string;
+    role: string;
+
+    emailAddress: string;
 }

@@ -34,7 +34,7 @@ export class AdminCollectionEffects {
         map(action => action.payload),
         switchMap(changes => this.adminService.update(changes).pipe(
             map(user => new UpdateAdminSuccess({
-                id: changes.resourceId,
+                id: changes.username,
                 changes
             }))
         ))

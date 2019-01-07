@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from '../model/user';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
 
-    constructor() { }
+    readonly base = `/api`;
+
+    constructor(
+        private http: HttpClient
+    ) { }
 
     get(): Observable<User> {
         const defUser = Object.assign({}, {
@@ -17,5 +22,11 @@ export class UserService {
             }
         });
         return of(defUser);
+    }
+
+    getRoles(): Observable<string[]> {
+        return this.http.get<string[]>(
+            `${this.base}/supportedRoles`
+        );
     }
 } /* istanbul ignore next */
