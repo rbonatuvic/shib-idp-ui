@@ -1,4 +1,4 @@
-import { Admin, Role } from './admin';
+import { Admin } from './admin';
 
 export class AdminEntity implements Admin {
 
@@ -7,19 +7,11 @@ export class AdminEntity implements Admin {
     lastName: string;
     emailAddress: string;
 
-    roles: Role[];
+    role: string;
 
     constructor(
         properties: Admin
     ) {
         Object.assign(this, properties);
-    }
-
-    get role(): Role {
-        return this.roles[0];
-    }
-
-    set role(newRole: Role) {
-        this.roles[0] = newRole;
     }
 }

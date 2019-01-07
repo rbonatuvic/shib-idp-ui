@@ -24,7 +24,7 @@ export class AdminService {
 
     update(user: Admin): Observable<Admin> {
         return this.http.put<Admin>(
-            `${this.base}${this.endpoint}/${user.username}`, {user}
+            `${this.base}${this.endpoint}/${user.username}`, {...user}
         );
     }
 

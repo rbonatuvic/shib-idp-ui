@@ -1,5 +1,3 @@
-import { User } from '../../../core/model/user';
-
 export interface Admin {
     createdDate?: string;
     updatedDate?: string;
@@ -7,13 +5,7 @@ export interface Admin {
     firstName: string;
     lastName: string;
 
-    roles: Role[];
-
-    role: Role;
+    role: string;
 
     emailAddress: string;
-}
-
-export interface Role {
-    name: string;
 }
