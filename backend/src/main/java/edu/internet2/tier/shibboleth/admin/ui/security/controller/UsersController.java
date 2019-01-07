@@ -78,8 +78,8 @@ public class UsersController {
                     .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()),
                             String.format("A user with username [%s] already exists within the system.", user.getUsername())));
         }
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRoleService.updateUserRole(user);
-        //TODO: encrypt password? Or is it sent to us encrypted?
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
