@@ -55,13 +55,13 @@ public class User extends AbstractAuditable {
     private Set<Role> roles = new HashSet<>();
 
     public String getRole() {
-        Set<Role> roles = this.getRoles();
-        if (roles.size() != 1) {
-            if (StringUtils.isNotBlank(this.role)) {
-                return this.role;
+        if (StringUtils.isBlank(this.role)) {
+            Set<Role> roles = this.getRoles();
+            if (roles.size() != 1) {
+                throw new RuntimeException(String.format("User with username [%s] does not have exactly one role!", this.getUsername()));
             }
-            throw new RuntimeException(String.format("User with username [%s] does not have exactly one role!", this.getUsername()));
+            this.role = roles.iterator().next().getName();
         }
-        return roles.iterator().next().getName();
+        return this.role;
     }
 }
