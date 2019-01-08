@@ -10,7 +10,7 @@ shibui:
     keystorePath: "/conf/samlKeystore.jks"
     keystorePassword: "changeit"
     privateKeyPassword: "changeit"
-    serviceProviderEntityId: "https://unicon.net/shibui"
+    serviceProviderEntityId: "https://unicon.net/dev/shibui"
     serviceProviderMetadataPath: "/conf/sp-metadata.xml"
     identityProviderMetadataPath: "/conf/idp-metadata.xml"
     forceServiceProviderMetadataGeneration: true
