@@ -3,7 +3,7 @@
         <div class="section-header bg-primary p-2 text-light">
             <div class="row justify-content-between">
                 <div class="col-12">
-                    <span class="lead" translate="label.admin-management">User Maintenance</span>
+                    <span class="lead" translate="label.user-maintenance">User Maintenance</span>
                 </div>
             </div>
         </div>
@@ -11,11 +11,11 @@
             <table class="table table-striped">
                 <thead class="thead-primary">
                     <tr>
-                        <th scope="col">UserId</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Delete?</th>
+                        <th scope="col" translate="label.user-id">UserId</th>
+                        <th scope="col" translate="label.name">Name</th>
+                        <th scope="col" translate="label.email">Email</th>
+                        <th scope="col" translate="label.role">Role</th>
+                        <th scope="col" translate="label.delete">Delete?</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,9 @@
                         </td>
                         <td>
                             <button class="btn btn-link" (click)="deleteUser(user.username)">
-                                <span class="sr-only">Delete User</span>
+                                <span class="sr-only" translate="label.delete-user">
+                                    Delete User
+                                </span>
                                 <i class="fa fa-trash fa-lg text-danger"></i>
                             </button>
                         </td>
