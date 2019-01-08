@@ -157,6 +157,12 @@ export class FilterCollectionEffects {
     );
 
     @Effect()
+    updateFilterSuccessResetState$ = this.actions$.pipe(
+        ofType<UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
+        map(() => new ClearFilter())
+    );
+
+    @Effect()
     getOrderWithLoad$ = this.actions$.pipe(
         ofType<LoadFilterSuccess>(FilterCollectionActionTypes.LOAD_FILTER_SUCCESS),
         map(() => new GetOrderFilterRequest())
