@@ -13,20 +13,26 @@ import { reducers } from './reducer';
 import { AdminService } from './service/admin.service';
 import { AdminCollectionEffects } from './effect/collection.effect';
 import { EffectsModule } from '@ngrx/effects';
+import { DeleteUserDialogComponent } from './component/delete-user-dialog.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
         AdminManagementPageComponent,
-        AdminComponent
+        AdminComponent,
+        DeleteUserDialogComponent
     ],
-    entryComponents: [],
+    entryComponents: [
+        DeleteUserDialogComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,
         RouterModule,
         HttpClientModule,
         SharedModule,
-        I18nModule
+        I18nModule,
+        NgbModalModule
     ]
 })
 export class UserAdminModule {

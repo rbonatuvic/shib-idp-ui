@@ -9,6 +9,10 @@ import * as fromAdmin from '../reducer';
 import { LoadAdminRequest, UpdateAdminRequest, RemoveAdminRequest } from '../action/collection.action';
 import { Admin } from '../model/admin';
 import { LoadRoleRequest } from '../../../core/action/configuration.action';
+import { ModalService } from '../../../core/service/modal.service';
+import { DeleteUserDialogComponent } from '../component/delete-user-dialog.component';
+import { map } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'admin-management-page',
@@ -22,7 +26,8 @@ export class AdminManagementPageComponent {
     roles$: Observable<string[]>;
 
     constructor(
-        private store: Store<fromRoot.State>
+        private store: Store<fromRoot.State>,
+        private modal: NgbModal
     ) {
         this.store.dispatch(new LoadAdminRequest());
         this.store.dispatch(new LoadRoleRequest());
@@ -39,6 +44,14 @@ export class AdminManagementPageComponent {
     }
 
     deleteUser(user: string): void {
-        this.store.dispatch(new RemoveAdminRequest(user));
+        this.modal
+            .open(DeleteUserDialogComponent)
+            .result
+            .then(
+                result => this.store.dispatch(new RemoveAdminRequest(user))
+            )
+            .catch(
+                err => err
+            );
     }
 }
