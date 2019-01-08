@@ -115,7 +115,10 @@ describe('DynamicHttpMetadataProviderWizard', () => {
                 '/',
                 '/name',
                 '/xmlId',
-                '/metadataURL'
+                '/metadataRequestURLConstructionScheme',
+                '/metadataRequestURLConstructionScheme/content',
+                '/metadataRequestURLConstructionScheme/@type',
+                '/metadataRequestURLConstructionScheme/match'
             ]);
         });
     });

@@ -6,22 +6,18 @@ import { Admin } from '../model/admin';
 
 let users = <Admin[]>[
     {
-        resourceId: 'abc',
-        role: 'SUPER_ADMIN',
-        email: 'foo@bar.com',
-        name: {
-            first: 'Jane',
-            last: 'Doe'
-        }
+        username: 'abc',
+        role: 'ROLE_ADMIN',
+        emailAddress: 'foo@bar.com',
+        firstName: 'Jane',
+        lastName: 'Doe'
     },
     {
-        resourceId: 'def',
-        role: 'DELEGATED_ADMIN',
-        email: 'bar@baz.com',
-        name: {
-            first: 'John',
-            last: 'Doe'
-        }
+        username: 'def',
+        role: 'ROLE_USER',
+        emailAddress: 'bar@baz.com',
+        firstName: 'John',
+        lastName: 'Doe'
     }
 ];
 
@@ -47,7 +43,7 @@ describe('Admin Service', () => {
                 service.query().subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === '/api/users'
+                    return req.url === '/api/admin/users'
                         && req.method === 'GET';
                 }, `GET admin collection`);
             }
@@ -59,7 +55,7 @@ describe('Admin Service', () => {
                 service.update({...users[0]}).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === '/api/users/abc'
+                    return req.url === '/api/admin/users/abc'
                         && req.method === 'PUT';
                 }, `PUT admin user`);
             }
@@ -68,10 +64,10 @@ describe('Admin Service', () => {
     describe('remove method', () => {
         it(`should send an expected delete request`, async(inject([AdminService, HttpTestingController],
             (service: AdminService, backend: HttpTestingController) => {
-                service.remove(users[0].resourceId).subscribe();
+                service.remove(users[0].username).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === '/api/users/abc'
+                    return req.url === '/api/admin/users/abc'
                         && req.method === 'DELETE';
                 }, `DELETE admin user`);
             }

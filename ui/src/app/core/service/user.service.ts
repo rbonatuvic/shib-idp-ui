@@ -12,18 +12,6 @@ export class UserService {
         private http: HttpClient
     ) { }
 
-    get(): Observable<User> {
-        const defUser = Object.assign({}, {
-            id: 'foo',
-            role: 'admin',
-            name: {
-                first: 'Ryan',
-                last: 'Mathis'
-            }
-        });
-        return of(defUser);
-    }
-
     getRoles(): Observable<string[]> {
         return this.http.get<string[]>(
             `${this.base}/supportedRoles`

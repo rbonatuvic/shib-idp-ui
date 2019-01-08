@@ -12,18 +12,6 @@ import { UserService } from '../service/user.service';
 export class UserEffects {
 
     @Effect()
-    loadUser$ = this.actions$.pipe(
-        ofType(user.USER_LOAD_REQUEST),
-        switchMap(() =>
-            this.userService.get()
-                .pipe(
-                    map(u => new user.UserLoadSuccessAction({ ...u })),
-                    catchError(error => of(new user.UserLoadErrorAction(error)))
-                )
-        )
-    );
-
-    @Effect()
     loadRoles$ = this.actions$.pipe(
         ofType<LoadRoleRequest>(ConfigurationActionTypes.LOAD_ROLE_REQUEST),
         switchMap(() =>

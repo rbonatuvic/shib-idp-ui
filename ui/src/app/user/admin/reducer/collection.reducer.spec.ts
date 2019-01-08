@@ -10,22 +10,18 @@ import { Admin } from '../model/admin';
 
 let users = <Admin[]>[
     {
-        resourceId: 'abc',
-        role: 'SUPER_ADMIN',
-        email: 'foo@bar.com',
-        name: {
-            first: 'Jane',
-            last: 'Doe'
-        }
+        username: 'abc',
+        role: 'ROLE_ADMIN',
+        emailAddress: 'foo@bar.com',
+        firstName: 'Jane',
+        lastName: 'Doe'
     },
     {
-        resourceId: 'def',
-        role: 'DELEGATED_ADMIN',
-        email: 'bar@baz.com',
-        name: {
-            first: 'John',
-            last: 'Doe'
-        }
+        username: 'def',
+        role: 'ROLE_USER',
+        emailAddress: 'bar@baz.com',
+        firstName: 'John',
+        lastName: 'Doe'
     }
 ];
 
