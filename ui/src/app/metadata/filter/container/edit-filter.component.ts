@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, Subscription } from 'rxjs';
 
 import * as fromFilter from '../reducer';
 import { MetadataFilterTypes } from '../model';
@@ -11,13 +11,15 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
-import { shareReplay, map, withLatestFrom, filter, switchMap, startWith, defaultIfEmpty } from 'rxjs/operators';
+import { shareReplay, map, withLatestFrom, filter, switchMap, startWith, defaultIfEmpty, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'edit-filter-page',
     templateUrl: './edit-filter.component.html'
 })
-export class EditFilterComponent {
+export class EditFilterComponent implements OnDestroy {
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
@@ -39,21 +41,25 @@ export class EditFilterComponent {
 
     actions: any;
 
+    defSub: Subscription;
+
     constructor(
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
     ) {
         this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
+            takeUntil(this.ngUnsubscribe),
             filter(t => !!t),
             map(t => MetadataFilterTypes[t])
         );
 
-        this.definition$.subscribe(d => this.definition = d);
+        this.defSub = this.definition$.subscribe(d => this.definition = d);
 
         this.schema$ = this.definition$.pipe(
+            takeUntil(this.ngUnsubscribe),
             filter(d => !!d),
             switchMap(d => {
-                return this.schemaService.get(d.schema);
+                return this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe));
             }),
             shareReplay()
         );
@@ -67,6 +73,7 @@ export class EditFilterComponent {
         });
 
         this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
+            takeUntil(this.ngUnsubscribe),
             withLatestFrom(
                 this.store.select(fromFilter.getSelectedFilter),
                 this.definition$
@@ -85,6 +92,12 @@ export class EditFilterComponent {
                 this.preview(parameters.id);
             }
         };
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+        this.defSub.unsubscribe();
     }
 
     save(): void {

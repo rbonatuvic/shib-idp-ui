@@ -62,6 +62,7 @@ export class NewFilterComponent implements OnDestroy, OnInit {
             filter(t => !!t),
             map(t => MetadataFilterTypes[t])
         );
+
         this.schema$ = this.definition$.pipe(
             takeUntil(this.ngUnsubscribe),
             filter(d => !!d),
@@ -80,7 +81,10 @@ export class NewFilterComponent implements OnDestroy, OnInit {
         this.options$ = of(Object.values(MetadataFilterTypes));
 
         this.form.get('type').valueChanges
-            .pipe(distinctUntilChanged())
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                distinctUntilChanged()
+            )
             .subscribe(type => this.store.dispatch(new SelectFilterType(type)));
     }
 
