@@ -23,7 +23,7 @@ export class AdminService {
     }
 
     update(user: Admin): Observable<Admin> {
-        return this.http.put<Admin>(
+        return this.http.patch<Admin>(
             `${this.base}${this.endpoint}/${user.username}`, {...user}
         );
     }

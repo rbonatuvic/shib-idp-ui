@@ -50,14 +50,14 @@ describe('Admin Service', () => {
         )));
     });
     describe('update method', () => {
-        it(`should send an expected put request`, async(inject([AdminService, HttpTestingController],
+        it(`should send an expected patch request`, async(inject([AdminService, HttpTestingController],
             (service: AdminService, backend: HttpTestingController) => {
                 service.update({...users[0]}).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
                     return req.url === '/api/admin/users/abc'
-                        && req.method === 'PUT';
-                }, `PUT admin user`);
+                        && req.method === 'PATCH';
+                }, `PATCH admin user`);
             }
         )));
     });
