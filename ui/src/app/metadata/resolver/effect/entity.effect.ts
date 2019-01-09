@@ -28,11 +28,11 @@ export class EntityEffects {
     cancelChanges$ = this.actions$.pipe(
         ofType<Cancel>(ResolverEntityActionTypes.CANCEL),
         map(() => new provider.LoadResolverRequest()),
-        tap(() => this.router.navigate(['metadata']))
+        tap(() => this.router.navigate(['dashboard']))
     );
 
     @Effect()
-    updateResolverSuccessRedirect$ = this.actions$.pipe(
+    updateResolverSuccessClear$ = this.actions$.pipe(
         ofType<provider.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
         map(p => new Clear())
@@ -40,7 +40,7 @@ export class EntityEffects {
 
     @Effect()
     openContention$ = this.actions$.pipe(
-        ofType<provider.UpdateResolverFail>(ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL),
+        ofType<provider.UpdateResolverConflict>(ResolverCollectionActionTypes.UPDATE_RESOLVER_CONFLICT),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromResolver.getSelectedResolver)),
         switchMap(([filter, current]) => {

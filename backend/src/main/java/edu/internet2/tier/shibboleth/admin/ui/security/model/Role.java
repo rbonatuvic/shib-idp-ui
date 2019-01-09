@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,10 +29,23 @@ import java.util.Set;
 @ToString(exclude = "users")
 public class Role extends AbstractAuditable {
 
+    public Role(String name) {
+        this.name = name;
+    }
+
+    public Role(String name, int rank) {
+        this.name = name;
+        this.rank = rank;
+    }
+
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.EAGER)
+    private int rank;
+
+    //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
+    @JsonIgnoreProperties("roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>();
 
 }
