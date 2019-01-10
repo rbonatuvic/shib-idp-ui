@@ -91,7 +91,7 @@ dependencies {
     }
 
     // spring boot auto-config starters
-    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux'].each {
+    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux', 'starter-thymeleaf', 'starter-mail'].each {
         compile "org.springframework.boot:spring-boot-${it}"
     }
     // TODO: figure out what this should really be
