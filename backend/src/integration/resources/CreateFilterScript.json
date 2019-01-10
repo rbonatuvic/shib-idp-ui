@@ -1,0 +1,316 @@
+{
+  "type" : "script",
+  "seleniumVersion" : "2"
+  "formatVersion" : 2,
+  "steps" : [
+    {
+      "type": "get",
+      "url": "http://localhost:10101/api/heheheheheheheWipeout",
+    },
+    {
+      "type": "waitForElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": "body"
+      }
+    },
+    {
+      "type": "assertText",
+      "locator": {
+        "type": "css selector",
+        "value": "body"
+      },
+      "text": "yes, you did it",
+      "negated": false
+    },
+    {
+      "type" : "get",
+      "url" : "http://localhost:10101"
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "a[href=\"/metadata/provider/b2d2caf2-4b18-4bf2-b0fe-d07ba220be94/filter/new\"] > translate-i18n"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "a[href=\"/metadata/provider/b2d2caf2-4b18-4bf2-b0fe-d07ba220be94/filter/new\"] > translate-i18n"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field79"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field79"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field79"
+      }
+    },
+    {
+      "type" : "setElementText",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field79"
+      },
+      "text" : "Script"
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "button[type=\"button\"].btn"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "button[type=\"button\"].btn"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".dropdown-menu > a[href=\"#\"].dropdown-item:nth-of-type(3)"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".dropdown-menu > a[href=\"#\"].dropdown-item:nth-of-type(3)"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#targetInput"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#targetInput"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "fieldset.col > div > div:nth-of-type(1) > sf-form-element > .has-success > sf-widget-chooser > checkbox-component > .widget.form-group > .d-flex.justify-content-start > .custom-control.custom-checkbox.custom-control-inline.custom-control-reverse > label.custom-control-label"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "fieldset.col > div > div:nth-of-type(1) > sf-form-element > .has-success > sf-widget-chooser > checkbox-component > .widget.form-group > .d-flex.justify-content-start > .custom-control.custom-checkbox.custom-control-inline.custom-control-reverse > label.custom-control-label"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field93"
+      }
+    },
+    {
+      "type" : "setElementText",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field93"
+      },
+      "text" : "asdf"
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".has-success > sf-widget-chooser > custom-object > fieldset > div:nth-of-type(9) > sf-form-element > .has-success > sf-widget-chooser > array-component > .widget.form-group > .d-flex.justify-content-start > button.btn.btn-success.btn-sm.array-add-button > translate-i18n"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".has-success > sf-widget-chooser > custom-object > fieldset > div:nth-of-type(9) > sf-form-element > .has-success > sf-widget-chooser > array-component > .widget.form-group > .d-flex.justify-content-start > button.btn.btn-success.btn-sm.array-add-button > translate-i18n"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".input-group-append > button[type=\"button\"].btn.btn-outline-secondary"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".input-group-append > button[type=\"button\"].btn.btn-outline-secondary"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field97__option--1"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field97__option--1"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".has-success > sf-widget-chooser > custom-object > fieldset > div:nth-of-type(10) > sf-form-element > .has-success > sf-widget-chooser > array-component > .widget.form-group > .d-flex.justify-content-start > button.btn.btn-success.btn-sm.array-add-button"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : ".has-success > sf-widget-chooser > custom-object > fieldset > div:nth-of-type(10) > sf-form-element > .has-success > sf-widget-chooser > array-component > .widget.form-group > .d-flex.justify-content-start > button.btn.btn-success.btn-sm.array-add-button"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field98-container > .input-group > .input-group-append > button[type=\"button\"].btn.btn-outline-secondary"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field98-container > .input-group > .input-group-append > button[type=\"button\"].btn.btn-outline-secondary"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field98__option--1"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "#field98__option--1"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "i.fa.fa-fw.fa-check"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "i.fa.fa-fw.fa-check"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(7) > td:nth-of-type(2) > fieldset > .custom-control.custom-checkbox > label.custom-control-label"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(7) > td:nth-of-type(2) > fieldset > .custom-control.custom-checkbox > label.custom-control-label"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(8) > td:nth-of-type(2) > fieldset > .custom-control.custom-checkbox > label.custom-control-label"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(8) > td:nth-of-type(2) > fieldset > .custom-control.custom-checkbox > label.custom-control-label"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "i.fa.fa-fw.fa-lg.fa-save"
+      }
+    },
+    {
+      "type" : "clickElement",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "i.fa.fa-fw.fa-lg.fa-save"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(3) > td.td-lg:nth-of-type(3)"
+      }
+    },
+    {
+      "text" : "*Script*",
+      "negated" : false,
+      "type" : "assertText",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(3) > td.td-lg:nth-of-type(3)"
+      }
+    },
+    {
+      "type" : "waitForElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(3) > td.td-sm:nth-of-type(5) > button.btn.btn-link > i.fa.fa-lg.fa-check-square.text-success"
+      }
+    },
+    {
+      "type" : "assertElementPresent",
+      "locator" : {
+        "type" : "css selector",
+        "value" : "table.table > tbody > tr:nth-of-type(3) > td.td-sm:nth-of-type(5) > button.btn.btn-link > i.fa.fa-lg.fa-check-square.text-success"
+      },
+      "negated" : false
+    }
+  ]
+}
