@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
@@ -122,13 +123,13 @@ class UsersControllerIntegrationTests extends Specification {
         when:
         this.restTemplate.postForEntity("$RESOURCE_URI", createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
         newUser['firstName'] = 'Bob'
-        def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", org.springframework.http.HttpMethod.PUT, createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
+        def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", HttpMethod.PATCH, createRequestHttpEntityFor { JsonOutput.toJson(newUser) }, Map)
 
         then:
         result.statusCodeValue == 200
     }
 
-    def 'PUT detects unknown username'() {
+    def 'PATCH detects unknown username'() {
         given:
         def newUser = [firstName: 'Foo',
                        lastName: 'Bar',
@@ -138,7 +139,7 @@ class UsersControllerIntegrationTests extends Specification {
                        role: 'ROLE_USER']
 
         when:
-        def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", org.springframework.http.HttpMethod.PUT, createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
+        def result = this.restTemplate.exchange("$RESOURCE_URI/$newUser.username", HttpMethod.PATCH, createRequestHttpEntityFor { mapper.writeValueAsString(newUser) }, Map)
 
         then:
         result.statusCodeValue == 404

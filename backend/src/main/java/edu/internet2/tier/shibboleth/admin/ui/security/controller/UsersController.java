@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,6 +78,7 @@ public class UsersController {
                     .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()),
                             String.format("A user with username [%s] already exists within the system.", user.getUsername())));
         }
+        //TODO: modify this such that additional encoders can be used
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userRoleService.updateUserRole(user);
         User savedUser = userRepository.save(user);
@@ -85,7 +86,7 @@ public class UsersController {
     }
 
     @Transactional
-    @PutMapping("/{username}")
+    @PatchMapping("/{username}")
     ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestBody User user) {
         User persistedUser = findUserOrThrowHttp404(username);
         if (StringUtils.isNotBlank(user.getFirstName())) {
