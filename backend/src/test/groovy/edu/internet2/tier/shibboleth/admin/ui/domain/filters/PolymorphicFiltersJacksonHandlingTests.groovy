@@ -125,6 +125,7 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         json.contains('EntityAttributes')
         json.contains('RequiredValidUntil')
         json.contains('EntityAttributes')
+        json.contains('NameIDFormat')
 
     }
 
@@ -173,5 +174,46 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         filter.resourceId == 'ab3fec19-8544-45d8-9700-289155b42edf'
         EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.entityAttributesFilterTargetType.name() == 'ENTITY'
         EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.value == ['GATCCLk32V']
+    }
+
+    def "Correct polymorphic serialization of NameIdFormatFilter"() {
+        given:
+        def givenFilterJson = """
+            {
+              "createdDate" : null,
+              "modifiedDate" : null,
+              "createdBy" : null,
+              "modifiedBy" : null,
+              "name" : "NameIDFormat",
+              "resourceId" : "ab95b80f-102b-494c-a3b8-27b625553977",
+              "filterEnabled" : false,
+              "removeExistingFormats" : false,
+              "formats" : [ "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" ],
+              "nameIdFormatFilterTarget" : {
+                "createdDate" : null,
+                "modifiedDate" : null,
+                "createdBy" : null,
+                "modifiedBy" : null,
+                "nameIdFormatFilterTargetType" : "ENTITY",
+                "value" : [ "https://sp1.example.org" ],
+                "audId" : null
+              },
+              "audId" : null,
+              "@type" : "NameIDFormat",
+              "version" : 1896953777
+            }"""
+
+        when:
+        def deSerializedFilter = mapper.readValue(givenFilterJson, MetadataFilter)
+        def json = mapper.writeValueAsString(deSerializedFilter)
+        println(json)
+        def roundTripFilter = mapper.readValue(json, MetadataFilter)
+
+        then:
+        roundTripFilter == deSerializedFilter
+
+        and:
+        deSerializedFilter instanceof NameIdFormatFilter
+        roundTripFilter instanceof NameIdFormatFilter
     }
 }

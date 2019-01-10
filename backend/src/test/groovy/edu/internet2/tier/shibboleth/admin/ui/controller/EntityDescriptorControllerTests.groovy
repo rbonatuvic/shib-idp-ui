@@ -505,7 +505,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         result.andExpect(status().isConflict())
-                .andExpect(content().string("The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists."))
+                .andExpect(content().string("{\"errorCode\":\"409\",\"errorMessage\":\"The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists.\"}"))
     }
 
     def "POST /EntityDescriptor handles x-www-form-urlencoded happily"() {

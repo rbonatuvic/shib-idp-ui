@@ -45,7 +45,9 @@ export class ResolverService {
         return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, xml, {
             headers: new HttpHeaders().set('Content-Type', 'application/xml'),
             params: new HttpParams().set('spName', name)
-        });
+        }).pipe(catchError(error => {
+            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error.errorMessage}` });
+        }));
     }
 
     createFromUrl(name: string, url: string): Observable<MetadataResolver> {
@@ -53,7 +55,9 @@ export class ResolverService {
         return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, body, {
             headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
             params: new HttpParams().set('spName', name)
-        });
+        }).pipe(catchError(error => {
+            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error.errorMessage}` });
+        }));
     }
 
     preview(id: string): Observable<string> {

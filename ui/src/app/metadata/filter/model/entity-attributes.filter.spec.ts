@@ -35,9 +35,9 @@ describe('Entity Attributes filter form', () => {
     });
 
     describe('transformer', () => {
-        it('should not modify the object', () => {
+        it('should add modify the object', () => {
             expect(EntityAttributesFilter.formatter({})).toEqual({});
-            expect(EntityAttributesFilter.parser({})).toEqual({});
+            expect(EntityAttributesFilter.parser({}).relyingPartyOverrides).toBeDefined();
         });
     });
 });

@@ -44,8 +44,8 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             ]
         },
         {
-            id: 'reloading',
-            label: 'label.reloading-attributes',
+            id: 'dynamic',
+            label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
             schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
@@ -116,14 +116,14 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
                     class: ['mb-3'],
                     fields: [
                         'name',
-                        '@type',
-                        'enabled'
+                        '@type'
                     ]
                 },
                 {
                     type: 'group-lg',
                     class: ['col-12'],
                     fields: [
+                        'enabled',
                         'xmlId',
                         'metadataFile',
                         'doInitialization'
@@ -132,8 +132,8 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             ]
         },
         {
-            id: 'reloading',
-            label: 'label.reloading-attributes',
+            id: 'dynamic',
+            label: 'label.dynamic-attributes',
             index: 2,
             initialValues: [],
             schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',

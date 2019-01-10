@@ -17,6 +17,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResour
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.FILESYSTEM_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.LOCAL_DYNAMIC_METADATA_RESOLVER
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.METADATA_SOURCES
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocation.SchemaType.NAME_ID_FORMAT_FILTER
 
 /**
  * @author Dmitriy Kopylenko
@@ -78,6 +79,13 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
                     .jacksonMapper(jacksonMapper)
                     .detectMalformedJson(false)
                     .build())
+                .register(NAME_ID_FORMAT_FILTER, JsonSchemaLocationBuilder.with()
+                    .jsonSchemaLocation('classpath:nameid-filter.schema.json')
+                    .resourceLoader(resourceLoader)
+                    .jacksonMapper(jacksonMapper)
+                    .detectMalformedJson(false)
+                    .build())
+
         }
     }
 }

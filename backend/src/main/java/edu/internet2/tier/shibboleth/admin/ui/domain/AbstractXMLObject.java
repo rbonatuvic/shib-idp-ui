@@ -116,6 +116,8 @@ public abstract class AbstractXMLObject extends AbstractAuditable implements XML
         return null;
     }
 
+    //TODO: refactor mappings so we're also able persist and use non-null parent which happens to be used in some code paths
+    //where we use open saml API (re-filtering, for example)
     @Transient
     private transient XMLObject parent;
     @Nullable

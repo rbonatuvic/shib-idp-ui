@@ -8,7 +8,7 @@
     ],
     "properties": {
         "name": {
-            "title": "label.metadata-provider-name",
+            "title": "label.service-provider-name-dashboard-display-only",
             "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
@@ -135,7 +135,7 @@
                     },
                     "placeholder": "label.real-number",
                     "minimum": 0,
-                    "maximum": 1,
+                    "maximum": 0.99,
                     "default": null
                 }
             }

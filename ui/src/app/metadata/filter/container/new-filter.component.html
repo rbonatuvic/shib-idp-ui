@@ -1,36 +1,60 @@
-<div class="container-fluid p-3" role="main">
+<div class="container-fluid p-3" role="section">
     <section class="section">
         <div class="section-header bg-info p-2 text-white">
             <div class="row justify-content-between">
                 <div class="col-md-12">
                     <span class="display-6">
                         <i class="fa fa-fw fa-gears"></i>&nbsp;&nbsp;
-                        <translate-i18n key="label.new-filter">New Filter - EntityAttributes</translate-i18n>
+                        <translate-i18n key="label.new-filter">New Filter</translate-i18n>
                     </span>
                 </div>
             </div>
         </div>
-        <div class="section-body p-4 border border-top-0 border-info" *ngIf="schema$ | async">
-            <div class="mx-3 my-2 d-flex justify-content-end">
-                <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="!isValid || (isSaving$ | async)">
-                    <i class="fa fa-fw fa-lg" [ngClass]="{
-                                        'fa-save': !(isSaving$ | async),
-                                        'fa-spinner': (isSaving$ | async),
-                                        'fa-pulse': (isSaving$ | async)
-                                    }"></i>
-                    <translate-i18n key="action.save">Save</translate-i18n>
-                </button>
-                &nbsp;
-                <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
-                    <translate-i18n key="action.cancel">Cancel</translate-i18n>
-                </button>
+        <div class="section-body p-4 border border-top-0 border-info">
+            <div class="mx-3 my-2">
+                <div class="d-flex justify-content-between">
+                    <form [formGroup]="form" class="d-block w-50">
+                        <div class="form-group">
+                            <label for="type" class="d-flex justify-content-start control-label">
+                                <span>
+                                    <translate-i18n key="label.select-filter-type">Select Filter Type</translate-i18n>
+                                    <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                            <select class="form-control" formControlName="type" name="type">
+                                <option value="" disabled>
+                                    <translate-i18n key="label.select-filter-type">Select Filter Type</translate-i18n>
+                                </option>
+                                <option *ngFor="let opt of options$ | async" [value]="opt.type">{{ opt.label }}</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="py-2">
+                        <ng-container *ngIf="schema$ | async">
+                            <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="!isValid || (isSaving$ | async)">
+                                <i class="fa fa-fw fa-lg" [ngClass]="{
+                                                    'fa-save': !(isSaving$ | async),
+                                                    'fa-spinner': (isSaving$ | async),
+                                                    'fa-pulse': (isSaving$ | async)
+                                                }"></i>
+                                <translate-i18n key="action.save">Save</translate-i18n>
+                            </button>
+                            &nbsp;
+                            <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
+                                <translate-i18n key="action.cancel">Cancel</translate-i18n>
+                            </button>
+                        </ng-container>
+                    </div>
+                </div>
+                <div *ngIf="schema$ | async">
+                    <sf-form
+                        [schema]="schema$ | async"
+                        [model]="model"
+                        [validators]="validators$ | async"
+                        (onChange)="valueChangeSubject.next($event)"
+                        (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
+                </div>
             </div>
-            <sf-form
-                [schema]="schema$ | async"
-                [model]="model$ | async"
-                [validators]="validators$ | async"
-                (onChange)="valueChangeSubject.next($event)"
-                (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
         </div>
     </section>
 </div>

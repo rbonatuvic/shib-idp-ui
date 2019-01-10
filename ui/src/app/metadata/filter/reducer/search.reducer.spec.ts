@@ -90,6 +90,13 @@ describe('Filter Reducer', () => {
         });
     });
 
+    describe(`${SearchActionTypes.CLEAR_SEARCH} action`, () => {
+        it('should set saving to true', () => {
+            const result = reducer(snapshot, new ClearSearch());
+            expect(result).toEqual(fromFilter.initialState);
+        });
+    });
+
     describe('selector methods', () => {
         describe('getViewMore', () => {
             it('should return the state viewMore', () => {

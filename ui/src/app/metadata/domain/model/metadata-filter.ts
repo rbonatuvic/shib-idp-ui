@@ -4,7 +4,7 @@ export interface MetadataFilter extends MetadataBase {
     name: string;
     filterEnabled?: boolean;
     type: string;
-    resourceId: string;
+    resourceId: string | null;
 
     [key: string]: any;
 }

@@ -160,7 +160,7 @@ public class EntityDescriptorController {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .headers(headers)
-                    .body(String.format("The entity descriptor with entity id [%s] already exists.", entityId));
+                    .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format("The entity descriptor with entity id [%s] already exists.", entityId)));
         }
         //No existing entity descriptor, which is an OK condition indicated by returning a null conflict response
         return null;

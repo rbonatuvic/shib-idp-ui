@@ -1,11 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.google.common.base.Predicate
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
@@ -27,6 +30,7 @@ import org.opensaml.saml.common.profile.logic.EntityIdPredicate
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
+import org.opensaml.saml.metadata.resolver.filter.impl.NameIDFormatFilter
 import org.opensaml.saml.saml2.core.Attribute
 import org.opensaml.saml.saml2.metadata.EntityDescriptor
 import org.springframework.beans.factory.annotation.Autowired
@@ -34,6 +38,9 @@ import org.w3c.dom.Document
 
 import javax.annotation.Nonnull
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.CONDITION_SCRIPT
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.REGEX
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
@@ -52,17 +59,29 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     @Autowired
     private MetadataResolversPositionOrderContainerService resolversPositionOrderContainerService
 
+    @Autowired
+    private ShibUIConfiguration shibUIConfiguration
+
     // TODO: enhance
     @Override
     void reloadFilters(String metadataResolverResourceId) {
         OpenSamlChainingMetadataResolver chainingMetadataResolver = (OpenSamlChainingMetadataResolver) metadataResolver
-        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find { it.id == metadataResolverResourceId }
+        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find {
+            it.id == metadataResolverResourceId
+        }
         edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverResourceId)
 
         if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
             MetadataFilterChain metadataFilterChain = (MetadataFilterChain) targetMetadataResolver.getMetadataFilter()
 
             List<MetadataFilter> metadataFilters = new ArrayList<>()
+
+            // set up namespace protection
+            if (shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0 && targetMetadataResolver && jpaMetadataResolver.type in ['FileBackedHttpMetadataResolver', 'DynamicHttpMetadataResolver']) {
+                def target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
+                target.attributeFilter = new ScriptedPredicate(new EvaluableScript(protectedNamespaceScript()))
+                metadataFilters.add(target)
+            }
 
             for (edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter metadataFilter : jpaMetadataResolver.getMetadataFilters()) {
                 if (metadataFilter instanceof EntityAttributesFilter) {
@@ -92,6 +111,30 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     target.setRules(rules)
                     metadataFilters.add(target)
                 }
+                if (metadataFilter instanceof NameIdFormatFilter) {
+                    NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
+                    NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
+                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+                    Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
+                    def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
+                    def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
+                    switch (type) {
+                        case ENTITY:
+                            predicateRules[new EntityIdPredicate(values)] = nameIdFormatFilter.formats
+                            break
+                        case CONDITION_SCRIPT:
+                            predicateRules[new ScriptedPredicate(new EvaluableScript(values[0]))] = nameIdFormatFilter.formats
+                            break
+                        case REGEX:
+                            predicateRules[new ScriptedPredicate(new EvaluableScript(generateJavaScriptRegexScript(values[0])))] = nameIdFormatFilter.formats
+                            break
+                        default:
+                            // do nothing, we'd have exploded elsewhere previously.
+                            break
+                    }
+                    openSamlTargetFilter.rules = predicateRules
+                    metadataFilters << openSamlTargetFilter
+                }
             }
             metadataFilterChain.setFilters(metadataFilters)
         }
@@ -102,6 +145,21 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             //TODO: Do something here if we need to refilter other non-Batch resolvers
             log.warn("Target resolver is not a Refilterable resolver. Skipping refilter()")
         }
+    }
+
+    private String protectedNamespaceScript() {
+        return """(function (attribute) {
+                "use strict";
+                var namespaces = [${shibUIConfiguration.protectedAttributeNamespaces.collect({"\"${it}\""}).join(', ')}];
+                // check the parameter
+                if (attribute === null) { return true; }
+                for (var i in namespaces) {
+                    if (attribute.getName().startsWith(namespaces[i])) {
+                        return false;
+                    }
+                }
+                return true;
+            }(input));"""
     }
 
     private class ScriptedPredicate extends net.shibboleth.utilities.java.support.logic.ScriptedPredicate<EntityDescriptor> {
@@ -133,9 +191,18 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
                             constructXmlNodeForResolver(mr, delegate) {
                                 //TODO: enhance
+                                def didNamespaceProtectionFilter = !(shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0)
+                                def doNamespaceProtectionFilter = { def filter ->
+                                    if (mr.type in ['FileBackedMetadataResolver', 'DynamicHttpMetadataResolver'] && (filter == null || filter instanceof EntityAttributesFilter) && !didNamespaceProtectionFilter) {
+                                        constructXmlNodeForEntityAttributeNamespaceProtection(delegate)
+                                        didNamespaceProtectionFilter = true
+                                    }
+                                }
                                 mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
+                                    doNamespaceProtectionFilter()
                                     constructXmlNodeForFilter(filter, delegate)
                                 }
+                                doNamespaceProtectionFilter()
                             }
                         }
                 }
@@ -144,8 +211,18 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+    void constructXmlNodeForEntityAttributeNamespaceProtection(def markupBuilderDelegate) {
+        markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
+            AttributeFilterScript() {
+                Script() {
+                    mkp.yieldUnescaped("\n<![CDATA[\n${protectedNamespaceScript()}\n]]>\n")
+                }
+            }
+        }
+    }
+
     void constructXmlNodeForFilter(SignatureValidationFilter filter, def markupBuilderDelegate) {
-        if(filter.xmlShouldBeGenerated()) {
+        if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(id: filter.name,
                     'xsi:type': 'SignatureValidation',
                     'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
@@ -216,11 +293,49 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(RequiredValidUntilFilter filter, def markupBuilderDelegate) {
-        if(filter.xmlShouldBeGenerated()) {
+        if (filter.xmlShouldBeGenerated()) {
             markupBuilderDelegate.MetadataFilter(
                     'xsi:type': 'RequiredValidUntil',
                     maxValidityInterval: filter.maxValidityInterval
             )
+        }
+    }
+
+    void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
+        def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
+        markupBuilderDelegate.MetadataFilter(
+                'xsi:type': 'NameIDFormat',
+                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata',
+                'removeExistingFormats': filter.removeExistingFormats ?: null
+        ) {
+            filter.formats.each {
+                Format(it)
+            }
+            switch (type) {
+                case ENTITY:
+                    filter.nameIdFormatFilterTarget.value.each {
+                        Entity(it)
+                    }
+                    break
+                case CONDITION_SCRIPT:
+                case REGEX:
+                    ConditionScript() {
+                        Script() {
+                            def script
+                            def scriptValue = filter.nameIdFormatFilterTarget.value[0]
+                            if (type == CONDITION_SCRIPT) {
+                                script = scriptValue
+                            } else if (type == REGEX) {
+                                script = generateJavaScriptRegexScript(scriptValue)
+                            }
+                            mkp.yieldUnescaped("\n<![CDATA[\n${script}\n]]>\n")
+                        }
+                    }
+                    break
+                default:
+                    // do nothing, we'd have exploded elsewhere previously.
+                    break
+            }
         }
     }
 
@@ -441,4 +556,5 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
 
     }
+
 }
