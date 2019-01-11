@@ -85,7 +85,7 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
 
     cancel(): void {
         this.clear();
-        this.router.navigate(['metadata', 'manager', 'resolvers']);
+        this.router.navigate(['dashboard', 'metadata', 'manager', 'resolvers']);
     }
 
     canDeactivate(
@@ -97,7 +97,6 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
             return of(true);
         }
         const diff = this.diffService.updatedDiff(this.resolver, this.latest);
-        console.log(diff, this.resolver, this.latest);
         if (diff && Object.keys(diff).length > 0) {
             let modal = this.modalService.open(UnsavedEntityComponent);
             modal.result.then(

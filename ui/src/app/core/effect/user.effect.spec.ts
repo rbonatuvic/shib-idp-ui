@@ -3,14 +3,10 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { UserEffects } from './user.effect';
-import {
-    UserLoadRequestAction,
-    UserLoadSuccessAction,
-    UserLoadErrorAction
-} from '../action/user.action';
 import { Subject, of, throwError } from 'rxjs';
 import { UserService } from '../service/user.service';
-import { User } from '../model/user';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { LoadRoleSuccess, LoadRoleFail, LoadRoleRequest } from '../action/configuration.action';
 
 describe('User Effects', () => {
     let effects: UserEffects;
@@ -19,7 +15,9 @@ describe('User Effects', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [],
+            imports: [
+                HttpClientTestingModule
+            ],
             providers: [
                 UserEffects,
                 UserService,
@@ -32,26 +30,25 @@ describe('User Effects', () => {
     });
 
     it('should fire a success action', () => {
-        let user = {};
-        spyOn(userService, 'get').and.returnValue(of(user));
+        spyOn(userService, 'getRoles').and.returnValue(of(['ROLE_ADMIN']));
         actions = new ReplaySubject(1);
 
-        actions.next(new UserLoadRequestAction());
+        actions.next(new LoadRoleRequest());
 
-        effects.loadUser$.subscribe(result => {
-            expect(result).toEqual(new UserLoadSuccessAction(user as User));
+        effects.loadRoles$.subscribe(result => {
+            expect(result).toEqual(new LoadRoleSuccess(['ROLE_ADMIN']));
         });
     });
 
     it('should fire an error action', () => {
         let err = new Error('404');
-        spyOn(userService, 'get').and.returnValue(throwError(err));
+        spyOn(userService, 'getRoles').and.returnValue(throwError(err));
         actions = new ReplaySubject(1);
 
-        actions.next(new UserLoadRequestAction());
+        actions.next(new LoadRoleRequest());
 
-        effects.loadUser$.subscribe(result => {
-            expect(result).toEqual(new UserLoadErrorAction(err));
+        effects.loadRoles$.subscribe(result => {
+            expect(result).toEqual(new LoadRoleFail());
         });
     });
 });

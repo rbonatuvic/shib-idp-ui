@@ -130,7 +130,7 @@ export class CollectionEffects {
     createProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['metadata', 'manager', 'providers']))
+        tap(provider => this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']))
     );
 
     @Effect()
@@ -162,7 +162,7 @@ export class CollectionEffects {
         map(action => action.payload),
         tap(provider => {
             this.store.dispatch(new ClearProvider());
-            this.router.navigate(['metadata', 'manager', 'providers']);
+            this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']);
         })
     );
 
