@@ -15,8 +15,11 @@ import java.util.Set;
  */
 public class UserRoleService {
 
-    @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
+
+    public UserRoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
