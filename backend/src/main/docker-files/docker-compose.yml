@@ -1,7 +1,7 @@
 version: "3"
 services:
 
-  redis:
+  mailhog:
     image: mailhog/mailhog:latest
     ports:
       - 1025:1025
