@@ -37,6 +37,11 @@ public class EmailConfiguration {
     @Setter
     private String htmlEmailTemplatePathPrefix = "/mail/html/";
 
+    //Configured via @ConfigurationProperties (using setter method) with 'shibui.system.email.address' property and
+    // default value set here if that property is not explicitly set in application.properties
+    @Setter
+    private String systemEmailAddress = "doNotReply@shibui.org";
+
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -92,6 +97,6 @@ public class EmailConfiguration {
 
     @Bean
     public EmailService emailService() {
-        return new EmailServiceImpl(javaMailSender, emailMessageSource(), textEmailTemplateEngine(), htmlEmailTemplateEngine());
+        return new EmailServiceImpl(javaMailSender, emailMessageSource(), textEmailTemplateEngine(), htmlEmailTemplateEngine(), systemEmailAddress);
     }
 }

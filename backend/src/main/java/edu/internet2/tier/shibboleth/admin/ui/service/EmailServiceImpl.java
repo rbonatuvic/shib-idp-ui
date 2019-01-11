@@ -18,6 +18,7 @@ import java.util.Locale;
 public class EmailServiceImpl implements EmailService {
     private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 
+    private final String systemEmailAddress;
     private JavaMailSender emailSender;
     private ResourceBundleMessageSource emailMessageSource;
     private TemplateEngine textEmailTemplateEngine;
@@ -26,14 +27,16 @@ public class EmailServiceImpl implements EmailService {
     public EmailServiceImpl(JavaMailSender emailSender,
                             ResourceBundleMessageSource emailMessageSource,
                             TemplateEngine textEmailTemplateEngine,
-                            TemplateEngine htmlEmailTemplateEngine) {
+                            TemplateEngine htmlEmailTemplateEngine,
+                            String systemEmailAddress) {
         this.emailSender = emailSender;
         this.emailMessageSource = emailMessageSource;
         this.textEmailTemplateEngine = textEmailTemplateEngine;
         this.htmlEmailTemplateEngine = htmlEmailTemplateEngine;
+        this.systemEmailAddress = systemEmailAddress;
     }
 
-    public void sendMail(String emailTemplate, String fromAddress, String recipient, String subject, Locale locale) throws MessagingException {
+    public void sendMail(String emailTemplate, String fromAddress, String[] recipients, String subject, Locale locale) throws MessagingException {
         Context context = new Context(locale);
         // TODO: set things to be replaced in the email template here
 
@@ -41,13 +44,22 @@ public class EmailServiceImpl implements EmailService {
         MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true,"UTF-8");
         message.setSubject(subject);
         message.setFrom(fromAddress);
-        message.setTo(recipient);
+        message.setTo(recipients);
 
         String textContent = textEmailTemplateEngine.process(emailTemplate, context);
         String htmlContent = htmlEmailTemplateEngine.process(emailTemplate, context);
         message.setText(textContent, htmlContent);
 
         // TODO: Uncomment when we're ready to actually send emails
-        // emailSender.send(mimeMessage);
+        emailSender.send(mimeMessage);
+    }
+
+    public void sendNewUserMail(String newUsername) throws MessagingException {
+        String subject = String.format("User Access Request for %s", newUsername);
+        sendMail("new-user", systemEmailAddress, getSystemAdmins(), subject, Locale.getDefault());
+    }
+
+    private String[] getSystemAdmins() {
+        return new String[]{"admin1@shibui.org", "admin2@shibui.org"};
     }
 }
