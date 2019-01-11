@@ -1,0 +1,15 @@
+@import '../../../theme/palette';
+
+:host {
+    .lead {
+        line-height: 36px;
+    }
+
+    .nav-tabs, .nav-link.active {
+        border-color: $brand-primary;
+    }
+
+    .nav-link:hover {
+        border-bottom-color: $brand-primary;
+    }
+}

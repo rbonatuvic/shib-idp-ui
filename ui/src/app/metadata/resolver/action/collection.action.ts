@@ -10,6 +10,7 @@ export enum ResolverCollectionActionTypes {
     UPDATE_RESOLVER_REQUEST = '[Metadata Resolver] Update Request',
     UPDATE_RESOLVER_SUCCESS = '[Metadata Resolver] Update Success',
     UPDATE_RESOLVER_FAIL = '[Metadata Resolver] Update Fail',
+    UPDATE_RESOLVER_CONFLICT = '[Metadata Resolver] Update Conflict',
 
     LOAD_RESOLVER_REQUEST = '[Metadata Resolver Collection] Resolver REQUEST',
     LOAD_RESOLVER_SUCCESS = '[Metadata Resolver Collection] Resolver SUCCESS',
@@ -75,6 +76,12 @@ export class UpdateResolverSuccess implements Action {
 
 export class UpdateResolverFail implements Action {
     readonly type = ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL;
+
+    constructor(public payload: any) { }
+}
+
+export class UpdateResolverConflict implements Action {
+    readonly type = ResolverCollectionActionTypes.UPDATE_RESOLVER_CONFLICT;
 
     constructor(public payload: MetadataResolver) { }
 }
@@ -143,5 +150,6 @@ export type ResolverCollectionActionsUnion =
     | UpdateResolverRequest
     | UpdateResolverSuccess
     | UpdateResolverFail
+    | UpdateResolverConflict
     | UploadResolverRequest
     | CreateResolverFromUrlRequest;

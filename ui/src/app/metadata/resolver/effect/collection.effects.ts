@@ -39,8 +39,6 @@ export class ResolverCollectionEffects {
         ofType<providerActions.UpdateResolverRequest>(ResolverCollectionActionTypes.UPDATE_RESOLVER_REQUEST),
         map(action => action.payload),
         switchMap(provider => {
-            delete provider.modifiedDate;
-            delete provider.createdDate;
             return this.descriptorService
                 .update(provider)
                 .pipe(
@@ -48,7 +46,16 @@ export class ResolverCollectionEffects {
                         id: p.id,
                         changes: p
                     })),
-                    catchError(err => of(new providerActions.UpdateResolverFail(provider)))
+                    catchError(err => {
+                        if (err.status === 409) {
+                            return of(new providerActions.UpdateResolverConflict(provider));
+                        }
+                        console.log(err);
+                        return of(new providerActions.UpdateResolverFail({
+                            errorCode: err.status,
+                            errorMessage: `${err.statusText} - ${err.message}`
+                        }));
+                    })
                 );
         })
     );
@@ -57,7 +64,7 @@ export class ResolverCollectionEffects {
     updateResolverSuccessRedirect$ = this.actions$.pipe(
         ofType<providerActions.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['metadata']))
+        tap(provider => this.router.navigate(['dashboard']))
     );
 
     @Effect()
@@ -65,6 +72,20 @@ export class ResolverCollectionEffects {
         ofType<providerActions.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
         map(provider => new providerActions.LoadResolverRequest())
+    );
+
+    @Effect()
+    updateResolverFailNotification$ = this.actions$.pipe(
+        ofType<providerActions.UpdateResolverFail>(ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromI18n.getMessages)),
+        map(([error, messages]) => new AddNotification(
+            new Notification(
+                NotificationType.Danger,
+                `${error.errorCode}: ${this.i18nService.translate(error.errorMessage, null, messages)}`,
+                8000
+            )
+        ))
     );
 
     @Effect()
@@ -104,7 +125,7 @@ export class ResolverCollectionEffects {
     addResolverSuccessRedirect$ = this.actions$.pipe(
         ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['metadata']))
+        tap(provider => this.router.navigate(['dashboard']))
     );
     @Effect()
     addResolverSuccessReload$ = this.actions$.pipe(
