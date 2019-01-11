@@ -1,11 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailServiceImpl;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -43,10 +43,10 @@ public class EmailConfiguration {
     private String systemEmailAddress = "doNotReply@shibui.org";
 
     @Autowired
-    private ApplicationContext applicationContext;
+    private JavaMailSender javaMailSender;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private UserRepository userRepository;
 
     @Bean
     public ResourceBundleMessageSource emailMessageSource() {
@@ -97,6 +97,11 @@ public class EmailConfiguration {
 
     @Bean
     public EmailService emailService() {
-        return new EmailServiceImpl(javaMailSender, emailMessageSource(), textEmailTemplateEngine(), htmlEmailTemplateEngine(), systemEmailAddress);
+        return new EmailServiceImpl(javaMailSender,
+                emailMessageSource(),
+                textEmailTemplateEngine(),
+                htmlEmailTemplateEngine(),
+                systemEmailAddress,
+                userRepository);
     }
 }

@@ -326,3 +326,8 @@ dockerCompose {
     captureContainersOutput = true
     waitForTcpPorts = false
 }
+
+task test(overwrite: true) {
+    dependsOn 'composeUp'
+    finalizedBy 'composeDown'
+}

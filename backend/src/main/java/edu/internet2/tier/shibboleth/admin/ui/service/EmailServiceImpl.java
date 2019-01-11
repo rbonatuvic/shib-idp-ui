@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -10,7 +12,9 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -23,17 +27,20 @@ public class EmailServiceImpl implements EmailService {
     private ResourceBundleMessageSource emailMessageSource;
     private TemplateEngine textEmailTemplateEngine;
     private TemplateEngine htmlEmailTemplateEngine;
+    private UserRepository userRepository;
 
     public EmailServiceImpl(JavaMailSender emailSender,
                             ResourceBundleMessageSource emailMessageSource,
                             TemplateEngine textEmailTemplateEngine,
                             TemplateEngine htmlEmailTemplateEngine,
-                            String systemEmailAddress) {
+                            String systemEmailAddress,
+                            UserRepository userRepository) {
         this.emailSender = emailSender;
         this.emailMessageSource = emailMessageSource;
         this.textEmailTemplateEngine = textEmailTemplateEngine;
         this.htmlEmailTemplateEngine = htmlEmailTemplateEngine;
         this.systemEmailAddress = systemEmailAddress;
+        this.userRepository = userRepository;
     }
 
     public void sendMail(String emailTemplate, String fromAddress, String[] recipients, String subject, Locale locale) throws MessagingException {
@@ -50,7 +57,6 @@ public class EmailServiceImpl implements EmailService {
         String htmlContent = htmlEmailTemplateEngine.process(emailTemplate, context);
         message.setText(textContent, htmlContent);
 
-        // TODO: Uncomment when we're ready to actually send emails
         emailSender.send(mimeMessage);
     }
 
@@ -60,6 +66,12 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private String[] getSystemAdmins() {
-        return new String[]{"admin1@shibui.org", "admin2@shibui.org"};
+        Set<User> systemAdmins = userRepository.findByRoles_Name("ROLE_ADMIN");
+        if (systemAdmins == null || systemAdmins.size() == 0) {
+            //TODO: Should this be an exception?
+            logger.warn("No users with ROLE_ADMIN were found! Check your configuration!");
+            systemAdmins = new HashSet<>();
+        }
+        return systemAdmins.stream().map(User::getEmailAddress).distinct().toArray(String[]::new);
     }
 }
