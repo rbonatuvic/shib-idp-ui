@@ -7,3 +7,5 @@ services:
       - 1025:1025
       - 8025:8025
     container_name: mailhog
+    environment:
+        - MH_SMTP_BIND_ADDR=0.0.0.0:1025
