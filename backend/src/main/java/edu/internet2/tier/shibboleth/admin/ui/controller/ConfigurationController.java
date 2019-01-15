@@ -30,11 +30,6 @@ public class ConfigurationController {
     @Autowired
     EmailService emailService;
 
-    @ExceptionHandler(MessagingException.class)
-    public ResponseEntity<?> handleMessagingExcepgtion() {
-        return ResponseEntity.badRequest().body(new ErrorResponse("12345", "Something exploded."));
-    }
-
     @GetMapping(value = "/customAttributes")
     public ResponseEntity<?> getCustomAttributes() {
         return ResponseEntity.ok(customPropertiesConfiguration.getAttributes());
@@ -43,11 +38,5 @@ public class ConfigurationController {
     @GetMapping(value = "/supportedRoles")
     public ResponseEntity<?> getSupportedRoles() {
         return ResponseEntity.ok(roleRepository.findAll().stream().map(Role::getName).collect(Collectors.toList()));
-    }
-
-    @GetMapping(value = "/foo")
-    public ResponseEntity<?> getFoo() throws MessagingException {
-        emailService.sendNewUserMail("foobar");
-        return ResponseEntity.ok().build();
     }
 }
