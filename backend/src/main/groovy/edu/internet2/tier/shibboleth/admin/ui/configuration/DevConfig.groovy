@@ -34,16 +34,29 @@ class DevConfig {
 
     @Transactional
     @PostConstruct
-    void createDevAdminUsers() {
+    void createDevUsers() {
         if (adminUserRepository.count() == 0) {
-            def user = new User().with {
+            def users = [new User().with {
                 username = 'admin'
                 password = '{noop}adminpass'
+                firstName = 'Joe'
+                lastName = 'Doe'
+                emailAddress = 'joe@institution.edu'
                 roles.add(new Role(name: 'ROLE_ADMIN'))
                 it
+            }, new User().with {
+                username = 'nonadmin'
+                password = '{noop}nonadminpass'
+                firstName = 'Peter'
+                lastName = 'Vandelay'
+                emailAddress = 'peter@institution.edu'
+                roles.add(new Role(name: 'ROLE_USER'))
+                it
+            }]
+            users.each {
+                adminUserRepository.save(it)
             }
 
-            adminUserRepository.save(user)
         }
     }
 

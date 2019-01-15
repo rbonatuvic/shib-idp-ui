@@ -37,9 +37,7 @@
                         <translate-i18n key="label.search-criteria-by" [params]="{ displayType: (displayType | translate) }">
                             Search Criteria by {{ this.displayType | translate }}
                         </translate-i18n>&nbsp;&nbsp;
-                        <i class="fa fa-asterisk text-danger"
-                            aria-hidden="true"
-                            *ngIf="targetType !== 'ENTITY'"></i>
+                        <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
                     </span>
                     <span>
                         <info-icon [description]="'label.search-criteria-by' | translate:{ displayType: (displayType | translate) }"></info-icon>

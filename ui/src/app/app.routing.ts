@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'metadata', pathMatch: 'full' },
-    { path: 'dashboard', redirectTo: 'metadata', pathMatch: 'full' },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    {
+        path: 'dashboard',
+        loadChildren: './dashboard/dashboard.module#DashboardModule'
+    },
     {
         path: 'metadata',
         loadChildren: './metadata/metadata.module#MetadataModule'
@@ -11,7 +14,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, {
+        preloadingStrategy: PreloadAllModules
+    })],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

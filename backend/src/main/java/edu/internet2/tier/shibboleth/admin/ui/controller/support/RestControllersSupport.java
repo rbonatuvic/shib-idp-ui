@@ -35,13 +35,9 @@ public class RestControllersSupport {
         return resolver;
     }
 
-    //TODO: Review this handler and update accordingly. Do we still need it?
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
-        if(ex.getStatusCode() == NOT_FOUND) {
-            return ResponseEntity.status(NOT_FOUND).body(ex.getStatusText());
-        }
-        throw ex;
+        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(ex.getStatusCode().toString(), ex.getStatusText()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
