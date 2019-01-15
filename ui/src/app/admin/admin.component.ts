@@ -3,6 +3,7 @@ import { LoadRoleRequest } from '../core/action/configuration.action';
 
 import * as fromRoot from '../app.reducer';
 import { Store } from '@ngrx/store';
+import { LoadAdminRequest } from './action/collection.action';
 
 @Component({
     selector: 'admin-page',
@@ -15,6 +16,6 @@ export class AdminComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.store.dispatch(new LoadRoleRequest());
+        this.store.dispatch(new LoadAdminRequest());
     }
 }

@@ -10,6 +10,7 @@ import { UpdateAdminRequest, RemoveAdminRequest } from '../action/collection.act
 import { Admin } from '../model/admin';
 import { DeleteUserDialogComponent } from '../component/delete-user-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'user-management',
@@ -17,17 +18,23 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './user-management.component.html',
     styleUrls: []
 })
-export class UserManagementComponent {
+export class UserManagementComponent implements OnInit {
 
     users$: Observable<Admin[]>;
     roles$: Observable<string[]>;
+
+    hasUsers$: Observable<boolean>;
 
     constructor(
         protected store: Store<fromRoot.State>,
         protected modal: NgbModal
     ) {
-        this.users$ = this.store.select(fromAdmin.getAllAdmins);
-        this.roles$ = this.store.select(fromCore.getRoles);
+        this.roles$ = this.store.select(fromCore.getUserRoles);
+    }
+
+    ngOnInit(): void {
+        this.users$ = this.store.select(fromAdmin.getAllConfiguredUsers);
+        this.hasUsers$ = this.users$.pipe(map(userList => userList.length > 0));
     }
 
     setUserRole(user: Admin, change: string): void {

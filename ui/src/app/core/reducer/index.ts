@@ -39,5 +39,9 @@ export const getVersionInfo = createSelector(getVersionState, fromVersion.getVer
 export const getVersionLoading = createSelector(getVersionState, fromVersion.getVersionIsLoading);
 export const getVersionError = createSelector(getVersionState, fromVersion.getVersionError);
 
+export const filterRoles = (roles: string[]) => roles.filter(r => r !== 'ROLE_NONE');
+
 export const getConfigState = createSelector(getCoreFeature, getConfigStateFn);
 export const getRoles = createSelector(getConfigState, fromConfig.getRoles);
+
+export const getUserRoles = createSelector(getRoles, filterRoles);

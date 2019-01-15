@@ -15,7 +15,5 @@ export class AdminManagementPageComponent {
 
     constructor(
         private store: Store<fromRoot.State>
-    ) {
-        this.store.dispatch(new LoadAdminRequest());
-    }
+    ) {}
 }

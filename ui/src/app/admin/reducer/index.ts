@@ -31,3 +31,7 @@ export const getSelectedAdmin = createSelector(getAdminEntities, getSelectedAdmi
     return selectedId && entities[selectedId];
 });
 export const getAdminIds = createSelector(getCollectionState, fromCollection.selectAdminIds);
+export const getAllNewUsers = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role === 'ROLE_NONE'));
+export const getAllConfiguredUsers = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role !== 'ROLE_NONE'));
+
+export const getTotalActionsRequired = createSelector(getAllNewUsers, (users) => users.length);
