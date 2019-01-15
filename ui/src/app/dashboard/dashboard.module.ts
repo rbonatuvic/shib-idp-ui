@@ -6,13 +6,13 @@ import { WidgetRegistry } from 'ngx-schema-form';
 import { DashboardPageComponent } from './container/dashboard.component';
 import { DashboardRoutingModule } from './dashboard.routing';
 import { MetadataModule } from '../metadata/metadata.module';
-import { UserModule } from '../user/user.module';
+import { AdminModule } from '../admin/admin.module';
 
 @NgModule({
     imports: [
         DashboardRoutingModule,
         MetadataModule,
-        UserModule,
+        AdminModule,
         I18nModule
     ],
     providers: [

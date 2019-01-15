@@ -11,7 +11,8 @@ import {
     UpdateAdminRequest,
     UpdateAdminSuccess,
     RemoveAdminRequest,
-    RemoveAdminSuccess
+    RemoveAdminSuccess,
+    LoadNewUsersRequest
 } from '../action/collection.action';
 import { AdminService } from '../service/admin.service';
 
@@ -23,6 +24,14 @@ export class AdminCollectionEffects {
     @Effect()
     loadAdminRequest$ = this.actions$.pipe(
         ofType<LoadAdminRequest>(AdminCollectionActionTypes.LOAD_ADMIN_REQUEST),
+        switchMap(() => this.adminService.query().pipe(
+            map(users => new LoadAdminSuccess(users))
+        ))
+    );
+
+    @Effect()
+    loadNewUsersRequest$ = this.actions$.pipe(
+        ofType<LoadNewUsersRequest>(AdminCollectionActionTypes.LOAD_NEW_USERS_REQUEST),
         switchMap(() => this.adminService.query().pipe(
             map(users => new LoadAdminSuccess(users))
         ))

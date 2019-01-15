@@ -18,10 +18,19 @@
         </li>
         <li class="nav-item">
             <a class="nav-link"
-                [routerLink]="['./', 'users', 'admin']"
+                [routerLink]="['./', 'admin', 'management']"
                 routerLinkActive="active"
                 translate="label.admin">
                 Admin
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+                [routerLink]="['./', 'admin', 'actions']"
+                routerLinkActive="active">
+                <translate-i18n key="label.action-required">Action Required</translate-i18n>
+                &nbsp;
+                <span class="badge badge-pill badge-danger">0</span>
             </a>
         </li>
     </ul>

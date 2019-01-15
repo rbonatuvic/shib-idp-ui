@@ -5,9 +5,9 @@ import { ManagerComponent } from '../metadata/manager/container/manager.componen
 import { MetadataPageComponent } from '../metadata/metadata.component';
 import { DashboardResolversListComponent } from '../metadata/manager/container/dashboard-resolvers-list.component';
 import { DashboardProvidersListComponent } from '../metadata/manager/container/dashboard-providers-list.component';
-import { UserPageComponent } from '../user/user.component';
-import { AdminComponent } from '../user/admin/admin.component';
-import { AdminManagementPageComponent } from '../user/admin/container/admin-management.component';
+import { AdminComponent } from '../admin/admin.component';
+import { AdminManagementPageComponent } from '../admin/container/admin-management.component';
+import { ActionRequiredPageComponent } from '../admin/container/action-required.component';
 
 const routes: Routes = [
     {
@@ -32,18 +32,19 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'users',
-                component: UserPageComponent,
+                path: 'admin',
                 children: [
-                    { path: '', redirectTo: 'admin', pathMatch: 'prefix' },
                     {
-                        path: 'admin',
+                        path: '',
                         component: AdminComponent,
                         children: [
-                            { path: '', redirectTo: 'management', pathMatch: 'prefix' },
                             {
                                 path: 'management',
                                 component: AdminManagementPageComponent
+                            },
+                            {
+                                path: 'actions',
+                                component: ActionRequiredPageComponent
                             }
                         ]
                     }
