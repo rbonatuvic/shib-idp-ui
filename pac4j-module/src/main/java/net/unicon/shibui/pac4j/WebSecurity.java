@@ -1,5 +1,6 @@
 package net.unicon.shibui.pac4j;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
@@ -18,8 +19,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @AutoConfigureOrder(-1)
 public class WebSecurity {
     @Bean("webSecurityConfig")
-    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository) {
-        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository);
+    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository) {
+        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository);
     }
 
     @Configuration
@@ -35,10 +36,12 @@ public class WebSecurity {
     public static class Pac4jWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final Config config;
         private UserRepository userRepository;
+        private RoleRepository roleRepository;
 
-        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository) {
+        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository) {
             this.config = config;
             this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
         }
 
         @Override
@@ -52,7 +55,7 @@ public class WebSecurity {
 
             http.addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
 
-            http.addFilterBefore(new AddNewUserFilter(userRepository), BasicAuthenticationFilter.class);
+            http.addFilterAfter(new AddNewUserFilter(userRepository, roleRepository), BasicAuthenticationFilter.class);
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 
