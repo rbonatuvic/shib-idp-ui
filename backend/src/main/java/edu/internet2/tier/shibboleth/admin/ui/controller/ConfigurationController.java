@@ -25,9 +25,6 @@ public class ConfigurationController {
     @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
-    EmailService emailService;
-
     @GetMapping(value = "/customAttributes")
     public ResponseEntity<?> getCustomAttributes() {
         return ResponseEntity.ok(customPropertiesConfiguration.getAttributes());
