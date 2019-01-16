@@ -49,7 +49,7 @@ import org.springframework.web.util.UrlPathHelper;
 import javax.servlet.http.HttpServletRequest;
 
 @Configuration
-@EnableConfigurationProperties({CustomPropertiesConfiguration.class, ShibUIConfiguration.class})
+@EnableConfigurationProperties({CustomPropertiesConfiguration.class, ShibUIConfiguration.class, EmailConfiguration.class})
 public class CoreShibUiConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(CoreShibUiConfiguration.class);
 

@@ -22,22 +22,22 @@ import java.util.Collections;
  * @author Bill Smith (wsmith@unicon.net)
  */
 @Configuration
-@ConfigurationProperties("shibui")
+@ConfigurationProperties("shibui.mail")
 public class EmailConfiguration {
 
     private static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
 
-    //Configured via @ConfigurationProperties (using setter method) with 'shibui.text.email.template.path.prefix' property and
+    //Configured via @ConfigurationProperties (using setter method) with 'shibui.mail.text-email-template-path-prefix' property and
     // default value set here if that property is not explicitly set in application.properties
     @Setter
     private String textEmailTemplatePathPrefix = "/mail/text/";
 
-    //Configured via @ConfigurationProperties (using setter method) with 'shibui.html.email.template.path.prefix' property and
+    //Configured via @ConfigurationProperties (using setter method) with 'shibui.mail.html-email-template-path-prefix' property and
     // default value set here if that property is not explicitly set in application.properties
     @Setter
     private String htmlEmailTemplatePathPrefix = "/mail/html/";
 
-    //Configured via @ConfigurationProperties (using setter method) with 'shibui.system.email.address' property and
+    //Configured via @ConfigurationProperties (using setter method) with 'shibui.mail.system-email-address' property and
     // default value set here if that property is not explicitly set in application.properties
     @Setter
     private String systemEmailAddress = "doNotReply@shibui.org";
