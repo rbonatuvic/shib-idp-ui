@@ -322,7 +322,7 @@ task runChecker << {
  */
 apply plugin: 'docker-compose'
 dockerCompose {
-    useComposeFiles = ['./src/main/docker-files/docker-compose.yml']
+    useComposeFiles = ['./src/test/docker-files/docker-compose.yml']
     captureContainersOutput = true
     waitForTcpPorts = false
 }
