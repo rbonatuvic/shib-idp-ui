@@ -1,11 +1,11 @@
-import { reducer, initialState as snapshot } from './collection.reducer';
-import * as fromAdmin from './collection.reducer';
+import { reducer, initialState as snapshot } from './user-collection.reducer';
+import * as fromAdmin from './user-collection.reducer';
 import {
     AdminCollectionActionTypes,
     LoadAdminSuccess,
     UpdateAdminSuccess,
     RemoveAdminSuccess
-} from '../action/collection.action';
+} from '../action/user-collection.action';
 import { Admin } from '../model/admin';
 
 let users = <Admin[]>[

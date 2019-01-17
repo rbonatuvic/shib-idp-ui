@@ -1,6 +1,6 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Admin } from '../model/admin';
-import { AdminCollectionActionsUnion, AdminCollectionActionTypes } from '../action/collection.action';
+import { AdminCollectionActionsUnion, AdminCollectionActionTypes } from '../action/user-collection.action';
 
 export interface CollectionState extends EntityState<Admin> {
     selectedAdminId: string | null;

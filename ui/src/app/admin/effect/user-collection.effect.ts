@@ -13,7 +13,7 @@ import {
     RemoveAdminRequest,
     RemoveAdminSuccess,
     LoadNewUsersRequest
-} from '../action/collection.action';
+} from '../action/user-collection.action';
 import { AdminService } from '../service/admin.service';
 
 

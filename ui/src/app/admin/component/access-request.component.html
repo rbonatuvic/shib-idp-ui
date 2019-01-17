@@ -1,68 +1,53 @@
-<section class="section">
-    <div class="section-body border border-top-0 border-primary">
-        <div class="section-header bg-primary p-2 text-light">
-            <div class="row justify-content-between">
-                <div class="col-12">
-                    <span class="lead" translate="label.user-access-request">User Access Request</span>
-                </div>
-            </div>
+
+<ng-container>
+    <div class="d-flex justify-content-center">
+        <div class="w-25 alert alert-info m-3" *ngIf="!(hasUsers$ | async)">
+            <p>There are no new user requests at this time.</p>
         </div>
-        <ng-container>
-            <div class="d-flex justify-content-center">
-                <div class="w-25 alert alert-info m-3" *ngIf="!(hasUsers$ | async)">
-                    <p>There are no new user requests at this time.</p>
-                </div>
-            </div>
-        </ng-container>
-        <ng-container *ngIf="hasUsers$ | async">
-            <div *ngFor="let user of users$ | async; let i = index;">
-                <div class="p-3 bg-light border-light rounded m-3">
-                    <div class="row align-items-center">
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col text-right font-weight-bold" translate="label.user-id">
-                                    UserId
-                                </div>
-                                <div class="col">{{ user.username }}</div>
-                                <div class="col text-right font-weight-bold" translate="label.email">
-                                    Email
-                                </div>
-                                <div class="col">{{ user.emailAddress }}</div>
-                            </div>
-                            <div class="w-100 my-1"></div>
-                            <div class="row">
-                                <div class="col text-right font-weight-bold" translate="label.name">
-                                    Name
-                                </div>
-                                <div class="col">{{ user.firstName }} {{ user.lastName }}</div>
-                                <label [for]="'role-' + i" class="d-block col text-right font-weight-bold" translate="label.role">
-                                    Role
-                                </label>
-                                <div class="col">
-                                    <select
-                                        [id]="'role-' + i"
-                                        [name]="user.username"
-                                        [ngModel]="user.role"
-                                        class="form-control form-control-sm"
-                                        disableValidation
-                                        (change)="setUserRole(user, $event.target.value)">
-                                        <option *ngFor="let role of roles$ | async" [value]="role">{{ role }}</option>
-                                    </select>
-                                </div>
-                            </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="hasUsers$ | async">
+    <div *ngFor="let user of users$ | async; let i = index;">
+        <div class="p-3 bg-light border-light rounded m-3">
+            <div class="row align-items-center">
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col text-right font-weight-bold" translate="label.user-id">
+                            UserId
                         </div>
-                        <div class="col-2 text-right">
-                            <button class="btn btn-danger btn-sm" (click)="deleteUser(user.username)">
-                                <i class="fa fa-trash fa-lg"></i>
-                                &nbsp;
-                                <span translate="label.delete-request">
-                                    Delete Request
-                                </span>
-                            </button>
+                        <div class="col">{{ user.username }}</div>
+                        <div class="col text-right font-weight-bold" translate="label.email">
+                            Email
+                        </div>
+                        <div class="col">{{ user.emailAddress }}</div>
+                    </div>
+                    <div class="w-100 my-1"></div>
+                    <div class="row">
+                        <div class="col text-right font-weight-bold" translate="label.name">
+                            Name
+                        </div>
+                        <div class="col">{{ user.firstName }} {{ user.lastName }}</div>
+                        <label [for]="'role-' + i" class="d-block col text-right font-weight-bold" translate="label.role">
+                            Role
+                        </label>
+                        <div class="col">
+                            <select [id]="'role-' + i" [name]="user.username" [ngModel]="user.role" class="form-control form-control-sm"
+                                disableValidation (change)="setUserRole(user, $event.target.value)">
+                                <option *ngFor="let role of roles$ | async" [value]="role">{{ role }}</option>
+                            </select>
                         </div>
                     </div>
                 </div>
+                <div class="col-2 text-right">
+                    <button class="btn btn-danger btn-sm" (click)="deleteUser(user.username)">
+                        <i class="fa fa-trash fa-lg"></i>
+                        &nbsp;
+                        <span translate="label.delete-request">
+                            Delete Request
+                        </span>
+                    </button>
+                </div>
             </div>
-        </ng-container>
+        </div>
     </div>
-</section>
+</ng-container>

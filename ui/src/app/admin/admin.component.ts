@@ -3,7 +3,7 @@ import { LoadRoleRequest } from '../core/action/configuration.action';
 
 import * as fromRoot from '../app.reducer';
 import { Store } from '@ngrx/store';
-import { LoadAdminRequest } from './action/collection.action';
+import { LoadAdminRequest } from './action/user-collection.action';
 
 @Component({
     selector: 'admin-page',
