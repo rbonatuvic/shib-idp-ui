@@ -1,12 +1,14 @@
 import * as fromIndex from './index';
 import * as fromUser from './user.reducer';
 import * as fromVersion from './version.reducer';
+import * as fromConfig from './configuration.reducer';
 import { VersionInfo } from '../model/version';
 
 describe('Core index reducers', () => {
     const state: fromIndex.CoreState = {
         user: fromUser.initialState as fromUser.UserState,
-        version: fromVersion.initialState as fromVersion.VersionState
+        version: fromVersion.initialState as fromVersion.VersionState,
+        config: fromConfig.initialState as fromConfig.ConfigState
     };
 
     describe('getUserStateFn function', () => {

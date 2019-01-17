@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
+import org.springframework.mail.javamail.JavaMailSender
+import org.springframework.mail.javamail.JavaMailSenderImpl
 
 @Configuration
 class TestConfiguration {
@@ -33,6 +35,15 @@ class TestConfiguration {
     TestConfiguration(final OpenSamlObjects openSamlObjects, final MetadataResolverRepository metadataResolverRepository) {
         this.openSamlObjects =openSamlObjects
         this.metadataResolverRepository = metadataResolverRepository
+    }
+
+    @Bean
+    JavaMailSender javaMailSender() {
+        return new JavaMailSenderImpl().with {
+            it.host = 'localhost'
+            it.port = 1025
+            it
+        }
     }
 
     @Bean

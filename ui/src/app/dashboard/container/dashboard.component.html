@@ -1,0 +1,29 @@
+<div class="container-fluid p-3" role="section">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link"
+                [routerLink]="['./', 'metadata', 'manager', 'resolvers']"
+                routerLinkActive="active"
+                translate="label.metadata-sources">
+                Metadata Sources
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+                [routerLink]="['./', 'metadata', 'manager', 'providers']"
+                routerLinkActive="active"
+                translate="label.metadata-providers">
+                Metadata Providers
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"
+                [routerLink]="['./', 'users', 'admin']"
+                routerLinkActive="active"
+                translate="label.admin">
+                Admin
+            </a>
+        </li>
+    </ul>
+    <router-outlet></router-outlet>
+</div>

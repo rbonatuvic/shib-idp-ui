@@ -33,7 +33,8 @@ class UserBootstrap {
             log.info("configuring users from ${shibUIConfiguration.userBootstrapResource.URI}")
             new CSVReader(new InputStreamReader(shibUIConfiguration.userBootstrapResource.inputStream)).each { it ->
                 def (username, password, firstName, lastName, roleName) = it
-                def role = roleRepository.findByName(roleName).orElse(roleRepository.save(new Role(name: roleName)))
+                def role = roleRepository.findByName(roleName).orElse(new Role(name: roleName))
+                roleRepository.saveAndFlush(role)
                 def user = userRepository.findByUsername(username).orElse(new User(username: username)).with {
                     it.password = password
                     it.firstName = firstName
@@ -41,7 +42,7 @@ class UserBootstrap {
                     it.roles.add(role)
                     it
                 }
-                userRepository.save(user)
+                userRepository.saveAndFlush(user)
             }
         }
     }

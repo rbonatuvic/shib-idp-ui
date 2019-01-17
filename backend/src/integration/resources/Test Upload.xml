@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="UploadedTest" validUntil="2019-10-01T00:00:00.000Z">
+  <SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDbTCCAlWgAwIBAgIET+b8mTANBgkqhkiG9w0BAQsFADBnMR8wHQYDVQQDExZ1
+cm46YW1hem9uOndlYnNlcnZpY2VzMSIwIAYDVQQKExlBbWF6b24gV2ViIFNlcnZp
+Y2VzLCBJbmMuMRMwEQYDVQQIEwpXYXNoaW5ndG9uMQswCQYDVQQGEwJVUzAeFw0x
+ODEwMDEwMDAwMDBaFw0xOTEwMDEwMDAwMDBaMGcxHzAdBgNVBAMTFnVybjphbWF6
+b246d2Vic2VydmljZXMxIjAgBgNVBAoTGUFtYXpvbiBXZWIgU2VydmljZXMsIElu
+Yy4xEzARBgNVBAgTCldhc2hpbmd0b24xCzAJBgNVBAYTAlVTMIIBIjANBgkqhkiG
+9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqi+bdL+COkCFRqqB+pQNNbyIKDpn+425OTaP
+MqZYRCGwcaARAj+gehn/qEMTz6CzARhQ/aekmtVqf9baLbGFzEDgcfcYkipJjUEl
+eDJ1J35EikiQCS1VZc/e09Bh2CnD5nRZqK9ftvpw2PeDFOFoET4o/TXFWKo/oCm/
+eWEfIBx4lkwqBapG4cbDa98vzoK9mEkkiY2CJUWDmSRx8L5oHp6aI/knonvbKMOq
+0X7XWUcxlSk7R7kFwtzLgvp/6JDrSILOaXfQr9St82pVH+OsLPU+hOY9eJaiekYP
+c22WlMKJ8jT0BF7gsR2ASE9Ee2JQf/1UU7rpx4Y0w9kSH5V0rQIDAQABoyEwHzAd
+BgNVHQ4EFgQUT6a3g7OjcYYBXPTwmvnNYiT8lVYwDQYJKoZIhvcNAQELBQADggEB
+AECq6txWuVMJvC5AlJStdLUteU3HPlUwEIYxJBr1YxsJOFVTOVw4EkaOfezEWCMe
+m03/xscSB8VoxXgKhGNWlKSpmOciZdIUDR8ZA7qK0M6mqDM3qxj9R3sNkiwv4edm
+3UbwITrLdprnWKZ8bIv++wqvqUZHaf/2/x0qoH/6VdMWZxFCetcz+YM3QPEUPn2F
+0tr6p6bVyK86kK2E6Dvppv7wxfdLnjO+8R/c1eQQMnWlR9znPEnv5HDIgl6Etn6P
+AEk+iLf+AkkVukf66mRJyTXYnN7LyQsmALNxhNnPNFzUHxu7XJHf81IBkEbWV+68
+Rr/c3IAYmUPssWs67rq/m40=</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </KeyDescriptor>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos</NameIDFormat>
+    <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:entity</NameIDFormat>
+    <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://signin.aws.amazon.com/saml" index="1" isDefault="true"/>
+  </SPSSODescriptor>
+  <Organization>
+    <OrganizationName xml:lang="en">Amazon Web Services, Inc.</OrganizationName>
+    <OrganizationDisplayName xml:lang="en">AWS</OrganizationDisplayName>
+    <OrganizationURL xml:lang="en">https://aws.amazon.com</OrganizationURL>
+  </Organization>
+</EntityDescriptor>

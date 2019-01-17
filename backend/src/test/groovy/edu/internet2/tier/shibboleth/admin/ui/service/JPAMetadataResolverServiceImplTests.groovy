@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
@@ -393,6 +394,23 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         namespaces | filename
         ['http://shibboleth.net/ns/profiles'] | '/conf/984.xml'
         ['http://shibboleth.net/ns/profiles', 'http://scaldingspoon.com/iam'] | '/conf/984-2.xml'
+    }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    def 'test namespace protection in nonURL resolver'() {
+        setup:
+        shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
+        def resolver = new LocalDynamicMetadataResolver().with {
+            it.xmlId = 'LocalDynamic'
+            it.sourceDirectory = '/tmp'
+            it
+        }
+
+        when:
+        metadataResolverRepository.save(resolver)
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/1059.xml', metadataResolverService.generateConfiguration())
     }
 
     @Ignore('there is a bug in org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter.applyFilter')
