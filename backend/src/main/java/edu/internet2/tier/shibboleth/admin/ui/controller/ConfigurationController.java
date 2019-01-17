@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -34,6 +34,7 @@ class UserBootstrap {
             new CSVReader(new InputStreamReader(shibUIConfiguration.userBootstrapResource.inputStream)).each { it ->
                 def (username, password, firstName, lastName, roleName) = it
                 def role = roleRepository.findByName(roleName).orElse(new Role(name: roleName))
+                roleRepository.saveAndFlush(role)
                 def user = userRepository.findByUsername(username).orElse(new User(username: username)).with {
                     it.password = password
                     it.firstName = firstName
