@@ -9,4 +9,5 @@ import java.util.Locale;
 public interface EmailService {
     void sendMail(String emailTemplate, String fromAddress, String[] recipients, String subject, Locale locale) throws MessagingException;
     void sendNewUserMail(String newUsername) throws MessagingException;
+    String[] getSystemAdminEmailAddresses();
 }

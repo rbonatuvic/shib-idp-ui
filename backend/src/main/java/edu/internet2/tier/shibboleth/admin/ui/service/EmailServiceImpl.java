@@ -62,10 +62,10 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendNewUserMail(String newUsername) throws MessagingException {
         String subject = String.format("User Access Request for %s", newUsername);
-        sendMail("new-user", systemEmailAddress, getSystemAdmins(), subject, Locale.getDefault());
+        sendMail("new-user", systemEmailAddress, getSystemAdminEmailAddresses(), subject, Locale.getDefault());
     }
 
-    private String[] getSystemAdmins() {
+    public String[] getSystemAdminEmailAddresses() {
         Set<User> systemAdmins = userRepository.findByRoles_Name("ROLE_ADMIN");
         if (systemAdmins == null || systemAdmins.size() == 0) {
             //TODO: Should this be an exception?

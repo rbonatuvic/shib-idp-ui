@@ -40,7 +40,7 @@ class TestConfiguration {
     @Bean
     JavaMailSender javaMailSender() {
         return new JavaMailSenderImpl().with {
-            it.host = 'mailhog'
+            it.host = 'localhost'
             it.port = 1025
             it
         }
