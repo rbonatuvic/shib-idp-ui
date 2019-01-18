@@ -2,8 +2,10 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +56,9 @@ public class JsonSchemaComponentsConfiguration {
     @Setter
     private String nameIdFormatFilterUiSchemaLocation = "classpath:nameid-filter.schema.json";
 
+    @Autowired
+    UserRepository userRepository;
+
     @Bean
     public JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
         return JsonSchemaResourceLocationRegistry.inMemory()
@@ -97,6 +102,6 @@ public class JsonSchemaComponentsConfiguration {
 
     @Bean
     public JsonSchemaBuilderService jsonSchemaBuilderService() {
-        return new JsonSchemaBuilderService();
+        return new JsonSchemaBuilderService(userRepository);
     }
 }
