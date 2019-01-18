@@ -21,4 +21,5 @@ public interface EntityDescriptorRepository extends CrudRepository<EntityDescrip
     @Query("select e from EntityDescriptor e")
     Stream<EntityDescriptor> findAllByCustomQueryAndStream();
 
+    Stream<EntityDescriptor> findAllByCreatedBy(String username);
 }
