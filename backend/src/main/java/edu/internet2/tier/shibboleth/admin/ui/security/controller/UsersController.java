@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,12 @@ public class UsersController {
     @GetMapping
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/current")
+    public ResponseEntity<?> getPrincipal(Principal principal) {
+        return ResponseEntity.ok(principal);
     }
 
     @Transactional(readOnly = true)
