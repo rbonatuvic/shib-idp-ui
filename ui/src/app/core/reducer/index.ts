@@ -41,3 +41,5 @@ export const getVersionError = createSelector(getVersionState, fromVersion.getVe
 
 export const getConfigState = createSelector(getCoreFeature, getConfigStateFn);
 export const getRoles = createSelector(getConfigState, fromConfig.getRoles);
+
+export const isCurrentUserAdmin = createSelector(getUser, user => user.role === 'ROLE_ADMIN');
