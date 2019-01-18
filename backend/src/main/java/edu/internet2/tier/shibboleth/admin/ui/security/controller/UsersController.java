@@ -61,6 +61,12 @@ public class UsersController {
     }
 
     @Transactional
+    @GetMapping("/role/{rolename}")
+    public ResponseEntity<?> getUsersWithRole(@PathVariable String rolename) {
+        return ResponseEntity.ok(userRepository.findByRoles_Name(rolename));
+    }
+
+    @Transactional
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteOne(@PathVariable String username) {
         User user = findUserOrThrowHttp404(username);
