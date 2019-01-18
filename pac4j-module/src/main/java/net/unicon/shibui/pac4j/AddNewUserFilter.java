@@ -64,19 +64,21 @@ public class AddNewUserFilter implements Filter {
                     user = persistedUser.get();
                 }
                 if (user.getRole().equals(ROLE_NONE)) {
-//                    throw new AccessDeniedException("DENIED!");
-                    response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
+                    throw new AccessDeniedException("DENIED!");
+/*                    response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
                     response.getOutputStream().write(getJsonResponseBytes(
                             new ErrorResponse(String.valueOf(HttpStatus.FORBIDDEN.value()),
                                     "Your account is not yet authorized to access ShibUI.")));
                     ((HttpServletResponse) response).sendRedirect("/static.html");
-                    return;
-                } // else, user is in the system already, carry on
+//                    return;*/
+                } else {
+                    chain.doFilter(request, response);// else, user is in the system already, carry on
+                }
             }
         }
 
-        chain.doFilter(request, response);
+//        chain.doFilter(request, response);
     }
 
     @Override
