@@ -1,7 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import groovy.json.JsonOutput
+import org.apache.commons.lang.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
+
+import java.security.Principal
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -10,6 +15,12 @@ class JsonSchemaBuilderService {
 
     @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
+
+    UserRepository userRepository;
+
+    JsonSchemaBuilderService(UserRepository userRepository) {
+        this.userRepository = userRepository
+    }
 
     void addReleaseAttributesToJson(Object json) {
         json['data'] = customPropertiesConfiguration.getAttributes().collect {
@@ -60,6 +71,19 @@ class JsonSchemaBuilderService {
 
             definition['items'] = items
             json[(String) it['name']] = definition
+        }
+    }
+
+    void hideServiceEnabledFromNonAdmins(Map json, Principal principal) {
+        if (principal != null && StringUtils.isNotBlank(principal.getName())) {
+            def user = userRepository.findByUsername(principal.getName())
+            if (user.isPresent() && user.get().role != 'ROLE_ADMIN') {
+                // user isn't an admin, so hide 'ServiceEnabled'
+                Map<String, String> serviceEnabled = (HashMap) json['properties']['serviceEnabled']
+                serviceEnabled['type'] = 'hidden'
+                serviceEnabled.remove('title')
+                serviceEnabled.remove('description')
+            }
         }
     }
 }
