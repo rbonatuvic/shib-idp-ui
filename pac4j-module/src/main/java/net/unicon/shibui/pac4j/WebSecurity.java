@@ -12,6 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
@@ -21,6 +24,19 @@ public class WebSecurity {
     @Bean("webSecurityConfig")
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository) {
         return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository);
+    }
+
+    @Bean
+    public static AccessDeniedHandler accessDeniedHandler() {
+        return new net.unicon.shibui.pac4j.AccessDeniedHandler();
+    }
+
+    @Bean
+    public static ExceptionTranslationFilter exceptionTranslationFilter(AccessDeniedHandler accessDeniedHandler) {
+        ExceptionTranslationFilter exceptionTranslationFilter = new ExceptionTranslationFilter(new RestAuthenticationEntryPoint());
+        exceptionTranslationFilter.setAccessDeniedHandler(accessDeniedHandler);
+        exceptionTranslationFilter.afterPropertiesSet();
+        return exceptionTranslationFilter;
     }
 
     @Configuration
@@ -55,7 +71,16 @@ public class WebSecurity {
 
             http.addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
 
-            http.addFilterAfter(new AddNewUserFilter(userRepository, roleRepository), BasicAuthenticationFilter.class);
+            http.addFilterAfter(new AddNewUserFilter(userRepository, roleRepository), SecurityFilter.class);
+/*
+                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+            http.addFilterAfter(exceptionTranslationFilter(accessDeniedHandler()), ExceptionTranslationFilter.class);
+*/
+/*
+            ExceptionTranslationFilter customExceptionTranslationFilter = new ExceptionTranslationFilter(new RestAuthenticationEntryPoint());
+            customExceptionTranslationFilter.setAccessDeniedHandler(accessDeniedHandler);
+            http.addFilterAfter(customExceptionTranslationFilter, AddNewUserFilter.class);
+*/
 
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 

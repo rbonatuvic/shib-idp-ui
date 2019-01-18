@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.http.entity.ContentType;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -55,6 +56,7 @@ public class AddNewUserFilter implements Filter {
                     user.setUsername(username);
                     user.setPassword(BCrypt.hashpw(RandomStringUtils.randomAlphanumeric(20), BCrypt.gensalt()));
                     Role noRole = roleRepository.findByName(ROLE_NONE).orElse(new Role(ROLE_NONE));
+                    roleRepository.save(noRole);
                     user.getRoles().add(noRole);
                     userRepository.save(user);
                     //TODO: Add call to email service here
@@ -62,11 +64,13 @@ public class AddNewUserFilter implements Filter {
                     user = persistedUser.get();
                 }
                 if (user.getRole().equals(ROLE_NONE)) {
+//                    throw new AccessDeniedException("DENIED!");
                     response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
                     ((HttpServletResponse) response).setStatus(HttpStatus.FORBIDDEN.value());
                     response.getOutputStream().write(getJsonResponseBytes(
                             new ErrorResponse(String.valueOf(HttpStatus.FORBIDDEN.value()),
                                     "Your account is not yet authorized to access ShibUI.")));
+                    ((HttpServletResponse) response).sendRedirect("/static.html");
                     return;
                 } // else, user is in the system already, carry on
             }
