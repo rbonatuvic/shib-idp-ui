@@ -51,7 +51,25 @@ public class WebSecurity {
         }
     }
 
+    @Configuration
     @Order(1)
+    public static class StaticSecurityConfiguration extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/static.html").authorizeRequests().antMatchers("/static.html").permitAll();
+        }
+    }
+
+    @Configuration
+    @Order(2)
+    public static class ErrorSecurityConfiguration extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/error").authorizeRequests().antMatchers("/error").permitAll();
+        }
+    }
+
+    @Order(100)
     public static class Pac4jWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final Config config;
         private UserRepository userRepository;
@@ -65,8 +83,6 @@ public class WebSecurity {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/static.html").permitAll();
-
             final SecurityFilter securityFilter = new SecurityFilter(this.config, "Saml2Client");
 
             final CallbackFilter callbackFilter = new CallbackFilter(this.config);
