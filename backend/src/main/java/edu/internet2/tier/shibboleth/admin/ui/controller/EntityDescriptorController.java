@@ -176,8 +176,7 @@ public class EntityDescriptorController {
                 final String xml = this.openSamlObjects.marshalToXmlString(ed);
                 return ResponseEntity.ok(xml);
             } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
-                        "You are not authorized to perform the requested operation."));
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }
     }
