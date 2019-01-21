@@ -16,6 +16,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.security.Principal;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -99,8 +99,8 @@ public class EntityDescriptorController {
     }
 
     @PutMapping("/EntityDescriptor/{resourceId}")
-    public ResponseEntity<?> update(Principal principal, @RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
-        User currentUser = getUserFromPrincipal(principal);
+    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
+        User currentUser = getCurrentUser();
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(resourceId);
         if (existingEd == null) {
             return ResponseEntity.notFound().build();
@@ -130,8 +130,8 @@ public class EntityDescriptorController {
 
     @GetMapping("/EntityDescriptors")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getAll(Principal principal) {
-        User currentUser = getUserFromPrincipal(principal);
+    public ResponseEntity<?> getAll() {
+        User currentUser = getCurrentUser();
         if (currentUser != null) {
             if (currentUser.getRole().equals("ROLE_ADMIN")) {
                 return ResponseEntity.ok(entityDescriptorRepository.findAllByCustomQueryAndStream()
@@ -149,8 +149,8 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}")
-    public ResponseEntity<?> getOne(Principal principal, @PathVariable String resourceId) {
-        User currentUser = getUserFromPrincipal(principal);
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
+        User currentUser = getCurrentUser();
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             return ResponseEntity.notFound().build();
@@ -166,8 +166,8 @@ public class EntityDescriptorController {
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
-    public ResponseEntity<?> getOneXml(Principal principal, @PathVariable String resourceId) throws MarshallingException {
-        User currentUser = getUserFromPrincipal(principal);
+    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException {
+        User currentUser = getCurrentUser();
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             return ResponseEntity.notFound().build();
@@ -218,12 +218,15 @@ public class EntityDescriptorController {
                 .body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
     }
 
-    private User getUserFromPrincipal(Principal principal) {
+    private User getCurrentUser() {
         User user = null;
-        if (principal != null && StringUtils.isNotBlank(principal.getName())) {
-            Optional<User> persistedUser = userRepository.findByUsername(principal.getName());
-            if (persistedUser.isPresent()) {
-                user = persistedUser.get();
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+            String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (StringUtils.isNotBlank(principal)) {
+                Optional<User> persistedUser = userRepository.findByUsername(principal);
+                if (persistedUser.isPresent()) {
+                    user = persistedUser.get();
+                }
             }
         }
         return user;

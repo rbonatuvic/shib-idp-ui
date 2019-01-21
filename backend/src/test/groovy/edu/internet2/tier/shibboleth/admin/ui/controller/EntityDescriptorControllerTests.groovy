@@ -1,20 +1,36 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository
+import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 import spock.lang.Subject
 
+import javax.servlet.http.HttpSession
+import java.security.Principal
 import java.time.LocalDateTime
 
 import static org.hamcrest.CoreMatchers.containsString
@@ -22,6 +38,10 @@ import static org.springframework.http.MediaType.*
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
+@DataJpaTest
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
+@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
+@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class EntityDescriptorControllerTests extends Specification {
 
     RandomGenerator randomGenerator
@@ -43,6 +63,10 @@ class EntityDescriptorControllerTests extends Specification {
     @Subject
     def controller
 
+    Authentication authentication = Mock()
+    SecurityContext securityContext = Mock()
+    UserRepository userRepository = Mock()
+
     def setup() {
         generator = new TestObjectGenerator()
         randomGenerator = new RandomGenerator()
@@ -52,14 +76,18 @@ class EntityDescriptorControllerTests extends Specification {
         controller = new EntityDescriptorController(
                 entityDescriptorRepository: entityDescriptorRepository,
                 openSamlObjects: openSamlObjects,
-                entityDescriptorService: service
+                entityDescriptorService: service,
+                userRepository: userRepository
         )
         controller.restTemplate = mockRestTemplate
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+
+        securityContext.getAuthentication() >> authentication
     }
 
     def 'GET /EntityDescriptors with empty repository'() {
         given:
+        prepareAdminUser()
         def emptyRecordsFromRepository = [].stream()
         def expectedEmptyListResponseBody = '[]'
         def expectedResponseContentType = APPLICATION_JSON_UTF8
@@ -79,6 +107,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def 'GET /EntityDescriptors with 1 record in repository'() {
         given:
+        prepareAdminUser()
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true,
                 createdDate: LocalDateTime.parse(expectedCreationDate))
@@ -124,6 +153,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def 'GET /EntityDescriptors with 2 records in repository'() {
         given:
+        prepareAdminUser()
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
                 serviceEnabled: true,
@@ -318,6 +348,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def 'GET /EntityDescriptor/{resourceId} existing'() {
         given:
+        prepareAdminUser()
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
         def expectedSpName = 'sp1'
@@ -364,6 +395,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def 'GET /EntityDescriptor/{resourceId} existing (xml)'() {
         given:
+        prepareAdminUser()
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
         def expectedSpName = 'sp1'
@@ -395,6 +427,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def "POST /EntityDescriptor handles XML happily"() {
         given:
+        prepareAdminUser()
         def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
   <md:Extensions>
@@ -510,6 +543,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def "POST /EntityDescriptor handles x-www-form-urlencoded happily"() {
         given:
+        prepareAdminUser()
         def postedMetadataUrl = "http://test.scaldingspoon.org/test1"
         def restXml = '''<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
@@ -588,6 +622,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def "PUT /EntityDescriptor updates entity descriptors properly"() {
         given:
+        prepareAdminUser()
         def entityDescriptor = generator.buildEntityDescriptor()
         def updatedEntityDescriptor = generator.buildEntityDescriptor()
         updatedEntityDescriptor.resourceId = entityDescriptor.resourceId
@@ -615,6 +650,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def "PUT /EntityDescriptor 409's if the version numbers don't match"() {
         given:
+        prepareAdminUser()
         def entityDescriptor = generator.buildEntityDescriptor()
         def updatedEntityDescriptor = generator.buildEntityDescriptor()
         updatedEntityDescriptor.resourceId = entityDescriptor.resourceId
@@ -633,5 +669,13 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         result.andExpect(status().is(409))
+    }
+
+    def prepareAdminUser() {
+        authentication.getPrincipal() >> "foo"
+        SecurityContextHolder.setContext(securityContext)
+        def user = new User(username: "foo", role: "ROLE_ADMIN")
+        Optional<User> currentUser = Optional.of(user)
+        userRepository.findByUsername("foo") >> currentUser
     }
 }
