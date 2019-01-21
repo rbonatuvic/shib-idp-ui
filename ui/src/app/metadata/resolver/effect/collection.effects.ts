@@ -5,9 +5,29 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { map, catchError, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import * as providerActions from '../action/collection.action';
+import {
+    ResolverCollectionActionTypes,
+    LoadResolverRequest,
+    LoadResolverSuccess,
+    LoadResolverError,
+    LoadAdminResolverRequest,
+    AddResolverRequest,
+    AddResolverSuccess,
+    AddResolverFail,
+    RemoveResolverRequest,
+    RemoveResolverSuccess,
+    RemoveResolverFail,
+    SelectResolver,
+    SelectResolverSuccess,
+    UpdateResolverRequest,
+    UpdateResolverSuccess,
+    UpdateResolverFail,
+    UpdateResolverConflict,
+    UploadResolverRequest,
+    CreateResolverFromUrlRequest
+} from '../action/collection.action';
 import * as draftActions from '../action/draft.action';
-import { ResolverCollectionActionTypes } from '../action/collection.action';
+import {  } from '../action/collection.action';
 import { ResolverService } from '../../domain/service/resolver.service';
 import { removeNulls } from '../../../shared/util';
 import { AddNotification } from '../../../notification/action/notification.action';
@@ -23,35 +43,48 @@ export class ResolverCollectionEffects {
 
     @Effect()
     loadResolvers$ = this.actions$.pipe(
-        ofType<providerActions.LoadResolverRequest>(ResolverCollectionActionTypes.LOAD_RESOLVER_REQUEST),
+        ofType<LoadResolverRequest>(ResolverCollectionActionTypes.LOAD_RESOLVER_REQUEST),
         switchMap(() =>
             this.descriptorService
                 .query()
                 .pipe(
-                    map(descriptors => new providerActions.LoadResolverSuccess(descriptors)),
-                    catchError(error => of(new providerActions.LoadResolverError(error)))
+                    map(descriptors => new LoadResolverSuccess(descriptors)),
+                    catchError(error => of(new LoadResolverError(error)))
+                )
+        )
+    );
+
+    @Effect()
+    loadAdminResolvers$ = this.actions$.pipe(
+        ofType<LoadAdminResolverRequest>(ResolverCollectionActionTypes.LOAD_RESOLVER_REQUEST),
+        switchMap(() =>
+            this.descriptorService
+                .query({admin: true})
+                .pipe(
+                    map(descriptors => new LoadResolverSuccess(descriptors)),
+                    catchError(error => of(new LoadResolverError(error)))
                 )
         )
     );
 
     @Effect()
     updateResolver$ = this.actions$.pipe(
-        ofType<providerActions.UpdateResolverRequest>(ResolverCollectionActionTypes.UPDATE_RESOLVER_REQUEST),
+        ofType<UpdateResolverRequest>(ResolverCollectionActionTypes.UPDATE_RESOLVER_REQUEST),
         map(action => action.payload),
         switchMap(provider => {
             return this.descriptorService
                 .update(provider)
                 .pipe(
-                    map(p => new providerActions.UpdateResolverSuccess({
+                    map(p => new UpdateResolverSuccess({
                         id: p.id,
                         changes: p
                     })),
                     catchError(err => {
                         if (err.status === 409) {
-                            return of(new providerActions.UpdateResolverConflict(provider));
+                            return of(new UpdateResolverConflict(provider));
                         }
                         console.log(err);
-                        return of(new providerActions.UpdateResolverFail({
+                        return of(new UpdateResolverFail({
                             errorCode: err.status,
                             errorMessage: `${err.statusText} - ${err.message}`
                         }));
@@ -62,21 +95,21 @@ export class ResolverCollectionEffects {
 
     @Effect({ dispatch: false })
     updateResolverSuccessRedirect$ = this.actions$.pipe(
-        ofType<providerActions.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
+        ofType<UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
         tap(provider => this.router.navigate(['dashboard']))
     );
 
     @Effect()
     updateResolverSuccessReload$ = this.actions$.pipe(
-        ofType<providerActions.UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
+        ofType<UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
-        map(provider => new providerActions.LoadResolverRequest())
+        map(provider => new LoadResolverRequest())
     );
 
     @Effect()
     updateResolverFailNotification$ = this.actions$.pipe(
-        ofType<providerActions.UpdateResolverFail>(ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL),
+        ofType<UpdateResolverFail>(ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromI18n.getMessages)),
         map(([error, messages]) => new AddNotification(
@@ -90,20 +123,20 @@ export class ResolverCollectionEffects {
 
     @Effect()
     selectResolver$ = this.actions$.pipe(
-        ofType<providerActions.SelectResolver>(ResolverCollectionActionTypes.SELECT),
+        ofType<SelectResolver>(ResolverCollectionActionTypes.SELECT),
         map(action => action.payload),
         switchMap(id =>
             this.descriptorService
                 .find(id)
                 .pipe(
-                    map(p => new providerActions.SelectResolverSuccess(p))
+                    map(p => new SelectResolverSuccess(p))
                 )
         )
     );
 
     @Effect()
     addResolverRequest$ = this.actions$.pipe(
-        ofType<providerActions.AddResolverRequest>(ResolverCollectionActionTypes.ADD_RESOLVER),
+        ofType<AddResolverRequest>(ResolverCollectionActionTypes.ADD_RESOLVER),
         map(action => action.payload),
         map(provider => {
             return ({
@@ -115,28 +148,28 @@ export class ResolverCollectionEffects {
             this.descriptorService
                 .save(provider)
                 .pipe(
-                    map(p => new providerActions.AddResolverSuccess(p)),
-                    catchError(() => of(new providerActions.AddResolverFail(provider)))
+                    map(p => new AddResolverSuccess(p)),
+                    catchError(() => of(new AddResolverFail(provider)))
                 )
         )
     );
 
     @Effect({ dispatch: false })
     addResolverSuccessRedirect$ = this.actions$.pipe(
-        ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
+        ofType<AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
         tap(provider => this.router.navigate(['dashboard']))
     );
     @Effect()
     addResolverSuccessReload$ = this.actions$.pipe(
-        ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
+        ofType<AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
-        map(provider => new providerActions.LoadResolverRequest())
+        map(provider => new LoadResolverRequest())
     );
 
     @Effect()
     addResolverSuccessRemoveDraft$ = this.actions$.pipe(
-        ofType<providerActions.AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
+        ofType<AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
         map(provider => {
             return new draftActions.RemoveDraftRequest(provider);
@@ -145,7 +178,7 @@ export class ResolverCollectionEffects {
 
     @Effect()
     addResolverFailNotification$ = this.actions$.pipe(
-        ofType<providerActions.AddResolverFail>(ResolverCollectionActionTypes.ADD_RESOLVER_FAIL),
+        ofType<AddResolverFail>(ResolverCollectionActionTypes.ADD_RESOLVER_FAIL),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromI18n.getMessages)),
         map(([error, messages]) => new AddNotification(
@@ -159,28 +192,28 @@ export class ResolverCollectionEffects {
 
     @Effect()
     uploadResolverRequest$ = this.actions$.pipe(
-        ofType<providerActions.UploadResolverRequest>(ResolverCollectionActionTypes.UPLOAD_RESOLVER_REQUEST),
+        ofType<UploadResolverRequest>(ResolverCollectionActionTypes.UPLOAD_RESOLVER_REQUEST),
         map(action => action.payload),
         switchMap(file =>
             this.descriptorService
                 .upload(file.name, file.body)
                 .pipe(
-                    map(p => new providerActions.AddResolverSuccess(p)),
-                    catchError((error) => of(new providerActions.AddResolverFail(error)))
+                    map(p => new AddResolverSuccess(p)),
+                    catchError((error) => of(new AddResolverFail(error)))
                 )
         )
     );
 
     @Effect()
     createResolverFromUrlRequest$ = this.actions$.pipe(
-        ofType<providerActions.CreateResolverFromUrlRequest>(ResolverCollectionActionTypes.CREATE_RESOLVER_FROM_URL_REQUEST),
+        ofType<CreateResolverFromUrlRequest>(ResolverCollectionActionTypes.CREATE_RESOLVER_FROM_URL_REQUEST),
         map(action => action.payload),
         switchMap(file =>
             this.descriptorService
                 .createFromUrl(file.name, file.url)
                 .pipe(
-                    map(p => new providerActions.AddResolverSuccess(p)),
-                    catchError((error) => of(new providerActions.AddResolverFail(error)))
+                    map(p => new AddResolverSuccess(p)),
+                    catchError((error) => of(new AddResolverFail(error)))
                 )
         )
     );

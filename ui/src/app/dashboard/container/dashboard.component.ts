@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../app.reducer';
 import * as fromAdmin from '../../admin/reducer';
 import { Observable } from 'rxjs';
-import { LoadAdminRequest } from '../../admin/action/collection.action';
+import { LoadAdminRequest } from '../../admin/action/user-collection.action';
 import { LoadRoleRequest } from '../../core/action/configuration.action';
 import { map } from 'rxjs/operators';
 

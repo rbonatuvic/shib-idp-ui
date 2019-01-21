@@ -14,7 +14,7 @@ export class ResolverService {
         private http: HttpClient
     ) {}
 
-    query(): Observable<MetadataResolver[]> {
+    query(opts: any = {}): Observable<MetadataResolver[]> {
         return this.http.get<MetadataResolver[]>(`${ this.base }${ this.endpoint }s`, {})
             .pipe(
                 catchError(err => throwError([]))
