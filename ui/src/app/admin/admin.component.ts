@@ -16,6 +16,6 @@ export class AdminComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.store.dispatch(new LoadAdminRequest());
+        // this.store.dispatch(new LoadAdminRequest());
     }
 }

@@ -7,11 +7,12 @@ import { map } from 'rxjs/operators';
 
 import { MetadataEntity, MetadataResolver } from '../../metadata/domain/model';
 import * as fromDashboard from '../../metadata/manager/reducer';
+import * as fromResolver from '../../metadata/resolver/reducer';
 import { ToggleEntityDisplay } from '../../metadata/manager/action/manager.action';
 import { DeleteDialogComponent } from '../../metadata/manager/component/delete-dialog.component';
 import { PreviewEntity } from '../../metadata/domain/action/entity.action';
 import { RemoveDraftRequest } from '../../metadata/resolver/action/draft.action';
-import { LoadResolverRequest } from '../../metadata/resolver/action/collection.action';
+import { LoadAdminResolverRequest } from '../../metadata/resolver/action/collection.action';
 
 @Component({
     selector: 'enable-metadata',
@@ -19,14 +20,12 @@ import { LoadResolverRequest } from '../../metadata/resolver/action/collection.a
 })
 
 export class EnableMetadataComponent implements OnInit {
-    searchQuery$: Observable<string>;
     resolvers$: Observable<MetadataEntity[]>;
     loading$: Observable<boolean>;
 
     total$: Observable<number>;
     page = 1;
     limit = 8;
-    limited$: Observable<MetadataEntity[]>;
 
     entitiesOpen$: Observable<{ [key: string]: boolean }>;
 
@@ -35,8 +34,7 @@ export class EnableMetadataComponent implements OnInit {
         private router: Router,
         private modalService: NgbModal
     ) {
-        this.resolvers$ = store.select(fromDashboard.getSearchResults);
-        this.searchQuery$ = store.select(fromDashboard.getSearchQuery);
+        this.resolvers$ = store.select(fromResolver.getAllResolvers);
         this.loading$ = store.select(fromDashboard.getSearchLoading);
         this.entitiesOpen$ = store.select(fromDashboard.getOpenProviders);
 
@@ -44,7 +42,7 @@ export class EnableMetadataComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.store.dispatch(new LoadResolverRequest());
+        this.store.dispatch(new LoadAdminResolverRequest());
     }
 
     edit(entity: MetadataEntity): void {

@@ -35,6 +35,7 @@ import { Notification, NotificationType } from '../../../notification/model/noti
 import { I18nService } from '../../../i18n/service/i18n.service';
 import * as fromRoot from '../../../app.reducer';
 import * as fromI18n from '../../../i18n/reducer';
+import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 
 
 /* istanbul ignore next */
@@ -56,12 +57,12 @@ export class ResolverCollectionEffects {
 
     @Effect()
     loadAdminResolvers$ = this.actions$.pipe(
-        ofType<LoadAdminResolverRequest>(ResolverCollectionActionTypes.LOAD_RESOLVER_REQUEST),
+        ofType<LoadAdminResolverRequest>(ResolverCollectionActionTypes.LOAD_ADMIN_RESOLVERS_REQUEST),
         switchMap(() =>
             this.descriptorService
                 .query({admin: true})
                 .pipe(
-                    map(descriptors => new LoadResolverSuccess(descriptors)),
+                    map(descriptors => new LoadResolverSuccess(descriptors.map(d => new FileBackedHttpMetadataResolver(d)))),
                     catchError(error => of(new LoadResolverError(error)))
                 )
         )
