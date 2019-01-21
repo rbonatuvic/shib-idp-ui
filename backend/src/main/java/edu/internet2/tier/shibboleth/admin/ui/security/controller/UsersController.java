@@ -57,8 +57,12 @@ public class UsersController {
 
     @Transactional(readOnly = true)
     @GetMapping("/current")
-    public ResponseEntity<?> getPrincipal(Principal principal) {
-        return ResponseEntity.ok(principal);
+    public ResponseEntity<?> getCurrentUser(Principal principal) {
+        if (principal != null && principal.getName() != null) {
+            return ResponseEntity.ok(userRepository.findByUsername(principal.getName()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Transactional(readOnly = true)
