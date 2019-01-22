@@ -5,9 +5,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
-import org.apache.commons.lang.StringUtils;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +31,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 import java.net.URI;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,12 +49,21 @@ public class EntityDescriptorController {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    @Autowired
     private UserRepository userRepository;
+
+    private RoleRepository roleRepository;
+
+    private UserService userService;
 
     private RestTemplate restTemplate;
 
     private static Logger LOGGER = LoggerFactory.getLogger(EntityDescriptorController.class);
+
+    public EntityDescriptorController(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.userService = userService;
+    }
 
     @PostConstruct
     public void initRestTemplate() {
@@ -100,7 +108,7 @@ public class EntityDescriptorController {
 
     @PutMapping("/EntityDescriptor/{resourceId}")
     public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
-        User currentUser = getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(resourceId);
         if (existingEd == null) {
             return ResponseEntity.notFound().build();
@@ -131,7 +139,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptors")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        User currentUser = getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         if (currentUser != null) {
             if (currentUser.getRole().equals("ROLE_ADMIN")) {
                 return ResponseEntity.ok(entityDescriptorRepository.findAllByCustomQueryAndStream()
@@ -150,7 +158,7 @@ public class EntityDescriptorController {
 
     @GetMapping("/EntityDescriptor/{resourceId}")
     public ResponseEntity<?> getOne(@PathVariable String resourceId) {
-        User currentUser = getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             return ResponseEntity.notFound().build();
@@ -167,7 +175,7 @@ public class EntityDescriptorController {
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
     public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException {
-        User currentUser = getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             return ResponseEntity.notFound().build();
@@ -217,17 +225,4 @@ public class EntityDescriptorController {
                 .body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
     }
 
-    private User getCurrentUser() {
-        User user = null;
-        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
-            String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (StringUtils.isNotBlank(principal)) {
-                Optional<User> persistedUser = userRepository.findByUsername(principal);
-                if (persistedUser.isPresent()) {
-                    user = persistedUser.get();
-                }
-            }
-        }
-        return user;
-    }
 }
