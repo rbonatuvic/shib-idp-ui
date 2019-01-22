@@ -43,6 +43,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 
@@ -80,15 +82,24 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     private EntityService entityService;
 
-    public JPAEntityDescriptorServiceImpl(OpenSamlObjects openSamlObjects, EntityService entityService) {
+    private UserService userService;
+
+    public JPAEntityDescriptorServiceImpl(OpenSamlObjects openSamlObjects, EntityService entityService, UserService userService) {
         this.openSamlObjects = openSamlObjects;
         this.entityService = entityService;
+        this.userService = userService;
     }
 
     @Override
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
         ed.setEntityID(representation.getEntityId());
+        User user = userService.getCurrentUser();
+        if (user != null) {
+            ed.setCreatedBy(user.getUsername());
+        } else {
+            LOGGER.warn("Current user was null! Who is logged in?");
+        }
 
         // setup SPSSODescriptor
         if (representation.getServiceProviderSsoDescriptor() != null) {

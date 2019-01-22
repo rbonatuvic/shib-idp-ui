@@ -65,8 +65,8 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public EntityDescriptorService jpaEntityDescriptorService() {
-        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService());
+    public EntityDescriptorService jpaEntityDescriptorService(UserService userService) {
+        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService(), userService);
     }
 
     @Bean
