@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import javax.annotation.PostConstruct
-import java.security.Principal
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
@@ -43,10 +42,10 @@ class MetadataSourcesUiDefinitionController {
     JsonSchemaBuilderService jsonSchemaBuilderService
 
     @GetMapping
-    ResponseEntity<?> getUiDefinitionJsonSchema(Principal principal) {
+    ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
-            jsonSchemaBuilderService.hideServiceEnabledFromNonAdmins(parsedJson, principal)
+            jsonSchemaBuilderService.hideServiceEnabledFromNonAdmins(parsedJson)
             jsonSchemaBuilderService.addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['widget'])
             jsonSchemaBuilderService.addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'])
             jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"])

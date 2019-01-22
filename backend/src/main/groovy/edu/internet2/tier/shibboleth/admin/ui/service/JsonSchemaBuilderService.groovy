@@ -1,12 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import groovy.json.JsonOutput
-import org.apache.commons.lang.StringUtils
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
-
-import java.security.Principal
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -16,10 +13,10 @@ class JsonSchemaBuilderService {
     @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
 
-    UserRepository userRepository;
+    UserService userService
 
-    JsonSchemaBuilderService(UserRepository userRepository) {
-        this.userRepository = userRepository
+    JsonSchemaBuilderService(UserService userService) {
+        this.userService = userService
     }
 
     void addReleaseAttributesToJson(Object json) {
@@ -74,16 +71,14 @@ class JsonSchemaBuilderService {
         }
     }
 
-    void hideServiceEnabledFromNonAdmins(Map json, Principal principal) {
-        if (principal != null && StringUtils.isNotBlank(principal.getName())) {
-            def user = userRepository.findByUsername(principal.getName())
-            if (user.isPresent() && user.get().role != 'ROLE_ADMIN') {
-                // user isn't an admin, so hide 'ServiceEnabled'
-                Map<String, String> serviceEnabled = (HashMap) json['properties']['serviceEnabled']
-                serviceEnabled['type'] = 'hidden'
-                serviceEnabled.remove('title')
-                serviceEnabled.remove('description')
-            }
+    void hideServiceEnabledFromNonAdmins(Map json) {
+        User currentUser = userService.getCurrentUser()
+        if (currentUser != null && currentUser.role != 'ROLE_ADMIN') {
+            // user isn't an admin, so hide 'ServiceEnabled'
+            Map<String, String> serviceEnabled = (HashMap) json['properties']['serviceEnabled']
+            serviceEnabled['type'] = 'hidden'
+            serviceEnabled.remove('title')
+            serviceEnabled.remove('description')
         }
     }
 }

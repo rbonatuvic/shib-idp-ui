@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResourceLocationRegistry;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.JsonSchemaBuilderService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class JsonSchemaComponentsConfiguration {
     }
 
     @Bean
-    public JsonSchemaBuilderService jsonSchemaBuilderService() {
-        return new JsonSchemaBuilderService(userRepository);
+    public JsonSchemaBuilderService jsonSchemaBuilderService(UserService userService) {
+        return new JsonSchemaBuilderService(userService);
     }
 }
