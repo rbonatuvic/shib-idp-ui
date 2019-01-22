@@ -79,6 +79,11 @@ public class EntityDescriptorController {
             return existingEntityDescriptorConflictResponse;
         }
 
+        ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
+        if (entityDescriptorEnablingDeniedResponse != null) {
+            return entityDescriptorEnablingDeniedResponse;
+        }
+
         EntityDescriptor ed = (EntityDescriptor) entityDescriptorService.createDescriptorFromRepresentation(edRepresentation);
 
         EntityDescriptor persistedEd = entityDescriptorRepository.save(ed);
@@ -89,11 +94,13 @@ public class EntityDescriptorController {
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/xml")
     public ResponseEntity<?> upload(@RequestBody byte[] entityDescriptorXml, @RequestParam String spName) throws Exception {
+        //TODO: Do we want security checks here?
         return handleUploadingEntityDescriptorXml(entityDescriptorXml, spName);
     }
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/x-www-form-urlencoded")
     public ResponseEntity<?> upload(@RequestParam String metadataUrl, @RequestParam String spName) throws Exception {
+        //TODO: Do we want security checks here?
         try {
             byte[] xmlContents = this.restTemplate.getForObject(metadataUrl, byte[].class);
             return handleUploadingEntityDescriptorXml(xmlContents, spName);
@@ -117,6 +124,11 @@ public class EntityDescriptorController {
                 // Verify we're the only one attempting to update the EntityDescriptor
                 if (edRepresentation.getVersion() != existingEd.hashCode()) {
                     return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+                }
+
+                ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
+                if (entityDescriptorEnablingDeniedResponse != null) {
+                    return entityDescriptorEnablingDeniedResponse;
                 }
 
                 EntityDescriptor updatedEd =
@@ -208,6 +220,17 @@ public class EntityDescriptorController {
                     .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format("The entity descriptor with entity id [%s] already exists.", entityId)));
         }
         //No existing entity descriptor, which is an OK condition indicated by returning a null conflict response
+        return null;
+    }
+
+    private ResponseEntity<?> entityDescriptorEnablePermissionsCheck(boolean serviceEnabled) {
+        User user = userService.getCurrentUser();
+        if (user != null) {
+            if (serviceEnabled && !user.getRole().equals("ROLE_ADMIN")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new ErrorResponse(HttpStatus.FORBIDDEN, "You do not have the permissions necessary to enable this service."));
+            }
+        }
         return null;
     }
 
