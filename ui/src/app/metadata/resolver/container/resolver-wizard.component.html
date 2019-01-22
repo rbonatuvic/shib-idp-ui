@@ -1,9 +1,9 @@
 <wizard (onNext)="next()" (onPrevious)="previous()" (onSave)="save()"></wizard>
 <hr />
-<div class="py-4">
-        <div class="col-11">
-            <router-outlet></router-outlet>
-        </div>
+<div class="py-3">
+    <div class="col-11">
+        <router-outlet></router-outlet>
+    </div>
 </div>
 <wizard-summary
     [summary]="summary$ | async"

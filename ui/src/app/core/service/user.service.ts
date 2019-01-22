@@ -23,6 +23,5 @@ export class UserService {
         return this.http.get<User>(
             `${this.base}/admin/users/current`
         );
-        // .pipe(map(user => ({ ...user, role: 'ROLE_USER' })));
     }
 } /* istanbul ignore next */
