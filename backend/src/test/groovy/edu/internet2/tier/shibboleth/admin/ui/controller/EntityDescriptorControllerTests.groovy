@@ -71,13 +71,17 @@ class EntityDescriptorControllerTests extends Specification {
     UserRepository userRepository = Mock()
     RoleRepository roleRepository = Mock()
 
+    UserService userService
+
     def setup() {
         generator = new TestObjectGenerator()
         randomGenerator = new RandomGenerator()
         mapper = new ObjectMapper()
-        service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
-        controller = new EntityDescriptorController(userRepository, roleRepository, new UserService(roleRepository, userRepository))
+        userService = new UserService(roleRepository, userRepository)
+        service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), userService)
+
+        controller = new EntityDescriptorController(userRepository, roleRepository, userService)
         controller.entityDescriptorRepository =  entityDescriptorRepository
         controller.openSamlObjects = openSamlObjects
         controller.entityDescriptorService = service

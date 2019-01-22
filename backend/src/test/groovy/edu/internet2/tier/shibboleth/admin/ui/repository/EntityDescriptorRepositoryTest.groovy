@@ -6,6 +6,9 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,19 +28,25 @@ import javax.persistence.EntityManager
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class EnityDescriptorRepositoryTest extends Specification {
+class EntityDescriptorRepositoryTest extends Specification {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
     EntityManager entityManager
 
+    @Autowired
+    RoleRepository roleRepository
+
+    @Autowired
+    UserRepository userRepository
+
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         init()
         it
     }
 
-    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
+    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), new UserService(roleRepository, userRepository))
 
     def "SHIBUI-553.2"() {
         when:
