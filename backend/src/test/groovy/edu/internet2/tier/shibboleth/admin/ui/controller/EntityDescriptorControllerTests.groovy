@@ -9,7 +9,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
@@ -67,6 +69,7 @@ class EntityDescriptorControllerTests extends Specification {
     Authentication authentication = Mock()
     SecurityContext securityContext = Mock()
     UserRepository userRepository = Mock()
+    RoleRepository roleRepository = Mock()
 
     def setup() {
         generator = new TestObjectGenerator()
@@ -74,12 +77,11 @@ class EntityDescriptorControllerTests extends Specification {
         mapper = new ObjectMapper()
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
 
-        controller = new EntityDescriptorController(
-                entityDescriptorRepository: entityDescriptorRepository,
-                openSamlObjects: openSamlObjects,
-                entityDescriptorService: service,
-                userRepository: userRepository
-        )
+        controller = new EntityDescriptorController(userRepository, roleRepository, new UserService(roleRepository, userRepository))
+        controller.entityDescriptorRepository =  entityDescriptorRepository
+        controller.openSamlObjects = openSamlObjects
+        controller.entityDescriptorService = service
+
         controller.restTemplate = mockRestTemplate
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
 
