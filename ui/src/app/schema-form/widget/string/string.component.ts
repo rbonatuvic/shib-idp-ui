@@ -23,7 +23,7 @@ export class CustomStringComponent extends StringWidget implements AfterViewInit
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
         this.errorSub = this.control.valueChanges.pipe(startWith(this.control.value)).subscribe(v => {
-            if (!v && this.required && this.errorMessages.some(msg => !!msg.toLowerCase().match('required').length)) {
+            if (!v && this.required && !this.errorMessages.some(msg => !!msg.toLowerCase().match('required').length)) {
                 this.errorMessages.push('message.required');
             }
         });
