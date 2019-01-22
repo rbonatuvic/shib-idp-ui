@@ -76,7 +76,7 @@ class JsonSchemaBuilderService {
         if (currentUser != null && currentUser.role != 'ROLE_ADMIN') {
             // user isn't an admin, so hide 'ServiceEnabled'
             Map<String, String> serviceEnabled = (HashMap) json['properties']['serviceEnabled']
-            serviceEnabled['type'] = 'hidden'
+            serviceEnabled['widget'] = 'hidden'
             serviceEnabled.remove('title')
             serviceEnabled.remove('description')
         }
