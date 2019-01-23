@@ -354,6 +354,45 @@ class EntityDescriptorControllerTests extends Specification {
 
     }
 
+    def 'POST /EntityDescriptor as user disallows enabling'() {
+        given:
+        prepareUser('user', 'ROLE_USER')
+        def expectedEntityId = 'https://shib'
+        def expectedSpName = 'sp1'
+
+        def postedJsonBody = """            
+              {	            
+	            "serviceProviderName": "$expectedSpName",
+	            "entityId": "$expectedEntityId",
+	            "organization": null,
+	            "serviceEnabled": true,
+	            "createdDate": null,
+                "modifiedDate": null,
+	            "organization": null,
+	            "contacts": null,
+	            "mdui": null,
+	            "serviceProviderSsoDescriptor": null,
+	            "logoutEndpoints": null,
+	            "securityInfo": null,
+	            "assertionConsumerServices": null,
+	            "relyingPartyOverrides": null,
+                "attributeRelease": null
+              }                
+        """
+
+        when:
+        def result = mockMvc.perform(
+                post('/api/EntityDescriptor')
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(postedJsonBody))
+
+        then:
+        0 * entityDescriptorRepository.findByEntityID(_)
+        0 * entityDescriptorRepository.save(_)
+
+        result.andExpect(status().isForbidden())
+    }
+
     def 'POST /EntityDescriptor record already exists'() {
         given:
         def expectedEntityId = 'eid1'
@@ -838,6 +877,33 @@ class EntityDescriptorControllerTests extends Specification {
         expectedJson << [version: updatedEntityDescriptor.hashCode()]
         result.andExpect(status().isOk())
                 .andExpect(content().json(JsonOutput.toJson(expectedJson), true))
+    }
+
+    def "PUT /EntityDescriptor disallows user from enabling"() {
+        given:
+        prepareUser('someUser', 'ROLE_USER')
+        def entityDescriptor = generator.buildEntityDescriptor()
+        entityDescriptor.serviceEnabled = false
+        def updatedEntityDescriptor = generator.buildEntityDescriptor()
+        updatedEntityDescriptor.serviceEnabled = true
+        updatedEntityDescriptor.resourceId = entityDescriptor.resourceId
+        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(updatedEntityDescriptor)
+        updatedEntityDescriptorRepresentation.version = entityDescriptor.hashCode()
+        def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
+
+        def resourceId = entityDescriptor.resourceId
+
+        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
+        0 * entityDescriptorRepository.save(_) >> updatedEntityDescriptor
+
+        when:
+        def result = mockMvc.perform(
+                put("/api/EntityDescriptor/$resourceId")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(postedJsonBody))
+
+        then:
+        result.andExpect(status().isForbidden())
     }
 
     def "PUT /EntityDescriptor denies the request if the PUTing user is not an ADMIN and not the createdBy user"() {

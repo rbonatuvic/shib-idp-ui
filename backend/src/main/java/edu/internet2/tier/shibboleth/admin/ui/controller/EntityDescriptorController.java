@@ -74,14 +74,14 @@ public class EntityDescriptorController {
     public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) {
         final String entityId = edRepresentation.getEntityId();
 
-        ResponseEntity<?> existingEntityDescriptorConflictResponse = existingEntityDescriptorCheck(entityId);
-        if (existingEntityDescriptorConflictResponse != null) {
-            return existingEntityDescriptorConflictResponse;
-        }
-
         ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
         if (entityDescriptorEnablingDeniedResponse != null) {
             return entityDescriptorEnablingDeniedResponse;
+        }
+
+        ResponseEntity<?> existingEntityDescriptorConflictResponse = existingEntityDescriptorCheck(entityId);
+        if (existingEntityDescriptorConflictResponse != null) {
+            return existingEntityDescriptorConflictResponse;
         }
 
         EntityDescriptor ed = (EntityDescriptor) entityDescriptorService.createDescriptorFromRepresentation(edRepresentation);
@@ -94,13 +94,11 @@ public class EntityDescriptorController {
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/xml")
     public ResponseEntity<?> upload(@RequestBody byte[] entityDescriptorXml, @RequestParam String spName) throws Exception {
-        //TODO: Do we want security checks here?
         return handleUploadingEntityDescriptorXml(entityDescriptorXml, spName);
     }
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/x-www-form-urlencoded")
     public ResponseEntity<?> upload(@RequestParam String metadataUrl, @RequestParam String spName) throws Exception {
-        //TODO: Do we want security checks here?
         try {
             byte[] xmlContents = this.restTemplate.getForObject(metadataUrl, byte[].class);
             return handleUploadingEntityDescriptorXml(xmlContents, spName);
@@ -121,14 +119,14 @@ public class EntityDescriptorController {
             return ResponseEntity.notFound().build();
         } else {
             if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy()))) {
-                // Verify we're the only one attempting to update the EntityDescriptor
-                if (edRepresentation.getVersion() != existingEd.hashCode()) {
-                    return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-                }
-
                 ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
                 if (entityDescriptorEnablingDeniedResponse != null) {
                     return entityDescriptorEnablingDeniedResponse;
+                }
+
+                // Verify we're the only one attempting to update the EntityDescriptor
+                if (edRepresentation.getVersion() != existingEd.hashCode()) {
+                    return new ResponseEntity<Void>(HttpStatus.CONFLICT);
                 }
 
                 EntityDescriptor updatedEd =
