@@ -4,6 +4,7 @@ import { SelectWidget } from 'ngx-schema-form';
 import { SchemaService } from '../../service/schema.service';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { HARD_CODED_REQUIRED_MSG } from '../../model/messages';
 
 @Component({
     selector: 'select-component',
@@ -43,7 +44,7 @@ export class CustomSelectComponent extends SelectWidget implements AfterViewInit
         }
 
         this.errorSub = this.control.valueChanges.pipe(startWith(this.control.value)).subscribe(v => {
-            if (!v && this.required && !this.errorMessages.some(msg => !!msg.toLowerCase().match('required').length)) {
+            if (!v && this.required && !this.errorMessages.some(msg => HARD_CODED_REQUIRED_MSG.test(msg))) {
                 this.errorMessages.push('message.required');
             }
         });
@@ -55,5 +56,9 @@ export class CustomSelectComponent extends SelectWidget implements AfterViewInit
 
     get required(): boolean {
         return this.widgetService.isRequired(this.formProperty);
+    }
+
+    getError(error: string): string {
+        return HARD_CODED_REQUIRED_MSG.test(error) ? 'message.required' : error;
     }
 }

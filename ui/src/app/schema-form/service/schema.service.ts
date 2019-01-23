@@ -31,7 +31,8 @@ export class SchemaService {
                 Object
                     .keys(condition.properties)
                     .some(
-                        key => values.hasOwnProperty(key) ? condition.properties[key].enum[0] === values[key] : false
+                        key => values.hasOwnProperty(key) && condition.properties[key].enum ?
+                            condition.properties[key].enum[0] === values[key] : false
                     )
             );
             currentConditions.forEach(el => {

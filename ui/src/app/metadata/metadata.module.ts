@@ -9,7 +9,8 @@ import { MetadataRoutingModule } from './metadata.routing';
 import { ProviderModule } from './provider/provider.module';
 import { I18nModule } from '../i18n/i18n.module';
 import { CustomWidgetRegistry } from '../schema-form/registry';
-import { WidgetRegistry } from 'ngx-schema-form';
+import { WidgetRegistry, SchemaValidatorFactory } from 'ngx-schema-form';
+import { CustomSchemaValidatorFactory } from '../schema-form/service/schema-validator';
 
 
 @NgModule({
@@ -23,7 +24,11 @@ import { WidgetRegistry } from 'ngx-schema-form';
         I18nModule
     ],
     providers: [
-        { provide: WidgetRegistry, useClass: CustomWidgetRegistry }
+        { provide: WidgetRegistry, useClass: CustomWidgetRegistry },
+        {
+            provide: SchemaValidatorFactory,
+            useClass: CustomSchemaValidatorFactory
+        }
     ],
     declarations: [
         MetadataPageComponent

@@ -5,6 +5,8 @@ import { SchemaService } from '../../service/schema.service';
 import { startWith } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
+import { HARD_CODED_REQUIRED_MSG, REQUIRED_MSG_OVERRIDE } from '../../model/messages';
+
 @Component({
     selector: 'custom-string',
     templateUrl: `./string.component.html`,
@@ -22,9 +24,16 @@ export class CustomStringComponent extends StringWidget implements AfterViewInit
 
     ngAfterViewInit(): void {
         super.ngAfterViewInit();
-        this.errorSub = this.control.valueChanges.pipe(startWith(this.control.value)).subscribe(v => {
-            if (!v && this.required && !this.errorMessages.some(msg => !!msg.toLowerCase().match('required').length)) {
-                this.errorMessages.push('message.required');
+        let listener = this.formProperty.parent ? this.formProperty.parent : this.control;
+        this.errorSub = listener.valueChanges.pipe(startWith(listener.value)).subscribe(v => {
+            if (!this.control.value
+                    && this.required
+                    && !this.errorMessages.some(msg => HARD_CODED_REQUIRED_MSG.test(msg))
+                    && this.errorMessages.indexOf(REQUIRED_MSG_OVERRIDE) < 0) {
+                this.errorMessages.push(REQUIRED_MSG_OVERRIDE);
+            }
+            if (!this.required) {
+                this.errorMessages = this.errorMessages.filter(e => e !== REQUIRED_MSG_OVERRIDE);
             }
         });
     }
@@ -37,5 +46,9 @@ export class CustomStringComponent extends StringWidget implements AfterViewInit
         const req = this.widgetService.isRequired(this.formProperty);
 
         return req;
+    }
+
+    getError(error: string): string {
+        return HARD_CODED_REQUIRED_MSG.test(error) ? REQUIRED_MSG_OVERRIDE : error;
     }
 }
