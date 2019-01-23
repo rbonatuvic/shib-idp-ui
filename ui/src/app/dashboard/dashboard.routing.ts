@@ -8,6 +8,7 @@ import { DashboardProvidersListComponent } from '../metadata/manager/container/d
 import { UserPageComponent } from '../user/user.component';
 import { AdminComponent } from '../user/admin/admin.component';
 import { AdminManagementPageComponent } from '../user/admin/container/admin-management.component';
+import { AdminGuard } from '../core/service/admin.guard';
 
 const routes: Routes = [
     {
@@ -26,7 +27,7 @@ const routes: Routes = [
                         children: [
                             { path: '', redirectTo: 'resolvers', pathMatch: 'prefix' },
                             { path: 'resolvers', component: DashboardResolversListComponent },
-                            { path: 'providers', component: DashboardProvidersListComponent },
+                            { path: 'providers', component: DashboardProvidersListComponent, canActivate: [AdminGuard] },
                         ]
                     }
                 ]
@@ -34,6 +35,7 @@ const routes: Routes = [
             {
                 path: 'users',
                 component: UserPageComponent,
+                canActivate: [AdminGuard],
                 children: [
                     { path: '', redirectTo: 'admin', pathMatch: 'prefix' },
                     {

@@ -8,7 +8,8 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositi
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserRoleService;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
@@ -64,8 +65,8 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public EntityDescriptorService jpaEntityDescriptorService() {
-        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService());
+    public EntityDescriptorService jpaEntityDescriptorService(UserService userService) {
+        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService(), userService);
     }
 
     @Bean
@@ -198,7 +199,7 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public UserRoleService userRoleService(RoleRepository roleRepository) {
-        return new UserRoleService(roleRepository);
+    public UserService userService(RoleRepository roleRepository, UserRepository userRepository) {
+        return new UserService(roleRepository, userRepository);
     }
 }

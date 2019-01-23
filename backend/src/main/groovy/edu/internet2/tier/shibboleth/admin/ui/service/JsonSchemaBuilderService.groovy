@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
@@ -10,6 +12,12 @@ class JsonSchemaBuilderService {
 
     @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
+
+    UserService userService
+
+    JsonSchemaBuilderService(UserService userService) {
+        this.userService = userService
+    }
 
     void addReleaseAttributesToJson(Object json) {
         json['data'] = customPropertiesConfiguration.getAttributes().collect {
@@ -60,6 +68,17 @@ class JsonSchemaBuilderService {
 
             definition['items'] = items
             json[(String) it['name']] = definition
+        }
+    }
+
+    void hideServiceEnabledFromNonAdmins(Map json) {
+        User currentUser = userService.getCurrentUser()
+        if (currentUser != null && currentUser.role != 'ROLE_ADMIN') {
+            // user isn't an admin, so hide 'ServiceEnabled'
+            Map<String, String> serviceEnabled = (HashMap) json['properties']['serviceEnabled']
+            serviceEnabled['widget'] = 'hidden'
+            serviceEnabled.remove('title')
+            serviceEnabled.remove('description')
         }
     }
 }

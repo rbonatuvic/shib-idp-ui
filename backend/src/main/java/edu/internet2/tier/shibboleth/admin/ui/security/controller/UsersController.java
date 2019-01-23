@@ -4,7 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserRoleService;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,18 +40,29 @@ public class UsersController {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private UserRoleService userRoleService;
+    private UserService userService;
 
-    public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserRoleService userRoleService) {
+    public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.userRoleService = userRoleService;
+        this.userService = userService;
     }
 
     @Transactional(readOnly = true)
     @GetMapping
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping("/current")
+    public ResponseEntity<?> getCurrentUser() {
+        User user = userService.getCurrentUser();
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Transactional(readOnly = true)
@@ -80,7 +91,7 @@ public class UsersController {
         }
         //TODO: modify this such that additional encoders can be used
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        userRoleService.updateUserRole(user);
+        userService.updateUserRole(user);
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -103,7 +114,7 @@ public class UsersController {
         }
         if (StringUtils.isNotBlank(user.getRole())) {
             persistedUser.setRole(user.getRole());
-            userRoleService.updateUserRole(persistedUser);
+            userService.updateUserRole(persistedUser);
         }
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);
