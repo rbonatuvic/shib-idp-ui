@@ -24,16 +24,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 import spock.lang.Subject
 
-import javax.servlet.http.HttpSession
-import java.security.Principal
 import java.time.LocalDateTime
 
 import static org.hamcrest.CoreMatchers.containsString
@@ -105,7 +101,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         //One call to the repo expected
-        1 * entityDescriptorRepository.findAllByCustomQueryAndStream() >> emptyRecordsFromRepository
+        1 * entityDescriptorRepository.findAllStreamByCustomQuery() >> emptyRecordsFromRepository
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedEmptyListResponseBody))
@@ -152,7 +148,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         //One call to the repo expected
-        1 * entityDescriptorRepository.findAllByCustomQueryAndStream() >> oneRecordFromRepository
+        1 * entityDescriptorRepository.findAllStreamByCustomQuery() >> oneRecordFromRepository
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedOneRecordListResponseBody, true))
@@ -223,7 +219,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         //One call to the repo expected
-        1 * entityDescriptorRepository.findAllByCustomQueryAndStream() >> twoRecordsFromRepository
+        1 * entityDescriptorRepository.findAllStreamByCustomQuery() >> twoRecordsFromRepository
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedTwoRecordsListResponseBody, true))
@@ -272,7 +268,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         //One call to the repo expected
-        1 * entityDescriptorRepository.findAllByCreatedBy('someUser') >> oneRecordFromRepository
+        1 * entityDescriptorRepository.findAllStreamByCreatedBy('someUser') >> oneRecordFromRepository
         result.andExpect(expectedHttpResponseStatus)
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedOneRecordListResponseBody, true))
@@ -280,6 +276,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def 'POST /EntityDescriptor and successfully create new record'() {
         given:
+        prepareUser('admin', 'ROLE_ADMIN')
         def expectedCreationDate = '2017-10-23T11:11:11'
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
@@ -394,6 +391,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     def 'GET /EntityDescriptor/{resourceId} non-existent'() {
         given:
+        prepareUser('admin', 'ROLE_ADMIN')
         def providedResourceId = 'uuid-1'
 
         when:

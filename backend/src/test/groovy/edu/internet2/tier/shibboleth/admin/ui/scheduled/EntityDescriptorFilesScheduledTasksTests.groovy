@@ -89,7 +89,7 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
             }
             it
         })
-        1 * entityDescriptorRepository.findAllByServiceEnabled(true) >> [entityDescriptor].stream()
+        1 * entityDescriptorRepository.findAllStreamByServiceEnabled(true) >> [entityDescriptor].stream()
 
         when:
         if (directory.exists()) {
@@ -137,7 +137,7 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
         def file = new File(directory, randomGenerator.randomId() + ".xml")
         file.text = "Delete me!"
 
-        1 * entityDescriptorRepository.findAllByServiceEnabled(true) >> [entityDescriptor].stream()
+        1 * entityDescriptorRepository.findAllStreamByServiceEnabled(true) >> [entityDescriptor].stream()
 
         when:
         entityDescriptorFilesScheduledTasks.removeDanglingEntityDescriptorFiles()

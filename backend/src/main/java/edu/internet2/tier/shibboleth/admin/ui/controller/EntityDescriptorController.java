@@ -120,7 +120,7 @@ public class EntityDescriptorController {
         if (existingEd == null) {
             return ResponseEntity.notFound().build();
         } else {
-            if (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy())) {
+            if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy()))) {
                 // Verify we're the only one attempting to update the EntityDescriptor
                 if (edRepresentation.getVersion() != existingEd.hashCode()) {
                     return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -154,11 +154,11 @@ public class EntityDescriptorController {
         User currentUser = userService.getCurrentUser();
         if (currentUser != null) {
             if (currentUser.getRole().equals("ROLE_ADMIN")) {
-                return ResponseEntity.ok(entityDescriptorRepository.findAllByCustomQueryAndStream()
+                return ResponseEntity.ok(entityDescriptorRepository.findAllStreamByCustomQuery()
                         .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
                         .collect(Collectors.toList()));
             } else {
-                return ResponseEntity.ok(entityDescriptorRepository.findAllByCreatedBy(currentUser.getUsername())
+                return ResponseEntity.ok(entityDescriptorRepository.findAllStreamByCreatedBy(currentUser.getUsername())
                         .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
                         .collect(Collectors.toList()));
             }
