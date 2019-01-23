@@ -1,8 +1,7 @@
 plugins {
-    id 'java'
+    id 'groovy'
     id 'com.palantir.docker' version '0.20.1'
     id 'jacoco'
-    id 'io.franzbecker.gradle-lombok' version '1.13'
     id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
@@ -16,11 +15,6 @@ repositories {
         url 'https://build.shibboleth.net/nexus/content/groups/public'
         artifactUrls = ['https://build.shibboleth.net/nexus/content/repositories/thirdparty-snapshots']
     }
-}
-
-lombok {
-    version = "1.16.20"
-    sha256 = "c5178b18caaa1a15e17b99ba5e4023d2de2ebc18b58cde0f5a04ca4b31c10e6d"
 }
 
 dependencyManagement {
@@ -38,6 +32,11 @@ dependencies {
         // opensaml libraries are provided
         exclude group: 'org.opensaml'
     }
+
+    testCompile project(':backend')
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
