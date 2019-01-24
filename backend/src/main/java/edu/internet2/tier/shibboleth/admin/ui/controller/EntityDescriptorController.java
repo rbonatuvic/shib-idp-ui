@@ -144,6 +144,7 @@ public class EntityDescriptorController {
         return ResponseEntity.ok(xml);
     }
 
+    @Transactional
     @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
     public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() {
         return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
