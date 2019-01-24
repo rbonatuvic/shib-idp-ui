@@ -35,10 +35,10 @@ public class WebSecurity {
 
     @Configuration
     @Order(1)
-    public static class StaticSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    public static class UnsecuredSecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/static.html").authorizeRequests().antMatchers("/static.html").permitAll();
+            http.antMatcher("/unsecured/**/*").authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
         }
     }
 
