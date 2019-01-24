@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../../app.reducer';
+import { LoadAdminRequest } from '../action/user-collection.action';
 
 @Component({
     selector: 'admin-management-page',
