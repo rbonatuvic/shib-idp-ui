@@ -92,6 +92,7 @@ class DevConfig {
     @Bean
     MetadataResolver fbhmr(ModelRepresentationConversions modelRepresentationConversions) {
         return this.metadataResolverRepository.save(new FileBackedHttpMetadataResolver().with {
+            it.createdBy = 'nonadmin' // depends on dev profile
             enabled = true
             xmlId = 'test-fbhmr'
             name = 'test-fbhmr'
@@ -120,6 +121,7 @@ class DevConfig {
     @Bean
     MetadataResolver dhmr(ModelRepresentationConversions modelRepresentationConversions) {
         return this.metadataResolverRepository.save(new DynamicHttpMetadataResolver().with {
+            it.createdBy = 'nonadmin' // depends on dev profile
             it.enabled = true
             it.xmlId = 'test-dhmr'
             it.name = 'test-dhmr'
