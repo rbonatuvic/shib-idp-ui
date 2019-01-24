@@ -13,7 +13,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
+import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.stream.Collectors;
 
@@ -150,6 +153,20 @@ public class EntityDescriptorController {
         return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
                 .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
                 .collect(Collectors.toList());
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping(value = "/EntityDescriptor/{resourceId}")
+    public ResponseEntity<?> deleteOne(@PathVariable String resourceId) {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            return ResponseEntity.notFound().build();
+        } else if (ed.isServiceEnabled()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, "Deleting an enabled Metadata Source is not allowed. Disable the source and try again."));
+        } else {
+            entityDescriptorRepository.delete(ed);
+            return ResponseEntity.noContent().build();
+        }
     }
 
     private static URI getResourceUriFor(EntityDescriptor ed) {
