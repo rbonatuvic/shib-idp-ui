@@ -144,6 +144,13 @@ public class EntityDescriptorController {
         return ResponseEntity.ok(xml);
     }
 
+    @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
+    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() {
+        return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
+                .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
+                .collect(Collectors.toList());
+    }
+
     private static URI getResourceUriFor(EntityDescriptor ed) {
         return ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/api/EntityDescriptor")
