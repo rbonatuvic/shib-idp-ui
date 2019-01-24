@@ -3,7 +3,17 @@ import { FormsModule } from '@angular/forms';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import * as fromAdmin from '../reducer';
 import { AdminManagementPageComponent } from './admin-management.component';
-import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { MockI18nModule } from '../../../testing/i18n.stub';
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'user-management',
+    template: '<div></div>'
+})
+export class UserManagementComponent {
+
+    constructor() {}
+}
 
 describe('Admin Management Page Component', () => {
     let fixture: ComponentFixture<AdminManagementPageComponent>;
@@ -20,7 +30,8 @@ describe('Admin Management Page Component', () => {
                 MockI18nModule
             ],
             declarations: [
-                AdminManagementPageComponent
+                AdminManagementPageComponent,
+                UserManagementComponent
             ],
         });
 

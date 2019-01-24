@@ -15,6 +15,8 @@ import {
     LoadNewUsersRequest
 } from '../action/user-collection.action';
 import { AdminService } from '../service/admin.service';
+import { AddNotification } from '../../notification/action/notification.action';
+import { Notification, NotificationType } from '../../notification/model/notification';
 
 
 /* istanbul ignore next */
@@ -32,7 +34,7 @@ export class AdminCollectionEffects {
     @Effect()
     loadNewUsersRequest$ = this.actions$.pipe(
         ofType<LoadNewUsersRequest>(AdminCollectionActionTypes.LOAD_NEW_USERS_REQUEST),
-        switchMap(() => this.adminService.query().pipe(
+        switchMap(() => this.adminService.queryByRole('ROLE_NONE').pipe(
             map(users => new LoadAdminSuccess(users))
         ))
     );
@@ -50,6 +52,19 @@ export class AdminCollectionEffects {
     );
 
     @Effect()
+    updateAdminRoleSuccess$ = this.actions$.pipe(
+        ofType<UpdateAdminSuccess>(AdminCollectionActionTypes.UPDATE_ADMIN_SUCCESS),
+        map(action => action.payload),
+        map(user => new AddNotification(
+            new Notification(
+                NotificationType.Success,
+                `User update successful for ${ user.changes.username }`,
+                5000
+            )
+        ))
+    );
+
+    @Effect()
     removeAdminRequest$ = this.actions$.pipe(
         ofType<RemoveAdminRequest>(AdminCollectionActionTypes.REMOVE_ADMIN_REQUEST),
         map(action => action.payload),
@@ -62,6 +77,19 @@ export class AdminCollectionEffects {
     removeAdminSuccessReload$ = this.actions$.pipe(
         ofType<RemoveAdminSuccess>(AdminCollectionActionTypes.REMOVE_ADMIN_SUCCESS),
         map(action => new LoadAdminRequest())
+    );
+
+    @Effect()
+    deleteAdminRoleSuccess$ = this.actions$.pipe(
+        ofType<RemoveAdminSuccess>(AdminCollectionActionTypes.REMOVE_ADMIN_SUCCESS),
+        map(action => action.payload),
+        map(user => new AddNotification(
+            new Notification(
+                NotificationType.Success,
+                `User deleted.`,
+                5000
+            )
+        ))
     );
 
     constructor(

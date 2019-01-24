@@ -42,6 +42,17 @@ class UsersControllerIntegrationTests extends Specification {
         result.body[0].role == 'ROLE_ADMIN'
     }
 
+    def 'GET ALL users by role (when there are existing users)'() {
+        when:
+        def result = this.restTemplate.getForEntity(RESOURCE_URI + '/role/ROLE_ADMIN', Object)
+
+        then: 'Request completed with HTTP 200 and returned a list of users'
+        result.statusCodeValue == 200
+        ((Object[]) result.body).size() == 2
+        result.body[0].role == 'ROLE_ADMIN'
+        result.body[1].role == 'ROLE_ADMIN'
+    }
+
     def 'GET ONE existing user'() {
         when: 'GET request is made for one existing user'
         def result = this.restTemplate.getForEntity("$RESOURCE_URI/admin", Map)

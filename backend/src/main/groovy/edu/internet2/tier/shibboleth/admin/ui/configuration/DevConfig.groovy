@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadat
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.springframework.context.annotation.Bean
@@ -24,17 +25,35 @@ import javax.annotation.PostConstruct
 @Profile('dev')
 class DevConfig {
     private final UserRepository adminUserRepository
+    private final RoleRepository roleRepository
 
     private final MetadataResolverRepository metadataResolverRepository
 
-    DevConfig(UserRepository adminUserRepository, MetadataResolverRepository metadataResolverRepository) {
+    DevConfig(UserRepository adminUserRepository, MetadataResolverRepository metadataResolverRepository, RoleRepository roleRepository) {
         this.adminUserRepository = adminUserRepository
         this.metadataResolverRepository = metadataResolverRepository
+        this.roleRepository = roleRepository
     }
 
     @Transactional
     @PostConstruct
     void createDevUsers() {
+        if (roleRepository.count() == 0) {
+            def roles = [new Role().with {
+                name = 'ROLE_ADMIN'
+                it
+            }, new Role().with {
+                name = 'ROLE_USER'
+                it
+            }, new Role().with {
+                name = 'ROLE_NONE'
+                it
+            }]
+            roles.each {
+                roleRepository.save(it)
+            }
+        }
+        roleRepository.flush()
         if (adminUserRepository.count() == 0) {
             def users = [new User().with {
                 username = 'admin'
@@ -42,7 +61,7 @@ class DevConfig {
                 firstName = 'Joe'
                 lastName = 'Doe'
                 emailAddress = 'joe@institution.edu'
-                roles.add(new Role(name: 'ROLE_ADMIN'))
+                roles.add(roleRepository.findByName('ROLE_ADMIN').get())
                 it
             }, new User().with {
                 username = 'nonadmin'
@@ -50,13 +69,21 @@ class DevConfig {
                 firstName = 'Peter'
                 lastName = 'Vandelay'
                 emailAddress = 'peter@institution.edu'
-                roles.add(new Role(name: 'ROLE_USER'))
+                roles.add(roleRepository.findByName('ROLE_USER').get())
+                it
+            }, new User().with {
+                username = 'anonymousUser'
+                password = '{noop}anotheradmin'
+                firstName = 'Anon'
+                lastName = 'Ymous'
+                emailAddress = 'anonymous@institution.edu'
+                roles.add(roleRepository.findByName('ROLE_ADMIN').get())
                 it
             }]
             users.each {
                 adminUserRepository.save(it)
             }
-
+            adminUserRepository.flush()
         }
     }
 

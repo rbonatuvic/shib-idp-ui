@@ -13,5 +13,7 @@ export class ActionRequiredPageComponent {
 
     constructor(
         private store: Store<fromRoot.State>
-    ) {}
+    ) {
+        this.store.dispatch(new LoadNewUsersRequest());
+    }
 }

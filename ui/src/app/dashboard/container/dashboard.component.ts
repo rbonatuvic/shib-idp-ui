@@ -24,8 +24,6 @@ export class DashboardPageComponent {
     ) {
         this.actionsRequired$ = this.store.select(fromAdmin.getTotalActionsRequired);
         this.hasActions$ = this.actionsRequired$.pipe(map(a => a > 0));
-
-        this.store.dispatch(new LoadAdminRequest());
         this.store.dispatch(new LoadRoleRequest());
     }
 }
