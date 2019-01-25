@@ -1,30 +1,82 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://accounts.google.com/o/saml2?idpid=C04alwt8m" validUntil="2021-06-30T14:58:44.000Z">
-  <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-    <md:KeyDescriptor use="signing">
-      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-        <ds:X509Data>
-          <ds:X509Certificate>MIIDdDCCAlygAwIBAgIGAVWm+BpSMA0GCSqGSIb3DQEBCwUAMHsxFDASBgNVBAoTC0dvb2dsZSBJ
-bmMuMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MQ8wDQYDVQQDEwZHb29nbGUxGDAWBgNVBAsTD0dv
-b2dsZSBGb3IgV29yazELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWEwHhcNMTYwNzAx
-MTQ1ODQ0WhcNMjEwNjMwMTQ1ODQ0WjB7MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEWMBQGA1UEBxMN
-TW91bnRhaW4gVmlldzEPMA0GA1UEAxMGR29vZ2xlMRgwFgYDVQQLEw9Hb29nbGUgRm9yIFdvcmsx
-CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
-MIIBCgKCAQEAirwyeCS6SZpnYxprfXhpTNXwVfQC+J9OvBlJp8/7ngA627yER1bvfUkBMQxo0CXe
-H6HX6Vw1DgalZJeEGDZSErlAY7lWkXkHdsejlMoYayQSZz2b/EfeRetwxh3Ek0hMDScOgDlsdfAn
-AiZ4//n3IlypCi4ZMnLPs308FYunvp+R0Wd8Yqj8ctKhiYs6fCSHksDd+JKPe2FC1Zqw9GCGhi32
-DBNRTHfE3tX3rTRs1pT0qbrQmpPfeBYfX00astGa3Dq/XWVO62IlqM7nVjglIPdi0tCIx+5RVZrY
-uvULMipA+131TMxTpcGjUFxNwzPdogdpNhtL8+erfhG26C6b8wIDAQABMA0GCSqGSIb3DQEBCwUA
-A4IBAQCIOe/bW+mdE9PuarSz60HPGe9ROibyEOTyAWGxvSFfqoNFzaH3oOiEHMNG+ZkHHGtGEeWc
-KYQ72V1OKO4aNqy2XaT3onOkd2oh4N8Q5pWrgMRkAB2HvBhBcQeO6yojVamTd43Kbtc+Hly3o+Or
-XXOR9cgfxX/0Dbb+xwzTcwcMoJ1CPd3T4zxByKMHNflWrgrmZ9DmDOya4Aqs+xvrvPJB2VHaXoJ6
-r/N+xtG8zO8wNRuxQxNUvtcFKKX2sZAqQRASGi1z8Y1FhU6rWBdBRtaiASAIgkNwOmS603Mm08Yr
-0Yq7x6h3XlG8HO0bAOto6pr6q85pLqqv7v7/x7mfdjV3</ds:X509Certificate>
-        </ds:X509Data>
-      </ds:KeyInfo>
-    </md:KeyDescriptor>
-    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
-    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://accounts.google.com/o/saml2/idp?idpid=C04alwt8m"/>
-    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://accounts.google.com/o/saml2/idp?idpid=C04alwt8m"/>
-  </md:IDPSSODescriptor>
-</md:EntityDescriptor>
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" entityID="https://idp.unicon.net/idp/shibboleth">
+
+    <IDPSSODescriptor protocolSupportEnumeration="urn:mace:shibboleth:1.0 urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+
+        <Extensions>
+            <shibmd:Scope regexp="false">unicon.net</shibmd:Scope>
+            <mdui:UIInfo>
+                <mdui:DisplayName xml:lang="en">Unicon, Inc.</mdui:DisplayName>
+                <mdui:Description xml:lang="en">Login service for Unicon Employees</mdui:Description>
+                <mdui:Logo height="40" width="135" xml:lang="en">https://idp.unicon.net/logo_135_0.png</mdui:Logo>
+            </mdui:UIInfo>
+        </Extensions>
+
+        <KeyDescriptor use="signing">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIDIzCCAgugAwIBAgIUIEHTfbStY0ckKZzxIgqd5p1O2K0wDQYJKoZIhvcNAQEF
+                        BQAwGTEXMBUGA1UEAxMOaWRwLnVuaWNvbi5uZXQwHhcNMTEwOTEzMDMyMzE2WhcN
+                        MzEwOTEzMDMyMzE2WjAZMRcwFQYDVQQDEw5pZHAudW5pY29uLm5ldDCCASIwDQYJ
+                        KoZIhvcNAQEBBQADggEPADCCAQoCggEBANtUsFXxlhvD3bWT5Y7TqKkf5rxa+dPA
+                        z7vpbJ6bWhDPSMXb/9MiJe/ciY5ZKKrB1rdRC04s7blrzem3YtjGihfGd4ld+NRt
+                        Pi0xoAT2YIp83CvEe5BHAKwqD7KTonN1unbN84mVo65itbme9d8lZKc0PfLM+BQp
+                        fhXKUBfYeBCkYU4YWxmgL4Vs7XBaKjEjpTN4ncar4YSrarWTTPyO5RzmVPLAcv88
+                        1OBqewTyN41+JRXt0Jopi4ZQ8JjKkm73vhoYDBPHr/VMqk1lFfrDcDwJa2ygyWCm
+                        qTlq6zyLE9Fr6sYz6CbgA2lAqu/b1rYCqVCnRpoHZKahAQ9uGQSfHD8CAwEAAaNj
+                        MGEwQAYDVR0RBDkwN4IOaWRwLnVuaWNvbi5uZXSGJWh0dHBzOi8vaWRwLnVuaWNv
+                        bi5uZXQvaWRwL3NoaWJib2xldGgwHQYDVR0OBBYEFK6yUrpGjvY3B09ke0kVl4wA
+                        CMAnMA0GCSqGSIb3DQEBBQUAA4IBAQDG/gMpr3N+nAMuo7RhtDBsckiJV2+BwT/r
+                        JmpxlHAV1Zgc3eeuOdyxm5/jA78tspLldL0+6W/LzZWov/je36IqVT1wSGy1n0Sc
+                        Pjw8DHgyEJLCij2vVScV+j/Y4Eg0bVy6pZTeQW+e3ygb6WgiVT/ARM8QBp6GjAUC
+                        qIlJCads9Rcx3vAih72I4exUUD4qMuBMeLIdY5XReHy5YHqxbkPjQhDIEORAFlzJ
+                        jLqO/Ldzn4waEa5snDZyeYjsl6pi+8CVGfXLSDVsDuk5s47B9OD+gOSJ1wEc7O/N
+                        nU9d/WCcM1V4IGZGL8TXUdfJoVXYZUFF08jUGSL2mj30WS1orIWo
+
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+
+        <KeyDescriptor use="encryption">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIDIzCCAgugAwIBAgIUIEHTfbStY0ckKZzxIgqd5p1O2K0wDQYJKoZIhvcNAQEF
+                        BQAwGTEXMBUGA1UEAxMOaWRwLnVuaWNvbi5uZXQwHhcNMTEwOTEzMDMyMzE2WhcN
+                        MzEwOTEzMDMyMzE2WjAZMRcwFQYDVQQDEw5pZHAudW5pY29uLm5ldDCCASIwDQYJ
+                        KoZIhvcNAQEBBQADggEPADCCAQoCggEBANtUsFXxlhvD3bWT5Y7TqKkf5rxa+dPA
+                        z7vpbJ6bWhDPSMXb/9MiJe/ciY5ZKKrB1rdRC04s7blrzem3YtjGihfGd4ld+NRt
+                        Pi0xoAT2YIp83CvEe5BHAKwqD7KTonN1unbN84mVo65itbme9d8lZKc0PfLM+BQp
+                        fhXKUBfYeBCkYU4YWxmgL4Vs7XBaKjEjpTN4ncar4YSrarWTTPyO5RzmVPLAcv88
+                        1OBqewTyN41+JRXt0Jopi4ZQ8JjKkm73vhoYDBPHr/VMqk1lFfrDcDwJa2ygyWCm
+                        qTlq6zyLE9Fr6sYz6CbgA2lAqu/b1rYCqVCnRpoHZKahAQ9uGQSfHD8CAwEAAaNj
+                        MGEwQAYDVR0RBDkwN4IOaWRwLnVuaWNvbi5uZXSGJWh0dHBzOi8vaWRwLnVuaWNv
+                        bi5uZXQvaWRwL3NoaWJib2xldGgwHQYDVR0OBBYEFK6yUrpGjvY3B09ke0kVl4wA
+                        CMAnMA0GCSqGSIb3DQEBBQUAA4IBAQDG/gMpr3N+nAMuo7RhtDBsckiJV2+BwT/r
+                        JmpxlHAV1Zgc3eeuOdyxm5/jA78tspLldL0+6W/LzZWov/je36IqVT1wSGy1n0Sc
+                        Pjw8DHgyEJLCij2vVScV+j/Y4Eg0bVy6pZTeQW+e3ygb6WgiVT/ARM8QBp6GjAUC
+                        qIlJCads9Rcx3vAih72I4exUUD4qMuBMeLIdY5XReHy5YHqxbkPjQhDIEORAFlzJ
+                        jLqO/Ldzn4waEa5snDZyeYjsl6pi+8CVGfXLSDVsDuk5s47B9OD+gOSJ1wEc7O/N
+                        nU9d/WCcM1V4IGZGL8TXUdfJoVXYZUFF08jUGSL2mj30WS1orIWo
+
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <!--
+                <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.unicon.net/idp/profile/SAML2/Redirect/SLO"/>
+                <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.unicon.net/idp/profile/SAML2/POST/SLO"/>
+                <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://idp.unicon.net/idp/profile/SAML2/POST-SimpleSign/SLO"/>
+        -->
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+
+        <SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://idp.unicon.net/idp/profile/Shibboleth/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp.unicon.net/idp/profile/SAML2/POST/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://idp.unicon.net/idp/profile/SAML2/POST-SimpleSign/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.unicon.net/idp/profile/SAML2/Redirect/SSO"/>
+    </IDPSSODescriptor>
+
+</EntityDescriptor>
