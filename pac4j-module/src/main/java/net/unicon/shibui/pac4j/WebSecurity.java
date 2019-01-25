@@ -20,8 +20,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @AutoConfigureOrder(-1)
 public class WebSecurity {
     @Bean("webSecurityConfig")
-    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, CustomPropertiesConfiguration customPropertiesConfiguration) {
-        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository, emailService, customPropertiesConfiguration);
+    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
+        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository, emailService, pac4jConfigurationProperties);
     }
 
     @Configuration
@@ -57,14 +57,14 @@ public class WebSecurity {
         private UserRepository userRepository;
         private RoleRepository roleRepository;
         private EmailService emailService;
-        private CustomPropertiesConfiguration customPropertiesConfiguration;
+        private Pac4jConfigurationProperties pac4jConfigurationProperties;
 
-        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, CustomPropertiesConfiguration customPropertiesConfiguration) {
+        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
             this.config = config;
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
             this.emailService = emailService;
-            this.customPropertiesConfiguration = customPropertiesConfiguration;
+            this.pac4jConfigurationProperties = pac4jConfigurationProperties;
         }
 
         @Override
@@ -74,7 +74,7 @@ public class WebSecurity {
             final CallbackFilter callbackFilter = new CallbackFilter(this.config);
             http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
-                    .addFilterAfter(new AddNewUserFilter(customPropertiesConfiguration, userRepository, roleRepository, emailService), SecurityFilter.class);
+                    .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService), SecurityFilter.class);
 
             http.authorizeRequests().anyRequest().fullyAuthenticated();
 

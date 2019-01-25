@@ -41,16 +41,16 @@ public class AddNewUserFilter implements Filter {
     private RoleRepository roleRepository;
     private EmailService emailService;
 
-    private CustomPropertiesConfiguration customPropertiesConfiguration;
+    private Pac4jConfigurationProperties pac4jConfigurationProperties;
 
-    private Map<String, String> saml2ProfileMapping;
+    private Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping;
 
-    public AddNewUserFilter(CustomPropertiesConfiguration customPropertiesConfiguration, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService) {
+    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
-        this.customPropertiesConfiguration = customPropertiesConfiguration;
-        saml2ProfileMapping = this.customPropertiesConfiguration.getSaml2ProfileMapping();
+        this.pac4jConfigurationProperties = pac4jConfigurationProperties;
+        saml2ProfileMapping = this.pac4jConfigurationProperties.getSaml2ProfileMapping();
     }
 
     @Override
@@ -108,17 +108,27 @@ public class AddNewUserFilter implements Filter {
     }
 
     private String getAttributeFromProfile(SAML2Profile profile, String stringKey) {
-        String mappingKey = saml2ProfileMapping.get(stringKey);
-        List<String> attributeList = (List<String>) profile.getAttribute(mappingKey);
         String attribute = null;
-        if (attributeList.size() > 0) {
-            if (attributeList.size() != 1) {
-                logger.warn(String.format("More than one attribute was found for key [%s]", stringKey));
-            }
-            attribute = attributeList.get(0);
+        switch (stringKey) {
+            case "username":
+                attribute = saml2ProfileMapping.getUsername();
+                break;
+            case "firstName":
+                attribute = saml2ProfileMapping.getFirstName();
+                break;
+            case "lastName":
+                attribute = saml2ProfileMapping.getLastName();
+                break;
+            case "email":
+                attribute = saml2ProfileMapping.getEmail();
+                break;
+            default:
+                // do we care? Not yet.
         }
-        return attribute;
+        List<String> attributeList = (List<String>) profile.getAttribute(attribute);
+        return attributeList.size() < 1 ? null : attributeList.get(0);
     }
+
     private byte[] getJsonResponseBytes(ErrorResponse eErrorResponse) throws IOException {
         String errorResponseJson = new ObjectMapper().writeValueAsString(eErrorResponse);
         return errorResponseJson.getBytes();

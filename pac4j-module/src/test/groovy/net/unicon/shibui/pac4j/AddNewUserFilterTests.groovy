@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletResponse
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-@SpringBootTest(classes = [CustomPropertiesConfiguration])
-@EnableConfigurationProperties([CustomPropertiesConfiguration])
+@SpringBootTest(classes = [Pac4jConfigurationProperties])
+@EnableConfigurationProperties([Pac4jConfigurationProperties])
 class AddNewUserFilterTests extends Specification {
 
     UserRepository userRepository = Mock()
@@ -39,9 +39,9 @@ class AddNewUserFilterTests extends Specification {
     SAML2Profile saml2Profile = Mock()
 
     @Autowired
-    CustomPropertiesConfiguration customPropertiesConfiguration
+    Pac4jConfigurationProperties pac4jConfigurationProperties
 
-    Map<String, String> userAttributeMapping
+    Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping
 
     @Subject
     AddNewUserFilter addNewUserFilter
@@ -51,16 +51,18 @@ class AddNewUserFilterTests extends Specification {
         securityContext.getAuthentication() >> authentication
         authentication.getPrincipal() >> saml2Profile
 
-        addNewUserFilter = new AddNewUserFilter(customPropertiesConfiguration, userRepository, roleRepository, emailService)
-        userAttributeMapping = customPropertiesConfiguration.saml2ProfileMapping
+        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService)
+        saml2ProfileMapping = pac4jConfigurationProperties.saml2ProfileMapping
     }
 
     def "new users are redirected"() {
         given:
-        saml2Profile.getAttribute(userAttributeMapping.get('username')) >> ['newUser']
-        saml2Profile.getAttribute(userAttributeMapping.get('firstName')) >> ['New']
-        saml2Profile.getAttribute(userAttributeMapping.get('lastName')) >> ['User']
-        saml2Profile.getAttribute(userAttributeMapping.get('email')) >> ['newuser@institution.edu']
+        ['Username': 'newUser',
+         'FirstName': 'New',
+         'LastName': 'User',
+         'Email': 'newuser@institution.edu'].each { key, value ->
+            saml2Profile.getAttribute(saml2ProfileMapping."get${key}"()) >> [value]
+        }
         userRepository.findByUsername('newUser') >> Optional.empty()
         roleRepository.findByName('ROLE_NONE') >> Optional.of(new Role('ROLE_NONE'))
 
@@ -76,7 +78,7 @@ class AddNewUserFilterTests extends Specification {
 
     def "existing users are not redirected"() {
         given:
-        saml2Profile.getAttribute(userAttributeMapping.get('username')) >> ['existingUser']
+        saml2Profile.getAttribute(saml2ProfileMapping.getUsername()) >> ['existingUser']
         userRepository.findByUsername('existingUser') >> Optional.of(new User().with {
             it.username = 'existingUser'
             it.roles = [new Role('ROLE_USER')]

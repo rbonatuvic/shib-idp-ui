@@ -22,6 +22,7 @@ public class Pac4jConfiguration {
         saml2ClientConfiguration.setServiceProviderMetadataPath(pac4jConfigurationProperties.getServiceProviderMetadataPath());
         saml2ClientConfiguration.setForceServiceProviderMetadataGeneration(pac4jConfigurationProperties.isForceServiceProviderMetadataGeneration());
         saml2ClientConfiguration.setWantsAssertionsSigned(pac4jConfigurationProperties.isWantAssertionsSigned());
+        saml2ClientConfiguration.setAttributeAsId(pac4jConfigurationProperties.getSaml2ProfileMapping().getUsername());
 
         final SAML2Client saml2Client = new SAML2Client(saml2ClientConfiguration);
         saml2Client.setName("Saml2Client");
