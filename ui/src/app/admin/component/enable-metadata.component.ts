@@ -7,12 +7,12 @@ import { map } from 'rxjs/operators';
 
 import { MetadataEntity, MetadataResolver } from '../../metadata/domain/model';
 import * as fromDashboard from '../../metadata/manager/reducer';
-import * as fromResolver from '../../metadata/resolver/reducer';
+import * as fromMetadata from '../reducer';
 import { ToggleEntityDisplay } from '../../metadata/manager/action/manager.action';
 import { DeleteDialogComponent } from '../../metadata/manager/component/delete-dialog.component';
 import { PreviewEntity } from '../../metadata/domain/action/entity.action';
-import { RemoveDraftRequest } from '../../metadata/resolver/action/draft.action';
-import { LoadAdminResolverRequest } from '../../metadata/resolver/action/collection.action';
+import { FileBackedHttpMetadataResolver } from '../../metadata/domain/entity';
+import { RemoveMetadataRequest, UpdateMetadataRequest, LoadMetadataRequest } from '../action/metadata-collection.action';
 
 @Component({
     selector: 'enable-metadata',
@@ -20,7 +20,7 @@ import { LoadAdminResolverRequest } from '../../metadata/resolver/action/collect
 })
 
 export class EnableMetadataComponent implements OnInit {
-    resolvers$: Observable<MetadataEntity[]>;
+    resolvers$: Observable<FileBackedHttpMetadataResolver[]>;
     loading$: Observable<boolean>;
 
     total$: Observable<number>;
@@ -34,16 +34,20 @@ export class EnableMetadataComponent implements OnInit {
         private router: Router,
         private modalService: NgbModal
     ) {
-        this.resolvers$ = store.select(fromResolver.getAllResolvers);
-        this.loading$ = store.select(fromDashboard.getSearchLoading);
-        this.entitiesOpen$ = store.select(fromDashboard.getOpenProviders);
+        this.store.dispatch(new LoadMetadataRequest());
+
+        this.resolvers$ = this.store
+            .select(fromMetadata.getMetadataCollection)
+            .pipe(
+                map(resolvers => resolvers.map(r => new FileBackedHttpMetadataResolver(r)))
+            );
+        this.loading$ = this.store.select(fromDashboard.getSearchLoading);
+        this.entitiesOpen$ = this.store.select(fromDashboard.getOpenProviders);
 
         this.total$ = this.resolvers$.pipe(map(list => list.length));
     }
 
-    ngOnInit(): void {
-        this.store.dispatch(new LoadAdminResolverRequest());
-    }
+    ngOnInit(): void {}
 
     edit(entity: MetadataEntity): void {
         this.router.navigate(['metadata', 'resolver', entity.getId(), 'edit']);
@@ -57,13 +61,18 @@ export class EnableMetadataComponent implements OnInit {
         this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
     }
 
+    toggleResolverEnabled(entity: MetadataResolver, enabled: boolean): void {
+        let update = { ...entity, serviceEnabled: enabled };
+        this.store.dispatch(new UpdateMetadataRequest(update));
+    }
+
     deleteResolver(entity: MetadataResolver): void {
         this.modalService
             .open(DeleteDialogComponent)
             .result
             .then(
                 success => {
-                    this.store.dispatch(new RemoveDraftRequest(entity));
+                    this.store.dispatch(new RemoveMetadataRequest(entity));
                 },
                 err => {
                     console.log('Cancelled');

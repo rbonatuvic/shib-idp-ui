@@ -11,7 +11,7 @@ import { AdminManagementPageComponent } from './container/admin-management.compo
 import { AdminComponent } from './admin.component';
 import { reducers } from './reducer';
 import { AdminService } from './service/admin.service';
-import { AdminCollectionEffects } from './effect/user-collection.effect';
+import { AdminCollectionEffects } from './effect/admin-collection.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { DeleteUserDialogComponent } from './component/delete-user-dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +20,7 @@ import { AccessRequestComponent } from './component/access-request.component';
 import { UserManagementComponent } from './component/user-management.component';
 import { EnableMetadataComponent } from './component/enable-metadata.component';
 import { ManagerModule } from '../metadata/manager/manager.module';
+import { MetadataCollectionEffects } from './effect/metadata-collection.effect';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,7 @@ import { ManagerModule } from '../metadata/manager/manager.module';
         CommonModule,
         I18nModule,
         StoreModule.forFeature('admin', reducers),
-        EffectsModule.forFeature([AdminCollectionEffects]),
+        EffectsModule.forFeature([AdminCollectionEffects, MetadataCollectionEffects]),
         FormsModule,
         RouterModule,
         HttpClientModule,

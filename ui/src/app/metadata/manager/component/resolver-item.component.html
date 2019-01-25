@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header" (click)="toggle.emit(entity)" (keydown.space)="toggle.emit(entity)" tabindex="0">
         <div class="row">
-            <div class="col-9 clearfix">
+            <div class="col-8 clearfix">
                 <div class="w-10 pr-3 pull-left">
                     <i class="fa fa-fw fa-3x text-primary" [class.fa-caret-right]="!isOpen" [class.fa-caret-down]="isOpen"></i>
                     &nbsp;
@@ -21,11 +21,27 @@
                     <small class="d-block">{{ entity.getDisplayId() }}</small>
                 </div>
             </div>
-            <div class="col-3 text-right">
-                <button class="btn btn-link" (click)="preview.emit(entity)" *ngIf="!entity.isDraft()" aria-label="Review the XML of the selected service provider">
+            <div class="col-4 text-right">
+                <button *ngIf="showAdminFunctions"
+                    [class.btn-success]="entity.enabled"
+                    [class.btn-danger]="!entity.enabled"
+                    class="btn text-capitalize"
+                    (click)="toggleEnabled.emit(entity); $event.stopPropagation()"
+                    aria-label="Enable this service provider">
+                    <translate-i18n *ngIf="entity.enabled" key="label.disable">Disable</translate-i18n>
+                    <translate-i18n *ngIf="!entity.enabled" key="label.enable">Enable</translate-i18n>
+                    <i class="fa fa-fw fa-check-square-o fa-lg" *ngIf="entity.enabled"></i>
+                    <i class="fa fa-fw fa-square-o fa-lg" *ngIf="!entity.enabled"></i>
+                </button>
+                <button class="btn btn-link"
+                    (click)="preview.emit(entity); $event.stopPropagation()"
+                    *ngIf="!entity.isDraft()"
+                    aria-label="Review the XML of the selected service provider">
                     <i class="fa fa-fw fa-eye fa-2x"></i>
                 </button>
-                <button class="btn btn-link" (click)="select.emit(entity)" aria-label="Edit selected service provider">
+                <button class="btn btn-link"
+                    (click)="select.emit(entity); $event.stopPropagation()"
+                    aria-label="Edit selected service provider">
                     <i class="fa fa-fw fa-edit fa-2x"></i>
                 </button>
             </div>
@@ -66,7 +82,7 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <button *ngIf="entity.isDraft() && entity.kind === types.RESOLVER"
+                    <button *ngIf="allowDelete"
                         class="btn btn-link pull-right"
                         (click)="delete.emit(entity)"
                         aria-label="Delete selected service provider">

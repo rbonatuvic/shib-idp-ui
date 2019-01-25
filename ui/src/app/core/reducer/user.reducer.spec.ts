@@ -11,12 +11,11 @@ describe('User Reducer', () => {
     };
 
     const user: User = {
-        id: '1',
+        username: 'foo',
         role: 'admin',
-        name: {
-            first: 'foo',
-            last: 'bar'
-        }
+        firstName: 'foo',
+        lastName: 'bar',
+        emailAddress: 'foo@bar.com'
     };
 
     describe('undefined action', () => {
@@ -59,14 +58,7 @@ describe('User Reducer', () => {
 
     describe('User Selectors', () => {
         const state = {
-            user: {
-                id: '1',
-                role: 'admin',
-                name: {
-                    first: 'foo',
-                    last: 'bar'
-                }
-            },
+            user: { ...user },
             fetching: true,
             error: { message: 'foo', type: 'bar' }
         } as fromUser.UserState;

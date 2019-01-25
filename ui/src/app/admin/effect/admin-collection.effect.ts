@@ -11,9 +11,8 @@ import {
     UpdateAdminRequest,
     UpdateAdminSuccess,
     RemoveAdminRequest,
-    RemoveAdminSuccess,
-    LoadNewUsersRequest
-} from '../action/user-collection.action';
+    RemoveAdminSuccess
+} from '../action/admin-collection.action';
 import { AdminService } from '../service/admin.service';
 import { AddNotification } from '../../notification/action/notification.action';
 import { Notification, NotificationType } from '../../notification/model/notification';
@@ -27,14 +26,6 @@ export class AdminCollectionEffects {
     loadAdminRequest$ = this.actions$.pipe(
         ofType<LoadAdminRequest>(AdminCollectionActionTypes.LOAD_ADMIN_REQUEST),
         switchMap(() => this.adminService.query().pipe(
-            map(users => new LoadAdminSuccess(users))
-        ))
-    );
-
-    @Effect()
-    loadNewUsersRequest$ = this.actions$.pipe(
-        ofType<LoadNewUsersRequest>(AdminCollectionActionTypes.LOAD_NEW_USERS_REQUEST),
-        switchMap(() => this.adminService.queryByRole('ROLE_NONE').pipe(
             map(users => new LoadAdminSuccess(users))
         ))
     );

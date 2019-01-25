@@ -56,25 +56,12 @@ export class ResolverCollectionEffects {
     );
 
     @Effect()
-    loadAdminResolvers$ = this.actions$.pipe(
-        ofType<LoadAdminResolverRequest>(ResolverCollectionActionTypes.LOAD_ADMIN_RESOLVERS_REQUEST),
-        switchMap(() =>
-            this.descriptorService
-                .query({admin: true})
-                .pipe(
-                    map(descriptors => new LoadResolverSuccess(descriptors.map(d => new FileBackedHttpMetadataResolver(d)))),
-                    catchError(error => of(new LoadResolverError(error)))
-                )
-        )
-    );
-
-    @Effect()
     updateResolver$ = this.actions$.pipe(
         ofType<UpdateResolverRequest>(ResolverCollectionActionTypes.UPDATE_RESOLVER_REQUEST),
         map(action => action.payload),
         switchMap(provider => {
             return this.descriptorService
-                .update(provider)
+                .update(removeNulls(provider))
                 .pipe(
                     map(p => new UpdateResolverSuccess({
                         id: p.id,
@@ -84,7 +71,6 @@ export class ResolverCollectionEffects {
                         if (err.status === 409) {
                             return of(new UpdateResolverConflict(provider));
                         }
-                        console.log(err);
                         return of(new UpdateResolverFail({
                             errorCode: err.status,
                             errorMessage: `${err.statusText} - ${err.message}`
@@ -215,6 +201,20 @@ export class ResolverCollectionEffects {
                 .pipe(
                     map(p => new AddResolverSuccess(p)),
                     catchError((error) => of(new AddResolverFail(error)))
+                )
+        )
+    );
+
+    @Effect()
+    removeResolver$ = this.actions$.pipe(
+        ofType<RemoveResolverRequest>(ResolverCollectionActionTypes.REMOVE_RESOLVER),
+        map(action => action.payload),
+        switchMap(entity =>
+            this.descriptorService
+                .remove(entity)
+                .pipe(
+                    map(p => new RemoveResolverSuccess(p)),
+                    catchError(err => of(new RemoveResolverFail(err)))
                 )
         )
     );

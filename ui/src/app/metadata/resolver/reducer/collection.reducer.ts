@@ -39,6 +39,18 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
             };
         }
 
+        case ResolverCollectionActionTypes.LOAD_RESOLVER_ERROR: {
+            return adapter.removeAll({
+                ...state
+            });
+        }
+
+        case ResolverCollectionActionTypes.REMOVE_RESOLVER_SUCCESS: {
+            return adapter.removeOne(action.payload.id, {
+                ...state
+            });
+        }
+
         default: {
             return state;
         }

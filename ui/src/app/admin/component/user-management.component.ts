@@ -6,7 +6,7 @@ import * as fromRoot from '../../app.reducer';
 import * as fromCore from '../../core/reducer';
 import * as fromAdmin from '../reducer';
 
-import { UpdateAdminRequest, RemoveAdminRequest } from '../action/user-collection.action';
+import { UpdateAdminRequest, RemoveAdminRequest } from '../action/admin-collection.action';
 import { Admin } from '../model/admin';
 import { DeleteUserDialogComponent } from '../component/delete-user-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -33,7 +33,7 @@ export class UserManagementComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.users$ = this.store.select(fromAdmin.getAllConfiguredUsers);
+        this.users$ = this.store.select(fromAdmin.getAllConfiguredAdmins);
         this.hasUsers$ = this.users$.pipe(map(userList => userList.length > 0));
     }
 

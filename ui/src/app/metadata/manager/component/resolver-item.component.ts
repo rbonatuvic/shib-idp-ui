@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, AfterContentInit, Output } from '@angular/core';
 
-import { MetadataEntity } from '../../domain/model';
+import { MetadataEntity, MetadataResolver } from '../../domain/model';
 import { EntityItemComponent } from './entity-item.component';
+import { EventEmitter } from 'events';
 
 @Component({
     selector: 'resolver-item',

@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+import * as fromRoot from '../app.reducer';
+import { Store } from '@ngrx/store';
+import { LoadAdminRequest } from './action/admin-collection.action';
 
 @Component({
     selector: 'admin-page',
@@ -6,5 +10,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: []
 })
 export class AdminComponent {
-    constructor() { }
+    constructor(
+        private store: Store<fromRoot.State>
+    ) {
+        this.store.dispatch(new LoadAdminRequest());
+    }
 }
