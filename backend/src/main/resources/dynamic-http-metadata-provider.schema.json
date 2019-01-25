@@ -599,8 +599,7 @@
                         "certificateFile": {
                             "title": "label.certificate-file",
                             "description": "tooltip.certificate-file",
-                            "type": "string",
-                            "default": ""
+                            "type": "string"
                         }
                     },
                     "anyOf": [

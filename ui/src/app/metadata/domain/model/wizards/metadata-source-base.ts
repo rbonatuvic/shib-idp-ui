@@ -60,6 +60,28 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     }
 
     getValidators(entityIdList: string[]): { [key: string]: any } {
+        const checkRequiredChild = (value, property, form) => {
+            if (!value) {
+                return {
+                    code: 'REQUIRED',
+                    path: `#${property.path}`,
+                    message: `message.required`,
+                    params: [value]
+                };
+            }
+            return null;
+        };
+        const checkRequiredChildren = (value, property, form) => {
+            let errors;
+            Object.keys(value).forEach((item, index, all) => {
+                const error = checkRequiredChild(item, { path: `${index}` }, form);
+                if (error) {
+                    errors = errors || [];
+                    errors.push(error);
+                }
+            });
+            return errors;
+        };
         const checkOrg = (value, property, form) => {
             const org = property.parent;
             const orgValue = org.value || {};
