@@ -1,5 +1,8 @@
 package net.unicon.shibui.pac4j;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
@@ -17,8 +20,8 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 @AutoConfigureOrder(-1)
 public class WebSecurity {
     @Bean("webSecurityConfig")
-    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config) {
-        return new Pac4jWebSecurityConfigurerAdapter(config);
+    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService) {
+        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository, emailService);
     }
 
     @Configuration
@@ -30,12 +33,36 @@ public class WebSecurity {
         }
     }
 
+    @Configuration
     @Order(1)
+    public static class UnsecuredSecurityConfiguration extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/unsecured/**/*").authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
+        }
+    }
+
+    @Configuration
+    @Order(2)
+    public static class ErrorSecurityConfiguration extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/error").authorizeRequests().antMatchers("/error").permitAll();
+        }
+    }
+
+    @Order(100)
     public static class Pac4jWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final Config config;
+        private UserRepository userRepository;
+        private RoleRepository roleRepository;
+        private EmailService emailService;
 
-        public Pac4jWebSecurityConfigurerAdapter(final Config config) {
+        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService) {
             this.config = config;
+            this.userRepository = userRepository;
+            this.roleRepository = roleRepository;
+            this.emailService = emailService;
         }
 
         @Override
@@ -43,14 +70,13 @@ public class WebSecurity {
             final SecurityFilter securityFilter = new SecurityFilter(this.config, "Saml2Client");
 
             final CallbackFilter callbackFilter = new CallbackFilter(this.config);
-            // http.regexMatcher("/callback").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
-            http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
+            http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
+                    .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
+                    .addFilterAfter(new AddNewUserFilter(userRepository, roleRepository, emailService), SecurityFilter.class);
+
             http.authorizeRequests().anyRequest().fullyAuthenticated();
 
-            http.addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-
-            // http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
             http.csrf().disable();
             http.headers().frameOptions().disable();
