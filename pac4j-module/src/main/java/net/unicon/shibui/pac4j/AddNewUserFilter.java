@@ -75,7 +75,7 @@ public class AddNewUserFilter implements Filter {
                     user = persistedUser.get();
                 }
                 if (user.getRole().equals(ROLE_NONE)) {
-                    ((HttpServletResponse) response).sendRedirect("/static.html");
+                    ((HttpServletResponse) response).sendRedirect("/unsecured/error.html");
                 } else {
                     chain.doFilter(request, response); // else, user is in the system already, carry on
                 }

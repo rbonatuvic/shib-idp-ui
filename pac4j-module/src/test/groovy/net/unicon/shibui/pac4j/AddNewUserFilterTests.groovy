@@ -52,7 +52,7 @@ class AddNewUserFilterTests extends Specification {
         1 * roleRepository.save(_)
         1 * userRepository.save(_)
         1 * emailService.sendNewUserMail('newUser')
-        1 * response.sendRedirect("/static.html")
+        1 * response.sendRedirect("/unsecured/error.html")
     }
 
     def "existing users are not redirected"() {

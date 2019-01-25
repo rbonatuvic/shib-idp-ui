@@ -13,6 +13,7 @@
         validate="true"
         [attr.readonly]="schema.readOnly?true:null"
         class="text-widget.id textline-widget form-control"
+        [class.is-invalid]="control.touched && !control.value && errorMessages.length"
         [attr.type]="this.getInputType()"
         [attr.id]="id"
         [formControl]="control"
@@ -25,7 +26,7 @@
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
             <ng-container *ngIf="!first">, </ng-container>
-            <translate-i18n [key]="error">error</translate-i18n>
+            <translate-i18n [key]="getError(error)">error</translate-i18n>
         </ng-container>
     </small>
     <small class="form-text text-secondary"

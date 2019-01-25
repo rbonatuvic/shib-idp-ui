@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 
 import { ControlWidget } from 'ngx-schema-form';
 import { SchemaService } from '../../service/schema.service';
+import { HARD_CODED_REQUIRED_MSG } from '../../model/messages';
 
 @Component({
     selector: 'datalist-component',
@@ -25,5 +26,9 @@ export class DatalistComponent extends ControlWidget implements AfterViewInit {
 
     get required(): boolean {
         return this.widgetService.isRequired(this.formProperty);
+    }
+
+    getError(error: string): string {
+        return HARD_CODED_REQUIRED_MSG.test(error) ? 'message.required' : error;
     }
 }
