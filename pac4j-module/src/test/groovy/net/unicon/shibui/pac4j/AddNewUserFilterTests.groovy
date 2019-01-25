@@ -5,9 +5,13 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -18,6 +22,9 @@ import javax.servlet.http.HttpServletResponse
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
+@SpringBootTest
+@ComponentScan("net.unicon.shibui.pac4j")
+@ContextConfiguration(classes=[CustomPropertiesConfiguration])
 class AddNewUserFilterTests extends Specification {
 
     UserRepository userRepository = Mock()
@@ -31,8 +38,10 @@ class AddNewUserFilterTests extends Specification {
     SecurityContext securityContext = Mock()
     Authentication authentication = Mock()
 
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
     @Subject
-    AddNewUserFilter addNewUserFilter = new AddNewUserFilter(userRepository, roleRepository, emailService)
+    AddNewUserFilter addNewUserFilter = new AddNewUserFilter(customPropertiesConfiguration, userRepository, roleRepository, emailService)
 
     def setup() {
         SecurityContextHolder.setContext(securityContext)
