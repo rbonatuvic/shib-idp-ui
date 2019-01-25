@@ -21,4 +21,10 @@
         role="textbox"
         [attr.aria-label]="schema.title | translate">
     </auto-complete>
+    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
+        <ng-container *ngFor="let error of errorMessages; let first=first;">
+            <ng-container *ngIf="!first">, </ng-container>
+            <translate-i18n [key]="getError(error)">error</translate-i18n>
+        </ng-container>
+    </small>
 </div>
