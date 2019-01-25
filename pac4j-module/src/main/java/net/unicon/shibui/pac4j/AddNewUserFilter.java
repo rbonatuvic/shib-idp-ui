@@ -7,11 +7,13 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.pac4j.saml.profile.SAML2Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.mail.MessagingException;
 import javax.servlet.Filter;
@@ -22,6 +24,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,18 +57,22 @@ public class AddNewUserFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
-    private User buildAndPersistNewUserFromProfile(Map<String, Object> attributes) {
+    private User buildAndPersistNewUserFromProfile(SAML2Profile profile) {
         Role noRole = roleRepository.findByName(ROLE_NONE).orElse(new Role(ROLE_NONE));
         roleRepository.save(noRole);
 
         User user = new User();
         user.getRoles().add(noRole);
-        user.setUsername((String) attributes.get(saml2ProfileMapping.get("username")));
-        user.setFirstName((String) attributes.get(saml2ProfileMapping.get("firstName")));
-        user.setLastName((String) attributes.get(saml2ProfileMapping.get("lastName")));
-        user.setEmailAddress((String) attributes.get(saml2ProfileMapping.get("email")));
-        userRepository.save(user);
-        return user;
+        user.setUsername(getAttributeFromProfile(profile, "username"));
+        user.setPassword(BCrypt.hashpw(RandomStringUtils.randomAlphanumeric(20), BCrypt.gensalt()));
+        user.setFirstName(getAttributeFromProfile(profile, "firstName"));
+        user.setLastName(getAttributeFromProfile(profile, "lastName"));
+        user.setEmailAddress(getAttributeFromProfile(profile, "email"));
+        User persistedUser = userRepository.save(user);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Persisted new user:\n" + user);
+        }
+        return persistedUser;
     }
 
     @Override
@@ -73,12 +80,12 @@ public class AddNewUserFilter implements Filter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SAML2Profile profile = (SAML2Profile) authentication.getPrincipal();
         if (profile != null) {
-            String username = (String) profile.getAttribute(saml2ProfileMapping.get("username"));
+            String username = getAttributeFromProfile(profile, "username");
             if (username != null) {
                 Optional<User> persistedUser = userRepository.findByUsername(username);
                 User user;
                 if (!persistedUser.isPresent()) {
-                    user = buildAndPersistNewUserFromProfile(profile.getAttributes());
+                    user = buildAndPersistNewUserFromProfile(profile);
                     try {
                         emailService.sendNewUserMail(username);
                     } catch (MessagingException e) {
@@ -100,6 +107,18 @@ public class AddNewUserFilter implements Filter {
     public void destroy() {
     }
 
+    private String getAttributeFromProfile(SAML2Profile profile, String stringKey) {
+        String mappingKey = saml2ProfileMapping.get(stringKey);
+        List<String> attributeList = (List<String>) profile.getAttribute(mappingKey);
+        String attribute = null;
+        if (attributeList.size() > 0) {
+            if (attributeList.size() != 1) {
+                logger.warn(String.format("More than one attribute was found for key [%s]", stringKey));
+            }
+            attribute = attributeList.get(0);
+        }
+        return attribute;
+    }
     private byte[] getJsonResponseBytes(ErrorResponse eErrorResponse) throws IOException {
         String errorResponseJson = new ObjectMapper().writeValueAsString(eErrorResponse);
         return errorResponseJson.getBytes();

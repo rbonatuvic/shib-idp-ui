@@ -1,10 +1,9 @@
 package net.unicon.shibui.pac4j;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,6 +11,7 @@ import java.util.Map;
  */
 @Component
 @ConfigurationProperties(prefix="custom")
+@EnableConfigurationProperties
 public class CustomPropertiesConfiguration {
 
     private Map<String, String> saml2ProfileMapping;
