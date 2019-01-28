@@ -79,14 +79,6 @@ class DevConfig {
                 emailAddress = 'anon@institution.edu'
                 roles.add(roleRepository.findByName('ROLE_ADMIN').get())
                 it
-            }, new User().with { // allow some shady fella
-                username = 'scalding@scaldingspoon.com'
-                password = '{noop}anonymous'
-                firstName = 'Jj!'
-                lastName = 'Jj!'
-                emailAddress = 'scalding@scaldingspoon.com'
-                roles.add(roleRepository.findByName('ROLE_ADMIN').get())
-                it
             }]
             users.each {
                 adminUserRepository.save(it)
