@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
+@import "../../../theme/palette";
 
 .dropdown.form-group {
     margin-bottom: 0px;
@@ -13,5 +14,17 @@
 :host {
     .btn-outline-secondary {
         border-color: $input-border-color;
+    }
+
+    &.is-invalid {
+        input.form-control {
+            border-color: $brand-danger;
+        }
+    }
+
+    &.is-valid {
+        input.form-control {
+            border-color: $brand-success;
+        }
     }
 }

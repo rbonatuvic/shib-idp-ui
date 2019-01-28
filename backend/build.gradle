@@ -49,6 +49,10 @@ configurations {
 
 processResources.dependsOn(':ui:npm_run_buildProd')
 
+jar {
+    enabled = true
+}
+
 //Integration of the frontend and backend into the build to have all of the UI resources available in the app's executable war
 bootWar.dependsOn(':ui:npm_run_buildProd')
 bootWar.baseName = 'shibui'

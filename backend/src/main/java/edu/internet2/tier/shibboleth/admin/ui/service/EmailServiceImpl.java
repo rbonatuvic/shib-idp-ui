@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -72,6 +73,6 @@ public class EmailServiceImpl implements EmailService {
             logger.warn("No users with ROLE_ADMIN were found! Check your configuration!");
             systemAdmins = new HashSet<>();
         }
-        return systemAdmins.stream().map(User::getEmailAddress).distinct().toArray(String[]::new);
+        return systemAdmins.stream().filter(user -> StringUtils.isNotBlank(user.getEmailAddress())).map(User::getEmailAddress).distinct().toArray(String[]::new);
     }
 }
