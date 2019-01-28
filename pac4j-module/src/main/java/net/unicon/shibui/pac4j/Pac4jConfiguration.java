@@ -3,16 +3,12 @@ package net.unicon.shibui.pac4j;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.client.SAML2ClientConfiguration;
 import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class Pac4jConfiguration {
@@ -34,15 +30,16 @@ public class Pac4jConfiguration {
         saml2ClientConfiguration.setForceServiceProviderMetadataGeneration(pac4jConfigurationProperties.isForceServiceProviderMetadataGeneration());
         saml2ClientConfiguration.setWantsAssertionsSigned(pac4jConfigurationProperties.isWantAssertionsSigned());
 
-/*        Map<String, String> mappedAttributes = new HashMap<>();
-        mappedAttributes.put(pac4jConfigurationProperties.getSaml2ProfileMapping().getUsername(), Pac4jConstants.USERNAME);
-        saml2ClientConfiguration.setMappedAttributes(mappedAttributes);*/
-
         saml2ClientConfiguration.setAttributeAsId(pac4jConfigurationProperties.getSaml2ProfileMapping().getUsername());
 
         final SAML2Client saml2Client = new SAML2Client(saml2ClientConfiguration);
         saml2Client.setName("Saml2Client");
         saml2Client.addAuthorizationGenerator(saml2ModelAuthorizationGenerator);
+
+        //TODO: pray
+        SAML2Authenticator saml2Authenticator = new SAML2Authenticator(saml2ClientConfiguration.getAttributeAsId(), saml2ClientConfiguration.getMappedAttributes());
+        saml2Authenticator.setProfileDefinition(new CommonProfileDefinition<>(p -> new BetterSAML2Profile(pac4jConfigurationProperties.getSaml2ProfileMapping().getUsername())));
+        saml2Client.setAuthenticator(saml2Authenticator);
 
         final Clients clients = new Clients(pac4jConfigurationProperties.getCallbackUrl(), saml2Client);
 

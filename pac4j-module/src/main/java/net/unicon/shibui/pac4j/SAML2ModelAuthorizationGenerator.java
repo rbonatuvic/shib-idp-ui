@@ -17,7 +17,7 @@ public class SAML2ModelAuthorizationGenerator implements AuthorizationGenerator<
 
     @Override
     public SAML2Profile generate(WebContext context, SAML2Profile profile) {
-        Optional<User> user = userRepository.findByUsername(profile.getId());
+        Optional<User> user = userRepository.findByUsername(profile.getUsername());
         user.ifPresent( u -> profile.addRole(u.getRole()));
         return profile;
     }
