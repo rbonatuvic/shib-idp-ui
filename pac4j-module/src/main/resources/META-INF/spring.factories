@@ -1,5 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   net.unicon.shibui.pac4j.Pac4jConfiguration,\
   net.unicon.shibui.pac4j.WebSecurity,\
-  net.unicon.shibui.pac4j.Pac4jConfigurationProperties,\
-  net.unicon.shibui.pac4j.CustomPropertiesConfiguration
+  net.unicon.shibui.pac4j.Pac4jConfigurationProperties
