@@ -4,12 +4,13 @@ import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserRoleService;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,14 +42,15 @@ public class UsersController {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private UserRoleService userRoleService;
+    private UserService userService;
 
-    public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserRoleService userRoleService) {
+    public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.userRoleService = userRoleService;
+        this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     @GetMapping
     public List<User> getAll() {
@@ -55,11 +58,19 @@ public class UsersController {
     }
 
     @Transactional(readOnly = true)
+    @GetMapping("/current")
+    public Principal getCurrentUser(Principal principal) {
+        return principal;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(readOnly = true)
     @GetMapping("/{username}")
     public ResponseEntity<?> getOne(@PathVariable String username) {
         return ResponseEntity.ok(findUserOrThrowHttp404(username));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteOne(@PathVariable String username) {
@@ -68,6 +79,7 @@ public class UsersController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @PostMapping
     ResponseEntity<?> saveOne(@RequestBody User user) {
@@ -80,11 +92,12 @@ public class UsersController {
         }
         //TODO: modify this such that additional encoders can be used
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        userRoleService.updateUserRole(user);
+        userService.updateUserRole(user);
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @PatchMapping("/{username}")
     ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestBody User user) {
@@ -103,7 +116,7 @@ public class UsersController {
         }
         if (StringUtils.isNotBlank(user.getRole())) {
             persistedUser.setRole(user.getRole());
-            userRoleService.updateUserRole(persistedUser);
+            userService.updateUserRole(persistedUser);
         }
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);

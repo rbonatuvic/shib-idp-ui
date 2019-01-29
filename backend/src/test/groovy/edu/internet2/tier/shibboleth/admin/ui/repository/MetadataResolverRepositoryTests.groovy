@@ -11,6 +11,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMet
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +42,13 @@ class MetadataResolverRepositoryTests extends Specification {
     @Autowired
     OpenSamlObjects openSamlObjects
 
-    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects))
+    @Autowired
+    RoleRepository roleRepository
+
+    @Autowired
+    UserRepository userRepository
+
+    def service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), new UserService(roleRepository, userRepository))
 
     def "test persisting a metadata resolver"() {
         when:

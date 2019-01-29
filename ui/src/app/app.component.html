@@ -35,7 +35,8 @@
                         routerLink="/metadata/provider/wizard"
                         routerLinkActive="active"
                         [attr.aria-label]="'action.add-new-provider' | translate"
-                        role="button">
+                        role="button"
+                        *ngIf="isAdmin$ | async">
                         <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
                         &nbsp;
                         <translate-i18n key="label.metadata-provider">Metadata Provider</translate-i18n>

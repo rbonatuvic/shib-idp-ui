@@ -4,8 +4,19 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, tap, catchError, switchMap } from 'rxjs/operators';
 
-import * as user from '../action/user.action';
-import { LoadRoleRequest, LoadRoleFail, LoadRoleSuccess, ConfigurationActionTypes } from '../action/configuration.action';
+import {
+    LoadRoleRequest,
+    LoadRoleFail,
+    LoadRoleSuccess,
+    ConfigurationActionTypes
+} from '../action/configuration.action';
+import {
+    UserLoadRequestAction,
+    CurrentUserActionTypes,
+    UserLoadSuccessAction,
+    UserLoadErrorAction,
+    UserRedirect
+} from '../action/user.action';
 import { UserService } from '../service/user.service';
 
 @Injectable()
@@ -23,10 +34,22 @@ export class UserEffects {
         )
     );
 
+    @Effect()
+    loadCurrentUser$ = this.actions$.pipe(
+        ofType<UserLoadRequestAction>(CurrentUserActionTypes.USER_LOAD_REQUEST),
+        switchMap(() =>
+            this.userService.getCurrentUser()
+                .pipe(
+                    map(user => new UserLoadSuccessAction(user)),
+                    catchError(error => of(new UserLoadErrorAction(error)))
+                )
+        )
+    );
+
     @Effect({dispatch: false})
     redirect$ = this.actions$.pipe(
-        ofType(user.REDIRECT),
-        map((action: user.UserRedirect) => action.payload),
+        ofType(CurrentUserActionTypes.REDIRECT),
+        map((action: UserRedirect) => action.payload),
         tap(path => {
             window.location.href = path;
         })

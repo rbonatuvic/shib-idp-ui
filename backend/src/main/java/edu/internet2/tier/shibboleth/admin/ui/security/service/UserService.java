@@ -3,8 +3,9 @@ package edu.internet2.tier.shibboleth.admin.ui.security.service;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -13,12 +14,14 @@ import java.util.Set;
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-public class UserRoleService {
+public class UserService {
 
     private RoleRepository roleRepository;
+    private UserRepository userRepository;
 
-    public UserRoleService(RoleRepository roleRepository) {
+    public UserService(RoleRepository roleRepository, UserRepository userRepository) {
         this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -42,5 +45,20 @@ public class UserRoleService {
         } else {
             throw new RuntimeException(String.format("User with username [%s] has no role defined and therefor cannot be updated!", user.getUsername()));
         }
+    }
+
+    public User getCurrentUser() {
+        //TODO: Consider returning an Optional here
+        User user = null;
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+            String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (StringUtils.isNotBlank(principal)) {
+                Optional<User> persistedUser = userRepository.findByUsername(principal);
+                if (persistedUser.isPresent()) {
+                    user = persistedUser.get();
+                }
+            }
+        }
+        return user;
     }
 }

@@ -12,11 +12,13 @@ import { SelectFilterComponent } from '../filter/container/select-filter.compone
 import { EditFilterComponent } from '../filter/container/edit-filter.component';
 import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
 import { FilterComponent } from '../filter/container/filter.component';
+import { AdminGuard } from '../../core/service/admin.guard';
 
 export const ProviderRoutes: Routes = [
     {
         path: 'provider',
         component: ProviderComponent,
+        canActivate: [AdminGuard],
         children: [
             {
                 path: 'wizard',
