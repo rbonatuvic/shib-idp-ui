@@ -59,8 +59,9 @@ public class UsersController {
 
     @Transactional(readOnly = true)
     @GetMapping("/current")
-    public Principal getCurrentUser(Principal principal) {
-        return principal;
+    public User getCurrentUser(Principal principal) {
+        // TODO: fix this
+        return userService.getCurrentUser();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
