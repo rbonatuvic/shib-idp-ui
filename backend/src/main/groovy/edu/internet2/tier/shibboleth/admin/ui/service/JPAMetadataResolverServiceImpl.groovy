@@ -281,13 +281,15 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
-        markupBuilderDelegate.MetadataFilter(
-                'xsi:type': 'EntityRoleWhiteList',
-                'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
-        ) {
-            filter.retainedRoles.each {
-                // TODO: fix
-                markupBuilderDelegate.RetainedRole(it.startsWith('md:') ? it : "md:${it}")
+        if (!filter.retainedRoles?.isEmpty()) {
+            markupBuilderDelegate.MetadataFilter(
+                    'xsi:type': 'EntityRoleWhiteList',
+                    'xmlns:md': 'urn:oasis:names:tc:SAML:2.0:metadata'
+            ) {
+                filter.retainedRoles.each {
+                    // TODO: fix
+                    markupBuilderDelegate.RetainedRole(it.startsWith('md:') ? it : "md:${it}")
+                }
             }
         }
     }
