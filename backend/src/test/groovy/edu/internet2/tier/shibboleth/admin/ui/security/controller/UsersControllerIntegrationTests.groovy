@@ -45,7 +45,6 @@ class UsersControllerIntegrationTests extends Specification {
     "role" : "ROLE_ADMIN",
     "username" : "admin",
     "createdBy" : null,
-    "audId" : 4,
     "lastName" : "Doe"
   },
   {
@@ -55,7 +54,6 @@ class UsersControllerIntegrationTests extends Specification {
     "role" : "ROLE_USER",
     "username" : "nonadmin",
     "createdBy" : null,
-    "audId" : 5,
     "lastName" : "Vandelay"
   },
   {
@@ -65,7 +63,6 @@ class UsersControllerIntegrationTests extends Specification {
     "role" : "ROLE_ADMIN",
     "username" : "anonymousUser",
     "createdBy" : null,
-    "audId" : 6,
     "lastName" : "Ymous"
   }
 ]"""
@@ -92,7 +89,6 @@ class UsersControllerIntegrationTests extends Specification {
   "role" : "ROLE_ADMIN",
   "username" : "admin",
   "createdBy" : null,
-  "audId" : 4,
   "lastName" : "Doe"
 }"""
         when: 'GET request is made for one existing user'
