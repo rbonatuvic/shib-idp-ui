@@ -1,7 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import groovy.xml.XmlUtil
 import org.apache.commons.lang.StringUtils
+import org.springframework.security.core.context.SecurityContextHolder
 import org.w3c.dom.Document
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -38,5 +40,10 @@ class TestHelpers {
 
     static String XmlDocumentToString(Document document) {
         return XmlUtil.serialize(document.documentElement)
+    }
+
+    static Optional<User> generateOptionalUser(String username, String rolename) {
+        def user = new User(username: username, role: rolename)
+        Optional.of(user)
     }
 }
