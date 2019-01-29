@@ -9,9 +9,6 @@ import java.util.Map;
 
 public class EntityDescriptorRepresentation implements Serializable {
 
-
-    private int version;
-
     public EntityDescriptorRepresentation() {
     }
 
@@ -62,6 +59,10 @@ public class EntityDescriptorRepresentation implements Serializable {
     private Map<String, Object> relyingPartyOverrides;
 
     private List<String> attributeRelease;
+
+    private int version;
+
+    private String createdBy;
 
     public String getId() {
         return id;
@@ -203,5 +204,13 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
