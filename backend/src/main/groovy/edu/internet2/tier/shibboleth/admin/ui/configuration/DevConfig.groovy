@@ -79,14 +79,6 @@ class DevConfig {
                 emailAddress = 'anon@institution.edu'
                 roles.add(roleRepository.findByName('ROLE_ADMIN').get())
                 it
-            }, new User().with { // allow us to auto-login as an admin
-                username = 'wsmith@unicon.net'
-                password = '{noop}anonymous'
-                firstName = 'Anon'
-                lastName = 'Ymous'
-                emailAddress = 'anon@institution.edu'
-                roles.add(roleRepository.findByName('ROLE_ADMIN').get())
-                it
             }]
             users.each {
                 adminUserRepository.save(it)
