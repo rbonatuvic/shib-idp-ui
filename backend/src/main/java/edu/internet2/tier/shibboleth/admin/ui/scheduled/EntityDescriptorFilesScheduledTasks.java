@@ -60,7 +60,7 @@ public class EntityDescriptorFilesScheduledTasks {
     @Scheduled(fixedRateString = "${shibui.taskRunRate:30000}")
     @Transactional(readOnly = true)
     public void generateEntityDescriptorFiles() throws MarshallingException {
-        this.entityDescriptorRepository.findAllByServiceEnabled(true)
+        this.entityDescriptorRepository.findAllStreamByServiceEnabled(true)
                 .forEach(ed -> {
                     Path targetFilePath = targetFilePathFor(toSha1HexString(ed.getEntityID()));
                     if (Files.exists(targetFilePath)) {
@@ -91,7 +91,7 @@ public class EntityDescriptorFilesScheduledTasks {
                     .map(it -> it.substring(0, it.indexOf(".")))
                     .collect(toSet());
 
-            Set<String> enabledEidsSha1Hashes = this.entityDescriptorRepository.findAllByServiceEnabled(true)
+            Set<String> enabledEidsSha1Hashes = this.entityDescriptorRepository.findAllStreamByServiceEnabled(true)
                     .map(EntityDescriptor::getEntityID)
                     .map(EntityDescriptorFilesScheduledTasks::toSha1HexString)
                     .collect(toSet());

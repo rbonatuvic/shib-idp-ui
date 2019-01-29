@@ -11,6 +11,7 @@ import { I18nService } from './i18n/service/i18n.service';
 import { SetLocale } from './i18n/action/message.action';
 import { brand } from './app.brand';
 import { Brand } from './core/model/brand';
+import { UserLoadRequestAction } from './core/action/user.action';
 
 @Component({
     selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     formatted$: Observable<string>;
     today = new Date();
     year = new Date().getFullYear();
+    isAdmin$: Observable<boolean>;
 
     brand: Brand = brand;
 
@@ -35,9 +37,11 @@ export class AppComponent implements OnInit {
     ) {
         this.version$ = this.store.select(fromRoot.getVersionInfo);
         this.formatted$ = this.version$.pipe(map(this.formatter));
+        this.isAdmin$ = this.store.select(fromRoot.isCurrentUserAdmin);
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new UserLoadRequestAction());
         this.store.dispatch(new VersionInfoLoadRequestAction());
         this.store.dispatch(new SetLocale(this.i18nService.getCurrentLocale()));
     }

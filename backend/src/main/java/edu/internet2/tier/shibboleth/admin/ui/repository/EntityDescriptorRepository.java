@@ -16,12 +16,14 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
 
     EntityDescriptor findByResourceId(String resourceId);
 
-    Stream<EntityDescriptor> findAllByServiceEnabled(boolean serviceEnabled);
+    Stream<EntityDescriptor> findAllStreamByServiceEnabled(boolean serviceEnabled);
 
     @Query("select e from EntityDescriptor e")
-    Stream<EntityDescriptor> findAllByCustomQueryAndStream();
+    Stream<EntityDescriptor> findAllStreamByCustomQuery();
 
     @Query("select e from EntityDescriptor e, User u join u.roles r " +
             "where e.createdBy = u.username and e.serviceEnabled = false and r.name in ('ROLE_USER', 'ROLE_NONE')")
     Stream<EntityDescriptor> findAllDisabledAndNotOwnedByAdmin();
+
+    Stream<EntityDescriptor> findAllStreamByCreatedBy(String createdBy);
 }

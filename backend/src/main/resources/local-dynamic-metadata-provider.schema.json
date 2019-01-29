@@ -63,14 +63,12 @@
                     "description": "tooltip.refresh-delay-factor",
                     "type": "string",
                     "widget": {
-                        "id": "number",
-                        "step": 0.01
+                        "id": "string",
+                        "help": "message.real-number"
                     },
                     "placeholder": "label.real-number",
-                    "minimum": 0,
-                    "maximum": 1,
-                    "default": null,
-                    "pattern": "^([0]*(\\.[0-9]+)?|[0]*\\.[0-9]*[1-9][0-9]*)$"
+                    "default": "",
+                    "pattern": "^(?:([0]*(\\.[0-9]+)?|[0]*\\.[0-9]*[1-9][0-9]*)|)$"
                 },
                 "minCacheDuration": {
                     "title": "label.min-cache-duration",
@@ -87,6 +85,7 @@
                             "PT30M",
                             "PT1H",
                             "PT4H",
+                            "PT8H",
                             "PT12H",
                             "PT24H"
                         ]
@@ -109,6 +108,7 @@
                             "PT30M",
                             "PT1H",
                             "PT4H",
+                            "PT8H",
                             "PT12H",
                             "PT24H"
                         ]
@@ -131,6 +131,7 @@
                             "PT30M",
                             "PT1H",
                             "PT4H",
+                            "PT8H",
                             "PT12H",
                             "PT24H"
                         ]
@@ -176,6 +177,7 @@
                             "PT30M",
                             "PT1H",
                             "PT4H",
+                            "PT8H",
                             "PT12H",
                             "PT24H"
                         ]

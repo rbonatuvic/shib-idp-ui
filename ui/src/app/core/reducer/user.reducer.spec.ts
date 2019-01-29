@@ -13,9 +13,9 @@ describe('User Reducer', () => {
     const user: User = {
         username: 'foo',
         role: 'admin',
-        firstName: 'foo',
-        lastName: 'bar',
-        emailAddress: 'foo@bar.com'
+        firstName: 'somebody',
+        lastName: 'nobody',
+        emailAddress: 'email@edu.edu'
     };
 
     describe('undefined action', () => {
