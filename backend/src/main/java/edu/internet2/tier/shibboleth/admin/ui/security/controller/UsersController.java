@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +50,7 @@ public class UsersController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     @GetMapping
     public List<User> getAll() {
@@ -56,21 +59,19 @@ public class UsersController {
 
     @Transactional(readOnly = true)
     @GetMapping("/current")
-    public ResponseEntity<?> getCurrentUser() {
-        User user = userService.getCurrentUser();
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public User getCurrentUser(Principal principal) {
+        // TODO: fix this
+        return userService.getCurrentUser();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     @GetMapping("/{username}")
     public ResponseEntity<?> getOne(@PathVariable String username) {
         return ResponseEntity.ok(findUserOrThrowHttp404(username));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteOne(@PathVariable String username) {
@@ -79,6 +80,7 @@ public class UsersController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @PostMapping
     ResponseEntity<?> saveOne(@RequestBody User user) {
@@ -96,6 +98,7 @@ public class UsersController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @PatchMapping("/{username}")
     ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestBody User user) {

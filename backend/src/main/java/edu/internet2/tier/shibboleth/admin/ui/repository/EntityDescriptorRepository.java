@@ -16,10 +16,10 @@ public interface EntityDescriptorRepository extends CrudRepository<EntityDescrip
 
     EntityDescriptor findByResourceId(String resourceId);
 
-    Stream<EntityDescriptor> findAllByServiceEnabled(boolean serviceEnabled);
+    Stream<EntityDescriptor> findAllStreamByServiceEnabled(boolean serviceEnabled);
 
     @Query("select e from EntityDescriptor e")
-    Stream<EntityDescriptor> findAllByCustomQueryAndStream();
+    Stream<EntityDescriptor> findAllStreamByCustomQuery();
 
-    Stream<EntityDescriptor> findAllByCreatedBy(String createdBy);
+    Stream<EntityDescriptor> findAllStreamByCreatedBy(String createdBy);
 }

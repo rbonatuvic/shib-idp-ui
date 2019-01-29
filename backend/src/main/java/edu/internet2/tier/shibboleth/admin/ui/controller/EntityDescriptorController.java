@@ -74,6 +74,11 @@ public class EntityDescriptorController {
     public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) {
         final String entityId = edRepresentation.getEntityId();
 
+        ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
+        if (entityDescriptorEnablingDeniedResponse != null) {
+            return entityDescriptorEnablingDeniedResponse;
+        }
+
         ResponseEntity<?> existingEntityDescriptorConflictResponse = existingEntityDescriptorCheck(entityId);
         if (existingEntityDescriptorConflictResponse != null) {
             return existingEntityDescriptorConflictResponse;
@@ -113,7 +118,12 @@ public class EntityDescriptorController {
         if (existingEd == null) {
             return ResponseEntity.notFound().build();
         } else {
-            if (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy())) {
+            if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy()))) {
+                ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
+                if (entityDescriptorEnablingDeniedResponse != null) {
+                    return entityDescriptorEnablingDeniedResponse;
+                }
+
                 // Verify we're the only one attempting to update the EntityDescriptor
                 if (edRepresentation.getVersion() != existingEd.hashCode()) {
                     return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -142,11 +152,11 @@ public class EntityDescriptorController {
         User currentUser = userService.getCurrentUser();
         if (currentUser != null) {
             if (currentUser.getRole().equals("ROLE_ADMIN")) {
-                return ResponseEntity.ok(entityDescriptorRepository.findAllByCustomQueryAndStream()
+                return ResponseEntity.ok(entityDescriptorRepository.findAllStreamByCustomQuery()
                         .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
                         .collect(Collectors.toList()));
             } else {
-                return ResponseEntity.ok(entityDescriptorRepository.findAllByCreatedBy(currentUser.getUsername())
+                return ResponseEntity.ok(entityDescriptorRepository.findAllStreamByCreatedBy(currentUser.getUsername())
                         .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
                         .collect(Collectors.toList()));
             }
@@ -208,6 +218,17 @@ public class EntityDescriptorController {
                     .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format("The entity descriptor with entity id [%s] already exists.", entityId)));
         }
         //No existing entity descriptor, which is an OK condition indicated by returning a null conflict response
+        return null;
+    }
+
+    private ResponseEntity<?> entityDescriptorEnablePermissionsCheck(boolean serviceEnabled) {
+        User user = userService.getCurrentUser();
+        if (user != null) {
+            if (serviceEnabled && !user.getRole().equals("ROLE_ADMIN")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new ErrorResponse(HttpStatus.FORBIDDEN, "You do not have the permissions necessary to enable this service."));
+            }
+        }
         return null;
     }
 

@@ -57,9 +57,6 @@ public class JsonSchemaComponentsConfiguration {
     @Setter
     private String nameIdFormatFilterUiSchemaLocation = "classpath:nameid-filter.schema.json";
 
-    @Autowired
-    UserRepository userRepository;
-
     @Bean
     public JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader, ObjectMapper jacksonMapper) {
         return JsonSchemaResourceLocationRegistry.inMemory()

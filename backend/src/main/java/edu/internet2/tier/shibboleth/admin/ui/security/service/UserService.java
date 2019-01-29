@@ -48,6 +48,7 @@ public class UserService {
     }
 
     public User getCurrentUser() {
+        //TODO: Consider returning an Optional here
         User user = null;
         if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
             String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

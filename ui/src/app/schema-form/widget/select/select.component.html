@@ -42,7 +42,7 @@
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
             <ng-container *ngIf="!first">, </ng-container>
-            <translate-i18n [key]="error">error</translate-i18n>
+            <translate-i18n [key]="getError(error)">error</translate-i18n>
         </ng-container>
     </small>
     <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
