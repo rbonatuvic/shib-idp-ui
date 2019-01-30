@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import * as fromRoot from '../../app.reducer';
 import * as fromCore from '../../core/reducer';
@@ -21,6 +21,8 @@ import { map } from 'rxjs/operators';
 export class UserManagementComponent implements OnInit {
 
     users$: Observable<Admin[]>;
+    currentUser: Admin;
+    userSub: Subscription;
     roles$: Observable<string[]>;
 
     hasUsers$: Observable<boolean>;
@@ -35,6 +37,10 @@ export class UserManagementComponent implements OnInit {
     ngOnInit(): void {
         this.users$ = this.store.select(fromAdmin.getAllConfiguredUsers);
         this.hasUsers$ = this.users$.pipe(map(userList => userList.length > 0));
+        this.users$ = this.store.select(fromAdmin.getAllAdmins);
+        let user$ = this.store.select(fromCore.getUser);
+
+        this.userSub = user$.subscribe(u => this.currentUser = u);
     }
 
     setUserRole(user: Admin, change: string): void {
