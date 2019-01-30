@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import * as fromRoot from '../../../app.reducer';
 import * as fromCore from '../../../core/reducer';
@@ -9,9 +9,7 @@ import * as fromAdmin from '../reducer';
 import { LoadAdminRequest, UpdateAdminRequest, RemoveAdminRequest } from '../action/collection.action';
 import { Admin } from '../model/admin';
 import { LoadRoleRequest } from '../../../core/action/configuration.action';
-import { ModalService } from '../../../core/service/modal.service';
 import { DeleteUserDialogComponent } from '../component/delete-user-dialog.component';
-import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -23,6 +21,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class AdminManagementPageComponent {
 
     users$: Observable<Admin[]>;
+    currentUser: Admin;
+    userSub: Subscription;
     roles$: Observable<string[]>;
 
     constructor(
@@ -34,6 +34,9 @@ export class AdminManagementPageComponent {
 
         this.users$ = this.store.select(fromAdmin.getAllAdmins);
         this.roles$ = this.store.select(fromCore.getRoles);
+        let user$ = this.store.select(fromCore.getUser);
+
+        this.userSub = user$.subscribe(u => this.currentUser = u);
     }
 
     setUserRole(user: Admin, change: string): void {
