@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
@@ -233,6 +234,26 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         when:
         genXmlSnippet(markupBuilder) {
             JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, it) {}
+        }
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/532.xml', domBuilder.parseText(writer.toString()))
+    }
+
+    def 'SHIBUI-960 test generating FileBackedHttpMetadataResolver with empty EntityRoleWhitelistFilter produces no filter in the xml'() {
+        given:
+        def resolver = testObjectGenerator.fileBackedHttpMetadataResolver()
+        def erwFilter = testObjectGenerator.entityRoleWhitelistFilter()
+        erwFilter.retainedRoles.clear()
+        resolver.metadataFilters.add(erwFilter)
+
+        when:
+        genXmlSnippet(markupBuilder) {
+            JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForResolver(resolver, markupBuilder) {
+                resolver.metadataFilters.each { MetadataFilter filter ->
+                    JPAMetadataResolverServiceImpl.cast(metadataResolverService).constructXmlNodeForFilter(filter, markupBuilder)
+                }
+            }
         }
 
         then:
