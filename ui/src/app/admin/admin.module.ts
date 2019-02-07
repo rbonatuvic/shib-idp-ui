@@ -11,13 +11,16 @@ import { AdminManagementPageComponent } from './container/admin-management.compo
 import { AdminComponent } from './admin.component';
 import { reducers } from './reducer';
 import { AdminService } from './service/admin.service';
-import { AdminCollectionEffects } from './effect/collection.effect';
+import { AdminCollectionEffects } from './effect/admin-collection.effect';
 import { EffectsModule } from '@ngrx/effects';
 import { DeleteUserDialogComponent } from './component/delete-user-dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ActionRequiredPageComponent } from './container/action-required.component';
 import { AccessRequestComponent } from './component/access-request.component';
 import { UserManagementComponent } from './component/user-management.component';
+import { EnableMetadataComponent } from './component/enable-metadata.component';
+import { ManagerModule } from '../metadata/manager/manager.module';
+import { MetadataCollectionEffects } from './effect/metadata-collection.effect';
 
 @NgModule({
     declarations: [
@@ -26,7 +29,8 @@ import { UserManagementComponent } from './component/user-management.component';
         DeleteUserDialogComponent,
         UserManagementComponent,
         ActionRequiredPageComponent,
-        AccessRequestComponent
+        AccessRequestComponent,
+        EnableMetadataComponent
     ],
     entryComponents: [
         DeleteUserDialogComponent
@@ -35,13 +39,14 @@ import { UserManagementComponent } from './component/user-management.component';
         CommonModule,
         I18nModule,
         StoreModule.forFeature('admin', reducers),
-        EffectsModule.forFeature([AdminCollectionEffects]),
+        EffectsModule.forFeature([AdminCollectionEffects, MetadataCollectionEffects]),
         FormsModule,
         RouterModule,
         HttpClientModule,
         SharedModule,
         I18nModule,
-        NgbModalModule
+        NgbModalModule,
+        ManagerModule
     ],
     providers: [
         AdminService

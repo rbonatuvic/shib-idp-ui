@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MetadataResolver } from '../model';
 
@@ -16,6 +16,13 @@ export class ResolverService {
 
     query(): Observable<MetadataResolver[]> {
         return this.http.get<MetadataResolver[]>(`${ this.base }${ this.endpoint }s`, {})
+            .pipe(
+                catchError(err => throwError([]))
+            );
+    }
+
+    queryForAdmin(): Observable<MetadataResolver[]> {
+        return this.http.get<MetadataResolver[]>(`${this.base}${this.endpoint}/disabledNonAdmin`, {})
             .pipe(
                 catchError(err => throwError([]))
             );

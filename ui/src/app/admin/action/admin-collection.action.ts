@@ -11,7 +11,6 @@ export enum AdminCollectionActionTypes {
     UPDATE_ADMIN_SUCCESS = '[Admin Collection] Update Admin Success',
     UPDATE_ADMIN_FAIL = '[Admin Collection] Update Admin Fail',
 
-    LOAD_NEW_USERS_REQUEST = '[Admin Collection] Load New Users Request',
     LOAD_ADMIN_REQUEST = '[Admin Collection] Load Admin Request',
     LOAD_ADMIN_SUCCESS = '[Admin Collection] Load Admin Success',
     LOAD_ADMIN_ERROR = '[Admin Collection] Load Admin Error',
@@ -48,12 +47,6 @@ export class SelectAdminFail implements Action {
 
 export class LoadAdminRequest implements Action {
     readonly type = AdminCollectionActionTypes.LOAD_ADMIN_REQUEST;
-
-    constructor() { }
-}
-
-export class LoadNewUsersRequest implements Action {
-    readonly type = AdminCollectionActionTypes.LOAD_NEW_USERS_REQUEST;
 
     constructor() { }
 }
@@ -133,7 +126,6 @@ export type AdminCollectionActionsUnion =
     | LoadAdminRequest
     | LoadAdminSuccess
     | LoadAdminError
-    | LoadNewUsersRequest
     | AddAdminRequest
     | AddAdminSuccess
     | AddAdminFail

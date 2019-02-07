@@ -12,6 +12,9 @@ import { MetadataTypes } from '../../domain/domain.type';
 export class EntityItemComponent {
     types = MetadataTypes;
     @Input() isOpen: boolean;
+    @Input() allowDelete: boolean;
+    @Input() showAdminFunctions: boolean;
+    @Output() toggleEnabled = new EventEmitter();
     @Output() select = new EventEmitter();
     @Output() toggle = new EventEmitter();
     @Output() preview = new EventEmitter();

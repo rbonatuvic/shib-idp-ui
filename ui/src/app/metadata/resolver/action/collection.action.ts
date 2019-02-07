@@ -12,12 +12,15 @@ export enum ResolverCollectionActionTypes {
     UPDATE_RESOLVER_FAIL = '[Metadata Resolver] Update Fail',
     UPDATE_RESOLVER_CONFLICT = '[Metadata Resolver] Update Conflict',
 
-    LOAD_RESOLVER_REQUEST = '[Metadata Resolver Collection] Resolver REQUEST',
-    LOAD_RESOLVER_SUCCESS = '[Metadata Resolver Collection] Resolver SUCCESS',
-    LOAD_RESOLVER_ERROR = '[Metadata Resolver Collection] Resolver ERROR',
+    LOAD_RESOLVER_REQUEST = '[Metadata Resolver Collection] Load Resolver REQUEST',
+    LOAD_RESOLVER_SUCCESS = '[Metadata Resolver Collection] Load Resolver SUCCESS',
+    LOAD_RESOLVER_ERROR = '[Metadata Resolver Collection] Load Resolver ERROR',
+    LOAD_ADMIN_RESOLVERS_REQUEST = '[Metadata Resolver Collection] Load Admin Resolver REQUEST',
+
     ADD_RESOLVER = '[Metadata Resolver Collection] Add Resolver',
     ADD_RESOLVER_SUCCESS = '[Metadata Resolver Collection] Add Resolver Success',
     ADD_RESOLVER_FAIL = '[Metadata Resolver Collection] Add Resolver Fail',
+
     REMOVE_RESOLVER = '[Metadata Resolver Collection] Remove Resolver',
     REMOVE_RESOLVER_SUCCESS = '[Metadata Resolver Collection] Remove Resolver Success',
     REMOVE_RESOLVER_FAIL = '[Metadata Resolver Collection] Remove Resolver Fail',
@@ -46,6 +49,12 @@ export class SelectResolverSuccess implements Action {
 
 export class LoadResolverRequest implements Action {
     readonly type = ResolverCollectionActionTypes.LOAD_RESOLVER_REQUEST;
+
+    constructor() { }
+}
+
+export class LoadAdminResolverRequest implements Action {
+    readonly type = ResolverCollectionActionTypes.LOAD_ADMIN_RESOLVERS_REQUEST;
 
     constructor() { }
 }
@@ -138,6 +147,7 @@ export type ResolverCollectionActionsUnion =
     | LoadResolverRequest
     | LoadResolverSuccess
     | LoadResolverError
+    | LoadAdminResolverRequest
     | AddResolverRequest
     | AddResolverSuccess
     | AddResolverFail

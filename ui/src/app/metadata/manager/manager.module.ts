@@ -45,6 +45,9 @@ import { I18nModule } from '../../i18n/i18n.module';
         HttpClientModule,
         SharedModule,
         I18nModule
+    ],
+    exports: [
+        ResolverItemComponent
     ]
 })
 export class ManagerModule {

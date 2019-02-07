@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
@@ -8,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResol
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
@@ -28,11 +30,13 @@ class DevConfig {
     private final RoleRepository roleRepository
 
     private final MetadataResolverRepository metadataResolverRepository
+    private final EntityDescriptorRepository entityDescriptorRepository
 
-    DevConfig(UserRepository adminUserRepository, MetadataResolverRepository metadataResolverRepository, RoleRepository roleRepository) {
+    DevConfig(UserRepository adminUserRepository, MetadataResolverRepository metadataResolverRepository, RoleRepository roleRepository, EntityDescriptorRepository entityDescriptorRepository) {
         this.adminUserRepository = adminUserRepository
         this.metadataResolverRepository = metadataResolverRepository
         this.roleRepository = roleRepository
+        this.entityDescriptorRepository = entityDescriptorRepository
     }
 
     @Transactional
@@ -137,6 +141,19 @@ class DevConfig {
                 return it
             })
             return it
+        })
+    }
+
+    @Profile('ed')
+    @Transactional
+    @Bean
+    EntityDescriptor ed() {
+        return this.entityDescriptorRepository.save(new EntityDescriptor().with {
+            it.createdBy = 'nonadmin'
+            it.entityID = 'testID'
+            it.serviceEnabled = true
+            it.serviceProviderName = 'testSP'
+            it
         })
     }
 }

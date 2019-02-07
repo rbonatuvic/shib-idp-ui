@@ -18,14 +18,13 @@ export class CustomRouterStateSerializer implements RouterStateSerializer<Router
 export function removeNulls(attribute: any, discardObjects: boolean = false): any {
     if (!attribute) { return {}; }
     let removed = Object.keys(attribute).reduce((coll, val, index) => {
-        if (attribute[val]) {
+        if (attribute[val] !== null) {
             if (!discardObjects || checkByType(attribute[val])) {
                 coll[val] = attribute[val];
             }
         }
         return coll;
     }, {});
-
     return removed;
 }
 

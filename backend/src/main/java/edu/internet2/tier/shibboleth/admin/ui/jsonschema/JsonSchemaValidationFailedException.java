@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema;
 
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -8,11 +10,12 @@ import java.util.List;
  *
  * @author Dmitriy Kopylenko
  */
-class JsonSchemaValidationFailedException extends RuntimeException {
+@Getter
+public class JsonSchemaValidationFailedException extends RuntimeException {
 
     List<String> errors;
 
-    JsonSchemaValidationFailedException(List<String> errors) {
-        this.errors = errors;
+    JsonSchemaValidationFailedException(List<?> errors) {
+        this.errors = (List<String>) errors;
     }
 }

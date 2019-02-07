@@ -1,37 +1,61 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../core/reducer';
-import * as fromCollection from './collection.reducer';
+import * as fromAdminCollection from './admin-collection.reducer';
+import * as fromMetadataCollection from './metadata-collection.reducer';
+import { getInCollectionFn } from '../../metadata/domain/domain.util';
 
 export interface AdminState {
-    collection: fromCollection.CollectionState;
+    admins: fromAdminCollection.CollectionState;
+    metadata: fromMetadataCollection.CollectionState;
 }
 
 export const reducers = {
-    collection: fromCollection.reducer
+    admins: fromAdminCollection.reducer,
+    metadata: fromMetadataCollection.reducer
 };
 
 export interface State extends fromRoot.State {
     'admin': AdminState;
 }
 
-export const getCollectionFromStateFn = (state: AdminState) => state.collection;
+export const getAdminsCollectionFromStateFn = (state: AdminState) => state.admins;
+export const getMetadataCollectionFromStateFn = (state: AdminState) => state.metadata;
 
-export const getAdminState = createFeatureSelector<AdminState>('admin');
+export const getFeatureState = createFeatureSelector<AdminState>('admin');
 
 /*
  *   Select pieces of Admin Collection
 */
-export const getCollectionState = createSelector(getAdminState, getCollectionFromStateFn);
-export const getAllAdmins = createSelector(getCollectionState, fromCollection.selectAllAdmins);
-export const getCollectionSaving = createSelector(getCollectionState, fromCollection.getIsSaving);
+export const getAdminCollectionState = createSelector(getFeatureState, getAdminsCollectionFromStateFn);
+export const getAllAdmins = createSelector(getAdminCollectionState, fromAdminCollection.selectAllAdmins);
+export const getCollectionSaving = createSelector(getAdminCollectionState, fromAdminCollection.getIsSaving);
 
-export const getAdminEntities = createSelector(getCollectionState, fromCollection.selectAdminEntities);
-export const getSelectedAdminId = createSelector(getCollectionState, fromCollection.getSelectedAdminId);
+export const getAdminEntities = createSelector(getAdminCollectionState, fromAdminCollection.selectAdminEntities);
+export const getSelectedAdminId = createSelector(getAdminCollectionState, fromAdminCollection.getSelectedAdminId);
 export const getSelectedAdmin = createSelector(getAdminEntities, getSelectedAdminId, (entities, selectedId) => {
     return selectedId && entities[selectedId];
 });
-export const getAdminIds = createSelector(getCollectionState, fromCollection.selectAdminIds);
+export const getAdminIds = createSelector(getAdminCollectionState, fromAdminCollection.selectAdminIds);
+export const getAllConfiguredAdmins = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role !== 'ROLE_NONE'));
 export const getAllNewUsers = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role === 'ROLE_NONE'));
-export const getAllConfiguredUsers = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role !== 'ROLE_NONE'));
 
-export const getTotalActionsRequired = createSelector(getAllNewUsers, (users) => users.length);
+/*
+ *   Select pieces of Metadata Collection
+*/
+export const getMetadataCollectionState = createSelector(getFeatureState, getMetadataCollectionFromStateFn);
+
+export const getMetadataEntities = createSelector(getMetadataCollectionState, fromMetadataCollection.selectMetadataEntities);
+export const getSelectedMetadataId = createSelector(getMetadataCollectionState, fromMetadataCollection.getSelectedMetadataId);
+export const getMetadataIds = createSelector(getMetadataCollectionState, fromMetadataCollection.selectMetadataIds);
+
+export const getMetadataCollection = createSelector(getMetadataCollectionState, getMetadataIds, fromMetadataCollection.selectAllMetadata);
+export const getSelectedMetadata = createSelector(getMetadataEntities, getSelectedMetadataId, getInCollectionFn);
+
+export const totalUserFn = (users) => users.length;
+export const totalMetadataFn = (md) => md.filter(obj => !obj.serviceEnabled).length;
+export const totalActionsFn = (users, md) => md + users;
+
+export const getTotalNewUsers = createSelector(getAllNewUsers, totalUserFn);
+export const getTotalNewMetadata = createSelector(getMetadataCollection, totalMetadataFn);
+
+export const getTotalActionsRequired = createSelector(getTotalNewUsers, getTotalNewMetadata, totalActionsFn);

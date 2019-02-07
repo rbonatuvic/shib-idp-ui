@@ -55,11 +55,6 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
         ] as HttpInputMessage
     }
 
-    @ExceptionHandler(JsonSchemaValidationFailedException)
-    final ResponseEntity<?> handleJsonSchemaValidationFailedException(JsonSchemaValidationFailedException ex) {
-        ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("400", String.join('\n', ex.errors)))
-    }
-
     @PostConstruct
     void init() {
         this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
