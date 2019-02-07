@@ -1,4 +1,4 @@
-<div class="container-fluid p-3" role="section">
+<div class="container-fluid p-3" role="navigation">
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link"
@@ -18,10 +18,21 @@
         </li>
         <li class="nav-item" *ngIf="isAdmin$ | async">
             <a class="nav-link"
-                [routerLink]="['./', 'users', 'admin']"
+                [routerLink]="['./', 'admin', 'management']"
                 routerLinkActive="active"
                 translate="label.admin">
                 Admin
+            </a>
+        </li>
+        <li class="nav-item" *ngIf="isAdmin$ | async">
+            <a class="nav-link"
+                [routerLink]="['./', 'admin', 'actions']"
+                routerLinkActive="active">
+                <translate-i18n key="label.action-required">Action Required</translate-i18n>
+                <ng-container *ngIf="hasActions$">
+                    &nbsp;
+                    <span class="badge badge-pill badge-danger">{{ actionsRequired$ | async }}</span>
+                </ng-container>
             </a>
         </li>
     </ul>

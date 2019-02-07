@@ -8,7 +8,10 @@
             </div>
         </div>
         <div class="p-3">
-            <table class="table table-striped">
+            <div class="alert alert-info" *ngIf="!(hasUsers$ | async)">
+                <p>There are no users configured in the system for you to manage.</p>
+            </div>
+            <table class="table table-striped" *ngIf="hasUsers$ | async">
                 <thead class="thead-primary">
                     <tr>
                         <th scope="col" translate="label.user-id">UserId</th>

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 

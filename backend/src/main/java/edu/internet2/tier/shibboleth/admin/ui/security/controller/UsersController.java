@@ -73,6 +73,13 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
+    @GetMapping("/role/{rolename}")
+    public ResponseEntity<?> getUsersWithRole(@PathVariable String rolename) {
+        return ResponseEntity.ok(userRepository.findByRoles_Name(rolename));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteOne(@PathVariable String username) {
         User user = findUserOrThrowHttp404(username);

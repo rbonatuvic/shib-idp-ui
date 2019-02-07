@@ -1,39 +1,43 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
-import * as fromRoot from '../../../app.reducer';
-import * as fromCore from '../../../core/reducer';
+import * as fromRoot from '../../app.reducer';
+import * as fromCore from '../../core/reducer';
 import * as fromAdmin from '../reducer';
 
-import { LoadAdminRequest, UpdateAdminRequest, RemoveAdminRequest } from '../action/collection.action';
+import { UpdateAdminRequest, RemoveAdminRequest } from '../action/collection.action';
 import { Admin } from '../model/admin';
-import { LoadRoleRequest } from '../../../core/action/configuration.action';
 import { DeleteUserDialogComponent } from '../component/delete-user-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { map } from 'rxjs/operators';
 
 @Component({
-    selector: 'admin-management-page',
+    selector: 'user-management',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './admin-management.component.html',
+    templateUrl: './user-management.component.html',
     styleUrls: []
 })
-export class AdminManagementPageComponent {
+export class UserManagementComponent implements OnInit {
 
     users$: Observable<Admin[]>;
     currentUser: Admin;
     userSub: Subscription;
     roles$: Observable<string[]>;
 
-    constructor(
-        private store: Store<fromRoot.State>,
-        private modal: NgbModal
-    ) {
-        this.store.dispatch(new LoadAdminRequest());
-        this.store.dispatch(new LoadRoleRequest());
+    hasUsers$: Observable<boolean>;
 
+    constructor(
+        protected store: Store<fromRoot.State>,
+        protected modal: NgbModal
+    ) {
+        this.roles$ = this.store.select(fromCore.getUserRoles);
+    }
+
+    ngOnInit(): void {
+        this.users$ = this.store.select(fromAdmin.getAllConfiguredUsers);
+        this.hasUsers$ = this.users$.pipe(map(userList => userList.length > 0));
         this.users$ = this.store.select(fromAdmin.getAllAdmins);
-        this.roles$ = this.store.select(fromCore.getRoles);
         let user$ = this.store.select(fromCore.getUser);
 
         this.userSub = user$.subscribe(u => this.currentUser = u);
