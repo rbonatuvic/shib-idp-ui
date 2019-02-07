@@ -95,7 +95,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def emptyRecordsFromRepository = [].stream()
         def expectedEmptyListResponseBody = '[]'
@@ -118,7 +118,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true,
@@ -168,7 +168,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
@@ -242,7 +242,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
@@ -293,7 +293,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def expectedEntityId = 'https://shib'
@@ -376,7 +376,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
@@ -453,7 +453,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def providedResourceId = 'uuid-1'
 
@@ -470,7 +470,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
@@ -521,7 +521,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
@@ -573,7 +573,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
@@ -599,7 +599,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
@@ -634,7 +634,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
@@ -670,7 +670,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
@@ -700,7 +700,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
@@ -820,7 +820,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def postedMetadataUrl = "http://test.scaldingspoon.org/test1"
         def restXml = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -903,7 +903,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def entityDescriptor = generator.buildEntityDescriptor()
         def updatedEntityDescriptor = generator.buildEntityDescriptor()
@@ -934,7 +934,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USER'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def entityDescriptor = generator.buildEntityDescriptor()
         entityDescriptor.serviceEnabled = false
@@ -964,7 +964,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'someUser'
         def role = 'ROLE_USERN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def entityDescriptor = generator.buildEntityDescriptor()
         entityDescriptor.createdBy = 'someoneElse'
@@ -990,7 +990,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
-        authentication.getPrincipal() >> username
+        authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def entityDescriptor = generator.buildEntityDescriptor()
         def updatedEntityDescriptor = generator.buildEntityDescriptor()

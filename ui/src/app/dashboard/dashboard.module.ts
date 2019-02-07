@@ -8,7 +8,6 @@ import { DashboardPageComponent } from './container/dashboard.component';
 import { DashboardRoutingModule } from './dashboard.routing';
 import { MetadataModule } from '../metadata/metadata.module';
 import { AdminModule } from '../admin/admin.module';
-import { CommonModule } from '@angular/common';
 
 
 @NgModule({

@@ -51,7 +51,7 @@ public class UserService {
         //TODO: Consider returning an Optional here
         User user = null;
         if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
-            String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String principal = SecurityContextHolder.getContext().getAuthentication().getName();
             if (StringUtils.isNotBlank(principal)) {
                 Optional<User> persistedUser = userRepository.findByUsername(principal);
                 if (persistedUser.isPresent()) {

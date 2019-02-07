@@ -24,7 +24,7 @@
                 Admin
             </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isAdmin$ | async">
             <a class="nav-link"
                 [routerLink]="['./', 'admin', 'actions']"
                 routerLinkActive="active">
