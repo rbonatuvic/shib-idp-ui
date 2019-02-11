@@ -7,6 +7,8 @@ import * as fromCore from '../../core/reducer';
 import { Observable } from 'rxjs';
 import { LoadRoleRequest } from '../../core/action/configuration.action';
 import { map } from 'rxjs/operators';
+import { LoadAdminRequest } from '../../admin/action/admin-collection.action';
+import { LoadMetadataRequest } from '../../admin/action/metadata-collection.action';
 
 @Component({
     selector: 'dashboard-page',
@@ -26,6 +28,9 @@ export class DashboardPageComponent {
         this.actionsRequired$ = this.store.select(fromAdmin.getTotalActionsRequired);
         this.hasActions$ = this.actionsRequired$.pipe(map(a => a > 0));
         this.isAdmin$ = this.store.select(fromCore.isCurrentUserAdmin);
+
         this.store.dispatch(new LoadRoleRequest());
+        this.store.dispatch(new LoadAdminRequest());
+        this.store.dispatch(new LoadMetadataRequest());
     }
 }
