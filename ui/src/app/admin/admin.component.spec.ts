@@ -31,8 +31,6 @@ describe('Admin Root Component', () => {
 
     it('should compile', () => {
         fixture.detectChanges();
-
         expect(fixture).toBeDefined();
-        expect(store.dispatch).toHaveBeenCalled();
     });
 });

@@ -34,8 +34,6 @@ export class EnableMetadataComponent implements OnInit {
         private router: Router,
         private modalService: NgbModal
     ) {
-        this.store.dispatch(new LoadMetadataRequest());
-
         this.resolvers$ = this.store
             .select(fromMetadata.getMetadataCollection)
             .pipe(

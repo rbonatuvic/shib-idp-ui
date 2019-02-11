@@ -12,7 +12,5 @@ import { LoadAdminRequest } from './action/admin-collection.action';
 export class AdminComponent {
     constructor(
         private store: Store<fromRoot.State>
-    ) {
-        this.store.dispatch(new LoadAdminRequest());
-    }
+    ) {}
 }
