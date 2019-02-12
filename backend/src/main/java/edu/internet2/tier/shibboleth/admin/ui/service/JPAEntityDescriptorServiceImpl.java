@@ -522,7 +522,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
                                     throw new RuntimeException("Multiple/No values detected where one is expected!");
                                 }
-                                attributeValues = getValueFromXSStringOrXSAny(jpaAttribute.getAttributeValues().get(0));
+                                attributeValues = getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
                                 break;
                             case INTEGER:
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
@@ -536,7 +536,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 }
                                 if (overrideProperty.getPersistType() != null &&
                                     !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
-                                    attributeValues = getValueFromXSStringOrXSAny(jpaAttribute.getAttributeValues().get(0));
+                                    attributeValues = getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
                                 } else {
                                     attributeValues = Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
                                             .get(0)).getStoredValue());
@@ -545,7 +545,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                             case SET:
                             case LIST:
                                 attributeValues = jpaAttribute.getAttributeValues().stream()
-                                        .map(attributeValue -> getValueFromXSStringOrXSAny(attributeValue))
+                                        .map(attributeValue -> getValueFromXMLObject(attributeValue))
                                         .collect(Collectors.toList());
                         }
                         relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
@@ -559,11 +559,17 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return representation;
     }
 
-    private String getValueFromXSStringOrXSAny(XMLObject xmlObject) {
-        if (xmlObject instanceof XSAny) {
-            return ((XSAny)xmlObject).getTextContent();
-        } else {
-            return ((XSString)xmlObject).getValue();
+    private String getValueFromXMLObject(XMLObject xmlObject) {
+        String objectType = xmlObject.getClass().getSimpleName();
+        switch (objectType) {
+            case "XSAny":
+                return ((XSAny)xmlObject).getTextContent();
+            case "XSString":
+                return ((XSString)xmlObject).getValue();
+            case "XSBoolean":
+                return ((XSBoolean)xmlObject).getStoredValue();
+            default:
+                throw new RuntimeException(String.format("Unsupported XML Object type [%s]", objectType));
         }
     }
 
