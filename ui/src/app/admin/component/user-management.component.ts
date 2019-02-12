@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
@@ -18,7 +18,7 @@ import { map } from 'rxjs/operators';
     templateUrl: './user-management.component.html',
     styleUrls: []
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent implements OnInit, OnDestroy {
 
     users$: Observable<Admin[]>;
     currentUser: Admin;
@@ -32,15 +32,18 @@ export class UserManagementComponent implements OnInit {
         protected modal: NgbModal
     ) {
         this.roles$ = this.store.select(fromCore.getUserRoles);
+        let user$ = this.store.select(fromCore.getUser);
+        this.userSub = user$.subscribe(u => this.currentUser = u);
     }
 
     ngOnInit(): void {
         this.users$ = this.store.select(fromAdmin.getAllConfiguredAdmins);
         this.hasUsers$ = this.users$.pipe(map(userList => userList.length > 0));
         this.users$ = this.store.select(fromAdmin.getAllAdmins);
-        let user$ = this.store.select(fromCore.getUser);
+    }
 
-        this.userSub = user$.subscribe(u => this.currentUser = u);
+    ngOnDestroy(): void {
+        this.userSub.unsubscribe();
     }
 
     setUserRole(user: Admin, change: string): void {
