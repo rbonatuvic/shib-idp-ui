@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Configuration
 @ConfigurationProperties(prefix = "shibui")
@@ -24,7 +25,7 @@ public class ShibUIConfiguration {
      * A Resource containing a CSV of users to bootstrap into the system. Currently, this must be in format
      *
      * <code>
-     * username,password,firstName,lastName,role
+     * username,password,firstName,lastName,role,email
      * </code>
      *
      * Note that the password must be encrypted in the file. Ensure that you prepend the encoder to the value, e.g.
@@ -34,4 +35,9 @@ public class ShibUIConfiguration {
      * </code>
      */
     private Resource userBootstrapResource;
+
+    /**
+     * A list of roles to bootstrap into the system.
+     */
+    private Set<String> roles;
 }
