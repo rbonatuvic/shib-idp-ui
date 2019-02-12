@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: dev
+    include:
 server:
   port: 8443
   ssl:
@@ -9,6 +9,8 @@ server:
     keyStoreType: "PKCS12"
     keyAlias: "tomcat"
 shibui:
+  user-bootstrap-resource: file:/conf/users.csv
+  roles: ROLE_ADMIN,ROLE_NONE,ROLE_USER,ROLE_PONY
   pac4j:
     keystorePath: "/conf/samlKeystore.jks"
     keystorePassword: "changeit"

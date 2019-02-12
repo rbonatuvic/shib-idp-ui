@@ -44,4 +44,19 @@ class UserBootstrapTests extends Specification {
         assert userRepository.findAll().size() == 2
         assert roleRepository.findAll().size() == 2
     }
+
+    def "bootstrap roles"() {
+        setup:
+        shibUIConfiguration.roles = ['ROLE_ADMIN', 'ROLE_USER']
+        def userbootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository)
+
+        when:
+        userbootstrap.bootstrapUsersAndRoles(null)
+
+        then:
+        noExceptionThrown()
+        assert roleRepository.findAll().size() == 2
+        assert roleRepository.findByName('ROLE_ADMIN').get()
+        assert roleRepository.findByName('ROLE_USER').get()
+    }
 }
