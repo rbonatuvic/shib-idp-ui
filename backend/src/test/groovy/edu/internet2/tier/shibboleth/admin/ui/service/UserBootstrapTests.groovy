@@ -33,6 +33,8 @@ class UserBootstrapTests extends Specification {
 
     def "simple test"() {
         setup:
+        userRepository.deleteAll()
+        roleRepository.deleteAll()
         shibUIConfiguration.userBootstrapResource = new ClassPathResource('/conf/1044.csv')
         def userBootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository)
 
@@ -47,6 +49,8 @@ class UserBootstrapTests extends Specification {
 
     def "bootstrap roles"() {
         setup:
+        userRepository.deleteAll()
+        roleRepository.deleteAll()
         shibUIConfiguration.roles = ['ROLE_ADMIN', 'ROLE_USER']
         def userbootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository)
 
