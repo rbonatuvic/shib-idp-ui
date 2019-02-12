@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Configuration
 @ConfigurationProperties(prefix = "shibui")
@@ -38,5 +39,5 @@ public class ShibUIConfiguration {
     /**
      * A list of roles to bootstrap into the system.
      */
-    private List<String> roles;
+    private Set<String> roles;
 }
