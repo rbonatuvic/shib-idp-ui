@@ -59,7 +59,7 @@ class UserBootstrapTests extends Specification {
 
         then:
         noExceptionThrown()
-        assert roleRepository.findAll().size() == 2
+        assert roleRepository.findAll().size() == 3
         assert roleRepository.findByName('ROLE_ADMIN').get()
         assert roleRepository.findByName('ROLE_USER').get()
     }
