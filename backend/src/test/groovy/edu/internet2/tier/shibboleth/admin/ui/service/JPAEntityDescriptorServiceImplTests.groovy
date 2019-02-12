@@ -6,7 +6,10 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSAnyBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSBooleanBuilder
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSStringBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
@@ -784,6 +787,59 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         then:
         def actualVersion = representation.version
         expectedVersion == actualVersion
+    }
+
+    def "SHIBUI-1220 getValueFromXMLObject handles XSAny"() {
+        given:
+        def builder = new XSAnyBuilder()
+        def xsAny = builder.buildObject('namespace', 'localname', 'prefix')
+        def expectedTextContent = 'expectedTextContent'
+        xsAny.setTextContent(expectedTextContent)
+
+        when:
+        def result = service.getValueFromXMLObject(xsAny)
+
+        then:
+        result == expectedTextContent
+    }
+
+    def "SHIBUI-1220 getValueFromXMLObject handles XSString"() {
+        given:
+        def builder = new XSStringBuilder()
+        def xsString = builder.buildObject('namespace', 'localname', 'prefix')
+        def expectedValue = 'expectedValue'
+        xsString.setValue(expectedValue)
+
+        when:
+        def result = service.getValueFromXMLObject(xsString)
+
+        then:
+        result == expectedValue
+    }
+
+    def "SHIBUI-1220 getValueFromXMLObject handles XSBoolean"() {
+        given:
+        def builder = new XSBooleanBuilder()
+        def xsBoolean = builder.buildObject('namespace', 'localname', 'prefix')
+        def expectedValue = 'true'
+        xsBoolean.setStoredValue(expectedValue)
+
+        when:
+        def result = service.getValueFromXMLObject(xsBoolean)
+
+        then:
+        result == expectedValue
+    }
+
+    def "SHIBUI-1220 getValueFromXMLObject throws RuntimeException for unhandled object type"() {
+        given:
+        def unhandledObject = new Object()
+
+        when:
+        service.getValueFromXMLObject(unhandledObject)
+
+        then:
+        thrown RuntimeException
     }
 
     EntityDescriptor generateRandomEntityDescriptor() {
