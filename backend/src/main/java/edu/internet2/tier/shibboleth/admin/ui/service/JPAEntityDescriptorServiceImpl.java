@@ -300,13 +300,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
 
         if (representation.getRelyingPartyOverrides() != null || (representation.getAttributeRelease() != null && representation.getAttributeRelease().size() > 0)) {
-            // TODO: fix implementation
+            // TODO: review if we need more than a naive implementation
+            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
             getEntityAttributes(ed).getAttributes().addAll(entityService.getAttributeListFromEntityRepresentation(representation));
         } else {
-            EntityAttributes entityAttributes = getEntityAttributes(ed, false);
-            if (entityAttributes != null) {
-                entityAttributes.getAttributes().clear();
-            }
+            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
         }
         return ed;
     }
@@ -387,6 +385,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return getEntityAttributes(ed, true);
     }
 
+    private Optional<EntityAttributes> getOptionalEntityAttributes(EntityDescriptor ed) {
+        return Optional.ofNullable(getEntityAttributes(ed, false));
+    }
+
     private EntityAttributes getEntityAttributes(EntityDescriptor ed, boolean create) {
         Extensions extensions = ed.getExtensions();
         if (extensions == null && !create) {
@@ -397,12 +399,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             ed.setExtensions(extensions);
         }
 
-        EntityAttributes entityAttributes;
+        EntityAttributes entityAttributes = null;
         if (extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).size() > 0) {
             entityAttributes = (EntityAttributes) extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0);
         } else {
-            entityAttributes = ((EntityAttributesBuilder) openSamlObjects.getBuilderFactory().getBuilder(EntityAttributes.DEFAULT_ELEMENT_NAME)).buildObject();
-            extensions.getUnknownXMLObjects().add(entityAttributes);
+            if (create) {
+                entityAttributes = ((EntityAttributesBuilder) openSamlObjects.getBuilderFactory().getBuilder(EntityAttributes.DEFAULT_ELEMENT_NAME)).buildObject();
+                extensions.getUnknownXMLObjects().add(entityAttributes);
+            }
         }
         return entityAttributes;
     }
