@@ -91,18 +91,22 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
+    public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
+        if (!(entityDescriptor instanceof EntityDescriptor)) {
+            throw new UnsupportedOperationException("not yet implemented");
+        }
+        buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
+    }
+
+    @Override
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
         ed.setEntityID(representation.getEntityId());
-        /*
-        User user = userService.getCurrentUser();
-        if (user != null) {
-            ed.setCreatedBy(user.getUsername());
-        } else {
-            LOGGER.warn("Current user was null! Who is logged in?");
-        }
-         */
 
+        return buildDescriptorFromRepresentation(ed, representation);
+    }
+
+    private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         // setup SPSSODescriptor
         if (representation.getServiceProviderSsoDescriptor() != null) {
             SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
@@ -123,6 +127,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     spssoDescriptor.getNameIDFormats().add(nameIDFormat);
                 }
             }
+        } else {
+            ed.setRoleDescriptors(null);
         }
 
         ed.setServiceProviderName(representation.getServiceProviderName());
@@ -149,6 +155,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             organization.getURLs().add(organizationURL);
 
             ed.setOrganization(organization);
+        } else {
+            ed.setOrganization(null);
         }
 
         // set up contacts
@@ -168,6 +176,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
                 ed.addContactPerson(contactPerson);
             }
+        } else {
+            ed.getContactPersons().clear();
         }
 
         // set up mdui
@@ -179,6 +189,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 getUIInfo(ed).addDisplayName(displayName);
                 displayName.setValue(mduiRepresentation.getDisplayName());
                 displayName.setXMLLang("en");
+            } else {
+                if (getUIInfo(ed).getXMLObjects(DisplayName.DEFAULT_ELEMENT_NAME).size() > 0) {
+                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(DisplayName.DEFAULT_ELEMENT_NAME).get(0));
+                }
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getInformationUrl())) {
@@ -186,6 +200,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 getUIInfo(ed).addInformationURL(informationURL);
                 informationURL.setValue(mduiRepresentation.getInformationUrl());
                 informationURL.setXMLLang("en");
+            } else {
+                if (getUIInfo(ed).getXMLObjects(InformationURL.DEFAULT_ELEMENT_NAME).size() > 0) {
+                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(InformationURL.DEFAULT_ELEMENT_NAME).get(0));
+                }
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getPrivacyStatementUrl())) {
@@ -193,6 +211,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 getUIInfo(ed).addPrivacyStatementURL(privacyStatementURL);
                 privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
                 privacyStatementURL.setXMLLang("en");
+            } else {
+                if (getUIInfo(ed).getXMLObjects(PrivacyStatementURL.DEFAULT_ELEMENT_NAME).size() > 0) {
+                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(PrivacyStatementURL.DEFAULT_ELEMENT_NAME).get(0));
+                }
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getDescription())) {
@@ -200,6 +222,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 getUIInfo(ed).addDescription(description);
                 description.setValue(mduiRepresentation.getDescription());
                 description.setXMLLang("en");
+            } else {
+                if (getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).size() > 0) {
+                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).get(0));
+                }
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
@@ -209,7 +235,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 logo.setHeight(mduiRepresentation.getLogoHeight());
                 logo.setWidth(mduiRepresentation.getLogoWidth());
                 logo.setXMLLang("en");
+            } else {
+                if (getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).size() > 0) {
+                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).get(0));
+                }
             }
+        } else {
+            removeUIInfo(ed);
         }
 
         // setup security
@@ -227,6 +259,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
                 }
             }
+        } else {
+            // TODO: implement
         }
 
         // setup ACSs
@@ -240,6 +274,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 assertionConsumerService.setBinding(acsRepresentation.getBinding());
                 assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
             }
+        } else {
+            // TODO: implement
         }
 
         // setup logout
@@ -251,16 +287,28 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
                 getSPSSODescriptorFromEntityDescriptor(ed).getSingleLogoutServices().add(singleLogoutService);
             }
+        } else {
+            // TODO: implement
         }
 
         if (representation.getRelyingPartyOverrides() != null || (representation.getAttributeRelease() != null && representation.getAttributeRelease().size() > 0)) {
+            // TODO: fix implementation
             getEntityAttributes(ed).getAttributes().addAll(entityService.getAttributeListFromEntityRepresentation(representation));
+        } else {
+            EntityAttributes entityAttributes = getEntityAttributes(ed, false);
+            if (entityAttributes != null) {
+                entityAttributes.getAttributes().clear();
+            }
         }
         return ed;
     }
 
-    private SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
-        if (entityDescriptor.getSPSSODescriptor("") == null) {
+    private  SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
+        return getSPSSODescriptorFromEntityDescriptor(entityDescriptor, true);
+    }
+
+    private SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor, boolean create) {
+        if (entityDescriptor.getSPSSODescriptor("") == null && create) {
             SPSSODescriptor spssoDescriptor = openSamlObjects.buildDefaultInstanceOfType(SPSSODescriptor.class);
             entityDescriptor.getRoleDescriptors().add(spssoDescriptor);
         }
@@ -324,7 +372,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     private EntityAttributes getEntityAttributes(EntityDescriptor ed) {
+        return getEntityAttributes(ed, true);
+    }
+
+    private EntityAttributes getEntityAttributes(EntityDescriptor ed, boolean create) {
         Extensions extensions = ed.getExtensions();
+        if (extensions == null && !create) {
+            return null;
+        }
         if (extensions == null) {
             extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
             ed.setExtensions(extensions);
@@ -355,6 +410,19 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             extensions.getUnknownXMLObjects().add(uiInfo);
         }
         return uiInfo;
+    }
+
+    private void removeUIInfo(EntityDescriptor ed) {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed, false);
+        if (spssoDescriptor != null) {
+            Extensions extensions = spssoDescriptor.getExtensions();
+            if (extensions == null) {
+                return;
+            }
+            if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
+                extensions.getUnknownXMLObjects().remove(extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0));
+            }
+        }
     }
 
     //TODO: implement
@@ -583,13 +651,5 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
-    }
-
-
-
-    @Override
-    public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
-        // TODO: implement
-        throw new UnsupportedOperationException("not yet implemented");
     }
 }

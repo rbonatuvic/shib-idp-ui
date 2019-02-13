@@ -132,16 +132,10 @@ public class EntityDescriptorController {
                     return new ResponseEntity<Void>(HttpStatus.CONFLICT);
                 }
 
-                EntityDescriptor updatedEd =
-                        EntityDescriptor.class.cast(entityDescriptorService.createDescriptorFromRepresentation(edRepresentation));
+                entityDescriptorService.updateDescriptorFromRepresentation(existingEd, edRepresentation);
+                existingEd = entityDescriptorRepository.save(existingEd);
 
-                updatedEd.setAudId(existingEd.getAudId());
-                updatedEd.setResourceId(existingEd.getResourceId());
-                updatedEd.setCreatedDate(existingEd.getCreatedDate());
-
-                updatedEd = entityDescriptorRepository.save(updatedEd);
-
-                return ResponseEntity.ok().body(entityDescriptorService.createRepresentationFromDescriptor(updatedEd));
+                return ResponseEntity.ok().body(entityDescriptorService.createRepresentationFromDescriptor(existingEd));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
                         "You are not authorized to perform the requested operation."));

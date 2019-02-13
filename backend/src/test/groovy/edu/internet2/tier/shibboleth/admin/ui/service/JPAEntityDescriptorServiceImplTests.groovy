@@ -34,6 +34,7 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
+import spock.lang.Ignore
 import spock.lang.Specification
 
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
@@ -764,6 +765,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         testRunIndex << (1..5)
     }
 
+    @Ignore
     def "updateDescriptorFromRepresentation throws expected exception"() {
         given:
         def randomEntityDescriptor = generateRandomEntityDescriptor()
