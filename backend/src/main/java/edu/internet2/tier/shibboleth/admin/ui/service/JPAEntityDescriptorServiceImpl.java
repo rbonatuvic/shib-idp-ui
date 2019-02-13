@@ -260,7 +260,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 }
             }
         } else {
-            // TODO: implement
+            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent( spssoDescriptor -> {
+                spssoDescriptor.setAuthnRequestsSigned((Boolean) null);
+                spssoDescriptor.setWantAssertionsSigned((Boolean) null);
+                spssoDescriptor.getKeyDescriptors().clear();
+            });
         }
 
         // setup ACSs
@@ -301,6 +305,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             }
         }
         return ed;
+    }
+
+    private Optional<SPSSODescriptor> getOptionalSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
+        return Optional.ofNullable(getSPSSODescriptorFromEntityDescriptor(entityDescriptor, false));
     }
 
     private  SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
