@@ -1,6 +1,16 @@
 spring:
   profiles:
     include:
+  datasource:
+    platform: mariadb
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://db:3306/shibui
+    username: shibui
+    password: shibui
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
 server:
   port: 8443
   ssl:

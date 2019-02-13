@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -21,5 +22,6 @@ public class RegexScheme extends MetadataRequestURLConstructionScheme {
     }
 
     @NotNull
+    @Column(name = "match_regex")
     private String match;
 }

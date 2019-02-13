@@ -94,12 +94,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
         ed.setEntityID(representation.getEntityId());
+        /*
         User user = userService.getCurrentUser();
         if (user != null) {
             ed.setCreatedBy(user.getUsername());
         } else {
             LOGGER.warn("Current user was null! Who is logged in?");
         }
+         */
 
         // setup SPSSODescriptor
         if (representation.getServiceProviderSsoDescriptor() != null) {
