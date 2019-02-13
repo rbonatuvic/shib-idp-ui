@@ -269,6 +269,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
         // setup ACSs
         if (representation.getAssertionConsumerServices() != null && representation.getAssertionConsumerServices().size() > 0) {
+            // TODO: review if we need more than a naive implementation
+            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
             for (AssertionConsumerServiceRepresentation acsRepresentation : representation.getAssertionConsumerServices()) {
                 AssertionConsumerService assertionConsumerService = openSamlObjects.buildDefaultInstanceOfType(AssertionConsumerService.class);
                 getSPSSODescriptorFromEntityDescriptor(ed).getAssertionConsumerServices().add(assertionConsumerService);
@@ -279,7 +281,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
             }
         } else {
-            // TODO: implement
+            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
         }
 
         // setup logout
