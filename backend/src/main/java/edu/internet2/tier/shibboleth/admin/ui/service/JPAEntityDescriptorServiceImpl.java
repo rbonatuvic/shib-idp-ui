@@ -286,6 +286,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
         // setup logout
         if (representation.getLogoutEndpoints() != null && !representation.getLogoutEndpoints().isEmpty()) {
+            // TODO: review if we need more than a naive implementation
+            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
             for (LogoutEndpointRepresentation logoutEndpointRepresentation : representation.getLogoutEndpoints()) {
                 SingleLogoutService singleLogoutService = openSamlObjects.buildDefaultInstanceOfType(SingleLogoutService.class);
                 singleLogoutService.setBinding(logoutEndpointRepresentation.getBindingType());
@@ -294,7 +296,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 getSPSSODescriptorFromEntityDescriptor(ed).getSingleLogoutServices().add(singleLogoutService);
             }
         } else {
-            // TODO: implement
+            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
         }
 
         if (representation.getRelyingPartyOverrides() != null || (representation.getAttributeRelease() != null && representation.getAttributeRelease().size() > 0)) {
