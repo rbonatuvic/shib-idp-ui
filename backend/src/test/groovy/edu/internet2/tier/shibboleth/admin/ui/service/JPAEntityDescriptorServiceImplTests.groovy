@@ -774,7 +774,12 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         given:
         def randomEntityDescriptor = generateRandomEntityDescriptor()
         def updatedEntityDescriptor = generateRandomEntityDescriptor()
-        //TODO: copy values we don't care about asserting (id, entity id, ...)
+
+        //copy values we don't care about asserting (id, entity id, ...)
+        updatedEntityDescriptor.entityID = randomEntityDescriptor.entityID
+        updatedEntityDescriptor.resourceId = randomEntityDescriptor.resourceId
+        updatedEntityDescriptor.elementLocalName = randomEntityDescriptor.elementLocalName
+
         def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(updatedEntityDescriptor)
 
         when:
