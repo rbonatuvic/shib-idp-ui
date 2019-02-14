@@ -135,7 +135,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         // setup logout
         if (representation.getLogoutEndpoints() != null && !representation.getLogoutEndpoints().isEmpty()) {
             // TODO: review if we need more than a naive implementation
-            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
             for (LogoutEndpointRepresentation logoutEndpointRepresentation : representation.getLogoutEndpoints()) {
                 SingleLogoutService singleLogoutService = openSamlObjects.buildDefaultInstanceOfType(SingleLogoutService.class);
                 singleLogoutService.setBinding(logoutEndpointRepresentation.getBindingType());
@@ -144,7 +144,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 getSPSSODescriptorFromEntityDescriptor(ed).getSingleLogoutServices().add(singleLogoutService);
             }
         } else {
-            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
         }
     }
 
@@ -152,7 +152,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         // setup ACSs
         if (representation.getAssertionConsumerServices() != null && representation.getAssertionConsumerServices().size() > 0) {
             // TODO: review if we need more than a naive implementation
-            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
             for (AssertionConsumerServiceRepresentation acsRepresentation : representation.getAssertionConsumerServices()) {
                 AssertionConsumerService assertionConsumerService = openSamlObjects.buildDefaultInstanceOfType(AssertionConsumerService.class);
                 getSPSSODescriptorFromEntityDescriptor(ed).getAssertionConsumerServices().add(assertionConsumerService);
@@ -163,7 +163,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
             }
         } else {
-            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
         }
     }
 
@@ -184,7 +184,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 }
             }
         } else {
-            getOptionalSPSSODescriptorFromEntityDescriptor(ed).ifPresent( spssoDescriptor -> {
+            ed.getOptionalSPSSODescriptor().ifPresent( spssoDescriptor -> {
                 spssoDescriptor.setAuthnRequestsSigned((Boolean) null);
                 spssoDescriptor.setWantAssertionsSigned((Boolean) null);
                 spssoDescriptor.getKeyDescriptors().clear();
@@ -203,7 +203,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 displayName.setValue(mduiRepresentation.getDisplayName());
                 displayName.setXMLLang("en");
             } else {
-                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                ed.getOptionalSPSSODescriptor()
                         .flatMap(SPSSODescriptor::getOptionalExtensions)
                         .flatMap(Extensions::getOptionalUIInfo)
                         .ifPresent(u -> u.getXMLObjects().removeAll(u.getDisplayNames()));
@@ -215,7 +215,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 informationURL.setValue(mduiRepresentation.getInformationUrl());
                 informationURL.setXMLLang("en");
             } else {
-                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                ed.getOptionalSPSSODescriptor()
                         .flatMap(SPSSODescriptor::getOptionalExtensions)
                         .flatMap(Extensions::getOptionalUIInfo)
                         .ifPresent(u -> u.getXMLObjects().removeAll(u.getInformationURLs()));
@@ -227,7 +227,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
                 privacyStatementURL.setXMLLang("en");
             } else {
-                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                ed.getOptionalSPSSODescriptor()
                         .flatMap(SPSSODescriptor::getOptionalExtensions)
                         .flatMap(Extensions::getOptionalUIInfo)
                         .ifPresent(u -> u.getXMLObjects().removeAll(u.getPrivacyStatementURLs()));
@@ -239,7 +239,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 description.setValue(mduiRepresentation.getDescription());
                 description.setXMLLang("en");
             } else {
-                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                ed.getOptionalSPSSODescriptor()
                         .flatMap(SPSSODescriptor::getOptionalExtensions)
                         .flatMap(Extensions::getOptionalUIInfo)
                         .ifPresent(u -> u.getXMLObjects().removeAll(u.getDescriptions()));
@@ -253,7 +253,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 logo.setWidth(mduiRepresentation.getLogoWidth());
                 logo.setXMLLang("en");
             } else {
-                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                ed.getOptionalSPSSODescriptor()
                         .flatMap(SPSSODescriptor::getOptionalExtensions)
                         .flatMap(Extensions::getOptionalUIInfo)
                         .ifPresent(u -> u.getXMLObjects().removeAll(u.getLogos()));
@@ -337,10 +337,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         } else {
             ed.setRoleDescriptors(null);
         }
-    }
-
-    private Optional<SPSSODescriptor> getOptionalSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
-        return Optional.ofNullable(getSPSSODescriptorFromEntityDescriptor(entityDescriptor, false));
     }
 
     private  SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {

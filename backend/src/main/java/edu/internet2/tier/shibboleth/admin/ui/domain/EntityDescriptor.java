@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -169,6 +170,16 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .filter(p -> p instanceof org.opensaml.saml.saml2.metadata.SPSSODescriptor && (StringUtils.isEmpty(s) ? true :p.isSupportedProtocol(s)))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transient
+    public Optional<SPSSODescriptor> getOptionalSPSSODescriptor(String s) {
+        return Optional.ofNullable(this.getSPSSODescriptor(s));
+    }
+
+    @Transient
+    public Optional<SPSSODescriptor> getOptionalSPSSODescriptor() {
+        return this.getOptionalSPSSODescriptor("");
     }
 
     @Override
