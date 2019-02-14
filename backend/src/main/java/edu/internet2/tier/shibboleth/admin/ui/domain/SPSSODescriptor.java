@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -115,5 +116,10 @@ public class SPSSODescriptor extends SSODescriptor implements org.opensaml.saml.
         children.addAll(this.getAttributeConsumingServices());
 
         return Collections.unmodifiableList(children);
+    }
+
+    @Transient
+    public Optional<Extensions> getOptionalExtensions() {
+        return Optional.ofNullable(this.getExtensions());
     }
 }

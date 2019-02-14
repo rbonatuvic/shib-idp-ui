@@ -190,9 +190,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 displayName.setValue(mduiRepresentation.getDisplayName());
                 displayName.setXMLLang("en");
             } else {
-                if (getUIInfo(ed).getXMLObjects(DisplayName.DEFAULT_ELEMENT_NAME).size() > 0) {
-                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(DisplayName.DEFAULT_ELEMENT_NAME).get(0));
-                }
+                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDisplayNames()));
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getInformationUrl())) {
@@ -201,9 +202,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 informationURL.setValue(mduiRepresentation.getInformationUrl());
                 informationURL.setXMLLang("en");
             } else {
-                if (getUIInfo(ed).getXMLObjects(InformationURL.DEFAULT_ELEMENT_NAME).size() > 0) {
-                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(InformationURL.DEFAULT_ELEMENT_NAME).get(0));
-                }
+                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getInformationURLs()));
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getPrivacyStatementUrl())) {
@@ -212,9 +214,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
                 privacyStatementURL.setXMLLang("en");
             } else {
-                if (getUIInfo(ed).getXMLObjects(PrivacyStatementURL.DEFAULT_ELEMENT_NAME).size() > 0) {
-                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(PrivacyStatementURL.DEFAULT_ELEMENT_NAME).get(0));
-                }
+                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getPrivacyStatementURLs()));
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getDescription())) {
@@ -223,9 +226,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 description.setValue(mduiRepresentation.getDescription());
                 description.setXMLLang("en");
             } else {
-                if (getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).size() > 0) {
-                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).get(0));
-                }
+                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDescriptions()));
             }
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
@@ -236,9 +240,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 logo.setWidth(mduiRepresentation.getLogoWidth());
                 logo.setXMLLang("en");
             } else {
-                if (getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).size() > 0) {
-                    getUIInfo(ed).getXMLObjects().remove(getUIInfo(ed).getXMLObjects(Description.DEFAULT_ELEMENT_NAME).get(0));
-                }
+                getOptionalSPSSODescriptorFromEntityDescriptor(ed)
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getLogos()));
             }
         } else {
             removeUIInfo(ed);
