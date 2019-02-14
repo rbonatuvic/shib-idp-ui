@@ -106,7 +106,8 @@ public class JPAEntityServiceImpl implements EntityService {
                 case BOOLEAN:
                     if (overrideProperty.getPersistType() != null &&
                         !overrideProperty.getPersistType().equalsIgnoreCase("boolean") &&
-                            ((entry.getValue() instanceof Boolean && (Boolean)entry.getValue()) || Boolean.valueOf((String)entry.getValue()))) {
+                            ((entry.getValue() instanceof Boolean && (Boolean)entry.getValue()) ||
+                            ((entry.getValue() instanceof String) && Boolean.valueOf((String)entry.getValue())))) {
                         list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                                                                    overrideProperty.getAttributeFriendlyName(),
                                                                                    overrideProperty.getPersistValue()));
