@@ -43,6 +43,12 @@ export class AdminCollectionEffects {
     );
 
     @Effect()
+    updateAdminRoleReload$ = this.actions$.pipe(
+        ofType<UpdateAdminSuccess>(AdminCollectionActionTypes.UPDATE_ADMIN_SUCCESS),
+        map(action => new LoadAdminRequest())
+    );
+
+    @Effect()
     updateAdminRoleSuccess$ = this.actions$.pipe(
         ofType<UpdateAdminSuccess>(AdminCollectionActionTypes.UPDATE_ADMIN_SUCCESS),
         map(action => action.payload),

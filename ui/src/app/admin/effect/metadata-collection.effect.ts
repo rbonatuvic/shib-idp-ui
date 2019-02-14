@@ -105,6 +105,12 @@ export class MetadataCollectionEffects {
     );
 
     @Effect()
+    updateMetadataSuccessReload$ = this.actions$.pipe(
+        ofType<UpdateMetadataSuccess>(MetadataCollectionActionTypes.UPDATE_METADATA_SUCCESS),
+        map(() => new LoadMetadataRequest())
+    );
+
+    @Effect()
     removeMetadata$ = this.actions$.pipe(
         ofType<RemoveMetadataRequest>(MetadataCollectionActionTypes.REMOVE_METADATA),
         map(action => action.payload),
