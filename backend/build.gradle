@@ -170,6 +170,8 @@ dependencies {
     
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
+
+    testCompile 'org.skyscreamer:jsonassert:1.5.0'
 }
 
 def generatedSrcDir = new File(buildDir, 'generated/src/main/java')

@@ -25,6 +25,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import groovy.json.JsonOutput
+import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.json.JacksonTester
@@ -56,6 +58,8 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
+    ObjectMapper mapper
+
     RandomGenerator generator
 
     @Autowired
@@ -67,7 +71,8 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
     def setup() {
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
                 new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration), new UserService(roleRepository, userRepository))
-        JacksonTester.initFields(this, new ObjectMapper())
+        mapper = new ObjectMapper()
+        JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator()
     }
@@ -765,16 +770,20 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         testRunIndex << (1..5)
     }
 
-    def "updateDescriptorFromRepresentation throws expected exception"() {
+    def "updateDescriptorFromRepresentation updates descriptor properly"() {
         given:
         def randomEntityDescriptor = generateRandomEntityDescriptor()
-        def entityDescriptorRepresentation = service.createRepresentationFromDescriptor(randomEntityDescriptor)
+        def updatedEntityDescriptor = generateRandomEntityDescriptor()
+        //TODO: copy values we don't care about asserting (id, entity id, ...)
+        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(updatedEntityDescriptor)
 
         when:
-        service.updateDescriptorFromRepresentation(randomEntityDescriptor, entityDescriptorRepresentation)
+        service.updateDescriptorFromRepresentation(randomEntityDescriptor, updatedEntityDescriptorRepresentation)
 
         then:
-        thrown UnsupportedOperationException
+        def expectedJson = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
+        def actualJson = mapper.writeValueAsString(service.createRepresentationFromDescriptor(randomEntityDescriptor))
+        JSONAssert.assertEquals(expectedJson, actualJson, false)
     }
 
     def "createRepresentationFromDescriptor creates a representation containing a version that is a hash of the original object"() {
@@ -850,6 +859,9 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         ed.setServiceProviderName(generator.randomString(10))
         ed.setServiceEnabled(generator.randomBoolean())
         ed.setResourceId(generator.randomId())
+        ed.setElementLocalName(generator.randomString(10))
+
+        //TODO: Finish fleshing out this thing
 
         return ed
     }
