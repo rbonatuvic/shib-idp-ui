@@ -1,9 +1,9 @@
 import { Component, OnDestroy, Inject } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { ActivatedRoute } from '@angular/router';
-import { map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { map, distinctUntilChanged, skipWhile, takeUntil } from 'rxjs/operators';
 import { SelectResolver } from '../action/collection.action';
 import * as fromResolvers from '../reducer';
 import { MetadataResolver } from '../../domain/model';
@@ -19,6 +19,7 @@ import { Wizard } from '../../../wizard/model';
 })
 
 export class ResolverSelectComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     actionsSubscription: Subscription;
 
     resolver$: Observable<MetadataResolver>;
@@ -28,13 +29,14 @@ export class ResolverSelectComponent implements OnDestroy {
         private route: ActivatedRoute,
         @Inject(METADATA_SOURCE_EDITOR) private sourceWizard: Wizard<MetadataResolver>
     ) {
-        this.actionsSubscription = this.route.params.pipe(
+        this.route.params.pipe(
+            takeUntil(this.ngUnsubscribe),
             map(params => new SelectResolver(params.id))
         ).subscribe(store);
 
         this.resolver$ = this.store.select(fromResolvers.getSelectedResolver).pipe(skipWhile(p => !p));
 
-        this.resolver$.subscribe(resolver => this.setDefinition(resolver));
+        this.resolver$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(resolver => this.setDefinition(resolver));
     }
 
     setDefinition(resolver: MetadataResolver): void {
@@ -44,7 +46,8 @@ export class ResolverSelectComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
-        this.actionsSubscription.unsubscribe();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
         this.store.dispatch(new Clear());
         this.store.dispatch(new ClearWizard());
     }
