@@ -101,12 +101,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
-        ed.setEntityID(representation.getEntityId());
 
         return buildDescriptorFromRepresentation(ed, representation);
     }
 
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
+        ed.setEntityID(representation.getEntityId());
+
         setupSPSSODescriptor(ed, representation);
         ed.setServiceProviderName(representation.getServiceProviderName());
         ed.setServiceEnabled(representation.isServiceEnabled());
