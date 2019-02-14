@@ -1,6 +1,18 @@
 version: "3.7"
 
 services:
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      MYSQL_USER: shibui
+      MYSQL_PASSWORD: shibui
+      MYSQL_DATABASE: shibui
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    networks:
+      - front
+    ports:
+      - 3306:3306
   shibui:
     image: unicon/shibui-pac4j
     entrypoint: ["/usr/bin/java", "-Dspring.profiles.active=dev", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "app.jar"]
@@ -13,7 +25,8 @@ services:
       - ./conf/application.yml:/application.yml
     networks:
       - front
-
+    depends_on:
+      - db
   mailhog:
     image: mailhog/mailhog:latest
     ports:

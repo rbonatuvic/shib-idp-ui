@@ -5,8 +5,10 @@ import org.opensaml.core.xml.XMLObject;
 
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity
@@ -16,5 +18,15 @@ public class Extensions extends AbstractElementExtensibleXMLObject implements or
     @Override
     public List<XMLObject> getOrderedChildren() {
         return Collections.unmodifiableList(this.getUnknownXMLObjects());
+    }
+
+    @Transient
+    public Optional<UIInfo> getOptionalUIInfo() {
+        List uiinfos = this.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME);
+        if (uiinfos.size() == 0) {
+            return Optional.empty();
+        } else {
+            return Optional.of((UIInfo) uiinfos.get(0));
+        }
     }
 }

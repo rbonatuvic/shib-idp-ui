@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -92,5 +93,10 @@ public class WebSecurity {
             firewall.setAllowUrlEncodedSlash(true);
             web.httpFirewall(firewall);
         }
+    }
+
+    @Bean
+    public AuditorAware<String> defaultAuditorAware() {
+        return new Pac4jAuditorAware();
     }
 }
