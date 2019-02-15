@@ -9,7 +9,7 @@ import { MetadataResolver } from '../../domain/model';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
-import { withLatestFrom, map, distinctUntilChanged, filter } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { UpdateChanges } from '../action/entity.action';
 import { FormControl } from '@angular/forms';
 
@@ -81,25 +81,30 @@ export class ResolverEditStepComponent implements OnDestroy {
                 this.changes$,
                 this.definition$
             ),
-            map(([schema, resolver, model, changes, definition]) => ({
-                model: {
-                    ...model,
-                    ...resolver,
-                    ...changes
-                },
-                definition
-            })),
+            map(([schema, resolver, model, changes, definition]) => {
+                return ({
+                    model: {
+                        ...model,
+                        ...resolver,
+                        ...changes
+                    },
+                    definition
+                });
+            }),
             filter(({ model, definition }) => definition && model),
             map(({ model, definition }) => definition.formatter(model))
         );
 
         this.valueChangeEmitted$.pipe(
+            takeUntil(this.ngUnsubscribe),
             map(changes => changes.value),
-            withLatestFrom(this.definition$, this.store.select(fromResolver.getSelectedResolver)),
-            filter(([changes, definition]) => definition && changes),
-            map(([changes, definition, resolver]) => definition.parser({ ...resolver, ...changes }))
+            withLatestFrom(this.definition$, this.store.select(fromResolver.getSelectedResolver), this.changes$),
+            filter(([valueChange, definition, resolver]) => definition && resolver),
+            map(([valueChange, definition, resolver, changes]) => definition.parser({ ...resolver, ...changes, ...valueChange }))
         )
-        .subscribe(changes => this.store.dispatch(new UpdateChanges(changes)));
+        .subscribe(changes => {
+            this.store.dispatch(new UpdateChanges(changes));
+        });
 
         this.statusChangeEmitted$
             .pipe(distinctUntilChanged())
