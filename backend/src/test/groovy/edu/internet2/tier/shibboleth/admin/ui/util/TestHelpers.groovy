@@ -20,8 +20,8 @@ class TestHelpers {
                 count += ((Collection)entry.value).size() != 0 ? 1 : 0
             } else if (entry.value instanceof String) {
                 count += StringUtils.isNotBlank((String)entry.value) ? 1 : 0
-            } else {
-                count++
+            } else if (entry.value instanceof Boolean) {
+                count += Boolean.valueOf((Boolean)entry.value) ? 1 : 0
             }
         }
 

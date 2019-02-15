@@ -307,7 +307,7 @@ class TestObjectGenerator {
                                 override.getPersistType() != override.getDisplayType()) {
                             attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
                         } else {
-                            attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomBoolean()))
+                            attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), true))
                         }
                         break
                     case ModelRepresentationConversions.AttributeTypes.INTEGER:
@@ -348,12 +348,7 @@ class TestObjectGenerator {
         customPropertiesConfiguration.getOverrides().each { override ->
             switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
                 case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
-                    if (override.getPersistType() != null &&
-                            override.getPersistType() != override.getDisplayType()) {
-                        representation.put(override.getName(), generator.randomString(30))
-                    } else {
-                        representation.put(override.getName(), generator.randomBoolean())
-                    }
+                    representation.put(override.getName(), generator.randomBoolean())
                     break
                 case ModelRepresentationConversions.AttributeTypes.INTEGER:
                     representation.put(override.getName(), generator.randomInt(0, 999999))
