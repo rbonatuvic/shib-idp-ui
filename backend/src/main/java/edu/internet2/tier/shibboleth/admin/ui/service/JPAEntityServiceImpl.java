@@ -104,22 +104,23 @@ public class JPAEntityServiceImpl implements EntityService {
             RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
             switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                 case BOOLEAN:
-                    if (overrideProperty.getPersistType() != null &&
-                        !overrideProperty.getPersistType().equalsIgnoreCase("boolean") &&
-                            ((entry.getValue() instanceof Boolean && (Boolean)entry.getValue()) ||
-                            ((entry.getValue() instanceof String) && Boolean.valueOf((String)entry.getValue())))) {
-                        list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                   overrideProperty.getAttributeFriendlyName(),
-                                                                                   overrideProperty.getPersistValue()));
-                    } else {
-                        if (entry.getValue() instanceof String) {
-                            list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                    if ((entry.getValue() instanceof Boolean && (Boolean)entry.getValue()) ||
+                        ((entry.getValue() instanceof String) && Boolean.valueOf((String)entry.getValue()))) {
+                        if (overrideProperty.getPersistType() != null &&
+                            !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
+                            list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                                     overrideProperty.getAttributeFriendlyName(),
-                                    Boolean.valueOf((String) entry.getValue())));
+                                    overrideProperty.getPersistValue()));
                         } else {
-                            list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
-                                    overrideProperty.getAttributeFriendlyName(),
-                                    (Boolean) entry.getValue()));
+                            if (entry.getValue() instanceof String) {
+                                list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                        overrideProperty.getAttributeFriendlyName(),
+                                        Boolean.valueOf((String) entry.getValue())));
+                            } else {
+                                list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                        overrideProperty.getAttributeFriendlyName(),
+                                        (Boolean) entry.getValue()));
+                            }
                         }
                     }
                     break;
