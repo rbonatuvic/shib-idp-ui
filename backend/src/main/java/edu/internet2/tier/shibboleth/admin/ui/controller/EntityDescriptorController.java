@@ -122,9 +122,11 @@ public class EntityDescriptorController {
             return ResponseEntity.notFound().build();
         } else {
             if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy()))) {
-                ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
-                if (entityDescriptorEnablingDeniedResponse != null) {
-                    return entityDescriptorEnablingDeniedResponse;
+                if (!existingEd.isServiceEnabled()) {
+                    ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
+                    if (entityDescriptorEnablingDeniedResponse != null) {
+                        return entityDescriptorEnablingDeniedResponse;
+                    }
                 }
 
                 // Verify we're the only one attempting to update the EntityDescriptor
