@@ -1,10 +1,14 @@
-package edu.internet2.tier.shibboleth.admin.ui.configuration;
+package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailServiceImpl;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +28,8 @@ import java.util.Optional;
  */
 @Configuration
 @ConfigurationProperties("shibui.mail")
+@AutoConfigureAfter(MailSenderAutoConfiguration.class)
+@ConditionalOnBean(JavaMailSender.class)
 public class EmailConfiguration {
 
     private static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
@@ -43,7 +49,7 @@ public class EmailConfiguration {
     @Setter
     private String systemEmailAddress = "doNotReply@shibui.org";
 
-    @Autowired(required = false)
+    @Autowired
     private JavaMailSender javaMailSender;
 
     @Autowired
@@ -97,16 +103,12 @@ public class EmailConfiguration {
     }
 
     @Bean
-    public Optional<EmailService> emailService() {
-        if (this.javaMailSender != null) {
-            return Optional.of(new EmailServiceImpl(javaMailSender,
-                    emailMessageSource(),
-                    textEmailTemplateEngine(),
-                    htmlEmailTemplateEngine(),
-                    systemEmailAddress,
-                    userRepository));
-        } else {
-            return Optional.empty();
-        }
+    public EmailService emailService() {
+        return new EmailServiceImpl(javaMailSender,
+                emailMessageSource(),
+                textEmailTemplateEngine(),
+                htmlEmailTemplateEngine(),
+                systemEmailAddress,
+                userRepository);
     }
 }
