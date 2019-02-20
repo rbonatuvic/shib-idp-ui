@@ -17,6 +17,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.util.Collections;
+import java.util.Optional;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -42,7 +43,7 @@ public class EmailConfiguration {
     @Setter
     private String systemEmailAddress = "doNotReply@shibui.org";
 
-    @Autowired
+    @Autowired(required = false)
     private JavaMailSender javaMailSender;
 
     @Autowired
@@ -96,12 +97,16 @@ public class EmailConfiguration {
     }
 
     @Bean
-    public EmailService emailService() {
-        return new EmailServiceImpl(javaMailSender,
-                emailMessageSource(),
-                textEmailTemplateEngine(),
-                htmlEmailTemplateEngine(),
-                systemEmailAddress,
-                userRepository);
+    public Optional<EmailService> emailService() {
+        if (this.javaMailSender != null) {
+            return Optional.of(new EmailServiceImpl(javaMailSender,
+                    emailMessageSource(),
+                    textEmailTemplateEngine(),
+                    htmlEmailTemplateEngine(),
+                    systemEmailAddress,
+                    userRepository));
+        } else {
+            return Optional.empty();
+        }
     }
 }

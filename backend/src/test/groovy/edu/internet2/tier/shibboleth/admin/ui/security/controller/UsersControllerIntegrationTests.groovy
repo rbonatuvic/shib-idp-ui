@@ -52,9 +52,18 @@ class UsersControllerIntegrationTests extends Specification {
     "firstName" : "Peter",
     "emailAddress" : "peter@institution.edu",
     "role" : "ROLE_USER",
-    "username" : "nonadmin",
+    "username" : "user",
     "createdBy" : null,
     "lastName" : "Vandelay"
+  },
+  {
+    "modifiedBy" : null,
+    "firstName" : "Bad",
+    "emailAddress" : "badboy@institution.edu",
+    "role" : "ROLE_NONE",
+    "username" : "none",
+    "createdBy" : null,
+    "lastName" : "robot"
   },
   {
     "modifiedBy" : null,
