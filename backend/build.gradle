@@ -307,7 +307,7 @@ dockerRun {
     image 'unicon/shibui'
     ports '10101:8080'
     daemonize true
-    command '--spring.profiles.include=no-auth,very-dangerous'
+    command '--spring.profiles.include=very-dangerous,dev'
     clean true
 }
 
