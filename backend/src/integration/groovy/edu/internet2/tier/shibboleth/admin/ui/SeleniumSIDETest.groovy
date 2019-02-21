@@ -3,10 +3,16 @@ package edu.internet2.tier.shibboleth.admin.ui
 import jp.vmi.selenium.selenese.Main
 import jp.vmi.selenium.selenese.Runner
 import jp.vmi.selenium.selenese.config.DefaultConfig
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 import spock.lang.Unroll
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
 class SeleniumSIDETest extends Specification {
+    @Value('${local.server.port}')
+    int randomPort
+
     @Unroll
     def "#name"() {
         setup:
@@ -16,7 +22,7 @@ class SeleniumSIDETest extends Specification {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
             }
-            it.baseurl = 'http://localhost:10101'
+            it.baseurl = "http://localhost:${this.randomPort}"
             it
         }
         def runner = new Runner()
