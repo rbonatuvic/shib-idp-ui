@@ -1,11 +1,13 @@
 package net.unicon.shibui.pac4j;
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.auto.EmailConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +19,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Configuration
 @AutoConfigureOrder(-1)
+@AutoConfigureAfter(EmailConfiguration.class)
 public class WebSecurity {
     @Bean("webSecurityConfig")
-    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
+    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
         return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository, emailService, pac4jConfigurationProperties);
     }
 
@@ -57,10 +63,10 @@ public class WebSecurity {
         private final Config config;
         private UserRepository userRepository;
         private RoleRepository roleRepository;
-        private EmailService emailService;
+        private Optional<EmailService> emailService;
         private Pac4jConfigurationProperties pac4jConfigurationProperties;
 
-        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
+        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
             this.config = config;
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
