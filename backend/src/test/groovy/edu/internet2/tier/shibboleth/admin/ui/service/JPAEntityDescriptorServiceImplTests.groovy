@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAnyBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
@@ -54,7 +55,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         it
     }
 
-    def service
+    JPAEntityDescriptorServiceImpl service
 
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
 
@@ -855,6 +856,28 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
 
         then:
         thrown RuntimeException
+    }
+
+    def "SHIBUI-1237"() {
+        given:
+        // this is very inefficient, but it might work
+        def inputRepresentation = new EntityDescriptorRepresentation().with {
+            it.id = 'test'
+            it.entityId = 'test'
+            it.relyingPartyOverrides = [
+                    'useSha': true,
+                    'ignoreAuthenticationMethod': true
+            ]
+            it
+        }
+
+        when:
+        def entityDescriptor = service.createDescriptorFromRepresentation(inputRepresentation)
+        def representation = service.createRepresentationFromDescriptor(entityDescriptor)
+
+        then:
+        assert representation.relyingPartyOverrides.get('useSha') instanceof Boolean
+        assert representation.relyingPartyOverrides.get('ignoreAuthenticationMethod') instanceof Boolean
     }
 
     EntityDescriptor generateRandomEntityDescriptor() {

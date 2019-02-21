@@ -652,7 +652,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 }
                                 if (overrideProperty.getPersistType() != null &&
                                     !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
-                                    attributeValues = getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
+                                    attributeValues = overrideProperty.getPersistValue().equals(getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0)));
                                 } else {
                                     attributeValues = Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
                                             .get(0)).getStoredValue());
