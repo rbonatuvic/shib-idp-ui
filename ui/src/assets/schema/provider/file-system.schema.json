@@ -8,7 +8,7 @@
     ],
     "properties": {
         "name": {
-            "title": "label.metadata-provider-name",
+            "title": "label.service-provider-name-dashboard-display-only",
             "description": "tooltip.metadata-provider-name",
             "type": "string",
             "widget": {
@@ -53,6 +53,29 @@
             "title": "label.enable-provider-upon-saving",
             "description": "tooltip.enable-provider-upon-saving",
             "type": "boolean",
+            "default": false
+        },
+        "doInitialization": {
+            "title": "label.do-resolver-initialization",
+            "description": "tooltip.do-resolver-initialization",
+            "type": "boolean",
+            "widget": {
+                "id": "boolean-radio"
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        true
+                    ],
+                    "description": "value.true"
+                },
+                {
+                    "enum": [
+                        false
+                    ],
+                    "description": "value.false"
+                }
+            ],
             "default": false
         },
         "reloadableMetadataResolverAttributes": {
@@ -105,15 +128,14 @@
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
-                    "type": "number",
+                    "type": "string",
                     "widget": {
-                        "id": "number",
-                        "step": 0.01
+                        "id": "string",
+                        "help": "message.real-number"
                     },
                     "placeholder": "label.real-number",
-                    "minimum": 0,
-                    "maximum": 1,
-                    "default": null
+                    "default": "",
+                    "pattern": "^(?:([0]*(\\.[0-9]+)?|[0]*\\.[0-9]*[1-9][0-9]*)|)$"
                 }
             }
         }
