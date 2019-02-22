@@ -669,6 +669,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 }
             }
 
+            // TODO: fix this; there is a problem with the way that defaults are working and the processing from the front end
+            ModelRepresentationConversions.completeMe(relyingPartyOverrides);
+
             representation.setRelyingPartyOverrides(relyingPartyOverrides);
         }
 
