@@ -96,9 +96,6 @@ public class ModelRepresentationConversions {
             }
         }
 
-        // TODO: fix this; currently there is a problem with not returning a value
-        completeMe(relyingPartyOverrides);
-
         return relyingPartyOverrides;
     }
 

@@ -69,7 +69,6 @@ class PolymorphicFiltersJacksonHandlingTests extends Specification {
         roundTripFilter instanceof EntityRoleWhiteListFilter
     }
 
-    @Ignore("until we handle the workaround for SHIBUI-1237")
     def "Correct polymorphic serialization of EntityAttributesFilter"() {
         given:
         def simulatedPersistentFilter = testObjectGenerator.entityAttributesFilter()
