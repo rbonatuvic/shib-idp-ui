@@ -267,6 +267,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     void setupContacts(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         // set up contacts
         if (representation.getContacts() != null && representation.getContacts().size() > 0) {
+            ed.getContactPersons().clear();
             for (ContactRepresentation contactRepresentation : representation.getContacts()) {
                 ContactPerson contactPerson = ((ContactPersonBuilder) openSamlObjects.getBuilderFactory().getBuilder(ContactPerson.DEFAULT_ELEMENT_NAME)).buildObject();
 
@@ -325,7 +326,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 );
             }
 
-
+            spssoDescriptor.getNameIDFormats().clear();
             if (representation.getServiceProviderSsoDescriptor() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats().size() > 0) {
                 for (String nameidFormat : representation.getServiceProviderSsoDescriptor().getNameIdFormats()) {
                     NameIDFormat nameIDFormat = openSamlObjects.buildDefaultInstanceOfType(NameIDFormat.class);
