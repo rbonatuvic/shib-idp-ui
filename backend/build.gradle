@@ -184,6 +184,9 @@ sourceSets {
         java {
             srcDirs = []
         }
+        resources {
+            srcDir new File(buildDir, 'generated/ui')
+        }
     }
     integrationTest {
         groovy {
@@ -195,6 +198,11 @@ sourceSets {
             srcDir 'src/integration/resources'
         }
     }
+}
+
+task copyUI(type: Copy) {
+    from tasks.findByPath(':ui:npm_run_buildProd').outputs
+    into new File(buildDir, 'generated/ui/static')
 }
 
 task integrationTest(type: Test) {

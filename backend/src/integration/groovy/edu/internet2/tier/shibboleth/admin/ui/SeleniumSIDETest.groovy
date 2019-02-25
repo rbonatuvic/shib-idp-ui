@@ -1,14 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
+import edu.internet2.tier.shibboleth.admin.ui.controller.BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests
 import jp.vmi.selenium.selenese.Main
 import jp.vmi.selenium.selenese.Runner
 import jp.vmi.selenium.selenese.config.DefaultConfig
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
+@ComponentScan(excludeFilters = [@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = [BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests.Config, BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests])])
+@ActiveProfiles(['dev'])
 class SeleniumSIDETest extends Specification {
     @Value('${local.server.port}')
     int randomPort
