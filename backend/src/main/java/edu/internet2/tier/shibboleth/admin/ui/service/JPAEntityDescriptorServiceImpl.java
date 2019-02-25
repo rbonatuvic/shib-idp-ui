@@ -652,7 +652,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 }
                                 if (overrideProperty.getPersistType() != null &&
                                     !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
-                                    attributeValues = getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
+                                    attributeValues = overrideProperty.getPersistValue().equals(getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0)));
                                 } else {
                                     attributeValues = Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
                                             .get(0)).getStoredValue());
@@ -668,6 +668,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     }
                 }
             }
+
+            // TODO: fix this; there is a problem with the way that defaults are working and the processing from the front end
+            ModelRepresentationConversions.completeMe(relyingPartyOverrides);
 
             representation.setRelyingPartyOverrides(relyingPartyOverrides);
         }

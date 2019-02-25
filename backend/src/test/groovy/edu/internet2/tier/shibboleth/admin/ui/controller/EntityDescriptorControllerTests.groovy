@@ -27,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.client.RestTemplate
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -696,6 +697,7 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().is(403))
     }
 
+    @Ignore("until we handle the workaround for SHIBUI-1237")
     def "POST /EntityDescriptor handles XML happily"() {
         given:
         def username = 'admin'
@@ -816,6 +818,7 @@ class EntityDescriptorControllerTests extends Specification {
                 .andExpect(content().string("{\"errorCode\":\"409\",\"errorMessage\":\"The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists.\"}"))
     }
 
+    @Ignore("until we handle the workaround for SHIBUI-1237")
     def "POST /EntityDescriptor handles x-www-form-urlencoded happily"() {
         given:
         def username = 'admin'

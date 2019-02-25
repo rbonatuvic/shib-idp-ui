@@ -99,6 +99,25 @@ public class ModelRepresentationConversions {
         return relyingPartyOverrides;
     }
 
+    // TODO: fix this; currently there is a problem with not returning a value
+    public static Map<String,Object> completeMe(Map<String, Object> relyingPartyOverrides) {
+        customPropertiesConfiguration
+                .getOverrides()
+                .stream()
+                .filter(o -> !relyingPartyOverrides.containsKey(o.getName()))
+                .filter(o -> o.getDisplayType().equals("boolean"))
+                .forEach(p -> relyingPartyOverrides.put(p.getName(), getDefaultValueFromProperty(p)));
+        return relyingPartyOverrides;
+    }
+
+    private static Object getDefaultValueFromProperty(RelyingPartyOverrideProperty property) {
+        switch (property.getDisplayType()) {
+            case "boolean":
+                return Boolean.getBoolean(property.getDefaultValue());
+        }
+        return null;
+    }
+
     public static Object getOverrideFromAttribute(Attribute attribute) {
         RelyingPartyOverrideProperty relyingPartyOverrideProperty = customPropertiesConfiguration.getOverrides().stream()
                 .filter(it -> it.getAttributeFriendlyName().equals(attribute.getFriendlyName())).findFirst().get();
