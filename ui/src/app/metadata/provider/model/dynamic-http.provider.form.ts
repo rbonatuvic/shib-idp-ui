@@ -1,17 +1,22 @@
-import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
-import { ArrayProperty } from 'ngx-schema-form/lib/model/arrayproperty';
-import { ObjectProperty } from 'ngx-schema-form/lib/model/objectproperty';
-
 import { Wizard } from '../../../wizard/model';
 import { DynamicHttpMetadataProvider } from '../../domain/model/providers/dynamic-http-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
-import UriValidator from '../../../shared/validation/uri.validator';
 
 export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvider> = {
     ...BaseMetadataProviderEditor,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
     bindings: {},
+    formatter: (changes: DynamicHttpMetadataProvider) => {
+        let base = BaseMetadataProviderEditor.formatter(changes);
+        if (base.dynamicMetadataResolverAttributes) {
+            if (base.dynamicMetadataResolverAttributes.refreshDelayFactor) {
+                base.dynamicMetadataResolverAttributes.refreshDelayFactor =
+                    base.dynamicMetadataResolverAttributes.refreshDelayFactor.toString();
+            }
+        }
+        return base;
+    },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {

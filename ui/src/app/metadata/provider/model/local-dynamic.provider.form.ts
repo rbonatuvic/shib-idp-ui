@@ -1,11 +1,22 @@
 import { Wizard } from '../../../wizard/model';
 import { LocalDynamicMetadataProvider } from '../../domain/model/providers/local-dynamic-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
+import { MetadataProvider } from '../../domain/model';
 
 export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProvider> = {
     ...BaseMetadataProviderEditor,
     label: 'LocalDynamicMetadataProvider',
     type: 'LocalDynamicMetadataResolver',
+    formatter: (changes: LocalDynamicMetadataProvider) => {
+        let base = BaseMetadataProviderEditor.formatter(changes);
+        if (base.dynamicMetadataResolverAttributes) {
+            if (base.dynamicMetadataResolverAttributes.refreshDelayFactor) {
+                base.dynamicMetadataResolverAttributes.refreshDelayFactor =
+                    base.dynamicMetadataResolverAttributes.refreshDelayFactor.toString();
+            }
+        }
+        return base;
+    },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {

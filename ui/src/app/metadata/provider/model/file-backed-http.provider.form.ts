@@ -7,6 +7,16 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
     ...BaseMetadataProviderEditor,
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
+    formatter: (changes: FileBackedHttpMetadataProvider) => {
+        let base = BaseMetadataProviderEditor.formatter(changes);
+        if (base.reloadableMetadataResolverAttributes) {
+            if (base.reloadableMetadataResolverAttributes.refreshDelayFactor) {
+                base.reloadableMetadataResolverAttributes.refreshDelayFactor =
+                    base.reloadableMetadataResolverAttributes.refreshDelayFactor.toString();
+            }
+        }
+        return base;
+    },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {
