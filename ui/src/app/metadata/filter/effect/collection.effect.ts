@@ -40,6 +40,10 @@ import { EntityAttributesFilterEntity } from '../../domain/entity/filter/entity-
 import { MetadataFilterService } from '../../domain/service/filter.service';
 import { SelectProviderRequest } from '../../provider/action/collection.action';
 import { UpdateFilterChanges, ClearFilter } from '../action/filter.action';
+import { AddNotification } from '../../../notification/action/notification.action';
+import { NotificationType, Notification } from '../../../notification/model/notification';
+import { I18nService } from '../../../i18n/service/i18n.service';
+import * as fromI18n from '../../../i18n/reducer';
 
 /* istanbul ignore next */
 @Injectable()
@@ -116,6 +120,22 @@ export class FilterCollectionEffects {
     addFilterSuccessResetState$ = this.actions$.pipe(
         ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
         map(() => new ClearFilter())
+    );
+
+    @Effect()
+    addFilterFailNotification$ = this.actions$.pipe(
+        ofType<AddFilterFail>(FilterCollectionActionTypes.ADD_FILTER_FAIL),
+        map(action => action.payload.error),
+        withLatestFrom(this.store.select(fromI18n.getMessages)),
+        map(([error, messages]) => {
+            return new AddNotification(
+                new Notification(
+                    NotificationType.Danger,
+                    `${error.errorCode}: ${this.i18nService.translate(error.errorMessage || 'message.filter-fail', null, messages)}`,
+                    8000
+                )
+            );
+        })
     );
 
     @Effect()
@@ -253,6 +273,7 @@ export class FilterCollectionEffects {
         private actions$: Actions,
         private router: Router,
         private filterService: MetadataFilterService,
-        private store: Store<fromFilter.State>
+        private store: Store<fromFilter.State>,
+        private i18nService: I18nService
     ) { }
 }

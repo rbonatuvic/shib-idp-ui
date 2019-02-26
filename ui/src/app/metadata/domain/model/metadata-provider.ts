@@ -11,4 +11,5 @@ export interface MetadataProvider extends MetadataBase {
     xmlId: string;
     sortKey: number;
     metadataFilters: MetadataFilter[];
+    reloadableMetadataResolverAttributes?: any;
 }
