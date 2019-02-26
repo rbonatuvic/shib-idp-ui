@@ -392,7 +392,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
     }
 
-    private KeyDescriptor createKeyDescriptor(String name, String type, String value) {
+    KeyDescriptor createKeyDescriptor(String name, String type, String value) {
         KeyDescriptor keyDescriptor = openSamlObjects.buildDefaultInstanceOfType(KeyDescriptor.class);
 
         if (!Strings.isNullOrEmpty(name)) {

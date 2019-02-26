@@ -4,12 +4,14 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
 import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import org.opensaml.saml.common.xml.SAMLConstants
@@ -47,6 +49,44 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
 
         where:
         [method, description, representation, starter, expected] << Data.getData(openSAMLObjects)
+    }
+
+    def "test createKeyDescriptor, single type"() {
+        given:
+        def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" use="signing">
+  <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:X509Data>
+      <ds:X509Certificate>testValue</ds:X509Certificate>
+    </ds:X509Data>
+  </ds:KeyInfo>
+</md:KeyDescriptor>'''
+        def expected = openSAMLObjects.unmarshallFromXml(expectedXml.bytes, KeyDescriptor)
+        expected.name = 'testName'
+
+        when:
+        def keyDescriptor = entityDescriptorService.createKeyDescriptor('testName', 'signing', 'testValue')
+
+        then:
+        assert keyDescriptor == expected
+    }
+
+    def "test createKeyDescriptor, both type"() {
+        given:
+        def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+  <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:X509Data>
+      <ds:X509Certificate>testValue</ds:X509Certificate>
+    </ds:X509Data>
+  </ds:KeyInfo>
+</md:KeyDescriptor>'''
+        def expected = openSAMLObjects.unmarshallFromXml(expectedXml.bytes, KeyDescriptor)
+        expected.name = 'testName'
+
+        when:
+        def keyDescriptor = entityDescriptorService.createKeyDescriptor('testName', 'both', 'testValue')
+        def x = openSAMLObjects.marshalToXmlString(keyDescriptor)
+        then:
+        assert keyDescriptor == expected
     }
 
     static class Data {
@@ -450,10 +490,87 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                         it
                     }
             )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'set authentication requests signed to true',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation(authenticationRequestsSigned: true)
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.authnRequestsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'unset authentication requests signed to true',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.authnRequestsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class)
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'set want assertions signed to true',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation(wantAssertionsSigned: true)
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.wantAssertionsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'unset want assertions signed',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.wantAssertionsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class)
+                        )
+                        it
+                    }
+            )
 
 
             return data
         }
+
 
         static class DataField implements Iterable {
             String method
