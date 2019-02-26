@@ -178,6 +178,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             if (securityInfoRepresentation.isWantAssertionsSigned()) {
                 getSPSSODescriptorFromEntityDescriptor(ed).setWantAssertionsSigned(true);
             }
+            // TODO: review if we need more than a naive implementation
+            ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
             if (securityInfoRepresentation.isX509CertificateAvailable()) {
                 for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
                     KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
