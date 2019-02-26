@@ -22,7 +22,7 @@
     <ul class="mt-2"
         [ngClass]="{'bg-light border rounded p-3 list-group': getListType(formProperty) === 'object'}"
         [class.no-style]="getListType(formProperty) !== 'object'">
-        <li *ngFor="let itemProperty of formProperty.properties; let i=index; trackBy:trackByIndex"
+        <li *ngFor="let itemProperty of formProperty.properties; let i=index;"
             [class.mt-2]="i > 0"
             [class.list-group-item]="itemProperty.type === 'object'">
             <div [ngClass]="{ 'd-flex justify-content-between': itemProperty.type !== 'object' }">
@@ -30,7 +30,7 @@
                     <ng-container *ngSwitchDefault>
                         <sf-form-element class="flex-grow-1" [formProperty]="itemProperty"></sf-form-element>
                         <div class="py-2">
-                            <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                            <button class="btn btn-link pt-1" (click)="removeItem(i, itemProperty); $event.stopPropagation()" role="button">
                                 <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
                                 <span class="sr-only" translate="action.remove">Remove</span>
                             </button>
@@ -48,7 +48,7 @@
                                         <small class="sr-only" *ngIf="itemProperty.value.makeDefault === true" translate="label.default">(default)</small>
                                     </ng-container>
                                 </span>
-                                <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                                <button class="btn btn-link pt-1" (click)="removeItem(i, itemProperty); $event.stopPropagation()" role="button">
                                     <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
                                     <span class="sr-only" translate="action.remove">Remove</span>
                                 </button>
