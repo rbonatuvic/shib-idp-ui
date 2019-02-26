@@ -1,20 +1,18 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
-import edu.internet2.tier.shibboleth.admin.ui.controller.BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests
 import jp.vmi.selenium.selenese.Main
 import jp.vmi.selenium.selenese.Runner
 import jp.vmi.selenium.selenese.config.DefaultConfig
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.FilterType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
-@ComponentScan(excludeFilters = [@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = [BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests.Config, BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests])])
 @ActiveProfiles(['dev'])
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD, methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class SeleniumSIDETest extends Specification {
     @Value('${local.server.port}')
     int randomPort
@@ -41,7 +39,7 @@ class SeleniumSIDETest extends Specification {
         assert result.level.exitCode == 0
 
         where:
-        name | file
+        name                                     | file
 //        'Create Dynamic HTTP Metadata Resolver' | '/dhmr.side' //passing
 //        'Metadata Source Happy Path Save'       | '/MetadataSourceHappyPathSAVE.side' //passing
 //        'Metadata Provider Happy Path Save'     | '/MetadataProviderHappyPathSAVE.side' // failing (decimal point bug)
@@ -55,6 +53,6 @@ class SeleniumSIDETest extends Specification {
 //        'Create Metadata Source from URL'       | '/CreateMetadataSourceFromURL.side' //passing
 //        'Delete Incomplete Source'              | '/DeleteIncompleteSource_Incomplete.side' // incomplete
 //        'Admin Login'                           | '/SHIBUI-1031_AdminLogin.side'
-        'Delegated Admin: SubmitSourceWithError'    | '/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side' //passing, but with heap problem
+        'Delegated Admin: SubmitSourceWithError' | '/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side' //passing, but with heap problem
     }
 }

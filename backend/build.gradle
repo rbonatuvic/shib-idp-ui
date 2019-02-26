@@ -191,8 +191,8 @@ sourceSets {
     integrationTest {
         groovy {
             srcDirs = ['src/integration/groovy']
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
+            compileClasspath += main.output
+            runtimeClasspath += main.output
         }
         resources {
             srcDir 'src/integration/resources'
