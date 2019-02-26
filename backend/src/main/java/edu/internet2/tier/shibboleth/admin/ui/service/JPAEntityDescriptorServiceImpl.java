@@ -59,6 +59,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -322,6 +323,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (representation.getServiceProviderSsoDescriptor() != null) {
             SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
 
+            spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
             if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
                 spssoDescriptor.setSupportedProtocols(
                         Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
