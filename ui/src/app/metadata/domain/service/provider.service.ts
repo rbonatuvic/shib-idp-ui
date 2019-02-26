@@ -24,17 +24,7 @@ export class MetadataProviderService {
     }
 
     find(id: string): Observable<MetadataProvider> {
-        return this.http.get<MetadataProvider>(`${this.base}${this.endpoint}/${id}`).pipe(map(
-            provider => {
-                /*if (provider.reloadableMetadataResolverAttributes) {
-                    if (provider.reloadableMetadataResolverAttributes.refreshDelayFactor) {
-                        provider.reloadableMetadataResolverAttributes.refreshDelayFactor =
-                            provider.reloadableMetadataResolverAttributes.refreshDelayFactor.toString();
-                    }
-                }*/
-                return provider;
-            }
-        ));
+        return this.http.get<MetadataProvider>(`${this.base}${this.endpoint}/${id}`);
     }
 
     update(provider: MetadataProvider): Observable<MetadataProvider> {
