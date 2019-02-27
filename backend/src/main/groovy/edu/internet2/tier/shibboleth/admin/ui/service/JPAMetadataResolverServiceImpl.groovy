@@ -277,7 +277,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     private String generateJavaScriptRegexScript(String regex) {
         return """
     "use strict";
-    ${regex}.test(input.getEntityID());\n"""
+    ${regex.startsWith('/') ? '' : '/'}${regex}${regex.endsWith('/') ? '' : '/'}.test(input.getEntityID());\n"""
     }
 
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
