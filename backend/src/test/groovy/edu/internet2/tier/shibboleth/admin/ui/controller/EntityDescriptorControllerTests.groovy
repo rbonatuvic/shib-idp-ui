@@ -815,7 +815,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         result.andExpect(status().isConflict())
-                .andExpect(content().string("{\"errorCode\":\"409\",\"errorMessage\":\"The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists.\"}"))
+                .andExpect(content().string("{\"errorCode\":\"409\",\"errorMessage\":\"The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists.\",\"cause\":null}"))
     }
 
     @Ignore("until we handle the workaround for SHIBUI-1237")
