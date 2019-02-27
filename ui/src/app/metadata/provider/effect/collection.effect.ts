@@ -101,7 +101,9 @@ export class CollectionEffects {
                 .save(provider)
                 .pipe(
                     map(p => new AddProviderSuccess(p)),
-                    catchError((e) => of(new AddProviderFail(e.error)))
+                    catchError((e) => {
+                        return of(new AddProviderFail(e.error));
+                    })
                 )
         )
     );
@@ -111,13 +113,17 @@ export class CollectionEffects {
         ofType<AddProviderFail>(ProviderCollectionActionTypes.ADD_PROVIDER_FAIL),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromI18n.getMessages)),
-        map(([error, messages]) => new AddNotification(
-            new Notification(
-                NotificationType.Danger,
-                `${error.errorCode}: ${ this.i18nService.translate(error.errorMessage, null, messages) }`,
-                8000
-            )
-        ))
+        map(([error, messages]) => {
+            let message = `${error.errorCode}: ${this.i18nService.translate(error.errorMessage, null, messages)}`;
+            message = error.cause ? `${message} - ${error.cause}` : message;
+            return new AddNotification(
+                new Notification(
+                    NotificationType.Danger,
+                    message,
+                    8000
+                )
+            );
+        })
     );
     @Effect()
     createProviderFailEnableForm$ = this.actions$.pipe(
