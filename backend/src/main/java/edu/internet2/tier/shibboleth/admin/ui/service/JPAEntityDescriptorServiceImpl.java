@@ -43,7 +43,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
@@ -199,6 +198,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     void setupUIInfo(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         // set up mdui
         if (representation.getMdui() != null) {
+            // TODO: check if we need more than a naive implementation
+            removeUIInfo(ed);
             MduiRepresentation mduiRepresentation = representation.getMdui();
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getDisplayName())) {
@@ -251,7 +252,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
                 Logo logo = openSamlObjects.buildDefaultInstanceOfType(Logo.class);
-                getUIInfo(ed).addLog(logo);
+                getUIInfo(ed).addLogo(logo);
                 logo.setURL(mduiRepresentation.getLogoUrl());
                 logo.setHeight(mduiRepresentation.getLogoHeight());
                 logo.setWidth(mduiRepresentation.getLogoWidth());
