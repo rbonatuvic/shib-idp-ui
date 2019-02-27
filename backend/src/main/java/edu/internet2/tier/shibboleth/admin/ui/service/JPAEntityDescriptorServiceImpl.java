@@ -43,7 +43,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
@@ -59,6 +58,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,6 +178,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             if (securityInfoRepresentation.isWantAssertionsSigned()) {
                 getSPSSODescriptorFromEntityDescriptor(ed).setWantAssertionsSigned(true);
             }
+            // TODO: review if we need more than a naive implementation
+            ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
             if (securityInfoRepresentation.isX509CertificateAvailable()) {
                 for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
                     KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
@@ -196,6 +198,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     void setupUIInfo(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
         // set up mdui
         if (representation.getMdui() != null) {
+            // TODO: check if we need more than a naive implementation
+            removeUIInfo(ed);
             MduiRepresentation mduiRepresentation = representation.getMdui();
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getDisplayName())) {
@@ -248,7 +252,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
             if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
                 Logo logo = openSamlObjects.buildDefaultInstanceOfType(Logo.class);
-                getUIInfo(ed).addLog(logo);
+                getUIInfo(ed).addLogo(logo);
                 logo.setURL(mduiRepresentation.getLogoUrl());
                 logo.setHeight(mduiRepresentation.getLogoHeight());
                 logo.setWidth(mduiRepresentation.getLogoWidth());
@@ -320,6 +324,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (representation.getServiceProviderSsoDescriptor() != null) {
             SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
 
+            spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
             if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
                 spssoDescriptor.setSupportedProtocols(
                         Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
@@ -388,7 +393,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
     }
 
-    private KeyDescriptor createKeyDescriptor(String name, String type, String value) {
+    KeyDescriptor createKeyDescriptor(String name, String type, String value) {
         KeyDescriptor keyDescriptor = openSamlObjects.buildDefaultInstanceOfType(KeyDescriptor.class);
 
         if (!Strings.isNullOrEmpty(name)) {
