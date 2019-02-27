@@ -50,33 +50,11 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
     def "pretest"() {
         given:
         def dataField = new Data.DataField(
-                method: 'setupUIInfo',
-                description: 'set display name',
-                representation: new EntityDescriptorRepresentation().with {
-                    it.mdui = new MduiRepresentation().with {
-                        it.displayName = 'test name'
-                        it
-                    }
-                    it
-                },
-                starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor),
-                expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
-                    it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
-                        it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
-                            it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
-                                it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(DisplayName).with {
-                                    it.value = 'test name'
-                                    it.XMLLang = 'en'
-                                    it
-                                })
-                                it
-                            })
-                            it
-                        }
-                        it
-                    })
-                    it
-                }
+                method: 'setupLogout',
+                description: 'no change',
+                representation: new EntityDescriptorRepresentation(),
+                starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class)
         )
 
         when:
