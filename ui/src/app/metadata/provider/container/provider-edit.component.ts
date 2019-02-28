@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { skipWhile, map, combineLatest, filter } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { skipWhile, map, combineLatest, filter, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromProvider from '../reducer';
@@ -25,6 +25,7 @@ import { FilterableProviders } from '../model';
 })
 
 export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     provider$: Observable<MetadataProvider>;
     definition$: Observable<Wizard<MetadataProvider>>;
@@ -59,7 +60,7 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form || 'filters'));
         startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
 
-        this.index$.subscribe(id => id && this.go(id));
+        this.index$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(id => id && this.go(id));
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
@@ -82,6 +83,8 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
 
     ngOnDestroy() {
         this.clear();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     clear(): void {

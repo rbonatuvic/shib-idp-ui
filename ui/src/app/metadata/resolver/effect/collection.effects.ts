@@ -88,13 +88,6 @@ export class ResolverCollectionEffects {
     );
 
     @Effect()
-    updateResolverSuccessReload$ = this.actions$.pipe(
-        ofType<UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
-        map(action => action.payload),
-        map(provider => new LoadResolverRequest())
-    );
-
-    @Effect()
     updateResolverFailNotification$ = this.actions$.pipe(
         ofType<UpdateResolverFail>(ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL),
         map(action => action.payload),
@@ -146,12 +139,6 @@ export class ResolverCollectionEffects {
         ofType<AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
         map(action => action.payload),
         tap(provider => this.router.navigate(['dashboard']))
-    );
-    @Effect()
-    addResolverSuccessReload$ = this.actions$.pipe(
-        ofType<AddResolverSuccess>(ResolverCollectionActionTypes.ADD_RESOLVER_SUCCESS),
-        map(action => action.payload),
-        map(provider => new LoadResolverRequest())
     );
 
     @Effect()
