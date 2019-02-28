@@ -1,5 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * An SPI to validate different types of {@link MetadataResolver}s.
  * <p>
@@ -17,18 +20,20 @@ public interface MetadataResolverValidator<T extends MetadataResolver> {
 
     class ValidationResult {
 
+        public ValidationResult() {}
+
         public ValidationResult(String errorMessage) {
-            this.errorMessage = errorMessage;
+            this.errorMessages.add(errorMessage);
         }
 
-        private String errorMessage;
+        private List<String> errorMessages = new ArrayList<>();
 
-        public String getErrorMessage() {
-            return errorMessage;
+        public List<String> getErrorMessages() {
+            return errorMessages;
         }
 
         public boolean isValid() {
-            return this.errorMessage == null;
+            return this.errorMessages == null || this.errorMessages.isEmpty();
         }
     }
 }

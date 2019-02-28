@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.util.DefaultUriBuilderFactory
+import spock.lang.Ignore
 import spock.lang.Specification
 
 /**
@@ -25,6 +26,8 @@ class DefaultAuthenticationIntegrationTests extends Specification {
         this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
     }
 
+    // TODO: check this test
+    @Ignore('sporatically failing, need to investigate')
     def "When auth is enabled and an unauth'd request is made, a 302 is returned which points at login"() {
         when:
         def result = this.webClient

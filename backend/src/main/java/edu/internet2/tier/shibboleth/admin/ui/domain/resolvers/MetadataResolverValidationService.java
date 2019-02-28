@@ -4,7 +4,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverV
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A facade that aggregates {@link MetadataResolverValidator}s available to call just one of them supporting the type of a given resolver.
@@ -24,13 +23,15 @@ public class MetadataResolverValidationService<T extends MetadataResolver> {
 
     @SuppressWarnings("Unchecked")
     public ValidationResult validateIfNecessary(T metadataResolver) {
-        Optional<MetadataResolverValidator<T>> validator =
-                this.validators
-                        .stream()
-                        .filter(v -> v.supports(metadataResolver))
-                        .findFirst();
-        return validator.isPresent() ? validator.get().validate(metadataResolver) : new ValidationResult(null);
-
+        // TODO: make this more streamsish
+        ValidationResult validationResult = new ValidationResult();
+        this.validators
+                .stream()
+                .filter(v -> v.supports(metadataResolver))
+                .forEach(v -> {
+                    validationResult.getErrorMessages().addAll(v.validate(metadataResolver).getErrorMessages());
+                });
+        return validationResult;
     }
 
     //Package-private - used for unit tests
