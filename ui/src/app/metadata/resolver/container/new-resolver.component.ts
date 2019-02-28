@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { map, startWith, distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { map, startWith, distinctUntilChanged, debounceTime, withLatestFrom, takeUntil } from 'rxjs/operators';
 import { SelectDraftRequest } from '../action/draft.action';
 import { Store } from '@ngrx/store';
 import * as fromCollection from '../reducer';
@@ -11,7 +11,9 @@ import * as fromCollection from '../reducer';
     templateUrl: './new-resolver.component.html',
     styleUrls: ['./new-resolver.component.scss']
 })
-export class NewResolverComponent {
+export class NewResolverComponent implements OnDestroy {
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     actionsSubscription: Subscription;
 
@@ -32,8 +34,15 @@ export class NewResolverComponent {
         );
 
         this.actionsSubscription = this.route.data.pipe(
+            takeUntil(this.ngUnsubscribe),
             distinctUntilChanged(),
-            map(data => new SelectDraftRequest(data.draft))
+            map(data => {
+                return new SelectDraftRequest(data.draft);
+            })
         ).subscribe(this.store);
+    }
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

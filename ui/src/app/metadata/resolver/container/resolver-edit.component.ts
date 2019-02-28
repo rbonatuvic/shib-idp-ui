@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { skipWhile, map, combineLatest, filter } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { skipWhile, map, combineLatest, filter, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromResolver from '../reducer';
@@ -23,7 +23,7 @@ import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.di
 })
 
 export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate {
-
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
     resolver$: Observable<MetadataResolver>;
     definition$: Observable<Wizard<MetadataResolver>>;
     index$: Observable<string>;
@@ -54,9 +54,9 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
         this.isSaving$ = this.store.select(fromResolver.getEntityIsSaving);
 
         let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form));
-        startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
+        startIndex$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(index => this.store.dispatch(new SetIndex(index)));
 
-        this.index$.subscribe(index => index && this.go(index));
+        this.index$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(index => index && this.go(index));
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
@@ -73,6 +73,8 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
 
     ngOnDestroy() {
         this.clear();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     clear(): void {

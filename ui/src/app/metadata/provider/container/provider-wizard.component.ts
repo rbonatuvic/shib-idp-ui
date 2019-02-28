@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -7,7 +7,7 @@ import * as fromWizard from '../../../wizard/reducer';
 import { SetIndex, SetDisabled, ClearWizard, SetDefinition } from '../../../wizard/action/wizard.action';
 import { ClearEditor } from '../action/editor.action';
 import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
-import { startWith } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';
@@ -22,6 +22,8 @@ import { MetadataProviderWizard } from '../model';
 })
 
 export class ProviderWizardComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
     definition$: Observable<Wizard<MetadataProvider>>;
     changes$: Observable<MetadataProvider>;
     model$: Observable<any>;
@@ -40,6 +42,7 @@ export class ProviderWizardComponent implements OnDestroy {
     ) {
         this.store
             .select(fromWizard.getCurrentWizardSchema)
+            .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(s => {
                 if (s) {
                     this.store.dispatch(new LoadSchemaRequest(s));
@@ -53,7 +56,7 @@ export class ProviderWizardComponent implements OnDestroy {
         this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
 
         this.valid$
-            .pipe(startWith(false))
+            .pipe(startWith(false), takeUntil(this.ngUnsubscribe))
             .subscribe((valid) => {
                 this.store.dispatch(new SetDisabled(!valid));
             });
@@ -66,7 +69,7 @@ export class ProviderWizardComponent implements OnDestroy {
             map(([ definition, schema, model ]) => ({ definition, schema, model }))
         );
 
-        this.changes$.subscribe(c => this.provider = c);
+        this.changes$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(c => this.provider = c);
 
         this.store.dispatch(new SetDefinition(MetadataProviderWizard));
         this.store.dispatch(new SetIndex(MetadataProviderWizard.steps[0].id));
@@ -76,6 +79,9 @@ export class ProviderWizardComponent implements OnDestroy {
         this.store.dispatch(new ClearProvider());
         this.store.dispatch(new ClearWizard());
         this.store.dispatch(new ClearEditor());
+
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 
     next(): void {

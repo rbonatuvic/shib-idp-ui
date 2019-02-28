@@ -104,7 +104,7 @@ export class DraftCollectionEffects {
     removeDraft$ = this.actions$.pipe(
         ofType<actions.RemoveDraftRequest>(DraftActionTypes.REMOVE_DRAFT),
         map(getPayload),
-            switchMap(provider => this.draftService.find(provider.entityId, 'entityId').pipe(
+            switchMap(provider => this.draftService.find(provider.id, 'id').pipe(
                 switchMap(selected => this.draftService.remove(selected)),
                 map(p => new actions.RemoveDraftSuccess(p))
             )

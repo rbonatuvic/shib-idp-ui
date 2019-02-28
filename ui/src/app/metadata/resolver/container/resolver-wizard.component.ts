@@ -10,7 +10,7 @@ import {
     RouterStateSnapshot
 } from '@angular/router';
 import { Observable, Subject, of, combineLatest as combine } from 'rxjs';
-import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest } from 'rxjs/operators';
+import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -80,7 +80,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
                     this.store.dispatch(new LoadSchemaRequest(s));
                 }
             });
-
         this.valid$ = this.store.select(fromResolver.getEntityIsValid);
 
         this.valid$
@@ -102,6 +101,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
 
         this.route.params
             .pipe(
+                takeUntil(this.ngUnsubscribe),
                 map(params => params.index),
                 distinctUntilChanged()
             )
@@ -114,8 +114,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             skipWhile(() => this.saving),
             combineLatest(this.resolver$, (changes, base) => ({ ...base, ...changes }))
         ).subscribe(latest => this.latest = latest);
-
-        // this.changes$.subscribe(c => console.log(c));
 
         this.summary$ = combine(
             this.store.select(fromWizard.getWizardDefinition),

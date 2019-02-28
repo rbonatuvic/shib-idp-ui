@@ -19,8 +19,6 @@ import * as fromResolver from '../reducer';
 import { EntityDraftService } from '../../domain/service/draft.service';
 import { UpdateDraftRequest, SelectDraftSuccess, DraftActionTypes } from '../action/draft.action';
 
-
-
 @Injectable()
 export class WizardEffects {
 
