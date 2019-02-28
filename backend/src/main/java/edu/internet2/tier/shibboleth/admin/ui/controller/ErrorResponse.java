@@ -16,9 +16,17 @@ import org.springframework.http.HttpStatus;
 public class ErrorResponse {
     private String errorCode;
     private String errorMessage;
+    private String cause;
+
+    public ErrorResponse(String errorCode, String errorMessage) {
+        this(errorCode, errorMessage, null);
+    }
 
     public ErrorResponse(HttpStatus httpStatus, String errorMessage) {
-        this.errorCode = String.valueOf(httpStatus.value());
-        this.errorMessage = errorMessage;
+        this(httpStatus, errorMessage, null);
+    }
+
+    public ErrorResponse(HttpStatus httpStatus, String errorCode, String cause) {
+        this(String.valueOf(httpStatus.value()), errorCode, cause);
     }
 }

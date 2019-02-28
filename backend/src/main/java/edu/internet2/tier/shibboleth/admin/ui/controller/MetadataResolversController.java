@@ -71,7 +71,7 @@ public class MetadataResolversController {
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage(), ex.getCause().getMessage()));
     }
 
     @GetMapping("/MetadataResolvers")
