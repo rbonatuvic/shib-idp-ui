@@ -153,7 +153,8 @@ public class MetadataResolversController {
     private ResponseEntity<?> validate(MetadataResolver metadataResolver) {
         ValidationResult validationResult = metadataResolverValidationService.validateIfNecessary(metadataResolver);
         if (!validationResult.isValid()) {
-            return ResponseEntity.badRequest().body(validationResult.getErrorMessage());
+            ErrorResponse errorResponse = new ErrorResponse("400", String.join("\n", validationResult.getErrorMessages()));
+            return ResponseEntity.badRequest().body(errorResponse);
         }
         return null;
     }

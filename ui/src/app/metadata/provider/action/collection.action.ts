@@ -89,7 +89,7 @@ export class UpdateProviderSuccess implements Action {
 export class UpdateProviderFail implements Action {
     readonly type = ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL;
 
-    constructor(public payload: MetadataProvider) { }
+    constructor(public payload: any) { }
 }
 
 export class UpdateProviderConflict implements Action {
