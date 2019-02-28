@@ -19,7 +19,6 @@ export class EntityDraftService {
     }
 
     find(id: string, attr: string = 'id'): Observable<MetadataResolver> {
-        console.log(id);
         if (!id) {
             return throwError(404);
         }
