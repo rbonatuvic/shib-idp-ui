@@ -23,7 +23,9 @@ public interface MetadataResolverValidator<T extends MetadataResolver> {
         public ValidationResult() {}
 
         public ValidationResult(String errorMessage) {
-            this.errorMessages.add(errorMessage);
+            if (errorMessage != null) {
+                this.errorMessages.add(errorMessage);
+            }
         }
 
         private List<String> errorMessages = new ArrayList<>();

@@ -28,9 +28,7 @@ public class MetadataResolverValidationService<T extends MetadataResolver> {
         this.validators
                 .stream()
                 .filter(v -> v.supports(metadataResolver))
-                .forEach(v -> {
-                    validationResult.getErrorMessages().addAll(v.validate(metadataResolver).getErrorMessages());
-                });
+                .forEach(v -> v.validate(metadataResolver).getErrorMessages().stream().filter(m -> m != null).forEach(r -> validationResult.getErrorMessages().add(r)));
         return validationResult;
     }
 
