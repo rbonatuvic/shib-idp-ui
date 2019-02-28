@@ -144,7 +144,7 @@ export class CollectionEffects {
                 .update(provider)
                 .pipe(
                     map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
-                    catchError((e) => e.status === 409 ? of(new UpdateProviderConflict(provider)) : of(new UpdateProviderFail(provider)))
+                    catchError((e) => e.status === 409 ? of(new UpdateProviderConflict(provider)) : of(new UpdateProviderFail(e.error)))
                 )
         )
     );
@@ -164,6 +164,20 @@ export class CollectionEffects {
             this.store.dispatch(new ClearProvider());
             this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']);
         })
+    );
+
+    @Effect()
+    updateProviderFailDispatchNotification$ = this.actions$.pipe(
+        ofType<UpdateProviderFail>(ProviderCollectionActionTypes.UPDATE_PROVIDER_FAIL),
+        map(action => action.payload),
+        withLatestFrom(this.store.select(fromI18n.getMessages)),
+        map(([error, messages]) => new AddNotification(
+            new Notification(
+                NotificationType.Danger,
+                `${error.errorCode}: ${this.i18nService.translate(error.errorMessage, null, messages)}`,
+                8000
+            )
+        ))
     );
 
     @Effect()
