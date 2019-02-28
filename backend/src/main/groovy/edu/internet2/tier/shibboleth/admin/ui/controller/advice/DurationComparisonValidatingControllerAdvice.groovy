@@ -27,15 +27,19 @@ class DurationComparisonValidatingControllerAdvice extends RequestBodyAdviceAdap
         MetadataResolver metadataResolver = (MetadataResolver)body
         if (metadataResolver.hasProperty('dynamicMetadataResolverAttributes')) {
             DynamicMetadataResolverAttributes dynamicMetadataResolverAttributes = metadataResolver.dynamicMetadataResolverAttributes
-            if (DurationUtility.toMillis(dynamicMetadataResolverAttributes.minCacheDuration) > DurationUtility.toMillis(dynamicMetadataResolverAttributes.maxCacheDuration)) {
-                throw new MetadataResolverConfigurationValidationException('minimum cache duration larger than maximum')
+            if (dynamicMetadataResolverAttributes != null) {
+                if (DurationUtility.toMillis(dynamicMetadataResolverAttributes.minCacheDuration) > DurationUtility.toMillis(dynamicMetadataResolverAttributes.maxCacheDuration)) {
+                    throw new MetadataResolverConfigurationValidationException('minimum cache duration larger than maximum')
+                }
             }
         }
 
         if (metadataResolver.hasProperty('reloadableMetadataResolverAttributes')) {
             ReloadableMetadataResolverAttributes reloadableMetadataResolverAttributes = metadataResolver.reloadableMetadataResolverAttributes
-            if (DurationUtility.toMillis(reloadableMetadataResolverAttributes.minRefreshDelay) > DurationUtility.toMillis(reloadableMetadataResolverAttributes.maxRefreshDelay)) {
-                throw new MetadataResolverConfigurationValidationException('minimum refresh delay duration larger than maximum')
+            if (reloadableMetadataResolverAttributes != null) {
+                if (DurationUtility.toMillis(reloadableMetadataResolverAttributes.minRefreshDelay) > DurationUtility.toMillis(reloadableMetadataResolverAttributes.maxRefreshDelay)) {
+                    throw new MetadataResolverConfigurationValidationException('minimum refresh delay duration larger than maximum')
+                }
             }
         }
 
