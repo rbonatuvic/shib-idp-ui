@@ -1,18 +1,36 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.Description
+import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
+import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
+import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Logo
+import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat
+import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
+import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import org.opensaml.saml.common.xml.SAMLConstants
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
     @Shared
-    def openSAMLObjects = new OpenSamlObjects().with {
+    OpenSamlObjects openSAMLObjects = new OpenSamlObjects().with {
         it.init()
         it
     }
@@ -28,6 +46,26 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
         assert true
     }
 
+    // this is a stub to build out the DataFields
+    def "pretest"() {
+        given:
+        def dataField = new Data.DataField(
+                method: 'setupLogout',
+                description: 'no change',
+                representation: new EntityDescriptorRepresentation(),
+                starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class)
+        )
+
+        when:
+        def (expected, starter) = [dataField.expected, dataField.starter]
+        expected.setResourceId(starter.getResourceId())
+        entityDescriptorService."${dataField.method}"(starter, dataField.representation)
+
+        then:
+        assert expected == starter
+    }
+
     @Unroll
     def "test #method(#description)"() {
         setup:
@@ -38,11 +76,59 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
         assert starter == expected
 
         where:
-        [method, description, representation, starter, expected]  << Data.getData(openSAMLObjects)
+        [method, description, representation, starter, expected] << Data.getData(openSAMLObjects)
+    }
+
+    def "test createKeyDescriptor, single type"() {
+        given:
+        def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" use="signing">
+  <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:X509Data>
+      <ds:X509Certificate>testValue</ds:X509Certificate>
+    </ds:X509Data>
+  </ds:KeyInfo>
+</md:KeyDescriptor>'''
+        def expected = openSAMLObjects.unmarshallFromXml(expectedXml.bytes, KeyDescriptor)
+        expected.name = 'testName'
+
+        when:
+        def keyDescriptor = entityDescriptorService.createKeyDescriptor('testName', 'signing', 'testValue')
+
+        then:
+        assert keyDescriptor == expected
+    }
+
+    def "test createKeyDescriptor, both type"() {
+        given:
+        def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+  <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:X509Data>
+      <ds:X509Certificate>testValue</ds:X509Certificate>
+    </ds:X509Data>
+  </ds:KeyInfo>
+</md:KeyDescriptor>'''
+        def expected = openSAMLObjects.unmarshallFromXml(expectedXml.bytes, KeyDescriptor)
+        expected.name = 'testName'
+
+        when:
+        def keyDescriptor = entityDescriptorService.createKeyDescriptor('testName', 'both', 'testValue')
+        def x = openSAMLObjects.marshalToXmlString(keyDescriptor)
+        then:
+        assert keyDescriptor == expected
+    }
+
+    def 'test createKeyDescriptor equality'() {
+        when:
+        def key1 = entityDescriptorService.createKeyDescriptor('test', 'signing', 'test')
+        def key2 = entityDescriptorService.createKeyDescriptor('test', 'signing', 'test')
+
+        then:
+        assert key1.equals(key2)
     }
 
     static class Data {
         static def getData(OpenSamlObjects openSAMLObjects) {
+            JPAEntityDescriptorServiceImpl entityDescriptorService = new JPAEntityDescriptorServiceImpl(openSAMLObjects, null, null)
             def data = []
 
             data << new DataField(
@@ -138,9 +224,894 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                         it
                     },
             )
+            data << new DataField(
+                    method: 'setupContacts',
+                    description: 'add contact to empty descriptor',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.contacts = [new ContactRepresentation(type: 'administrative', name: 'name', emailAddress: 'test@test', displayName: 'displayName', url: 'http://url')]
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.contactPersons = [openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                            it.type = ContactPersonTypeEnumeration.ADMINISTRATIVE
+                            it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                it.name = 'name'
+                                it
+                            }
+                            it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                it.address = 'test@test'
+                                it
+                            })
+                            it
+                        }]
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupContacts',
+                    description: 'add contant to non-empty descriptor',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.contacts = [
+                                new ContactRepresentation(type: 'administrative', name: 'name', emailAddress: 'test@test', displayName: 'displayName', url: 'http://url'),
+                                new ContactRepresentation(type: 'technical', name: 'name2', emailAddress: 'test2@test', displayName: 'displayName2', url: 'http://url2')
+                        ]
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.contactPersons = [openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                            it.type = ContactPersonTypeEnumeration.ADMINISTRATIVE
+                            it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                it.name = 'name'
+                                it
+                            }
+                            it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                it.address = 'test@test'
+                                it
+                            })
+                            it
+                        }]
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.contactPersons = [
+                                openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                                    it.type = ContactPersonTypeEnumeration.ADMINISTRATIVE
+                                    it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                        it.name = 'name'
+                                        it
+                                    }
+                                    it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                        it.address = 'test@test'
+                                        it
+                                    })
+                                    it
+                                },
+                                openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                                    it.type = ContactPersonTypeEnumeration.TECHNICAL
+                                    it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                        it.name = 'name2'
+                                        it
+                                    }
+                                    it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                        it.address = 'test2@test'
+                                        it
+                                    })
+                                    it
+                                }]
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupContacts',
+                    description: 'update contact',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.contacts = [new ContactRepresentation(type: 'technical', name: 'name2', emailAddress: 'test2@test', displayName: 'displayName', url: 'http://url')]
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.contactPersons = [openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                            it.type = ContactPersonTypeEnumeration.ADMINISTRATIVE
+                            it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                it.name = 'name'
+                                it
+                            }
+                            it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                it.address = 'test@test'
+                                it
+                            })
+                            it
+                        }]
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.contactPersons = [openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                            it.type = ContactPersonTypeEnumeration.TECHNICAL
+                            it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                it.name = 'name2'
+                                it
+                            }
+                            it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                it.address = 'test2@test'
+                                it
+                            })
+                            it
+                        }]
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupContacts',
+                    description: 'delete contacts',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.contactPersons = [openSAMLObjects.buildDefaultInstanceOfType(ContactPerson.class).with {
+                            it.type = ContactPersonTypeEnumeration.ADMINISTRATIVE
+                            it.givenName = openSAMLObjects.buildDefaultInstanceOfType(GivenName.class).with {
+                                it.name = 'name'
+                                it
+                            }
+                            it.emailAddresses.add(openSAMLObjects.buildDefaultInstanceOfType(EmailAddress.class).with {
+                                it.address = 'test@test'
+                                it
+                            })
+                            it
+                        }]
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class)
+            )
+            data << new DataField(
+                    method: 'setupSPSSODescriptor',
+                    description: 'set SPSSODescriptor protocol support',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                            it.protocolSupportEnum = 'SAML 2'
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.supportedProtocols = [SAMLConstants.SAML20P_NS]
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSPSSODescriptor',
+                    description: 'add SPSSODescriptor protocol support',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                            it.protocolSupportEnum = 'SAML 1.1,SAML 2'
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.supportedProtocols = [SAMLConstants.SAML20P_NS]
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.supportedProtocols = [SAMLConstants.SAML11P_NS, SAMLConstants.SAML20P_NS]
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSPSSODescriptor',
+                    description: 'remove SPSSODescriptor',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.supportedProtocols = [SAMLConstants.SAML20P_NS]
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class)
+            )
+            data << new DataField(
+                    method: 'setupSPSSODescriptor',
+                    description: 'set nameid formats',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                            it.nameIdFormats = ['testformat']
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'testformat'
+                                        it
+                                    })
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSPSSODescriptor',
+                    description: 'add nameid formats',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                            it.nameIdFormats = ['testformat', 'anotherformat']
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'testformat'
+                                        it
+                                    })
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'testformat'
+                                        it
+                                    })
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'anotherformat'
+                                        it
+                                    })
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSPSSODescriptor',
+                    description: 'remove nameid format',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                            it.nameIdFormats = ['anotherformat']
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'testformat'
+                                        it
+                                    })
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'anotherformat'
+                                        it
+                                    })
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.nameIDFormats.add(openSAMLObjects.buildDefaultInstanceOfType(NameIDFormat.class).with {
+                                        it.format = 'anotherformat'
+                                        it
+                                    })
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'set authentication requests signed to true',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation(authenticationRequestsSigned: true)
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.authnRequestsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'unset authentication requests signed to true',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.authnRequestsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class)
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'set want assertions signed to true',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation(wantAssertionsSigned: true)
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.wantAssertionsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'unset want assertions signed',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.wantAssertionsSigned = true
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class)
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'add signing certificate',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation().with {
+                            it.x509CertificateAvailable = true
+                            it.x509Certificates = [
+                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test', type: 'signing', value: 'test')
+                            ]
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'add another certificate',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation().with {
+                            it.x509CertificateAvailable = true
+                            it.x509Certificates = [
+                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test', type: 'signing', value: 'test'),
+                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test2', type: 'encryption', value: 'test2')
+                            ]
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'remove a certificate',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation().with {
+                            it.x509CertificateAvailable = true
+                            it.x509Certificates = [
+                                    new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'test2', type: 'encryption', value: 'test2')
+                            ]
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it
+                                }
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'remove all certificates',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.securityInfo = new SecurityInfoRepresentation().with {
+                            it.x509CertificateAvailable = false
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'encryption', 'test'))
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class)
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupSecurity',
+                    description: 'remove all certificates',
+                    representation: new EntityDescriptorRepresentation(),
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'encryption', 'test'))
+                                    it
+                                }
+                        )
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
+                        it.getRoleDescriptors().add(
+                                openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class)
+                        )
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'set display name',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it.displayName = 'test name'
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(DisplayName).with {
+                                        it.value = 'test name'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'remove display name',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(DisplayName).with {
+                                        it.value = 'test name'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'set information URL',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it.informationUrl = 'http://test'
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(InformationURL).with {
+                                        it.value = 'http://test'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'remove information url',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(InformationURL).with {
+                                        it.value = 'http://test'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'set privacy statement URL',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it.privacyStatementUrl = 'http://test'
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(PrivacyStatementURL).with {
+                                        it.value = 'http://test'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'remove information url',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(PrivacyStatementURL).with {
+                                        it.value = 'http://test'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'set description',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it.description = 'test description'
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Description).with {
+                                        it.value = 'test description'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'remove description',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Description).with {
+                                        it.value = 'test description'
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'set logo',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it.logoUrl = 'http://test'
+                            it.logoHeight = 5
+                            it.logoWidth = 25
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor),
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Logo).with {
+                                        it.url = 'http://test'
+                                        it.height = 5
+                                        it.width = 25
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'remove logo',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.mdui = new MduiRepresentation().with {
+                            it
+                        }
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Logo).with {
+                                        it.url = 'http://test'
+                                        it.height = 5
+                                        it.width = 25
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it
+                            }
+                            it
+                        })
+                        it
+                    }
+            )
+            data << new DataField(
+                    method: 'setupUIInfo',
+                    description: 'remove ui info',
+                    representation: new EntityDescriptorRepresentation().with {
+                        it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation()
+                        it
+                    },
+                    starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions).with {
+                                it.unknownXMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(UIInfo).with {
+                                    it.XMLObjects.add(openSAMLObjects.buildDefaultInstanceOfType(Logo).with {
+                                        it.url = 'http://test'
+                                        it.height = 5
+                                        it.width = 25
+                                        it.XMLLang = 'en'
+                                        it
+                                    })
+                                    it
+                                })
+                                it
+                            }
+                            it
+                        })
+                        it
+                    },
+                    expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor).with {
+                        it.roleDescriptors.add(openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor).with {
+                            it.extensions = openSAMLObjects.buildDefaultInstanceOfType(Extensions)
+                            it
+                        })
+                        it
+                    }
+            )
 
             return data
         }
+
 
         static class DataField implements Iterable {
             String method

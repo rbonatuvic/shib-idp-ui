@@ -60,7 +60,7 @@ public class UIInfo extends AbstractXMLObject implements org.opensaml.saml.ext.s
         return this.xmlObjects.stream().filter(p -> p instanceof Logo).map(p -> (Logo) p).collect(Collectors.toList());
     }
 
-    public void addLog(edu.internet2.tier.shibboleth.admin.ui.domain.Logo logo) {
+    public void addLogo(edu.internet2.tier.shibboleth.admin.ui.domain.Logo logo) {
         this.xmlObjects.add(logo);
     }
 

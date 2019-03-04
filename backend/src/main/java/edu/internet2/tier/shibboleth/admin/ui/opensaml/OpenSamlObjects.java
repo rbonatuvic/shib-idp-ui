@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.config.InitializationServ
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.ParserPool;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.xml.XMLObject;
@@ -15,6 +16,7 @@ import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,6 +127,17 @@ public class OpenSamlObjects {
             if (unmarshaller != null) {
                 //Cast here could be dangerous, but we want to make sure that only EntityDescriptor representation is being POSTed (somehow)
                 return EntityDescriptor.class.cast(unmarshaller.unmarshall(e));
+            }
+            return null;
+        }
+    }
+
+    public <T> T unmarshallFromXml(byte[] xml, Class<T> type) throws IOException, XMLParserException, UnmarshallingException {
+        try (InputStream is = ByteSource.wrap(xml).openBufferedStream()) {
+            Document d = this.parserPool.parse(is);
+            Unmarshaller unmarshaller = this.unmarshallerFactory.getUnmarshaller(d.getDocumentElement());
+            if (unmarshaller != null) {
+                return type.cast(unmarshaller.unmarshall(d.getDocumentElement()));
             }
             return null;
         }

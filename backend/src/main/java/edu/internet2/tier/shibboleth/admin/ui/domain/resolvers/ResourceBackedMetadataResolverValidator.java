@@ -15,6 +15,6 @@ public class ResourceBackedMetadataResolverValidator implements MetadataResolver
         catch (ResourceBackedMetadataResolver.InvalidResourceTypeException e) {
             return new ValidationResult(e.getMessage());
         }
-        return new ValidationResult(null);
+        return new ValidationResult();
     }
 }

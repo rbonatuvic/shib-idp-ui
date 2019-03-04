@@ -6,6 +6,16 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
     ...BaseMetadataProviderEditor,
     label: 'FilesystemMetadataProvider',
     type: 'FilesystemMetadataResolver',
+    formatter: (changes: FileSystemMetadataProvider) => {
+        let base = BaseMetadataProviderEditor.formatter(changes);
+        if (base.reloadableMetadataResolverAttributes) {
+            if (base.reloadableMetadataResolverAttributes.refreshDelayFactor) {
+                base.reloadableMetadataResolverAttributes.refreshDelayFactor =
+                    base.reloadableMetadataResolverAttributes.refreshDelayFactor.toString();
+            }
+        }
+        return base;
+    },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList);
         validators['/xmlId'] = (value, property, form) => {

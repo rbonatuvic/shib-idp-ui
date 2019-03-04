@@ -71,7 +71,7 @@ public class MetadataResolversController {
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()));
+        return ResponseEntity.badRequest().body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage(), ex.getCause().getMessage()));
     }
 
     @GetMapping("/MetadataResolvers")
@@ -153,7 +153,8 @@ public class MetadataResolversController {
     private ResponseEntity<?> validate(MetadataResolver metadataResolver) {
         ValidationResult validationResult = metadataResolverValidationService.validateIfNecessary(metadataResolver);
         if (!validationResult.isValid()) {
-            return ResponseEntity.badRequest().body(validationResult.getErrorMessage());
+            ErrorResponse errorResponse = new ErrorResponse("400", String.join("\n", validationResult.getErrorMessages()));
+            return ResponseEntity.badRequest().body(errorResponse);
         }
         return null;
     }

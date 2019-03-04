@@ -3,6 +3,7 @@ import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { ArrayWidget } from 'ngx-schema-form';
 import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
+import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
 
 export interface FormError {
     code: string;
@@ -40,6 +41,11 @@ export class CustomArrayComponent extends ArrayWidget implements AfterViewInit, 
 
     ngOnDestroy(): void {
         this.hasErrorSub.unsubscribe();
+    }
+
+    removeItem(index: number, item: FormProperty = null): void {
+        this.formProperty.properties = (<FormProperty[]>this.formProperty.properties).filter(i => i !== item);
+        this.formProperty.updateValueAndValidity(false, true);
     }
 
     addItem(): void {

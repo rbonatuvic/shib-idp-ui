@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { withLatestFrom, map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, skipWhile, filter, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -21,6 +21,8 @@ import { pick } from '../../../shared/util';
 })
 
 export class ProviderWizardStepComponent implements OnDestroy {
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
     valueChangeSubject = new Subject<Partial<any>>();
     private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
 
@@ -79,6 +81,7 @@ export class ProviderWizardStepComponent implements OnDestroy {
         );
 
         this.valueChangeEmitted$.pipe(
+            takeUntil(this.ngUnsubscribe),
             withLatestFrom(this.schema$, this.definition$),
             map(([changes, schema, definition]) => this.resetSelectedType(changes, schema, definition)),
             skipWhile(({ changes, definition }) => !definition || !changes),
@@ -86,9 +89,12 @@ export class ProviderWizardStepComponent implements OnDestroy {
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
 
-        this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
+        this.statusChangeEmitted$.pipe(
+            takeUntil(this.ngUnsubscribe),
+            distinctUntilChanged())
+        .subscribe(errors => this.updateStatus(errors));
 
-        this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
+        this.store.select(fromWizard.getWizardIndex).pipe(takeUntil(this.ngUnsubscribe)).subscribe(i => this.currentPage = i);
     }
 
     resetSelectedType(changes: any, schema: any, definition: any): { changes: any, definition: any } {
@@ -117,6 +123,8 @@ export class ProviderWizardStepComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.valueChangeSubject.complete();
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }
 
