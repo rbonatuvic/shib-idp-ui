@@ -568,13 +568,12 @@
       "id": "c3d80754-3e28-4b07-95f6-5bfac82e9a58",
       "comment": "",
       "command": "assertText",
-      "target": "css=div.px-2",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
       "targets": [
-        ["css=div.px-2", "css"],
-        ["css=.px-2", "css:finder"],
-        ["xpath=//div[2]/div[2]", "xpath:position"]
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Provider: FBHMP FileBackedHttpMetadataResolver"
+      "value": "Metadata Provider: FBHMP"
     }]
   }],
   "suites": [{

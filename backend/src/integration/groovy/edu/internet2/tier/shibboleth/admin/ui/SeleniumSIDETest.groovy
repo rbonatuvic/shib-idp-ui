@@ -20,7 +20,7 @@ class SeleniumSIDETest extends Specification {
 
     def "Selenium: just run one"() {
         setup:
-        def file = "/CreateMetadataSourceFromCopy.side"
+        def file = "/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             System.properties.contains('')
@@ -70,12 +70,12 @@ class SeleniumSIDETest extends Specification {
         'Create Filter REGEX'                   | '/CreateFilterREGEX.side'
         'Create Filter Script'                  | '/CreateFilterScript.side'
 //        'Create Metadata Source From XML'       | '/CreateMetadataSourceFromXML.side' // failing (Failure: Cannot click <input type=file> elements)
-//        'Create Metadata Source From Copy'      | '/CreateMetadataSourceFromCopy.side' //passing
-//        'Delete Entity ID Filter'               | '/DeleteEntityIDFilter.side' // failing (decimal point bug, possibly also incomplete)
-//        'Delete REGEX Filter'                   | '/DeleteREGEXFilter_Incomplete.side' // incomplete
-//        'Create Metadata Source from URL'       | '/CreateMetadataSourceFromURL.side' //passing
-//        'Delete Incomplete Source'              | '/DeleteIncompleteSource_Incomplete.side' // incomplete
-//        'Admin Login'                           | '/SHIBUI-1031_AdminLogin.side'
+        'Create Metadata Source From Copy'      | '/CreateMetadataSourceFromCopy.side' //failing, error reported to JJ/Ryan
+        'Create Metadata Source from URL'       | '/CreateMetadataSourceFromURL.side'
+        'Delete Entity ID Filter'               | '/DeleteEntityIDFilter.side'
+        'Delete REGEX Filter'                   | '/DeleteREGEXFilter.side'
+        'Delete Incomplete Source'              | '/DeleteIncompleteSource.side'
+        'Admin Login'                           | '/SHIBUI-1031_AdminLogin.side'
 //        'Delegated Admin: SubmitSourceWithError' | '/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side' //passing, but with heap problem
     }
 }
