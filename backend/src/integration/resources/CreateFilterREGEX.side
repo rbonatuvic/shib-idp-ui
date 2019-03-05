@@ -1,29 +1,54 @@
 {
   "id": "16b5f41b-30c1-4cc1-9c9e-bc15e40d1318",
-  "version": "1.1",
+  "version": "2.0",
   "name": "ShibUI",
   "url": "http://localhost:10101/",
   "tests": [{
     "id": "daacdb81-2f14-49f3-8d15-da5f5d52586c",
     "name": "Create Filter REGEX",
     "commands": [{
-      "id": "227fe3ca-ebb3-46ee-8067-eb1bd1290801",
+      "id": "c023f973-f799-4dc3-90d0-d75ccade0317",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "/login",
       "targets": [],
       "value": ""
     }, {
-      "id": "853ef897-df38-4b31-ad06-3598bf9bc5e2",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
+      "id": "492f48b4-97f8-4cb7-b8de-abf963b576af",
+      "comment": "Use User Login",
+      "command": "type",
+      "target": "name=username",
       "targets": [
-        ["css=body", "css"],
-        ["css=body", "css:finder"],
-        ["xpath=//body", "xpath:position"]
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": "yes, you did it"
+      "value": "admin"
+    }, {
+      "id": "f61dd17c-d2ee-4200-a8f7-96d841d4ccb8",
+      "comment": "Use User Password",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "fdb5a585-49aa-403c-8c23-c4fc548267b3",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "effbf04c-a1fa-411e-a47f-0b71acfbf4b2",
       "comment": "",
@@ -615,7 +640,7 @@
         ["css=.px-2", "css:finder"],
         ["xpath=//div[2]/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Provider: FBHMP\\nFileBackedHttpMetadataResolver"
+      "value": "Metadata Provider: FBHMP FileBackedHttpMetadataResolver"
     }, {
       "id": "b8c89883-4999-4429-a4f0-b20f7dbc825c",
       "comment": "",
@@ -638,6 +663,30 @@
         ["xpath=//div[2]/a/translate-i18n", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "5693bc4b-80b7-41e3-885b-0911a4835212",
+      "comment": "",
+      "command": "click",
+      "target": "name=type",
+      "targets": [
+        ["name=type", "name"],
+        ["css=.is-valid", "css:finder"],
+        ["xpath=//select[@name='type']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5693bc4b-80b7-41e3-885b-0911a4835211",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [
+        ["name=type", "name"],
+        ["css=.is-valid", "css:finder"],
+        ["xpath=//select[@name='type']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "label=EntityAttributes"
     }, {
       "id": "a69166b9-4073-4653-987d-0537702f5dbb",
       "comment": "",
@@ -681,13 +730,14 @@
       "id": "bcb6b08c-2c96-4662-9615-172c5cca5555",
       "comment": "",
       "command": "click",
-      "target": "linkText=Regex",
+      "target": "css=.dropdown-item:nth-child(2)",
       "targets": [
         ["linkText=Regex", "linkText"],
         ["css=.dropdown-item:nth-child(2)", "css:finder"],
         ["xpath=//a[contains(text(),'Regex')]", "xpath:link"],
         ["xpath=(//a[contains(@href, '#')])[2]", "xpath:href"],
-        ["xpath=//div/div/a[2]", "xpath:position"]
+        ["xpath=//div/div/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Regex')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -745,7 +795,7 @@
         ["xpath=//input[@id='targetInput']", "xpath:attributes"],
         ["xpath=//div/div/input", "xpath:position"]
       ],
-      "value": "/foo.*/"
+      "value": "foo.*"
     }, {
       "id": "9c0fcb70-83f6-45b5-b5ef-d0ff7bdc80cb",
       "comment": "",
@@ -809,14 +859,25 @@
       ],
       "value": ""
     }, {
+      "id": "e54836ef-e3ac-41df-9989-ca8abffa0ee5",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.td-lg:nth-child(3)",
+      "targets": [
+        ["css=.td-lg:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'REGEX')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "8d472caf-2525-4e20-9f14-195e0212f72f",
       "comment": "",
       "command": "assertText",
-      "target": "css=td.td-lg",
+      "target": "css=.td-lg:nth-child(3)",
       "targets": [
-        ["css=td.td-lg", "css"],
         ["css=.td-lg:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"]
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'REGEX')]", "xpath:innerText"]
       ],
       "value": "REGEX"
     }]

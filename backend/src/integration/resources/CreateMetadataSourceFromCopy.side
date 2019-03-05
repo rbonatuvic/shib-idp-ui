@@ -1,29 +1,54 @@
 {
   "id": "16b5f41b-30c1-4cc1-9c9e-bc15e40d1318",
-  "version": "1.1",
+  "version": "2.0",
   "name": "ShibUI",
   "url": "http://localhost:10101/",
   "tests": [{
     "id": "daacdb81-2f14-49f3-8d15-da5f5d52586c",
     "name": "Create Metadata Source From Copy",
     "commands": [{
-      "id": "227fe3ca-ebb3-46ee-8067-eb1bd1290801",
+      "id": "c023f973-f799-4dc3-90d0-d75ccade0317",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "/login",
       "targets": [],
       "value": ""
     }, {
-      "id": "853ef897-df38-4b31-ad06-3598bf9bc5e2",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
+      "id": "492f48b4-97f8-4cb7-b8de-abf963b576af",
+      "comment": "Use User Login",
+      "command": "type",
+      "target": "name=username",
       "targets": [
-        ["css=body", "css"],
-        ["css=body", "css:finder"],
-        ["xpath=//body", "xpath:position"]
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": "yes, you did it"
+      "value": "admin"
+    }, {
+      "id": "f61dd17c-d2ee-4200-a8f7-96d841d4ccb8",
+      "comment": "Use User Password",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "fdb5a585-49aa-403c-8c23-c4fc548267b3",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "effbf04c-a1fa-411e-a47f-0b71acfbf4b2",
       "comment": "",
@@ -1283,22 +1308,22 @@
       "id": "97ed715c-ad35-4757-ace8-f7eb6942b6af",
       "comment": "",
       "command": "click",
-      "target": "css=.col-9 > div:nth-child(2)",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
       "targets": [
-        ["css=.col-9 > div:nth-child(2)", "css:finder"],
-        ["xpath=//div/div/div/div/div[2]", "xpath:position"]
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
       ],
       "value": ""
     }, {
       "id": "930367f7-083e-4c98-bd2b-99d26e8c3b5f",
       "comment": "",
       "command": "assertText",
-      "target": "css=.col-9 > div:nth-child(2)",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
       "targets": [
         ["css=.col-9 > div:nth-child(2)", "css:finder"],
         ["xpath=//div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Source Happy Path Metadata Source Happy Path"
+      "value": "Metadata Source Happy Path"
     }, {
       "id": "42ec39b0-db7b-4f35-9f09-921fb986ed37",
       "comment": "",
@@ -1440,18 +1465,17 @@
       "id": "b47410a0-db5a-47f2-8517-a28dee54eb88",
       "comment": "",
       "command": "click",
-      "target": "css=label.custom-control-label",
+      "target": "css=tr:nth-child(1) .custom-control-input",
       "targets": [
-        ["css=label.custom-control-label", "css"],
-        ["css=tr:nth-child(1) .custom-control-label", "css:finder"],
-        ["xpath=//td[2]/fieldset/div/label", "xpath:position"]
+        ["css=tr:nth-child(1) .custom-control", "css:finder"],
+        ["xpath=//td[2]/fieldset/div", "xpath:position"]
       ],
       "value": ""
     }, {
       "id": "670157c7-d87e-45ad-8989-f4f86c6196e8",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(2) .custom-control-label",
+      "target": "css=tr:nth-child(2) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(2) .custom-control-label", "css:finder"],
         ["xpath=//tr[2]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1461,7 +1485,7 @@
       "id": "ade20551-aa8a-4910-9c9e-1c19a1a75991",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(3) .custom-control-label",
+      "target": "css=tr:nth-child(3) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(3) .custom-control-label", "css:finder"],
         ["xpath=//tr[3]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1471,7 +1495,7 @@
       "id": "f880fd51-9737-450a-95a7-4ae2aa7639da",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(4) .custom-control-label",
+      "target": "css=tr:nth-child(4) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(4) .custom-control-label", "css:finder"],
         ["xpath=//tr[4]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1481,7 +1505,7 @@
       "id": "d509550c-17e1-4f93-88f8-f653b2669a16",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(5) .custom-control-label",
+      "target": "css=tr:nth-child(5) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(5) .custom-control-label", "css:finder"],
         ["xpath=//tr[5]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1491,7 +1515,7 @@
       "id": "fc2fe574-5d70-4cb7-b1c0-b4d074f0e97a",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(6) .custom-control-label",
+      "target": "css=tr:nth-child(6) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(6) .custom-control-label", "css:finder"],
         ["xpath=//tr[6]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1501,7 +1525,7 @@
       "id": "20098998-d725-4a7d-9406-9c19842ff0fb",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(7) .custom-control-label",
+      "target": "css=tr:nth-child(7) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(7) .custom-control-label", "css:finder"],
         ["xpath=//tr[7]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1511,7 +1535,7 @@
       "id": "6f21d5a5-f98b-4295-9fb7-b44dde90dfff",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(8) .custom-control-label",
+      "target": "css=tr:nth-child(8) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(8) .custom-control-label", "css:finder"],
         ["xpath=//tr[8]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1521,7 +1545,7 @@
       "id": "774eb1e9-37fe-47a1-89c9-48ec55061233",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(9) .custom-control-label",
+      "target": "css=tr:nth-child(9) .custom-control-input",
       "targets": [
         ["css=tr:nth-child(9) .custom-control-label", "css:finder"],
         ["xpath=//tr[9]/td[2]/fieldset/div/label", "xpath:position"]
@@ -1559,6 +1583,17 @@
         ["xpath=//li[3]/button/span[2]", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "5297a9fe-85c3-4daf-b2a6-c8533c9d5f1c",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.lead",
+      "targets": [
+        ["css=.lead", "css:finder"],
+        ["xpath=//div/div/div/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Current Metadata Sources')]", "xpath:innerText"]
+      ],
+      "value": "Current Metadata Sources"
     }]
   }],
   "suites": [{

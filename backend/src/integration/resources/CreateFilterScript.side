@@ -1,29 +1,54 @@
 {
   "id": "16b5f41b-30c1-4cc1-9c9e-bc15e40d1318",
-  "version": "1.1",
+  "version": "2.0",
   "name": "ShibUI",
   "url": "http://localhost:10101/",
   "tests": [{
     "id": "daacdb81-2f14-49f3-8d15-da5f5d52586c",
     "name": "Create Filter Script",
     "commands": [{
-      "id": "227fe3ca-ebb3-46ee-8067-eb1bd1290801",
+      "id": "c023f973-f799-4dc3-90d0-d75ccade0317",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "/login",
       "targets": [],
       "value": ""
     }, {
-      "id": "853ef897-df38-4b31-ad06-3598bf9bc5e2",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
+      "id": "492f48b4-97f8-4cb7-b8de-abf963b576af",
+      "comment": "Use User Login",
+      "command": "type",
+      "target": "name=username",
       "targets": [
-        ["css=body", "css"],
-        ["css=body", "css:finder"],
-        ["xpath=//body", "xpath:position"]
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": "yes, you did it"
+      "value": "admin"
+    }, {
+      "id": "f61dd17c-d2ee-4200-a8f7-96d841d4ccb8",
+      "comment": "Use User Password",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "fdb5a585-49aa-403c-8c23-c4fc548267b3",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "effbf04c-a1fa-411e-a47f-0b71acfbf4b2",
       "comment": "",
@@ -615,7 +640,7 @@
         ["css=.px-2", "css:finder"],
         ["xpath=//div[2]/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Provider: FBHMP\\nFileBackedHttpMetadataResolver"
+      "value": "Metadata Provider: FBHMP FileBackedHttpMetadataResolver"
     }, {
       "id": "9dadc071-16b4-4758-8e21-93933d72e8b5",
       "comment": "",
@@ -638,6 +663,30 @@
         ["xpath=//div[2]/a/translate-i18n", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "5693bc4b-80b7-41e3-885b-0911a4835212",
+      "comment": "",
+      "command": "click",
+      "target": "name=type",
+      "targets": [
+        ["name=type", "name"],
+        ["css=.is-valid", "css:finder"],
+        ["xpath=//select[@name='type']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5693bc4b-80b7-41e3-885b-0911a4835211",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [
+        ["name=type", "name"],
+        ["css=.is-valid", "css:finder"],
+        ["xpath=//select[@name='type']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "label=EntityAttributes"
     }, {
       "id": "5fc45586-7f56-4cce-927c-986c51eb5fde",
       "comment": "",
@@ -692,7 +741,7 @@
       "id": "a42808f2-8ec5-42f7-b74b-ab8487bb1134",
       "comment": "",
       "command": "click",
-      "target": "linkText=Script",
+      "target": "css=.dropdown-item:nth-child(3)",
       "targets": [
         ["linkText=Script", "linkText"],
         ["css=.dropdown-item:nth-child(3)", "css:finder"],
@@ -715,13 +764,25 @@
       ],
       "value": ""
     }, {
-      "id": "d78e18ea-1c46-41d1-af83-4ce4ef54716a",
+      "id": "12e67d13-7a7d-4467-940d-11e5a24db0b4",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=targetInput",
+      "targets": [
+        ["id=targetInput", "id"],
+        ["css=#targetInput", "css:finder"],
+        ["xpath=//p[@id='targetInput']", "xpath:attributes"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'eval(true);')]", "xpath:innerText"]
+      ],
+      "value": "\\n"
+    }, {
+      "id": "0d3f1f64-0a69-4dfe-bc6a-1287a8a3b79f",
       "comment": "",
       "command": "editContent",
       "target": "id=targetInput",
       "targets": [
         ["id=targetInput", "id"],
-        ["css=#targetInput", "css"],
         ["css=#targetInput", "css:finder"],
         ["xpath=//p[@id='targetInput']", "xpath:attributes"],
         ["xpath=//p", "xpath:position"]
