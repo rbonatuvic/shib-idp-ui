@@ -110,7 +110,7 @@ public class JPAEntityServiceImpl implements EntityService {
                                     overrideProperty.getAttributeFriendlyName(),
                                     Boolean.valueOf((String) o));
                         } else {
-                            Boolean value = Boolean.valueOf(overrideProperty.getInvert()) ? !(Boolean)o : (Boolean)o;
+                            Boolean value = Boolean.valueOf(overrideProperty.getInvert()) ^ (Boolean)o;
                             return attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
                                     overrideProperty.getAttributeFriendlyName(),
                                     value);
