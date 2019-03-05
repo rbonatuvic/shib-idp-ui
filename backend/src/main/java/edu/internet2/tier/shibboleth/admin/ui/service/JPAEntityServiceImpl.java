@@ -97,7 +97,7 @@ public class JPAEntityServiceImpl implements EntityService {
     edu.internet2.tier.shibboleth.admin.ui.domain.Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, RelyingPartyOverrideProperty overrideProperty) {
         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
             case BOOLEAN:
-                if ((o instanceof Boolean && ((Boolean)o) || (!(Boolean)o && Boolean.valueOf(overrideProperty.getInvert()))) ||
+                if ((o instanceof Boolean && ((Boolean)o)) ||
                         (o instanceof String) && Boolean.valueOf((String)o)) {
                     if (overrideProperty.getPersistType() != null &&
                             !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
