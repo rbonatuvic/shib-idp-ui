@@ -61,6 +61,7 @@ custom:
       helpText: tooltip.dont-sign-response
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signResponses
       attributeFriendlyName: signResponses
+      invert: true
     - name: turnOffEncryption
       displayName: label.turn-off-encryption-of-response
       displayType: boolean
@@ -68,6 +69,7 @@ custom:
       helpText: tooltip.turn-off-encryption
       attributeName: http://shibboleth.net/ns/profiles/encryptAssertions
       attributeFriendlyName: encryptAssertions
+      invert: true
     - name: useSha
       displayName: label.use-sha1-signing-algorithm
       displayType: boolean
@@ -93,6 +95,7 @@ custom:
       helpText: tooltip.omit-not-before-condition
       attributeName: http://shibboleth.net/ns/profiles/includeConditionsNotBefore
       attributeFriendlyName: includeConditionsNotBefore
+      invert: true
     - name: responderId
       displayName: label.responder-id
       displayType: string

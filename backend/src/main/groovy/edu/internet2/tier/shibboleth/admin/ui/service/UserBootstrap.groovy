@@ -46,7 +46,7 @@ class UserBootstrap {
                     it.password = password
                     it.firstName = firstName
                     it.lastName = lastName
-                    it.roles.add(role)
+                    it.roles = [role]
                     it.emailAddress = email
                     it
                 }
