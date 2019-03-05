@@ -47,12 +47,7 @@ The easiest way to do this in a servlet container is through the use of system p
 ## Authentication
 
 Currently, the application is wired with very simple authentication. A password for the user `root`
-can be set with the `shibui.default-password` property. If none is set, a default password
-will be generated and logged:
-
-```
-Using default security password: a3d9ab96-9c63-414f-b199-26fcf59e1ffa
-```
+can be set with the `shibui.default-password` property.
 
 ## Default Properties
 
