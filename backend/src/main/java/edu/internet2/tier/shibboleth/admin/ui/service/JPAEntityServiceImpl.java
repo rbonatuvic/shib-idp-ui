@@ -94,6 +94,51 @@ public class JPAEntityServiceImpl implements EntityService {
         return (List<Attribute>)(List<? extends Attribute>)attributeList;
     }
 
+    edu.internet2.tier.shibboleth.admin.ui.domain.Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, RelyingPartyOverrideProperty overrideProperty) {
+        switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
+            case BOOLEAN:
+                if ((o instanceof Boolean && ((Boolean)o) || (!(Boolean)o && Boolean.valueOf(overrideProperty.getInvert()))) ||
+                        (o instanceof String) && Boolean.valueOf((String)o)) {
+                    if (overrideProperty.getPersistType() != null &&
+                            !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
+                        return attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                                overrideProperty.getAttributeFriendlyName(),
+                                overrideProperty.getPersistValue());
+                    } else {
+                        if (o instanceof String) {
+                            return attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                    overrideProperty.getAttributeFriendlyName(),
+                                    Boolean.valueOf((String) o));
+                        } else {
+                            Boolean value = Boolean.valueOf(overrideProperty.getInvert()) ^ (Boolean)o;
+                            return attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                    overrideProperty.getAttributeFriendlyName(),
+                                    value);
+                        }
+                    }
+                }
+                return null;
+            case INTEGER:
+                return attributeUtility.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        Integer.valueOf((String) o));
+            case STRING:
+                return attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (String) o);
+            case SET:
+                return attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (List<String>) o);
+            case LIST:
+                return attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (List<String>) o);
+            default:
+                throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
+        }
+    }
+
     @Override
     public List<Attribute> getAttributeListFromRelyingPartyOverridesRepresentation(Map<String, Object> relyingPartyOverridesRepresentation) {
         List<RelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
@@ -102,50 +147,9 @@ public class JPAEntityServiceImpl implements EntityService {
         for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
             String key = (String) entry.getKey();
             RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
-            switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
-                case BOOLEAN:
-                    if ((entry.getValue() instanceof Boolean && (Boolean)entry.getValue()) ||
-                        ((entry.getValue() instanceof String) && Boolean.valueOf((String)entry.getValue()))) {
-                        if (overrideProperty.getPersistType() != null &&
-                            !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
-                            list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                    overrideProperty.getAttributeFriendlyName(),
-                                    overrideProperty.getPersistValue()));
-                        } else {
-                            if (entry.getValue() instanceof String) {
-                                list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
-                                        overrideProperty.getAttributeFriendlyName(),
-                                        Boolean.valueOf((String) entry.getValue())));
-                            } else {
-                                list.add(attributeUtility.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
-                                        overrideProperty.getAttributeFriendlyName(),
-                                        (Boolean) entry.getValue()));
-                            }
-                        }
-                    }
-                    break;
-                case INTEGER:
-                    list.add(attributeUtility.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
-                                                                               overrideProperty.getAttributeFriendlyName(),
-                                                                               Integer.valueOf((String) entry.getValue())));
-                    break;
-                case STRING:
-                    list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                               overrideProperty.getAttributeFriendlyName(),
-                                                                               (String) entry.getValue()));
-                    break;
-                case SET:
-                    list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                  overrideProperty.getAttributeFriendlyName(),
-                                                                              (List<String>) entry.getValue()));
-                    break;
-                case LIST:
-                    list.add(attributeUtility.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                  overrideProperty.getAttributeFriendlyName(),
-                                                                                  (List<String>) entry.getValue()));
-                    break;
-                default:
-                    throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
+            edu.internet2.tier.shibboleth.admin.ui.domain.Attribute attribute = getAttributeFromObjectAndRelyingPartyOverrideProperty(entry.getValue(), overrideProperty);
+            if (attribute != null) {
+                list.add(attribute);
             }
         }
 

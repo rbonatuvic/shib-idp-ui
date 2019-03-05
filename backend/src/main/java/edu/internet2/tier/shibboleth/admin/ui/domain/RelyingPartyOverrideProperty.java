@@ -21,6 +21,7 @@ public class RelyingPartyOverrideProperty {
     private String persistValue;
     private String attributeName;
     private String attributeFriendlyName;
+    private String invert;
 
     @Override
     public String toString() {
