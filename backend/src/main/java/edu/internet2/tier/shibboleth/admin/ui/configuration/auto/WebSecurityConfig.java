@@ -81,17 +81,17 @@ public class WebSecurityConfig {
                 PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 if (defaultPassword != null && !"".equals(defaultPassword)) {
                     // TODO: yeah, this isn't good, but we gotta initialize this user for now
-                    Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
-                        Role r = new Role();
-                        r.setName("ROLE_ADMIN");
-                        return roleRepository.saveAndFlush(r);
-                    });
                     User adminUser = userRepository.findByUsername("root").orElseGet(() ->{
                         User u = new User();
                         u.setUsername("root");
                         u.setPassword(defaultPassword);
                         u.setFirstName("admin");
                         u.setLastName("user");
+                        Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
+                            Role r = new Role();
+                            r.setName("ROLE_ADMIN");
+                            return roleRepository.saveAndFlush(r);
+                        });
                         u.setRoles(Collections.singleton(adminRole));
                         u.setEmailAddress("admin@localhost");
                         return userRepository.saveAndFlush(u);
