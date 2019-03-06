@@ -41,6 +41,5 @@ class AuxiliaryJPAEntityServiceTests extends Specification {
         where:
         input | output
         true  | false
-        false | true
     }
 }

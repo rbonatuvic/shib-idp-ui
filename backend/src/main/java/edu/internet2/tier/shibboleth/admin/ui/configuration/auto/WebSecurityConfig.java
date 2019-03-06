@@ -1,6 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration.auto;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,23 +15,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.Collections;
 
 /**
  * Web security configuration.
@@ -48,6 +46,9 @@ public class WebSecurityConfig {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Bean
     public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
@@ -82,6 +83,25 @@ public class WebSecurityConfig {
                 // TODO: more configurable authentication
                 PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 if (defaultPassword != null && !"".equals(defaultPassword)) {
+                    // TODO: yeah, this isn't good, but we gotta initialize this user for now
+                    User adminUser = userRepository.findByUsername("root").orElseGet(() ->{
+                        User u = new User();
+                        u.setUsername("root");
+                        u.setPassword(defaultPassword);
+                        u.setFirstName("admin");
+                        u.setLastName("user");
+                        Role adminRole = roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
+                            Role r = new Role();
+                            r.setName("ROLE_ADMIN");
+                            return roleRepository.saveAndFlush(r);
+                        });
+                        u.setRoles(Collections.singleton(adminRole));
+                        u.setEmailAddress("admin@localhost");
+                        return userRepository.saveAndFlush(u);
+                    });
+                    adminUser.setPassword(defaultPassword);
+                    userRepository.saveAndFlush(adminUser);
+
                     auth
                             .inMemoryAuthentication()
                             .withUser("root")
