@@ -38,7 +38,7 @@ class JsonSchemaBuilderService {
                          description: it['helpText'],
                          type       : it['displayType']]
                 if (it['displayType'] == 'boolean') {
-                    property['default'] = (Boolean)(it['defaultValue'])
+                    property['default'] = Boolean.valueOf(it['defaultValue'])
                 } else {
                     property['default'] = it['defaultValue']
                 }
