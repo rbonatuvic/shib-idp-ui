@@ -305,9 +305,9 @@ class TestObjectGenerator {
                     case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
                         if (override.getPersistType() != null &&
                                 override.getPersistType() != override.getDisplayType()) {
-                            attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
+                            attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), override.persistValue))
                         } else {
-                            attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), true))
+                            attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), Boolean.valueOf(override.invert) ^ true))
                         }
                         break
                     case ModelRepresentationConversions.AttributeTypes.INTEGER:

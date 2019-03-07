@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverridePropert
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -33,7 +34,7 @@ class AuxiliaryJPAEntityServiceTests extends Specification {
                 displayType: 'boolean',
                 invert: 'true'
         )
-        Attribute att = jpaEntityService.getAttributeFromObjectAndRelyingPartyOverrideProperty(input, overrideProperty)
+        Attribute att = ModelRepresentationConversions.getAttributeFromObjectAndRelyingPartyOverrideProperty(input, overrideProperty)
 
         expect:
         assert att && att.getAttributeValues()[0] instanceof XSBoolean && ((XSBoolean) att.getAttributeValues()[0]).value.value == output
