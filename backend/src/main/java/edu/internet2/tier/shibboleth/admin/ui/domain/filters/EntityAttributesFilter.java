@@ -68,6 +68,6 @@ public class EntityAttributesFilter extends MetadataFilter {
     @PostLoad
     public void intoTransientRepresentation() {
         this.attributeRelease = getAttributeReleaseListFromAttributeList(this.attributes);
-        this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(attributes);
+        this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(this.attributes);
     }
 }
