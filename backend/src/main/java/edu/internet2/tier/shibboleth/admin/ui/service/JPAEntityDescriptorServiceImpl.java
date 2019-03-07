@@ -66,6 +66,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getValueFromXMLObject;
 
 /**
  * Default implementation of {@link EntityDescriptorService}
@@ -684,18 +685,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return representation;
     }
 
+    // TODO: remove
     private String getValueFromXMLObject(XMLObject xmlObject) {
-        String objectType = xmlObject.getClass().getSimpleName();
-        switch (objectType) {
-            case "XSAny":
-                return ((XSAny)xmlObject).getTextContent();
-            case "XSString":
-                return ((XSString)xmlObject).getValue();
-            case "XSBoolean":
-                return ((XSBoolean)xmlObject).getStoredValue();
-            default:
-                throw new RuntimeException(String.format("Unsupported XML Object type [%s]", objectType));
-        }
+        return ModelRepresentationConversions.getValueFromXMLObject(xmlObject);
     }
 
     @Override

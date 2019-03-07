@@ -127,9 +127,9 @@ public class ModelRepresentationConversions {
             case BOOLEAN:
                 if (relyingPartyOverrideProperty.getPersistType() != null
                         && (!relyingPartyOverrideProperty.getPersistType().equalsIgnoreCase("boolean"))) {
-                    return true;
+                    return relyingPartyOverrideProperty.getPersistValue().equals(getValueFromXMLObject(attributeValues.get(0)));
                 } else {
-                    return Boolean.valueOf(((XSBoolean) attributeValues.get(0)).getStoredValue());
+                    return Boolean.valueOf(relyingPartyOverrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) attributeValues.get(0)).getStoredValue());
                 }
             case INTEGER:
                 return ((XSInteger) attributeValues.get(0)).getValue();
@@ -144,6 +144,20 @@ public class ModelRepresentationConversions {
                 return attributeValues.stream().map(it -> ((XSString) it).getValue()).collect(Collectors.toList());
             default:
                 throw new UnsupportedOperationException("An unsupported persist type was specified (" + relyingPartyOverrideProperty.getPersistType() + ")!");
+        }
+    }
+
+    public static String getValueFromXMLObject(XMLObject xmlObject) {
+        String objectType = xmlObject.getClass().getSimpleName();
+        switch (objectType) {
+            case "XSAny":
+                return ((XSAny)xmlObject).getTextContent();
+            case "XSString":
+                return ((XSString)xmlObject).getValue();
+            case "XSBoolean":
+                return ((XSBoolean)xmlObject).getStoredValue();
+            default:
+                throw new RuntimeException(String.format("Unsupported XML Object type [%s]", objectType));
         }
     }
 
@@ -166,60 +180,59 @@ public class ModelRepresentationConversions {
             for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
                 String key = (String) entry.getKey();
                 RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
-                switch (AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
-                    case BOOLEAN:
-                        if (overrideProperty.getPersistType() != null &&
-                                !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
-                            list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                       overrideProperty.getAttributeFriendlyName(),
-                                                                                       overrideProperty.getPersistValue()));
-                        } else {
-                            list.add(ATTRIBUTE_UTILITY.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
-                                                                                       overrideProperty.getAttributeFriendlyName(),
-                                                                                       (Boolean) entry.getValue()));
-                        }
-                        break;
-                    case INTEGER:
-                        list.add(ATTRIBUTE_UTILITY.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
-                                                                                   overrideProperty.getAttributeFriendlyName(),
-                                                                                   (Integer) entry.getValue()));
-                        break;
-                    case STRING:
-                        list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                   overrideProperty.getAttributeFriendlyName(),
-                                                                                   (String) entry.getValue()));
-                        break;
-                    case SET:
-                        Set<String> setValues;
-                        if (entry.getValue() instanceof Set) {
-                            setValues = (Set<String>) entry.getValue();
-                        } else if (entry.getValue() instanceof List) {
-                            setValues = new HashSet<>();
-                            setValues.addAll((List<String>) entry.getValue());
-                        } else {
-                            throw new UnsupportedOperationException("The collection passed from the UI is neither a Set or List. This shouldn't happen. Fix this!");
-                        }
-                        if (setValues.size() > 0) {
-                            list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                          overrideProperty.getAttributeFriendlyName(),
-                                                                                          new ArrayList<>(setValues)));
-                        }
-                        break;
-                    case LIST:
-                        List<String> listValues = (List<String>) entry.getValue();
-                        if (listValues.size() > 0) {
-                            list.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                                                                                          overrideProperty.getAttributeFriendlyName(),
-                                                                                          listValues));
-                        }
-                        break;
-                    default:
-                        throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
+                Attribute attribute = getAttributeFromObjectAndRelyingPartyOverrideProperty(entry.getValue(), overrideProperty);
+                if (attribute != null) {
+                    list.add(attribute);
                 }
             }
         }
 
         return (List<org.opensaml.saml.saml2.core.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) list;
+    }
+
+    public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, RelyingPartyOverrideProperty overrideProperty) {
+        switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
+            case BOOLEAN:
+                if ((o instanceof Boolean && ((Boolean)o)) ||
+                        (o instanceof String) && Boolean.valueOf((String)o)) {
+                    if (overrideProperty.getPersistType() != null &&
+                            !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
+                        return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                                overrideProperty.getAttributeFriendlyName(),
+                                overrideProperty.getPersistValue());
+                    } else {
+                        if (o instanceof String) {
+                            return ATTRIBUTE_UTILITY.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                    overrideProperty.getAttributeFriendlyName(),
+                                    Boolean.valueOf((String) o));
+                        } else {
+                            Boolean value = Boolean.valueOf(overrideProperty.getInvert()) ^ (Boolean)o;
+                            return ATTRIBUTE_UTILITY.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
+                                    overrideProperty.getAttributeFriendlyName(),
+                                    value);
+                        }
+                    }
+                }
+                return null;
+            case INTEGER:
+                return ATTRIBUTE_UTILITY.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        Integer.valueOf((String) o));
+            case STRING:
+                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (String) o);
+            case SET:
+                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (List<String>) o);
+            case LIST:
+                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (List<String>) o);
+            default:
+                throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
+        }
     }
 
 
