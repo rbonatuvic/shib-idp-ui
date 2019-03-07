@@ -20,7 +20,7 @@ class SeleniumSIDETest extends Specification {
 
     def "Selenium: just run one"() {
         setup:
-        def file = "/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side"
+        def file = "/CreateAndDeleteNameIDFormatScriptFilter.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             System.properties.contains('')
@@ -62,20 +62,26 @@ class SeleniumSIDETest extends Specification {
         assert result.level.exitCode == 0
 
         where:
-        name                                     | file
-        'Create Dynamic HTTP Metadata Resolver' | '/dhmr.side'
-        'Metadata Source Happy Path Save'       | '/MetadataSourceHappyPathSAVE.side'
-        'Metadata Provider Happy Path Save'     | '/MetadataProviderHappyPathSAVE.side'
-        'Create Filter Entity ID'               | '/CreateFilterEntityID.side'
-        'Create Filter REGEX'                   | '/CreateFilterREGEX.side'
-        'Create Filter Script'                  | '/CreateFilterScript.side'
+        name                                                | file
+        'Create Dynamic HTTP Metadata Resolver'             | '/dhmr.side'
+        'Metadata Source Happy Path Save'                   | '/MetadataSourceHappyPathSAVE.side'
+        'Metadata Provider Happy Path Save'                 | '/MetadataProviderHappyPathSAVE.side'
+        'Create Filter Entity ID'                           | '/CreateFilterEntityID.side'
+        'Create Filter REGEX'                               | '/CreateFilterREGEX.side'
+        'Create Filter Script'                              | '/CreateFilterScript.side'
 //        'Create Metadata Source From XML'       | '/CreateMetadataSourceFromXML.side' // failing (Failure: Cannot click <input type=file> elements)
-        'Create Metadata Source From Copy'      | '/CreateMetadataSourceFromCopy.side' //failing, error reported to JJ/Ryan
-        'Create Metadata Source from URL'       | '/CreateMetadataSourceFromURL.side'
-        'Delete Entity ID Filter'               | '/DeleteEntityIDFilter.side'
-        'Delete REGEX Filter'                   | '/DeleteREGEXFilter.side'
-        'Delete Incomplete Source'              | '/DeleteIncompleteSource.side'
-        'Admin Login'                           | '/SHIBUI-1031_AdminLogin.side'
-//        'Delegated Admin: SubmitSourceWithError' | '/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side' //passing, but with heap problem
+        'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' //failing, error reported to JJ/Ryan
+        'Create Metadata Source from URL'                   | '/CreateMetadataSourceFromURL.side'
+        'Delete Entity ID Filter'                           | '/DeleteEntityIDFilter.side'
+        'Delete REGEX Filter'                               | '/DeleteREGEXFilter.side'
+        'Delete Incomplete Source'                          | '/DeleteIncompleteSource.side'
+        'Admin Login'                                       | '/SHIBUI-1031_AdminLogin.side'
+        'Delegated Admin: SubmitSourceWithError'            | '/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side'
+        'Create Filesystem Metadata Resolver'               | '/CreateFilesystemMetadataResolver.side'
+        'Create Local Dynamic Metadata Resolver'            | '/CreateLocalDynamicMetadataResolver.side'
+        'Delete Entity Attributes Script Filter'            | '/DeleteScriptFilter.side'
+        'Create and Delete Name ID Format Entity ID Filter' | '/CreateAndDeleteNameIDFormatEntityIDFilter.side'
+        'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
+        'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
     }
 }

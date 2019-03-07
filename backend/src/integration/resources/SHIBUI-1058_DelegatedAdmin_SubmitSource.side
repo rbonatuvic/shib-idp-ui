@@ -957,6 +957,124 @@
         ["xpath=//span[contains(.,'Save')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "bf8f56ff-b9c1-4c73-a41b-9edcf282d0be",
+      "comment": "",
+      "command": "click",
+      "target": "css=li:nth-child(3) > .nav-link > translate-i18n",
+      "targets": [
+        ["css=li:nth-child(3) > .nav-link > translate-i18n", "css:finder"],
+        ["xpath=//div[@id='navbar']/ul/li[3]/a/translate-i18n", "xpath:idRelative"],
+        ["xpath=//li[3]/a/translate-i18n", "xpath:position"],
+        ["xpath=//translate-i18n[contains(.,'Logout')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a7de6603-7fd5-4af3-87fc-127f414e1a3c",
+      "comment": "",
+      "command": "type",
+      "target": "name=username",
+      "targets": [
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "ace65781-9a01-4629-a62e-c646003204d9",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "b27b3bc5-4a75-4079-bf27-84d074271d52",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "801c2367-e22b-46d6-aa21-c6ee1e268dce",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link > translate-i18n:nth-child(1)",
+      "targets": [
+        ["css=.nav-link > translate-i18n:nth-child(1)", "css:finder"],
+        ["xpath=//li[4]/a/translate-i18n", "xpath:position"],
+        ["xpath=//translate-i18n[contains(.,'Action Required')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "49cbb664-0971-4fcb-bfb8-2d97163bc2c2",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.text-capitalize",
+      "targets": [],
+      "value": "3000"
+    }, {
+      "id": "f08049e7-7b4e-452c-8091-a7d67e0e1b81",
+      "comment": "",
+      "command": "click",
+      "target": "css=.text-capitalize",
+      "targets": [
+        ["css=.text-capitalize", "css:finder"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Enable')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "91c48c31-cfbc-40cb-92d2-5dc8124759bc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-item:nth-child(1) > .nav-link",
+      "targets": [
+        ["linkText=Metadata Sources", "linkText"],
+        ["css=.nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Metadata Sources')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/dashboard/metadata/manager/resolvers')]", "xpath:href"],
+        ["xpath=//dashboard-page/div/ul/li/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Metadata Sources')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "97e9da2d-d3be-4442-ad99-6889369680da",
+      "comment": "",
+      "command": "click",
+      "target": "css=.text-primary",
+      "targets": [
+        ["css=.text-primary", "css:finder"],
+        ["xpath=//div/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0383aa75-506c-4309-b074-b28e3ada6c3f",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
+      "targets": [],
+      "value": "3000"
+    }, {
+      "id": "937fd019-c985-47c7-9416-097cd1c0c54d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
+      "targets": [
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
+      ],
+      "value": "DelegatedAdmin"
     }]
   }],
   "suites": [{
