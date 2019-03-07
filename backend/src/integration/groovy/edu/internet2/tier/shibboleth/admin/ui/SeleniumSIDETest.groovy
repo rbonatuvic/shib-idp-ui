@@ -20,7 +20,7 @@ class SeleniumSIDETest extends Specification {
 
     def "Selenium: just run one"() {
         setup:
-        def file = "/CreateAndDeleteNameIDFormatScriptFilter.side"
+        def file = "/SHIBUI-1058_DelegatedAdmin_SubmitSource.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             System.properties.contains('')
@@ -76,7 +76,7 @@ class SeleniumSIDETest extends Specification {
         'Delete REGEX Filter'                               | '/DeleteREGEXFilter.side'
         'Delete Incomplete Source'                          | '/DeleteIncompleteSource.side'
         'Admin Login'                                       | '/SHIBUI-1031_AdminLogin.side'
-        'Delegated Admin: SubmitSourceWithError'            | '/SHIBUI-1058_DelegatedAdmin_SubmitSourceWithError.side'
+        'Delegated Admin: SubmitSourceWithError'            | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side'
         'Create Filesystem Metadata Resolver'               | '/CreateFilesystemMetadataResolver.side'
         'Create Local Dynamic Metadata Resolver'            | '/CreateLocalDynamicMetadataResolver.side'
         'Delete Entity Attributes Script Filter'            | '/DeleteScriptFilter.side'
