@@ -11,6 +11,8 @@ import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.nio.file.Paths
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
 @ActiveProfiles(['dev'])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD, methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -18,7 +20,7 @@ class SeleniumSIDETest extends Specification {
     @Value('${local.server.port}')
     int randomPort
 
-    @Ignore
+//    @Ignore
     def "Selenium: just run one"() {
         setup:
         def file = "/CreateMetadataSourceFromXML.side"
@@ -32,7 +34,7 @@ class SeleniumSIDETest extends Specification {
         }
         def runner = new Runner()
         main.setupRunner(runner, config, [] as String[])
-        runner.varsMap.put('xmlUpload', '/Test Upload.xml')
+        runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
 
         expect:
         def result = runner.run(file, this.class.getResourceAsStream(file))
@@ -69,7 +71,7 @@ class SeleniumSIDETest extends Specification {
         'Create Filter Entity ID'                           | '/CreateFilterEntityID.side'
         'Create Filter REGEX'                               | '/CreateFilterREGEX.side'
         'Create Filter Script'                              | '/CreateFilterScript.side'
-//        'Create Metadata Source From XML'                   | '/CreateMetadataSourceFromXML.side' // failing, Selenium "Cannot click <input type=file> elements"
+        'Create Metadata Source From XML'                   | '/CreateMetadataSourceFromXML.side'
 //        'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' // failing, backend returning a 400
         'Create Metadata Source from URL'                   | '/CreateMetadataSourceFromURL.side'
         'Delete Entity ID Filter'                           | '/DeleteEntityIDFilter.side'

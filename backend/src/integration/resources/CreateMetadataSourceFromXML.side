@@ -143,20 +143,6 @@
       ],
       "value": "Metadata Source Upload XML"
     }, {
-      "id": "d68b5bc2-379e-45ca-ab8d-69361318171f",
-      "comment": "",
-      "command": "click",
-      "target": "id=fileInput",
-      "targets": [
-        ["id=fileInput", "id"],
-        ["name=file", "name"],
-        ["css=#fileInput", "css"],
-        ["css=#fileInput", "css:finder"],
-        ["xpath=//input[@id='fileInput']", "xpath:attributes"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "8f268193-87a0-4ae0-b7ba-e7218c6a3728",
       "comment": "",
       "command": "type",
@@ -170,6 +156,16 @@
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
       "value": "${xmlUpload}"
+    }, {
+      "id": "6c7ea04b-663e-45e4-9358-4db02a69a08f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=//li[2]/button", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "6d638906-6435-496a-bcee-6a55fa33e95e",
       "comment": "",
