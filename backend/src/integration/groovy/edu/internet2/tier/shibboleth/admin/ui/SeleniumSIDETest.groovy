@@ -20,7 +20,7 @@ class SeleniumSIDETest extends Specification {
 
     def "Selenium: just run one"() {
         setup:
-        def file = "/ModifyFilterOrder.side"
+        def file = "/CreateMetadataSourceFromXML.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
@@ -31,6 +31,7 @@ class SeleniumSIDETest extends Specification {
         }
         def runner = new Runner()
         main.setupRunner(runner, config, [] as String[])
+        runner.varsMap.put('xmlUpload', '/Test Upload.xml')
 
         expect:
         def result = runner.run(file, this.class.getResourceAsStream(file))
@@ -67,7 +68,7 @@ class SeleniumSIDETest extends Specification {
         'Create Filter Entity ID'                           | '/CreateFilterEntityID.side'
         'Create Filter REGEX'                               | '/CreateFilterREGEX.side'
         'Create Filter Script'                              | '/CreateFilterScript.side'
-//        'Create Metadata Source From XML'       | '/CreateMetadataSourceFromXML.side' // failing (Failure: Cannot click <input type=file> elements)
+//        'Create Metadata Source From XML'                 | '/CreateMetadataSourceFromXML.side' // failing (Failure: Cannot click <input type=file> elements)
         'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' //failing, error reported to JJ/Ryan
         'Create Metadata Source from URL'                   | '/CreateMetadataSourceFromURL.side'
         'Delete Entity ID Filter'                           | '/DeleteEntityIDFilter.side'
@@ -81,5 +82,6 @@ class SeleniumSIDETest extends Specification {
         'Create and Delete Name ID Format Entity ID Filter' | '/CreateAndDeleteNameIDFormatEntityIDFilter.side'
         'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
         'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
+        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side'
     }
 }

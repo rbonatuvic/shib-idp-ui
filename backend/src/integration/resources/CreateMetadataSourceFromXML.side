@@ -1,6 +1,6 @@
 {
   "id": "16b5f41b-30c1-4cc1-9c9e-bc15e40d1318",
-  "version": "1.1",
+  "version": "2.0",
   "name": "ShibUI",
   "url": "http://localhost:10101/",
   "tests": [{
@@ -169,71 +169,37 @@
         ["xpath=//input[@id='fileInput']", "xpath:attributes"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Test Upload.xml"
+      "value": "${xmlUpload}"
     }, {
-      "id": "e552d33d-2766-4abe-8d51-c36ad0a3b084",
+      "id": "6d638906-6435-496a-bcee-6a55fa33e95e",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.card-header",
+      "targets": [
+        ["css=.card-header", "css:finder"],
+        ["xpath=//resolver-item/div/div", "xpath:position"]
+      ],
+      "value": "3000"
+    }, {
+      "id": "8965fd85-b9b4-49d5-8efe-fcb1ad12b6dd",
       "comment": "",
       "command": "click",
-      "target": "css=span.direction.pull-right",
+      "target": "css=.text-primary",
       "targets": [
-        ["css=span.direction.pull-right", "css"],
-        ["css=.direction", "css:finder"],
-        ["xpath=//span[2]", "xpath:position"]
+        ["css=.text-primary", "css:finder"],
+        ["xpath=//div/i", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "06fda754-668b-440d-83dd-05e757fcb8fa",
+      "id": "44ac47d8-7246-4bf6-ae7b-0178f2987cfc",
       "comment": "",
       "command": "assertText",
-      "target": "css=.col-9 > div:nth-child(2)",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
       "targets": [
-        ["css=.col-9 > div:nth-child(2)", "css:finder"],
-        ["xpath=//div/div/div/div/div[2]", "xpath:position"]
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Source Upload XML\\nUploadedTest"
-    }, {
-      "id": "4d5813aa-c287-4bda-b535-18ce9c647087",
-      "comment": "",
-      "command": "click",
-      "target": "css=.fa-eye",
-      "targets": [
-        ["css=.fa-eye", "css:finder"],
-        ["xpath=//div[2]/button/i", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "d9833784-1fa0-4eb4-a1ef-6771fa067eb8",
-      "comment": "",
-      "command": "click",
-      "target": "css=button.btn.btn-secondary",
-      "targets": [
-        ["css=button.btn.btn-secondary", "css"],
-        ["css=.btn-secondary", "css:finder"],
-        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
-        ["xpath=//div[3]/button[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "6518b29c-f355-4dde-b65e-0011104b91fd",
-      "comment": "",
-      "command": "click",
-      "target": "css=.fa-edit",
-      "targets": [
-        ["css=.fa-edit", "css:finder"],
-        ["xpath=//button[2]/i", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "13d6ff70-8354-49d6-a642-b7cc6661fa79",
-      "comment": "",
-      "command": "click",
-      "target": "css=button.btn.btn-secondary > translate-i18n",
-      "targets": [
-        ["css=button.btn.btn-secondary > translate-i18n", "css"],
-        ["css=.btn-secondary > translate-i18n", "css:finder"],
-        ["xpath=//button[2]/translate-i18n", "xpath:position"]
-      ],
-      "value": ""
+      "value": "Metadata Source Upload XML"
     }]
   }],
   "suites": [{
