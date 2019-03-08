@@ -1157,12 +1157,12 @@
       "id": "38b54b65-e3cb-4711-9914-11947ff491e6",
       "comment": "",
       "command": "assertText",
-      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
+      "target": "css=.col-8 > div:nth-child(2)",
       "targets": [
-        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
-        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
+        ["css=.col-8 > div:nth-child(2)", "css:finder"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
       ],
-      "value": "DelegatedAdmin Edited"
+      "value": "DelegatedAdmin Edited DelegatedAdmin"
     }, {
       "id": "169d0a06-e822-476a-b3b8-6d6af0c4fe36",
       "comment": "",
@@ -1177,8 +1177,19 @@
     }, {
       "id": "f08049e7-7b4e-452c-8091-a7d67e0e1b81",
       "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.text-capitalize",
+      "targets": [
+        ["css=.text-capitalize", "css:finder"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Enable')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f08049e7-7b4e-452c-8091-a7d67e0e1b82",
+      "comment": "",
       "command": "click",
-      "target": "xpath=//button[contains(.,'Enable')]",
+      "target": "css=.text-capitalize",
       "targets": [
         ["css=.text-capitalize", "css:finder"],
         ["xpath=//div[2]/button", "xpath:position"],
@@ -1210,9 +1221,22 @@
       "id": "0383aa75-506c-4309-b074-b28e3ada6c3f",
       "comment": "",
       "command": "waitForElementPresent",
-      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
-      "targets": [],
+      "target": "css=.col-8 > div:nth-child(2)",
+      "targets": [
+        ["css=.col-8 > div:nth-child(2)", "css:finder"],
+        ["xpath=//div/div/div/div/div[2]", "xpath:position"]
+      ],
       "value": "3000"
+    }, {
+      "id": "5341ba03-b351-4a8c-9d8a-50130868f7e7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.text-primary",
+      "targets": [
+        ["css=.text-primary", "css:finder"],
+        ["xpath=//div/i", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "937fd019-c985-47c7-9416-097cd1c0c54d",
       "comment": "",

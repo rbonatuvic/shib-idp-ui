@@ -20,10 +20,10 @@ class SeleniumSIDETest extends Specification {
     @Value('${local.server.port}')
     int randomPort
 
-//    @Ignore
+    @Ignore
     def "Selenium: just run one"() {
         setup:
-        def file = "/CreateMetadataSourceFromCopy.side"
+        def file = "/SHIBUI-1058_DelegatedAdmin_SubmitSource.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
@@ -79,7 +79,7 @@ class SeleniumSIDETest extends Specification {
         'Delete REGEX Filter'                               | '/DeleteREGEXFilter.side'
         'Delete Incomplete Source'                          | '/DeleteIncompleteSource.side'
         'Admin Login'                                       | '/SHIBUI-1031_AdminLogin.side'
-//        'Delegated Admin: SubmitSource'                   | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side' // failing, Selenium not finding the right elements in the right order
+        'Delegated Admin: SubmitSource'                     | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side'
         'Create Filesystem Metadata Resolver'               | '/CreateFilesystemMetadataResolver.side'
         'Create Local Dynamic Metadata Resolver'            | '/CreateLocalDynamicMetadataResolver.side'
         'Delete Entity Attributes Script Filter'            | '/DeleteScriptFilter.side'
