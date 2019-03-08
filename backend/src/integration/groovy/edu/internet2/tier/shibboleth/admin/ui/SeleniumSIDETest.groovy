@@ -23,7 +23,6 @@ class SeleniumSIDETest extends Specification {
         def file = "/SHIBUI-1058_DelegatedAdmin_SubmitSource.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
-            System.properties.contains('')
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
             }
@@ -45,7 +44,6 @@ class SeleniumSIDETest extends Specification {
         setup:
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
-            System.properties.contains('')
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
             }
