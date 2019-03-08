@@ -20,7 +20,7 @@ class SeleniumSIDETest extends Specification {
 
     def "Selenium: just run one"() {
         setup:
-        def file = "/SHIBUI-1058_DelegatedAdmin_SubmitSource2.side"
+        def file = "/ModifyFilterOrder.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
