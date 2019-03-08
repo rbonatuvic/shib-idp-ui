@@ -166,7 +166,7 @@ dependencies {
     compile 'org.sharegov:mjson:1.4.1'
 
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
-    integrationTestCompile 'jp.vmi:selenese-runner-java:3.19.2'
+    integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'

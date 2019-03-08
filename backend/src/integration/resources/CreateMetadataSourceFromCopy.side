@@ -351,153 +351,6 @@
       ],
       "value": ""
     }, {
-      "id": "069f0972-4b43-4a12-a485-542831bba9d3",
-      "comment": "",
-      "command": "click",
-      "target": "id=field15",
-      "targets": [
-        ["id=field15", "id"],
-        ["name=field15", "name"],
-        ["css=#field15", "css"],
-        ["css=#field15", "css:finder"],
-        ["xpath=//input[@id='field15']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "74879229-2f35-458b-8bc2-fe53b40abc16",
-      "comment": "",
-      "command": "type",
-      "target": "id=field15",
-      "targets": [
-        ["id=field15", "id"],
-        ["name=field15", "name"],
-        ["css=#field15", "css"],
-        ["css=#field15", "css:finder"],
-        ["xpath=//input[@id='field15']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "Metadata Source Happy Path"
-    }, {
-      "id": "1c4fcf3d-9316-4816-b80a-3151bd71e9e2",
-      "comment": "",
-      "command": "click",
-      "target": "id=field19",
-      "targets": [
-        ["id=field19", "id"],
-        ["name=field19", "name"],
-        ["css=#field19", "css"],
-        ["css=#field19", "css:finder"],
-        ["xpath=//input[@id='field19']", "xpath:attributes"],
-        ["xpath=//fieldset[2]/div/div[2]/sf-form-element/div/sf-widget-chooser/custom-string/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "79efad4e-9936-4637-a86b-e34be03a833e",
-      "comment": "",
-      "command": "type",
-      "target": "id=field19",
-      "targets": [
-        ["id=field19", "id"],
-        ["name=field19", "name"],
-        ["css=#field19", "css"],
-        ["css=#field19", "css:finder"],
-        ["xpath=//input[@id='field19']", "xpath:attributes"],
-        ["xpath=//fieldset[2]/div/div[2]/sf-form-element/div/sf-widget-chooser/custom-string/div/input", "xpath:position"]
-      ],
-      "value": "Metadata Source Happy Path"
-    }, {
-      "id": "bcce1997-56cd-432c-8e8e-fa7cdfab4ff7",
-      "comment": "",
-      "command": "mouseDownAt",
-      "target": "name=field20",
-      "targets": [
-        ["name=field20", "name"],
-        ["css=input[name=\"field20\"]", "css"],
-        ["css=div:nth-child(3) > sf-form-element integer-component .text-widget", "css:finder"],
-        ["xpath=//input[@name='field20']", "xpath:attributes"],
-        ["xpath=//integer-component/div/input", "xpath:position"]
-      ],
-      "value": "18.046875,20.5625"
-    }, {
-      "id": "dc5a59a9-cdb0-4811-9665-2518b540bc96",
-      "comment": "",
-      "command": "mouseMoveAt",
-      "target": "name=field20",
-      "targets": [
-        ["name=field20", "name"],
-        ["css=input[name=\"field20\"]", "css"],
-        ["css=div:nth-child(3) > sf-form-element integer-component .text-widget", "css:finder"],
-        ["xpath=//input[@name='field20']", "xpath:attributes"],
-        ["xpath=//integer-component/div/input", "xpath:position"]
-      ],
-      "value": "18.046875,20.5625"
-    }, {
-      "id": "5f6e4eda-266a-4dec-9966-e59579197b57",
-      "comment": "",
-      "command": "mouseUpAt",
-      "target": "name=field20",
-      "targets": [
-        ["name=field20", "name"],
-        ["css=input[name=\"field20\"]", "css"],
-        ["css=div:nth-child(3) > sf-form-element integer-component .text-widget", "css:finder"],
-        ["xpath=//input[@name='field20']", "xpath:attributes"],
-        ["xpath=//integer-component/div/input", "xpath:position"]
-      ],
-      "value": "18.046875,20.5625"
-    }, {
-      "id": "fafee973-6b99-4213-abbe-cd19c2a301fc",
-      "comment": "",
-      "command": "click",
-      "target": "name=field20",
-      "targets": [
-        ["name=field20", "name"],
-        ["css=input[name=\"field20\"]", "css"],
-        ["css=div:nth-child(3) > sf-form-element integer-component .text-widget", "css:finder"],
-        ["xpath=//input[@name='field20']", "xpath:attributes"],
-        ["xpath=//integer-component/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "d2685a5b-b963-4087-9cb3-a16e284b8eec",
-      "comment": "",
-      "command": "type",
-      "target": "name=field20",
-      "targets": [
-        ["name=field20", "name"],
-        ["css=input[name=\"field20\"]", "css"],
-        ["css=integer-component .ng-dirty", "css:finder"],
-        ["xpath=//input[@name='field20']", "xpath:attributes"],
-        ["xpath=//integer-component/div/input", "xpath:position"]
-      ],
-      "value": "22"
-    }, {
-      "id": "33780c34-5a30-44e0-b717-324d8dc1d39f",
-      "comment": "",
-      "command": "click",
-      "target": "name=field21",
-      "targets": [
-        ["name=field21", "name"],
-        ["css=input[name=\"field21\"]", "css"],
-        ["css=integer-component .ng-untouched", "css:finder"],
-        ["xpath=//input[@name='field21']", "xpath:attributes"],
-        ["xpath=//div[4]/sf-form-element/div/sf-widget-chooser/integer-component/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "5d61c087-2035-4d19-a861-3709711f27d5",
-      "comment": "",
-      "command": "type",
-      "target": "name=field21",
-      "targets": [
-        ["name=field21", "name"],
-        ["css=input[name=\"field21\"]", "css"],
-        ["css=integer-component .ng-untouched", "css:finder"],
-        ["xpath=//input[@name='field21']", "xpath:attributes"],
-        ["xpath=//div[4]/sf-form-element/div/sf-widget-chooser/integer-component/div/input", "xpath:position"]
-      ],
-      "value": "22"
-    }, {
       "id": "5bd5ae5a-2c88-4773-bf44-751d13ed88d3",
       "comment": "",
       "command": "click",
@@ -1573,27 +1426,32 @@
       ],
       "value": ""
     }, {
+      "id": "cbdd31b0-1b06-4cc7-b18e-ac2fda5d6cfd",
+      "comment": "",
+      "command": "pause",
+      "target": "",
+      "targets": [],
+      "value": "3000"
+    }, {
       "id": "88338e99-dd8d-4c9b-ada6-bb93f612c1ab",
       "comment": "",
       "command": "click",
-      "target": "css=span.direction.pull-right",
+      "target": "css=.fa-caret-right",
       "targets": [
-        ["css=span.direction.pull-right", "css"],
-        ["css=.direction:nth-child(2)", "css:finder"],
-        ["xpath=//li[3]/button/span[2]", "xpath:position"]
+        ["css=.fa-caret-right", "css:finder"],
+        ["xpath=//li[2]/resolver-item/div/div/div/div/div/i", "xpath:position"]
       ],
       "value": ""
     }, {
       "id": "5297a9fe-85c3-4daf-b2a6-c8533c9d5f1c",
       "comment": "",
       "command": "assertText",
-      "target": "css=.lead",
+      "target": "css=.mt-2 .row:nth-child(1) > .col:nth-child(2)",
       "targets": [
-        ["css=.lead", "css:finder"],
-        ["xpath=//div/div/div/span", "xpath:position"],
-        ["xpath=//span[contains(.,'Current Metadata Sources')]", "xpath:innerText"]
+        ["css=.mt-2 .row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//li[2]/resolver-item/div/div[2]/div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Current Metadata Sources"
+      "value": "New Metadata Source from Copy"
     }]
   }],
   "suites": [{

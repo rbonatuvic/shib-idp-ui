@@ -23,7 +23,7 @@ class SeleniumSIDETest extends Specification {
 //    @Ignore
     def "Selenium: just run one"() {
         setup:
-        def file = "/CreateMetadataSourceFromXML.side"
+        def file = "/CreateMetadataSourceFromCopy.side"
         def main = new Main()
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
@@ -33,8 +33,8 @@ class SeleniumSIDETest extends Specification {
             it
         }
         def runner = new Runner()
-        main.setupRunner(runner, config, [] as String[])
         runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
+        main.setupRunner(runner, config, [] as String[])
 
         expect:
         def result = runner.run(file, this.class.getResourceAsStream(file))
@@ -55,6 +55,7 @@ class SeleniumSIDETest extends Specification {
             it
         }
         def runner = new Runner()
+        runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
         main.setupRunner(runner, config, [] as String[])
 
         expect:
@@ -72,19 +73,19 @@ class SeleniumSIDETest extends Specification {
         'Create Filter REGEX'                               | '/CreateFilterREGEX.side'
         'Create Filter Script'                              | '/CreateFilterScript.side'
         'Create Metadata Source From XML'                   | '/CreateMetadataSourceFromXML.side'
-//        'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' // failing, backend returning a 400
+        'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' // currently does not populate MDUI before copy (causes 400)
         'Create Metadata Source from URL'                   | '/CreateMetadataSourceFromURL.side'
         'Delete Entity ID Filter'                           | '/DeleteEntityIDFilter.side'
         'Delete REGEX Filter'                               | '/DeleteREGEXFilter.side'
         'Delete Incomplete Source'                          | '/DeleteIncompleteSource.side'
         'Admin Login'                                       | '/SHIBUI-1031_AdminLogin.side'
-//        'Delegated Admin: SubmitSourceWithError'            | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side' // failing, Selenium not finding the right elements in the right order
+//        'Delegated Admin: SubmitSource'                   | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side' // failing, Selenium not finding the right elements in the right order
         'Create Filesystem Metadata Resolver'               | '/CreateFilesystemMetadataResolver.side'
         'Create Local Dynamic Metadata Resolver'            | '/CreateLocalDynamicMetadataResolver.side'
         'Delete Entity Attributes Script Filter'            | '/DeleteScriptFilter.side'
         'Create and Delete Name ID Format Entity ID Filter' | '/CreateAndDeleteNameIDFormatEntityIDFilter.side'
         'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
         'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
-//        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side' // failing, Selenium can't click up/down arrows
+        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side'
     }
 }
