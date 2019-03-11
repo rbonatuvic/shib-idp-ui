@@ -51,7 +51,7 @@ class AddNewUserFilterTests extends Specification {
         securityContext.getAuthentication() >> authentication
         authentication.getPrincipal() >> saml2Profile
 
-        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService)
+        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, Optional.of(emailService))
         saml2ProfileMapping = pac4jConfigurationProperties.saml2ProfileMapping
     }
 

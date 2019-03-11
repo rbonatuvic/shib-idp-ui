@@ -166,7 +166,7 @@ dependencies {
     compile 'org.sharegov:mjson:1.4.1'
 
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
-    integrationTestCompile 'jp.vmi:selenese-runner-java:3.19.2'
+    integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
@@ -184,17 +184,25 @@ sourceSets {
         java {
             srcDirs = []
         }
+        resources {
+            srcDir new File(buildDir, 'generated/ui')
+        }
     }
     integrationTest {
         groovy {
             srcDirs = ['src/integration/groovy']
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
+            compileClasspath += main.output
+            runtimeClasspath += main.output
         }
         resources {
             srcDir 'src/integration/resources'
         }
     }
+}
+
+task copyUI(type: Copy) {
+    from tasks.findByPath(':ui:npm_run_buildProd').outputs
+    into new File(buildDir, 'generated/ui/static')
 }
 
 task integrationTest(type: Test) {
@@ -307,7 +315,7 @@ dockerRun {
     image 'unicon/shibui'
     ports '10101:8080'
     daemonize true
-    command '--spring.profiles.include=no-auth,very-dangerous'
+    command '--spring.profiles.include=very-dangerous,dev'
     clean true
 }
 

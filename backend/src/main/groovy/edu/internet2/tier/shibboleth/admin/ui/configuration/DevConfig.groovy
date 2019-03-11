@@ -68,12 +68,20 @@ class DevConfig {
                 roles.add(roleRepository.findByName('ROLE_ADMIN').get())
                 it
             }, new User().with {
-                username = 'nonadmin'
-                password = '{noop}nonadminpass'
+                username = 'user'
+                password = '{noop}userpass'
                 firstName = 'Peter'
                 lastName = 'Vandelay'
                 emailAddress = 'peter@institution.edu'
                 roles.add(roleRepository.findByName('ROLE_USER').get())
+                it
+            }, new User().with {
+                username = 'none'
+                password = '{noop}nonepass'
+                firstName = 'Bad'
+                lastName = 'robot'
+                emailAddress = 'badboy@institution.edu'
+                roles.add(roleRepository.findByName('ROLE_NONE').get())
                 it
             }, new User().with { // allow us to auto-login as an admin
                 username = 'anonymousUser'

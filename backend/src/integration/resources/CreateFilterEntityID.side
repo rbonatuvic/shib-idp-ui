@@ -1,29 +1,54 @@
 {
   "id": "16b5f41b-30c1-4cc1-9c9e-bc15e40d1318",
-  "version": "1.1",
+  "version": "2.0",
   "name": "ShibUI",
   "url": "http://localhost:10101/",
   "tests": [{
     "id": "daacdb81-2f14-49f3-8d15-da5f5d52586c",
-    "name": "nada",
+    "name": "FBHMR - Entity Attributes - Entity ID",
     "commands": [{
-      "id": "227fe3ca-ebb3-46ee-8067-eb1bd1290801",
+      "id": "c023f973-f799-4dc3-90d0-d75ccade0317",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "/login",
       "targets": [],
       "value": ""
     }, {
-      "id": "853ef897-df38-4b31-ad06-3598bf9bc5e2",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
+      "id": "492f48b4-97f8-4cb7-b8de-abf963b576af",
+      "comment": "Use User Login",
+      "command": "type",
+      "target": "name=username",
       "targets": [
-        ["css=body", "css"],
-        ["css=body", "css:finder"],
-        ["xpath=//body", "xpath:position"]
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": "yes, you did it"
+      "value": "admin"
+    }, {
+      "id": "f61dd17c-d2ee-4200-a8f7-96d841d4ccb8",
+      "comment": "Use User Password",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "fdb5a585-49aa-403c-8c23-c4fc548267b3",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "effbf04c-a1fa-411e-a47f-0b71acfbf4b2",
       "comment": "",
@@ -609,13 +634,12 @@
       "id": "c3d80754-3e28-4b07-95f6-5bfac82e9a58",
       "comment": "",
       "command": "assertText",
-      "target": "css=div.px-2",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
       "targets": [
-        ["css=div.px-2", "css"],
-        ["css=.px-2", "css:finder"],
-        ["xpath=//div[2]/div[2]", "xpath:position"]
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Provider: FBHMP\\nFileBackedHttpMetadataResolver"
+      "value": "Metadata Provider: FBHMP"
     }, {
       "id": "108a25aa-6b33-4fa2-870d-ee413d7eb986",
       "comment": "",
@@ -639,19 +663,29 @@
       ],
       "value": ""
     }, {
-      "id": "5693bc4b-80b7-41e3-885b-0911a4835211",
+      "id": "5693bc4b-80b7-41e3-885b-0911a4835212",
       "comment": "",
       "command": "click",
-      "target": "id=field33",
+      "target": "name=type",
       "targets": [
-        ["id=field33", "id"],
-        ["name=field33", "name"],
-        ["css=#field33", "css"],
-        ["css=#field33", "css:finder"],
-        ["xpath=//input[@id='field33']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
+        ["name=type", "name"],
+        ["css=.is-valid", "css:finder"],
+        ["xpath=//select[@name='type']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "5693bc4b-80b7-41e3-885b-0911a4835211",
+      "comment": "",
+      "command": "select",
+      "target": "name=type",
+      "targets": [
+        ["name=type", "name"],
+        ["css=.is-valid", "css:finder"],
+        ["xpath=//select[@name='type']", "xpath:attributes"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "label=EntityAttributes"
     }, {
       "id": "31dca951-b673-41a5-9430-184ed7d8a170",
       "comment": "",
@@ -684,14 +718,13 @@
       "id": "a453edf2-c8c5-47d1-86a2-c59d30d0935f",
       "comment": "",
       "command": "click",
-      "target": "id=undefined__option--0",
+      "target": "id=targetInput",
       "targets": [
-        ["id=undefined__option--0", "id"],
-        ["css=#undefined__option--0", "css"],
-        ["css=#undefined__option--0", "css:finder"],
-        ["xpath=//li[@id='undefined__option--0']", "xpath:attributes"],
-        ["xpath=//ul[@id='__listbox']/li", "xpath:idRelative"],
-        ["xpath=//auto-complete/div/ul/li", "xpath:position"]
+        ["id=targetInput", "id"],
+        ["css=#targetInput", "css:finder"],
+        ["xpath=//input[@id='targetInput']", "xpath:attributes"],
+        ["xpath=//div[@id='-container']/div/input", "xpath:idRelative"],
+        ["xpath=//div/div/input", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -913,6 +946,35 @@
         ["xpath=//div/button/i", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "0639596d-acef-4dd4-91b1-de12b05f9876",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.td-lg:nth-child(3)",
+      "targets": [],
+      "value": "3000"
+    }, {
+      "id": "77bb14f1-a994-4dcd-880e-16d262762941",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.td-lg:nth-child(3)",
+      "targets": [
+        ["css=.td-lg:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'Entity ID')]", "xpath:innerText"]
+      ],
+      "value": "Entity ID"
+    }, {
+      "id": "7e890e10-3f49-47ec-b118-25fc28c6563e",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.td-lg:nth-child(4)",
+      "targets": [
+        ["css=.td-lg:nth-child(4)", "css:finder"],
+        ["xpath=//td[4]", "xpath:position"],
+        ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
+      ],
+      "value": "EntityAttributes"
     }]
   }],
   "suites": [{
