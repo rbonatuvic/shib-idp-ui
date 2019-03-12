@@ -196,6 +196,7 @@ sourceSets {
         }
         resources {
             srcDir 'src/integration/resources'
+            srcDir new File(buildDir, 'generated/ui')
         }
     }
 }
@@ -208,8 +209,7 @@ task copyUI(type: Copy) {
 task integrationTest(type: Test) {
     group = 'verification'
     description = 'Run various integration tests'
-    dependsOn 'dockerRun', 'runChecker'
-    finalizedBy 'dockerStop'
+    dependsOn 'copyUI'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     systemProperties = System.properties
@@ -307,28 +307,6 @@ docker {
     files tasks.bootJar.outputs
     files 'src/main/docker-files/loader.properties'
     buildArgs(['JAR_FILE': "shibui-${version}.jar"])
-}
-
-tasks.dockerRun.dependsOn tasks.docker
-dockerRun {
-    name 'shibuiint'
-    image 'unicon/shibui'
-    ports '10101:8080'
-    daemonize true
-    command '--spring.profiles.include=very-dangerous,dev'
-    clean true
-}
-
-task runChecker << {
-    def ready = false
-    while (!ready) {
-        try {
-            ready = 'http://localhost:10101'.toURL().text.length() > 0
-        } catch (IOException e) {
-            println 'cannot reach site'
-            sleep 5000
-        }
-    }
 }
 
 /*
