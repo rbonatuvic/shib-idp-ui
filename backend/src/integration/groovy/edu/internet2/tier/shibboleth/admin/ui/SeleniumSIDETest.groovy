@@ -3,8 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui
 import jp.vmi.selenium.selenese.Main
 import jp.vmi.selenium.selenese.Runner
 import jp.vmi.selenium.selenese.config.DefaultConfig
-import org.openqa.selenium.remote.DesiredCapabilities
-import org.openqa.selenium.remote.RemoteWebDriver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
@@ -32,10 +30,10 @@ class SeleniumSIDETest extends Specification {
                 it.driver = System.properties.getProperty('webdriver.driver')
             } else {
                 it.driver = 'remote'
-                it.remoteUrl = 'http://localhost:4444/wd/hub'
+                it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
                 it.remoteBrowser = 'firefox'
             }
-            it.baseurl = "http://localhost:${this.randomPort}"
+            it.baseurl = "http://jenkins:${this.randomPort}"
             it
         }
         def runner = new Runner()
@@ -56,8 +54,12 @@ class SeleniumSIDETest extends Specification {
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
+            } else {
+                it.driver = 'remote'
+                it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
+                it.remoteBrowser = 'firefox'
             }
-            it.baseurl = "http://localhost:${this.randomPort}"
+            it.baseurl = "http://jenkins:${this.randomPort}"
             it
         }
         def runner = new Runner()
