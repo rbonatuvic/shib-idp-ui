@@ -13,6 +13,7 @@ import spock.lang.Unroll
 
 import java.nio.file.Paths
 
+//TODO: make config configurable
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
 @ActiveProfiles(['dev'])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD, methodMode = DirtiesContext.MethodMode.AFTER_METHOD)

@@ -7,7 +7,6 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.13'
     id 'com.palantir.docker' version '0.20.1'
     id 'com.palantir.docker-run' version '0.20.1'
-    id 'com.avast.gradle.docker-compose' version '0.8.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -307,20 +306,4 @@ docker {
     files tasks.bootJar.outputs
     files 'src/main/docker-files/loader.properties'
     buildArgs(['JAR_FILE': "shibui-${version}.jar"])
-}
-
-/*
- * Docker Compose (gradle-docker-compose-plugin) settings.
- * Used to start and stop docker containers before running tests.
- */
-apply plugin: 'docker-compose'
-dockerCompose {
-    useComposeFiles = ['./src/test/docker-files/docker-compose.yml']
-    captureContainersOutput = true
-    waitForTcpPorts = false
-}
-
-test {
-    dependsOn 'composeUp'
-    finalizedBy 'composeDown'
 }
