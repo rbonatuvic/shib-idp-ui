@@ -10,7 +10,7 @@ describe('Modal Service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbModalModule.forRoot()
+                NgbModalModule
             ],
             providers: [
                 ModalService

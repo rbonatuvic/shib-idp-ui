@@ -45,7 +45,7 @@ describe('Provider Edit Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbDropdownModule.forRoot(),
+                NgbDropdownModule,
                 RouterTestingModule.withRoutes([
                     {path: 'edit', children: []},
                     {path: 'foo', children: []},
