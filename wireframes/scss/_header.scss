@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.app-header {
+	background: white;
+	border-bottom: 1px solid rgba(0,0,0,.35);
+
+	.navbar-brand {
+		font-size: 1.5em;
+		margin: $spacer;
+	}
+
+	.tagline {
+		line-height: 2.4em;
+	}
+
+	.app-navbar {
+		background: rgba(0,0,0,.05);
+		padding: 0 $spacer;
+	}
+
+	.app-global {
+		margin: $spacer;
+		text-align: right;
+
+		.global-item {
+			display: inline-block;
+		}
+	}
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {
+
+	.app-header {
+		position: fixed;
+		width: 100%;
+		z-index: 10;
+	}
+}
+@include media-breakpoint-up(lg) {}
+@include media-breakpoint-up(xl) {}

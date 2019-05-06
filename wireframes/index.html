@@ -1,0 +1,2233 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Internet2 Shibboleth UI</title>
+        <meta name="description" content="Internet2 Shibboleth UI prototype">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="libs/animate/animate.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="libs/prism/prism.css" />
+    </head>
+    <body class="app">
+        <a id="skippy" class="sr-only sr-only-focusable" href="#content">
+            <div class="container">
+                <span class="skiplink-text">Skip to main content</span>
+            </div>
+        </a>
+        <header class="app-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <a class="navbar-brand mr-0 mr-md-2 change-view" href="#" data-view="vDashboard" aria-label="Shibboleth Source Management">
+                            Shibboleth Source Management
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="app-global">
+                            <div class="global-item">
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span><i class="icon fas fa-plus-circle"></i> Add New</span>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="global-item">
+                                <button type="button" class="btn btn-light change-view" data-view="vDashboard2">
+                                    <span><i class="icon fas fa-th"></i> Dashboard</span>
+                                </button>
+                            </div>
+                            <div class="global-item">
+                                <button type="button" class="btn btn-light">
+                                    <span><i class="icon fas fa-sign-out-alt"></i> Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </header>
+        <div class="app-body">
+            
+            <main class="app-content" id="viewContainer" role="main">
+
+                <!-- Dashboard -->
+                <article class="view active" id="vDashboard">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-body">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-sources" data-toggle="tab" href="#sources" role="tab" aria-controls="sources" aria-selected="true">Metadata Sources</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-providers" data-toggle="tab-providers" href="#providers" role="tab" aria-controls="providers" aria-selected="false">Metadata Providers</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-admin" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-action-required" data-toggle="tab" href="#action-required" role="tab" aria-controls="action-required" aria-selected="false">Action Required <span class="badge badge-light">0</span></a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="sources" role="tabpanel" aria-labelledby="tab-sources">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <h1 class="h3 my-1">Current Metadata Sources</h1>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Search Files" aria-label="Search Files" aria-describedby="search-files-addon">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text" id="search-files-addon">Clear</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="source-list-wrapper">
+                                                    <ul class="source-list list-unstyled">
+                                                        <li class="list-item">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="expand-collapse">
+                                                                        <i class="fas fa-caret-right"></i>
+                                                                    </div>
+                                                                    <div class="list-item-title">
+                                                                        <i class="fas fa-cube source-icon"></i>
+                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
+                                                                        <h3 class="h6 m-0">Username</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="source-actions">
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
+                                                                            <i class="fas fa-eye"></i>
+                                                                            <span class="sr-only">View XML</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
+                                                                            <i class="fas fa-history"></i>
+                                                                            <span class="sr-only">Version History</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            <span class="sr-only">Edit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-item">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="expand-collapse">
+                                                                        <i class="fas fa-caret-right"></i>
+                                                                    </div>
+                                                                    <div class="list-item-title">
+                                                                        <i class="fas fa-cube source-icon"></i>
+                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
+                                                                        <h3 class="h6 m-0">Username</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="source-actions">
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
+                                                                            <i class="fas fa-eye"></i>
+                                                                            <span class="sr-only">View XML</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
+                                                                            <i class="fas fa-history"></i>
+                                                                            <span class="sr-only">Version History</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            <span class="sr-only">Edit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-item">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="expand-collapse">
+                                                                        <i class="fas fa-caret-right"></i>
+                                                                    </div>
+                                                                    <div class="list-item-title">
+                                                                        <i class="fas fa-cube source-icon"></i>
+                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
+                                                                        <h3 class="h6 m-0">Username</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="source-actions">
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
+                                                                            <i class="fas fa-eye"></i>
+                                                                            <span class="sr-only">View XML</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
+                                                                            <i class="fas fa-history"></i>
+                                                                            <span class="sr-only">Version History</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            <span class="sr-only">Edit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="providers" role="tabpanel" aria-labelledby="tab-providers">...</div>
+                                    <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="tab-admin">...</div>
+                                    <div class="tab-pane fade" id="action-required" role="tabpanel" aria-labelledby="tab-action-required">...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Dashboard - new design -->
+                <article class="view d-none" id="vDashboard2">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-body">
+                                <ul class="nav nav-tabs" id="dash2Tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-sources2" data-toggle="tab" href="#sources2" role="tab" aria-controls="sources2" aria-selected="true">Metadata Sources</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-providers2" data-toggle="tab-providers2" href="#providers2" role="tab" aria-controls="providers2" aria-selected="false">Metadata Providers</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-admin2" data-toggle="tab" href="#admin2" role="tab" aria-controls="admin2" aria-selected="false">Admin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-action-required2" data-toggle="tab" href="#action-required2" role="tab" aria-controls="action-required2" aria-selected="false">Action Required <span class="badge badge-light">0</span></a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="sources2" role="tabpanel" aria-labelledby="tab-sources2">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h1 class="h3 my-1">Current Metadata Sources</h1>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="source-list-wrapper">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="search-filter">
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" placeholder="Filter sources" aria-label="Filter Sources" aria-describedby="search-files-addon">
+                                                                    <button class="btn btn-link">Clear Filter</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="view-toggle" id="sourceListViewToggle">
+                                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                                    <button type="button" class="btn btn-primary change-view" data-view="sourceView2List" data-view-type="source-view" data-view-container="sourceList2"><i class="fas fa-list"></i> List</button>
+                                                                    <button type="button" class="btn btn-light change-view" data-view="sourceView2Grid"  data-view-type="source-view" data-view-container="sourceList2"><i class="fas fa-th"></i> Grid</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="source-list2" id="sourceList2">
+                                                        <div class="source-view list-view active" id="sourceView2List">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Title <i class="fas fa-caret-down"></i></th>
+                                                                        <th>Entity ID</th>
+                                                                        <th>Author</th>
+                                                                        <th>Created Date</th>
+                                                                        <th>Enabled</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityIdNameThatCouldBeVeryLongAndMightTakeUpLotsOfSpaceLike65Chr</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><a href="#" class="change-view" data-view="vViewOptions">Source Title</a></td>
+                                                                        <td>EntityId</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="source-view grid-view d-none" id="sourceView2Grid">
+                                                            <ul class="list-unstyled">
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="list-item">
+                                                                    <a class="change-view" href="#" role="button" data-view="vViewOptions">
+                                                                        <div class="item-header">
+                                                                            <h2 class="source-title">Source Title</h2>
+                                                                            <h3 class="entity-id">EntityId</h3>
+                                                                        </div>
+                                                                        <div class="item-body">
+                                                                            <span class="badge badge-primary status">Enabled</span>
+                                                                            <span class="date">Apr 22, 2019</span>, <span class="author">Username</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="providers2" role="tabpanel" aria-labelledby="tab-providers2">...</div>
+                                    <div class="tab-pane fade" id="admin2" role="tabpanel" aria-labelledby="tab-admin2">...</div>
+                                    <div class="tab-pane fade" id="action-required2" role="tabpanel" aria-labelledby="tab-action-required2">...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- View Options -->
+                <article class="view d-none" id="vViewOptions">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Source Configuration</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="options-table">
+                                    <div class="card enabled-status">
+                                        <div class="card-body">
+                                            <h2 class="card-title version-title">Version 5</h2>
+                                            <p class="card-text version-details">
+                                                Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
+                                            </p>
+                                            <p class="card-text"><span class="badge badge-primary">Enabled</span> <span class="badge badge-primary">Current</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <button type="button" class="btn btn-link change-view" data-view="vVersionHistory"><i class="fas fa-history"></i> Version History</button>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="view-toggle">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-primary">Options</button>
+                                                    <button type="button" class="btn btn-light change-view" data-view="vViewXML">XML</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Name and Entity ID</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Entity ID</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Service Provider</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Oganization Information</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Organization Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization Display Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization URL</td>
+                                                    <td><a href="#">https://www.domanin.com/sitename</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">User Interface / MDUI Information</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Display Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Information URL</td>
+                                                    <td><a href="#">https://www.domanin.com/information</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Privacy statement URL</td>
+                                                    <td><a href="#">https://www.domanin.com/privacy</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>Test description</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo URL</td>
+                                                    <td><a href="#">https://www.domanin.com/logo.png</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo height</td>
+                                                    <td>120</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo width</td>
+                                                    <td>120</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">SP SSO Descriptor Information</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Protocol support enumeration</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NameID format to send</td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">05</span><span class="text">Logout Endpoints</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Organization Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization Display Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization URL</td>
+                                                    <td><a href="#">https://www.domanin.com/sitename</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">06</span><span class="text">Security Information</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>X509 certificate</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Authentication resquests signed</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Want assertions signed</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>X509 certificates</td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">07</span><span class="text">Assertion Consumer Service</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Endpoints</td>
+                                                    <td>--</td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">08</span><span class="text">Relying Party Overrides</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Sign the assertion</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sign the response</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Turn off encryption resposne</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use SHA1 signing algorithm?</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ignore any SP-requested authentication method</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Omit Not Before Condition</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NameID format to send</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Authentication methods to use</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Force AuthN</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">09</span><span class="text">Attribute Release</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditConfig"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>eduPersonPrincipalName (EPPN)</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>uid</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>mail</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>surname</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>givenName</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonScopedAffiliation</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonPrimaryAffiliation</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonEntitlement</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonPrimaryAssurance</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonUniqueId</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>employeeNumber</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- View Version Options -->
+                <article class="view d-none" id="vViewVersionOptions">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Source Configuration</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="options-table">
+                                    <div class="card enabled-status">
+                                        <div class="card-body">
+                                            <h2 class="card-title version-title">Version 4</h2>
+                                            <p class="card-text version-details">
+                                                Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
+                                            </p>
+                                            <p class="card-text"><!--span class="badge badge-primary">Enabled</span--> <span class="badge badge-secondary">Not Current</span> <button class="btn btn-link change-view" data-view="vCompareOptions">Compare to Current <i class="fas fa-angle-right"></i></button><button class="btn btn-link float-right change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore this version</button></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <button type="button" class="btn btn-link change-view" data-view="vVersionHistory"><i class="fas fa-history"></i> Version History</button>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="view-toggle">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-primary">Options</button>
+                                                    <button type="button" class="btn btn-light change-view" data-view="vViewXML">XML</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Name and Entity ID</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Entity ID</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Service Provider</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Oganization Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Organization Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization Display Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization URL</td>
+                                                    <td><a href="#">https://www.domanin.com/sitename</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">User Interface / MDUI Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Display Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Information URL</td>
+                                                    <td><a href="#">https://www.domanin.com/information</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Privacy statement URL</td>
+                                                    <td><a href="#">https://www.domanin.com/privacy</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>Test description</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo URL</td>
+                                                    <td><a href="#">https://www.domanin.com/logo.png</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo height</td>
+                                                    <td>120</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo width</td>
+                                                    <td>120</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">SP SSO Descriptor Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Protocol support enumeration</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NameID format to send</td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">05</span><span class="text">Logout Endpoints</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Organization Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization Display Name</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization URL</td>
+                                                    <td><a href="#">https://www.domanin.com/sitename</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">06</span><span class="text">Security Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>X509 certificate</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Authentication resquests signed</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Want assertions signed</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>X509 certificates</td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">07</span><span class="text">Assertion Consumer Service</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Endpoints</td>
+                                                    <td>--</td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">08</span><span class="text">Relying Party Overrides</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Sign the assertion</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sign the response</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Turn off encryption resposne</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use SHA1 signing algorithm?</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ignore any SP-requested authentication method</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Omit Not Before Condition</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NameID format to send</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Authentication methods to use</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Force AuthN</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">09</span><span class="text">Attribute Release</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>eduPersonPrincipalName (EPPN)</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>uid</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>mail</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>surname</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>givenName</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonScopedAffiliation</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonPrimaryAffiliation</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonEntitlement</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonPrimaryAssurance</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonUniqueId</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>employeeNumber</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Compare Options -->
+                <article class="view d-none" id="vCompareOptions">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Source Configuration</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="options-table">
+                                    <div class="column-stripe"></div>
+                                    <div class="actions">
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <button type="button" class="btn btn-link change-view" data-view="vVersionHistory"><i class="fas fa-history"></i> Version History</button>
+                                            </div>
+                                            <div class="col-md">
+                                                <!--div class="view-toggle">
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-primary">Options</button>
+                                                        <button type="button" class="btn btn-light change-view" data-view="vViewXML">XML</button>
+                                                    </div>
+                                                </div-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Name and Entity ID</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Entity ID</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Service Provider</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Oganization Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Organization Name</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization Display Name</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization URL</td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">User Interface / MDUI Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Display Name</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Information URL</td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Privacy statement URL</td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>Test description</td>
+                                                    <td>Test description</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo URL</td>
+                                                    <td><a href="#">https://www.domanin.com/logo.png</a></td>
+                                                    <td><a href="#">https://www.domanin.com/logo.png</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo height</td>
+                                                    <td>120</td>
+                                                    <td>120</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Logo width</td>
+                                                    <td>120</td>
+                                                    <td>120</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">SP SSO Descriptor Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Protocol support enumeration</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NameID format to send</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">05</span><span class="text">Logout Endpoints</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Organization Name</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization Display Name</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organization URL</td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                    <td><a href="#">https://www.domanin.com</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">06</span><span class="text">Security Information</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>X509 certificate</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Authentication resquests signed</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Want assertions signed</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>X509 certificates</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">07</span><span class="text">Assertion Consumer Service</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Endpoints</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">08</span><span class="text">Relying Party Overrides</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Sign the assertion</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sign the response</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Turn off encryption resposne</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use SHA1 signing algorithm?</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ignore any SP-requested authentication method</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Omit Not Before Condition</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>NameID format to send</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Authentication methods to use</td>
+                                                    <td>--</td>
+                                                    <td>--</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Force AuthN</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">09</span><span class="text">Attribute Release</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>v5</th>
+                                                    <th>v4</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>eduPersonPrincipalName (EPPN)</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>uid</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>mail</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>surname</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>givenName</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonScopedAffiliation</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonPrimaryAffiliation</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonEntitlement</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonPrimaryAssurance</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eduPersonUniqueId</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>employeeNumber</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- View XML -->
+                <article class="view d-none" id="vViewXML">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Source Configuration</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="config-group">
+                                    <div class="view-toggle">
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-light change-view" data-view="vViewOptions">Options</button>
+                                            <button type="button" class="btn btn-primary">XML</button>
+                                        </div>
+                                    </div>
+                                    <figure class="config-group code-block">
+                                        <pre>
+                                            <code class="language-markup" contenteditable spellcheck="false">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="jjentity">
+&lt;md:Extensions>
+&lt;mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+&lt;saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="nameIDFormatPrecedence" Name="http://shibboleth.net/ns/profiles/nameIDFormatPrecedence" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+&lt;saml2:Attribute xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" FriendlyName="defaultAuthenticationMethods" Name="http://shibboleth.net/ns/profiles/defaultAuthenticationMethods" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"/>
+&lt;/mdattr:EntityAttributes>
+&lt;/md:Extensions>
+&lt;md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+&lt;md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://localhost" isDefault="true"/>
+&lt;/md:SPSSODescriptor>
+&lt;/md:EntityDescriptor>
+                                            </code>
+                                        </pre>
+                                    </figure>
+                                    <button type="button" class="btn btn-primary"><i class="fas fa-file-download"></i> Download File</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Version History -->
+                <article class="view d-none" id="vVersionHistory">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Version History</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="version-history">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th><span class="sr-only">Select</span></th>
+                                                <th>Version</th>
+                                                <th>Save Date</th>
+                                                <th>Changed By</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect5" aria-labelledby="v5label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewOptions" href="#"><span id="v5label"><span class="current">Current</span></a> (v5)</span></td>
+                                                <td>Apr 22, 2019 11:58</td>
+                                                <td>Username</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect4" aria-labelledby="v4label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v4label">v4</span></td>
+                                                <td>Jan 28, 2019 09:33</td>
+                                                <td>Username</td>
+                                                <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect3" aria-labelledby="v3label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v3label">v3</span></td>
+                                                <td>Nov 19, 2018 11:09</td>
+                                                <td>Username</td>
+                                                <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect2" aria-labelledby="v2label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v2label">v2</span></td>
+                                                <td>Aug 28, 2018 14:07</td>
+                                                <td>Username</td>
+                                                <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect1" aria-labelledby="v1label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v1label">v1</span></td>
+                                                <td>May 07, 2018 16:42</td>
+                                                <td>Username</td>
+                                                <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="actions">
+                                        <button class="btn btn-primary change-view" data-view="vCompareOptions"><i class="fas fa-columns"></i> Compare Selected</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Restore Version -->
+                <article class="view d-none" id="vRestoreVersion">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Restore Version 4</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="card restore-confirm">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Create Version 6 From Version 4 Settings</h2>
+                                        <p class="card-text">Restoring this version will copy the Version 4 configuration and create a new Version 6 from the v4 settings. You can then edit the configuration before saving the new version.</p>
+                                        <button class="btn btn-light change-view" data-view="vViewOptions">Cancel</button>
+                                        <button class="btn btn-primary change-view" data-view="vViewOptions">Restore</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Edit Config -->
+                <article class="view d-none" id="vEditConfig">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Edit Configuration</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="card edit-options">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Name and Entity ID</h2>
+                                        <p class="card-text">This represents the current edit wizard flow.</p>
+                                        <button class="btn btn-primary change-view" data-view="vViewOptions">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+            </main>
+        </div>
+        
+        <footer class="app-footer">
+            <div class="footer-inner">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>Links to Shibboleth resources:</p>
+                        <nav class="nav">
+                            <a class="nav-link" href="#">Home Page</a>
+                            <a class="nav-link" href="#">Wiki</a>
+                            <a class="nav-link" href="#">Issue Tracker</a>
+                            <a class="nav-link" href="#">Mailing List</a>
+                        </nav>
+                        <div class="copyright">
+                            SNAPSHOT-id | Copyright &copy; Internet2
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="sponsor">
+                            <p>In partnership with <a href="#">Unicon</a> and <a href="#">Internet2</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <!-- custom -->
+        <script src="js/main.js"></script>
+        <script src="js/views.js"></script>
+
+        <!-- Prism: https://prismjs.com/ -->
+        <script src="libs/prism/prism.js"></script>
+
+    </body>
+</html>

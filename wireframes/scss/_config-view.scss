@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Configuration View
+   ========================================================================== */
+
+.options-table {
+    max-width: $reading-width;
+    margin: 0 auto;
+
+    .enabled-status {
+        margin-bottom: ($spacer *2);
+    }
+
+    .version-title {
+        margin-bottom: 0.25rem;
+    }
+
+    .version-details {
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        font-size: 0.85em;
+        margin: 0 0 0.75rem 0;
+        padding-bottom: 0.5rem;
+
+        .author {
+            font-style: italic;
+        }
+    }
+
+    .actions {
+        margin-bottom: $spacer;
+    }
+
+    .edit-link {
+        
+        text-transform: uppercase;
+    }
+
+    .numbered-header {
+        background: rgba(0,0,0,0.05);
+
+        .title {
+            margin: 0;
+            padding: 0.3em 0;
+        }
+    }
+
+    th, td {
+        width: 50%;
+    }
+}
+
+.view-toggle {
+    margin-bottom: $spacer;
+    text-align: right;
+}
+
+#vCompareOptions {
+
+    .options-table {
+        max-width: 65em;
+        position: relative;
+
+        th, td {
+            width: 33%;
+        }
+
+        /*
+        tr > td:nth-child(2) {
+            background: rgba(0,0,0,0.05);
+        } */
+    }
+
+    .column-stripe {
+        background: rgba(0,0,0,0.025);
+        position: absolute;
+        width: 33%;
+        height: 100%;
+        left: 33%;
+        top: 2em;
+    }
+}
+
+.edit-options {
+    max-width: $reading-width;
+    margin: 0 auto;
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {}
+@include media-breakpoint-up(lg) {}
+@include media-breakpoint-up(xl) {}

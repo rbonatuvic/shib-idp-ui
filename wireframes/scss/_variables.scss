@@ -1,0 +1,52 @@
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+
+/* Colors
+----------------------------------------------------------------------------- */
+
+// Basic colors
+$white:				rgb(255,255,255);
+$black:				rgb(0,0,0);
+
+// Brand colors
+$green1: 		    rgb(58,108,21);  // #3A6C15
+$green2:	        rgb(172,210,76);  // #ACD24C
+$tan:	            rgb(220,189,112);  // #DCBD70
+$red: 		        rgb(204,86,56);  // #CC5638
+$brown:		        rgb(69,40,37);  // #452825
+
+// Utility colors
+$u-off-white:       rgb(245, 246, 247); // #f5f6f7 barely grey
+$u-dusk-blue:       rgb(39, 52, 63);  // #27343f dark and desaturated
+
+// Class assignments for easy use
+$bg:                $white;
+$text:              rgb(33, 37, 41);
+$text-muted:        rgb(108,117,125);
+
+
+/* Fonts
+----------------------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Roboto:300,400,600');
+
+$font-base:			'Open Sans', sans-serif;
+$font-title:		'Roboto', sans-serif;
+$font-subtitle:		'Roboto', sans-serif;
+
+
+/* Bootstrap Overrides
+----------------------------------------------------------------------------- */
+$theme-colors: (
+    //"primary": $green1
+);
+
+
+/* Layout
+----------------------------------------------------------------------------- */
+
+$sidebar-width:			250px;
+$sidebar-width-lg:		280px;
+$sidebar-width-xl:		320px;
+$reading-width:			45em;

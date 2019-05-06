@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.app-footer {
+	background: $u-off-white;
+	border-top: 1px solid rgba(0,0,0,.35);
+	color: $text-muted;
+	font-size: 85%;
+
+	nav {
+		margin-bottom: ($spacer *1.5);
+	}
+
+	p {
+		margin-bottom: 0;
+	}
+
+	a {
+		color: black;
+	}
+
+	.sponsor {
+		margin: ($spacer *1.5) 0;
+	}
+
+	.sponsor-logo {
+	}
+
+	.license-icons {
+		font-size: 2em;
+
+		a:hover, a:focus {
+			text-decoration: none;
+		}
+	}
+
+	.social-media {
+		font-size: 2em;
+		margin: $spacer;
+
+		li {
+			display: inline-block;
+			margin: 0 ($spacer / 2);
+		}
+	}
+}
+
+.footer-inner {
+	padding: ($spacer *2);
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {
+
+	.app-footer {
+		font-size: 18px;
+
+		.row {
+			font-size: 14px;
+		}
+	}
+
+	.footer-inner {
+		padding: ($spacer *3);
+	}
+}
+@include media-breakpoint-up(lg) {
+
+	.footer-inner {
+		padding: ($spacer *4);
+	}
+}
+@include media-breakpoint-up(xl) {
+
+	.footer-inner {
+		padding: ($spacer *5);
+	}
+}
