@@ -26,6 +26,7 @@
                         (toggle)="toggleEntity(resolver)"
                         (preview)="openPreviewDialog(resolver)"
                         (delete)="deleteResolver(resolver)"
+                        (history)="viewMetadataHistory(resolver)"
                         [allowDelete]="resolver.isDraft()">
                     </resolver-item>
                 </li>

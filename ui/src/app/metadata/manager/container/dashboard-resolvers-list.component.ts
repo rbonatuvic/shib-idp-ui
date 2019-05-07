@@ -90,6 +90,10 @@ export class DashboardResolversListComponent implements OnInit {
         this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
     }
 
+    viewMetadataHistory(entity: MetadataEntity): void {
+        this.router.navigate(['metadata', 'resolver', entity.getId(), 'versions']);
+    }
+
     deleteResolver(entity: MetadataResolver): void {
         this.modalService
             .open(DeleteDialogComponent)
