@@ -4,7 +4,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, async, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ProviderEditComponent } from './provider-edit.component';
 import * as fromRoot from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
@@ -144,7 +144,7 @@ describe('Provider Edit Component', () => {
         it('should open a modal', (done) => {
             app.latest = <MetadataProvider>{ name: 'bar' };
             spyOn(store, 'select').and.returnValue(of(false));
-            spyOn(modal, 'open').and.returnValue({ result: Promise.resolve('closed') });
+            spyOn(modal, 'open').and.returnValue({ result: Promise.resolve('closed') } as NgbModalRef);
             fixture.detectChanges();
             let route = new ActivatedRouteStub(),
                 snapshot = route.snapshot;
