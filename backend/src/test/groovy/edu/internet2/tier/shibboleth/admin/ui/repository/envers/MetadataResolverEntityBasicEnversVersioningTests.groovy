@@ -43,16 +43,26 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
 
     def "test basic audit and version data is created when persisting base metadata resolver with envers enabled"() {
         when:
-        doInExplicitTransaction {
+        MetadataResolver mdr = doInExplicitTransaction {
             metadataResolverRepository.save(create {new MetadataResolver()})
         }
-        def metadataResolverHistory = metadataResolverHistory()
+        def metadataResolverHistory = resolverHistory()
+
+        then:
+        metadataResolverHistory
+
+        when:
+        mdr.name = 'Updated'
+        doInExplicitTransaction {
+            metadataResolverRepository.save(mdr)
+        }
+        metadataResolverHistory = resolverHistory()
 
         then:
         metadataResolverHistory
     }
 
-    private metadataResolverHistory() {
+    private resolverHistory() {
         def auditReader = AuditReaderFactory.get(entityManager)
         AuditQuery auditQuery = auditReader
                 .createQuery()
@@ -83,7 +93,8 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
     //start/commit transaction making envers data written out and verifiable
     private doInExplicitTransaction(Closure uow) {
         def txStatus = txMgr.getTransaction(new DefaultTransactionDefinition(PROPAGATION_REQUIRES_NEW))
-        uow()
+        def entity = uow()
         txMgr.commit(txStatus)
+        entity
     }
 }
