@@ -10,6 +10,7 @@
     "grunt-contrib-sass": "^1.0.0"
   },
   "dependencies": {
-    "npm": "^6.9.0"
+    "npm": "^6.9.0",
+    "bootstrap": "^4.3.1"
   }
 }
