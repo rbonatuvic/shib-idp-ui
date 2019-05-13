@@ -49,7 +49,13 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
         def metadataResolverHistory = resolverHistory()
 
         then:
-        metadataResolverHistory
+        metadataResolverHistory.size() == 1
+
+        when:
+        def rev = metadataResolverHistory[0]
+
+        then:
+        rev[1].principalUserName == 'anonymous'
 
         when:
         mdr.name = 'Updated'
@@ -59,7 +65,7 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
         metadataResolverHistory = resolverHistory()
 
         then:
-        metadataResolverHistory
+        metadataResolverHistory.size == 2
     }
 
     private resolverHistory() {

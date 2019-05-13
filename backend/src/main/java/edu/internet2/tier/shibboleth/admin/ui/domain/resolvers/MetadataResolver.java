@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
@@ -40,7 +39,6 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = FilesystemMetadataResolver.class, name = "FilesystemMetadataResolver"),
         @JsonSubTypes.Type(value = ResourceBackedMetadataResolver.class, name = "ResourceBackedMetadataResolver")})
 @Audited
-@AuditOverride(forClass = AbstractAuditable.class)
 public class MetadataResolver extends AbstractAuditable {
 
     @JsonProperty("@type")
