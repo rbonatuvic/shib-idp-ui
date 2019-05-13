@@ -1,15 +1,15 @@
 swagger: '2.0'
 info:
-  description: Shibboleth UI REST Api Documentation
+  description: Shibboleth IdP UI REST Api Documentation
   version: '1.0'
-  title: Api Documentation
+  title: Shibboleth IdP UI REST Api Documentation
   termsOfService: 'urn:tos'
   contact: {}
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0'
 host: 'localhost:8080'
-basePath: /
+basePath: /api
 tags:
   - name: entities-controller
     description: Entities Controller
@@ -24,7 +24,7 @@ tags:
   - name: metadata-resolvers-controller
     description: Metadata Resolvers Controller
 paths:
-  /api/EntityDescriptor:
+  /EntityDescriptor:
     post:
       tags:
         - entity-descriptor-controller
@@ -53,7 +53,7 @@ paths:
         '409':
           description: Already Exists
       deprecated: false
-  '/api/EntityDescriptor/{resourceId}':
+  '/EntityDescriptor/{resourceId}':
     get:
       tags:
         - entity-descriptor-controller
@@ -115,7 +115,62 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /api/EntityDescriptors:
+  '/EntityDescriptor/{resourceId}/Versions':
+    get:
+      tags:
+        - entity-descriptor-controller
+      description: Get list of Versions for an entity descriptor
+      produces:
+        - application/json
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Version'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/EntityDescriptor/{resourceId}/Versions/{versionId}':
+    get:
+      tags:
+        - entity-descriptor-controller
+      description: Get a Version of an entity descriptor
+      produces:
+        - application/json
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+        - name: versionId
+          in: path
+          description: versionId of a version of the EntityDescriptor
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/EntityDescriptorRepresentation'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /EntityDescriptors:
     get:
       tags:
         - entity-descriptor-controller
@@ -135,7 +190,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /api/EntityIds/search:
+  /EntityIds/search:
     get:
       tags:
         - entity-ids-search-controller
@@ -165,7 +220,7 @@ paths:
         '403':
           description: Forbidden
       deprecated: false
-  /api/MetadataResolvers:
+  /MetadataResolvers:
     get:
       tags:
         - metadata-resolvers-controller
@@ -209,7 +264,7 @@ paths:
         '409':
           description: Already Exists
       deprecated: false
-  '/api/MetadataResolvers/{metadataResolverId}/Filters':
+  '/MetadataResolvers/{metadataResolverId}/Filters':
     get:
       tags:
         - metadata-filters-controller
@@ -264,7 +319,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  '/api/MetadataResolvers/{metadataResolverId}/Filters/{resourceId}':
+  '/MetadataResolvers/{metadataResolverId}/Filters/{resourceId}':
     get:
       tags:
         - metadata-filters-controller
@@ -335,7 +390,72 @@ paths:
         '409':
           description: Already Exists
       deprecated: false
-  '/api/MetadataResolvers/{resourceId}':
+  '/MetadataResolvers/{metadataResolverId}/Filters/{resourceId}/Versions':
+    get:
+      tags:
+        - metadata-filters-controller
+      description: Get list of Versions for an entity descriptor
+      produces:
+        - application/json
+      parameters:
+        - name: metadataResolverId
+          in: path
+          description: metadataResolverId
+          required: true
+          type: string
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Version'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/MetadataResolvers/{metadataResolverId}/Filters/{resourceId}/Versions/{versionId}':
+    get:
+      tags:
+        - metadata-filters-controller
+      description: Get a Version of an entity descriptor
+      produces:
+        - application/json
+      parameters:
+        - name: metadataResolverId
+          in: path
+          description: metadataResolverId
+          required: true
+          type: string
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+        - name: versionId
+          in: path
+          description: versionId of a version of the EntityDescriptor
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MetadataFilter'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/MetadataResolvers/{resourceId}':
     get:
       tags:
         - metadata-resolvers-controller
@@ -399,7 +519,62 @@ paths:
           description: Version conflict
 
       deprecated: false
-  '/api/entities/{entityId}':
+  '/MetadataResolvers/{resourceId}/Versions':
+    get:
+      tags:
+        - metadata-resolvers-controller
+      description: Get list of Versions for a metadata resolver
+      produces:
+        - application/json
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Version'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/MetadataResolvers/{resourceId}/Versions/{versionId}':
+    get:
+      tags:
+        - metadata-resolvers-controller
+      description: Get a Version of an entity descriptor
+      produces:
+        - application/json
+      parameters:
+        - name: resourceId
+          in: path
+          description: resourceId
+          required: true
+          type: string
+        - name: versionId
+          in: path
+          description: versionId of a version of the MetadataResolver
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MetadataResolver'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/entities/{entityId}':
     get:
       tags:
         - entities-controller
@@ -425,7 +600,7 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-  /api/metadataProviders:
+  /metadataProviders:
     get:
       tags:
         - metadata-providers-controller
@@ -470,6 +645,91 @@ definitions:
       url:
         type: string
     title: ContactRepresentation
+  DynamicMetadataResolverAttributes:
+    type: object
+    properties:
+      parserPoolRef:
+        type: string
+      taskTimerRef:
+        type: string
+      refreshDelayFactor:
+        type: number
+        format: double
+      minCacheDuration:
+        type: string
+      maxCacheDuration:
+        type: string
+      maxIdelEntityData:
+        type: string
+      removeIdleEntityData:
+        type: boolean
+      cleanupTaskInterval:
+        type: string
+      persistentCacheManagerRef:
+        type: string
+      persistentCacheKeyGeneratorRef:
+        type: string
+      initializeFromPersistentCacheInBackground:
+        type: boolean
+      backgroundInitializationFromCacheDelay:
+        type: string
+      initializationFromCachePredicateRef:
+        type: string
+  HttpMetadataResolverAttributes:
+    type: object
+    properties:
+      httpClientRef:
+        type: string
+      connectionRequestTimeout:
+        type: string
+      connectionTimeout:
+        type: string
+      socketTimeout:
+        type: string
+      disregardTLSCertificate:
+        type: boolean
+        default: false
+      tlsTrustEngineRef:
+        type: string
+      httpClientSecurityParametersRef:
+        type: string
+      proxyHost:
+        type: string
+      proxyPort:
+        type: string
+      proxyUser:
+        type: string
+      proxyPassword:
+        type: string
+        format: password
+      httpCaching:
+        type: string
+      httpCacheDirectory:
+        type: string
+      httpMaxCacheEntries:
+        type: integer
+      httpMaxCacheEntrySize:
+        type: integer
+  ReloadableMetadataResolverAttributes:
+    type: object
+    properties:
+      parserPoolRef:
+        type: string
+      taskTimerRef:
+        type: string
+      minRefreshDelay:
+        type: string
+      maxRefreshDelay:
+        type: string
+      refreshDelayFactor:
+        type: number
+        format: double
+      indexesRef:
+        type: string
+      resolveViaPredicatesOnly:
+        type: boolean
+      expirationWarningThreshold:
+        type: string
   DynamicHttpMetadataResolver:
     title: DynamicHttpMetadataResolver
     allOf:
@@ -530,6 +790,13 @@ definitions:
             type: integer
             format: int32
         title: DynamicHttpMetadataResolver
+  EntityAttributesFilterTarget:
+    type: object
+    properties:
+      entityAttributesFilterTargetType:
+        type: array
+        items:
+          type: string
   EntityAttributesFilter:
     title: EntityAttributesFilter
     allOf:
@@ -1017,3 +1284,16 @@ definitions:
       value:
         type: string
     title: X509CertificateRepresentation
+  Version:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: identifier for this particular version of the object
+      creator:
+        type: string
+        description: identifier of the user that created this particular version of the object
+      date:
+        type: string
+        format: date-time
+        description: datetime this particular version was created
