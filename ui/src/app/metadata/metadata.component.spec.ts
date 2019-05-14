@@ -27,7 +27,7 @@ describe('Metadata Root Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbDropdownModule.forRoot(),
+                NgbDropdownModule,
                 RouterTestingModule,
                 StoreModule.forRoot({
                     core: combineReducers(fromRoot.reducers)

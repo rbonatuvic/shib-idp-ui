@@ -86,7 +86,7 @@ export class CollectionEffects {
             this.providerService
                 .find(id)
                 .pipe(
-                    map(provider => new SelectProviderSuccess({ id, changes: provider })),
+                    map(provider => new SelectProviderSuccess(provider)),
                     catchError(error => of(new SelectProviderError(error)))
                 )
         )

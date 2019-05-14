@@ -29,7 +29,7 @@ describe('Provider Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbDropdownModule.forRoot(),
+                NgbDropdownModule,
                 RouterTestingModule,
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),
