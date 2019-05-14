@@ -42,8 +42,8 @@ describe('Provider Wizard Summary Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbDropdownModule.forRoot(),
-                NgbPopoverModule.forRoot(),
+                NgbDropdownModule,
+                NgbPopoverModule,
                 RouterTestingModule,
                 SchemaFormModule.forRoot(),
                 MockI18nModule

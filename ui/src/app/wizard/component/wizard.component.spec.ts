@@ -28,7 +28,7 @@ describe('Wizard Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbDropdownModule.forRoot(),
+                NgbDropdownModule,
                 RouterTestingModule,
                 StoreModule.forRoot({
                     wizard: combineReducers(fromWizard.reducers)

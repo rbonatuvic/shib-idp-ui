@@ -33,7 +33,7 @@ describe('AppComponent', () => {
                 {provide: I18nService, useClass: MockI18nService }
             ],
             imports: [
-                NgbDropdownModule.forRoot(),
+                NgbDropdownModule,
                 RouterTestingModule,
                 StoreModule.forRoot({
                     core: combineReducers(fromRoot.reducers)

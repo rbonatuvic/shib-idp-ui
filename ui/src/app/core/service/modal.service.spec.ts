@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { NgbModalModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 import { ModalService } from './modal.service';
 
@@ -10,7 +10,7 @@ describe('Modal Service', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbModalModule.forRoot()
+                NgbModalModule
             ],
             providers: [
                 ModalService
@@ -42,7 +42,7 @@ describe('Modal Service', () => {
                 return {
                     result: Promise.resolve({}),
                     componentInstance: {}
-                };
+                } as NgbModalRef;
             });
             service.open(`<div></div>`, {}, { foo: 'bar' });
             expect(ngbModal.open).toHaveBeenCalled();

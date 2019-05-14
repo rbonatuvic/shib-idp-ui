@@ -42,7 +42,7 @@ describe('Editor Nav Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                NgbDropdownModule.forRoot(),
+                NgbDropdownModule,
                 RouterTestingModule,
                 SchemaFormModule.forRoot(),
                 StoreModule.forRoot({
