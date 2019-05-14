@@ -1,0 +1,108 @@
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+// Headings and titles
+h1, h2, h3, h4, h5, h6,
+.title,
+.subtitle {
+	font-family: $font-title;
+	margin-bottom: 0.5em;
+
+	.icon {
+		color: #fff;
+        background: #ca353b;
+        border-radius: 0.5rem;
+		padding: 0.5em;
+		text-align: center;
+		width: 2em;
+	}
+}
+
+.section-title {
+	font-size: 1.5em;
+	font-weight: 400;
+	text-transform: uppercase;
+}
+
+.breadcrumb {
+	background: transparent;
+	border-bottom: 1px solid rgba($color: #000000, $alpha: 0.2);
+	font-size: 1.2em;
+}
+
+// Pipe dividers for text
+.divider {
+	color: rgba(0,0,0,.35);
+}
+
+.divider.horizontal {
+	display: inline-block;
+	margin: 0 0.5em;
+}
+
+// Term definitions (uses the <dfn> element)
+dfn {
+    font-weight: 700;
+}
+
+// Lists
+.n-list {
+    @include numbered-list();
+    @include numbered-list-items();
+}
+
+// Code
+
+pre, 
+code {
+	font-family: monospace, monospace;
+}
+
+pre {
+	overflow: auto;
+}
+
+pre > code {
+	display: block;
+	padding: 1rem;
+	word-wrap: normal;
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {
+	.numbered-header {
+		display: grid;
+		grid-template-columns: minmax(2.2em, auto) 1fr 1fr;
+		grid-template-rows: auto;
+
+		.number {
+			grid-column: 1;
+			grid-row: 1;
+			background: $white;
+			border: 2px solid rgba(0,0,0,.35);
+			border-radius: 0.5rem;
+			font-weight: 400;
+			min-width: 2.2em;
+			padding: 0.25em 0.35em;
+			text-align: center;
+		}
+	
+		.text {
+			grid-column: 2;
+			grid-row: 1;
+			padding: 0.25em 0 0 0.5em;
+		}
+
+		.actions {
+			grid-column: 3;
+			grid-row: 1;
+			margin-bottom: 0 !important;
+			padding: 0.1em;
+			text-align: right;
+		}
+	}
+}
+@include media-breakpoint-up(lg) {}
+@include media-breakpoint-up(xl) {}
