@@ -130,7 +130,7 @@ paths:
           type: string
       responses:
         '200':
-          description: OK
+          description: OK. Items returned should be ordered by `date`, ascending (oldest version first).
           schema:
             type: array
             items:
@@ -410,7 +410,7 @@ paths:
           type: string
       responses:
         '200':
-          description: OK
+          description: OK. Items returned should be ordered by `date`, ascending (oldest version first).
           schema:
             type: array
             items:
@@ -534,7 +534,7 @@ paths:
           type: string
       responses:
         '200':
-          description: OK
+          description: OK. Items returned should be ordered by `date`, ascending (oldest version first).
           schema:
             type: array
             items:
@@ -1289,7 +1289,7 @@ definitions:
     properties:
       id:
         type: integer
-        description: identifier for this particular version of the object
+        description: identifier for this particular version of the object. Note that this is not guaranteed to be sequential.
       creator:
         type: string
         description: identifier of the user that created this particular version of the object
