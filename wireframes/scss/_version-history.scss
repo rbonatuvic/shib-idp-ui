@@ -1,0 +1,30 @@
+/* ==========================================================================
+   Version History
+   ========================================================================== */
+
+.version-history {
+
+    .current {
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .action {
+        display: inline-block;
+    }
+
+    .action.delete {
+        margin-left: $spacer *3;
+    }
+}
+
+.restore-confirm {
+    margin: 0 auto;
+    max-width: $reading-width;
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {}
+@include media-breakpoint-up(lg) {}
+@include media-breakpoint-up(xl) {}

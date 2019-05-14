@@ -1,0 +1,39 @@
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+
+.app-sidebar {
+	padding: $spacer;
+
+	.nav-item {
+		border-bottom: 1px solid rgba(0,0,0,0.25);
+	}
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {
+
+    .app-sidebar {
+        background: $white;
+        border-left: 1px solid rgba(0,0,0,0.25);
+        height: 100vh;
+        overflow-y: scroll;
+        padding-top: 140px !important;
+        padding-bottom: $spacer;
+		position: fixed;
+		right: 0;
+        width: $sidebar-width;
+        z-index: 5;
+    }
+}
+@include media-breakpoint-up(lg) {
+    .app-sidebar {
+        width: $sidebar-width-lg;
+    }
+}
+@include media-breakpoint-up(xl) {
+    .app-sidebar {
+        width: $sidebar-width-xl;
+    }
+}

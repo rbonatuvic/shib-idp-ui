@@ -1,0 +1,128 @@
+/* ==========================================================================
+   Source List
+   ========================================================================== */
+
+.source-list {
+
+    .list-item {
+        background: rgba(0,0,0,0.025);
+        border: 1px solid rgba(0,0,0,0.15);
+        margin: ($spacer /2) 0;
+        padding: $spacer;
+        position: relative;
+    }
+
+    .expand-collapse {
+        position: absolute;
+        top: 0;
+        left: $spacer;
+    }
+
+    .list-item-title {
+        margin-left: 20px;
+        padding-left: 60px;
+        position: relative;
+    }
+
+    .source-icon {
+        font-size: 2em;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .source-status-icon {
+        font-size: 0.8em;
+    }
+}
+
+.source-actions {
+    text-align: right;
+}
+
+.source-list2 .grid-view {
+
+    .list-item {
+
+        a {
+            border: 1px solid rgba(0,0,0,0.15);
+            color: #444;
+            display: block;
+            position: relative;
+    
+            &:hover,
+            &:focus {
+                background: rgba(0,0,0,0.025);
+                border: 1px solid theme-color("primary");
+                text-decoration: none;
+            }
+        }
+    }
+
+    .item-header,
+    .item-body {
+        padding: $spacer;
+    }
+
+    .item-header {
+        padding-bottom: ($spacer /2);
+    }
+
+    .item-body {
+        padding-top: ($spacer /2);
+    }
+
+    .item-header {
+
+        h2 {
+            font-size: 1.25em;
+            margin: 0;
+        }
+
+        h3 {
+            font-size: 1em;
+            margin: 0;
+        }
+    }
+
+    .item-body {
+        background: rgba(0,0,0,0.02);
+    }
+
+    .date,
+    .author {
+        display: inline-block;
+        font-size: 0.8em;
+    }
+
+    .date {
+        margin-left: $spacer /2;
+    }
+
+    .author {
+        font-style: italic;
+    }
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {
+
+    #sourceView2Grid ul {
+        display: grid;
+		grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px;
+    }
+}
+@include media-breakpoint-up(lg) {
+
+    #sourceView2Grid ul {
+		grid-template-columns: repeat(4, 1fr);
+    }
+}
+@include media-breakpoint-up(xl) {
+
+    #sourceView2Grid ul {
+		grid-template-columns: repeat(5, 1fr);
+    }
+}
