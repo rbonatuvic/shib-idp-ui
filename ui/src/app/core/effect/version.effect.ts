@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
@@ -17,8 +17,8 @@ export class VersionEffects {
 
     @Effect()
     loadVersionInfo$ = this.actions$
-        .ofType(version.VERSION_LOAD_REQUEST)
         .pipe(
+            ofType(version.VERSION_LOAD_REQUEST),
             switchMap(() =>
                 this.http.get<VersionInfo>(`${this.base}${this.endpoint}`)
                     .pipe(

@@ -34,8 +34,8 @@ describe('Provider Wizard Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 WizardModule,
-                NgbDropdownModule.forRoot(),
-                NgbPopoverModule.forRoot(),
+                NgbDropdownModule,
+                NgbPopoverModule,
                 RouterTestingModule,
                 StoreModule.forRoot({
                     provider: combineReducers(fromRoot.reducers),

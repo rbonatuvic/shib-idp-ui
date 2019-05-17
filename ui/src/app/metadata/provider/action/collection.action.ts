@@ -65,7 +65,7 @@ export class SelectProviderRequest implements Action {
 export class SelectProviderSuccess implements Action {
     readonly type = ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS;
 
-    constructor(public payload: Update<MetadataProvider>) { }
+    constructor(public payload: MetadataProvider) { }
 }
 
 export class SelectProviderError implements Action {
