@@ -1,0 +1,31 @@
+/* ==========================================================================
+   Provdier List
+   ========================================================================== */
+
+.provider-list {
+
+    .order-number {
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 50%;
+        display: inline-block;
+        height: 2em;
+        width: 2em;
+        padding-top: 0.1em;
+        text-align: center;
+    }
+}
+
+.provider-filters {
+    margin-top: ($spacer *3);
+
+    th, td {
+        width: auto !important;
+    }
+}
+
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {}
+@include media-breakpoint-up(lg) {}
+@include media-breakpoint-up(xl) {}

@@ -57,152 +57,8 @@
             
             <main class="app-content" id="viewContainer" role="main">
 
-                <!-- Dashboard -->
-                <article class="view active" id="vDashboard">
-                    <section class="vs">
-                        <div class="vs-inner">
-                            <div class="section-body">
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="tab-sources" data-toggle="tab" href="#sources" role="tab" aria-controls="sources" aria-selected="true">Metadata Sources</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="tab-providers" data-toggle="tab-providers" href="#providers" role="tab" aria-controls="providers" aria-selected="false">Metadata Providers</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="tab-admin" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="tab-action-required" data-toggle="tab" href="#action-required" role="tab" aria-controls="action-required" aria-selected="false">Action Required <span class="badge badge-light">0</span></a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="sources" role="tabpanel" aria-labelledby="tab-sources">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <h1 class="h3 my-1">Current Metadata Sources</h1>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" placeholder="Search Files" aria-label="Search Files" aria-describedby="search-files-addon">
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text" id="search-files-addon">Clear</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="source-list-wrapper">
-                                                    <ul class="source-list list-unstyled">
-                                                        <li class="list-item">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <div class="expand-collapse">
-                                                                        <i class="fas fa-caret-right"></i>
-                                                                    </div>
-                                                                    <div class="list-item-title">
-                                                                        <i class="fas fa-cube source-icon"></i>
-                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
-                                                                        <h3 class="h6 m-0">Username</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="source-actions">
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
-                                                                            <i class="fas fa-eye"></i>
-                                                                            <span class="sr-only">View XML</span>
-                                                                        </button>
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
-                                                                            <i class="fas fa-history"></i>
-                                                                            <span class="sr-only">Version History</span>
-                                                                        </button>
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
-                                                                            <i class="fas fa-edit"></i>
-                                                                            <span class="sr-only">Edit</span>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-item">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <div class="expand-collapse">
-                                                                        <i class="fas fa-caret-right"></i>
-                                                                    </div>
-                                                                    <div class="list-item-title">
-                                                                        <i class="fas fa-cube source-icon"></i>
-                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
-                                                                        <h3 class="h6 m-0">Username</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="source-actions">
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
-                                                                            <i class="fas fa-eye"></i>
-                                                                            <span class="sr-only">View XML</span>
-                                                                        </button>
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
-                                                                            <i class="fas fa-history"></i>
-                                                                            <span class="sr-only">Version History</span>
-                                                                        </button>
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
-                                                                            <i class="fas fa-edit"></i>
-                                                                            <span class="sr-only">Edit</span>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-item">
-                                                            <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <div class="expand-collapse">
-                                                                        <i class="fas fa-caret-right"></i>
-                                                                    </div>
-                                                                    <div class="list-item-title">
-                                                                        <i class="fas fa-cube source-icon"></i>
-                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
-                                                                        <h3 class="h6 m-0">Username</h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <div class="source-actions">
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
-                                                                            <i class="fas fa-eye"></i>
-                                                                            <span class="sr-only">View XML</span>
-                                                                        </button>
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
-                                                                            <i class="fas fa-history"></i>
-                                                                            <span class="sr-only">Version History</span>
-                                                                        </button>
-                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
-                                                                            <i class="fas fa-edit"></i>
-                                                                            <span class="sr-only">Edit</span>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="providers" role="tabpanel" aria-labelledby="tab-providers">...</div>
-                                    <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="tab-admin">...</div>
-                                    <div class="tab-pane fade" id="action-required" role="tabpanel" aria-labelledby="tab-action-required">...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </article>
-
                 <!-- Dashboard - new design -->
-                <article class="view d-none" id="vDashboard2">
+                <article class="view active" id="vDashboard">
                     <section class="vs">
                         <div class="vs-inner">
                             <div class="section-body">
@@ -211,7 +67,7 @@
                                         <a class="nav-link active" id="tab-sources2" data-toggle="tab" href="#sources2" role="tab" aria-controls="sources2" aria-selected="true">Metadata Sources</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="tab-providers2" data-toggle="tab-providers2" href="#providers2" role="tab" aria-controls="providers2" aria-selected="false">Metadata Providers</a>
+                                        <a class="nav-link" id="tab-viders" data-toggle="tab" href="#viders" role="tab" aria-controls="viders" aria-selected="false">Metadata Providers</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="tab-admin2" data-toggle="tab" href="#admin2" role="tab" aria-controls="admin2" aria-selected="false">Admin</a>
@@ -220,7 +76,7 @@
                                         <a class="nav-link" id="tab-action-required2" data-toggle="tab" href="#action-required2" role="tab" aria-controls="action-required2" aria-selected="false">Action Required <span class="badge badge-light">0</span></a>
                                     </li>
                                 </ul>
-                                <div class="tab-content" id="myTabContent">
+                                <div class="tab-content" id="dash2TabContent">
                                     <div class="tab-pane fade show active" id="sources2" role="tabpanel" aria-labelledby="tab-sources2">
                                         <div class="card">
                                             <div class="card-header">
@@ -880,7 +736,95 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="providers2" role="tabpanel" aria-labelledby="tab-providers2">...</div>
+                                    <div class="tab-pane fade" id="viders" role="tabpanel" aria-labelledby="tab-viders">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h1 class="h3 my-1">Current Metadata Providers</h1>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="source-list-wrapper">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="search-filter">
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" placeholder="Filter sources" aria-label="Filter Sources" aria-describedby="search-files-addon">
+                                                                    <button class="btn btn-link">Clear Filter</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                        </div>
+                                                    </div>
+                                                    <div class="provider-list" id="providerList">
+                                                        <div class="provider-view list-view active" id="providerViewList">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Order</th>
+                                                                        <th>Title <i class="fas fa-caret-down"></i></th>
+                                                                        <th>Enabled</th>
+                                                                        <th>Provider Type</th>
+                                                                        <th>Author</th>
+                                                                        <th>Created Date</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td><span class="order-number">1</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                                        <td><a href="#" class="change-view" data-view="vViewProvider">Provider Title</a></td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                        <td>ProviderType</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="order-number">2</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                                        <td><a href="#" class="change-view" data-view="vViewProvider">Provider Title</a></td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                        <td>ProviderType</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="order-number">3</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                                        <td><a href="#" class="change-view" data-view="vViewProvider">Provider Title</a></td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                        <td>ProviderType</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="order-number">4</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                                        <td><a href="#" class="change-view" data-view="vViewProvider">Provider Title</a></td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                        <td>ProviderType</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="order-number">5</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                                        <td><a href="#" class="change-view" data-view="vViewProvider">Provider Title</a></td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                        <td>ProviderType</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><span class="order-number">6</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                                        <td><a href="#" class="change-view" data-view="vViewProvider">Provider Title</a></td>
+                                                                        <td><span class="badge badge-primary">Enabled</span></td>
+                                                                        <td>ProviderType</td>
+                                                                        <td>Username</td>
+                                                                        <td>Mmm DD YYYY</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="tab-pane fade" id="admin2" role="tabpanel" aria-labelledby="tab-admin2">...</div>
                                     <div class="tab-pane fade" id="action-required2" role="tabpanel" aria-labelledby="tab-action-required2">...</div>
                                 </div>
@@ -889,7 +833,151 @@
                     </section>
                 </article>
 
-                <!-- View Options -->
+                <!-- Dashboard - old design -->
+                <article class="view d-none" id="vDashboard2">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-body">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-sources" data-toggle="tab" href="#sources" role="tab" aria-controls="sources" aria-selected="true">Metadata Sources</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-providers" data-toggle="tab-providers" href="#providers" role="tab" aria-controls="providers" aria-selected="false">Metadata Providers</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-admin" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Admin</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-action-required" data-toggle="tab" href="#action-required" role="tab" aria-controls="action-required" aria-selected="false">Action Required <span class="badge badge-light">0</span></a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="sources" role="tabpanel" aria-labelledby="tab-sources">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <h1 class="h3 my-1">Current Metadata Sources</h1>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Search Files" aria-label="Search Files" aria-describedby="search-files-addon">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text" id="search-files-addon">Clear</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="source-list-wrapper">
+                                                    <ul class="source-list list-unstyled">
+                                                        <li class="list-item">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="expand-collapse">
+                                                                        <i class="fas fa-caret-right"></i>
+                                                                    </div>
+                                                                    <div class="list-item-title">
+                                                                        <i class="fas fa-cube source-icon"></i>
+                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
+                                                                        <h3 class="h6 m-0">Username</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="source-actions">
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
+                                                                            <i class="fas fa-eye"></i>
+                                                                            <span class="sr-only">View XML</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
+                                                                            <i class="fas fa-history"></i>
+                                                                            <span class="sr-only">Version History</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            <span class="sr-only">Edit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-item">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="expand-collapse">
+                                                                        <i class="fas fa-caret-right"></i>
+                                                                    </div>
+                                                                    <div class="list-item-title">
+                                                                        <i class="fas fa-cube source-icon"></i>
+                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
+                                                                        <h3 class="h6 m-0">Username</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="source-actions">
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
+                                                                            <i class="fas fa-eye"></i>
+                                                                            <span class="sr-only">View XML</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
+                                                                            <i class="fas fa-history"></i>
+                                                                            <span class="sr-only">Version History</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            <span class="sr-only">Edit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-item">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="expand-collapse">
+                                                                        <i class="fas fa-caret-right"></i>
+                                                                    </div>
+                                                                    <div class="list-item-title">
+                                                                        <i class="fas fa-cube source-icon"></i>
+                                                                        <h2 class="h5 m-0">Source Title <i class="fas fa-check-circle source-status-icon"></i></h2>
+                                                                        <h3 class="h6 m-0">Username</h3>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="source-actions">
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vViewOptions">
+                                                                            <i class="fas fa-eye"></i>
+                                                                            <span class="sr-only">View XML</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vVersionHistory">
+                                                                            <i class="fas fa-history"></i>
+                                                                            <span class="sr-only">Version History</span>
+                                                                        </button>
+                                                                        <button class="btn btn-lg btn-light change-view" data-view="vEditConfig">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            <span class="sr-only">Edit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="providers" role="tabpanel" aria-labelledby="tab-providers">...</div>
+                                    <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="tab-admin">...</div>
+                                    <div class="tab-pane fade" id="action-required" role="tabpanel" aria-labelledby="tab-action-required">...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- View Source -->
                 <article class="view d-none" id="vViewOptions">
                     <section class="vs">
                         <div class="vs-inner">
@@ -1255,6 +1343,260 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- View Provider -->
+                <article class="view d-none" id="vViewProvider">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Provider Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Provider Configuration</h1>
+                            </div>
+                            <div class="section-body" id="providerTop">
+                                <div class="options-table">
+                                    <div class="card enabled-status">
+                                        <div class="card-body">
+                                            <h2 class="card-title version-title">Version 3</h2>
+                                            <p class="card-text version-details">
+                                                Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
+                                            </p>
+                                            <p class="card-text"><span class="badge badge-primary">Enabled</span> <span class="badge badge-primary">Current</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <button type="button" class="btn btn-link change-view" data-view="vVersionHistoryProvider"><i class="fas fa-history"></i> Version History</button>
+                                            <a href="#providerFilters" class="btn btn-link" id="scrollToFilters"><i class="fas fa-arrow-down"></i> Filters</a>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="view-toggle">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-primary">Options</button>
+                                                    <button type="button" class="btn btn-light">XML</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Metadata Provider Type</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Metadata Provider Name (Display Only)</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata Provider Type</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Common Attributes</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata URL</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Initialize From Backup File?</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backing File</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backup File Init Next Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Valid Metadata</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fail Fast Initialization</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use Default Predicate Registry</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Satisfy Any Predicates</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">Reloading Attributes</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Min Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Max Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Refresh Delay Factor</td>
+                                                    <td>0.5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">Metadata Filter Plugins</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Max Validity Interval</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Signed Root</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Certificate File</td>
+                                                    <td><a href="#">https://www.domanin.com/certificate</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Retained Roles</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Roleless Entity Descriptors</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Empty Entities Descriptors</td>
+                                                    <td>True</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group provider-filters" id="providerFilters">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="text">Filters</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-cog"></i> Manage</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                    <th>Enable</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="order-number">1</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                    <td>
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                                            <label class="custom-control-label" for="customSwitch1"><span class="sr-only">Enable this filter</span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">2</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                    <td>
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                                            <label class="custom-control-label" for="customSwitch2"><span class="sr-only">Enable this filter</span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">3</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                    <td>
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                                            <label class="custom-control-label" for="customSwitch3"><span class="sr-only">Enable this filter</span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <a href="#providerTop" class="btn btn-link" id="scrollToFilters"><i class="fas fa-arrow-up"></i> Back to top</a>
                                 </div>
                             </div>
                         </div>
@@ -2044,7 +2386,7 @@
                     </section>
                 </article>
 
-                <!-- Version History -->
+                <!-- Version History - Source -->
                 <article class="view d-none" id="vVersionHistory">
                     <section class="vs">
                         <div class="vs-inner">
@@ -2087,7 +2429,7 @@
                                                         <input type="checkbox" class="form-check-input" id="versionSelect4" aria-labelledby="v4label">
                                                     </div>
                                                 </td>
-                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v4label">v4</span></td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v4label">v4</span></a></td>
                                                 <td>Jan 28, 2019 09:33</td>
                                                 <td>Username</td>
                                                 <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
@@ -2098,7 +2440,7 @@
                                                         <input type="checkbox" class="form-check-input" id="versionSelect3" aria-labelledby="v3label">
                                                     </div>
                                                 </td>
-                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v3label">v3</span></td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v3label">v3</span></a></td>
                                                 <td>Nov 19, 2018 11:09</td>
                                                 <td>Username</td>
                                                 <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
@@ -2109,7 +2451,7 @@
                                                         <input type="checkbox" class="form-check-input" id="versionSelect2" aria-labelledby="v2label">
                                                     </div>
                                                 </td>
-                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v2label">v2</span></td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v2label">v2</span></a></td>
                                                 <td>Aug 28, 2018 14:07</td>
                                                 <td>Username</td>
                                                 <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
@@ -2120,7 +2462,7 @@
                                                         <input type="checkbox" class="form-check-input" id="versionSelect1" aria-labelledby="v1label">
                                                     </div>
                                                 </td>
-                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v1label">v1</span></td>
+                                                <td><a class="change-view" data-view="vViewVersionOptions" href="#"><span id="v1label">v1</span></a></td>
                                                 <td>May 07, 2018 16:42</td>
                                                 <td>Username</td>
                                                 <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersion"><i class="fab fa-rev"></i> Restore</a></span></td>
@@ -2136,7 +2478,77 @@
                     </section>
                 </article>
 
-                <!-- Restore Version -->
+                <!-- Version History - Provider -->
+                <article class="view d-none" id="vVersionHistoryProvider">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Provider Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Version History</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="version-history">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th><span class="sr-only">Select</span></th>
+                                                <th>Version</th>
+                                                <th>Save Date</th>
+                                                <th>Changed By</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect4" aria-labelledby="v4label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewProvider" href="#"><span id="v4label"><span class="current">Current</span></a> (v3)</span></td>
+                                                <td>Jan 28, 2019 09:33</td>
+                                                <td>Username</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect2" aria-labelledby="v2label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewProvider" href="#"><span id="v2label">v2</span></a></td>
+                                                <td>Aug 28, 2018 14:07</td>
+                                                <td>Username</td>
+                                                <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersionProvider"><i class="fab fa-rev"></i> Restore</a></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group form-check">
+                                                        <input type="checkbox" class="form-check-input" id="versionSelect1" aria-labelledby="v1label">
+                                                    </div>
+                                                </td>
+                                                <td><a class="change-view" data-view="vViewProvider" href="#"><span id="v1label">v1</span></a></td>
+                                                <td>May 07, 2018 16:42</td>
+                                                <td>Username</td>
+                                                <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersionProvider"><i class="fab fa-rev"></i> Restore</a></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="actions">
+                                        <button class="btn btn-primary change-view" data-view="vCompareOptions"><i class="fas fa-columns"></i> Compare Selected</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Restore Version - Source -->
                 <article class="view d-none" id="vRestoreVersion">
                     <section class="vs">
                         <div class="vs-inner">
@@ -2163,7 +2575,34 @@
                     </section>
                 </article>
 
-                <!-- Edit Config -->
+                <!-- Restore Version - Provider -->
+                <article class="view d-none" id="vRestoreVersionProvider">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item change-view" data-view="vViewProvider"><a href="#">Metadata Provider Title</a></li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Restore Version 2</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="card restore-confirm">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Create Version 4 From Version 2 Settings</h2>
+                                        <p class="card-text">Restoring this version will copy the Version 3 configuration and create a new Version 4 from the v2 settings. You can then edit the configuration before saving the new version.</p>
+                                        <button class="btn btn-light change-view" data-view="vViewProvider">Cancel</button>
+                                        <button class="btn btn-primary change-view" data-view="vViewProvider">Restore</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Edit Source -->
                 <article class="view d-none" id="vEditConfig">
                     <section class="vs">
                         <div class="vs-inner">
@@ -2171,7 +2610,7 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
+                                        <li class="breadcrumb-item change-view" data-view="vViewOptions"><a href="#">Metadata Source Title</a></li>
                                     </ol>
                                 </nav>
                                 <h1 class="section-title">Edit Configuration</h1>
@@ -2182,6 +2621,32 @@
                                         <h2 class="card-title">Name and Entity ID</h2>
                                         <p class="card-text">This represents the current edit wizard flow.</p>
                                         <button class="btn btn-primary change-view" data-view="vViewOptions">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Edit Provider -->
+                <article class="view d-none" id="vEditProvider">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item change-view" data-view="vViewProvider"><a href="#">Metadata Provider Title</a></li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Edit Provider</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="card edit-options">
+                                    <div class="card-body">
+                                        <h2 class="card-title">Metadata Provider Type</h2>
+                                        <p class="card-text">This represents the current edit wizard flow.</p>
+                                        <button class="btn btn-primary change-view" data-view="vViewProvider">Save</button>
                                     </div>
                                 </div>
                             </div>
