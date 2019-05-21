@@ -15,6 +15,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
@@ -155,5 +157,11 @@ class DevConfig {
             it.serviceProviderName = 'testSP'
             it
         })
+    }
+
+    @Profile('dev-ed-versioning')
+    @Bean
+    EntityDescriptorVersionService stubEntityDescriptorVersionService(EntityDescriptorService entityDescriptorService) {
+        return EntityDescriptorVersionService.stubImpl(entityDescriptorService)
     }
 }

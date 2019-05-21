@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.TestEntityDescriptorVersioningConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
@@ -40,7 +41,7 @@ import org.xmlunit.diff.ElementSelectors
 import spock.lang.Ignore
 import spock.lang.Specification
 
-@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration, TestEntityDescriptorVersioningConfiguration])
 @SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @PropertySource("classpath:application.yml")
 class JPAEntityDescriptorServiceImplTests extends Specification {
