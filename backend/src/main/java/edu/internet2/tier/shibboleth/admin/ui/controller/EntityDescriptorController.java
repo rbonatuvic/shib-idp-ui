@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
@@ -9,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.annotation.PostConstruct;
 import javax.xml.ws.Response;
 import java.net.URI;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,20 +55,17 @@ public class EntityDescriptorController {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    private UserRepository userRepository;
-
-    private RoleRepository roleRepository;
-
     private UserService userService;
 
     private RestTemplate restTemplate;
 
+    private EntityDescriptorVersionService versionService;
+
     private static Logger LOGGER = LoggerFactory.getLogger(EntityDescriptorController.class);
 
-    public EntityDescriptorController(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+    public EntityDescriptorController(UserService userService, EntityDescriptorVersionService versionService) {
         this.userService = userService;
+        this.versionService = versionService;
     }
 
     @PostConstruct
@@ -220,6 +220,40 @@ public class EntityDescriptorController {
         }
     }
 
+    //Versioning endpoints
+
+    @GetMapping("/EntityDescriptor/{resourceId}/Versions")
+    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Version> versions = versionService.findVersionsForEntityDescriptor(resourceId);
+        if (versions.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        if(isAuthorizedFor(ed.getCreatedBy())) {
+            return ResponseEntity.ok(versions);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
+    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
+        EntityDescriptorRepresentation edRepresentation =
+                versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
+
+        if (edRepresentation == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if(isAuthorizedFor(edRepresentation.getCreatedBy())) {
+            return ResponseEntity.ok(edRepresentation);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    //Private methods
+
     private static URI getResourceUriFor(EntityDescriptor ed) {
         return ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/api/EntityDescriptor")
@@ -265,6 +299,13 @@ public class EntityDescriptorController {
         final EntityDescriptor persistedEd = entityDescriptorRepository.save(ed);
         return ResponseEntity.created(getResourceUriFor(persistedEd))
                 .body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
+    }
+
+    private boolean isAuthorizedFor(String username) {
+        User u = userService.getCurrentUser();
+        return (u != null) &&
+                (u.getRole().equals("ROLE_ADMIN")
+                        || (u.getUsername().equals(username)));
     }
 
 }

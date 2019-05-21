@@ -13,5 +13,5 @@ public interface EntityDescriptorVersionService {
 
     List<Version> findVersionsForEntityDescriptor(String resourceId);
 
-    EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionToken);
+    EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId);
 }
