@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import org.bouncycastle.util.encoders.Hex;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.slf4j.Logger;
@@ -49,12 +50,16 @@ public class EntityDescriptorFilesScheduledTasks {
 
     private static final String TARGET_FILE_TEMPLATE = "%s/%s";
 
+    private final FileWritingService fileWritingService;
+
     public EntityDescriptorFilesScheduledTasks(String metadataDirName,
                                                EntityDescriptorRepository entityDescriptorRepository,
-                                               OpenSamlObjects openSamlObjects) {
+                                               OpenSamlObjects openSamlObjects,
+                                               FileWritingService fileWritingService) {
         this.metadataDirName = metadataDirName;
         this.entityDescriptorRepository = entityDescriptorRepository;
         this.openSamlObjects = openSamlObjects;
+        this.fileWritingService = fileWritingService;
     }
 
     @Scheduled(fixedRateString = "${shibui.taskRunRate:30000}")
@@ -71,7 +76,7 @@ public class EntityDescriptorFilesScheduledTasks {
 
                     try {
                         String xmlContent = this.openSamlObjects.marshalToXmlString(ed);
-                        Files.write(targetFilePath, xmlContent.getBytes());
+                        fileWritingService.write(targetFilePath, xmlContent);
                     } catch (MarshallingException | IOException e) {
                         //TODO: any other better way to handle it?
                         LOGGER.error("Error marshalling entity descriptor into a file {} - {}", ed.getEntityID(), e.getMessage());
