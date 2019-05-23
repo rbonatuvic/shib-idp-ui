@@ -106,7 +106,7 @@ public class CoreShibUiConfiguration {
     @Bean
     @ConditionalOnProperty(name = "shibui.metadataProviders.target")
     public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(@Value("${shibui.metadataProviders.target}") final Resource resource, final MetadataResolverService metadataResolverService) {
-        return new MetadataProvidersScheduledTasks(resource, metadataResolverService);
+        return new MetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
     }
 
     @Bean

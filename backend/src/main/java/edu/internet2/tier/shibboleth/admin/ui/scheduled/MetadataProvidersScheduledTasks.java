@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.scheduled;
 
+import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +27,12 @@ public class MetadataProvidersScheduledTasks {
 
     private final Resource target;
     private final MetadataResolverService metadataResolverService;
+    private final FileWritingService fileWritingService;
 
-    public MetadataProvidersScheduledTasks(Resource target, MetadataResolverService metadataResolverService) {
+    public MetadataProvidersScheduledTasks(Resource target, MetadataResolverService metadataResolverService, FileWritingService fileWritingService) {
         this.target = target;
         this.metadataResolverService = metadataResolverService;
+        this.fileWritingService = fileWritingService;
     }
 
     @Scheduled(fixedRateString = "${shibui.metadataProviders.taskRunRate:30000}")
