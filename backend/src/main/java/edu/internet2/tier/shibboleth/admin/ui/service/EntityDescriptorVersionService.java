@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -18,7 +19,8 @@ public interface EntityDescriptorVersionService {
     EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId);
 
     /* Factory method to return stub impl for dev and testing purposes */
-    static EntityDescriptorVersionService stubImpl(final EntityDescriptorService entityDescriptorService) {
+    static EntityDescriptorVersionService stubImpl(final EntityDescriptorService entityDescriptorService,
+                                                   final EntityDescriptorRepository entityDescriptorRepository) {
         return new EntityDescriptorVersionService() {
             @Override
             public List<Version> findVersionsForEntityDescriptor(String resourceId) {

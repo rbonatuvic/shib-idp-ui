@@ -4,6 +4,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
@@ -33,6 +36,8 @@ import java.util.stream.Collectors;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
+@AuditOverride(forClass = AbstractAuditable.class)
 public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor {
     private String localId;
 
@@ -45,31 +50,39 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     private String resourceId;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private Organization organization;
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
+    @NotAudited
     private List<ContactPerson> contactPersons = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
+    @NotAudited
     private List<RoleDescriptor> roleDescriptors;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entitydesc_addlmetdatlocations_id")
     @OrderColumn
+    @NotAudited
     private List<AdditionalMetadataLocation> additionalMetadataLocations = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private AuthnAuthorityDescriptor authnAuthorityDescriptor;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private AttributeAuthorityDescriptor attributeAuthorityDescriptor;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private PDPDescriptor pdpDescriptor;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private AffiliationDescriptor affiliationDescriptor;
 
     public EntityDescriptor() {

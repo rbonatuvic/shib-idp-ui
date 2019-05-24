@@ -1,6 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.AffiliateMember
+import edu.internet2.tier.shibboleth.admin.ui.domain.AffiliationDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Organization
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
@@ -9,6 +18,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResol
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.util.entitydescriptors.EntityDescriptors
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
@@ -18,8 +29,11 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.event.ApplicationStartedEvent
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -33,6 +47,9 @@ class DevConfig {
 
     private final MetadataResolverRepository metadataResolverRepository
     private final EntityDescriptorRepository entityDescriptorRepository
+
+    @Autowired
+    private OpenSamlObjects openSamlObjects
 
     DevConfig(UserRepository adminUserRepository, MetadataResolverRepository metadataResolverRepository, RoleRepository roleRepository, EntityDescriptorRepository entityDescriptorRepository) {
         this.adminUserRepository = adminUserRepository
@@ -161,7 +178,16 @@ class DevConfig {
 
     @Profile('dev-ed-versioning')
     @Bean
-    EntityDescriptorVersionService stubEntityDescriptorVersionService(EntityDescriptorService entityDescriptorService) {
-        return EntityDescriptorVersionService.stubImpl(entityDescriptorService)
+    EntityDescriptorVersionService stubEntityDescriptorVersionService(EntityDescriptorService entityDescriptorService,
+                                                                      EntityDescriptorRepository entityDescriptorRepository) {
+        return EntityDescriptorVersionService.stubImpl(entityDescriptorService, entityDescriptorRepository)
+    }
+
+    @Transactional
+    @EventListener
+    void edForVersioningDev(ApplicationStartedEvent e) {
+        if (e.applicationContext.environment.activeProfiles.contains('dev-ed-versioning')) {
+            this.entityDescriptorRepository.save(EntityDescriptors.prebakedEntityDescriptor(openSamlObjects))
+        }
     }
 }
