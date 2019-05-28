@@ -1,7 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository.envers
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
+import org.hibernate.envers.AuditReaderFactory
+import org.hibernate.envers.query.AuditQuery
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.DefaultTransactionDefinition
+
+import javax.persistence.EntityManager
 
 import static org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW
 
@@ -16,5 +23,25 @@ class EnversTestsSupport {
         def entity = uow()
         txMgr.commit(txStatus)
         entity
+    }
+
+    static updateAndGetRevisionHistory(ed, representation,
+                                       EntityDescriptorService eds,
+                                       EntityDescriptorRepository edr,
+                                       PlatformTransactionManager txMgr,
+                                       EntityManager em) {
+        eds.updateDescriptorFromRepresentation(ed, representation)
+        doInExplicitTransaction(txMgr) {
+            edr.save(ed)
+        }
+        getRevisionHistory(em)
+    }
+
+    static getRevisionHistory(EntityManager em) {
+        def auditReader = AuditReaderFactory.get(em)
+        AuditQuery auditQuery = auditReader
+                .createQuery()
+                .forRevisionsOfEntity(EntityDescriptor, false, false)
+        auditQuery.resultList
     }
 }

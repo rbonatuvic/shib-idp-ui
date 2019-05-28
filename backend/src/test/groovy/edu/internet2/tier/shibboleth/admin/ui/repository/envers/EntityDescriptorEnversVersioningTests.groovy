@@ -10,8 +10,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
-import org.hibernate.envers.AuditReaderFactory
-import org.hibernate.envers.query.AuditQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -24,6 +22,8 @@ import javax.persistence.EntityManager
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.util.entitydescriptors.EntityDescriptors.prebakedEntityDescriptor
 import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionHistory
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistory
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHER
 
@@ -56,7 +56,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         EntityDescriptor ed = doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(prebakedEntityDescriptor(openSamlObjects))
         }
-        def entityDescriptorHistory = getRevisionHistory()
+        def entityDescriptorHistory = getRevisionHistory(entityManager)
 
         then:
         entityDescriptorHistory.size() == 1
@@ -66,7 +66,10 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'nameUPDATED', emailAddress: 'test@test')]
             it
         }
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation)
+        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
 
         then:
         entityDescriptorHistory.size() == 2
@@ -80,7 +83,11 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.contacts = [new ContactRepresentation(type: 'other', name: 'nameUPDATED', emailAddress: 'test@test.com')]
             it
         }
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation)
+        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation,
+                entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
 
         then:
         entityDescriptorHistory.size() == 3
@@ -97,21 +104,5 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory[0][1].principalUserName == 'anonymous'
         entityDescriptorHistory[0][1].timestamp > 0L
 
-    }
-
-    private updateAndGetRevisionHistory(ed, representation) {
-        entityDescriptorService.updateDescriptorFromRepresentation(ed, representation)
-        doInExplicitTransaction(txMgr) {
-            entityDescriptorRepository.save(ed)
-        }
-        getRevisionHistory()
-    }
-
-    private getRevisionHistory() {
-        def auditReader = AuditReaderFactory.get(entityManager)
-        AuditQuery auditQuery = auditReader
-                .createQuery()
-                .forRevisionsOfEntity(EntityDescriptor, false, false)
-        auditQuery.resultList
     }
 }
