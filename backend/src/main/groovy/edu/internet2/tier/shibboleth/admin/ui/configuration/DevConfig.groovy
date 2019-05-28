@@ -168,12 +168,4 @@ class DevConfig {
                                                                       EntityDescriptorRepository entityDescriptorRepository) {
         return EntityDescriptorVersionService.stubImpl(entityDescriptorService, entityDescriptorRepository)
     }
-
-    @Transactional
-    @EventListener
-    void edForVersioningDev(ApplicationStartedEvent e) {
-        if (e.applicationContext.environment.activeProfiles.contains('dev-ed-versioning')) {
-            this.entityDescriptorRepository.save(EntityDescriptors.prebakedEntityDescriptor(openSamlObjects))
-        }
-    }
 }
