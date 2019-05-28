@@ -4,18 +4,23 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
+import spock.lang.Shared
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
@@ -51,18 +56,30 @@ class EntityDescriptorEnversVersioningTests extends Specification {
     @Autowired
     OpenSamlObjects openSamlObjects
 
+    @Shared
+    EntityDescriptor ed = new EntityDescriptor()
+
     def "test versioning with contact persons"() {
         when:
-        EntityDescriptor ed = doInExplicitTransaction(txMgr) {
-            entityDescriptorRepository.save(prebakedEntityDescriptor(openSamlObjects))
+        def representation = new EntityDescriptorRepresentation().with {
+            it.contacts = [new ContactRepresentation(type: 'administrative', name: 'name', emailAddress: 'test@test')]
+            it
         }
-        def entityDescriptorHistory = getRevisionHistory(entityManager)
+        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
 
         then:
         entityDescriptorHistory.size() == 1
+        entityDescriptorHistory[0][0].contactPersons[0].givenName.name == 'name'
+        entityDescriptorHistory[0][0].contactPersons[0].type == ADMINISTRATIVE
+        entityDescriptorHistory[0][0].contactPersons[0].emailAddresses[0].address == 'test@test'
+        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[0][1].timestamp > 0L
 
         when:
-        def representation = new EntityDescriptorRepresentation().with {
+        representation = new EntityDescriptorRepresentation().with {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'nameUPDATED', emailAddress: 'test@test')]
             it
         }
@@ -75,12 +92,13 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory.size() == 2
         entityDescriptorHistory[1][0].contactPersons[0].givenName.name == 'nameUPDATED'
         entityDescriptorHistory[1][0].contactPersons[0].type == ADMINISTRATIVE
+        entityDescriptorHistory[1][0].contactPersons[0].emailAddresses[0].address == 'test@test'
         entityDescriptorHistory[1][1].principalUserName == 'anonymous'
         entityDescriptorHistory[1][1].timestamp > 0L
 
         when:
         representation = new EntityDescriptorRepresentation().with {
-            it.contacts = [new ContactRepresentation(type: 'other', name: 'nameUPDATED', emailAddress: 'test@test.com')]
+            it.contacts = [new ContactRepresentation(type: 'other', name: 'nameUPDATED2', emailAddress: 'test@test.com')]
             it
         }
         entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation,
@@ -91,7 +109,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         then:
         entityDescriptorHistory.size() == 3
-        entityDescriptorHistory[2][0].contactPersons[0].givenName.name == 'nameUPDATED'
+        entityDescriptorHistory[2][0].contactPersons[0].givenName.name == 'nameUPDATED2'
         entityDescriptorHistory[2][0].contactPersons[0].type == OTHER
         entityDescriptorHistory[2][0].contactPersons[0].emailAddresses[0].address == 'test@test.com'
         entityDescriptorHistory[2][1].principalUserName == 'anonymous'
