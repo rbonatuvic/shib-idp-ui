@@ -1,23 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.AffiliateMember
-import edu.internet2.tier.shibboleth.admin.ui.domain.AffiliationDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
-import edu.internet2.tier.shibboleth.admin.ui.domain.EncryptionMethod
+
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
-import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.Organization
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
