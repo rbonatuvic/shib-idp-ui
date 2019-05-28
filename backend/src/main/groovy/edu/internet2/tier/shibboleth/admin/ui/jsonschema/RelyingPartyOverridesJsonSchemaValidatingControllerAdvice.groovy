@@ -24,7 +24,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocati
  *
  * @author Dmitriy Kopylenko
  */
-@ControllerAdvice
+//@ControllerAdvice
 class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestBodyAdviceAdapter {
 
     @Autowired

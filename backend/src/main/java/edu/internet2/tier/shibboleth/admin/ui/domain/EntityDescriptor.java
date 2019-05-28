@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Audited
-@AuditOverride(forClass = AbstractAuditable.class)
 public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor {
     private String localId;
 
@@ -55,7 +54,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
-    @NotAudited
     private List<ContactPerson> contactPersons = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
