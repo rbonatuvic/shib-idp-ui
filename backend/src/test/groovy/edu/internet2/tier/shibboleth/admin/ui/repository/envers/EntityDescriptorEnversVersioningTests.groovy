@@ -82,7 +82,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         }
         entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation)
 
-        ed.contactPersons[0].emailAddresses[0].address
         then:
         entityDescriptorHistory.size() == 3
         entityDescriptorHistory[2][0].contactPersons[0].givenName.name == 'nameUPDATED'
