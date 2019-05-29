@@ -1,0 +1,10 @@
+<div class="row" *ngIf="configuration && configuration.columns">
+    <div class="col-xl-6 col-xs-12" *ngFor="let sections of configuration.columns">
+        <section class="px-3" *ngFor="let section of sections; let i = index;">
+            {{ i + 1 }}: {{ section.label }}
+            <ng-container *ngFor="let prop of section.properties">
+                {{ prop | json }}
+            </ng-container>
+        </section>
+    </div>
+</div>
