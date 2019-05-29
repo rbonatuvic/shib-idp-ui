@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
@@ -16,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
-import spock.lang.Shared
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
@@ -49,11 +49,9 @@ class EntityDescriptorEnversVersioningTests extends Specification {
     @Autowired
     OpenSamlObjects openSamlObjects
 
-    @Shared
-    EntityDescriptor ed = new EntityDescriptor()
-
     def "test versioning with contact persons"() {
         when:
+        def ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'name', emailAddress: 'test@test')]
             it
@@ -115,5 +113,49 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory[0][1].principalUserName == 'anonymous'
         entityDescriptorHistory[0][1].timestamp > 0L
 
+    }
+
+    def "test versioning with organization"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.organization = new OrganizationRepresentation(name: 'org', displayName: 'display org', url: 'http://org.edu')
+            it
+        }
+        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+        then:
+        entityDescriptorHistory.size() == 1
+        entityDescriptorHistory[0][0].organization.organizationNames[0].value == 'org'
+        entityDescriptorHistory[0][0].organization.displayNames[0].value == 'display org'
+        entityDescriptorHistory[0][0].organization.URLs[0].value == 'http://org.edu'
+        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[0][1].timestamp > 0L
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.organization = new OrganizationRepresentation(name: 'orgUpdated', displayName: 'display org Updated', url: 'http://org2.edu')
+            it
+        }
+        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+        then:
+        entityDescriptorHistory.size() == 2
+        entityDescriptorHistory[1][0].organization.organizationNames[0].value == 'orgUpdated'
+        entityDescriptorHistory[1][0].organization.displayNames[0].value == 'display org Updated'
+        entityDescriptorHistory[1][0].organization.URLs[0].value == 'http://org2.edu'
+        entityDescriptorHistory[1][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[1][1].timestamp > 0L
+
+        //Check the original revision is intact
+        entityDescriptorHistory[0][0].organization.organizationNames[0].value == 'org'
+        entityDescriptorHistory[0][0].organization.displayNames[0].value == 'display org'
+        entityDescriptorHistory[0][0].organization.URLs[0].value == 'http://org.edu'
+        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[0][1].timestamp > 0L
     }
 }

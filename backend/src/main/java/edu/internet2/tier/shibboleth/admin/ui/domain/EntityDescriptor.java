@@ -2,30 +2,21 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-
 import lombok.EqualsAndHashCode;
-import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
-import org.opensaml.core.xml.io.MarshallingException;
 import org.springframework.util.StringUtils;
-import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
-
-import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
-
 import javax.xml.namespace.QName;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +40,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     private String resourceId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @NotAudited
     private Organization organization;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -58,7 +48,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
-    @NotAudited
     private List<RoleDescriptor> roleDescriptors;
 
     @OneToMany(cascade = CascadeType.ALL)
