@@ -19,6 +19,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 
 @Configuration
 @ConditionalOnProperty("shibui.metadataProviders.target")
@@ -38,13 +39,14 @@ public class MetadataProvidersScheduledTasks {
     @Scheduled(fixedRateString = "${shibui.metadataProviders.taskRunRate:30000}")
     @Transactional(readOnly = true)
     public void generateMetadataProvidersFile() {
-        try (OutputStream os = ((WritableResource)target).getOutputStream()) {
+        try (StringWriter os = new StringWriter()) {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
 
             transformer.transform(new DOMSource(metadataResolverService.generateConfiguration()), new StreamResult(os));
+            this.fileWritingService.write((WritableResource)this.target, os.toString());
         } catch (IOException | TransformerException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

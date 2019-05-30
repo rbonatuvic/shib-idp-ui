@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.toSet;
  * @since 1.0
  */
 @Configuration
-@ConditionalOnProperty(name = "shibui-metadata-dir")
+@ConditionalOnProperty(name = "shibui.metadata-dir")
 public class EntityDescriptorFilesScheduledTasks {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityDescriptorFilesScheduledTasks.class);
