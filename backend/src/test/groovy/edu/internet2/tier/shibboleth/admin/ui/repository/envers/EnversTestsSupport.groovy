@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository.envers
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import org.hibernate.envers.AuditReaderFactory
@@ -25,7 +26,7 @@ class EnversTestsSupport {
         entity
     }
 
-    static updateAndGetRevisionHistory(ed, representation,
+    static updateAndGetRevisionHistory(EntityDescriptor ed, EntityDescriptorRepresentation representation,
                                        EntityDescriptorService eds,
                                        EntityDescriptorRepository edr,
                                        PlatformTransactionManager txMgr,
@@ -34,6 +35,10 @@ class EnversTestsSupport {
         doInExplicitTransaction(txMgr) {
             edr.save(ed)
         }
+
+        //For temp debugging. Remove when done!
+        //def updated = edr.findByResourceId(ed.resourceId)
+
         getRevisionHistory(em)
     }
 

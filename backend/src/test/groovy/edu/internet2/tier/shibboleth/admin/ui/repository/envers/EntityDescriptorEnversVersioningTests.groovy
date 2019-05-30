@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
@@ -20,6 +21,7 @@ import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
+import java.time.LocalDateTime
 
 import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistory
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
@@ -155,6 +157,66 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory[0][0].organization.organizationNames[0].value == 'org'
         entityDescriptorHistory[0][0].organization.displayNames[0].value == 'display org'
         entityDescriptorHistory[0][0].organization.URLs[0].value == 'http://org.edu'
+        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[0][1].timestamp > 0L
+    }
+
+    def "test versioning with sp sso descriptor"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                it.protocolSupportEnum = 'SAML 1.1'
+                it.nameIdFormats = ['format']
+                it
+            }
+            it
+        }
+        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        then:
+        entityDescriptorHistory.size() == 1
+        entityDescriptorHistory[0][0].roleDescriptors[0].nameIDFormats[0].format == 'format'
+        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[1] == null
+        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[0][1].timestamp > 0L
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.serviceProviderSsoDescriptor = new ServiceProviderSsoDescriptorRepresentation().with {
+                it.protocolSupportEnum = 'SAML 1.1, SAML 2'
+                it.nameIdFormats = ['formatUPDATED']
+                it
+            }
+            it
+        }
+
+        //Currently this is the ONLY way to let envers recognize update revision type for EntityDescriptor type
+        //when modifying SPSSODescriptor inside RoleDescriptors collection. This date "touch" would need to be encapsulated
+        //perhaps in JPAEntityDescriptorServiceImpl#buildDescriptorFromRepresentation
+        ed.modifiedDate = LocalDateTime.now()
+
+        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        then:
+        entityDescriptorHistory.size() == 2
+        entityDescriptorHistory[1][0].roleDescriptors[0].nameIDFormats[0].format == 'formatUPDATED'
+        entityDescriptorHistory[1][0].roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        entityDescriptorHistory[1][0].roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
+        entityDescriptorHistory[1][1].principalUserName == 'anonymous'
+        entityDescriptorHistory[1][1].timestamp > 0L
+
+        //Check the original revision is intact
+        entityDescriptorHistory[0][0].roleDescriptors[0].nameIDFormats[0].format == 'format'
+        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[1] == null
         entityDescriptorHistory[0][1].principalUserName == 'anonymous'
         entityDescriptorHistory[0][1].timestamp > 0L
     }
