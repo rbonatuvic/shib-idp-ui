@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.scheduled;
 
+import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringWriter;
 
 @Configuration
 @ConditionalOnProperty("shibui.metadataProviders.target")
@@ -26,22 +28,25 @@ public class MetadataProvidersScheduledTasks {
 
     private final Resource target;
     private final MetadataResolverService metadataResolverService;
+    private final FileWritingService fileWritingService;
 
-    public MetadataProvidersScheduledTasks(Resource target, MetadataResolverService metadataResolverService) {
+    public MetadataProvidersScheduledTasks(Resource target, MetadataResolverService metadataResolverService, FileWritingService fileWritingService) {
         this.target = target;
         this.metadataResolverService = metadataResolverService;
+        this.fileWritingService = fileWritingService;
     }
 
     @Scheduled(fixedRateString = "${shibui.metadataProviders.taskRunRate:30000}")
     @Transactional(readOnly = true)
     public void generateMetadataProvidersFile() {
-        try (OutputStream os = ((WritableResource)target).getOutputStream()) {
+        try (StringWriter os = new StringWriter()) {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
 
             transformer.transform(new DOMSource(metadataResolverService.generateConfiguration()), new StreamResult(os));
+            this.fileWritingService.write((WritableResource)this.target, os.toString());
         } catch (IOException | TransformerException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
