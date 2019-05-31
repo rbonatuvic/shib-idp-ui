@@ -5,8 +5,10 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
@@ -26,6 +29,8 @@ import java.time.LocalDateTime
 import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistory
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHER
+import static org.springframework.test.annotation.DirtiesContext.MethodMode.AFTER_METHOD
+import static org.springframework.test.annotation.DirtiesContext.MethodMode.BEFORE_METHOD
 
 /**
  * Testing entity descriptor envers versioning
@@ -51,6 +56,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
     @Autowired
     OpenSamlObjects openSamlObjects
 
+    @DirtiesContext
     def "test versioning with contact persons"() {
         when:
         def ed = new EntityDescriptor()
@@ -117,6 +123,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     }
 
+    @DirtiesContext
     def "test versioning with organization"() {
         when:
         EntityDescriptor ed = new EntityDescriptor()
@@ -161,6 +168,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory[0][1].timestamp > 0L
     }
 
+    @DirtiesContext
     def "test versioning with sp sso descriptor"() {
         when:
         EntityDescriptor ed = new EntityDescriptor()
@@ -219,5 +227,83 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[1] == null
         entityDescriptorHistory[0][1].principalUserName == 'anonymous'
         entityDescriptorHistory[0][1].timestamp > 0L
+    }
+    @DirtiesContext
+    def "test versioning with uiInfo"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.mdui = new MduiRepresentation().with {
+                it.displayName = 'Initial display name'
+                it.informationUrl = 'http://info'
+                it.privacyStatementUrl = 'http://privacy'
+                it.description = 'Initial desc'
+                it.logoUrl = 'http://logo'
+                it.logoHeight = 20
+                it.logoWidth = 30
+                it
+            }
+            it
+        }
+        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        //Groovy FTW - able to call any private methods on ANY object. Get first revision
+        UIInfo uiinfo = entityDescriptorService.getUIInfo(entityDescriptorHistory[0][0])
+
+        then:
+        entityDescriptorHistory.size() == 1
+        uiinfo.displayNames[0].value == 'Initial display name'
+        uiinfo.informationURLs[0].value == 'http://info'
+        uiinfo.privacyStatementURLs[0].value == 'http://privacy'
+        uiinfo.descriptions[0].value == 'Initial desc'
+        uiinfo.logos[0].URL == 'http://logo'
+        uiinfo.logos[0].height == 20
+        uiinfo.logos[0].width == 30
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.mdui = new MduiRepresentation().with {
+                it.displayName = 'Display name UPDATED'
+                it.informationUrl = 'http://info.updated'
+                it.privacyStatementUrl = 'http://privacy.updated'
+                it.description = 'Desc UPDATED'
+                it.logoUrl = 'http://logo.updated'
+                it.logoHeight = 30
+                it.logoWidth = 40
+                it
+            }
+            it
+        }
+        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        //Get second revision
+        uiinfo = entityDescriptorService.getUIInfo(entityDescriptorHistory[1][0])
+        //And initial revision
+        def uiinfoInitialRevision = entityDescriptorService.getUIInfo(entityDescriptorHistory[0][0])
+
+        then:
+        entityDescriptorHistory.size() == 2
+        uiinfo.displayNames[0].value == 'Display name UPDATED'
+        uiinfo.informationURLs[0].value == 'http://info.updated'
+        uiinfo.privacyStatementURLs[0].value == 'http://privacy.updated'
+        uiinfo.descriptions[0].value == 'Desc UPDATED'
+        uiinfo.logos[0].URL == 'http://logo.updated'
+        uiinfo.logos[0].height == 30
+        uiinfo.logos[0].width == 40
+
+        //Check the initial revision is still intact
+        uiinfoInitialRevision.displayNames[0].value == 'Initial display name'
+        uiinfoInitialRevision.informationURLs[0].value == 'http://info'
+        uiinfoInitialRevision.privacyStatementURLs[0].value == 'http://privacy'
+        uiinfoInitialRevision.descriptions[0].value == 'Initial desc'
+        uiinfoInitialRevision.logos[0].URL == 'http://logo'
+        uiinfoInitialRevision.logos[0].height == 20
+        uiinfoInitialRevision.logos[0].width == 30
     }
 }
