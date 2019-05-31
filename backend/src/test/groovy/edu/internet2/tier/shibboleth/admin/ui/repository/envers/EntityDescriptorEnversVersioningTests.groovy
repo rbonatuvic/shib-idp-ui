@@ -5,11 +5,15 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
+import edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -26,11 +30,11 @@ import spock.lang.Specification
 import javax.persistence.EntityManager
 import java.time.LocalDateTime
 
-import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistory
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHER
-import static org.springframework.test.annotation.DirtiesContext.MethodMode.AFTER_METHOD
-import static org.springframework.test.annotation.DirtiesContext.MethodMode.BEFORE_METHOD
 
 /**
  * Testing entity descriptor envers versioning
@@ -64,43 +68,43 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'name', emailAddress: 'test@test')]
             it
         }
-        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 1
-        entityDescriptorHistory[0][0].contactPersons[0].givenName.name == 'name'
-        entityDescriptorHistory[0][0].contactPersons[0].type == ADMINISTRATIVE
-        entityDescriptorHistory[0][0].contactPersons[0].emailAddresses[0].address == 'test@test'
-        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[0][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].givenName.name == 'name'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].type == ADMINISTRATIVE
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].emailAddresses[0].address == 'test@test'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
 
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'nameUPDATED', emailAddress: 'test@test')]
             it
         }
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 2
-        entityDescriptorHistory[1][0].contactPersons[0].givenName.name == 'nameUPDATED'
-        entityDescriptorHistory[1][0].contactPersons[0].type == ADMINISTRATIVE
-        entityDescriptorHistory[1][0].contactPersons[0].emailAddresses[0].address == 'test@test'
-        entityDescriptorHistory[1][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[1][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == ADMINISTRATIVE
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
 
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.contacts = [new ContactRepresentation(type: 'other', name: 'nameUPDATED2', emailAddress: 'test@test.com')]
             it
         }
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation,
                 entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
@@ -108,18 +112,18 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         then:
         entityDescriptorHistory.size() == 3
-        entityDescriptorHistory[2][0].contactPersons[0].givenName.name == 'nameUPDATED2'
-        entityDescriptorHistory[2][0].contactPersons[0].type == OTHER
-        entityDescriptorHistory[2][0].contactPersons[0].emailAddresses[0].address == 'test@test.com'
-        entityDescriptorHistory[2][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[2][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].givenName.name == 'nameUPDATED2'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].type == OTHER
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].emailAddresses[0].address == 'test@test.com'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).timestamp > 0L
 
         //Also make sure we have our original revision
-        entityDescriptorHistory[0][0].contactPersons[0].givenName.name == 'name'
-        entityDescriptorHistory[0][0].contactPersons[0].type == ADMINISTRATIVE
-        entityDescriptorHistory[0][0].contactPersons[0].emailAddresses[0].address == 'test@test'
-        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[0][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == ADMINISTRATIVE
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
 
     }
 
@@ -131,41 +135,41 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.organization = new OrganizationRepresentation(name: 'org', displayName: 'display org', url: 'http://org.edu')
             it
         }
-        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
         then:
         entityDescriptorHistory.size() == 1
-        entityDescriptorHistory[0][0].organization.organizationNames[0].value == 'org'
-        entityDescriptorHistory[0][0].organization.displayNames[0].value == 'display org'
-        entityDescriptorHistory[0][0].organization.URLs[0].value == 'http://org.edu'
-        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[0][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
 
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.organization = new OrganizationRepresentation(name: 'orgUpdated', displayName: 'display org Updated', url: 'http://org2.edu')
             it
         }
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
         then:
         entityDescriptorHistory.size() == 2
-        entityDescriptorHistory[1][0].organization.organizationNames[0].value == 'orgUpdated'
-        entityDescriptorHistory[1][0].organization.displayNames[0].value == 'display org Updated'
-        entityDescriptorHistory[1][0].organization.URLs[0].value == 'http://org2.edu'
-        entityDescriptorHistory[1][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[1][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.organizationNames[0].value == 'orgUpdated'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.displayNames[0].value == 'display org Updated'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.URLs[0].value == 'http://org2.edu'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
 
         //Check the original revision is intact
-        entityDescriptorHistory[0][0].organization.organizationNames[0].value == 'org'
-        entityDescriptorHistory[0][0].organization.displayNames[0].value == 'display org'
-        entityDescriptorHistory[0][0].organization.URLs[0].value == 'http://org.edu'
-        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[0][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
     }
 
     @DirtiesContext
@@ -180,18 +184,18 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 1
-        entityDescriptorHistory[0][0].roleDescriptors[0].nameIDFormats[0].format == 'format'
-        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
-        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[1] == null
-        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[0][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -208,26 +212,27 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         //perhaps in JPAEntityDescriptorServiceImpl#buildDescriptorFromRepresentation
         ed.modifiedDate = LocalDateTime.now()
 
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 2
-        entityDescriptorHistory[1][0].roleDescriptors[0].nameIDFormats[0].format == 'formatUPDATED'
-        entityDescriptorHistory[1][0].roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
-        entityDescriptorHistory[1][0].roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
-        entityDescriptorHistory[1][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[1][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).nameIDFormats[0].format == 'formatUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
 
         //Check the original revision is intact
-        entityDescriptorHistory[0][0].roleDescriptors[0].nameIDFormats[0].format == 'format'
-        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
-        entityDescriptorHistory[0][0].roleDescriptors[0].supportedProtocols[1] == null
-        entityDescriptorHistory[0][1].principalUserName == 'anonymous'
-        entityDescriptorHistory[0][1].timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
     }
+
     @DirtiesContext
     def "test versioning with uiInfo"() {
         when:
@@ -245,13 +250,13 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-        def entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         //Groovy FTW - able to call any private methods on ANY object. Get first revision
-        UIInfo uiinfo = entityDescriptorService.getUIInfo(entityDescriptorHistory[0][0])
+        UIInfo uiinfo = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 1
@@ -277,15 +282,15 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-        entityDescriptorHistory = updateAndGetRevisionHistory(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         //Get second revision
-        uiinfo = entityDescriptorService.getUIInfo(entityDescriptorHistory[1][0])
+        uiinfo = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
         //And initial revision
-        def uiinfoInitialRevision = entityDescriptorService.getUIInfo(entityDescriptorHistory[0][0])
+        def uiinfoInitialRevision = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 2
@@ -305,5 +310,39 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         uiinfoInitialRevision.logos[0].URL == 'http://logo'
         uiinfoInitialRevision.logos[0].height == 20
         uiinfoInitialRevision.logos[0].width == 30
+    }
+
+    @DirtiesContext
+    def "test versioning with security"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.securityInfo = new SecurityInfoRepresentation().with {
+                it.authenticationRequestsSigned = true
+                it.x509CertificateAvailable = true
+                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'sign', type: 'signing', value: 'signingValue')]
+                it
+            }
+            it
+        }
+
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        //Get initial revision
+        SPSSODescriptor spssoDescriptor =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+
+        KeyDescriptor keyDescriptor = spssoDescriptor.keyDescriptors[0]
+        X509Certificate x509cert = keyDescriptor.keyInfo.x509Datas[0].x509Certificates[0]
+
+        then:
+        entityDescriptorHistory.size() == 1
+        spssoDescriptor.isAuthnRequestsSigned()
+        keyDescriptor.name == 'sign'
+        keyDescriptor.usageType == 'signing'
+        x509cert.value == 'signingValue'
     }
 }

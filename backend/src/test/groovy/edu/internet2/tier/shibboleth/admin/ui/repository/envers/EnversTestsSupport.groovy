@@ -26,27 +26,32 @@ class EnversTestsSupport {
         entity
     }
 
-    static updateAndGetRevisionHistory(EntityDescriptor ed, EntityDescriptorRepresentation representation,
-                                       EntityDescriptorService eds,
-                                       EntityDescriptorRepository edr,
-                                       PlatformTransactionManager txMgr,
-                                       EntityManager em) {
+    static updateAndGetRevisionHistoryOfEntityDescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation,
+                                                         EntityDescriptorService eds,
+                                                         EntityDescriptorRepository edr,
+                                                         PlatformTransactionManager txMgr,
+                                                         EntityManager em) {
         eds.updateDescriptorFromRepresentation(ed, representation)
         doInExplicitTransaction(txMgr) {
             edr.save(ed)
         }
 
-        //For temp debugging. Remove when done!
-        //def updated = edr.findByResourceId(ed.resourceId)
-
-        getRevisionHistory(em)
+        getRevisionHistoryForEntityType(em, EntityDescriptor)
     }
 
-    static getRevisionHistory(EntityManager em) {
+    static getRevisionHistoryForEntityType(EntityManager em, Class<?> entityType) {
         def auditReader = AuditReaderFactory.get(em)
         AuditQuery auditQuery = auditReader
                 .createQuery()
-                .forRevisionsOfEntity(EntityDescriptor, false, false)
+                .forRevisionsOfEntity(entityType, false, false)
         auditQuery.resultList
+    }
+
+    static getTargetEntityForRevisionIndex(List<Object[]> revHistory, int revIndex) {
+        revHistory[revIndex][0]
+    }
+
+    static getRevisionEntityForRevisionIndex(List<Object[]> revHistory, int revIndex) {
+        revHistory[revIndex][1]
     }
 }
