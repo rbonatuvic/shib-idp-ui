@@ -344,5 +344,56 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         keyDescriptor.name == 'sign'
         keyDescriptor.usageType == 'signing'
         x509cert.value == 'signingValue'
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.securityInfo = new SecurityInfoRepresentation().with {
+                it.authenticationRequestsSigned = false
+                it.x509CertificateAvailable = true
+                it.x509Certificates = [new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'sign', type: 'signing', value: 'signingValue'),
+                                       new SecurityInfoRepresentation.X509CertificateRepresentation(name: 'encrypt', type: 'encryption', value: 'encryptionValue')]
+                it
+            }
+            it
+        }
+
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+
+        //Get second revision
+        SPSSODescriptor spssoDescriptor_second = entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
+
+        KeyDescriptor keyDescriptor_second1 = spssoDescriptor_second.keyDescriptors[0]
+        X509Certificate x509cert_second1 = keyDescriptor_second1.keyInfo.x509Datas[0].x509Certificates[0]
+        KeyDescriptor keyDescriptor_second2 = spssoDescriptor_second.keyDescriptors[1]
+        X509Certificate x509cert_second2 = keyDescriptor_second2.keyInfo.x509Datas[0].x509Certificates[0]
+
+
+        //Get initial revision
+        spssoDescriptor =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+
+        keyDescriptor = spssoDescriptor.keyDescriptors[0]
+        x509cert = keyDescriptor.keyInfo.x509Datas[0].x509Certificates[0]
+
+        then:
+        entityDescriptorHistory.size() == 2
+        !spssoDescriptor_second.isAuthnRequestsSigned()
+        keyDescriptor_second1.name == 'sign'
+        keyDescriptor_second1.usageType == 'signing'
+        keyDescriptor_second2.name == 'encrypt'
+        keyDescriptor_second2.usageType == 'encryption'
+        x509cert_second1.value == 'signingValue'
+        x509cert_second2.value == 'encryptionValue'
+
+        //Check the initial version is intact
+        spssoDescriptor.keyDescriptors.size() == 1
+        spssoDescriptor.isAuthnRequestsSigned()
+        keyDescriptor.name == 'sign'
+        keyDescriptor.usageType == 'signing'
+        x509cert.value == 'signingValue'
     }
 }
