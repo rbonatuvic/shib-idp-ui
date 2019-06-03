@@ -8,11 +8,13 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
 import edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
@@ -459,6 +461,61 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         !acs.isDefault()
         acs.location == 'http://acs'
         acs.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+    }
 
+    @DirtiesContext
+    def "test versioning logout"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.logoutEndpoints = [new LogoutEndpointRepresentation(url: 'http://logout', bindingType: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST')]
+            it
+        }
+
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        SPSSODescriptor spssoDescriptor =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        SingleLogoutService slo = spssoDescriptor.singleLogoutServices[0]
+
+        then:
+        entityDescriptorHistory.size() == 1
+        slo.location == 'http://logout'
+        slo.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.logoutEndpoints = [new LogoutEndpointRepresentation(url: 'http://logout.updated', bindingType: 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'),
+                                  new LogoutEndpointRepresentation(url: 'http://logout2', bindingType: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact')]
+            it
+        }
+
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        SPSSODescriptor spssoDescriptor2 =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+        def (slo1, slo2) = [spssoDescriptor2.singleLogoutServices[0], spssoDescriptor2.singleLogoutServices[1]]
+
+        //Initial revision
+        spssoDescriptor =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        slo = spssoDescriptor.singleLogoutServices[0]
+
+        then:
+        entityDescriptorHistory.size() == 2
+        slo1.location == 'http://logout.updated'
+        slo1.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'
+        slo2.location == 'http://logout2'
+        slo2.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'
+
+        //Check the initial version is intact
+        slo.location == 'http://logout'
+        slo.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
     }
 }
