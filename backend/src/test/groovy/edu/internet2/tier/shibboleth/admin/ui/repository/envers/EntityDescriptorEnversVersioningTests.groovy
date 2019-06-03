@@ -219,7 +219,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         then:
         entityDescriptorHistory.size() == 2
-        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).nameIDFormats[0].format == 'formatUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].nameIDFormats[0].format == 'formatUPDATED'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
