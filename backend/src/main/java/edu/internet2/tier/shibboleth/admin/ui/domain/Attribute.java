@@ -27,6 +27,7 @@ public class Attribute extends AbstractAttributeExtensibleXMLObject implements o
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
+    @Audited
     private List<AbstractXMLObject> attributeValues = new ArrayList<>();
 
     @Override

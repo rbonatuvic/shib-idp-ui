@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
@@ -517,5 +518,60 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         //Check the initial version is intact
         slo.location == 'http://logout'
         slo.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+    }
+
+    @DirtiesContext
+    def "test versioning relying party overrides"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.relyingPartyOverrides = [signAssertion: true]
+            it.attributeRelease = ['attr1']
+            it
+        }
+
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        EntityAttributes attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+
+        then:
+        entityDescriptorHistory.size() == 1
+        attrs.attributes[0].attributeValues[0].storedValue == 'true'
+        attrs.attributes[1].attributeValues[0].xsStringvalue == 'attr1'
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.relyingPartyOverrides = [signAssertion: false]
+            it.attributeRelease = ['attr1', 'attr2']
+            it
+        }
+
+        //Currently this is the ONLY way to let envers recognize update revision type for EntityDescriptor type
+        //when modifying attributes. This date "touch" would need to be encapsulated
+        //perhaps in JPAEntityDescriptorServiceImpl#buildDescriptorFromRepresentation
+        ed.modifiedDate = LocalDateTime.now()
+
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        EntityAttributes attrs2 = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+
+        //Initial revision
+        attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+
+        then:
+        entityDescriptorHistory.size() == 2
+        attrs2.attributes[0].attributeValues[0].xsStringvalue == 'attr1'
+        attrs2.attributes[0].attributeValues[1].xsStringvalue == 'attr2'
+
+        //Check the initial revision is intact
+        attrs.attributes[0].attributeValues[0].storedValue == 'true'
+        attrs.attributes[1].attributeValues[0].xsStringvalue == 'attr1'
+        attrs.attributes[1].attributeValues[1] == null
     }
 }
