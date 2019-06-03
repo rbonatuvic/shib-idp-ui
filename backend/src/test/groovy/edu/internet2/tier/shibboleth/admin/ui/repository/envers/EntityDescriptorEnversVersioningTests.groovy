@@ -4,11 +4,13 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
 import edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
@@ -395,5 +397,68 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         keyDescriptor.name == 'sign'
         keyDescriptor.usageType == 'signing'
         x509cert.value == 'signingValue'
+    }
+
+    @DirtiesContext
+    def "test versioning ACS"() {
+        when:
+        EntityDescriptor ed = new EntityDescriptor()
+        def representation = new EntityDescriptorRepresentation().with {
+            it.assertionConsumerServices = [
+                    new AssertionConsumerServiceRepresentation(locationUrl: 'http://acs', binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST')]
+            it
+        }
+
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        SPSSODescriptor spssoDescriptor =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+        AssertionConsumerService acs = spssoDescriptor.assertionConsumerServices[0]
+
+        then:
+        entityDescriptorHistory.size() == 1
+        !acs.isDefault()
+        acs.location == 'http://acs'
+        acs.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+
+        when:
+        representation = new EntityDescriptorRepresentation().with {
+            it.assertionConsumerServices = [
+                    new AssertionConsumerServiceRepresentation(locationUrl: 'http://acs.updated', binding: 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS', makeDefault: true),
+                    new AssertionConsumerServiceRepresentation(locationUrl: 'http://acs2', binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact')]
+            it
+        }
+
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+                entityDescriptorRepository,
+                txMgr,
+                entityManager)
+
+        SPSSODescriptor spssoDescriptor2 =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
+        def (acs1, acs2) = [spssoDescriptor2.assertionConsumerServices[0], spssoDescriptor2.assertionConsumerServices[1]]
+
+        //Initial revision
+        spssoDescriptor =
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+        acs = spssoDescriptor.assertionConsumerServices[0]
+
+        then:
+        entityDescriptorHistory.size() == 2
+        acs1.isDefault()
+        !acs2.isDefault()
+        acs1.location == 'http://acs.updated'
+        acs1.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'
+        acs2.location == 'http://acs2'
+        acs2.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'
+
+        //Check the initial revision is intact
+        !acs.isDefault()
+        acs.location == 'http://acs'
+        acs.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+
     }
 }
