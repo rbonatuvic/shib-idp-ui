@@ -5,6 +5,7 @@ import { Metadata } from '../../domain/domain.type';
 import { Wizard } from '../../../wizard/model';
 import { MetadataSourceEditor } from '../../domain/model/wizards/metadata-source-editor';
 import { MetadataProviderEditorTypes } from '../../provider/model';
+import { Schema } from '../model/schema';
 
 export enum PATHS {
     resolver = 'EntityDescriptor',
@@ -30,6 +31,10 @@ export class MetadataConfigurationService {
 
     getDefinition(model: Metadata): Wizard<Metadata> {
         return MetadataProviderEditorTypes.find(def => def.type === model['@type']) || new MetadataSourceEditor();
+    }
+
+    loadSchema(path: string): Observable<Schema> {
+        return this.http.get<Schema>(path);
     }
 }
 

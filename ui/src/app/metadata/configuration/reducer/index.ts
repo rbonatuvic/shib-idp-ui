@@ -29,47 +29,29 @@ export const getConfigurationModel = createSelector(getConfigurationState, fromC
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
 export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
 
-export const mergedSchema = createSelector(getConfigurationSchema, schema => !schema ? null : Object.keys(schema).reduce((coll, key) => ({
-    ...merge(coll, schema[key])
-}), {} as any));
-
 export const getConfigurationSectionsFn = (model, definition, schema) => !definition || !schema ? null :
-    definition.steps
-        .filter(step => step.id !== 'summary')
-        .map(
-            (step: WizardStep, num: number) => {
-                return ({
-                    id: step.id,
-                    pageNumber: num + 1,
-                    index: step.index,
-                    label: step.label,
-                    properties: utils.getStepProperties(
-                        getSplitSchema(schema, step),
-                        definition.formatter(model),
-                        schema.definitions || {}
-                    )
-                });
-            }
-        );
-
-export const getConfigurationColumnsFn = sections => !sections ? null :
-    sections.reduce((resultArray, item, index) => {
-        const chunkIndex = Math.floor(index / Math.round(this.sections.length / 2));
-
-        if (!resultArray[chunkIndex]) {
-            resultArray[chunkIndex] = [];
-        }
-
-        resultArray[chunkIndex].push(item);
-
-        return resultArray;
-    }, []);
-
+    ({
+        sections: definition.steps
+            .filter(step => step.id !== 'summary')
+            .map(
+                (step: WizardStep, num: number) => {
+                    return ({
+                        id: step.id,
+                        pageNumber: num + 1,
+                        index: step.index,
+                        label: step.label,
+                        properties: utils.getStepProperties(
+                            getSplitSchema(schema, step),
+                            definition.formatter(model),
+                            schema.definitions || {}
+                        )
+                    });
+                }
+            )
+    });
 export const getConfigurationSections = createSelector(
     getConfigurationModel,
     getConfigurationDefinition,
-    mergedSchema,
+    getConfigurationSchema,
     getConfigurationSectionsFn
 );
-
-export const getConfigurationColumns = createSelector(getConfigurationSections, getConfigurationColumnsFn);

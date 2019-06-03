@@ -24,7 +24,7 @@ export class ConfigurationComponent implements OnDestroy {
         private store: Store<fromConfiguration.ConfigurationState>,
         private routerState: ActivatedRoute
     ) {
-        this.configuration$ = this.store.select(fromConfiguration.getConfigurationColumns);
+        this.configuration$ = this.store.select(fromConfiguration.getConfigurationSections);
 
         this.routerState.params.pipe(
             takeUntil(this.ngUnsubscribe),
@@ -32,8 +32,6 @@ export class ConfigurationComponent implements OnDestroy {
         ).subscribe(store);
 
         this.configuration$.subscribe(c => console.log(c));
-
-        // this.resolver$ = this.store.select(fromResolvers.getSelectedResolver).pipe(skipWhile(p => !p));
     }
 
     ngOnDestroy() {

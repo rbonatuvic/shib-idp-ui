@@ -10,7 +10,11 @@ import {
     LoadMetadataError,
     ConfigurationActionTypes,
     SetMetadata,
-    SetDefinition
+    SetDefinition,
+    LoadSchemaRequest,
+    LoadSchemaSuccess,
+    SetSchema,
+    LoadSchemaError
 } from '../action/configuration.action';
 
 @Injectable()
@@ -36,9 +40,34 @@ export class MetadataConfigurationEffects {
     );
 
     @Effect()
-    setDefinitionOnMetadataSet$ = this.actions$.pipe(
+    setDefinition$ = this.actions$.pipe(
         ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
         map(action => new SetDefinition(this.configService.getDefinition(action.payload)))
+    );
+
+    @Effect()
+    loadSchemaOnDefinitionSet$ = this.actions$.pipe(
+        ofType<SetDefinition>(ConfigurationActionTypes.SET_DEFINITION),
+        map(action => new LoadSchemaRequest(action.payload.schema))
+    );
+
+    @Effect()
+    loadSchemaData$ = this.actions$.pipe(
+        ofType<LoadSchemaRequest>(ConfigurationActionTypes.LOAD_SCHEMA_REQUEST),
+        switchMap(action =>
+            this.configService
+                .loadSchema(action.payload)
+                .pipe(
+                    map(schema => new LoadSchemaSuccess(schema)),
+                    catchError(error => of(new LoadSchemaError(error)))
+                )
+        )
+    );
+
+    @Effect()
+    setSchema$ = this.actions$.pipe(
+        ofType<LoadSchemaSuccess>(ConfigurationActionTypes.LOAD_SCHEMA_SUCCESS),
+        map(action => new SetSchema(action.payload))
     );
 
     constructor(

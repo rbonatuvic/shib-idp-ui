@@ -8,6 +8,10 @@ export enum ConfigurationActionTypes {
     LOAD_METADATA_SUCCESS = '[Metadata Configuration] Load Metadata Success',
     LOAD_METADATA_ERROR = '[Metadata Configuration] Load Metadata Error',
 
+    LOAD_SCHEMA_REQUEST = '[Metadata Configuration] Load Schema Request',
+    LOAD_SCHEMA_SUCCESS = '[Metadata Configuration] Load Schema Success',
+    LOAD_SCHEMA_ERROR = '[Metadata Configuration] Load Schema Error',
+
     SET_METADATA = '[Metadata Configuration] Set Metadata Model',
     SET_DEFINITION = '[Metadata Configuration] Set Metadata Definition',
     SET_SCHEMA = '[Metadata Configuration] Set Metadata Schema',
@@ -28,6 +32,24 @@ export class LoadMetadataSuccess implements Action {
 
 export class LoadMetadataError implements Action {
     readonly type = ConfigurationActionTypes.LOAD_METADATA_ERROR;
+
+    constructor(public payload: any) { }
+}
+
+export class LoadSchemaRequest implements Action {
+    readonly type = ConfigurationActionTypes.LOAD_SCHEMA_REQUEST;
+
+    constructor(public payload: string) { }
+}
+
+export class LoadSchemaSuccess implements Action {
+    readonly type = ConfigurationActionTypes.LOAD_SCHEMA_SUCCESS;
+
+    constructor(public payload: Schema) { }
+}
+
+export class LoadSchemaError implements Action {
+    readonly type = ConfigurationActionTypes.LOAD_SCHEMA_ERROR;
 
     constructor(public payload: any) { }
 }
@@ -55,6 +77,12 @@ export class ClearConfiguration implements Action {
 }
 
 export type ConfigurationActionsUnion =
+    | LoadMetadataRequest
+    | LoadMetadataSuccess
+    | LoadMetadataError
+    | LoadSchemaRequest
+    | LoadSchemaSuccess
+    | LoadSchemaError
     | SetMetadata
     | SetDefinition
     | SetSchema

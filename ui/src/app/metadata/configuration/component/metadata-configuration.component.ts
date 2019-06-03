@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { WizardStep } from '../../../wizard/model';
-import Section from '../model/section';
 import { MetadataConfiguration } from '../model/metadata-configuration';
+import { Property } from '../../domain/model/property';
+import Section from '../model/section';
 
 @Component({
     selector: 'metadata-configuration',
@@ -13,4 +13,8 @@ export class MetadataConfigurationComponent {
     @Input() configuration: MetadataConfiguration;
 
     constructor() { }
+
+    edit(section: Section): void {
+        console.log(section);
+    }
 }

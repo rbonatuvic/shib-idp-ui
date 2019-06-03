@@ -310,6 +310,7 @@
         },
         "attributeRelease": {
             "type": "array",
+            "title": "label.attribute-release",
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
             "widget": {
                 "id": "checklist",
