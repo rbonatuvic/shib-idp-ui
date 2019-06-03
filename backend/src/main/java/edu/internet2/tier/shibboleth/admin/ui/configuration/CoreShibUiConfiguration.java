@@ -17,6 +17,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl;
@@ -98,13 +100,13 @@ public class CoreShibUiConfiguration {
     @Bean
     @ConditionalOnProperty(name = "shibui.metadata-dir")
     public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository, @Value("${shibui.metadata-dir}") final String metadataDir) {
-        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects());
+        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects(), fileWritingService());
     }
 
     @Bean
     @ConditionalOnProperty(name = "shibui.metadataProviders.target")
     public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(@Value("${shibui.metadataProviders.target}") final Resource resource, final MetadataResolverService metadataResolverService) {
-        return new MetadataProvidersScheduledTasks(resource, metadataResolverService);
+        return new MetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
     }
 
     @Bean
@@ -201,5 +203,10 @@ public class CoreShibUiConfiguration {
     @Bean
     public UserService userService(RoleRepository roleRepository, UserRepository userRepository) {
         return new UserService(roleRepository, userRepository);
+    }
+
+    @Bean
+    public FileWritingService fileWritingService() {
+        return new FileCheckingFileWritingService();
     }
 }
