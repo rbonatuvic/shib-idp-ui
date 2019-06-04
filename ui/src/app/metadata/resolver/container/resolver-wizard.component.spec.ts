@@ -53,8 +53,8 @@ describe('Resolver Wizard Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 MockWizardModule,
-                NgbDropdownModule.forRoot(),
-                NgbPopoverModule.forRoot(),
+                NgbDropdownModule,
+                NgbPopoverModule,
                 RouterTestingModule,
                 StoreModule.forRoot({
                     resolver: combineReducers(fromRoot.reducers, {

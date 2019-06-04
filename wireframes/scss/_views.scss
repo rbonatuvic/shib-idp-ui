@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Views
+   ========================================================================== */
+
+// The content wrapper (article.view)
+.view {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 18px;
+	line-height: 30px;
+	padding: ($spacer *2);
+}
+
+.section-header {
+	margin-bottom: ($spacer *2);
+
+	.breadcrumb {
+		padding: 0;
+	}
+
+	.actions {
+		text-align: right;
+	}
+}
+
+// View section (section.vs) for content subsections
+// Fluid width for backgrounds and styling
+.vs {}
+
+// View section inner wrapper for constraining to reading width
+.vs-inner {
+	//max-width: $reading-width;
+	padding: $spacer;
+}
+
+@include media-breakpoint-up(xs) {}
+@include media-breakpoint-up(sm) {}
+@include media-breakpoint-up(md) {
+
+	.app-content {
+		min-height: 100vh;
+	}
+
+	.view {
+		padding: ($spacer *3);
+		padding-top: 130px !important;
+	}
+
+	.has-sidebar {
+
+		.view {
+			margin-right: $sidebar-width;
+		}
+	}
+}
+@include media-breakpoint-up(lg) {
+
+	.view {
+		padding: ($spacer *4);
+	}
+
+	.has-sidebar {
+
+		.view {
+			margin-right: $sidebar-width-lg;
+		}
+	}
+}
+@include media-breakpoint-up(xl) {
+
+	.view {
+		padding: ($spacer *5);
+	}
+
+	.has-sidebar {
+
+		.view {
+			margin-right: $sidebar-width-xl;
+		}
+	}
+}

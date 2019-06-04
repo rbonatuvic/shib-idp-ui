@@ -1,0 +1,39 @@
+<table class="table">
+    <caption class="sr-only" translate="label.name-and-entityid">Metadata Version History</caption>
+    <thead>
+        <tr>
+            <th scope="col">
+                <span class="sr-only" translate="label.select-version">Select Version</span>
+            </th>
+            <th scope="col" translate="label.version">Version</th>
+            <th scope="col" translate="label.save-date">Save Date</th>
+            <th scope="col" translate="label.changed-by">Changed By</th>
+            <th scope="col" translate="label.actions">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let version of history.versions; index as i;">
+            <td>
+                <div class="custom-control custom-checkbox" (click)="toggleVersionSelected(version)">
+                    <input [title]="'check-' + i" type="checkbox" class="custom-control-input" [checked]="selected.indexOf(version) > -1">
+                    <label class="custom-control-label" [for]="'check-' + i">
+                        <span class="sr-only" translate="label.check-to-select">Check to select</span>
+                    </label>
+                </div>
+            </td>
+            <td *ngIf="i === 0"><translate-i18n key="label.current">Current</translate-i18n> (v{{ version.versionNumber }})</td>
+            <td *ngIf="i > 0">v{{ version.versionNumber }}</td>
+            <td>{{ version.saveDate | date }}</td>
+            <td>{{ version.changedBy }}</td>
+            <td>
+                <button class="btn btn-link" (click)="restoreVersion(version)">
+                    <i class="fa fa-undo"></i>
+                    <translate-i18n key="label.restore">Restore</translate-i18n>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<button class="btn btn-primary" (click)="compareSelected(selected)" [disabled]="!selected.length">
+    <translate-i18n key="label.compare-selected">Compare Selected</translate-i18n> <span *ngIf="selected.length">({{ selected.length }})</span>
+</button>

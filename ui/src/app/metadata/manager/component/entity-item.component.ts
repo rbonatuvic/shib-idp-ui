@@ -19,4 +19,5 @@ export class EntityItemComponent {
     @Output() toggle = new EventEmitter();
     @Output() preview = new EventEmitter();
     @Output() delete = new EventEmitter();
+    @Output() history = new EventEmitter();
 }

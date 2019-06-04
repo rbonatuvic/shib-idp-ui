@@ -11,6 +11,7 @@ import { I18nModule } from '../i18n/i18n.module';
 import { CustomWidgetRegistry } from '../schema-form/registry';
 import { WidgetRegistry, SchemaValidatorFactory } from 'ngx-schema-form';
 import { CustomSchemaValidatorFactory } from '../schema-form/service/schema-validator';
+import { MetadataVersionModule } from './version/version.module';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { CustomSchemaValidatorFactory } from '../schema-form/service/schema-vali
         DomainModule.forRoot(),
         ManagerModule.forRoot(),
         ProviderModule.forRoot(),
+        MetadataVersionModule.forRoot(),
         MetadataRoutingModule,
         I18nModule
     ],

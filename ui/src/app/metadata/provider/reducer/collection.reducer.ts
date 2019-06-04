@@ -21,10 +21,10 @@ export const initialState: CollectionState = adapter.getInitialState({
 export function reducer(state = initialState, action: ProviderCollectionActionsUnion): CollectionState {
     switch (action.type) {
         case ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS: {
-            return adapter.upsertOne(action.payload, {
+            return {
                 ...state,
                 selectedProviderId: action.payload.id as string
-            });
+            };
         }
 
         case ProviderCollectionActionTypes.LOAD_PROVIDER_SUCCESS: {

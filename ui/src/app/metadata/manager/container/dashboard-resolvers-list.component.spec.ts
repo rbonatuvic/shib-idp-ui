@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { NgbPaginationModule, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
 import { EntityItemComponent } from '../component/entity-item.component';
@@ -138,7 +138,7 @@ describe('Dashboard Resolvers List Page', () => {
             spyOn(modal, 'open').and.callFake(() => {
                 return {
                     result: Promise.resolve(true)
-                };
+                } as NgbModalRef;
             });
             instance.deleteResolver(resolver);
             expect(modal.open).toHaveBeenCalled();
@@ -147,7 +147,7 @@ describe('Dashboard Resolvers List Page', () => {
             spyOn(modal, 'open').and.callFake(() => {
                 return {
                     result: Promise.reject(false)
-                };
+                } as NgbModalRef;
             });
             instance.deleteResolver(resolver);
             expect(modal.open).toHaveBeenCalled();
