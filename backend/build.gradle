@@ -310,3 +310,13 @@ docker {
     files 'src/main/docker-files/loader.properties'
     buildArgs(['JAR_FILE': "shibui-${version}.jar"])
 }
+
+tasks.dockerRun.dependsOn tasks.docker
+dockerRun {
+    name 'shibuiint'
+    image 'unicon/shibui'
+    ports '10101:8080'
+    daemonize true
+    command '--spring.profiles.include=very-dangerous,dev'
+    clean true
+}
