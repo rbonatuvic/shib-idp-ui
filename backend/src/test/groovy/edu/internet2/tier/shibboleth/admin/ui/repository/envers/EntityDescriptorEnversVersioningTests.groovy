@@ -4,22 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
-import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
-import edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
@@ -33,11 +19,8 @@ import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
-import java.time.LocalDateTime
 
-import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex
-import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex
-import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.*
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
 import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHER
 
@@ -67,6 +50,9 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning with contact persons"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name, ContactPerson.name, GivenName.name, EmailAddress.name]
+
         when:
         def ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -85,6 +71,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].emailAddresses[0].address == 'test@test'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -95,7 +82,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
-
         then:
         entityDescriptorHistory.size() == 2
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
@@ -103,6 +89,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -122,6 +109,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].emailAddresses[0].address == 'test@test.com'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 2).sort() == expectedModifiedPersistentEntities.sort()
 
         //Also make sure we have our original revision
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
@@ -134,6 +122,13 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning with organization"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  Organization.name,
+                                                  OrganizationDisplayName.name,
+                                                  OrganizationName.name,
+                                                  OrganizationURL.name]
+
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -151,6 +146,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -168,6 +164,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.URLs[0].value == 'http://org2.edu'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the original revision is intact
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
@@ -179,6 +176,10 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning with sp sso descriptor"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  NameIDFormat.name,
+                                                  SPSSODescriptor.name]
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -201,6 +202,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -211,11 +213,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-
-        //Currently this is the ONLY way to let envers recognize update revision type for EntityDescriptor type
-        //when modifying SPSSODescriptor inside RoleDescriptors collection. This date "touch" would need to be encapsulated
-        //perhaps in JPAEntityDescriptorServiceImpl#buildDescriptorFromRepresentation
-        ed.modifiedDate = LocalDateTime.now()
 
         entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
@@ -229,6 +226,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the original revision is intact
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
@@ -240,6 +238,17 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning with uiInfo"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  Description.name,
+                                                  DisplayName.name,
+                                                  SPSSODescriptor.name,
+                                                  Extensions.name,
+                                                  InformationURL.name,
+                                                  Logo.name,
+                                                  PrivacyStatementURL.name,
+                                                  UIInfo.name]
+
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -272,6 +281,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         uiinfo.logos[0].URL == 'http://logo'
         uiinfo.logos[0].height == 20
         uiinfo.logos[0].width == 30
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -306,6 +316,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         uiinfo.logos[0].URL == 'http://logo.updated'
         uiinfo.logos[0].height == 30
         uiinfo.logos[0].width == 40
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is still intact
         uiinfoInitialRevision.displayNames[0].value == 'Initial display name'
@@ -319,6 +330,14 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning with security"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  KeyDescriptor.name,
+                                                  KeyInfo.name,
+                                                  SPSSODescriptor.name,
+                                                  X509Certificate.name,
+                                                  X509Data.name]
+
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -349,6 +368,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         keyDescriptor.name == 'sign'
         keyDescriptor.usageType == 'signing'
         x509cert.value == 'signingValue'
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -393,6 +413,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         keyDescriptor_second2.usageType == 'encryption'
         x509cert_second1.value == 'signingValue'
         x509cert_second2.value == 'encryptionValue'
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial version is intact
         spssoDescriptor.keyDescriptors.size() == 1
@@ -404,6 +425,11 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning ACS"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  SPSSODescriptor.name,
+                                                  AssertionConsumerService.name]
+
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -426,6 +452,8 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         !acs.isDefault()
         acs.location == 'http://acs'
         acs.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -457,6 +485,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         acs1.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'
         acs2.location == 'http://acs2'
         acs2.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is intact
         !acs.isDefault()
@@ -466,6 +495,11 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning logout"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  SPSSODescriptor.name,
+                                                  SingleLogoutService.name]
+
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -486,6 +520,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory.size() == 1
         slo.location == 'http://logout'
         slo.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -514,6 +549,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         slo1.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'
         slo2.location == 'http://logout2'
         slo2.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial version is intact
         slo.location == 'http://logout'
@@ -522,6 +558,14 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @DirtiesContext
     def "test versioning relying party overrides"() {
+        setup:
+        def expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                                  EntityAttributes.name,
+                                                  Extensions.name,
+                                                  Attribute.name,
+                                                  XSBoolean.name,
+                                                  XSString.name]
+
         when:
         EntityDescriptor ed = new EntityDescriptor()
         def representation = new EntityDescriptorRepresentation().with {
@@ -541,6 +585,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory.size() == 1
         attrs.attributes[0].attributeValues[0].storedValue == 'true'
         attrs.attributes[1].attributeValues[0].xsStringvalue == 'attr1'
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -548,11 +593,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.attributeRelease = ['attr1', 'attr2']
             it
         }
-
-        //Currently this is the ONLY way to let envers recognize update revision type for EntityDescriptor type
-        //when modifying attributes. This date "touch" would need to be encapsulated
-        //perhaps in JPAEntityDescriptorServiceImpl#buildDescriptorFromRepresentation
-        ed.modifiedDate = LocalDateTime.now()
 
         entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
@@ -564,10 +604,15 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         //Initial revision
         attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
+        expectedModifiedPersistentEntities = [EntityDescriptor.name,
+                                              EntityAttributes.name,
+                                              Attribute.name,
+                                              XSString.name]
         then:
         entityDescriptorHistory.size() == 2
         attrs2.attributes[0].attributeValues[0].xsStringvalue == 'attr1'
         attrs2.attributes[0].attributeValues[1].xsStringvalue == 'attr2'
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is intact
         attrs.attributes[0].attributeValues[0].storedValue == 'true'

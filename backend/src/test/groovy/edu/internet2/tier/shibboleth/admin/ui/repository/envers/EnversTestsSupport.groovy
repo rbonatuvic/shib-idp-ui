@@ -54,4 +54,8 @@ class EnversTestsSupport {
     static getRevisionEntityForRevisionIndex(List<Object[]> revHistory, int revIndex) {
         revHistory[revIndex][1]
     }
+
+    static getModifiedEntityNames(List<Object[]> revHistory, int revIndex) {
+        getRevisionEntityForRevisionIndex(revHistory, revIndex).modifiedEntityNames
+    }
 }

@@ -56,6 +56,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -119,6 +120,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         setupACSs(ed, representation);
         setupLogout(ed, representation);
         setupRelyingPartyOverrides(ed, representation);
+
+        //Let envers recognize update revision type for EntityDescriptor type
+        //when modifying Attributes and SPSSODescriptor inside RoleDescriptors collection
+        ed.setModifiedDate(LocalDateTime.now());
 
         return ed;
     }
