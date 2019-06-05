@@ -18,4 +18,8 @@ import javax.persistence.Entity;
 public class PrincipalAwareRevisionEntity extends DefaultTrackingModifiedEntitiesRevisionEntity {
 
     private String principalUserName;
+
+    public String idAsString() {
+        return String.valueOf(getId());
+    }
 }
