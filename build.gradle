@@ -3,6 +3,8 @@ plugins {
     id 'net.researchgate.release' version '2.6.0'
 }
 
+tasks.findByName('release').dependsOn 'test'
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8.1'
 }
