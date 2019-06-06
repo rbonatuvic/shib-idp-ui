@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import * as fromConfiguration from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
-import { METADATA_SOURCE_EDITOR } from '../../resolver/wizard-definition';
 import { takeUntil, map } from 'rxjs/operators';
 import { LoadMetadataRequest, ClearConfiguration } from '../action/configuration.action';
 
@@ -30,8 +29,6 @@ export class ConfigurationComponent implements OnDestroy {
             takeUntil(this.ngUnsubscribe),
             map(params => new LoadMetadataRequest({id: params.id, type: params.type}))
         ).subscribe(store);
-
-        this.configuration$.subscribe(c => console.log(c));
     }
 
     ngOnDestroy() {
