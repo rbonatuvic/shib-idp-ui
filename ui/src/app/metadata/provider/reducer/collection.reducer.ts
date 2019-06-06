@@ -23,7 +23,7 @@ export function reducer(state = initialState, action: ProviderCollectionActionsU
         case ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS: {
             return {
                 ...state,
-                selectedProviderId: action.payload.id as string
+                selectedProviderId: action.payload.resourceId
             };
         }
 
