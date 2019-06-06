@@ -32,12 +32,10 @@ export class ProviderSelectComponent implements OnDestroy {
         ).subscribe(store);
 
         this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(filter(p => {
-            console.log(p);
             return p;
         }));
 
         this.provider$.subscribe(provider => {
-            console.log(provider);
             this.setDefinition(provider);
         });
     }
