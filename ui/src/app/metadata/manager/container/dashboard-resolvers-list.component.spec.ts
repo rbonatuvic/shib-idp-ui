@@ -6,7 +6,6 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbPaginationModule, NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
-import { EntityItemComponent } from '../component/entity-item.component';
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RouterStub } from '../../../../testing/router.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
@@ -96,13 +95,6 @@ describe('Dashboard Resolvers List Page', () => {
     describe('toggleResolver method', () => {
         it('should fire a redux action', () => {
             instance.toggleEntity(draft);
-            expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
-    describe('openPreviewDialog method', () => {
-        it('should fire a redux action', () => {
-            instance.openPreviewDialog(resolver);
             expect(store.dispatch).toHaveBeenCalled();
         });
     });
