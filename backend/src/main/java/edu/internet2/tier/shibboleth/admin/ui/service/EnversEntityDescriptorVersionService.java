@@ -15,15 +15,17 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.*;
 
 /**
  * Hibernate Envers based implementation of {@link EntityDescriptorVersionService}.
  */
 public class EnversEntityDescriptorVersionService implements EntityDescriptorVersionService {
-
-    private AuditReader auditReader;
 
     private EntityManager entityManager;
 
@@ -38,18 +40,20 @@ public class EnversEntityDescriptorVersionService implements EntityDescriptorVer
                 .add(AuditEntity.property("resourceId").eq(resourceId))
                 .getResultList();
 
-        //TODO: sort
-        Object revEntities = revs.stream()
-                .map(it -> (PrincipalAwareRevisionEntity)((Object[])it)[1])
+        Object listOfVersions = revs.stream()
+                .map(it -> ((Object[])it)[1])
                 .map(it -> {
                     return new Version(((PrincipalAwareRevisionEntity) it).idAsString(),
                             ((PrincipalAwareRevisionEntity) it).getPrincipalUserName(),
-                            ((PrincipalAwareRevisionEntity) it).getRevisionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+                            ((PrincipalAwareRevisionEntity) it).getRevisionDate()
+                                    .toInstant()
+                                    .atZone(ZoneId.systemDefault())
+                                    .toLocalDateTime());
                 })
-                .collect(Collectors.toList());
+                .sorted(comparing(Version::getDate))
+                .collect(toList());
 
-
-        return (List<Version>)revEntities;
+        return (List<Version>)listOfVersions;
     }
 
     @Override
