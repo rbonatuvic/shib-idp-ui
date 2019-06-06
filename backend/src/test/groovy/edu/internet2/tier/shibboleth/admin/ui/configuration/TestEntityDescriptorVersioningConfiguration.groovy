@@ -17,7 +17,7 @@ class TestEntityDescriptorVersioningConfiguration {
     @Autowired
     EntityDescriptorService entityDescriptorService
 
-    @Bean
+    /*@Bean
     EntityDescriptorVersionService stubEntityDescriptorVersionService() {
         return new EntityDescriptorVersionService() {
             @Override
@@ -31,6 +31,6 @@ class TestEntityDescriptorVersioningConfiguration {
                 return entityDescriptorService.createRepresentationFromDescriptor(new TestObjectGenerator().buildEntityDescriptor())
             }
         }
-    }
+    }*/
 
 }
