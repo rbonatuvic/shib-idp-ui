@@ -9,6 +9,8 @@ node {
     download = true
 }
 
+npmInstall.setNpmCommand('ci')
+
 npm_run_build {
     inputs.dir 'src'
     outputs.dir 'dist'
