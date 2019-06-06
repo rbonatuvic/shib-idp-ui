@@ -3,7 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { ActivatedRoute } from '@angular/router';
-import { map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
 import { SelectProviderRequest, ClearProviderSelection } from '../action/collection.action';
 import * as fromProviders from '../reducer';
 import { MetadataProvider } from '../../domain/model';
@@ -31,9 +31,15 @@ export class ProviderSelectComponent implements OnDestroy {
             map(params => new SelectProviderRequest(params.providerId))
         ).subscribe(store);
 
-        this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(skipWhile(p => !p));
+        this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(filter(p => {
+            console.log(p);
+            return p;
+        }));
 
-        this.provider$.subscribe(provider => this.setDefinition(provider));
+        this.provider$.subscribe(provider => {
+            console.log(provider);
+            this.setDefinition(provider);
+        });
     }
 
     setDefinition(provider: MetadataProvider): void {
