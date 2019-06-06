@@ -49,7 +49,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
         versions[0].creator
         versions[0].date < LocalDateTime.now()
 
-        when: 'Third version'
+        when: 'Second version'
         ed.serviceProviderName = 'SP2'
         ed = doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
