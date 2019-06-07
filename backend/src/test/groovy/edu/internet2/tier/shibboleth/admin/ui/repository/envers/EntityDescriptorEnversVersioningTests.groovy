@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
@@ -31,6 +32,7 @@ import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHE
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, TestConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@Ignore
 class EntityDescriptorEnversVersioningTests extends Specification {
 
     @Autowired
