@@ -5,7 +5,7 @@ import * as fromRoot from '../../../app.reducer';
 import * as fromConfiguration from './configuration.reducer';
 import { WizardStep } from '../../../wizard/model';
 
-import * as utils from '../service/utility';
+import * as utils from '../../domain/utility/configuration';
 import { getSplitSchema } from '../../../wizard/reducer';
 
 export interface ConfigurationState {

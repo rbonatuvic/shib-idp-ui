@@ -22,24 +22,20 @@ export function reducer(state = initialState, action: ConfigurationActionsUnion)
                 ...state,
                 schema: action.payload
             };
-            break;
         case ConfigurationActionTypes.SET_DEFINITION:
             return {
                 ...state,
                 definition: action.payload
             };
-            break;
         case ConfigurationActionTypes.SET_METADATA:
             return {
                 ...state,
                 model: action.payload
             };
-            break;
         case ConfigurationActionTypes.CLEAR:
             return {
                 ...initialState
             };
-            break;
         default: {
             return state;
         }

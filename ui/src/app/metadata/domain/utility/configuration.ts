@@ -1,4 +1,4 @@
-import { Property } from '../../domain/model/property';
+import { Property } from '../model/property';
 
 export function getDefinition(path: string, definitions: any): any {
     let def = path.split('/').pop();
