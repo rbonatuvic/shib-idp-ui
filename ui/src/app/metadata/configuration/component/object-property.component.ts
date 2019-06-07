@@ -14,13 +14,5 @@ export class ObjectPropertyComponent extends ConfigurationPropertyComponent {
     constructor() {
         super();
     }
-
-    getKeys(schema): string[] {
-        return Object.keys(schema.properties);
-    }
-
-    getItemType(items: Property): string {
-        return items.widget ? items.widget.id : 'default';
-    }
 }
 

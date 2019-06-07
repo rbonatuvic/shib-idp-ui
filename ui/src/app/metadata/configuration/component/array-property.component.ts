@@ -19,10 +19,6 @@ export class ArrayPropertyComponent extends ConfigurationPropertyComponent {
         super();
     }
 
-    getKeys(schema): string[] {
-        return Object.keys(schema.properties);
-    }
-
     get attributeList$(): Observable<{ key: string, label: string }[]> {
         if (this.property.widget && this.property.widget.hasOwnProperty('data')) {
             return of(this.property.widget.data);

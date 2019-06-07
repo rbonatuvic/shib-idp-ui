@@ -10,7 +10,7 @@ describe('domain utility functions', () => {
         });
 
         it('should return a formatted list of properties', () => {
-            expect(getStepProperties(SCHEMA, {}).length).toBe(2);
+            expect(getStepProperties(SCHEMA, {}).length).toBe(3);
         });
     });
 

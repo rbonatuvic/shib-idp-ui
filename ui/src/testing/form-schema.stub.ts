@@ -30,6 +30,31 @@ export const SCHEMA = {
                     'description': 'FileBackedHttpMetadataProvider'
                 }
             ]
+        },
+        'list': {
+            'title': 'label.retained-roles',
+            'description': 'tooltip.retained-roles',
+            'type': 'array',
+            'items': {
+                'widget': {
+                    'id': 'select'
+                },
+                'type': 'string',
+                'oneOf': [
+                    {
+                        'enum': [
+                            'SPSSODescriptor'
+                        ],
+                        'description': 'value.spdescriptor'
+                    },
+                    {
+                        'enum': [
+                            'AttributeAuthorityDescriptor'
+                        ],
+                        'description': 'value.attr-auth-descriptor'
+                    }
+                ]
+            }
         }
     },
     'required': [

@@ -3,7 +3,7 @@ import { Property } from '../../domain/model/property';
 
 @Component({
     selector: 'configuration-property',
-    templateUrl: './configuration-property.component.html',
+    template: `{{ property | json }}`,
     styleUrls: []
 })
 
@@ -11,6 +11,10 @@ export class ConfigurationPropertyComponent {
     @Input() property: Property;
 
     constructor() { }
+
+    getKeys(schema): string[] {
+        return Object.keys(schema.properties);
+    }
 
     getItemType(items: Property): string {
         return items.widget ? items.widget.id : 'default';
