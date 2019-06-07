@@ -44,5 +44,13 @@ export const SCHEMA = {
                 '@type'
             ]
         }
-    ]
+    ],
+    'definitions': {
+        'description': {
+            'title': 'Description',
+            'description': 'A description of the object',
+            'type': 'string',
+            'widget': 'string'
+        }
+    }
 };

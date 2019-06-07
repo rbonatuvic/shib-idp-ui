@@ -1,6 +1,6 @@
 import { ConfigurationActionTypes, ConfigurationActionsUnion } from '../action/configuration.action';
 import { Metadata } from '../../domain/domain.type';
-import { Wizard, WizardStep } from '../../../wizard/model';
+import { Wizard } from '../../../wizard/model';
 import { Schema } from '../model/schema';
 
 export interface State {

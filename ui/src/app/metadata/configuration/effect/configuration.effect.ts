@@ -42,7 +42,7 @@ export class MetadataConfigurationEffects {
     @Effect()
     setDefinition$ = this.actions$.pipe(
         ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
-        map(action => new SetDefinition(this.configService.getDefinition(action.payload)))
+        map(action => new SetDefinition(this.configService.getDefinition(action.payload['@type'])))
     );
 
     @Effect()

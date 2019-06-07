@@ -29,8 +29,8 @@ export class MetadataConfigurationService {
         return this.http.get<Metadata>(`${this.base}/${PATHS[type]}/${id}`);
     }
 
-    getDefinition(model: Metadata): Wizard<Metadata> {
-        return MetadataProviderEditorTypes.find(def => def.type === model['@type']) || new MetadataSourceEditor();
+    getDefinition(type: string): Wizard<Metadata> {
+        return MetadataProviderEditorTypes.find(def => def.type === type) || new MetadataSourceEditor();
     }
 
     loadSchema(path: string): Observable<Schema> {
