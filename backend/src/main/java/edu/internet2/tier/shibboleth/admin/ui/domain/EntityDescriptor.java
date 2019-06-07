@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 
 @Entity
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude={"versionModifiedTimestamp"})
 @Audited
 public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor {
     private String localId;
@@ -38,6 +38,8 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     private boolean serviceEnabled;
 
     private String resourceId;
+
+    private Long versionModifiedTimestamp;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Organization organization;
@@ -75,6 +77,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     public EntityDescriptor() {
         super();
         this.resourceId = UUID.randomUUID().toString();
+    }
+
+    public void setVersionModifiedTimestamp(Long versionModifiedTimestamp) {
+        this.versionModifiedTimestamp = versionModifiedTimestamp;
     }
 
     //getters and setters

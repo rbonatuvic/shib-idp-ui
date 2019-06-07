@@ -123,7 +123,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
         //Let envers recognize update revision type for EntityDescriptor type
         //when modifying Attributes and SPSSODescriptor inside RoleDescriptors collection
-        ed.setModifiedDate(LocalDateTime.now());
+        ed.setVersionModifiedTimestamp(System.currentTimeMillis());
 
         return ed;
     }

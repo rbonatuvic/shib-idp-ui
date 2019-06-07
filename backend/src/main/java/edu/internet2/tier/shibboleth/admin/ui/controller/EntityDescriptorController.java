@@ -6,8 +6,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
@@ -34,11 +32,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
-import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
