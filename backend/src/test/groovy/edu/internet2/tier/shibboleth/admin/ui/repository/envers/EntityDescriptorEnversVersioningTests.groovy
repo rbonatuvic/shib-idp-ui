@@ -33,7 +33,7 @@ import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHE
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-//@Ignore
+@Ignore
 class EntityDescriptorEnversVersioningTests extends Specification {
 
     @Autowired
