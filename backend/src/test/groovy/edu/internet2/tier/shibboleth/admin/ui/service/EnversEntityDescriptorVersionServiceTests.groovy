@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
@@ -21,7 +22,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTes
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, TestConfiguration, SearchConfiguration, EntitiesVersioningConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@Ignore
 class EnversEntityDescriptorVersionServiceTests extends Specification {
 
     @Autowired
@@ -36,7 +36,6 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
     @Autowired
     PlatformTransactionManager txMgr
 
-    @DirtiesContext
     def "versioning service returns correct number of versions sorted by modified date in natural order"() {
         when: 'Initial version'
         EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1')

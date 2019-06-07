@@ -16,7 +16,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
@@ -32,7 +31,7 @@ import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHE
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, TestConfiguration, SearchConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@Ignore
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class EntityDescriptorEnversVersioningTests extends Specification {
 
     @Autowired
@@ -50,7 +49,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
     @Autowired
     OpenSamlObjects openSamlObjects
 
-    @DirtiesContext
     def "test versioning with contact persons"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name, ContactPerson.name, GivenName.name, EmailAddress.name]
@@ -122,7 +120,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     }
 
-    @DirtiesContext
     def "test versioning with organization"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,
@@ -176,7 +173,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
     }
 
-    @DirtiesContext
     def "test versioning with sp sso descriptor"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,
@@ -238,7 +234,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
     }
 
-    @DirtiesContext
     def "test versioning with uiInfo"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,
@@ -330,7 +325,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         uiinfoInitialRevision.logos[0].width == 30
     }
 
-    @DirtiesContext
     def "test versioning with security"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,
@@ -425,7 +419,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         x509cert.value == 'signingValue'
     }
 
-    @DirtiesContext
     def "test versioning ACS"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,
@@ -495,7 +488,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         acs.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
     }
 
-    @DirtiesContext
     def "test versioning logout"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,
@@ -558,7 +550,6 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         slo.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
     }
 
-    @DirtiesContext
     def "test versioning relying party overrides"() {
         setup:
         def expectedModifiedPersistentEntities = [EntityDescriptor.name,

@@ -5,6 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import org.hibernate.envers.AuditReaderFactory
+import org.hibernate.envers.query.AuditEntity
 import org.hibernate.envers.query.AuditQuery
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.DefaultTransactionDefinition
@@ -36,14 +37,15 @@ class EnversTestsSupport {
             edr.save(ed)
         }
 
-        getRevisionHistoryForEntityType(em, EntityDescriptor)
+        getRevisionHistoryForEntityType(em, EntityDescriptor, ed.resourceId)
     }
 
-    static getRevisionHistoryForEntityType(EntityManager em, Class<?> entityType) {
+    static getRevisionHistoryForEntityType(EntityManager em, Class<?> entityType, String resourceId) {
         def auditReader = AuditReaderFactory.get(em)
         AuditQuery auditQuery = auditReader
                 .createQuery()
                 .forRevisionsOfEntity(entityType, false, false)
+                .add(AuditEntity.property("resourceId").eq(resourceId))
         auditQuery.resultList
     }
 
