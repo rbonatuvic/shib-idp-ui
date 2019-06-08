@@ -1,1 +1,1 @@
-include 'backend', 'ui', 'pac4j-module'
+include 'backend', 'ui', 'pac4j-module', 'envers-tests-module'

@@ -34,7 +34,7 @@ import static org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHE
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @Ignore
-class EntityDescriptorEnversVersioningTests extends Specification {
+class EntityDescriptorEnversVersioningTestsX extends Specification {
 
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
