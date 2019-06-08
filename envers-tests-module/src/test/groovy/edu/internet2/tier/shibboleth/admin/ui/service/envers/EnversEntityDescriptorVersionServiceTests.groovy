@@ -1,17 +1,16 @@
-package edu.internet2.tier.shibboleth.admin.ui.service
+package edu.internet2.tier.shibboleth.admin.ui.service.envers
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -22,7 +21,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTes
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, TestConfiguration, SearchConfiguration, EntitiesVersioningConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@Ignore
 class EnversEntityDescriptorVersionServiceTests extends Specification {
 
     @Autowired
