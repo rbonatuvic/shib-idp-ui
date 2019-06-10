@@ -9,7 +9,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.Pri
  */
 public class PrincipalEnhancingRevisionListener implements RevisionListener {
 
-    private static final String ANONYMOUS = "anonymous";
+    private static final String ANONYMOUS = "anonymousUser";
 
     @Override
     public void newRevision(Object revisionEntity) {
