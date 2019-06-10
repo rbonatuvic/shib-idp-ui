@@ -1,7 +1,7 @@
 plugins {
     id 'base'
     id 'net.researchgate.release' version '2.6.0'
-    id 'com.github.breadmoirai.github-release' version '2.2.1'
+    id 'com.github.breadmoirai.github-release' version '2.2.9'
 }
 
 tasks.findByName('release').dependsOn project.getTasksByName('test', true)
@@ -10,8 +10,11 @@ githubRelease {
     token project.'githubToken'
     owner project.'githubOwner'
     repo project.'githubRepo'
-    releaseAssets project('backend').artifacts { it }
+    releaseAssets project('backend').getTasksByName('bootWar', false).outputs, project('backend').getTasksByName('bootJar', false).outputs
+    overwrite true
 }
+
+afterReleaseBuild.dependsOn githubRelease
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8.1'
