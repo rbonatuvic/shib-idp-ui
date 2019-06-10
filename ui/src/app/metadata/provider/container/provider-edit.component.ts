@@ -60,8 +60,6 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form || 'filters'));
         startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
 
-        this.index$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(id => id && this.go(id));
-
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .pipe(filter(s => !!s))
@@ -75,10 +73,6 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         this.store.select(fromProvider.getEntityChanges).subscribe(changes => this.latest = changes);
 
         this.canFilter$ = this.definition$.pipe(map(def => FilterableProviders.indexOf(def.type) > -1));
-    }
-
-    go(id: string): void {
-        this.router.navigate(['./', id], { relativeTo: this.route });
     }
 
     ngOnDestroy() {
