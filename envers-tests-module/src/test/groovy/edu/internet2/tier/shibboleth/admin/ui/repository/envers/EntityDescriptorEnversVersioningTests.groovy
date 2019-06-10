@@ -67,7 +67,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].givenName.name == 'name'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].type == ADMINISTRATIVE
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].emailAddresses[0].address == 'test@test'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -85,7 +85,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == ADMINISTRATIVE
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -105,7 +105,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].givenName.name == 'nameUPDATED2'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].type == OTHER
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].emailAddresses[0].address == 'test@test.com'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 2).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -113,7 +113,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == ADMINISTRATIVE
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
 
     }
@@ -141,7 +141,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -159,7 +159,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.organizationNames[0].value == 'orgUpdated'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.displayNames[0].value == 'display org Updated'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.URLs[0].value == 'http://org2.edu'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -167,7 +167,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
     }
 
@@ -196,7 +196,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -220,7 +220,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].nameIDFormats[0].format == 'formatUPDATED'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
@@ -228,7 +228,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
         getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
-        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymous'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
     }
 

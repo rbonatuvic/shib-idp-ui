@@ -55,7 +55,7 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
         def rev = metadataResolverHistory[0]
 
         then:
-        rev[1].principalUserName == 'anonymous'
+        rev[1].principalUserName == 'anonymousUser'
 
         when:
         mdr.name = 'Updated'
