@@ -1,9 +1,17 @@
 plugins {
     id 'base'
     id 'net.researchgate.release' version '2.6.0'
+    id 'com.github.breadmoirai.github-release' version '2.2.1'
 }
 
 tasks.findByName('release').dependsOn project.getTasksByName('test', true)
+
+githubRelease {
+    token project.'githubToken'
+    owner project.'githubOwner'
+    repo project.'githubRepo'
+    releaseAssets project('backend').artifacts { it }
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8.1'
