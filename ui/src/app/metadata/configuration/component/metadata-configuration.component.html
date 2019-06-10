@@ -9,13 +9,13 @@
                 <div class="actions px-2">
                     <a class="edit-link change-view" [routerLink]="['../', 'edit', section.id]">
                         <i class="fa fa-edit"></i>
-                        Edit
+                        <span translate="action.edit">Edit</span>
                     </a>
                 </div>
             </div>
             <div class="d-flex border-bottom border-light border-2 p-2">
-                <strong class="w-50">Option</strong>
-                <strong class="w-50">Value</strong>
+                <strong class="w-50" translate="label.option">Option</strong>
+                <strong class="w-50" translate="label.value">Value</strong>
             </div>
             <object-property class="d-block" *ngIf="section" [property]="section"></object-property>
         </div>
