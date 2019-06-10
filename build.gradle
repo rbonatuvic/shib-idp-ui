@@ -14,7 +14,7 @@ githubRelease {
     overwrite true
 }
 
-afterReleaseBuild.dependsOn githubRelease
+afterReleaseBuild.dependsOn project.getTasksByName('githubRelease', false)
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.8.1'
