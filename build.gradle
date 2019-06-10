@@ -7,9 +7,9 @@ plugins {
 tasks.findByName('release').dependsOn project.getTasksByName('test', true)
 
 githubRelease {
-    token project.'github.token'
-    owner project.'github.owner'
-    repo project.'github.repo'
+    token project.'i2.github.token'
+    owner project.'i2.github.owner'
+    repo project.'i2.github.repo'
     releaseAssets project('backend').getTasksByName('bootWar', false).outputs, project('backend').getTasksByName('bootJar', false).outputs
     overwrite true
 }
