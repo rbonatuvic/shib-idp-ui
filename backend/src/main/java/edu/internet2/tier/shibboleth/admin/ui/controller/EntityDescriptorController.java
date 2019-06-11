@@ -32,7 +32,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
-import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.stream.Collectors;
 

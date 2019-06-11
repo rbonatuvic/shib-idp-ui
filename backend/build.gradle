@@ -1,7 +1,7 @@
 plugins {
     id 'groovy'
     id 'war'
-    id 'org.springframework.boot' version '2.0.0.RELEASE'
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
     id 'net.researchgate.release' version '2.6.0'
     id 'io.franzbecker.gradle-lombok' version '1.13'
@@ -139,6 +139,8 @@ dependencies {
 
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
+    // runtime libraries for later java versions
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
 
     // TODO: these will likely only be runtimeOnly or test scope, unless we want to ship the libraries with the final product
     compile "com.h2database:h2"
