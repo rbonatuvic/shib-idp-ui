@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EnversEntityDescriptorVersionService;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ public class EntitiesVersioningConfiguration {
     private EntityManager entityManager;
 
     @Bean
-    EntityDescriptorVersionService entityDescriptorVersionService() {
-        return new EnversEntityDescriptorVersionService(entityManager);
+    EntityDescriptorVersionService entityDescriptorVersionService(EntityDescriptorService entityDescriptorService) {
+        return new EnversEntityDescriptorVersionService(entityManager, entityDescriptorService);
     }
 }

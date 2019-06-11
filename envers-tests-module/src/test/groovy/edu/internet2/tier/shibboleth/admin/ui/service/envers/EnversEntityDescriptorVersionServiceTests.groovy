@@ -75,4 +75,42 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
         versions[0].creator && versions[1].creator && versions[2].creator
         (versions[0].date < versions[1].date) && (versions[1].date < versions[2].date)
     }
+
+    def "versioning service returns correct entity descriptor for version number"() {
+        when: 'Initial version'
+        EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1', createdBy: 'anonymousUser')
+        ed = doInExplicitTransaction(txMgr) {
+            entityDescriptorRepository.save(ed)
+        }
+        def versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
+        def v1EdRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, versions[0].id)
+
+        then:
+        v1EdRepresentation.serviceProviderName == 'SP1'
+        v1EdRepresentation.id == ed.resourceId
+
+        when: 'Update the original'
+        ed.serviceProviderName = 'SP2'
+        ed = doInExplicitTransaction(txMgr) {
+            entityDescriptorRepository.save(ed)
+        }
+        versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
+        def v2EdRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, versions[1].id)
+
+        then:
+        v2EdRepresentation.serviceProviderName == 'SP2'
+        v2EdRepresentation.id == ed.resourceId
+    }
+
+    def "versioning service returns null for non existent version number"() {
+        when: 'Initial version'
+        EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1', createdBy: 'anonymousUser')
+        ed = doInExplicitTransaction(txMgr) {
+            entityDescriptorRepository.save(ed)
+        }
+        def edRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, '1000')
+
+        then:
+        !edRepresentation
+    }
 }

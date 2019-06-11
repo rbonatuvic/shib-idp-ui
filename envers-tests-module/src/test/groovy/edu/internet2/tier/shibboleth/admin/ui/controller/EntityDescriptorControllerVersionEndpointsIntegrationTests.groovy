@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -27,6 +28,8 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
     static BASE_URI = '/api/EntityDescriptor'
 
     static ALL_VERSIONS_URI = "$BASE_URI/%s/Versions"
+
+    static SPECIFIC_VERSION_URI = "$BASE_URI/%s/Versions/%s"
 
     def "GET /api/EntityDescriptor/{resourceId}/Versions with non-existent entity descriptor"() {
         when:
@@ -68,12 +71,49 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         result.body[0].date < result.body[1].date
     }
 
+    def "GET /api/EntityDescriptor{resourceId}/Versions/{version} for non existent version"() {
+        given:
+        EntityDescriptor ed = new EntityDescriptor(entityID: 'http://test/controller', createdBy: 'anonymousUser')
+        ed = entityDescriptorRepository.save(ed)
 
+        when:
+        def result = getEntityDescriptorForVersion(ed.resourceId, '1000', EntityDescriptorRepresentation)
+
+        then:
+        result.statusCodeValue == 404
+    }
+
+    def "GET /api/EntityDescriptor{resourceId}/Versions/{version} with 2 entity descriptor versions returns correct ED for specific versions"() {
+        given:
+        EntityDescriptor ed = new EntityDescriptor(entityID: 'http://test/controller', createdBy: 'anonymousUser', serviceProviderName: 'SP1')
+        ed = entityDescriptorRepository.save(ed)
+        //Will created a second version for UPDATE revision
+        ed.serviceProviderName = 'SP2'
+        entityDescriptorRepository.save(ed)
+
+        when:
+        def allVersions = getAllEntityDescriptorVersions(ed.resourceId, List)
+        def edv1 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[0].id, EntityDescriptorRepresentation)
+        def edv2 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[1].id, EntityDescriptorRepresentation)
+
+        then:
+        edv1.statusCodeValue == 200
+        edv1.body.serviceProviderName == 'SP1'
+        edv2.statusCodeValue == 200
+        edv2.body.serviceProviderName == 'SP2'
+    }
 
     private getAllEntityDescriptorVersions(String resourceId, responseType) {
         this.restTemplate.getForEntity(resourceUriFor(ALL_VERSIONS_URI, resourceId), responseType)
     }
 
+    private getEntityDescriptorForVersion(String resourceId, String version, responseType) {
+        this.restTemplate.getForEntity(resourceUriFor(SPECIFIC_VERSION_URI, resourceId, version), responseType)
+    }
+
+    private static resourceUriFor(String uriTemplate, String resourceId, String version) {
+        String.format(uriTemplate, resourceId, version)
+    }
 
     private static resourceUriFor(String uriTemplate, String resourceId) {
         String.format(uriTemplate, resourceId)

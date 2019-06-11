@@ -11,6 +11,7 @@ import org.hibernate.envers.query.AuditEntity;
 import org.springframework.data.jpa.repository.JpaContext;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -29,8 +30,11 @@ public class EnversEntityDescriptorVersionService implements EntityDescriptorVer
 
     private EntityManager entityManager;
 
-    public EnversEntityDescriptorVersionService(EntityManager entityManager) {
+    private EntityDescriptorService entityDescriptorService;
+
+    public EnversEntityDescriptorVersionService(EntityManager entityManager, EntityDescriptorService entityDescriptorService) {
         this.entityManager = entityManager;
+        this.entityDescriptorService = entityDescriptorService;
     }
 
     @Override
@@ -58,6 +62,16 @@ public class EnversEntityDescriptorVersionService implements EntityDescriptorVer
 
     @Override
     public EntityDescriptorRepresentation findSpecificVersionOfEntityDescriptor(String resourceId, String versionId) {
-        return null;
+        try {
+            Object revision = AuditReaderFactory.get(entityManager).createQuery()
+                    .forEntitiesAtRevision(EntityDescriptor.class, Integer.valueOf(versionId))
+                    .add(AuditEntity.property("resourceId").eq(resourceId))
+                    .add(AuditEntity.revisionNumber().eq(Integer.valueOf(versionId)))
+                    .getSingleResult();
+            return entityDescriptorService.createRepresentationFromDescriptor((EntityDescriptor) revision);
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 }
