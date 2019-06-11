@@ -7,12 +7,14 @@ export interface State {
     model: Metadata;
     schema: Schema;
     definition: Wizard<Metadata>;
+    xml: string;
 }
 
 export const initialState: State = {
     model: null,
     schema: null,
-    definition: null
+    definition: null,
+    xml: ''
 };
 
 export function reducer(state = initialState, action: ConfigurationActionsUnion): State {
@@ -32,6 +34,11 @@ export function reducer(state = initialState, action: ConfigurationActionsUnion)
                 ...state,
                 model: action.payload
             };
+        case ConfigurationActionTypes.SET_XML:
+            return {
+                ...state,
+                xml: action.payload
+            };
         case ConfigurationActionTypes.CLEAR:
             return {
                 ...initialState
@@ -45,3 +52,4 @@ export function reducer(state = initialState, action: ConfigurationActionsUnion)
 export const getModel = (state: State) => state.model;
 export const getDefinition = (state: State) => state.definition;
 export const getSchema = (state: State) => state.schema;
+export const getXml = (state: State) => state.xml;

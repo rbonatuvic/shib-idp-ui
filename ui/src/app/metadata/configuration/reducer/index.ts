@@ -28,6 +28,7 @@ export const getConfigurationState = createSelector(getState, getConfigurationSt
 export const getConfigurationModel = createSelector(getConfigurationState, fromConfiguration.getModel);
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
 export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
+export const getConfigurationXml = createSelector(getConfigurationState, fromConfiguration.getXml);
 
 export const getConfigurationSectionsFn = (model, definition, schema) => !definition || !schema ? null :
     ({

@@ -87,7 +87,8 @@ export class DashboardResolversListComponent implements OnInit {
     }
 
     viewConfiguration(entity: MetadataEntity): void {
-        this.router.navigate(['metadata', 'resolver', entity.getId(), 'configuration']);
+        // this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
+        this.router.navigate(['metadata', 'resolver', entity.getId(), 'configuration', 'options']);
     }
 
     viewMetadataHistory(entity: MetadataEntity): void {

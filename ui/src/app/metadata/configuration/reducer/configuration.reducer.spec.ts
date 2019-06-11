@@ -14,6 +14,7 @@ describe('Configuration Reducer', () => {
         serviceProviderName: 'foo',
         '@type': 'MetadataResolver'
     };
+    const xml = `<entity-descriptor></entity-descriptor>`;
 
     describe('undefined action', () => {
         it('should return the default state', () => {
@@ -50,6 +51,15 @@ describe('Configuration Reducer', () => {
         });
     });
 
+    describe('SET_XML action', () => {
+        it('should set the state metadata model', () => {
+            const action = new actions.SetXml(xml);
+            const result = reducer(initialState, action);
+
+            expect(result).toEqual({ ...initialState, xml });
+        });
+    });
+
     describe('CLEAR action', () => {
         it('should clear the state and reset to initial state', () => {
             const action = new actions.ClearConfiguration();
@@ -61,6 +71,35 @@ describe('Configuration Reducer', () => {
             }, action);
 
             expect(result).toEqual(initialState);
+        });
+    });
+
+    describe('selector functions', () => {
+        /*
+        export const getModel = (state: State) => state.model;
+        export const getDefinition = (state: State) => state.definition;
+        export const getSchema = (state: State) => state.schema;
+        export const getXml = (state: State) => state.xml;
+        */
+        describe('getModel', () => {
+            it('should retrieve the model from state', () => {
+                expect(fromConfig.getModel({...initialState, model})).toBe(model);
+            });
+        });
+        describe('getDefinition', () => {
+            it('should retrieve the definition from state', () => {
+                expect(fromConfig.getDefinition({ ...initialState, definition })).toBe(definition);
+            });
+        });
+        describe('getSchema', () => {
+            it('should retrieve the schema from state', () => {
+                expect(fromConfig.getSchema({ ...initialState, schema })).toBe(schema);
+            });
+        });
+        describe('getXml', () => {
+            it('should retrieve the schema from state', () => {
+                expect(fromConfig.getXml({ ...initialState, xml })).toBe(xml);
+            });
         });
     });
 });

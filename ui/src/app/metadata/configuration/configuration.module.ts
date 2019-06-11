@@ -17,10 +17,14 @@ import { PrimitivePropertyComponent } from './component/primitive-property.compo
 import { ObjectPropertyComponent } from './component/object-property.component';
 import { ArrayPropertyComponent } from './component/array-property.component';
 import { RouterModule } from '@angular/router';
+import { MetadataOptionsComponent } from './container/metadata-options.component';
+import { MetadataXmlComponent } from './container/metadata-xml.component';
 
 @NgModule({
     declarations: [
         MetadataConfigurationComponent,
+        MetadataOptionsComponent,
+        MetadataXmlComponent,
         ConfigurationPropertyComponent,
         PrimitivePropertyComponent,
         ObjectPropertyComponent,
