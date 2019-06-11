@@ -316,14 +316,16 @@ dockerRun {
     clean true
 }
 
-task runChecker << {
-    def ready = false
-    while (!ready) {
-        try {
-            ready = 'http://localhost:10101'.toURL().text.length() > 0
-        } catch (IOException e) {
-            println 'cannot reach site'
-            sleep 5000
+task runChecker {
+    doLast {
+        def ready = false
+        while (!ready) {
+            try {
+                ready = 'http://localhost:10101'.toURL().text.length() > 0
+            } catch (IOException e) {
+                println 'cannot reach site'
+                sleep 5000
+            }
         }
     }
 }
