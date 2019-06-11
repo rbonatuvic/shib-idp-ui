@@ -161,11 +161,4 @@ class DevConfig {
             it
         })
     }
-
-    /*@Profile('dev-ed-versioning')
-    @Bean
-    EntityDescriptorVersionService stubEntityDescriptorVersionService(EntityDescriptorService entityDescriptorService,
-                                                                      EntityDescriptorRepository entityDescriptorRepository) {
-        return EntityDescriptorVersionService.stubImpl(entityDescriptorService, entityDescriptorRepository)
-    }*/
 }
