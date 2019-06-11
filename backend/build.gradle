@@ -343,4 +343,6 @@ dockerCompose {
 test {
     dependsOn 'composeUp'
     finalizedBy 'composeDown'
+    
+    maxHeapSize = '4G'
 }
