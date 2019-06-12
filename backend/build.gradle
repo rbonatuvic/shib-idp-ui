@@ -44,6 +44,13 @@ configurations {
     integrationTestRuntime {
         extendsFrom testRuntime
     }
+    enversTestCompile {
+        extendsFrom testCompile
+
+    }
+    enversTestRuntime {
+        extendsFrom testRuntime
+    }
 }
 
 processResources.dependsOn(':ui:npm_run_buildProd')
@@ -197,6 +204,13 @@ sourceSets {
             srcDir 'src/integration/resources'
         }
     }
+    enversTest {
+        groovy {
+            srcDirs = ['src/enversTest/groovy']
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+    }
 }
 
 task integrationTest(type: Test) {
@@ -209,6 +223,18 @@ task integrationTest(type: Test) {
     systemProperties = System.properties
     systemProperties['user.dir'] = workingDir
 }
+
+task enversTest(type: Test) {
+    group = 'verification'
+    description = 'Run tests pertaing to envers versioning engine'
+    testClassesDirs = sourceSets.enversTest.output.classesDirs
+    classpath = sourceSets.enversTest.runtimeClasspath
+    systemProperties = System.properties
+    systemProperties['user.dir'] = workingDir
+}
+test.finalizedBy enversTest
+
+
 
 task generateSources {
     inputs.dir('src/main/templates')
