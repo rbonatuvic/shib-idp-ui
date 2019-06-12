@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration
 
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -12,14 +11,10 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.context.event.ApplicationStartedEvent
+
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
-import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -34,14 +29,19 @@ class DevConfig {
     private final MetadataResolverRepository metadataResolverRepository
     private final EntityDescriptorRepository entityDescriptorRepository
 
-    @Autowired
-    private OpenSamlObjects openSamlObjects
+    private final OpenSamlObjects openSamlObjects
 
-    DevConfig(UserRepository adminUserRepository, MetadataResolverRepository metadataResolverRepository, RoleRepository roleRepository, EntityDescriptorRepository entityDescriptorRepository) {
+    DevConfig(UserRepository adminUserRepository,
+              MetadataResolverRepository metadataResolverRepository,
+              RoleRepository roleRepository,
+              EntityDescriptorRepository entityDescriptorRepository,
+              OpenSamlObjects openSamlObjects) {
+
         this.adminUserRepository = adminUserRepository
         this.metadataResolverRepository = metadataResolverRepository
         this.roleRepository = roleRepository
         this.entityDescriptorRepository = entityDescriptorRepository
+        this.openSamlObjects = openSamlObjects
     }
 
     @Transactional
