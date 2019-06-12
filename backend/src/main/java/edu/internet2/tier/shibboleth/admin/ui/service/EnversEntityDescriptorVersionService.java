@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Hibernate Envers based implementation of {@link EntityDescriptorVersionService}.
