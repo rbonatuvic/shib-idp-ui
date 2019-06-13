@@ -24,7 +24,7 @@ class VersionJsonSerializationBasicTests extends Specification {
             {
                 "id": "2",
                 "creator": "kramer",
-                "date": "${staticDate.toString()}"                
+                "date": "2019-05-20T15:00"                
             }
         """
 
