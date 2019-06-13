@@ -5,13 +5,32 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.Description
+import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
+import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
+import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyInfo
+import edu.internet2.tier.shibboleth.admin.ui.domain.Logo
+import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat
+import edu.internet2.tier.shibboleth.admin.ui.domain.Organization
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
 import edu.internet2.tier.shibboleth.admin.ui.domain.X509Certificate
+import edu.internet2.tier.shibboleth.admin.ui.domain.X509Data
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
@@ -32,6 +51,11 @@ import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
 
 import javax.persistence.EntityManager
+
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex
+import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor
 
 /**
  * Testing entity descriptor envers versioning
@@ -67,44 +91,44 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'name', emailAddress: 'test@test')]
             it
         }
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 1
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].givenName.name == 'name'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].emailAddresses[0].address == 'test@test'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].givenName.name == 'name'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).contactPersons[0].emailAddresses[0].address == 'test@test'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.contacts = [new ContactRepresentation(type: 'administrative', name: 'nameUPDATED', emailAddress: 'test@test')]
             it
         }
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
         then:
         entityDescriptorHistory.size() == 2
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.contacts = [new ContactRepresentation(type: 'other', name: 'nameUPDATED2', emailAddress: 'test@test.com')]
             it
         }
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation,
                 entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
@@ -112,19 +136,19 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         then:
         entityDescriptorHistory.size() == 3
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].givenName.name == 'nameUPDATED2'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHER
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].emailAddresses[0].address == 'test@test.com'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 2).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].givenName.name == 'nameUPDATED2'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.OTHER
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 2).contactPersons[0].emailAddresses[0].address == 'test@test.com'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 2).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 2).sort() == expectedModifiedPersistentEntities.sort()
 
         //Also make sure we have our original revision
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].givenName.name == 'nameUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].type == org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration.ADMINISTRATIVE
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).contactPersons[0].emailAddresses[0].address == 'test@test'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
 
     }
 
@@ -142,43 +166,43 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it.organization = new OrganizationRepresentation(name: 'org', displayName: 'display org', url: 'http://org.edu')
             it
         }
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
         then:
         entityDescriptorHistory.size() == 1
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.organization = new OrganizationRepresentation(name: 'orgUpdated', displayName: 'display org Updated', url: 'http://org2.edu')
             it
         }
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
         then:
         entityDescriptorHistory.size() == 2
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.organizationNames[0].value == 'orgUpdated'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.displayNames[0].value == 'display org Updated'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.URLs[0].value == 'http://org2.edu'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.organizationNames[0].value == 'orgUpdated'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.displayNames[0].value == 'display org Updated'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).organization.URLs[0].value == 'http://org2.edu'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the original revision is intact
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.organizationNames[0].value == 'org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.displayNames[0].value == 'display org'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).organization.URLs[0].value == 'http://org.edu'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
     }
 
     def "test versioning with sp sso descriptor"() {
@@ -196,19 +220,19 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 1
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -220,26 +244,26 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         then:
         entityDescriptorHistory.size() == 2
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].nameIDFormats[0].format == 'formatUPDATED'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].nameIDFormats[0].format == 'formatUPDATED'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 1).roleDescriptors[0].supportedProtocols[1] == 'urn:oasis:names:tc:SAML:2.0:protocol'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 1).timestamp > 0L
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the original revision is intact
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].nameIDFormats[0].format == 'format'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[0] == 'urn:oasis:names:tc:SAML:1.1:protocol'
+        getTargetEntityForRevisionIndex(entityDescriptorHistory, 0).roleDescriptors[0].supportedProtocols[1] == null
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
     }
 
     def "test versioning with uiInfo"() {
@@ -269,13 +293,13 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         //Groovy FTW - able to call any private methods on ANY object. Get first revision
-        UIInfo uiinfo = entityDescriptorService.getUIInfo(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        UIInfo uiinfo = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 1
@@ -286,7 +310,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         uiinfo.logos[0].URL == 'http://logo'
         uiinfo.logos[0].height == 20
         uiinfo.logos[0].width == 30
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -302,15 +326,15 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             }
             it
         }
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         //Get second revision
-        uiinfo = entityDescriptorService.getUIInfo(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+        uiinfo = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
         //And initial revision
-        def uiinfoInitialRevision = entityDescriptorService.getUIInfo(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        def uiinfoInitialRevision = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 2
@@ -321,7 +345,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         uiinfo.logos[0].URL == 'http://logo.updated'
         uiinfo.logos[0].height == 30
         uiinfo.logos[0].width == 40
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is still intact
         uiinfoInitialRevision.displayNames[0].value == 'Initial display name'
@@ -354,14 +378,14 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         //Get initial revision
         SPSSODescriptor spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
 
         KeyDescriptor keyDescriptor = spssoDescriptor.keyDescriptors[0]
         X509Certificate x509cert = keyDescriptor.keyInfo.x509Datas[0].x509Certificates[0]
@@ -372,7 +396,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         keyDescriptor.name == 'sign'
         keyDescriptor.usageType == 'signing'
         x509cert.value == 'signingValue'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -386,14 +410,14 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
 
         //Get second revision
-        SPSSODescriptor spssoDescriptor_second = entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
+        SPSSODescriptor spssoDescriptor_second = entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
 
         KeyDescriptor keyDescriptor_second1 = spssoDescriptor_second.keyDescriptors[0]
         X509Certificate x509cert_second1 = keyDescriptor_second1.keyInfo.x509Datas[0].x509Certificates[0]
@@ -403,7 +427,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         //Get initial revision
         spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
 
         keyDescriptor = spssoDescriptor.keyDescriptors[0]
         x509cert = keyDescriptor.keyInfo.x509Datas[0].x509Certificates[0]
@@ -417,7 +441,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         keyDescriptor_second2.usageType == 'encryption'
         x509cert_second1.value == 'signingValue'
         x509cert_second2.value == 'encryptionValue'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial version is intact
         spssoDescriptor.keyDescriptors.size() == 1
@@ -441,13 +465,13 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         SPSSODescriptor spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
         AssertionConsumerService acs = spssoDescriptor.assertionConsumerServices[0]
 
         then:
@@ -455,7 +479,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         !acs.isDefault()
         acs.location == 'http://acs'
         acs.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
 
         when:
@@ -466,18 +490,18 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         SPSSODescriptor spssoDescriptor2 =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
         def (acs1, acs2) = [spssoDescriptor2.assertionConsumerServices[0], spssoDescriptor2.assertionConsumerServices[1]]
 
         //Initial revision
         spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
         acs = spssoDescriptor.assertionConsumerServices[0]
 
         then:
@@ -488,7 +512,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         acs1.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'
         acs2.location == 'http://acs2'
         acs2.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is intact
         !acs.isDefault()
@@ -509,20 +533,20 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         SPSSODescriptor spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
         SingleLogoutService slo = spssoDescriptor.singleLogoutServices[0]
 
         then:
         entityDescriptorHistory.size() == 1
         slo.location == 'http://logout'
         slo.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -531,18 +555,18 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
         SPSSODescriptor spssoDescriptor2 =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
         def (slo1, slo2) = [spssoDescriptor2.singleLogoutServices[0], spssoDescriptor2.singleLogoutServices[1]]
 
         //Initial revision
         spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
         slo = spssoDescriptor.singleLogoutServices[0]
 
         then:
@@ -551,7 +575,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         slo1.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS'
         slo2.location == 'http://logout2'
         slo2.binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial version is intact
         slo.location == 'http://logout'
@@ -575,18 +599,18 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        def entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        def entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
-        EntityAttributes attrs = entityDescriptorService.getEntityAttributes(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        EntityAttributes attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 1
         attrs.attributes[0].attributeValues[0].storedValue == 'true'
         attrs.attributes[1].attributeValues[0].xsStringvalue == 'attr1'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
         when:
         representation = new EntityDescriptorRepresentation().with {
@@ -595,15 +619,15 @@ class EntityDescriptorEnversVersioningTests extends Specification {
             it
         }
 
-        entityDescriptorHistory = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
+        entityDescriptorHistory = updateAndGetRevisionHistoryOfEntityDescriptor(ed, representation, entityDescriptorService,
                 entityDescriptorRepository,
                 txMgr,
                 entityManager)
 
-        EntityAttributes attrs2 = entityDescriptorService.getEntityAttributes(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+        EntityAttributes attrs2 = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
 
         //Initial revision
-        attrs = entityDescriptorService.getEntityAttributes(edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         expectedModifiedPersistentEntities = [EntityDescriptor.name,
                                               EntityAttributes.name,
@@ -613,7 +637,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         entityDescriptorHistory.size() == 2
         attrs2.attributes[0].attributeValues[0].xsStringvalue == 'attr1'
         attrs2.attributes[0].attributeValues[1].xsStringvalue == 'attr2'
-        edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+        getModifiedEntityNames(entityDescriptorHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
 
         //Check the initial revision is intact
         attrs.attributes[0].attributeValues[0].storedValue == 'true'
