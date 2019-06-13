@@ -233,6 +233,7 @@ task enversTest(type: Test) {
     systemProperties = System.properties
     systemProperties['user.dir'] = workingDir
 }
+enversTest.mustRunAfter test
 
 check {
     dependsOn enversTest
