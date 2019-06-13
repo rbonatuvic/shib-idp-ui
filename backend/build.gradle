@@ -6,7 +6,7 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.13'
     id 'com.palantir.docker' version '0.20.1'
     id 'com.palantir.docker-run' version '0.20.1'
-    id 'com.avast.gradle.docker-compose' version '0.8.0'
+    // id 'com.avast.gradle.docker-compose' version '0.8.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -92,7 +92,7 @@ springBoot {
 }
 
 lombok {
-    version = "1.18.4"
+    version = "1.18.8"
     //TODO: get new sha256
     sha256 = ""
 }
@@ -283,7 +283,7 @@ compileJava {
 }
 
 jacoco {
-    toolVersion = '0.8.1'
+    toolVersion = '0.8.4'
 }
 
 jacocoTestReport {
@@ -329,10 +329,16 @@ task runChecker {
     }
 }
 
+test {
+    forkEvery = 1
+    maxHeapSize = '4G'
+}
+
 /*
  * Docker Compose (gradle-docker-compose-plugin) settings.
  * Used to start and stop docker containers before running tests.
  */
+/*
 apply plugin: 'docker-compose'
 dockerCompose {
     useComposeFiles = ['./src/test/docker-files/docker-compose.yml']
@@ -340,9 +346,5 @@ dockerCompose {
     waitForTcpPorts = false
 }
 
-test {
-    dependsOn 'composeUp'
-    finalizedBy 'composeDown'
-    
-    maxHeapSize = '4G'
-}
+dockerCompose.isRequiredBy(test)
+ */

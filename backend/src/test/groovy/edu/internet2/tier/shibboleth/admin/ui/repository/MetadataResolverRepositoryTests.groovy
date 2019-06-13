@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
@@ -32,6 +33,7 @@ import javax.persistence.EntityManager
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class MetadataResolverRepositoryTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
