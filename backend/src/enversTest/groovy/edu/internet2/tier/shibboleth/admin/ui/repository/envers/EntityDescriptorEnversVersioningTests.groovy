@@ -179,6 +179,10 @@ class EntityDescriptorEnversVersioningTests extends Specification {
         getRevisionEntityForRevisionIndex(entityDescriptorHistory, 0).timestamp > 0L
         getModifiedEntityNames(entityDescriptorHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
 
+
+
+
+
         when:
         representation = new EntityDescriptorRepresentation().with {
             it.organization = new OrganizationRepresentation(name: 'orgUpdated', displayName: 'display org Updated', url: 'http://org2.edu')
