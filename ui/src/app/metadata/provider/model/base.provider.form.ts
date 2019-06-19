@@ -4,6 +4,7 @@ import { BaseMetadataProvider } from '../../domain/model/providers';
 export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
     label: 'BaseMetadataProvider',
     type: 'BaseMetadataResolver',
+    schema: '',
     getValidators(namesList: string[]): any {
         const validators = {
             '/': (value, property, form_current) => {

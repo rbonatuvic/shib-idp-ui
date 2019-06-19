@@ -29,13 +29,13 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
         };
         return validators;
     },
+    schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
     steps: [
         {
             id: 'common',
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'xmlId',
                 'metadataFile',
@@ -58,7 +58,6 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'reloadableMetadataResolverAttributes'
             ],
@@ -77,7 +76,6 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'enabled'
             ],
@@ -103,7 +101,6 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'name',
                 'xmlId',
@@ -146,7 +143,6 @@ export const FileSystemMetadataProviderEditor: Wizard<FileSystemMetadataProvider
             label: 'label.dynamic-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
             fields: [
                 'reloadableMetadataResolverAttributes'
             ],

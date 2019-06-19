@@ -86,8 +86,9 @@ export class DashboardResolversListComponent implements OnInit {
         this.store.dispatch(new ToggleEntityDisplay(entity.getId()));
     }
 
-    openPreviewDialog(entity: MetadataEntity): void {
-        this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
+    viewConfiguration(entity: MetadataEntity): void {
+        // this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
+        this.router.navigate(['metadata', 'resolver', entity.getId(), 'configuration', 'options']);
     }
 
     viewMetadataHistory(entity: MetadataEntity): void {

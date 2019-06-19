@@ -9,6 +9,7 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     label = 'Metadata Source';
     type = '@MetadataProvider';
     steps: WizardStep[] = [];
+    schema = '';
 
     bindings = {
         '/securityInfo/x509CertificateAvailable': [
