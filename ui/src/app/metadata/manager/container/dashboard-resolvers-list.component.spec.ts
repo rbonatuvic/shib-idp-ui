@@ -11,7 +11,6 @@ import { RouterStub } from '../../../../testing/router.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { DashboardResolversListComponent } from './dashboard-resolvers-list.component';
-import { ResolverItemComponent } from '../component/resolver-item.component';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
 
@@ -54,7 +53,6 @@ describe('Dashboard Resolvers List Page', () => {
             declarations: [
                 DashboardResolversListComponent,
                 ProviderSearchComponent,
-                ResolverItemComponent,
                 DeleteDialogComponent,
                 CustomDatePipe
             ],
