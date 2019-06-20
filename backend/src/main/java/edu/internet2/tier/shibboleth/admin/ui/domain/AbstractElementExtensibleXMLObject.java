@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObject implements ElementExtensibleXMLObject {
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn

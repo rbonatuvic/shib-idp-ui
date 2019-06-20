@@ -48,5 +48,8 @@ pipeline {
     success {
       emailext body: '''${SCRIPT, template="groovy-text.template"}''', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: '[SHIBUI] Build Success'
     }
+    always {
+      cleanWs()
+    }
   }
 }

@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 
 import javax.annotation.Nullable;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Extensions extends AbstractElementExtensibleXMLObject implements org.opensaml.saml.saml2.metadata.Extensions {
     @Nullable
     @Override

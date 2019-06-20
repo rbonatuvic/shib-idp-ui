@@ -16,8 +16,6 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @ToString
-@Audited
-@AuditOverride(forClass = AbstractAuditable.class)
 public class FileBackedHttpMetadataResolver extends MetadataResolver {
     public FileBackedHttpMetadataResolver() {
         type = "FileBackedHttpMetadataResolver";

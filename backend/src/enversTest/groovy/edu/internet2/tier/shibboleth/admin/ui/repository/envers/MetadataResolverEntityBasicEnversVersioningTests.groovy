@@ -21,8 +21,6 @@ import spock.lang.Specification
 
 import javax.persistence.EntityManager
 
-import static org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW
-
 /**
  * Testing metadata resolvers basic versioning by envers is functioning.
  */
@@ -55,7 +53,7 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
         def rev = metadataResolverHistory[0]
 
         then:
-        rev[1].principalUserName == 'anonymous'
+        rev[1].principalUserName == 'anonymousUser'
 
         when:
         mdr.name = 'Updated'
@@ -98,7 +96,7 @@ class MetadataResolverEntityBasicEnversVersioningTests extends Specification {
     //boundary of the test method which commits tx only after an execution of the test method. This let's us explicitly
     //start/commit transaction making envers data written out and verifiable
     private doInExplicitTransaction(Closure uow) {
-        def txStatus = txMgr.getTransaction(new DefaultTransactionDefinition(PROPAGATION_REQUIRES_NEW))
+        def txStatus = txMgr.getTransaction(new DefaultTransactionDefinition(org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW))
         def entity = uow()
         txMgr.commit(txStatus)
         entity
