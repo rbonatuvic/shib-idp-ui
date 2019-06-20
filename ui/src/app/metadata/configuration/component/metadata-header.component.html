@@ -1,0 +1,13 @@
+<div class="card enabled-status">
+    <div class="card-body">
+        <h2 class="card-title version-title">Version 5</h2>
+        <p class="card-text version-details">
+            Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
+        </p>
+        <p class="card-text">
+            <span class="badge badge-primary" *ngIf="isEnabled" translate="value.enabled">Enabled</span>
+            <span class="badge badge-danger" *ngIf="!isEnabled" translate="value.disabled">Disabled</span>
+            <span class="badge badge-primary">Current</span>
+        </p>
+    </div>
+</div>

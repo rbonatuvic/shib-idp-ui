@@ -19,6 +19,7 @@ import { ArrayPropertyComponent } from './component/array-property.component';
 import { RouterModule } from '@angular/router';
 import { MetadataOptionsComponent } from './container/metadata-options.component';
 import { MetadataXmlComponent } from './container/metadata-xml.component';
+import { MetadataHeaderComponent } from './component/metadata-header.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { MetadataXmlComponent } from './container/metadata-xml.component';
         PrimitivePropertyComponent,
         ObjectPropertyComponent,
         ArrayPropertyComponent,
-        ConfigurationComponent
+        ConfigurationComponent,
+        MetadataHeaderComponent
     ],
     entryComponents: [],
     imports: [

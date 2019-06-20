@@ -1,3 +1,11 @@
 <div class="container">
+    <metadata-header [metadata]="model$ | async"></metadata-header>
+    <div class="px-3 my-3 d-flex justify-content-between">
+        <button class="btn btn-link">Version History</button>
+        <div class="btn-group">
+            <button class="btn" routerLinkActive="btn-primary">Options</button>
+            <button class="btn" routerLinkActive="btn-primary">XML</button>
+        </div>
+    </div>
     <metadata-configuration [configuration]="configuration$ | async"></metadata-configuration>
 </div>
