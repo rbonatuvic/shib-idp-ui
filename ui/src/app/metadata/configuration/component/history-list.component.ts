@@ -9,7 +9,7 @@ import { MetadataVersion } from '../model/version';
     styleUrls: []
 })
 export class HistoryListComponent {
-    @Input() history: MetadataHistory;
+    @Input() history: MetadataVersion[];
     @Output() compare: EventEmitter<MetadataVersion[]> = new EventEmitter();
     @Output() restore: EventEmitter<MetadataVersion> = new EventEmitter();
 

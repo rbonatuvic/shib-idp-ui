@@ -1,10 +1,17 @@
 <div class="container">
-    <metadata-header [metadata]="model$ | async"></metadata-header>
+    <metadata-header
+        [metadata]="model$ | async"
+        [version]="version$ | async"
+        [versionNumber]="versionNumber$ | async"
+        [isCurrent]="isCurrent$ | async"></metadata-header>
     <div class="px-3 my-3 d-flex justify-content-between">
-        <button class="btn btn-link">Version History</button>
+        <a class="btn btn-link" routerLink="../history">
+            <i class="fa fa-history sr-hidden"></i>
+            Version History
+        </a>
         <div class="btn-group">
-            <button class="btn" routerLinkActive="btn-primary">Options</button>
-            <button class="btn" routerLinkActive="btn-primary">XML</button>
+            <a class="btn" routerLink="../options" routerLinkActive="btn-primary">Options</a>
+            <a class="btn" routerLink="../xml" routerLinkActive="btn-primary">XML</a>
         </div>
     </div>
     <metadata-configuration [configuration]="configuration$ | async"></metadata-configuration>

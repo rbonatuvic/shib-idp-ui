@@ -5,7 +5,6 @@ import { MetadataPageComponent } from './metadata.component';
 import { ResolverRoutes } from './resolver/resolver.routing';
 import { ProviderRoutes } from './provider/provider.routing';
 import { ManagerRoutes } from './manager/manager.routing';
-import { VersionRoutes } from './version/version.routing';
 import { ConfigurationRoutes } from './configuration/configuration.routing';
 
 const routes: Routes = [
@@ -16,7 +15,6 @@ const routes: Routes = [
             ...ManagerRoutes,
             ...ResolverRoutes,
             ...ProviderRoutes,
-            ...VersionRoutes,
             ...ConfigurationRoutes
         ],
     },

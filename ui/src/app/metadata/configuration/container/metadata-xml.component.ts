@@ -13,8 +13,6 @@ import { DownloadXml } from '../action/configuration.action';
 })
 export class MetadataXmlComponent {
 
-    private ngUnsubscribe: Subject<void> = new Subject<void>();
-
     entity: Metadata;
     entity$: Observable<Metadata>;
     xml: string;

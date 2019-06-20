@@ -1,10 +1,10 @@
 import { Component, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
-import { VersionHistoryComponent } from './version-history.component';
+import { MetadataHistoryComponent } from './metadata-history.component';
 import { MetadataHistory } from '../model/history';
 import { MetadataVersion } from '../model/version';
-import { HistoryService } from '../service/history.service';
+import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
 
 export const TestData = {
@@ -33,14 +33,14 @@ const MockHistoryService = {
 };
 
 describe('Metadata Version History Component', () => {
-    let fixture: ComponentFixture<VersionHistoryComponent>;
-    let instance: VersionHistoryComponent;
+    let fixture: ComponentFixture<MetadataHistoryComponent>;
+    let instance: MetadataHistoryComponent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
                 {
-                    provide: HistoryService, useValue: MockHistoryService
+                    provide: MetadataHistoryService, useValue: MockHistoryService
                 }
             ],
             imports: [
@@ -48,11 +48,11 @@ describe('Metadata Version History Component', () => {
             ],
             declarations: [
                 MockHistoryListComponent,
-                VersionHistoryComponent
+                MetadataHistoryComponent
             ],
         });
 
-        fixture = TestBed.createComponent(VersionHistoryComponent);
+        fixture = TestBed.createComponent(MetadataHistoryComponent);
         instance = fixture.componentInstance;
         fixture.detectChanges();
     });
