@@ -4,15 +4,14 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfigurat
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.*
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -23,6 +22,8 @@ import spock.lang.Specification
 
 import javax.persistence.EntityManager
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.file
+import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes.HttpCachingType.none
 import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.*
 
 /**
@@ -90,5 +91,111 @@ class MetadataResolverEnversVersioningTests extends Specification {
         getTargetEntityForRevisionIndex(resolverHistory, 0).dynamicMetadataResolverAttributes.refreshDelayFactor == 0.75
         getRevisionEntityForRevisionIndex(resolverHistory, 0).principalUserName == 'anonymousUser'
         getRevisionEntityForRevisionIndex(resolverHistory, 0).timestamp > 0L
+    }
+
+    def "test versioning of FileBackedHttpMetadataResolver"() {
+        setup:
+        def expectedModifiedPersistentEntities = [FileBackedHttpMetadataResolver.name]
+
+        when:
+        FileBackedHttpMetadataResolver resolver = new FileBackedHttpMetadataResolver(name: 'fbmr').with {
+            it.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes(proxyUser: 'proxyUser',
+                    proxyPassword: 'proxyPass',
+                    httpCaching: none)
+            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes(indexesRef: 'indexRef')
+            it
+        }
+        def resolverHistory = updateAndGetRevisionHistoryOfMetadataResolver(resolver,
+                metadataResolverRepository,
+                FileBackedHttpMetadataResolver,
+                txMgr,
+                entityManager)
+
+        then:
+        resolverHistory.size() == 1
+        getTargetEntityForRevisionIndex(resolverHistory, 0).name == 'fbmr'
+        getTargetEntityForRevisionIndex(resolverHistory, 0).httpMetadataResolverAttributes.proxyUser == 'proxyUser'
+        getTargetEntityForRevisionIndex(resolverHistory, 0).httpMetadataResolverAttributes.proxyPassword == 'proxyPass'
+        getTargetEntityForRevisionIndex(resolverHistory, 0).httpMetadataResolverAttributes.httpCaching == none
+        getTargetEntityForRevisionIndex(resolverHistory, 0).reloadableMetadataResolverAttributes.indexesRef == 'indexRef'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).timestamp > 0L
+        getModifiedEntityNames(resolverHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+
+        when:
+        resolver.name = 'fbmrUPDATED'
+        resolver.httpMetadataResolverAttributes.proxyUser = 'proxyUserUPDATED'
+        resolver.httpMetadataResolverAttributes.proxyPassword = 'proxyPassUPDATED'
+        resolver.httpMetadataResolverAttributes.httpCaching = file
+        resolver.reloadableMetadataResolverAttributes.indexesRef = 'indexRefUPDATED'
+
+        resolverHistory = updateAndGetRevisionHistoryOfMetadataResolver(resolver,
+                metadataResolverRepository,
+                FileBackedHttpMetadataResolver,
+                txMgr,
+                entityManager)
+
+        then:
+        resolverHistory.size() == 2
+        getTargetEntityForRevisionIndex(resolverHistory, 1).name == 'fbmrUPDATED'
+        getTargetEntityForRevisionIndex(resolverHistory, 1).httpMetadataResolverAttributes.proxyUser == 'proxyUserUPDATED'
+        getTargetEntityForRevisionIndex(resolverHistory, 1).httpMetadataResolverAttributes.proxyPassword == 'proxyPassUPDATED'
+        getTargetEntityForRevisionIndex(resolverHistory, 1).httpMetadataResolverAttributes.httpCaching == file
+        getTargetEntityForRevisionIndex(resolverHistory, 1).reloadableMetadataResolverAttributes.indexesRef == 'indexRefUPDATED'
+        getRevisionEntityForRevisionIndex(resolverHistory, 1).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(resolverHistory, 1).timestamp > 0L
+        getModifiedEntityNames(resolverHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+
+        //Check the original revision is intact
+        getTargetEntityForRevisionIndex(resolverHistory, 0).name == 'fbmr'
+        getTargetEntityForRevisionIndex(resolverHistory, 0).httpMetadataResolverAttributes.proxyUser == 'proxyUser'
+        getTargetEntityForRevisionIndex(resolverHistory, 0).httpMetadataResolverAttributes.proxyPassword == 'proxyPass'
+        getTargetEntityForRevisionIndex(resolverHistory, 0).httpMetadataResolverAttributes.httpCaching == none
+        getTargetEntityForRevisionIndex(resolverHistory, 0).reloadableMetadataResolverAttributes.indexesRef == 'indexRef'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).timestamp > 0L
+    }
+
+    def "test versioning of DynamicHttpMetadataResolver"() {
+        setup:
+        def expectedModifiedPersistentEntities = [DynamicHttpMetadataResolver.name]
+
+        when:
+        DynamicHttpMetadataResolver resolver = new DynamicHttpMetadataResolver(name: 'dhmr')
+
+        def resolverHistory = updateAndGetRevisionHistoryOfMetadataResolver(resolver,
+                metadataResolverRepository,
+                DynamicHttpMetadataResolver,
+                txMgr,
+                entityManager)
+
+        then:
+        resolverHistory.size() == 1
+        getTargetEntityForRevisionIndex(resolverHistory, 0).name == 'dhmr'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).timestamp > 0L
+        getModifiedEntityNames(resolverHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
+
+        when:
+        resolver.name = 'dhmrUPDATED'
+
+        resolverHistory = updateAndGetRevisionHistoryOfMetadataResolver(resolver,
+                metadataResolverRepository,
+                DynamicHttpMetadataResolver,
+                txMgr,
+                entityManager)
+
+        then:
+        resolverHistory.size() == 2
+        getTargetEntityForRevisionIndex(resolverHistory, 1).name == 'dhmrUPDATED'
+        getRevisionEntityForRevisionIndex(resolverHistory, 1).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(resolverHistory, 1).timestamp > 0L
+        getModifiedEntityNames(resolverHistory, 1).sort() == expectedModifiedPersistentEntities.sort()
+
+        //Check the original revision is intact
+        getTargetEntityForRevisionIndex(resolverHistory, 0).name == 'dhmr'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).principalUserName == 'anonymousUser'
+        getRevisionEntityForRevisionIndex(resolverHistory, 0).timestamp > 0L
+        getModifiedEntityNames(resolverHistory, 0).sort() == expectedModifiedPersistentEntities.sort()
     }
 }
