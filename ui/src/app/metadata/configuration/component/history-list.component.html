@@ -26,7 +26,7 @@
             <td>{{ version.date | date }}</td>
             <td>{{ version.creator }}</td>
             <td>
-                <button class="btn btn-link" (click)="restoreVersion(version)">
+                <button class="btn btn-link" (click)="restore.emit(version)">
                     <i class="fa fa-undo"></i>&nbsp;
                     <translate-i18n key="label.restore">Restore</translate-i18n>
                 </button>
@@ -34,6 +34,6 @@
         </tr>
     </tbody>
 </table>
-<button class="btn btn-primary" (click)="compareSelected(selected)" [disabled]="!selected.length">
+<button class="btn btn-primary" (click)="compare.emit(selected)" [disabled]="!selected.length">
     <translate-i18n key="label.compare-selected">Compare Selected</translate-i18n> <span *ngIf="selected.length">({{ selected.length }})</span>
 </button>

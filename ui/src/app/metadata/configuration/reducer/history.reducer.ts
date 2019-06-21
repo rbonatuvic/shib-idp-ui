@@ -4,7 +4,6 @@ import { MetadataVersion } from '../model/version';
 
 export interface HistoryState extends EntityState<MetadataVersion> {
     selectedVersionId: string;
-    versions: MetadataVersion[];
 }
 
 export function sortByDate(a: MetadataVersion, b: MetadataVersion): number {
@@ -17,8 +16,7 @@ export const adapter: EntityAdapter<MetadataVersion> = createEntityAdapter<Metad
 });
 
 export const initialState: HistoryState = adapter.getInitialState({
-    selectedVersionId: null,
-    versions: []
+    selectedVersionId: null
 });
 
 export function reducer(state = initialState, action: HistoryActionsUnion): HistoryState {

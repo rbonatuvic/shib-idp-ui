@@ -9,15 +9,11 @@ import { MetadataVersion } from '../model/version';
 })
 
 export class MetadataHeaderComponent {
-    @Input() metadata: Metadata;
+    @Input() isEnabled: boolean;
     @Input() version: MetadataVersion;
     @Input() versionNumber: number;
     @Input() isCurrent: boolean;
 
     constructor() {}
-
-    get isEnabled(): boolean {
-        return this.metadata ? ('serviceEnabled' in this.metadata) ? this.metadata.serviceEnabled : this.metadata.enabled : false;
-    }
 }
 

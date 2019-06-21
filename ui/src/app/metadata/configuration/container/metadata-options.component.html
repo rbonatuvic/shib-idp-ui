@@ -1,6 +1,6 @@
 <div class="container">
     <metadata-header
-        [metadata]="model$ | async"
+        [isEnabled]="isEnabled$ | async"
         [version]="version$ | async"
         [versionNumber]="versionNumber$ | async"
         [isCurrent]="isCurrent$ | async"></metadata-header>

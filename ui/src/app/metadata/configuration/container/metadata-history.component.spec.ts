@@ -6,6 +6,8 @@ import { MetadataHistory } from '../model/history';
 import { MetadataVersion } from '../model/version';
 import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
+import { StoreModule, combineReducers } from '@ngrx/store';
+import * as fromConfiguration from '../reducer';
 
 export const TestData = {
     versions: [
@@ -44,7 +46,10 @@ describe('Metadata Version History Component', () => {
                 }
             ],
             imports: [
-                MockI18nModule
+                MockI18nModule,
+                StoreModule.forRoot({
+                    'metadata-configuration': combineReducers(fromConfiguration.reducers),
+                }),
             ],
             declarations: [
                 MockHistoryListComponent,

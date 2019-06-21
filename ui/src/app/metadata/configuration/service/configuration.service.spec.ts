@@ -1,9 +1,10 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { MetadataConfigurationService, PATHS } from './configuration.service';
+import { MetadataConfigurationService } from './configuration.service';
 import { FileBackedHttpMetadataProviderEditor } from '../../provider/model';
 import { MetadataSourceEditor } from '../../domain/model/wizards/metadata-source-editor';
+import { PATHS } from '../configuration.values';
 
 describe(`Attributes Service`, () => {
     beforeEach(() => {
