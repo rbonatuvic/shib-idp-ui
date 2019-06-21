@@ -3,6 +3,8 @@ export interface MetadataEntity {
     enabled: boolean;
     kind: string;
 
+    createdBy: string;
+
     getId(): string;
     getDisplayId(): string;
     isDraft(): boolean;
