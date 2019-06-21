@@ -56,7 +56,8 @@ describe('Resolver Wizard Step Component', () => {
                             ...initialState,
                             changes: {
                                 id: 'foo',
-                                serviceProviderName: 'bar'
+                                serviceProviderName: 'bar',
+                                createdBy: 'admin'
                             }
                         }
                     }),

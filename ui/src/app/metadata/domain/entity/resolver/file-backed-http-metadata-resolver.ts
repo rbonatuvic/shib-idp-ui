@@ -18,6 +18,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     createdDate?: string;
     modifiedDate?: string;
     version: string;
+    createdBy: string;
 
     entityId = '';
     serviceProviderName = '';
@@ -48,6 +49,8 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
 
     attributeRelease = [] as string[];
 
+    [property: string]: unknown;
+
     constructor(descriptor?: Partial<MetadataResolver>) {
         Object.assign(this, descriptor);
     }
@@ -65,7 +68,7 @@ export class FileBackedHttpMetadataResolver implements MetadataResolver, Metadat
     }
 
     getCreationDate(): Date {
-        return new Date(this.createdDate);
+        return this.createdDate ? new Date(this.createdDate) : null;
     }
 
     get name(): string {

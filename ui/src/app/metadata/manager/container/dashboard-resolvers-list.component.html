@@ -1,45 +1,51 @@
 <section class="section">
     <div class="section-body border border-top-0 border-primary">
         <div class="section-header bg-primary p-2 text-light">
-            <div class="row justify-content-between">
-                <div class="col-md-8">
-                    <span class="lead" translate="label.current-metadata-sources">Current Metadata Sources</span>
-                </div>
-                <div class="col-md-4">
-                    <provider-search
-                        [query]="searchQuery$ | async"
-                        [searching]="loading$ | async"
-                        (search)="search($event)">
-                    </provider-search>
-                </div>
-            </div>
+            <span class="lead" translate="label.current-metadata-sources">Current Metadata Sources</span>
         </div>
         <div class="p-3">
-            <ul class="list-unstyled m-0">
-                <li *ngFor="let resolver of limited$ | async; index as i"
-                    [ngClass]="{'mt-2': i > 0}"
-                    aria-label="Provider Item Accordion. Press Spacebar to open">
-                    <resolver-item
-                        [entity]="resolver"
-                        [isOpen]="(entitiesOpen$ | async)[resolver.getId()]"
-                        (select)="edit(resolver)"
-                        (toggle)="toggleEntity(resolver)"
-                        (preview)="viewConfiguration(resolver)"
-                        (delete)="deleteResolver(resolver)"
-                        (history)="viewMetadataHistory(resolver)"
-                        [allowDelete]="resolver.isDraft()">
-                    </resolver-item>
-                </li>
-            </ul>
-            <div class="mt-3 clearfix" *ngIf="(total$ | async) > limit">
-                <ngb-pagination
-                    class="float-right"
-                    [collectionSize]="total$ | async"
-                    [page]="page"
-                    [pageSize]="limit"
-                    (pageChange)="changePage($event)"
-                    aria-label="Pages">
-                </ngb-pagination>
+            <provider-search
+                class="w-50 d-block"
+                [query]="searchQuery$ | async"
+                [searching]="loading$ | async"
+                (search)="search($event)">
+            </provider-search>
+            <div class="table-responsive mt-3" *ngIf="limited$ | async">
+                <table class="table table-striped w-100 table-hover">
+                    <thead>
+                        <th translate="label.title">Title</th>
+                        <th class="w-40" translate="label.entity-id">Entity ID</th>
+                        <th class="w-15" translate="label.author">Author</th>
+                        <th class="w-15" translate="label.creation-date">Created Date</th>
+                        <th class="text-right w-15" translate="label.enabled">Enabled</th>
+                    </thead>
+                    <tbody infiniteScroll
+                            [infiniteScrollDistance]="2"
+                            [infiniteScrollThrottle]="50"
+                            (scrolled)="onScroll($event)">
+                        <tr *ngFor="let resolver of limited$ | async; index as i">
+                            <td><a [routerLink]="['/', 'metadata', 'resolver', resolver.getId(), 'configuration', 'options']">{{ resolver.name }}</a></td>
+                            <td>{{ resolver.getDisplayId() }}</td>
+                            <td>{{ resolver.createdBy }}</td>
+                            <td>{{ resolver.getCreationDate() ? (resolver.getCreationDate() | customDate) : '&mdash;' }}</td>
+                            <td class="text-right">
+                                <span class="badge badge-warning"
+                                    *ngIf="resolver.isDraft()"
+                                    aria-label="Warning Badge: Incomplete Form"
+                                    translate="message.incomplete-form">
+                                    Incomplete Form
+                                </span>
+                                <span class="badge"
+                                    *ngIf="!resolver.isDraft()"
+                                    [class.badge-danger]="!resolver.enabled"
+                                    [class.badge-success]="resolver.enabled">
+                                    <span *ngIf="resolver.enabled" translate="value.enabled">Enabled</span>
+                                    <span *ngIf="!resolver.enabled" translate="value.disabled">Enabled</span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -62,7 +62,8 @@ describe('Resolver Wizard Component', () => {
                             ...initialState,
                             changes: {
                                 id: 'foo',
-                                serviceProviderName: 'bar'
+                                serviceProviderName: 'bar',
+                                createdBy: 'admin'
                             }
                         }
                     }),
@@ -126,7 +127,7 @@ describe('Resolver Wizard Component', () => {
         }));
 
         it('should open a modal', () => {
-            app.changes = {id: 'bar', serviceProviderName: 'foo'};
+            app.changes = {id: 'bar', serviceProviderName: 'foo', createdBy: 'admin'};
             spyOn(modal, 'open').and.callThrough();
             app.canDeactivate(null, null, {
                 url: 'foo'

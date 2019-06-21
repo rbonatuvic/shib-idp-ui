@@ -12,7 +12,8 @@ describe('Configuration Reducer', () => {
     const model: MetadataResolver = {
         id: 'foo',
         serviceProviderName: 'foo',
-        '@type': 'MetadataResolver'
+        '@type': 'MetadataResolver',
+        createdBy: 'admin'
     };
     const xml = `<entity-descriptor></entity-descriptor>`;
 
