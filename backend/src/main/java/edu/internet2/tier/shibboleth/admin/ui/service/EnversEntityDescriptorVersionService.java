@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * Hibernate Envers based implementation of {@link EntityDescriptorVersionService}.
+ * TODO: refactor this implementation using EnversVersionServiceSupport class
  */
 public class EnversEntityDescriptorVersionService implements EntityDescriptorVersionService {
 

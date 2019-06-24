@@ -3,10 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 /**
