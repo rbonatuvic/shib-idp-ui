@@ -48,9 +48,6 @@ class MetadataResolverEnversVersioningTests extends Specification {
     @Autowired
     PlatformTransactionManager txMgr
 
-    @Autowired
-    OpenSamlObjects openSamlObjects
-
     def "test versioning of LocalDynamicMetadataResolver"() {
         setup:
         def expectedModifiedPersistentEntities = [LocalDynamicMetadataResolver.name]

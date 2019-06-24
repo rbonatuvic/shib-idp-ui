@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Column;
@@ -35,6 +36,8 @@ import java.util.UUID;
         @JsonSubTypes.Type(value=SignatureValidationFilter.class, name="SignatureValidation"),
         @JsonSubTypes.Type(value=RequiredValidUntilFilter.class, name="RequiredValidUntil"),
         @JsonSubTypes.Type(value=NameIdFormatFilter.class, name="NameIDFormat")})
+@Audited
+@AuditOverride(forClass = AbstractAuditable.class)
 public class MetadataFilter extends AbstractAuditable {
 
     @JsonProperty("@type")

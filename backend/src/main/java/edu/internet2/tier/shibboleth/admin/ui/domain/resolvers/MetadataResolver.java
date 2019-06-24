@@ -74,9 +74,11 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean doInitialization = true;
 
+    @JsonIgnore
+    private Long versionModifiedTimestamp;
+
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
-    @NotAudited
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
 
     @Transient
@@ -88,5 +90,9 @@ public class MetadataResolver extends AbstractAuditable {
             return this.version;
         }
         return this.hashCode();
+    }
+
+    public void markAsModified() {
+        this.versionModifiedTimestamp = System.currentTimeMillis();
     }
 }
