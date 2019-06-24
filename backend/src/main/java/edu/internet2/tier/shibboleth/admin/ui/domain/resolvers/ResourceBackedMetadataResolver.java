@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBa
 @Getter
 @Setter
 @ToString
+@Audited
 public class ResourceBackedMetadataResolver extends MetadataResolver {
     public ResourceBackedMetadataResolver() {
         type = "ResourceBackedMetadataResolver";

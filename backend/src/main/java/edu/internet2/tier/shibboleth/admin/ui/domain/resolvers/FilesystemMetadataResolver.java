@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @ToString
+@Audited
 public class FilesystemMetadataResolver extends MetadataResolver {
     public FilesystemMetadataResolver() {
         type = "FilesystemMetadataResolver";

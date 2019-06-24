@@ -35,7 +35,6 @@ import java.util.UUID;
         @JsonSubTypes.Type(value=SignatureValidationFilter.class, name="SignatureValidation"),
         @JsonSubTypes.Type(value=RequiredValidUntilFilter.class, name="RequiredValidUntil"),
         @JsonSubTypes.Type(value=NameIdFormatFilter.class, name="NameIDFormat")})
-@Audited
 public class MetadataFilter extends AbstractAuditable {
 
     @JsonProperty("@type")

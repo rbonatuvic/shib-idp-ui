@@ -13,6 +13,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -74,6 +75,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
+    @NotAudited
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
 
     @Transient
