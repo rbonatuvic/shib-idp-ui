@@ -14,7 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,7 +29,7 @@ import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EqualsAndHashCode(callSuper = true, exclude = {"version"})
+@EqualsAndHashCode(callSuper = true, exclude = {"version", "versionModifiedTimestamp"})
 @NoArgsConstructor
 @Getter
 @Setter
