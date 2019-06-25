@@ -24,6 +24,7 @@ import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
 
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 
 @DataJpaTest
@@ -53,7 +54,7 @@ class EnversMetadataResolverVersionServiceTests extends Specification {
         versions.size() == 1
         versions[0].id
         versions[0].creator
-        versions[0].date < LocalDateTime.now()
+        versions[0].date < ZonedDateTime.now()
 
         when: 'Second version'
         mr.name = 'ldmr2'

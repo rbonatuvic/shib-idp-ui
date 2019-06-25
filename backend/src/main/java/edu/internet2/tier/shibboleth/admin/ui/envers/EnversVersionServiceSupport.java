@@ -1,13 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.envers;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -38,8 +37,8 @@ public class EnversVersionServiceSupport {
                             ((PrincipalAwareRevisionEntity) it).getPrincipalUserName(),
                             ((PrincipalAwareRevisionEntity) it).getRevisionDate()
                                     .toInstant()
-                                    .atZone(ZoneId.systemDefault())
-                                    .toLocalDateTime());
+                                    .atOffset(ZoneOffset.UTC)
+                                    .toZonedDateTime());
                 })
                 .sorted(comparing(Version::getDate))
                 .collect(toList());
