@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 
 import javax.annotation.Nonnull;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Endpoint extends AbstractAttributeExtensibleXMLObject implements org.opensaml.saml.saml2.metadata.Endpoint {
 
     private String binding;

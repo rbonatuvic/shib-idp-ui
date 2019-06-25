@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import org.hibernate.envers.Audited;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 import javax.annotation.Nullable;
@@ -10,6 +11,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Audited
 abstract class AbstractLangBearingURL extends XSURI implements LocalizedURI {
     @Column(name = "informationUrlXmlLang")
     private String xmlLang;

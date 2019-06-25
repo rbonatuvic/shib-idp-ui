@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @MappedSuperclass
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public abstract class AbstractDescriptor extends AbstractAttributeExtensibleXMLObject implements CacheableSAMLObject, TimeBoundSAMLObject, SignableXMLObject {
     private Long cacheDuration;
 
