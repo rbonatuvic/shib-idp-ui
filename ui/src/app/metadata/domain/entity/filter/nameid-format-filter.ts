@@ -7,6 +7,7 @@ export class NameIDFormatFilterEntity implements MetadataFilter, MetadataEntity 
     modifiedDate?: string;
     version: string;
     resourceId: string;
+    createdBy: string;
 
     name = '';
     filterEnabled = false;

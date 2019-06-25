@@ -15,6 +15,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -52,8 +53,8 @@ public class EnversEntityDescriptorVersionService implements EntityDescriptorVer
                             ((PrincipalAwareRevisionEntity) it).getPrincipalUserName(),
                             ((PrincipalAwareRevisionEntity) it).getRevisionDate()
                                     .toInstant()
-                                    .atZone(ZoneId.systemDefault())
-                                    .toLocalDateTime());
+                                    .atOffset(ZoneOffset.UTC)
+                                    .toZonedDateTime());
                 })
                 .sorted(comparing(Version::getDate))
                 .collect(toList());

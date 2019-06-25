@@ -12,7 +12,7 @@ import { CustomWidgetRegistry } from '../schema-form/registry';
 import { WidgetRegistry, SchemaValidatorFactory } from 'ngx-schema-form';
 import { CustomSchemaValidatorFactory } from '../schema-form/service/schema-validator';
 import { MetadataVersionModule } from './version/version.module';
-
+import { MetadataConfigurationModule } from './configuration/configuration.module';
 
 @NgModule({
     imports: [
@@ -22,6 +22,7 @@ import { MetadataVersionModule } from './version/version.module';
         ManagerModule.forRoot(),
         ProviderModule.forRoot(),
         MetadataVersionModule.forRoot(),
+        MetadataConfigurationModule.forRoot(),
         MetadataRoutingModule,
         I18nModule
     ],

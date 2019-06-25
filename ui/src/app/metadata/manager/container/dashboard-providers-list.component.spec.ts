@@ -15,6 +15,7 @@ import { ProviderItemComponent } from '../component/provider-item.component';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
+import { Observable, of } from 'rxjs';
 
 
 describe('Dashboard Providers List Page', () => {
@@ -61,6 +62,7 @@ describe('Dashboard Providers List Page', () => {
         modal = TestBed.get(NgbModal);
 
         spyOn(store, 'dispatch').and.callThrough();
+        spyOn(store, 'select').and.returnValues(of([]), of({'foo': true}));
     });
 
     it('should compile', () => {

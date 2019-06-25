@@ -35,8 +35,7 @@ describe('Editor Nav Component', () => {
         id: 'common',
         label: 'Common Attributes',
         index: 2,
-        initialValues: [],
-        schema: 'assets/schema/provider/filebacked-http-common.schema.json'
+        initialValues: []
     };
 
     beforeEach(async(() => {
