@@ -24,9 +24,9 @@ public class EnversVersionServiceSupport {
         this.entityManager = entityManager;
     }
 
-    public List<Version> findVersionsForPersistentEntity(String resourceId, Class<?> enityClass) {
+    public List<Version> findVersionsForPersistentEntity(String resourceId, Class<?> entityClass) {
         List revs = AuditReaderFactory.get(entityManager).createQuery()
-                .forRevisionsOfEntity(enityClass, false, false)
+                .forRevisionsOfEntity(entityClass, false, false)
                 .add(AuditEntity.property("resourceId").eq(resourceId))
                 .getResultList();
 

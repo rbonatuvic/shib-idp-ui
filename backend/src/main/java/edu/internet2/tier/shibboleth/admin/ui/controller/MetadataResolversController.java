@@ -5,10 +5,12 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotF
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolverValidationService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.OpenSamlChainingMetadataResolverUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +70,9 @@ public class MetadataResolversController {
 
     @Autowired
     MetadataResolverConverterService metadataResolverConverterService;
+
+    @Autowired
+    MetadataResolverVersionService versionService;
 
     @ExceptionHandler({InvalidTypeIdException.class, IOException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<?> unableToParseJson(Exception ex) {
@@ -149,6 +154,30 @@ public class MetadataResolversController {
         return ResponseEntity.ok(persistedResolver);
     }
 
+    //Versioning endpoints
+
+    @GetMapping("/MetadataResolvers/{resourceId}/Versions")
+    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
+        MetadataResolver resolver = resolverRepository.findByResourceId(resourceId);
+        if (resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Version> versions = versionService.findVersionsForMetadataResolver(resourceId);
+        if (versions.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(versions);
+    }
+
+    @GetMapping("/MetadataResolvers/{resourceId}/Versions/{versionId}")
+    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
+        MetadataResolver resolver = versionService.findSpecificVersionOfMetadataResolver(resourceId, versionId);
+        if (resolver == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resolver);
+    }
+
     @SuppressWarnings("Unchecked")
     private ResponseEntity<?> validate(MetadataResolver metadataResolver) {
         ValidationResult validationResult = metadataResolverValidationService.validateIfNecessary(metadataResolver);
@@ -158,6 +187,8 @@ public class MetadataResolversController {
         }
         return null;
     }
+
+    //Private methods
 
     private static URI getResourceUriFor(MetadataResolver resolver) {
         return ServletUriComponentsBuilder

@@ -14,6 +14,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetada
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
@@ -22,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
@@ -99,7 +99,6 @@ class MetadataFilterEnversVersioningTests extends Specification {
         mrv3.metadataFilters[0].removeEmptyEntitiesDescriptors == false
     }
 
-    //@DirtiesContext
     def "test versioning of MetadataResolver with EntityAttributesFilter"() {
         when: 'Add initial filter'
         def mr = new FileBackedHttpMetadataResolver(name: 'resolver')
@@ -145,7 +144,6 @@ class MetadataFilterEnversVersioningTests extends Specification {
         mrv3.metadataFilters[0].attributes[0].attributeValues[0].xsStringvalue == 'attr1, attr2'
     }
 
-    //@DirtiesContext
     def "test versioning of MetadataResolver with SignatureValidationFilter"() {
         when: 'Add initial filter'
         def mr = new DynamicHttpMetadataResolver(name: 'resolver')
@@ -238,7 +236,6 @@ class MetadataFilterEnversVersioningTests extends Specification {
         mrv3.metadataFilters[0].maxValidityInterval == 'PT30S'
     }
 
-    @DirtiesContext
     def "test versioning of MetadataResolver with NameIdFormatFilter"() {
         when: 'Add initial filter'
         def mr = new ResourceBackedMetadataResolver(name: 'resolver')
@@ -289,7 +286,7 @@ class MetadataFilterEnversVersioningTests extends Specification {
 
     def "test versioning of deleting a filter"() {
         when: 'Add initial filter'
-        def mr = new LocalDynamicMetadataResolver(name: 'resolver')
+        def mr = new MetadataResolver(name: 'resolver')
         def filter = new EntityRoleWhiteListFilter()
 
         mr.metadataFilters.add(filter)
