@@ -1,7 +1,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { HistoryService } from './history.service';
+import { MetadataHistoryService } from './history.service';
 
 describe(`Attributes Service`, () => {
     beforeEach(() => {
@@ -11,15 +11,15 @@ describe(`Attributes Service`, () => {
                 HttpClientTestingModule
             ],
             providers: [
-                HistoryService
+                MetadataHistoryService
             ]
         });
     });
 
     describe('query method', () => {
-        it(`should return a MetadataHistory`, async(inject([HistoryService, HttpTestingController],
-            (service: HistoryService) => {
-                service.query().subscribe(history => {
+        it(`should return a MetadataHistory`, async(inject([MetadataHistoryService, HttpTestingController],
+            (service: MetadataHistoryService) => {
+                service.query('foo', 'resolver').subscribe(history => {
                     expect(history).toBeDefined();
                 });
             }

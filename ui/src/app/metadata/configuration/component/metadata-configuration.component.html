@@ -1,5 +1,5 @@
 <div *ngIf="configuration">
-    <section class="px-3 mb-3" *ngFor="let section of configuration.sections; let i = index;">
+    <section *ngFor="let section of configuration.sections; let i = index;">
         <div class="config-group">
             <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
                 <h2 class="title h4 m-0 flex-grow-1">
@@ -7,10 +7,10 @@
                     <span class="text">{{ section.label | translate }}</span>
                 </h2>
                 <div class="actions px-2">
-                    <a class="edit-link change-view" [routerLink]="['../', 'edit', section.id]">
-                        <i class="fa fa-edit"></i>
+                    <button class="btn btn-link edit-link change-view" (click)="edit(section.id)">
+                        <i class="fa fa-edit"></i>&nbsp;
                         <span translate="action.edit">Edit</span>
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="d-flex border-bottom border-light border-2 p-2">

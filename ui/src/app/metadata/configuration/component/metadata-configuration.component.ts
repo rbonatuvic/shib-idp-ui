@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 
 @Component({
@@ -10,5 +11,12 @@ import { MetadataConfiguration } from '../model/metadata-configuration';
 export class MetadataConfigurationComponent {
     @Input() configuration: MetadataConfiguration;
 
-    constructor() { }
+    constructor(
+        private router: Router,
+        private activatedRoute: ActivatedRoute
+    ) { }
+
+    edit(id: string): void {
+        this.router.navigate(['../', 'edit', id], { relativeTo: this.activatedRoute.parent });
+    }
 }

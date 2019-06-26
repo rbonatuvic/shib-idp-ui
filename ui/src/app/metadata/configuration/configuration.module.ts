@@ -12,13 +12,17 @@ import { MetadataConfigurationService } from './service/configuration.service';
 import * as fromConfig from './reducer';
 import { MetadataConfigurationEffects } from './effect/configuration.effect';
 import { ConfigurationPropertyComponent } from './component/configuration-property.component';
-import { DomainModule } from '../domain/domain.module';
 import { PrimitivePropertyComponent } from './component/primitive-property.component';
 import { ObjectPropertyComponent } from './component/object-property.component';
 import { ArrayPropertyComponent } from './component/array-property.component';
 import { RouterModule } from '@angular/router';
 import { MetadataOptionsComponent } from './container/metadata-options.component';
 import { MetadataXmlComponent } from './container/metadata-xml.component';
+import { MetadataHeaderComponent } from './component/metadata-header.component';
+import { MetadataHistoryEffects } from './effect/history.effect';
+import { MetadataHistoryService } from './service/history.service';
+import { MetadataHistoryComponent } from './container/metadata-history.component';
+import { HistoryListComponent } from './component/history-list.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +33,10 @@ import { MetadataXmlComponent } from './container/metadata-xml.component';
         PrimitivePropertyComponent,
         ObjectPropertyComponent,
         ArrayPropertyComponent,
-        ConfigurationComponent
+        ConfigurationComponent,
+        MetadataHeaderComponent,
+        MetadataHistoryComponent,
+        HistoryListComponent
     ],
     entryComponents: [],
     imports: [
@@ -46,7 +53,8 @@ export class MetadataConfigurationModule {
         return {
             ngModule: RootMetadataConfigurationModule,
             providers: [
-                MetadataConfigurationService
+                MetadataConfigurationService,
+                MetadataHistoryService
             ]
         };
     }
@@ -56,7 +64,7 @@ export class MetadataConfigurationModule {
     imports: [
         MetadataConfigurationModule,
         StoreModule.forFeature('metadata-configuration', fromConfig.reducers),
-        EffectsModule.forFeature([MetadataConfigurationEffects])
+        EffectsModule.forFeature([MetadataConfigurationEffects, MetadataHistoryEffects])
     ],
     providers: []
 })

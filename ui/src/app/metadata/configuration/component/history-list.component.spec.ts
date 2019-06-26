@@ -8,16 +8,15 @@ import { MetadataVersion } from '../model/version';
 export const TestData = {
     versions: [
         {
-            versionNumber: 1,
-            saveDate: new Date(),
-            changedBy: 'admin',
-            actions: []
+            id: 'foo',
+            date: new Date().toDateString(),
+            creator: 'admin'
         }
     ]
 };
 
 @Component({
-    template: `<history-list [history]="history" (compare)="compare($event)" (restore)="restore($event)"></history-list>`
+    template: `<history-list [history]="history.versions" (compare)="compare($event)" (restore)="restore($event)"></history-list>`
 })
 class TestHostComponent {
     @ViewChild(HistoryListComponent)
@@ -32,7 +31,7 @@ class TestHostComponent {
 describe('Metadata History List Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let table: HistoryListComponent;
+    let list: HistoryListComponent;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -48,32 +47,34 @@ describe('Metadata History List Component', () => {
 
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;
-        table = instance.componentUnderTest;
+        list = instance.componentUnderTest;
         fixture.detectChanges();
     });
 
     it('should compile', () => {
-        expect(table).toBeDefined();
+        expect(list).toBeDefined();
     });
 
     describe('compare selected', () => {
         it('should allow the user to toggle selected versions for comparison', () => {
-            table.toggleVersionSelected(TestData.versions[0]);
-            expect(table.selected.length).toBe(1);
+            list.toggleVersionSelected(TestData.versions[0]);
+            expect(list.selected.length).toBe(1);
         });
 
         it('should emit an event with the selected values when the Compare Selected button is clicked', () => {
             spyOn(instance, 'compare');
             const selected = TestData.versions;
-            table.compareSelected(selected);
+            list.compareSelected(selected);
             fixture.detectChanges();
             expect(instance.compare).toHaveBeenCalledWith(selected);
         });
+    });
 
+    describe('restore', () => {
         it('should emit an event with the selected version when the Restore button is clicked', () => {
             spyOn(instance, 'restore');
             const selected = TestData.versions[0];
-            table.restoreVersion(selected);
+            list.restoreVersion(selected);
             fixture.detectChanges();
             expect(instance.restore).toHaveBeenCalledWith(selected);
         });

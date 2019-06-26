@@ -65,7 +65,7 @@ export class LoadSchemaError implements Action {
 export class LoadXmlRequest implements Action {
     readonly type = ConfigurationActionTypes.LOAD_XML_REQUEST;
 
-    constructor(public payload: string) { }
+    constructor(public payload: { id: string, type: string }) { }
 }
 
 export class LoadXmlSuccess implements Action {

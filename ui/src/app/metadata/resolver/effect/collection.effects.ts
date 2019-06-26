@@ -84,7 +84,7 @@ export class ResolverCollectionEffects {
     updateResolverSuccessRedirect$ = this.actions$.pipe(
         ofType<UpdateResolverSuccess>(ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['dashboard']))
+        tap(provider => this.router.navigate(['metadata', 'resolver', provider.id, 'configuration']))
     );
 
     @Effect()

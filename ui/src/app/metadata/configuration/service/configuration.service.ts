@@ -6,15 +6,7 @@ import { Wizard } from '../../../wizard/model';
 import { MetadataSourceEditor } from '../../domain/model/wizards/metadata-source-editor';
 import { MetadataProviderEditorTypes } from '../../provider/model';
 import { Schema } from '../model/schema';
-
-export enum PATHS {
-    resolver = 'EntityDescriptor',
-    provider = 'MetadataResolvers'
-}
-
-export const DEFINITIONS = {
-    resolver: MetadataSourceEditor
-};
+import { PATHS } from '../configuration.values';
 
 @Injectable()
 export class MetadataConfigurationService {
