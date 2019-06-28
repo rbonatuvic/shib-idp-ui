@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -13,6 +15,8 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @ToString
+@Audited
+@AuditOverride(forClass = AbstractAuditable.class)
 public class NameIdFormatFilterTarget extends AbstractAuditable {
 
     public enum NameIdFormatFilterTargetType {

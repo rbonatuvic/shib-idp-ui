@@ -2,7 +2,9 @@ package edu.internet2.tier.shibboleth.admin.ui.repository.envers
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import org.hibernate.envers.AuditReaderFactory
 import org.hibernate.envers.query.AuditEntity
@@ -36,8 +38,19 @@ class EnversTestsSupport {
         doInExplicitTransaction(txMgr) {
             edr.save(ed)
         }
-
         getRevisionHistoryForEntityType(em, EntityDescriptor, ed.resourceId)
+    }
+
+    static updateAndGetRevisionHistoryOfMetadataResolver(MetadataResolver mr,
+                                                         MetadataResolverRepository mrr,
+                                                         Class < ? > type,
+                                                         PlatformTransactionManager
+                                                                 txMgr, EntityManager em) {
+
+        doInExplicitTransaction(txMgr) {
+            mrr.save(mr)
+        }
+        getRevisionHistoryForEntityType(em, type, mr.resourceId)
     }
 
     static getRevisionHistoryForEntityType(EntityManager em, Class<?> entityType, String resourceId) {

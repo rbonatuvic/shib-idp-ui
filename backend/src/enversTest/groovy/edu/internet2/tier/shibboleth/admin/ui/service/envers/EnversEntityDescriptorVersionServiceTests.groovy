@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +20,7 @@ import spock.lang.Specification
 
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
+
 
 @DataJpaTest
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, TestConfiguration, SearchConfiguration, EntitiesVersioningConfiguration])
@@ -41,7 +43,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
     def "versioning service returns correct number of versions sorted by modified date in natural order"() {
         when: 'Initial version'
         EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1')
-        ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
         def versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)

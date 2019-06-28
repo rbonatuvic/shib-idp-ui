@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,7 +29,7 @@ import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EqualsAndHashCode(callSuper = true, exclude = {"version"})
+@EqualsAndHashCode(callSuper = true, exclude = {"version", "versionModifiedTimestamp"})
 @NoArgsConstructor
 @Getter
 @Setter
@@ -72,6 +73,9 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean doInitialization = true;
 
+    @JsonIgnore
+    private Long versionModifiedTimestamp;
+
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
     private List<MetadataFilter> metadataFilters = new ArrayList<>();
@@ -85,5 +89,9 @@ public class MetadataResolver extends AbstractAuditable {
             return this.version;
         }
         return this.hashCode();
+    }
+
+    public void markAsModified() {
+        this.versionModifiedTimestamp = System.currentTimeMillis();
     }
 }

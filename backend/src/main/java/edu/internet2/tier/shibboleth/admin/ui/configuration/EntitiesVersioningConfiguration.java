@@ -1,8 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import edu.internet2.tier.shibboleth.admin.ui.envers.EnversVersionServiceSupport;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EnversEntityDescriptorVersionService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EnversMetadataResolverVersionService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +19,17 @@ public class EntitiesVersioningConfiguration {
     private EntityManager entityManager;
 
     @Bean
-    EntityDescriptorVersionService entityDescriptorVersionService(EntityDescriptorService entityDescriptorService) {
+    public EntityDescriptorVersionService entityDescriptorVersionService(EntityDescriptorService entityDescriptorService) {
         return new EnversEntityDescriptorVersionService(entityManager, entityDescriptorService);
+    }
+
+    @Bean
+    public MetadataResolverVersionService metadataResolverVersionService() {
+        return new EnversMetadataResolverVersionService(enversVersionServiceSupport());
+    }
+
+    @Bean
+    public EnversVersionServiceSupport enversVersionServiceSupport() {
+        return new EnversVersionServiceSupport(entityManager);
     }
 }

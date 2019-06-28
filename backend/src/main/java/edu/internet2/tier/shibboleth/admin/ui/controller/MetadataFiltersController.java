@@ -7,16 +7,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFunctionDrivenDynamicHTTPMetadataResolver;
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlLocalDynamicMetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver;
-import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +30,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -102,19 +97,19 @@ public class MetadataFiltersController {
     public ResponseEntity<?> update(@PathVariable String metadataResolverId,
                                     @PathVariable String resourceId,
                                     @RequestBody MetadataFilter updatedFilter) {
-        MetadataFilter filterTobeUpdated = filterRepository.findByResourceId(resourceId);
-        if (filterTobeUpdated == null) {
-            return ResponseEntity.notFound().build();
-        }
 
         MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
 
-        // check to make sure that the relationship exists
-        if (!metadataResolver.getMetadataFilters().contains(filterTobeUpdated)) {
-            // TODO: find a better response
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        //Now we operate directly on the filter attached to MetadataResolver,
+        //Instead of fetching filter separately, to accommodate correct envers versioning with uni-directional one-to-many
+        Optional<MetadataFilter> filterTobeUpdatedOptional = metadataResolver.getMetadataFilters()
+                .stream()
+                .filter(it -> it.getResourceId().equals(resourceId))
+                .findFirst();
+        if(!filterTobeUpdatedOptional.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
-
+        MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();
         if (!resourceId.equals(updatedFilter.getResourceId())) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
@@ -129,6 +124,10 @@ public class MetadataFiltersController {
         updateConcreteFilterTypeData(filterTobeUpdated, updatedFilter);
 
         MetadataFilter persistedFilter = filterRepository.save(filterTobeUpdated);
+
+        //To support envers versioning from MetadataResolver side
+        metadataResolver.markAsModified();
+        repository.save(metadataResolver);
 
         // TODO: this is wrong
         metadataResolverService.reloadFilters(metadataResolver.getResourceId());
