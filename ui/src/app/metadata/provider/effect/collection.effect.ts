@@ -82,14 +82,14 @@ export class CollectionEffects {
         ofType<SelectProviderRequest>(ProviderCollectionActionTypes.SELECT_PROVIDER_REQUEST),
         map(action => action.payload),
         debounceTime(500),
-        switchMap(id =>
-            this.providerService
+        switchMap(id => {
+            return this.providerService
                 .find(id)
                 .pipe(
                     map(provider => new SelectProviderSuccess(provider)),
                     catchError(error => of(new SelectProviderError(error)))
-                )
-        )
+                );
+        })
     );
 
     @Effect()

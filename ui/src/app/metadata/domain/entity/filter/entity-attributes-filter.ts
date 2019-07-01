@@ -7,6 +7,7 @@ export class EntityAttributesFilterEntity implements MetadataFilter, MetadataEnt
     modifiedDate?: string;
     version: string;
     resourceId: string;
+    createdBy: string;
 
     name = '';
     filterEnabled = false;

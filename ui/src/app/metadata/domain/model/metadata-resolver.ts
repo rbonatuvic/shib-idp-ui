@@ -25,4 +25,6 @@ export interface MetadataResolver extends MetadataBase {
     serviceEnabled?: boolean;
     relyingPartyOverrides?: RelyingPartyOverrides;
     attributeRelease?: string[];
+
+    [property: string]: unknown;
 }

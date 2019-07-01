@@ -8,11 +8,14 @@ import lombok.ToString;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @ToString
+@Audited
 public class LocalDynamicMetadataResolver extends MetadataResolver {
     public LocalDynamicMetadataResolver() {
         type = "LocalDynamicMetadataResolver";

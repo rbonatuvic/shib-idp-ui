@@ -80,13 +80,13 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
 
         return validators;
     },
+    schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
     steps: [
         {
             id: 'common',
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'xmlId',
                 'requireValidMetadata',
@@ -99,7 +99,6 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'dynamicMetadataResolverAttributes'
             ]
@@ -111,7 +110,6 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             initialValues: [
                 { key: 'metadataFilters', value: [] }
             ],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'metadataFilters'
             ]
@@ -121,7 +119,6 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             label: 'label.finished',
             index: 5,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'enabled'
             ]
@@ -138,7 +135,6 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'xmlId',
                 'metadataRequestURLConstructionScheme',
@@ -153,7 +149,6 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'dynamicMetadataResolverAttributes'
             ]
@@ -165,7 +160,6 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             initialValues: [
                 { key: 'metadataFilters', value: [] }
             ],
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'metadataFilters'
             ]
@@ -176,7 +170,6 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             index: 4,
             initialValues: [],
             locked: true,
-            schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
             fields: [
                 'httpMetadataResolverAttributes'
             ]

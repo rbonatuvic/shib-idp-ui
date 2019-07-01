@@ -8,7 +8,5 @@ import * as fromProvider from '../reducer';
     styleUrls: []
 })
 export class ProviderComponent {
-    constructor(
-        private store: Store<fromProvider.ProviderState>
-    ) {}
+    constructor() {}
 }

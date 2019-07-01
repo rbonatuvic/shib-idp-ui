@@ -5,7 +5,6 @@ import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAnyBuilder
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
@@ -26,7 +25,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import groovy.json.JsonOutput
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -37,7 +35,6 @@ import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
-import spock.lang.Ignore
 import spock.lang.Specification
 
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
