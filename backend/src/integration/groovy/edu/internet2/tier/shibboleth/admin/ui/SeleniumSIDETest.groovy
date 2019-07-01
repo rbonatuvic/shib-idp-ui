@@ -14,7 +14,7 @@ import spock.lang.Unroll
 import java.nio.file.Paths
 
 //TODO: make config configurable
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = [ShibbolethUiApplication])
 @ActiveProfiles(['dev'])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD, methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class SeleniumSIDETest extends Specification {
@@ -60,7 +60,11 @@ class SeleniumSIDETest extends Specification {
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
                 it.remoteBrowser = 'firefox'
             }
-            it.baseurl = "http://jenkins:${this.randomPort}"
+            if (System.properties.getProperty('selenium.host')) {
+                it.baseurl = System.properties.getProperty('selenium.host')
+            } else {
+                it.baseurl = "http://jenkins:${this.randomPort}"
+            }
             it
         }
         def runner = new Runner()
