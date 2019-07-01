@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.envers;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
@@ -31,14 +32,11 @@ public class EnversVersionServiceSupport {
                 .getResultList();
 
         Object listOfVersions = revs.stream()
-                .map(it -> ((Object[]) it)[1])
+                //.map(it -> ((Object[]) it))
                 .map(it -> {
-                    return new Version(((PrincipalAwareRevisionEntity) it).idAsString(),
-                            ((PrincipalAwareRevisionEntity) it).getPrincipalUserName(),
-                            ((PrincipalAwareRevisionEntity) it).getRevisionDate()
-                                    .toInstant()
-                                    .atOffset(ZoneOffset.UTC)
-                                    .toZonedDateTime());
+                    return new Version(((PrincipalAwareRevisionEntity) ((Object[]) it)[1]).idAsString(),
+                            ((AbstractAuditable) ((Object[]) it)[0]).getModifiedBy(),
+                            ((AbstractAuditable) ((Object[]) it)[0]).modifiedDateAsZonedDateTime());
                 })
                 .sorted(comparing(Version::getDate))
                 .collect(toList());

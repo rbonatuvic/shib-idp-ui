@@ -17,7 +17,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 
 @MappedSuperclass
@@ -93,5 +98,21 @@ public abstract class AbstractAuditable implements Auditable {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public ZonedDateTime createdDateAsZonedDateTime() {
+        return toZonedDateTime(this.createdDate);
+    }
+
+    public ZonedDateTime modifiedDateAsZonedDateTime() {
+        return toZonedDateTime(this.modifiedDate);
+    }
+
+    private static ZonedDateTime toZonedDateTime(LocalDateTime localDateTime) {
+        return localDateTime
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .atOffset(ZoneOffset.UTC)
+                .toZonedDateTime();
     }
 }

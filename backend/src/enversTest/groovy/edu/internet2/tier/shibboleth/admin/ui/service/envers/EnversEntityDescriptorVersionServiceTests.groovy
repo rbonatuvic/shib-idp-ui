@@ -13,12 +13,12 @@ import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionSer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
 
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
 
@@ -26,6 +26,7 @@ import java.time.ZonedDateTime
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, TestConfiguration, SearchConfiguration, EntitiesVersioningConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@EnableJpaAuditing
 class EnversEntityDescriptorVersionServiceTests extends Specification {
 
     @Autowired
