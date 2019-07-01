@@ -44,6 +44,12 @@ export class MetadataConfigurationEffects {
         )
     );
 
+    @Effect({dispatch: false})
+    loadMetadataError$ = this.actions$.pipe(
+        ofType<LoadMetadataError>(ConfigurationActionTypes.LOAD_METADATA_ERROR),
+        tap(action => console.log(action))
+    );
+
     @Effect()
     loadMetadataXml$ = this.actions$.pipe(
         ofType<LoadMetadataRequest>(ConfigurationActionTypes.LOAD_METADATA_REQUEST),

@@ -1,12 +1,12 @@
-import { Store } from '@ngrx/store';
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil, map, withLatestFrom, filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { ActivatedRoute, Params } from '@angular/router';
 
 import * as fromConfiguration from '../reducer';
-import { MetadataConfiguration } from '../model/metadata-configuration';
-import { takeUntil, map, withLatestFrom, filter } from 'rxjs/operators';
-import { LoadMetadataRequest, ClearConfiguration, LoadXmlRequest } from '../action/configuration.action';
+
+import { LoadMetadataRequest, ClearConfiguration } from '../action/configuration.action';
 import { LoadHistoryRequest, ClearHistory, SelectVersion } from '../action/history.action';
 import * as fromReducer from '../reducer';
 
@@ -18,6 +18,8 @@ import * as fromReducer from '../reducer';
 })
 export class ConfigurationComponent implements OnDestroy {
     private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+    name$: Observable<string>;
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
@@ -49,6 +51,13 @@ export class ConfigurationComponent implements OnDestroy {
                 this.store.dispatch(new SelectVersion(version));
             }
         });
+
+        this.name$ = this.store
+            .select(fromReducer.getConfigurationModel)
+            .pipe(
+                filter(model => !!model),
+                map(model => model ? ('serviceProviderName' in model) ? model.serviceProviderName : model.name : false)
+            );
     }
 
     ngOnDestroy() {
