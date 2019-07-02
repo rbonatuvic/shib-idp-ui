@@ -21,26 +21,19 @@
                     <translate-i18n key="action.add-new">Add New</translate-i18n>
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
-                    <a class="nav-link"
-                        routerLink="/metadata/resolver/new"
-                        routerLinkActive="active"
-                        queryParamsHandling="preserve"
-                        [attr.aria-label]="'action.add-new-source' | translate"
-                        role="button">
-                        <i class="fa fa-cube fa-fw" aria-hidden="true"></i>
-                        &nbsp;
-                        <translate-i18n key="label.metadata-source">Metadata Source</translate-i18n>
-                    </a>
-                    <a class="nav-link"
-                        routerLink="/metadata/provider/wizard"
-                        routerLinkActive="active"
-                        [attr.aria-label]="'action.add-new-provider' | translate"
-                        role="button"
-                        *ngIf="isAdmin$ | async">
-                        <i class="fa fa-cubes fa-fw" aria-hidden="true"></i>
-                        &nbsp;
-                        <translate-i18n key="label.metadata-provider">Metadata Provider</translate-i18n>
-                    </a>
+                    <ng-container *ngFor="let action of nav$ | async">
+                        <a  href=""
+                            class="nav-link"
+                            (click)="action.action($event)"
+                            [attr.aria-label]="action.label | translate"
+                            role="button">
+                            <ng-container *ngIf="action.icon">
+                                <i class="fa fa-fw" [ngClass]="action.icon"></i>
+                                &nbsp;
+                            </ng-container>
+                            {{ action.content | translate }}
+                        </a>
+                    </ng-container>
                 </div>
             </li>
             <li class="nav-item">

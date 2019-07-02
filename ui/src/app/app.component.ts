@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -12,6 +12,9 @@ import { SetLocale } from './i18n/action/message.action';
 import { brand } from './app.brand';
 import { Brand } from './core/model/brand';
 import { UserLoadRequestAction } from './core/action/user.action';
+import { Router } from '@angular/router';
+import { NavigationService } from './core/service/navigation.service';
+import { NavigationAction } from './core/model/action';
 
 @Component({
     selector: 'app-root',
@@ -26,23 +29,39 @@ export class AppComponent implements OnInit {
     today = new Date();
     year = new Date().getFullYear();
     isAdmin$: Observable<boolean>;
-
     brand: Brand = brand;
+    nav$: Observable<NavigationAction[]>;
 
     formatter = v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : '';
 
     constructor(
         private store: Store<fromRoot.State>,
-        private i18nService: I18nService
+        private i18nService: I18nService,
+        private router: Router,
+        private navService: NavigationService
     ) {
         this.version$ = this.store.select(fromRoot.getVersionInfo);
         this.formatted$ = this.version$.pipe(map(this.formatter));
         this.isAdmin$ = this.store.select(fromRoot.isCurrentUserAdmin);
+
+        this.nav$ = this.navService.emitter;
     }
 
     ngOnInit(): void {
         this.store.dispatch(new UserLoadRequestAction());
         this.store.dispatch(new VersionInfoLoadRequestAction());
         this.store.dispatch(new SetLocale(this.i18nService.getCurrentLocale()));
+
+        /*
+        this.router
+            .events
+            .pipe(
+                catchError(err => {
+                    console.error(err);
+                    return err;
+                })
+            )
+            .subscribe((ev) => console.log(ev));
+        */
     }
 }

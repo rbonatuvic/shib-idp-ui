@@ -186,7 +186,8 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean> {
-        if (nextState.url.match('blank') && !!nextState.root.queryParams.id) {
+        const changingIds = currentState.root.queryParams.id !== nextState.root.queryParams.id;
+        if (nextState.url.match('blank') && !!nextState.root.queryParams.id && !changingIds) {
             return of(true);
         }
         if (this.hasChanges(this.changes)) {
