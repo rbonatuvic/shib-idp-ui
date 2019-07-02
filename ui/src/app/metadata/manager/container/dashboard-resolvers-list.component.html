@@ -24,16 +24,28 @@
                             [infiniteScrollThrottle]="50"
                             (scrolled)="onScroll($event)">
                         <tr *ngFor="let resolver of limited$ | async; index as i">
-                            <td><a [routerLink]="['/', 'metadata', 'resolver', resolver.getId(), 'configuration', 'options']">{{ resolver.name }}</a></td>
+                            <td *ngIf="!resolver.isDraft()">
+                                <a [routerLink]="['/', 'metadata', 'resolver', resolver.getId(), 'configuration', 'options']">{{ resolver.name }}</a>
+                            </td>
+                            <td *ngIf="resolver.isDraft()">
+                                <a [routerLink]="['/', 'metadata', 'resolver', 'new', 'blank', 'common']"
+                                    [queryParams]="{'id': resolver.getId()}">{{ resolver.name }}</a>
+                            </td>
                             <td>{{ resolver.getDisplayId() }}</td>
                             <td>{{ resolver.createdBy }}</td>
                             <td>{{ resolver.getCreationDate() ? (resolver.getCreationDate() | customDate) : '&mdash;' }}</td>
                             <td class="text-right">
-                                <span class="badge badge-warning"
-                                    *ngIf="resolver.isDraft()"
-                                    aria-label="Warning Badge: Incomplete Form"
-                                    translate="message.incomplete-form">
-                                    Incomplete Form
+                                <span *ngIf="resolver.isDraft()">
+                                    <button class="btn btn-outline btn-sm btn-danger" (click)="deleteResolver(resolver)">
+                                        <span class="sr-only">Delete</span>
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                    &nbsp;
+                                    <span class="badge badge-warning"
+                                        aria-label="Warning Badge: Incomplete Form"
+                                        translate="message.incomplete-form">
+                                        Incomplete Form
+                                    </span>
                                 </span>
                                 <span class="badge"
                                     *ngIf="!resolver.isDraft()"

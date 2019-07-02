@@ -95,17 +95,15 @@ describe('Dashboard Resolvers List Page', () => {
     });
 
     describe('edit method', () => {
-        it('should route to the edit page', () => {
-            spyOn(router, 'navigate');
-            instance.edit(resolver);
-            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', resolver.id, 'edit']);
-        });
         it('should route to the wizard page', () => {
+            const evt = new Event('a type');
             spyOn(router, 'navigate');
-            instance.edit(draft);
+            spyOn(evt, 'preventDefault');
+            instance.edit(evt, draft);
             expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', 'new', 'blank', 'common'], {
                 queryParams: { id: '1' }
             });
+            expect(evt.preventDefault).toHaveBeenCalled();
         });
     });
 

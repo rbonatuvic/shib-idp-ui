@@ -72,16 +72,13 @@ export class DashboardResolversListComponent implements OnInit {
         this.loadMore(this.page + 1);
     }
 
-    edit(entity: MetadataEntity): void {
-        if (entity.isDraft()) {
-            this.router.navigate(['metadata', 'resolver', 'new', 'blank', 'common'], {
-                queryParams: {
-                    id: entity.getId()
-                }
-            });
-        } else {
-            this.router.navigate(['metadata', 'resolver', entity.getId(), 'edit']);
-        }
+    edit(evt: Event, entity: MetadataEntity): void {
+        evt.preventDefault();
+        this.router.navigate(['metadata', 'resolver', 'new', 'blank', 'common'], {
+            queryParams: {
+                id: entity.getId()
+            }
+        });
     }
 
     toggleEntity(entity: MetadataEntity): void {

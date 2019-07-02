@@ -13,18 +13,16 @@ import { ResolverWizardStepComponent } from './container/resolver-wizard-step.co
 import { ResolverEditComponent } from './container/resolver-edit.component';
 import { ResolverEditStepComponent } from './container/resolver-edit-step.component';
 import { ResolverSelectComponent } from './container/resolver-select.component';
-import { CreateDraftResolverService } from './service/create-draft.resolver';
+import { MetadataResolverPageComponent } from './resolver.component';
 
 export const ResolverRoutes: Routes = [
     {
         path: 'resolver',
+        component: MetadataResolverPageComponent,
         children: [
             {
                 path: 'new',
                 component: NewResolverComponent,
-                resolve: {
-                    draft: CreateDraftResolverService
-                },
                 children: [
                     { path: '', redirectTo: 'blank/common', pathMatch: 'prefix' },
                     {
@@ -60,7 +58,6 @@ export const ResolverRoutes: Routes = [
             {
                 path: ':id',
                 component: ResolverSelectComponent,
-                canActivate: [],
                 children: [
                     {
                         path: 'edit',
