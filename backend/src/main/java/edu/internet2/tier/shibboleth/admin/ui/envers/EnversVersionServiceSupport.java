@@ -46,14 +46,30 @@ public class EnversVersionServiceSupport {
 
     public Object findSpecificVersionOfPersistentEntity(String resourceId, String versionId, Class<?> entityClass) {
         try {
-            return AuditReaderFactory.get(entityManager).createQuery()
+            AbstractAuditable abstractAuditable =
+                    (AbstractAuditable) AuditReaderFactory.get(entityManager).createQuery()
                     .forEntitiesAtRevision(entityClass, Integer.valueOf(versionId))
                     .add(AuditEntity.property("resourceId").eq(resourceId))
                     .add(AuditEntity.revisionNumber().eq(Integer.valueOf(versionId)))
                     .getSingleResult();
-        }
-        catch (NoResultException e) {
+            if(isCurrentRevision(resourceId, versionId, entityClass)) {
+                abstractAuditable.markAsCurrent();
+            }
+            return abstractAuditable;
+        } catch (NoResultException e) {
             return null;
         }
+    }
+
+    private boolean isCurrentRevision(String resourceId, String versionId, Class<?> entityClass) {
+        Number revision = (Number) AuditReaderFactory
+                .get(entityManager)
+                .createQuery()
+                .forRevisionsOfEntity(entityClass, false, false)
+                .addProjection(AuditEntity.revisionNumber().max())
+                .add(AuditEntity.property("resourceId").eq(resourceId))
+                .getSingleResult();
+
+        return Integer.valueOf(versionId) == revision.intValue();
     }
 }

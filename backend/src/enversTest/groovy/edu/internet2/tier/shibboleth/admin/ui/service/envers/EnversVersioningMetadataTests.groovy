@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -80,5 +81,47 @@ class EnversVersioningMetadataTests extends Specification {
         mrVersions[1].date == mr.modifiedDateAsZonedDateTime()
         edVersions[1].creator == ed.modifiedBy
         edVersions[1].date == ed.modifiedDateAsZonedDateTime()
+    }
+
+    def "test current version correct logic"() {
+        when: 'Initial versions'
+        MetadataResolver mr = new DynamicHttpMetadataResolver(name: 'resolver')
+        EntityDescriptor ed = new EntityDescriptor(serviceProviderName: 'descriptor')
+        mr = EnversTestsSupport.doInExplicitTransaction(txMgr) {
+            metadataResolverRepository.save(mr)
+        }
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
+            entityDescriptorRepository.save(ed)
+        }
+        def mrVersions = metadataResolverVersionService.findVersionsForMetadataResolver(mr.resourceId)
+        def edVersions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
+        def mrV1 = metadataResolverVersionService.findSpecificVersionOfMetadataResolver(mr.resourceId, mrVersions[0].id)
+        def edV1 = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, edVersions[0].id)
+
+        then:
+        mrV1.isCurrent()
+        edV1.isCurrent()
+
+        when: 'new version due to update'
+        mr.name = 'UPDATED'
+        ed.serviceProviderName = 'UPDATED'
+        mr = EnversTestsSupport.doInExplicitTransaction(txMgr) {
+            metadataResolverRepository.save(mr)
+        }
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
+            entityDescriptorRepository.save(ed)
+        }
+        mrVersions = metadataResolverVersionService.findVersionsForMetadataResolver(mr.resourceId)
+        edVersions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
+        mrV1 = metadataResolverVersionService.findSpecificVersionOfMetadataResolver(mr.resourceId, mrVersions[0].id)
+        edV1 = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, edVersions[0].id)
+        def mrV2 = metadataResolverVersionService.findSpecificVersionOfMetadataResolver(mr.resourceId, mrVersions[1].id)
+        def edV2 = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, edVersions[1].id)
+
+        then:
+        !mrV1.isCurrent()
+        !edV1.isCurrent()
+        mrV2.isCurrent()
+        edV2.isCurrent()
     }
 }

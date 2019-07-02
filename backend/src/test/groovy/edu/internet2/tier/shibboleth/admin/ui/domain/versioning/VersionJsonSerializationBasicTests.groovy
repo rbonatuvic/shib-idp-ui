@@ -22,12 +22,12 @@ class VersionJsonSerializationBasicTests extends Specification {
     def "Verify basic Version JSON serialization"() {
         given:
         def staticDate = ZonedDateTime.parse("2019-05-20T15:00:00.574Z")
-        def version = new Version('2', 'kramer', staticDate)
+        def version = new Version('2', 'kramer', staticDate, false)
         def expectedJson = """
             {
                 "id": "2",
                 "creator": "kramer",
-                "date": "2019-05-20T15:00:00.574Z"                
+                "date": "2019-05-20T15:00:00.574Z"                                
             }
         """
         def expectedJsonMap = jsonSlurper.parseText(expectedJson)
@@ -37,5 +37,7 @@ class VersionJsonSerializationBasicTests extends Specification {
 
         then:
         deSerializedJsonMap.date == expectedJsonMap.date
+        deSerializedJsonMap.id == expectedJsonMap.id
+        deSerializedJsonMap.creator == expectedJsonMap.creator
     }
 }
