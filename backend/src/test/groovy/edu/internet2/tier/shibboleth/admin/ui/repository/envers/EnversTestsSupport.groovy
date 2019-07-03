@@ -13,10 +13,6 @@ import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.DefaultTransactionDefinition
 
 import javax.persistence.EntityManager
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.ZonedDateTime
 
 import static org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW
 
