@@ -22,7 +22,7 @@ class VersionJsonSerializationBasicTests extends Specification {
     def "Verify basic Version JSON serialization"() {
         given:
         def staticDate = ZonedDateTime.parse("2019-05-20T15:00:00.574Z")
-        def version = new Version('2', 'kramer', staticDate, false)
+        def version = new Version('2', 'kramer', staticDate)
         def expectedJson = """
             {
                 "id": "2",
