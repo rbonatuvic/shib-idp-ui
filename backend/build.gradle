@@ -266,6 +266,12 @@ task generateSources {
         xmlSecBuilders.ObjectProviders.ObjectProvider.BuilderClass.each {
             processLine(it['@className'].toString(), 'src/main/templates/XMLSecBuilderTemplate.java')
         }
+
+        new XmlSlurper().parse(file('src/main/resources/jpa-saml2-metadata-algorithm-config.xml')).with { builders ->
+            builders.ObjectProviders.ObjectProvider.BuilderClass.each {
+                processLine(it['@className'].toString(), 'src/main/templates/AlgorithmBuilderTemplate.java')
+            }
+        }
     }
 }
 
