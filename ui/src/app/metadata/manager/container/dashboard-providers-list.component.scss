@@ -1,0 +1,14 @@
+@import '../../../../theme/palette';
+.provider-index {
+    font-size: 1.8rem;
+    line-height: 1.8rem;
+    font-weight: lighter;
+    font-family: monospace;
+    width: 45px;
+}
+
+.table-providers {
+    tr > td {
+        vertical-align: middle;
+    }
+}

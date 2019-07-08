@@ -1,32 +1,34 @@
-import { Action } from '@ngrx/store';
-import { MetadataEntity } from '../../domain/model';
+import { Action, MemoizedSelector } from '@ngrx/store';
+import { Metadata } from '../../domain/domain.type';
 
-export const ENTITY_SEARCH = '[Metadata Entity Search] Entity Search';
-export const ENTITY_FILTER = '[Metadata Entity Filter] Entity Filter';
-export const ENTITY_SEARCH_COMPLETE = '[Metadata Entity Search] Entity Search COMPLETE';
+export enum DashboardSearchActionTypes {
+    ENTITY_SEARCH_COMPLETE = '[Metadata Entity Search] Entity Search COMPLETE',
+    ENTITY_FILTER = '[Metadata Entity Filter] Entity Filter',
+    ENTITY_SEARCH = '[Metadata Entity Search] Entity Search',
+}
 
 /**
  * Add Resolver to Collection Actions
  */
 export class SearchAction implements Action {
-    readonly type = ENTITY_SEARCH;
+    readonly type = DashboardSearchActionTypes.ENTITY_SEARCH;
 
-    constructor(public payload: string) { }
+    constructor(public payload: { query: string, selector: MemoizedSelector<object, any[]> }) { }
 }
 
 export class FilterAction implements Action {
-    readonly type = ENTITY_FILTER;
+    readonly type = DashboardSearchActionTypes.ENTITY_FILTER;
 
     constructor(public payload: string) { }
 }
 
 export class SearchCompleteAction implements Action {
-    readonly type = ENTITY_SEARCH_COMPLETE;
+    readonly type = DashboardSearchActionTypes.ENTITY_SEARCH_COMPLETE;
 
-    constructor(public payload: Array<MetadataEntity>) { }
+    constructor(public payload: Array<Metadata>) { }
 }
 
-export type Actions =
+export type DashboardSearchActionsUnion =
     | SearchAction
     | FilterAction
     | SearchCompleteAction;

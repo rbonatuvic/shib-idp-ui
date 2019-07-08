@@ -4,9 +4,8 @@
         aria-label="Provider Item Accordion. Press Spacebar to open">
         <resolver-item
             [entity]="resolver"
-            [isOpen]="(entitiesOpen$ | async)[resolver.getId()]"
+            [isOpen]="true"
             (select)="edit(resolver)"
-            (toggle)="toggleEntity(resolver)"
             (preview)="openPreviewDialog(resolver)"
             (delete)="deleteResolver(resolver)"
             (toggleEnabled)="toggleResolverEnabled(resolver, !resolver.enabled)"

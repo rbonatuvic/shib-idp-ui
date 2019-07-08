@@ -23,7 +23,6 @@ export class NavigationService {
     }
 
     addAction(name: string, action: NavigationAction): NavigationAction[] {
-        console.log(this.actions);
         this.actions[name] = action;
         this.subj.next(this.actionList);
         return this.actionList;

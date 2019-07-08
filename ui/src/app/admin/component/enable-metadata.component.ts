@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 import { MetadataEntity, MetadataResolver } from '../../metadata/domain/model';
 import * as fromDashboard from '../../metadata/manager/reducer';
 import * as fromMetadata from '../reducer';
-import { ToggleEntityDisplay } from '../../metadata/manager/action/manager.action';
 import { DeleteDialogComponent } from '../../metadata/manager/component/delete-dialog.component';
 import { PreviewEntity } from '../../metadata/domain/action/entity.action';
 import { FileBackedHttpMetadataResolver } from '../../metadata/domain/entity';
@@ -40,7 +39,6 @@ export class EnableMetadataComponent implements OnInit {
                 map(resolvers => resolvers.map(r => new FileBackedHttpMetadataResolver(r)))
             );
         this.loading$ = this.store.select(fromDashboard.getSearchLoading);
-        this.entitiesOpen$ = this.store.select(fromDashboard.getOpenProviders);
 
         this.total$ = this.resolvers$.pipe(map(list => list.length));
     }
@@ -49,10 +47,6 @@ export class EnableMetadataComponent implements OnInit {
 
     edit(entity: MetadataEntity): void {
         this.router.navigate(['metadata', 'resolver', entity.getId(), 'edit']);
-    }
-
-    toggleEntity(entity: MetadataEntity): void {
-        this.store.dispatch(new ToggleEntityDisplay(entity.getId()));
     }
 
     openPreviewDialog(entity: MetadataEntity): void {

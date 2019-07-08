@@ -1,10 +1,8 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../../core/reducer';
-import * as fromDashboard from './manager.reducer';
 import * as fromSearch from './search.reducer';
 
 export interface DashboardState {
-    manager: fromDashboard.State;
     search: fromSearch.SearchState;
 }
 
@@ -13,13 +11,10 @@ export interface State extends fromRoot.State {
 }
 
 export const reducers = {
-    manager: fromDashboard.reducer,
     search: fromSearch.reducer
 };
 
 export const getFeatureState = createFeatureSelector<DashboardState>('manager');
-export const getDashboardState = createSelector(getFeatureState, (state: DashboardState) => state.manager);
-export const getOpenProviders = createSelector(getDashboardState, (manager: fromDashboard.State) => manager.resolversOpen);
 
 export const getSearchState = createSelector(getFeatureState,
     (state: DashboardState) => state.search
