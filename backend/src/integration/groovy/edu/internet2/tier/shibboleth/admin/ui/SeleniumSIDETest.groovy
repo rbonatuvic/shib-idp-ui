@@ -108,4 +108,3 @@ class SeleniumSIDETest extends Specification {
     }
 }
 
-{"jsonParseError":"Unrecognized token 'This': was expecting ('true', 'false' or 'null')\n at [Source: (URL); line: 1, column: 6]","sourceUiSchemaDefinitionFile":"file:/Users/unicon/dev/shibui/git/backend/build/resources/test/metadata-sources-ui-schema_MALFORMED.json"}
