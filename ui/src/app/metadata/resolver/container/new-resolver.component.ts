@@ -33,11 +33,11 @@ export class NewResolverComponent implements OnDestroy {
             })
         );
 
-        this.actionsSubscription = this.route.data.pipe(
+        this.actionsSubscription = this.route.queryParams.pipe(
             takeUntil(this.ngUnsubscribe),
             distinctUntilChanged(),
             map(data => {
-                return new SelectDraftRequest(data.draft);
+                return new SelectDraftRequest(data.id);
             })
         ).subscribe(this.store);
     }

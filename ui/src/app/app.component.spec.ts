@@ -9,6 +9,8 @@ import { NotificationModule } from './notification/notification.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockTranslatePipe, MockI18nService, MockI18nModule } from '../testing/i18n.stub';
 import { I18nService } from './i18n/service/i18n.service';
+import { NavigationService } from './core/service/navigation.service';
+import { NavigationServiceStub } from '../testing/navigation-service.stub';
 
 @Component({
     template: `
@@ -30,7 +32,8 @@ describe('AppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             providers: [
-                {provide: I18nService, useClass: MockI18nService }
+                {provide: I18nService, useClass: MockI18nService },
+                { provide: NavigationService, useValue: NavigationServiceStub }
             ],
             imports: [
                 NgbDropdownModule,

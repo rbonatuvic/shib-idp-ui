@@ -1,9 +1,12 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule, combineReducers } from '@ngrx/store';
+
 import { ManagerComponent } from './manager.component';
-import { RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterStub, RouterLinkStubDirective, RouterOutletStubComponent } from '../../../../testing/router.stub';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import * as fromDashboard from '../reducer';
 
 describe('Metadata Manager Parent Page', () => {
     let fixture: ComponentFixture<ManagerComponent>;
@@ -16,7 +19,10 @@ describe('Metadata Manager Parent Page', () => {
             ],
             imports: [
                 NoopAnimationsModule,
-                MockI18nModule
+                MockI18nModule,
+                StoreModule.forRoot({
+                    manager: combineReducers(fromDashboard.reducers),
+                })
             ],
             declarations: [
                 ManagerComponent,

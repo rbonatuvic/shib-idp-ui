@@ -5,6 +5,11 @@ export enum PATHS {
     provider = 'MetadataResolvers'
 }
 
+export enum TYPES {
+    resolver = 'resolver',
+    provider = 'provider'
+}
+
 export const DEFINITIONS = {
     resolver: MetadataSourceEditor
 };

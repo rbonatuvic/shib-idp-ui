@@ -4,9 +4,13 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { MetadataConfigurationService } from './configuration.service';
 import { FileBackedHttpMetadataProviderEditor } from '../../provider/model';
 import { MetadataSourceEditor } from '../../domain/model/wizards/metadata-source-editor';
-import { PATHS } from '../configuration.values';
+import { ResolverService } from '../../domain/service/resolver.service';
+import { of } from 'rxjs';
 
-describe(`Attributes Service`, () => {
+describe(`Configuration Service`, () => {
+
+    let resolverService: any;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -14,21 +18,27 @@ describe(`Attributes Service`, () => {
                 HttpClientTestingModule
             ],
             providers: [
-                MetadataConfigurationService
+                MetadataConfigurationService,
+                {
+                    provide: ResolverService, useValue: {
+                        find: () => of([])
+                    }
+                }
             ]
         });
+
+        resolverService = TestBed.get(ResolverService);
+
     });
 
     describe('find method', () => {
         it(`should send an expected GET request`, async(inject([MetadataConfigurationService, HttpTestingController],
             (service: MetadataConfigurationService, backend: HttpTestingController) => {
+                spyOn(resolverService, 'find').and.callThrough();
                 const type = 'resolver';
                 const id = 'foo';
                 service.find(id, type).subscribe();
-                backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `${service.base}/${PATHS[type]}/${id}`
-                        && req.method === 'GET';
-                }, `GET metadata by id and type`);
+                expect(resolverService.find).toHaveBeenCalledWith(id);
             }
         )));
     });

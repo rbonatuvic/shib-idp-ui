@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { RouterStateSnapshot } from '@angular/router';
+import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { NgbDropdownModule, NgbPopoverModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
@@ -116,12 +116,23 @@ describe('Resolver Wizard Component', () => {
 
     describe('canDeactivate method', () => {
         it('should return true if moving to another page', async(() => {
-            app.canDeactivate(null, null, {
-                url: 'blank',
-                root: <any>{
-                    queryParams: { id: 'foo' }
-                }
-            } as RouterStateSnapshot).subscribe((can) => {
+            app.canDeactivate(
+                null,
+                {
+                    url: 'foo',
+                    root: <any>{
+                        queryParams: {
+                            id: 'foo'
+                        }
+                    }
+                } as RouterStateSnapshot,
+                {
+                    url: 'blank',
+                    root: <any>{
+                        queryParams: { id: 'foo' }
+                    }
+                } as RouterStateSnapshot
+            ).subscribe((can) => {
                 expect(can).toBe(true);
             });
         }));
@@ -129,9 +140,23 @@ describe('Resolver Wizard Component', () => {
         it('should open a modal', () => {
             app.changes = {id: 'bar', serviceProviderName: 'foo', createdBy: 'admin'};
             spyOn(modal, 'open').and.callThrough();
-            app.canDeactivate(null, null, {
-                url: 'foo'
-            } as RouterStateSnapshot);
+            app.canDeactivate(null,
+                {
+                    url: 'foo',
+                    root: <any>{
+                        queryParams: {
+                            id: 'foo'
+                        }
+                    }
+                } as RouterStateSnapshot,
+                {
+                    url: 'foo',
+                    root: <any>{
+                        queryParams: {
+                            id: 'foo'
+                        }
+                    }
+                } as RouterStateSnapshot);
             expect(modal.open).toHaveBeenCalled();
         });
 
@@ -139,8 +164,20 @@ describe('Resolver Wizard Component', () => {
             app.changes = {} as MetadataResolver;
             spyOn(store, 'select').and.returnValue(of(true));
             spyOn(modal, 'open').and.callThrough();
-            app.canDeactivate(null, null, {
-                url: 'foo'
+            app.canDeactivate(null, {
+                url: 'foo',
+                root: <any>{
+                    queryParams: {
+                        id: 'foo'
+                    }
+                }
+            } as RouterStateSnapshot, {
+                url: 'foo',
+                root: <any>{
+                    queryParams: {
+                        id: 'foo'
+                    }
+                }
             } as RouterStateSnapshot).subscribe((can) => {
                 expect(can).toBe(true);
                 expect(modal.open).not.toHaveBeenCalled();
