@@ -37,11 +37,11 @@ configurations.all {
 
 configurations {
     integrationTestCompile {
-        extendsFrom testCompile
+        extendsFrom compile
         
     }
     integrationTestRuntime {
-        extendsFrom testRuntime
+        extendsFrom runtime
     }
 }
 
@@ -195,6 +195,10 @@ dependencies {
 
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
+    integrationTestCompile "org.springframework.boot:spring-boot-starter-test"
+    integrationTestCompile "org.springframework.security:spring-security-test"
+    integrationTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    integrationTestCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
     
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
