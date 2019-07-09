@@ -59,8 +59,6 @@ sourceSets {
     integrationTest {
         groovy {
             srcDirs = ['src/integration/groovy']
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
         }
         resources {
             srcDir 'src/integration/resources'
@@ -193,6 +191,9 @@ dependencies {
     //JSON schema validator
     compile 'org.sharegov:mjson:1.4.1'
 
+    integrationTestRuntime configurations.runtime
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.compile
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test"
