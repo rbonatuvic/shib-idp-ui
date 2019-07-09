@@ -82,6 +82,7 @@ class SeleniumSIDETest extends Specification {
         assert result.level.exitCode == 0
 
         where:
+        //TODO: Update or delete where necessary
         name                                                | file
 //        'Create Dynamic HTTP Metadata Resolver'             | '/dhmr.side'
 //        'Metadata Source Happy Path Save'                   | '/MetadataSourceHappyPathSAVE.side'
