@@ -7,6 +7,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -24,6 +26,8 @@ import java.util.Map;
 @JsonSubTypes({@JsonSubTypes.Type(value=MetadataQueryProtocolScheme.class, name="MetadataQueryProtocol"),
                @JsonSubTypes.Type(value=TemplateScheme.class, name="Template"),
                @JsonSubTypes.Type(value=RegexScheme.class, name="Regex")})
+@Audited
+@AuditOverride(forClass = AbstractAuditable.class)
 public abstract class MetadataRequestURLConstructionScheme extends AbstractAuditable {
     public enum SchemeType {
         METADATA_QUERY_PROTOCOL("MetadataQueryProtocol"),

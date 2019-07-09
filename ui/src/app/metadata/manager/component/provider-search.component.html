@@ -1,5 +1,5 @@
 <form [formGroup]="searchForm">
-    <div class="input-group input-group-sm">
+    <div class="input-group">
         <label [for]="search" class="sr-only" translate="action.search">Search</label>
         <input
             id="search"
@@ -12,7 +12,7 @@
             role="textbox"
             (keyup)="search.emit($event.target.value)">
         <div class="input-group-append">
-            <button class="btn btn-light"
+            <button class="btn btn-link"
                 type="button"
                 tabindex="0"
                 aria-label="Clear search text field"

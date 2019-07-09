@@ -81,7 +81,7 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
 
     cancel(): void {
         this.clear();
-        this.router.navigate(['dashboard', 'metadata', 'manager', 'resolvers']);
+        this.router.navigate(['metadata', 'resolver', this.resolver.id, 'configuration']);
     }
 
     canDeactivate(

@@ -201,7 +201,6 @@ class MetadataFiltersControllerTests extends Specification {
         updatedMetadataResolver.getMetadataFilters().add(updatedFilter)
 
         1 * metadataResolverRepository.findByResourceId(_) >> originalMetadataResolver
-        1 * metadataFilterRepository.findByResourceId(_) >> originalFilter
         1 * metadataFilterRepository.save(_) >> updatedFilter
 
         def filterUUID = updatedFilter.getResourceId()
@@ -240,7 +239,6 @@ class MetadataFiltersControllerTests extends Specification {
         originalMetadataResolver.getMetadataFilters().add(randomFilter)
 
         1 * metadataResolverRepository.findByResourceId(_) >> originalMetadataResolver
-        1 * metadataFilterRepository.findByResourceId(_) >> randomFilter
 
         def filterUUID = randomFilter.getResourceId()
 

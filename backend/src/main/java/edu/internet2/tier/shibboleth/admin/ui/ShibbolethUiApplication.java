@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
-@EntityScan(basePackages = {"edu.internet2.tier.shibboleth.admin.ui.domain", "edu.internet2.tier.shibboleth.admin.ui.security.model"})
+@EntityScan(basePackages = {"edu.internet2.tier.shibboleth.admin.ui.domain", "edu.internet2.tier.shibboleth.admin.ui.envers", "edu.internet2.tier.shibboleth.admin.ui.security.model"})
 @EnableJpaAuditing
 @EnableScheduling
 @EnableWebSecurity

@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.NamespaceManager;
@@ -30,6 +32,8 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(callSuper = true)
+@Audited
+@AuditOverride(forClass = AbstractAuditable.class)
 public abstract class AbstractXMLObject extends AbstractAuditable implements XMLObject {
 
     private String namespaceURI;

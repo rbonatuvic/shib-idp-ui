@@ -1,0 +1,20 @@
+<div class="container-fluid p-3">
+    <section class="section" tabindex="0">
+        <div class="section-body px-4 pb-4 border border-info">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-bar">
+                    <li class="breadcrumb-item">
+                        <a [routerLink]="['/dashboard']" translate="action.dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span class="display-6">
+                            {{ name$ | async }}
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+            <h2 class="mb-4">Source Configuration</h2>
+            <router-outlet></router-outlet>
+        </div>
+    </section>
+</div>
