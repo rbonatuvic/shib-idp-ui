@@ -15,59 +15,16 @@
     ],
     "required": [
         "name",
+        "@type",
         "xmlId",
         "metadataURL",
         "backingFile",
         "backupFileInitNextRefreshDelay"
     ],
-    "anyOf": [
-        {
-            "properties": {
-                "initializeFromBackupFile": {
-                    "enum": [
-                        true
-                    ]
-                }
-            }
-        },
-        {
-            "properties": {
-                "initializeFromBackupFile": {
-                    "enum": [
-                        false
-                    ]
-                }
-            }
-        }
-    ],
-    "fieldsets": [
-        {
-            "type": "section",
-            "fields": [
-                "name",
-                "@type",
-                "enabled"
-            ]
-        },
-        {
-            "type": "group-lg",
-            "fields": [
-                "xmlId",
-                "metadataURL",
-                "initializeFromBackupFile",
-                "backingFile",
-                "backupFileInitNextRefreshDelay",
-                "requireValidMetadata",
-                "failFastInitialization",
-                "useDefaultPredicateRegistry",
-                "satisfyAnyPredicates"
-            ]
-        }
-    ],
     "properties": {
         "name": {
-            "title": "label.metadata-provider-name",
-            "description": "tooltip.metadata-provider-name",
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
             "type": "string",
             "widget": {
                 "id": "string",
