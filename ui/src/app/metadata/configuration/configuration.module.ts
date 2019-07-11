@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-
+import { RouterModule } from '@angular/router';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { I18nModule } from '../../i18n/i18n.module';
@@ -15,7 +15,6 @@ import { ConfigurationPropertyComponent } from './component/configuration-proper
 import { PrimitivePropertyComponent } from './component/primitive-property.component';
 import { ObjectPropertyComponent } from './component/object-property.component';
 import { ArrayPropertyComponent } from './component/array-property.component';
-import { RouterModule } from '@angular/router';
 import { MetadataOptionsComponent } from './container/metadata-options.component';
 import { MetadataXmlComponent } from './container/metadata-xml.component';
 import { MetadataHeaderComponent } from './component/metadata-header.component';
@@ -24,6 +23,8 @@ import { MetadataHistoryService } from './service/history.service';
 import { MetadataHistoryComponent } from './container/metadata-history.component';
 import { HistoryListComponent } from './component/history-list.component';
 import { DomainModule } from '../domain/domain.module';
+import { MetadataComparisonComponent } from './container/metadata-comparison.component';
+import { CompareVersionEffects } from './effect/compare.effect';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { DomainModule } from '../domain/domain.module';
         ConfigurationComponent,
         MetadataHeaderComponent,
         MetadataHistoryComponent,
-        HistoryListComponent
+        HistoryListComponent,
+        MetadataComparisonComponent
     ],
     entryComponents: [],
     imports: [
@@ -66,7 +68,12 @@ export class MetadataConfigurationModule {
     imports: [
         MetadataConfigurationModule,
         StoreModule.forFeature('metadata-configuration', fromConfig.reducers),
-        EffectsModule.forFeature([MetadataConfigurationEffects, MetadataHistoryEffects])
+        EffectsModule.forFeature(
+            [
+                MetadataConfigurationEffects,
+                MetadataHistoryEffects,
+                CompareVersionEffects
+            ])
     ],
     providers: []
 })

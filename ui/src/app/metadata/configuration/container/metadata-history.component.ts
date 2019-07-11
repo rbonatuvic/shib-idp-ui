@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ConfigurationState, getVersionCollection } from '../reducer';
 import { MetadataVersion } from '../model/version';
+import { CompareVersionRequest } from '../action/compare.action';
 
 @Component({
     selector: 'metadata-history',
@@ -18,5 +19,9 @@ export class MetadataHistoryComponent {
         private store: Store<ConfigurationState>
     ) {
         this.history$ = this.store.select(getVersionCollection);
+    }
+
+    compareVersions(versions: MetadataVersion[]): void {
+        this.store.dispatch(new CompareVersionRequest(versions));
     }
 }

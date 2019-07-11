@@ -3,6 +3,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../../app.reducer';
 import * as fromConfiguration from './configuration.reducer';
 import * as fromHistory from './history.reducer';
+import * as fromCompare from './compare.reducer';
 import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
@@ -12,11 +13,13 @@ import { getInCollectionFn } from '../../domain/domain.util';
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
     history: fromHistory.HistoryState;
+    compare: fromCompare.State;
 }
 
 export const reducers = {
     configuration: fromConfiguration.reducer,
-    history: fromHistory.reducer
+    history: fromHistory.reducer,
+    compare: fromCompare.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -27,6 +30,7 @@ export const getState = createFeatureSelector<ConfigurationState>('metadata-conf
 
 export const getConfigurationStateFn = (state: ConfigurationState) => state.configuration;
 export const getHistoryStateFn = (state: ConfigurationState) => state.history;
+export const getCompareStateFn = (state: ConfigurationState) => state.compare;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
 export const getConfigurationModel = createSelector(getConfigurationState, fromConfiguration.getModel);
@@ -83,3 +87,7 @@ export const getSelectedIsCurrent = createSelector(
         return selected ? collection[0].id === selected.id : null;
     }
 );
+
+// Version Comparison
+
+export const getCompareState = createSelector(getState, getCompareStateFn);

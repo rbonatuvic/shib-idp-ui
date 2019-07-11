@@ -6,6 +6,7 @@ import { MetadataHistory } from '../model/history';
 import { PATHS } from '../../configuration/configuration.values';
 import { MetadataVersion } from '../model/version';
 import { map } from 'rxjs/operators';
+import { Metadata } from '../../domain/domain.type';
 
 @Injectable()
 export class MetadataHistoryService {
@@ -23,5 +24,13 @@ export class MetadataHistoryService {
                 versions: resp
             }))
         );
+    }
+
+    find(resourceId: string, versions: MetadataVersion, type: string): Observable<Metadata[]> {
+        return of([]);
+    }
+
+    getVersion(resourceId: string, type: string): Observable<Metadata> {
+        return of();
     }
 }
