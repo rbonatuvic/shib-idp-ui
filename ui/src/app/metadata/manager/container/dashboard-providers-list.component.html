@@ -50,7 +50,7 @@
                             </td>
                             <td>{{ provider['@type'] }}</td>
                             <td>{{ provider.createdBy }}</td>
-                            <td>{{ provider.createdDate | customDate : '&mdash;' }}</td>
+                            <td>{{ provider.createdDate | customDate }}</td>
                             <td class="text-right">
                                 <span class="badge"
                                     [class.badge-danger]="!provider.enabled"
