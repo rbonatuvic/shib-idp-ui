@@ -8,8 +8,8 @@
     ],
     "properties": {
         "name": {
-            "title": "label.metadata-provider-name-display-only",
-            "description": "tooltip.metadata-provider-name-display-only",
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
             "type": "string",
             "widget": {
                 "id": "string",
@@ -29,9 +29,9 @@
             "oneOf": [
                 {
                     "enum": [
-                        "FileSystemMetadataResolver"
+                        "LocalDynamicMetadataResolver"
                     ],
-                    "description": "value.file-system-metadata-provider"
+                    "description": "value.local-dynamic-metadata-provider"
                 }
             ]
         },
