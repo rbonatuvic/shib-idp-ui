@@ -32,7 +32,6 @@ public class EnversVersionServiceSupport {
                 .getResultList();
 
         Object listOfVersions = revs.stream()
-                //.map(it -> ((Object[]) it))
                 .map(it -> {
                     return new Version(((PrincipalAwareRevisionEntity) ((Object[]) it)[1]).idAsString(),
                             ((AbstractAuditable) ((Object[]) it)[0]).getModifiedBy(),
