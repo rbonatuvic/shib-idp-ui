@@ -1,5 +1,10 @@
 <div *ngIf="property.name" class="d-flex border-bottom border-light p-2">
-    <span class="w-50 d-block" role="term" [translate]="property.name">{{ property.name }}</span>
-    <span class="w-50 d-block"
-        role="definition">{{ property.value || property.value === false ? property.value : '-' }}</span>
+    <span class="d-block"
+        role="term"
+        [translate]="property.name"
+        [ngStyle]="{'width': width}">{{ property.name }}</span>
+    <span *ngFor="let v of property.value"
+        class="d-block"
+        role="definition"
+        [ngStyle]="{'width': width}">{{ v ? v : (v === false) ? v : '-' }}</span>
 </div>

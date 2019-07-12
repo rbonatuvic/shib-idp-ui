@@ -28,3 +28,6 @@ export function reducer(state = initialState, action: CompareActionsUnion): Stat
         }
     }
 }
+
+export const getVersionModels = (state: State) => state.models;
+export const getVersionModelsLoaded = (state: State) => state.loaded;

@@ -9,6 +9,8 @@ import { WizardStep } from '../../../wizard/model';
 import * as utils from '../../domain/utility/configuration';
 import { getSplitSchema } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
+import { MetadataConfiguration } from '../model/metadata-configuration';
+import { Property } from '../../domain/model/property';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -34,32 +36,63 @@ export const getCompareStateFn = (state: ConfigurationState) => state.compare;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
 export const getConfigurationModel = createSelector(getConfigurationState, fromConfiguration.getModel);
+export const getConfigurationModelList = createSelector(getConfigurationModel, (model) => [model]);
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
 export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
 export const getConfigurationXml = createSelector(getConfigurationState, fromConfiguration.getXml);
 
-export const getConfigurationSectionsFn = (model, definition, schema) => !definition || !schema ? null :
-    ({
-        sections: definition.steps
-            .filter(step => step.id !== 'summary')
-            .map(
-                (step: WizardStep, num: number) => {
-                    return ({
-                        id: step.id,
-                        pageNumber: num + 1,
-                        index: step.index,
-                        label: step.label,
-                        properties: utils.getStepProperties(
-                            getSplitSchema(schema, step),
-                            definition.formatter(model),
-                            schema.definitions || {}
-                        )
-                    });
-                }
-            )
+export const assignValueToProperties = (models, properties): any[] => {
+    return properties.map(prop => {
+        switch (prop.type) {
+            case 'object':
+                return {
+                    ...prop,
+                    properties: assignValueToProperties(models.map(model => model[prop.id] || {}), prop.properties)
+                };
+            default:
+                return {
+                    ...prop,
+                    value: models.map(model => {
+                        return model[prop.id];
+                    })
+                };
+        }
     });
+};
+
+export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
+    console.log(models);
+    return !definition || !schema ? null :
+        ({
+            dates: models.map(m => m.updatedDate),
+            sections: definition.steps
+                .filter(step => step.id !== 'summary')
+                .map(
+                    (step: WizardStep, num: number) => {
+                        return ({
+                            id: step.id,
+                            pageNumber: num + 1,
+                            index: step.index,
+                            label: step.label,
+                            properties: utils.getStepProperties(
+                                getSplitSchema(schema, step),
+                                definition.formatter({}),
+                                schema.definitions || {}
+                            )
+                        });
+                    }
+                )
+                .map((section: any) => {
+                    return {
+                        ...section,
+                        properties: assignValueToProperties(models, section.properties)
+                    };
+                })
+        });
+    };
+
 export const getConfigurationSections = createSelector(
-    getConfigurationModel,
+    getConfigurationModelList,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
@@ -91,3 +124,13 @@ export const getSelectedIsCurrent = createSelector(
 // Version Comparison
 
 export const getCompareState = createSelector(getState, getCompareStateFn);
+export const getVersionModels = createSelector(getCompareState, fromCompare.getVersionModels);
+export const getVersionModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
+export const getVersionConfigurations = createSelector(
+    getVersionModels,
+    getConfigurationDefinition,
+    getConfigurationSchema,
+    getConfigurationSectionsFn
+);
+
+

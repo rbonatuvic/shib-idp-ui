@@ -31,7 +31,7 @@ export class MetadataOptionsComponent {
     constructor(
         private store: Store<ConfigurationState>
     ) {
-        this.configuration$ = this.store.select(getConfigurationSections);
+        this.configuration$ = this.store.select(getConfigurationSections).pipe(map(config => config));
         this.isEnabled$ = this.store.select(getConfigurationModel).pipe(
             map(config => config ? ('serviceEnabled' in config) ? config.serviceEnabled : config.enabled : false)
         );

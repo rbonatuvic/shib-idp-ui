@@ -1,23 +1,43 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { switchMap, catchError, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, withLatestFrom, map, filter, combineLatest, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { MetadataHistoryService } from '../service/history.service';
-import { CompareVersionRequest, CompareActionTypes } from '../action/compare.action';
+import {
+    CompareVersionRequest,
+    CompareActionTypes,
+    CompareVersionSuccess,
+    CompareVersionError,
+    SetMetadataVersions
+} from '../action/compare.action';
 import { Store } from '@ngrx/store';
 import { State, getConfigurationModel } from '../reducer';
-import { ActivatedRoute, RouterState, RouterStateSnapshot } from '@angular/router';
 
 @Injectable()
 export class CompareVersionEffects {
 
-    @Effect({dispatch: false})
+    @Effect()
     compareVersionRequest$ = this.actions$.pipe(
         ofType<CompareVersionRequest>(CompareActionTypes.COMPARE_METADATA_REQUEST),
-        withLatestFrom(
+        map(action => action.payload),
+        combineLatest(
             this.store.select(getConfigurationModel)
         ),
-        tap((data) => console.log(data, '@type' in data[1]))
+        switchMap(([versions, model]) => {
+            const type = '@type' in model ? 'provider' : 'resolver';
+            const id = '@type' in model ? model.resourceId : model.id;
+            return this.historyService.getVersions(id, versions, type).pipe(
+                map(v => new CompareVersionSuccess(v)),
+                catchError(err => of(new CompareVersionError(err)))
+            );
+        })
+    );
+
+    @Effect()
+    setVersionsOnSuccess$ = this.actions$.pipe(
+        ofType<CompareVersionSuccess>(CompareActionTypes.COMPARE_METADATA_SUCCESS),
+        map(action => action.payload),
+        map(versions => new SetMetadataVersions(versions))
     );
 
     constructor(

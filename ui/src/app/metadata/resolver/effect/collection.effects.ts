@@ -10,7 +10,6 @@ import {
     LoadResolverRequest,
     LoadResolverSuccess,
     LoadResolverError,
-    LoadAdminResolverRequest,
     AddResolverRequest,
     AddResolverSuccess,
     AddResolverFail,

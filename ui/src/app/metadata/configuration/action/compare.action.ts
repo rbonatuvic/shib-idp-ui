@@ -14,13 +14,13 @@ export enum CompareActionTypes {
 export class CompareVersionRequest implements Action {
     readonly type = CompareActionTypes.COMPARE_METADATA_REQUEST;
 
-    constructor(public payload: MetadataVersion[]) { }
+    constructor(public payload: string[]) { }
 }
 
 export class CompareVersionSuccess implements Action {
     readonly type = CompareActionTypes.COMPARE_METADATA_SUCCESS;
 
-    constructor(public payload: MetadataHistory) { }
+    constructor(public payload: Metadata[]) { }
 }
 
 export class CompareVersionError implements Action {

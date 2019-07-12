@@ -5,12 +5,17 @@
             <div *ngFor="let value of property.value; let i = index;" class="mb-2 bg-lighter">
                 <div *ngFor="let prop of getKeys(property.items); let n = index;"
                     class="d-flex p-2">
-                    <div class="w-50">
+                    <div [ngStyle]="{'width': width}">
                         <span [class.invisible]="n">{{ i + 1 }}.&nbsp;</span>
                         <span [translate]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</span>
                     </div>
-                    <div class="w-50" [ngbPopover]="value[prop]" triggers="mouseenter:mouseleave" container="body" placement="left">
-                        {{ value[prop] }}
+                    <div *ngFor="let v of value"
+                        [ngbPopover]="value[prop]"
+                        triggers="mouseenter:mouseleave"
+                        container="body"
+                        placement="left"
+                        [ngStyle]="{'width': width}">
+                        {{ v[prop] }}
                     </div>
                 </div>
             </div>
@@ -25,12 +30,14 @@
         </ng-container>
         <ng-container *ngSwitchDefault>
             <div *ngFor="let attr of attributeList$ | async" class="d-flex justify-content-between border-bottom border-light">
-                <span class="w-50 p-2" role="term" [translate]="attr.label">{{ attr.label }}</span>
-                <div class="w-50 p-2">
-                    <span *ngIf="property.value && property.value.indexOf(attr.key) > -1" translate="value.true">
+                <span class="p-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
+                <div *ngFor="let v of property.value"
+                    class="p-2"
+                    [ngStyle]="{'width': width}">
+                    <span *ngIf="v && v.indexOf(attr.key) > -1" translate="value.true">
                         true
                     </span>
-                    <span *ngIf="!property.value || !(property.value.indexOf(attr.key) > -1)" translate="value.false">
+                    <span *ngIf="!v || !(v.indexOf(attr.key) > -1)" translate="value.false">
                         false
                     </span>
                 </div>
@@ -40,12 +47,14 @@
 </div>
 <ng-template #listref>
     <div class="d-flex border-bottom border-light">
-        <span class="w-50 p-2" role="term" [translate]="property.name">{{ property.name }}</span>
-        <p class="text-secondary w-50 p-2" *ngIf="!property.value || !property.value.length">&mdash;</p>
-        <ul class="list-unstyled w-50 py-2" *ngIf="property.value && property.value.length">
-            <li *ngFor="let item of property.value">
-                {{ item }}
-            </li>
-        </ul>
+        <span class="p-2" role="term" [translate]="property.name" [ngStyle]="{'width': width}">{{ property.name }}</span>
+        <ng-container *ngFor="let v of property.value">
+            <p [ngStyle]="{'width': width}" class="text-secondary p-2" *ngIf="!v || !v.length">&mdash;</p>
+            <ul [ngStyle]="{'width': width}" class="list-unstyled py-2" *ngIf="v && v.length">
+                <li *ngFor="let item of v">
+                    {{ item }}
+                </li>
+            </ul>
+        </ng-container>
     </div>
 </ng-template>

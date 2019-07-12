@@ -32,11 +32,11 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
             return adapter.updateOne(action.payload, state);
         }
 
-        case ResolverCollectionActionTypes.SELECT: {
-            return {
+        case ResolverCollectionActionTypes.SELECT_SUCCESS: {
+            return adapter.addOne(action.payload, {
                 ...state,
-                selectedResolverId: action.payload,
-            };
+                selectedResolverId: action.payload.id,
+            });
         }
 
         case ResolverCollectionActionTypes.LOAD_RESOLVER_ERROR: {
