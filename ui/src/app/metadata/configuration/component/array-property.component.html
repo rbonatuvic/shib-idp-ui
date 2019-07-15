@@ -1,23 +1,24 @@
 <div>
     <ng-container *ngIf="property.items.type === 'object'">
         <div class="p-2" role="term" [translate]="property.name">{{ property.name }}</div>
-        <div class="p-2" *ngIf="property.value && property.value.length">
-            <div *ngFor="let value of property.value; let i = index;" class="mb-2 bg-lighter">
-                <div *ngFor="let prop of getKeys(property.items); let n = index;"
-                    class="d-flex p-2">
-                    <div [ngStyle]="{'width': width}">
-                        <span [class.invisible]="n">{{ i + 1 }}.&nbsp;</span>
-                        <span [translate]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</span>
-                    </div>
-                    <div *ngFor="let v of value"
-                        [ngbPopover]="value[prop]"
+        <div *ngFor="let item of range; let i = index;" class="p-2 bg-lighter border-top">
+            <div *ngFor="let prop of getKeys(property.items); let n = index;" class="d-flex py-2">
+                <div [ngStyle]="{'width': width}">
+                    <span [translate]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</span>
+                </div>
+                <ng-container *ngFor="let version of property.value">
+                    <div *ngIf="version[i]"
+                        [ngbPopover]="version[i][prop]"
                         triggers="mouseenter:mouseleave"
                         container="body"
                         placement="left"
                         [ngStyle]="{'width': width}">
-                        {{ v[prop] }}
+                        {{ version[i][prop] }}
                     </div>
-                </div>
+                    <div *ngIf="!version[i]" [ngStyle]="{'width': width}">
+                        &mdash;
+                    </div>
+                </ng-container>
             </div>
         </div>
     </ng-container>

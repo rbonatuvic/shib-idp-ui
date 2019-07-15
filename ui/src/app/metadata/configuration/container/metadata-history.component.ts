@@ -28,7 +28,11 @@ export class MetadataHistoryComponent {
         this.router.navigate(
             ['../', 'compare'],
             {
-                queryParams: { versions: versions.map(v => v.id) },
+                queryParams: { versions: versions.sort((a, b) => {
+                    const aDate = new Date(a.date).getTime();
+                    const bDate = new Date(b.date).getTime();
+                    return aDate === bDate ? 0 : aDate < bDate ? -1 : 1;
+                }).map(v => v.id) },
                 relativeTo: this.route
             }
         );
