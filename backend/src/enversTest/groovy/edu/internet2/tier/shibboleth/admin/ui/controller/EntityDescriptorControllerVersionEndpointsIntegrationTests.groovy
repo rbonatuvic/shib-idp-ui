@@ -36,7 +36,7 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         result.statusCodeValue == 404
     }
 
-    def "GET /api/EntityDescriptor{resourceId}/Versions with 1 entity descriptor version"() {
+    def "GET /api/EntityDescriptor/{resourceId}/Versions with 1 entity descriptor version"() {
         given:
         EntityDescriptor ed = new EntityDescriptor(entityID: 'http://test/controller', createdBy: 'anonymousUser')
         entityDescriptorRepository.save(ed)
@@ -50,7 +50,7 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         result.body[0].id && result.body[0].creator && result.body[0].date
     }
 
-    def "GET /api/EntityDescriptor{resourceId}/Versions with 2 entity descriptor versions"() {
+    def "GET /api/EntityDescriptor/{resourceId}/Versions with 2 entity descriptor versions"() {
         given:
         EntityDescriptor ed = new EntityDescriptor(entityID: 'http://test/controller', createdBy: 'anonymousUser')
         ed = entityDescriptorRepository.save(ed)
@@ -68,7 +68,7 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         result.body[0].date < result.body[1].date
     }
 
-    def "GET /api/EntityDescriptor{resourceId}/Versions/{version} for non existent version"() {
+    def "GET /api/EntityDescriptor/{resourceId}/Versions/{version} for non existent version"() {
         given:
         EntityDescriptor ed = new EntityDescriptor(entityID: 'http://test/controller', createdBy: 'anonymousUser')
         ed = entityDescriptorRepository.save(ed)

@@ -20,7 +20,7 @@ public class EntitiesVersioningConfiguration {
 
     @Bean
     public EntityDescriptorVersionService entityDescriptorVersionService(EntityDescriptorService entityDescriptorService) {
-        return new EnversEntityDescriptorVersionService(entityManager, entityDescriptorService);
+        return new EnversEntityDescriptorVersionService(enversVersionServiceSupport(), entityDescriptorService);
     }
 
     @Bean

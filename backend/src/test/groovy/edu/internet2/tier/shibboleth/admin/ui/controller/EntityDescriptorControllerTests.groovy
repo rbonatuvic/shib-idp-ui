@@ -147,7 +147,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
 	            "attributeRelease": null,
 	            "version": $version,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }
             ]    
         """
@@ -202,7 +203,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $versionOne,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               },
               {
 	            "id": "uuid-2",
@@ -221,7 +223,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $versionTwo,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }              
            ]    
         """
@@ -273,7 +276,8 @@ class EntityDescriptorControllerTests extends Specification {
                 "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $versionOne,
-                "createdBy": "someUser"
+                "createdBy": "someUser",
+                "current": false
               }              
            ]    
         """
@@ -325,7 +329,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-                "attributeRelease": null
+                "attributeRelease": null,
+                "current": false
               }                
         """
 
@@ -348,7 +353,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $version,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }                
         """
 
@@ -504,7 +510,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $version,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }                
         """
 
@@ -556,7 +563,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $version,
-                "createdBy": "someUser"
+                "createdBy": "someUser",
+                "current": false
               }                
         """
 
