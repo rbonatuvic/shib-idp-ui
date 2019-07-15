@@ -4,6 +4,12 @@ plugins {
     id 'com.github.breadmoirai.github-release' version '2.2.9'
 }
 
+subprojects {
+    tasks.withType(Test) {
+        maxHeapSize = "3g"        
+    }
+}
+
 tasks.findByName('release').dependsOn project.getTasksByName('test', true)
 
 githubRelease {
