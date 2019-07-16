@@ -20,6 +20,7 @@ import { ClearEditor } from '../action/editor.action';
 
 export class ProviderSelectComponent implements OnDestroy {
     actionsSubscription: Subscription;
+    providerSubscription: Subscription;
 
     provider$: Observable<MetadataProvider>;
 
@@ -31,11 +32,9 @@ export class ProviderSelectComponent implements OnDestroy {
             map(params => new SelectProviderRequest(params.providerId))
         ).subscribe(store);
 
-        this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(filter(p => {
-            return p;
-        }));
+        this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(filter(p => !!p));
 
-        this.provider$.subscribe(provider => {
+        this.providerSubscription = this.provider$.subscribe(provider => {
             this.setDefinition(provider);
         });
     }
@@ -50,6 +49,7 @@ export class ProviderSelectComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.actionsSubscription.unsubscribe();
+        this.providerSubscription.unsubscribe();
         this.store.dispatch(new ClearProvider());
         this.store.dispatch(new ClearWizard());
         this.store.dispatch(new ClearEditor());

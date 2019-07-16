@@ -6,7 +6,6 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
     ...BaseMetadataProviderEditor,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
-    bindings: {},
     formatter: (changes: DynamicHttpMetadataProvider) => {
         let base = BaseMetadataProviderEditor.formatter(changes);
         if (base.dynamicMetadataResolverAttributes) {
@@ -136,13 +135,43 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             index: 1,
             initialValues: [],
             fields: [
+                'name',
+                '@type',
                 'xmlId',
                 'metadataRequestURLConstructionScheme',
                 'enabled',
                 'requireValidMetadata',
                 'failFastInitialization'
             ],
-            order: ['xmlId', 'metadataRequestURLConstructionScheme', 'enabled', 'requireValidMetadata', 'failFastInitialization']
+            fieldsets: [
+                {
+                    type: 'section',
+                    class: ['mb-3'],
+                    fields: [
+                        'name',
+                        '@type'
+                    ]
+                },
+                {
+                    type: 'group-lg',
+                    class: ['col-12'],
+                    fields: [
+                        'xmlId',
+                        'metadataRequestURLConstructionScheme',
+                        'enabled',
+                        'requireValidMetadata',
+                        'failFastInitialization'
+                    ]
+                }
+            ],
+            override: {
+                '@type': {
+                    type: 'string',
+                    readOnly: true,
+                    widget: 'string',
+                    oneOf: [{ enum: ['DynamicHttpMetadataResolver'], description: 'value.dynamic-http-metadata-provider' }]
+                }
+            }
         },
         {
             id: 'dynamic',

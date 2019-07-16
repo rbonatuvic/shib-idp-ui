@@ -93,8 +93,11 @@ describe('Dashboard Providers List Page', () => {
 
     describe('edit method', () => {
         it('should route to the edit page', () => {
+            const evt = new Event('a type');
             spyOn(router, 'navigate');
-            instance.edit(provider);
+            spyOn(evt, 'preventDefault');
+            instance.edit(provider, evt);
+            expect(evt.preventDefault).toHaveBeenCalled();
             expect(router.navigate).toHaveBeenCalledWith(['metadata', 'provider', provider.resourceId, 'edit']);
         });
     });
