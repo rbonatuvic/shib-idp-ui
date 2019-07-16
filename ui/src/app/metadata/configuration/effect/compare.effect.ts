@@ -20,7 +20,7 @@ export class CompareVersionEffects {
     compareVersionRequest$ = this.actions$.pipe(
         ofType<CompareVersionRequest>(CompareActionTypes.COMPARE_METADATA_REQUEST),
         map(action => action.payload),
-        combineLatest(
+        withLatestFrom(
             this.store.select(getConfigurationModel)
         ),
         switchMap(([versions, model]) => {
