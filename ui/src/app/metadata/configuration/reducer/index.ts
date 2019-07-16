@@ -11,6 +11,7 @@ import { getSplitSchema } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Property } from '../../domain/model/property';
+import { Metadata } from '../../domain/domain.type';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -96,6 +97,15 @@ export const getConfigurationSections = createSelector(
     getConfigurationSchema,
     getConfigurationSectionsFn
 );
+
+export const getConfigurationModelEnabledFn =
+    (config: Metadata) => config ? ('serviceEnabled' in config) ? config.serviceEnabled : config.enabled : false;
+
+export const getConfigurationModelNameFn =
+    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : false;
+
+export const getConfigurationModelEnabled = createSelector(getConfigurationModel, getConfigurationModelEnabledFn);
+export const getConfigurationModelName = createSelector(getConfigurationModel, getConfigurationModelNameFn);
 
 // Version History
 

@@ -22,27 +22,8 @@ export class MetadataConfigurationComponent {
         this.router.navigate(['../', 'edit', id], { relativeTo: this.activatedRoute.parent });
     }
 
-    getItemType(items: Property): string {
-        return items.widget ? items.widget.id : 'default';
-    }
-
-    getKeys(schema): string[] {
-        return Object.keys(schema.properties);
-    }
-
-    get attributeList$(): Observable<{ key: string, label: string }[]> {
-        /*
-        if (this.property.widget && this.property.widget.hasOwnProperty('data')) {
-            return of(this.property.widget.data);
-        }
-        if (this.property.widget && this.property.widget.hasOwnProperty('dataUrl')) {
-            return this.attrService.query(this.property.widget.dataUrl);
-        }
-        */
-        return of([]);
-    }
-
     get width(): string {
-        return `${ Math.floor(100 / this.configuration.dates.length) }%`;
+        const columns = this.configuration.dates.length;
+        return `${Math.floor(100 / (columns + 1)) }%`;
     }
 }

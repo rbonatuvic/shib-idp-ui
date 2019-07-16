@@ -24,15 +24,20 @@ export class MetadataHistoryComponent {
         this.history$ = this.store.select(getVersionCollection);
     }
 
+    sortVersionsByDate(versions: MetadataVersion[]): MetadataVersion[] {
+        return versions.sort((a, b) => {
+            const aDate = new Date(a.date).getTime();
+            const bDate = new Date(b.date).getTime();
+            return aDate === bDate ? 0 : aDate < bDate ? -1 : 1;
+        });
+    }
+
     compareVersions(versions: MetadataVersion[]): void {
+        const sorted = this.sortVersionsByDate(versions);
         this.router.navigate(
             ['../', 'compare'],
             {
-                queryParams: { versions: versions.sort((a, b) => {
-                    const aDate = new Date(a.date).getTime();
-                    const bDate = new Date(b.date).getTime();
-                    return aDate === bDate ? 0 : aDate < bDate ? -1 : 1;
-                }).map(v => v.id) },
+                queryParams: { versions: sorted.map(v => v.id) },
                 relativeTo: this.route
             }
         );
