@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
+import org.springframework.data.domain.AuditorAware
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 
@@ -86,5 +88,10 @@ class TestConfiguration {
         metadataResolver.resolvers = [shortIncommon]
         metadataResolver.initialize()
         return metadataResolver
+    }
+
+    @Bean
+    AuditorAware<String> defaultAuditorAware() {
+        return new DefaultAuditorAware()
     }
 }

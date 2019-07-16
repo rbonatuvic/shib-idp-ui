@@ -497,6 +497,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setModifiedDate(ed.getModifiedDate());
         representation.setVersion(ed.hashCode());
         representation.setCreatedBy(ed.getCreatedBy());
+        representation.setCurrent(ed.isCurrent());
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
