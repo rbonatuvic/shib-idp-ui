@@ -1,11 +1,41 @@
 {
     "type": "object",
     "required": [
+        "name",
+        "@type",
         "xmlId",
         "metadataURL",
         "metadataRequestURLConstructionScheme"
     ],
     "properties": {
+        "name": {
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "placeholder": "label.select-metadata-type",
+            "type": "string",
+            "readOnly": true,
+            "widget": {
+                "id": "select",
+                "disabled": true
+            },
+            "oneOf": [
+                {
+                    "enum": [
+                        "DynamicHttpMetadataResolver"
+                    ],
+                    "description": "value.dynamic-http-metadata-provider"
+                }
+            ]
+        },
         "enabled": {
             "title": "label.enable-provider-upon-saving",
             "description": "tooltip.enable-provider-upon-saving",

@@ -235,6 +235,7 @@ export class CollectionEffects {
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
         map(([id, order]) => {
             const index = order.indexOf(id);
+            console.log(id, order);
             if (index > 0) {
                 const newOrder = array_move(order, index, index - 1);
                 return new SetOrderProviderRequest(newOrder);

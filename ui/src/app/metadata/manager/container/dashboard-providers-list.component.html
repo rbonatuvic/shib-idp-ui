@@ -8,23 +8,62 @@
             </div>
         </div>
         <div class="p-3">
-            <ul class="list-unstyled m-0">
-                <li *ngFor="let provider of providers$ | async; index as i; first as isFirst; last as isLast;"
-                    [class.mt-2]="i > 0">
-                    <provider-item
-                        [index]="i + 1"
-                        [first]="isFirst"
-                        [last]="isLast"
-                        [provider]="provider"
-                        [isOpen]="(providersOpen$ | async)[provider.resourceId]"
-                        (select)="edit(provider)"
-                        (viewFilters)="gotoFilters(provider)"
-                        (toggle)="toggleEntity(provider)"
-                        (changeOrderUp)="updateOrderUp($event)"
-                        (changeOrderDown)="updateOrderDown($event)">
-                    </provider-item>
-                </li>
-            </ul>
+            <provider-search
+                class="w-50 d-block"
+                [query]="searchQuery$ | async"
+                [searching]="loading$ | async"
+                (search)="search($event)">
+            </provider-search>
+            <div class="table-responsive mt-3" *ngIf="limited$ | async;">
+                <table class="table table-striped w-100 table-hover table-providers">
+                    <thead>
+                        <th translate="label.order">Order</th>
+                        <th class="w-25" translate="label.title">Title</th>
+                        <th class="w-15" translate="label.provider-type">Provider Type</th>
+                        <th class="w-15" translate="label.author">Author</th>
+                        <th class="w-15" translate="label.creation-date">Created Date</th>
+                        <th class="text-right w-15" translate="label.enabled">Enabled</th>
+                    </thead>
+                    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll($event)">
+                        <tr *ngFor="let provider of limited$ | async; index as i; first as isFirst; last as isLast;">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div *ngIf="!(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">{{ i }}</div>
+                                    <div *ngIf="(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">&mdash;</div>
+                                    &nbsp;
+                                    <button class="btn btn-link px-1"
+                                        (click)="updateOrderDown(provider); $event.stopPropagation();"
+                                        [disabled]="isLast || (isSearching$ | async)"
+                                        aria-label="Decrease reorder by 1">
+                                        <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="btn btn-link  px-1"
+                                        (click)="updateOrderUp(provider); $event.stopPropagation();"
+                                        [disabled]="isFirst || (isSearching$ | async)"
+                                        aria-label="Increase reorder by 1">
+                                        <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>
+                                <!--<a [routerLink]="['/', 'metadata', 'provider', provider.id, 'configuration', 'options']">{{ provider.name }}</a>-->
+                                <a href="" (click)="edit(provider, $event)">{{ provider.name }}</a>
+                            </td>
+                            <td>{{ provider['@type'] }}</td>
+                            <td>{{ provider.createdBy }}</td>
+                            <td>{{ provider.createdDate | customDate }}</td>
+                            <td class="text-right">
+                                <span class="badge"
+                                    [class.badge-danger]="!provider.enabled"
+                                    [class.badge-success]="provider.enabled">
+                                    <span *ngIf="provider.enabled" translate="value.enabled">Enabled</span>
+                                    <span *ngIf="!provider.enabled" translate="value.disabled">Enabled</span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

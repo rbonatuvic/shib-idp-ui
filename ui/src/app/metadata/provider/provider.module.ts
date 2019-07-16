@@ -9,7 +9,6 @@ import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProviderWizardComponent } from './container/provider-wizard.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
-import { ProviderComponent } from './container/provider.component';
 import { WizardModule } from '../../wizard/wizard.module';
 import * as fromProvider from './reducer';
 import { EditorEffects } from './effect/editor.effect';
@@ -26,17 +25,18 @@ import { ContentionModule } from '../../contention/contention.module';
 import { DeleteFilterComponent } from './component/delete-filter.component';
 import { I18nModule } from '../../i18n/i18n.module';
 import { DomainModule } from '../domain/domain.module';
+import { MetadataProviderPageComponent } from './provider.component';
 
 @NgModule({
     declarations: [
-        ProviderComponent,
         ProviderWizardComponent,
         ProviderWizardStepComponent,
         ProviderEditComponent,
         ProviderEditStepComponent,
         ProviderSelectComponent,
         ProviderFilterListComponent,
-        DeleteFilterComponent
+        DeleteFilterComponent,
+        MetadataProviderPageComponent
     ],
     entryComponents: [
         DeleteFilterComponent

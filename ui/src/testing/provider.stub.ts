@@ -7,9 +7,11 @@ import {
     LogoutEndpoint
 } from '../app/metadata/domain/model';
 
-export const draft = {
+const d: unknown = {
     serviceProviderName: 'bar'
-} as MetadataProvider;
+};
+
+export const draft = d as MetadataProvider;
 
 export const provider = {
     ...draft,

@@ -71,3 +71,4 @@ export const getProviderFilters = createSelector(getSelectedProvider, provider =
 
 export const getProviderXmlIds = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.xmlId));
 export const getOrderedProviders = createSelector(getAllProviders, getProviderOrder, utils.mergeOrderFn);
+export const getOrderedProvidersInSearch = createSelector(getAllProviders, getProviderOrder, utils.mergeOrderFn);

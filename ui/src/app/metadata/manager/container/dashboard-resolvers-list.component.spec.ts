@@ -76,13 +76,6 @@ describe('Dashboard Resolvers List Page', () => {
         expect(fixture).toBeDefined();
     });
 
-    describe('toggleResolver method', () => {
-        it('should fire a redux action', () => {
-            instance.toggleEntity(draft);
-            expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
     describe('search method', () => {
         it('should fire a redux action', () => {
             instance.search();
@@ -95,17 +88,34 @@ describe('Dashboard Resolvers List Page', () => {
     });
 
     describe('edit method', () => {
-        it('should route to the edit page', () => {
-            spyOn(router, 'navigate');
-            instance.edit(resolver);
-            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', resolver.id, 'edit']);
-        });
         it('should route to the wizard page', () => {
+            const evt = new Event('a type');
             spyOn(router, 'navigate');
-            instance.edit(draft);
+            spyOn(evt, 'preventDefault');
+            instance.edit(evt, draft);
             expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', 'new', 'blank', 'common'], {
                 queryParams: { id: '1' }
             });
+            expect(evt.preventDefault).toHaveBeenCalled();
+        });
+    });
+
+    describe('loadMore method', () => {
+        it('should call the page observable to emit the next value', (done: DoneFn) => {
+            instance.loadMore(5);
+            instance.page$.subscribe(val => {
+                expect(val).toBe(5);
+                expect(instance.page).toBe(5);
+                done();
+            });
+        });
+    });
+
+    describe('onScroll method', () => {
+        it('should call the loadMore method', () => {
+            spyOn(instance, 'loadMore');
+            instance.onScroll(new Event('scrolled'));
+            expect(instance.loadMore).toHaveBeenCalledWith(instance.page + 1);
         });
     });
 

@@ -23,6 +23,7 @@ import { MetadataHistoryEffects } from './effect/history.effect';
 import { MetadataHistoryService } from './service/history.service';
 import { MetadataHistoryComponent } from './container/metadata-history.component';
 import { HistoryListComponent } from './component/history-list.component';
+import { DomainModule } from '../domain/domain.module';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { HistoryListComponent } from './component/history-list.component';
         CommonModule,
         I18nModule,
         NgbPopoverModule,
-        RouterModule
+        RouterModule,
+        DomainModule
     ],
     exports: [],
     providers: []

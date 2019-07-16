@@ -1,8 +1,8 @@
-import * as searchActions from '../action/search.action';
-import { MetadataEntity } from '../../domain/model';
+import { DashboardSearchActionTypes, DashboardSearchActionsUnion } from '../action/search.action';
+import { Metadata } from '../../domain/domain.type';
 
 export interface SearchState {
-    entities: MetadataEntity[];
+    entities: Metadata[];
     loading: boolean;
     query: string;
 }
@@ -13,17 +13,17 @@ const initialState: SearchState = {
     query: ''
 };
 
-export function reducer(state = initialState, action: searchActions.Actions): SearchState {
+export function reducer(state = initialState, action: DashboardSearchActionsUnion): SearchState {
     switch (action.type) {
-        case searchActions.ENTITY_SEARCH: {
+        case DashboardSearchActionTypes.ENTITY_SEARCH: {
             return {
                 ...state,
-                query: action.payload,
+                query: action.payload.query,
                 loading: true,
             };
         }
 
-        case searchActions.ENTITY_SEARCH_COMPLETE: {
+        case DashboardSearchActionTypes.ENTITY_SEARCH_COMPLETE: {
             return {
                 entities: action.payload,
                 loading: false,
