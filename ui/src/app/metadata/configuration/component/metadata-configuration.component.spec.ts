@@ -14,6 +14,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
 })
 class ObjectPropertyComponent {
     @Input() property: Property;
+    @Input() columns = 1;
 }
 
 @Component({
@@ -25,7 +26,10 @@ class TestHostComponent {
     @ViewChild(MetadataConfigurationComponent)
     public componentUnderTest: MetadataConfigurationComponent;
 
-    configuration: MetadataConfiguration = {sections: []};
+    configuration: MetadataConfiguration = {
+        dates: [],
+        sections: []
+    };
 }
 
 describe('Metadata Configuration Component', () => {

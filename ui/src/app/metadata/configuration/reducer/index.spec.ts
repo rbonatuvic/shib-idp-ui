@@ -12,7 +12,7 @@ describe('Configuration Reducer', () => {
 
     describe('getConfigurationSectionsFn', () => {
         it('should parse the schema, definition, and model into a MetadataConfiguration', () => {
-            const config = getConfigurationSectionsFn(model, definition, schema);
+            const config = getConfigurationSectionsFn([model], definition, schema);
             expect(config.sections).toBeDefined();
         });
     });

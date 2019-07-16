@@ -17,8 +17,6 @@ import { MetadataXmlComponent } from './metadata-xml.component';
 class TestHostComponent {
     @ViewChild(MetadataXmlComponent)
     public componentUnderTest: MetadataXmlComponent;
-
-    configuration: MetadataConfiguration = { sections: [] };
 }
 
 describe('Metadata Xml Page Component', () => {

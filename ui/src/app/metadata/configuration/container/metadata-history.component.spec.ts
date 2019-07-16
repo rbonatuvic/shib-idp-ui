@@ -8,6 +8,9 @@ import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import * as fromConfiguration from '../reducer';
+import { Router, ActivatedRoute } from '@angular/router';
+import { RouterStub } from '../../../../testing/router.stub';
+import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 
 export const TestData = {
     versions: [
@@ -43,6 +46,12 @@ describe('Metadata Version History Component', () => {
             providers: [
                 {
                     provide: MetadataHistoryService, useValue: MockHistoryService
+                },
+                {
+                    provide: Router, useClass: RouterStub
+                },
+                {
+                    provide: ActivatedRoute, useClass: ActivatedRouteStub
                 }
             ],
             imports: [

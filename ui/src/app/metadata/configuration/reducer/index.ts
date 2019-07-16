@@ -63,7 +63,7 @@ export const assignValueToProperties = (models, properties): any[] => {
 export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
     return !definition || !schema ? null :
         ({
-            dates: models.map(m => m.updatedDate),
+            dates: models.map(m => m.modifiedDate),
             sections: definition.steps
                 .filter(step => step.id !== 'summary')
                 .map(

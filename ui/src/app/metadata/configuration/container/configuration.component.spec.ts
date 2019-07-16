@@ -18,7 +18,10 @@ class TestHostComponent {
     @ViewChild(ConfigurationComponent)
     public componentUnderTest: ConfigurationComponent;
 
-    configuration: MetadataConfiguration = { sections: [] };
+    configuration: MetadataConfiguration = {
+        dates: [],
+        sections: []
+    };
 }
 
 describe('Metadata Configuration Page Component', () => {
