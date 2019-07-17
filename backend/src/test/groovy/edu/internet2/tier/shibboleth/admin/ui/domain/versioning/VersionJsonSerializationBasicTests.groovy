@@ -27,7 +27,7 @@ class VersionJsonSerializationBasicTests extends Specification {
             {
                 "id": "2",
                 "creator": "kramer",
-                "date": "2019-05-20T15:00:00.574Z"                
+                "date": "2019-05-20T15:00:00.574Z"                                
             }
         """
         def expectedJsonMap = jsonSlurper.parseText(expectedJson)
@@ -37,5 +37,7 @@ class VersionJsonSerializationBasicTests extends Specification {
 
         then:
         deSerializedJsonMap.date == expectedJsonMap.date
+        deSerializedJsonMap.id == expectedJsonMap.id
+        deSerializedJsonMap.creator == expectedJsonMap.creator
     }
 }

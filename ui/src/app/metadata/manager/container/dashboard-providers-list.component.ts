@@ -81,7 +81,8 @@ export class DashboardProvidersListComponent implements OnInit {
         this.router.navigate(['metadata', 'provider', id, page]);
     }
 
-    edit(provider: MetadataProvider): void {
+    edit(provider: MetadataProvider, event: Event): void {
+        event.preventDefault();
         this.view(provider.resourceId, 'edit');
     }
 
