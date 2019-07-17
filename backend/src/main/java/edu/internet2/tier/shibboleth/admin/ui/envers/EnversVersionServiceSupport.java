@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.envers;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
@@ -31,14 +32,10 @@ public class EnversVersionServiceSupport {
                 .getResultList();
 
         Object listOfVersions = revs.stream()
-                .map(it -> ((Object[]) it)[1])
                 .map(it -> {
-                    return new Version(((PrincipalAwareRevisionEntity) it).idAsString(),
-                            ((PrincipalAwareRevisionEntity) it).getPrincipalUserName(),
-                            ((PrincipalAwareRevisionEntity) it).getRevisionDate()
-                                    .toInstant()
-                                    .atOffset(ZoneOffset.UTC)
-                                    .toZonedDateTime());
+                    return new Version(((PrincipalAwareRevisionEntity) ((Object[]) it)[1]).idAsString(),
+                            ((AbstractAuditable) ((Object[]) it)[0]).getModifiedBy(),
+                            ((AbstractAuditable) ((Object[]) it)[0]).modifiedDateAsZonedDateTime());
                 })
                 .sorted(comparing(Version::getDate))
                 .collect(toList());
@@ -48,14 +45,30 @@ public class EnversVersionServiceSupport {
 
     public Object findSpecificVersionOfPersistentEntity(String resourceId, String versionId, Class<?> entityClass) {
         try {
-            return AuditReaderFactory.get(entityManager).createQuery()
+            AbstractAuditable abstractAuditable =
+                    (AbstractAuditable) AuditReaderFactory.get(entityManager).createQuery()
                     .forEntitiesAtRevision(entityClass, Integer.valueOf(versionId))
                     .add(AuditEntity.property("resourceId").eq(resourceId))
                     .add(AuditEntity.revisionNumber().eq(Integer.valueOf(versionId)))
                     .getSingleResult();
-        }
-        catch (NoResultException e) {
+            if(isCurrentRevision(resourceId, versionId, entityClass)) {
+                abstractAuditable.markAsCurrent();
+            }
+            return abstractAuditable;
+        } catch (NoResultException e) {
             return null;
         }
+    }
+
+    private boolean isCurrentRevision(String resourceId, String versionId, Class<?> entityClass) {
+        Number revision = (Number) AuditReaderFactory
+                .get(entityManager)
+                .createQuery()
+                .forRevisionsOfEntity(entityClass, false, false)
+                .addProjection(AuditEntity.revisionNumber().max())
+                .add(AuditEntity.property("resourceId").eq(resourceId))
+                .getSingleResult();
+
+        return Integer.valueOf(versionId) == revision.intValue();
     }
 }
