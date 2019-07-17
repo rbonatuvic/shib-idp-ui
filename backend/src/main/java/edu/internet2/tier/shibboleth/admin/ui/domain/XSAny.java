@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.util.AttributeMap;
 
 import javax.annotation.Nonnull;
@@ -10,6 +11,7 @@ import javax.persistence.Transient;
 
 @Entity
 @EqualsAndHashCode(callSuper = true, exclude = {"unknownAttributes"})
+@Audited
 public class XSAny extends AbstractElementExtensibleXMLObject implements org.opensaml.core.xml.schema.XSAny {
 
     private String textContext;

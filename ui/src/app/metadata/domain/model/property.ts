@@ -1,4 +1,5 @@
 export interface Property {
+    title?: string;
     type: string;
     name: string;
     value: string[];

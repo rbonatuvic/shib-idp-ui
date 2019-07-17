@@ -1,20 +1,19 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbPaginationModule, NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
-import { EntityItemComponent } from '../component/entity-item.component';
 import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RouterStub } from '../../../../testing/router.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { DashboardResolversListComponent } from './dashboard-resolvers-list.component';
-import { ResolverItemComponent } from '../component/resolver-item.component';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 describe('Dashboard Resolvers List Page', () => {
@@ -50,12 +49,13 @@ describe('Dashboard Resolvers List Page', () => {
                 ReactiveFormsModule,
                 NgbPaginationModule,
                 NgbModalModule,
-                MockI18nModule
+                MockI18nModule,
+                InfiniteScrollModule,
+                RouterModule
             ],
             declarations: [
                 DashboardResolversListComponent,
                 ProviderSearchComponent,
-                ResolverItemComponent,
                 DeleteDialogComponent,
                 CustomDatePipe
             ],
@@ -76,37 +76,6 @@ describe('Dashboard Resolvers List Page', () => {
         expect(fixture).toBeDefined();
     });
 
-    xdescribe('getPagedResolvers method', () => {});
-
-    describe('changePage method', () => {
-        it('should update the page value', () => {
-            let page = 2;
-            instance.changePage(page);
-            expect(instance.page).toBe(page);
-        });
-
-        it('should update the paged resolvers list', () => {
-            let page = 2;
-            spyOn(instance, 'getPagedResolvers');
-            instance.changePage(page);
-            expect(instance.getPagedResolvers).toHaveBeenCalled();
-        });
-    });
-
-    describe('toggleResolver method', () => {
-        it('should fire a redux action', () => {
-            instance.toggleEntity(draft);
-            expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
-    describe('openPreviewDialog method', () => {
-        it('should fire a redux action', () => {
-            instance.openPreviewDialog(resolver);
-            expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
     describe('search method', () => {
         it('should fire a redux action', () => {
             instance.search();
@@ -119,17 +88,34 @@ describe('Dashboard Resolvers List Page', () => {
     });
 
     describe('edit method', () => {
-        it('should route to the edit page', () => {
-            spyOn(router, 'navigate');
-            instance.edit(resolver);
-            expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', resolver.id, 'edit']);
-        });
         it('should route to the wizard page', () => {
+            const evt = new Event('a type');
             spyOn(router, 'navigate');
-            instance.edit(draft);
+            spyOn(evt, 'preventDefault');
+            instance.edit(evt, draft);
             expect(router.navigate).toHaveBeenCalledWith(['metadata', 'resolver', 'new', 'blank', 'common'], {
                 queryParams: { id: '1' }
             });
+            expect(evt.preventDefault).toHaveBeenCalled();
+        });
+    });
+
+    describe('loadMore method', () => {
+        it('should call the page observable to emit the next value', (done: DoneFn) => {
+            instance.loadMore(5);
+            instance.page$.subscribe(val => {
+                expect(val).toBe(5);
+                expect(instance.page).toBe(5);
+                done();
+            });
+        });
+    });
+
+    describe('onScroll method', () => {
+        it('should call the loadMore method', () => {
+            spyOn(instance, 'loadMore');
+            instance.onScroll(new Event('scrolled'));
+            expect(instance.loadMore).toHaveBeenCalledWith(instance.page + 1);
         });
     });
 

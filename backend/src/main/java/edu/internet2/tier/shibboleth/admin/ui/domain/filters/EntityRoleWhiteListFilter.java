@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Audited
 public class EntityRoleWhiteListFilter extends MetadataFilter {
 
     public EntityRoleWhiteListFilter() {

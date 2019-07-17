@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -64,6 +66,9 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     private String createdBy;
 
+    @JsonProperty
+    private boolean current;
+
     public String getId() {
         return id;
     }
@@ -111,6 +116,7 @@ public class EntityDescriptorRepresentation implements Serializable {
     public void setMdui(MduiRepresentation mdui) {
         this.mdui = mdui;
     }
+
 
     public ServiceProviderSsoDescriptorRepresentation getServiceProviderSsoDescriptor() {
         return this.getServiceProviderSsoDescriptor(false);
@@ -212,5 +218,13 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
     }
 }

@@ -1,16 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
-import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse
+
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import mjson.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpInputMessage
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter
 
 import javax.annotation.PostConstruct

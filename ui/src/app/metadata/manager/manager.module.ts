@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { ManagerComponent } from './container/manager.component';
 import { EntityItemComponent } from './component/entity-item.component';
@@ -44,7 +45,8 @@ import { I18nModule } from '../../i18n/i18n.module';
         NgbDropdownModule,
         HttpClientModule,
         SharedModule,
-        I18nModule
+        I18nModule,
+        InfiniteScrollModule
     ],
     exports: [
         ResolverItemComponent

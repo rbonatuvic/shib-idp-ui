@@ -1,8 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.Audited;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,8 @@ import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
+@AuditOverride(forClass = AbstractAuditable.class)
 public class EntityAttributesFilterTarget extends AbstractAuditable {
     public enum EntityAttributesFilterTargetType {
         ENTITY, CONDITION_SCRIPT, CONDITION_REF, REGEX

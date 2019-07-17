@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.security;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Optional;
 
@@ -16,12 +15,14 @@ import java.util.Optional;
  */
 public class DefaultAuditorAware implements AuditorAware<String> {
 
+    private static final String ANONYMOUS = "anonymousUser";
+
     @Override
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            return Optional.empty();
+            return Optional.of(ANONYMOUS);
         }
-        return Optional.of(User.class.cast(authentication.getPrincipal()).getUsername());
+        return Optional.of(authentication.getName());
     }
 }

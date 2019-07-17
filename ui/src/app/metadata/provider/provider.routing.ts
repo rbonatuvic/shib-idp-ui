@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { ProviderComponent } from './container/provider.component';
 import { ProviderWizardComponent } from './container/provider-wizard.component';
 import { ProviderWizardStepComponent } from './container/provider-wizard-step.component';
 import { ProviderEditComponent } from './container/provider-edit.component';
@@ -13,11 +12,12 @@ import { EditFilterComponent } from '../filter/container/edit-filter.component';
 import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
 import { FilterComponent } from '../filter/container/filter.component';
 import { AdminGuard } from '../../core/service/admin.guard';
+import { MetadataProviderPageComponent } from './provider.component';
 
 export const ProviderRoutes: Routes = [
     {
         path: 'provider',
-        component: ProviderComponent,
+        component: MetadataProviderPageComponent,
         canActivate: [AdminGuard],
         children: [
             {

@@ -1,8 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,13 +18,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"current"})
+@Audited
 public abstract class AbstractAuditable implements Auditable {
 
     @Id
@@ -46,6 +56,9 @@ public abstract class AbstractAuditable implements Auditable {
     @LastModifiedBy
     private String modifiedBy;
 
+    @Transient
+    @JsonProperty
+    private boolean current;
 
     @Override
     public Long getAudId() {
@@ -91,5 +104,29 @@ public abstract class AbstractAuditable implements Auditable {
 
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public ZonedDateTime createdDateAsZonedDateTime() {
+        return toZonedDateTime(this.createdDate);
+    }
+
+    public ZonedDateTime modifiedDateAsZonedDateTime() {
+        return toZonedDateTime(this.modifiedDate);
+    }
+
+    public boolean isCurrent() {
+        return this.current;
+    }
+
+    public void markAsCurrent() {
+        this.current = true;
+    }
+
+    private static ZonedDateTime toZonedDateTime(LocalDateTime localDateTime) {
+        return localDateTime
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .atOffset(ZoneOffset.UTC)
+                .toZonedDateTime();
     }
 }

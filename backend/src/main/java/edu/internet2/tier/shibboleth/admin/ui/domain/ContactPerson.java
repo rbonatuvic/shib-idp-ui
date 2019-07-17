@@ -1,6 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration;
 
@@ -12,20 +14,24 @@ import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class ContactPerson extends AbstractAttributeExtensibleXMLObject implements org.opensaml.saml.saml2.metadata.ContactPerson {
 
     private String contactPersonType;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private Extensions extensions;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private Company company;
 
     @OneToOne(cascade = CascadeType.ALL)
     private GivenName givenName;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @NotAudited
     private SurName surName;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -36,6 +42,7 @@ public class ContactPerson extends AbstractAttributeExtensibleXMLObject implemen
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "contactpersn_telenmbr_id")
     @OrderColumn
+    @NotAudited
     private List<TelephoneNumber> telephoneNumbers = new ArrayList<>();
 
     @Override

@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
+import org.hibernate.envers.Audited;
 
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import java.beans.Transient;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class XSQName extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSQName {
     @Nullable
     @Override

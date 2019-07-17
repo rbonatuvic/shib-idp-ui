@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class Attribute extends AbstractAttributeExtensibleXMLObject implements org.opensaml.saml.saml2.core.Attribute {
 
     private String name;
@@ -25,6 +27,7 @@ public class Attribute extends AbstractAttributeExtensibleXMLObject implements o
 
     @OneToMany(cascade = CascadeType.ALL)
     @OrderColumn
+    @Audited
     private List<AbstractXMLObject> attributeValues = new ArrayList<>();
 
     @Override

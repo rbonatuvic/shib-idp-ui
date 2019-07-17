@@ -38,19 +38,6 @@ export class WizardEffects {
         map(provider => new Clear())
     );
 
-    @Effect({ dispatch: false })
-    updateEntityIdInUrl$ = this.actions$.pipe(
-        ofType<SelectDraftSuccess>(DraftActionTypes.SELECT_SUCCESS),
-        map(action => action.payload),
-        tap((id) => {
-            this.router.navigate([], {
-                relativeTo: this.activatedRoute,
-                queryParams: { id },
-                queryParamsHandling: 'merge'
-            });
-        })
-    );
-
     constructor(
         private store: Store<fromResolver.State>,
         private actions$: Actions,

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -28,6 +29,7 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 @Getter
 @Setter
 @ToString
+@Audited
 public class EntityAttributesFilter extends MetadataFilter {
 
     public EntityAttributesFilter() {
