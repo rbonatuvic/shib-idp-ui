@@ -78,8 +78,8 @@ class DevConfig {
                 roles.add(roleRepository.findByName('ROLE_ADMIN').get())
                 it
             }, new User().with {
-                username = 'user'
-                password = '{noop}userpass'
+                username = 'nonadmin'
+                password = '{noop}nonadminpass'
                 firstName = 'Peter'
                 lastName = 'Vandelay'
                 emailAddress = 'peter@institution.edu'

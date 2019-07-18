@@ -10,6 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -39,7 +40,7 @@ class UsersControllerIntegrationTests extends Specification {
         def expectedJson = """
 [
   {
-    "modifiedBy" : anonymousUser,
+    "modifiedBy" : "anonymousUser",
     "firstName" : "Joe",
     "emailAddress" : "joe@institution.edu",
     "role" : "ROLE_ADMIN",
@@ -48,7 +49,7 @@ class UsersControllerIntegrationTests extends Specification {
     "lastName" : "Doe"
   },
   {
-    "modifiedBy" : anonymousUser,
+    "modifiedBy" : "anonymousUser",
     "firstName" : "Peter",
     "emailAddress" : "peter@institution.edu",
     "role" : "ROLE_USER",
@@ -57,12 +58,21 @@ class UsersControllerIntegrationTests extends Specification {
     "lastName" : "Vandelay"
   },
   {
-    "modifiedBy" : anonymousUser,
+    "modifiedBy" : "anonymousUser",
+    "firstName" : "Bad",
+    "emailAddress" : "badboy@institution.edu",
+    "role" : "ROLE_NONE",
+    "username" : "none",
+    "createdBy" : "anonymousUser",
+    "lastName" : "robot"
+  },
+  {
+    "modifiedBy" : "anonymousUser",
     "firstName" : "Anon",
     "emailAddress" : "anon@institution.edu",
     "role" : "ROLE_ADMIN",
     "username" : "anonymousUser",
-    "createdBy" : anonymousUser,
+    "createdBy" : "anonymousUser",
     "lastName" : "Ymous"
   }
 ]"""
@@ -75,7 +85,6 @@ class UsersControllerIntegrationTests extends Specification {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().json(expectedJson, false))
-
     }
 
     @WithMockUser(value = "admin", roles = ["ADMIN"])
