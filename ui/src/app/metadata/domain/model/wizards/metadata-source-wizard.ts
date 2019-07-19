@@ -3,12 +3,12 @@ import { MetadataResolver } from '../metadata-resolver';
 import { MetadataSourceBase } from './metadata-source-base';
 
 export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<MetadataResolver> {
+    schema = '/api/ui/MetadataSources';
     steps: WizardStep[] = [
         {
             index: 1,
             id: 'common',
             label: 'label.name-and-entity-id',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceProviderName',
                 'entityId'
@@ -28,7 +28,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 2,
             id: 'org-info',
             label: 'label.org-info',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'organization',
                 'contacts'
@@ -52,7 +51,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 3,
             id: 'metadata-ui',
             label: 'label.metadata-ui',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'mdui'
             ]
@@ -61,7 +59,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 4,
             id: 'descriptor-info',
             label: 'label.descriptor-info',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceProviderSsoDescriptor'
             ]
@@ -70,7 +67,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 5,
             id: 'logout-endpoints',
             label: 'label.logout-endpoints',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'logoutEndpoints'
             ],
@@ -87,7 +83,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 6,
             id: 'key-info',
             label: 'label.key-info',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'securityInfo'
             ]
@@ -96,7 +91,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 7,
             id: 'assertion',
             label: 'label.assertion',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'assertionConsumerServices'
             ],
@@ -113,7 +107,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 8,
             id: 'relying-party',
             label: 'label.relying-party',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'relyingPartyOverrides'
             ],
@@ -130,7 +123,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 9,
             id: 'attribute',
             label: 'label.attribute-release',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'attributeRelease'
             ],
@@ -147,7 +139,6 @@ export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<M
             index: 10,
             id: 'summary',
             label: 'label.finished',
-            schema: '/api/ui/MetadataSources',
             fields: [
                 'serviceEnabled'
             ],

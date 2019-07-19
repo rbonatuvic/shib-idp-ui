@@ -3,7 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { ActivatedRoute } from '@angular/router';
-import { map, distinctUntilChanged, skipWhile } from 'rxjs/operators';
+import { map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
 import { SelectProviderRequest, ClearProviderSelection } from '../action/collection.action';
 import * as fromProviders from '../reducer';
 import { MetadataProvider } from '../../domain/model';
@@ -20,6 +20,7 @@ import { ClearEditor } from '../action/editor.action';
 
 export class ProviderSelectComponent implements OnDestroy {
     actionsSubscription: Subscription;
+    providerSubscription: Subscription;
 
     provider$: Observable<MetadataProvider>;
 
@@ -31,9 +32,11 @@ export class ProviderSelectComponent implements OnDestroy {
             map(params => new SelectProviderRequest(params.providerId))
         ).subscribe(store);
 
-        this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(skipWhile(p => !p));
+        this.provider$ = this.store.select(fromProviders.getSelectedProvider).pipe(filter(p => !!p));
 
-        this.provider$.subscribe(provider => this.setDefinition(provider));
+        this.providerSubscription = this.provider$.subscribe(provider => {
+            this.setDefinition(provider);
+        });
     }
 
     setDefinition(provider: MetadataProvider): void {
@@ -46,6 +49,7 @@ export class ProviderSelectComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.actionsSubscription.unsubscribe();
+        this.providerSubscription.unsubscribe();
         this.store.dispatch(new ClearProvider());
         this.store.dispatch(new ClearWizard());
         this.store.dispatch(new ClearEditor());

@@ -25,6 +25,7 @@ import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
 import { I18nModule } from './i18n/i18n.module';
+import { NavigationService } from './core/service/navigation.service';
 
 @NgModule({
     declarations: [
@@ -58,6 +59,7 @@ import { I18nModule } from './i18n/i18n.module';
     ],
     providers: [
         NavigatorService,
+        NavigationService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {
             provide: HTTP_INTERCEPTORS,

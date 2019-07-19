@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.ext.saml2mdui.Description;
 import org.opensaml.saml.ext.saml2mdui.DisplayName;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class UIInfo extends AbstractXMLObject implements org.opensaml.saml.ext.saml2mdui.UIInfo {
     @OneToMany
     @Cascade(CascadeType.ALL)

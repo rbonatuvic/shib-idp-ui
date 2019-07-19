@@ -48,11 +48,7 @@ export const getWizardIsDisabled = createSelector(getState, fromWizard.getDisabl
 export const getWizardDefinition = createSelector(getState, fromWizard.getDefinition);
 export const getSchemaCollection = createSelector(getState, fromWizard.getCollection);
 
-export const getSchemaPath = (index: string, wizard: Wizard<any>) => {
-    if (!wizard) { return null; }
-    const step = wizard.steps.find(s => s.id === index);
-    return step ? step.schema : null;
-};
+export const getSchemaPath = (wizard: Wizard<any>) => wizard ? wizard.schema : null;
 
 export const getSplitSchema = (schema: any, step: WizardStep) => {
     if (!schema || !step.fields || !step.fields.length || !schema.properties) {
@@ -93,7 +89,7 @@ export const getSplitSchema = (schema: any, step: WizardStep) => {
     return s;
 };
 
-export const getCurrentWizardSchema = createSelector(getWizardIndex, getWizardDefinition, getSchemaPath);
+export const getCurrentWizardSchema = createSelector(getWizardDefinition, getSchemaPath);
 
 export const getPreviousFn = (index: string, wizard: Wizard<any>) => {
     if (!wizard) { return null; }

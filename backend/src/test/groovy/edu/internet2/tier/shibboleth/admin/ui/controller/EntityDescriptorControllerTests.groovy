@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
@@ -69,6 +70,7 @@ class EntityDescriptorControllerTests extends Specification {
     RoleRepository roleRepository = Mock()
 
     UserService userService
+    EntityDescriptorVersionService versionService = Mock()
 
     def setup() {
         generator = new TestObjectGenerator()
@@ -78,7 +80,7 @@ class EntityDescriptorControllerTests extends Specification {
         userService = new UserService(roleRepository, userRepository)
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), userService)
 
-        controller = new EntityDescriptorController(userRepository, roleRepository, userService)
+        controller = new EntityDescriptorController(userService, versionService)
         controller.entityDescriptorRepository =  entityDescriptorRepository
         controller.openSamlObjects = openSamlObjects
         controller.entityDescriptorService = service
@@ -145,7 +147,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
 	            "attributeRelease": null,
 	            "version": $version,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }
             ]    
         """
@@ -200,7 +203,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $versionOne,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               },
               {
 	            "id": "uuid-2",
@@ -219,7 +223,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $versionTwo,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }              
            ]    
         """
@@ -271,7 +276,8 @@ class EntityDescriptorControllerTests extends Specification {
                 "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $versionOne,
-                "createdBy": "someUser"
+                "createdBy": "someUser",
+                "current": false
               }              
            ]    
         """
@@ -323,7 +329,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
 	            "relyingPartyOverrides": null,
-                "attributeRelease": null
+                "attributeRelease": null,
+                "current": false
               }                
         """
 
@@ -346,7 +353,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $version,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }                
         """
 
@@ -502,7 +510,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $version,
-                "createdBy": null
+                "createdBy": null,
+                "current": false
               }                
         """
 
@@ -554,7 +563,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "relyingPartyOverrides": null,
                 "attributeRelease": null,
                 "version": $version,
-                "createdBy": "someUser"
+                "createdBy": "someUser",
+                "current": false
               }                
         """
 

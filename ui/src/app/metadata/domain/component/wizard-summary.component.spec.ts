@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { getStepProperties, WizardSummaryComponent } from './wizard-summary.component';
+import { WizardSummaryComponent } from './wizard-summary.component';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import { Wizard } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
@@ -67,17 +67,6 @@ describe('Provider Wizard Summary Component', () => {
     it('should instantiate the component', async(() => {
         expect(app).toBeTruthy();
     }));
-
-    describe('getStepProperties function', () => {
-        it('should return an empty array of schema or schema.properties is not defined', () => {
-            expect(getStepProperties(null, {})).toEqual([]);
-            expect(getStepProperties({}, {})).toEqual([]);
-        });
-
-        it('should return a formatted list of properties', () => {
-            expect(getStepProperties(SCHEMA, {}).length).toBe(2);
-        });
-    });
 
     describe('gotoPage function', () => {
         it('should emit an empty string if page is null', () => {

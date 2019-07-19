@@ -97,14 +97,6 @@ describe('Provider Edit Component', () => {
         expect(app).toBeTruthy();
     }));
 
-    describe('go method', () => {
-        it('should route to the given child form', () => {
-            spyOn(router, 'navigate');
-            app.go('common');
-            expect(router.navigate).toHaveBeenCalled();
-        });
-    });
-
     describe('save method', () => {
         it('should route to the given child form', () => {
             app.save();

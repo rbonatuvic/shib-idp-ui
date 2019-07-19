@@ -30,13 +30,13 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
         };
         return validators;
     },
+    schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
     steps: [
         {
             id: 'common',
             label: 'label.common-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'xmlId',
                 'sourceDirectory'
@@ -57,7 +57,6 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'dynamicMetadataResolverAttributes'
             ],
@@ -76,7 +75,6 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'enabled'
             ],
@@ -102,7 +100,6 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
             label: 'label.common-attributes',
             index: 1,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'name',
                 '@type',
@@ -143,7 +140,6 @@ export const LocalDynamicMetadataProviderEditor: Wizard<LocalDynamicMetadataProv
             label: 'label.dynamic-attributes',
             index: 2,
             initialValues: [],
-            schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
             fields: [
                 'dynamicMetadataResolverAttributes'
             ]

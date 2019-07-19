@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.joda.time.DateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
@@ -13,6 +14,7 @@ import javax.persistence.Transient;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class XSDateTime extends AbstractXMLObject implements org.opensaml.core.xml.schema.XSDateTime {
 
     private DateTime dateTime;

@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.envers.Audited;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@Audited
 public class KeyInfo extends AbstractXMLObject implements org.opensaml.xmlsec.signature.KeyInfo {
 
     @OneToMany(cascade = CascadeType.ALL)

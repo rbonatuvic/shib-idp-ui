@@ -56,8 +56,6 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
         let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form));
         startIndex$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(index => this.store.dispatch(new SetIndex(index)));
 
-        this.index$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(index => index && this.go(index));
-
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .pipe(filter(s => !!s))
@@ -65,10 +63,6 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
 
         this.resolver$.subscribe(p => this.resolver = p);
         this.store.select(fromResolver.getEntityChanges).subscribe(changes => this.latest = changes);
-    }
-
-    go(index: string): void {
-        this.router.navigate(['./', index], { relativeTo: this.route });
     }
 
     ngOnDestroy() {
@@ -87,7 +81,7 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
 
     cancel(): void {
         this.clear();
-        this.router.navigate(['dashboard', 'metadata', 'manager', 'resolvers']);
+        this.router.navigate(['metadata', 'resolver', this.resolver.id, 'configuration']);
     }
 
     canDeactivate(

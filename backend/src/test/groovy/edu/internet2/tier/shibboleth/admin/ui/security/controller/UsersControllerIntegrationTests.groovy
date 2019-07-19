@@ -39,30 +39,30 @@ class UsersControllerIntegrationTests extends Specification {
         def expectedJson = """
 [
   {
-    "modifiedBy" : null,
+    "modifiedBy" : anonymousUser,
     "firstName" : "Joe",
     "emailAddress" : "joe@institution.edu",
     "role" : "ROLE_ADMIN",
     "username" : "admin",
-    "createdBy" : null,
+    "createdBy" : anonymousUser,
     "lastName" : "Doe"
   },
   {
-    "modifiedBy" : null,
+    "modifiedBy" : anonymousUser,
     "firstName" : "Peter",
     "emailAddress" : "peter@institution.edu",
     "role" : "ROLE_USER",
     "username" : "nonadmin",
-    "createdBy" : null,
+    "createdBy" : anonymousUser,
     "lastName" : "Vandelay"
   },
   {
-    "modifiedBy" : null,
+    "modifiedBy" : anonymousUser,
     "firstName" : "Anon",
     "emailAddress" : "anon@institution.edu",
     "role" : "ROLE_ADMIN",
     "username" : "anonymousUser",
-    "createdBy" : null,
+    "createdBy" : anonymousUser,
     "lastName" : "Ymous"
   }
 ]"""
@@ -83,12 +83,12 @@ class UsersControllerIntegrationTests extends Specification {
         given:
         def expectedJson = """
 {
-  "modifiedBy" : null,
+  "modifiedBy" : anonymousUser,
   "firstName" : "Joe",
   "emailAddress" : "joe@institution.edu",
   "role" : "ROLE_ADMIN",
   "username" : "admin",
-  "createdBy" : null,
+  "createdBy" : anonymousUser,
   "lastName" : "Doe"
 }"""
         when: 'GET request is made for one existing user'
