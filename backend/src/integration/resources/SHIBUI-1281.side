@@ -1747,7 +1747,7 @@
         ["xpath=//td[5]", "xpath:position"],
         ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
       ],
-      "value": "3000"
+      "value": "30000"
     }, {
       "id": "ba9fb8e8-d332-45bd-accd-703284744136",
       "comment": "",
