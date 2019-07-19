@@ -1349,261 +1349,7 @@
                     </section>
                 </article>
 
-                <!-- View Provider -->
-                <article class="view d-none" id="vViewProvider">
-                    <section class="vs">
-                        <div class="vs-inner">
-                            <div class="section-header">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Metadata Provider Title</li>
-                                    </ol>
-                                </nav>
-                                <h1 class="section-title">Provider Configuration</h1>
-                            </div>
-                            <div class="section-body" id="providerTop">
-                                <div class="options-table">
-                                    <div class="card enabled-status">
-                                        <div class="card-body">
-                                            <h2 class="card-title version-title">Version 3</h2>
-                                            <p class="card-text version-details">
-                                                Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
-                                            </p>
-                                            <p class="card-text"><span class="badge badge-primary">Enabled</span> <span class="badge badge-primary">Current</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md">
-                                            <button type="button" class="btn btn-link change-view" data-view="vVersionHistoryProvider"><i class="fas fa-history"></i> Version History</button>
-                                            <a href="#providerFilters" class="btn btn-link" id="scrollToFilters"><i class="fas fa-arrow-down"></i> Filters</a>
-                                        </div>
-                                        <div class="col-md">
-                                            <div class="view-toggle">
-                                                <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <button type="button" class="btn btn-primary">Options</button>
-                                                    <button type="button" class="btn btn-light">XML</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="config-group">
-                                        <div class="numbered-header">
-                                            <h2 class="title h4"><span class="number">01</span><span class="text">Metadata Provider Type</span></h2>
-                                            <div class="actions">
-                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
-                                            </div>
-                                        </div>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Option</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Metadata Provider Name (Display Only)</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Metadata Provider Type</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="config-group">
-                                        <div class="numbered-header">
-                                            <h2 class="title h4"><span class="number">02</span><span class="text">Common Attributes</span></h2>
-                                            <div class="actions">
-                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
-                                            </div>
-                                        </div>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Option</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>ID</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Metadata URL</td>
-                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Initialize From Backup File?</td>
-                                                    <td>True</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Backing File</td>
-                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Backup File Init Next Refresh Delay</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Require Valid Metadata</td>
-                                                    <td>True</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Fail Fast Initialization</td>
-                                                    <td>True</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Use Default Predicate Registry</td>
-                                                    <td>True</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Satisfy Any Predicates</td>
-                                                    <td>False</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="config-group">
-                                        <div class="numbered-header">
-                                            <h2 class="title h4"><span class="number">03</span><span class="text">Reloading Attributes</span></h2>
-                                            <div class="actions">
-                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
-                                            </div>
-                                        </div>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Option</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Min Refresh Delay</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Max Refresh Delay</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Refresh Delay Factor</td>
-                                                    <td>0.5</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="config-group">
-                                        <div class="numbered-header">
-                                            <h2 class="title h4"><span class="number">04</span><span class="text">Metadata Filter Plugins</span></h2>
-                                            <div class="actions">
-                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
-                                            </div>
-                                        </div>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Option</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Max Validity Interval</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Require Signed Root</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Certificate File</td>
-                                                    <td><a href="#">https://www.domanin.com/certificate</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Retained Roles</td>
-                                                    <td>Test</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Remove Roleless Entity Descriptors</td>
-                                                    <td>True</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Remove Empty Entities Descriptors</td>
-                                                    <td>True</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="config-group provider-filters" id="providerFilters">
-                                        <div class="numbered-header">
-                                            <h2 class="title h4"><span class="text">Filters</span></h2>
-                                            <div class="actions">
-                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-cog"></i> Manage</a>
-                                            </div>
-                                        </div>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Order</th>
-                                                    <th>Name</th>
-                                                    <th>Type</th>
-                                                    <th>Enable</th>
-                                                    <th>Delete</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="order-number">1</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
-                                                    <td>Filter Name</td>
-                                                    <td>filterType</td>
-                                                    <td>
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                                            <label class="custom-control-label" for="customSwitch1"><span class="sr-only">Enable this filter</span></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="order-number">2</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
-                                                    <td>Filter Name</td>
-                                                    <td>filterType</td>
-                                                    <td>
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                                                            <label class="custom-control-label" for="customSwitch2"><span class="sr-only">Enable this filter</span></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="order-number">3</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
-                                                    <td>Filter Name</td>
-                                                    <td>filterType</td>
-                                                    <td>
-                                                        <div class="custom-control custom-switch">
-                                                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
-                                                            <label class="custom-control-label" for="customSwitch3"><span class="sr-only">Enable this filter</span></label>
-                                                        </div>
-                                                    </td>
-                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <a href="#providerTop" class="btn btn-link" id="scrollToFilters"><i class="fas fa-arrow-up"></i> Back to top</a>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </article>
-
-                <!-- View Version Options -->
+                <!-- View Source: Previous Version -->
                 <article class="view d-none" id="vViewVersionOptions">
                     <section class="vs">
                         <div class="vs-inner">
@@ -1948,8 +1694,8 @@
                     </section>
                 </article>
 
-                <!-- Compare Options -->
-                <article class="view d-none" id="vCompareOptions">
+                <!-- Compare Versions: Source -->
+                <article class="view d-none compare-versions" id="vCompareOptions">
                     <section class="vs">
                         <div class="vs-inner">
                             <div class="section-header">
@@ -1959,7 +1705,7 @@
                                         <li class="breadcrumb-item active" aria-current="page">Metadata Source Title</li>
                                     </ol>
                                 </nav>
-                                <h1 class="section-title">Source Configuration</h1>
+                                <h1 class="section-title">Compare Source Configuration</h1>
                             </div>
                             <div class="section-body">
                                 <div class="options-table">
@@ -1987,7 +1733,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2013,7 +1759,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2044,7 +1790,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2095,7 +1841,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2121,7 +1867,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2152,7 +1898,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2188,7 +1934,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2208,7 +1954,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2269,7 +2015,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Option</th>
-                                                    <th>v5</th>
+                                                    <th>Current (v5)</th>
                                                     <th>v4</th>
                                                 </tr>
                                             </thead>
@@ -2339,6 +2085,1012 @@
                     </section>
                 </article>
 
+                <!-- View Provider -->
+                <article class="view d-none" id="vViewProvider">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Provider Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Provider Configuration</h1>
+                            </div>
+                            <div class="section-body" id="providerTop">
+                                <div class="options-table">
+                                    <div class="card enabled-status">
+                                        <div class="card-body">
+                                            <h2 class="card-title version-title">Version 3</h2>
+                                            <p class="card-text version-details">
+                                                Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
+                                            </p>
+                                            <p class="card-text"><span class="badge badge-primary">Enabled</span> <span class="badge badge-primary">Current</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <button type="button" class="btn btn-link change-view" data-view="vVersionHistoryProvider"><i class="fas fa-history"></i> Version History</button>
+                                            <a href="#providerFilters" class="btn btn-link"><i class="fas fa-arrow-down"></i> Filters</a>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="view-toggle">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-primary">Options</button>
+                                                    <button type="button" class="btn btn-light">XML</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Metadata Provider Type</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Metadata Provider Name (Display Only)</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata Provider Type</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Common Attributes</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata URL</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Initialize From Backup File?</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backing File</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backup File Init Next Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Valid Metadata</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fail Fast Initialization</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use Default Predicate Registry</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Satisfy Any Predicates</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">Reloading Attributes</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Min Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Max Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Refresh Delay Factor</td>
+                                                    <td>0.5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">Metadata Filter Plugins</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn=link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-edit"></i> Edit</a>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Max Validity Interval</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Signed Root</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Certificate File</td>
+                                                    <td><a href="#">https://www.domanin.com/certificate</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Retained Roles</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Roleless Entity Descriptors</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Empty Entities Descriptors</td>
+                                                    <td>True</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group provider-filters" id="providerFilters">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="text">Filters</span></h2>
+                                            <div class="actions">
+                                                <a class="btn btn-link edit-link change-view" href="#" data-view="vEditProvider"><i class="fas fa-plus-circle"></i> Add Filter</a>
+                                            </div>
+                                        </div>
+                                        <div class="filter">
+                                            <div class="filter-header">
+                                                <div class="filter-order">
+                                                    <span class="order-number">1</span>
+                                                    <div class="order-controls">
+                                                        <button class="btn btn-sm btn-light move-order-up"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light move-order-down"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="filter-title">
+                                                    <span class="filter-name"><a class="" data-toggle="collapse" href="#collapseFilter1" role="button" aria-expanded="false" aria-controls="collapseFilter1">Filter Name One</a></span>
+                                                    <span class="filter-type">
+                                                        filterType
+                                                    </span>
+                                                    <span class="filter-enabled"><span class="badge badge-primary">Enabled</span></span>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="collapse" id="collapseFilter1">
+                                                <div class="filter-body">
+                                                    <div class="filter-actions">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <button class="btn btn-link"><i class="fas fa-file-code"></i> Preview XML</button>
+                                                            </div>
+                                                            <div class="col text-right">
+                                                                <button class="btn btn-link filter-edit"><i class="fas fa-edit"></i> Edit</button>
+                                                                <button class="btn btn-link filter-delete"><i class="fas fa-trash"></i> Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h4 class="table-heading">Options</h4>
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Option</th>
+                                                                        <th>Value</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Sign the Assertion</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Sign the Response</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Encrypt the Response</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>SHA1 Signing Algorithm</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Ingore any SP-Requested Authentication Method</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Omit Not Before Condition</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="option-value filter-id-format">
+                                                                <span class="option">NameID Format</span>
+                                                                <span class="value">urn:oasis:names:tc:SAML:2.0:name-id-format:transient</span>
+                                                            </div>
+                                                            <div class="option-value filter-auth-method">
+                                                                <span class="option">Authentication Method</span>
+                                                                <div class="value">
+                                                                    <ol>
+                                                                        <li>authenticationMethod</li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
+                                                            <div class="option-value filter-responder-id">
+                                                                <span class="option">ResponderID</span>
+                                                                <span class="value">responderId</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <h4 class="table-heading">Attributes</h4>
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Attribute</th>
+                                                                        <th>Value</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>eduPersonPrincipalName (EPPN)</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>uid</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>mail</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>surname</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>givenName</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>displayName</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonAffiliation</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonScopedAffiliation</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonPrimaryAffiliation</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonEntitlement</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonPrimaryAssurance</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonUniqueId</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>employeeNumber</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <a class="btn btn-link" data-toggle="collapse" href="#collapseFilter1" role="button" aria-expanded="false" aria-controls="collapseFilter1"><i class="fas fa-chevron-up"></i> Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="filter">
+                                            <div class="filter-header">
+                                                <div class="filter-order">
+                                                    <span class="order-number">2</span>
+                                                    <div class="order-controls">
+                                                        <button class="btn btn-sm btn-light move-order-up"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light move-order-down"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="filter-title">
+                                                    <span class="filter-name"><a class="" data-toggle="collapse" href="#collapseFilter2" role="button" aria-expanded="false" aria-controls="collapseFilter2">Filter Name Two Could Be Very Long</a></span>
+                                                    <span class="filter-type">
+                                                        filterType
+                                                    </span>
+                                                    <span class="filter-enabled"><span class="badge badge-primary">Enabled</span></span>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="collapse" id="collapseFilter2">
+                                                <div class="filter-body">
+                                                    <div class="filter-actions">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <button class="btn btn-link"><i class="fas fa-file-code"></i> Preview XML</button>
+                                                            </div>
+                                                            <div class="col text-right">
+                                                                <button class="btn btn-link filter-edit"><i class="fas fa-edit"></i> Edit</button>
+                                                                <button class="btn btn-link filter-delete"><i class="fas fa-trash"></i> Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h4 class="table-heading">Options</h4>
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Option</th>
+                                                                        <th>Value</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Sign the Assertion</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Sign the Response</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Encrypt the Response</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>SHA1 Signing Algorithm</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Ingore any SP-Requested Authentication Method</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Omit Not Before Condition</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="option-value filter-id-format">
+                                                                <span class="option">NameID Format</span>
+                                                                <span class="value">urn:oasis:names:tc:SAML:2.0:name-id-format:transient</span>
+                                                            </div>
+                                                            <div class="option-value filter-auth-method">
+                                                                <span class="option">Authentication Method</span>
+                                                                <div class="value">
+                                                                    <ol>
+                                                                        <li>authenticationMethod</li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
+                                                            <div class="option-value filter-responder-id">
+                                                                <span class="option">ResponderID</span>
+                                                                <span class="value">responderId</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <h4 class="table-heading">Attributes</h4>
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Attribute</th>
+                                                                        <th>Value</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>eduPersonPrincipalName (EPPN)</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>uid</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>mail</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>surname</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>givenName</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>displayName</td>
+                                                                        <td><span class="yes">Yes <i class="fas fa-check-circle"></i></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonAffiliation</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonScopedAffiliation</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonPrimaryAffiliation</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonEntitlement</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonPrimaryAssurance</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>eduPersonUniqueId</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>employeeNumber</td>
+                                                                        <td>No</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <a class="btn btn-link" data-toggle="collapse" href="#collapseFilter2" role="button" aria-expanded="false" aria-controls="collapseFilter2"><i class="fas fa-chevron-up"></i> Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                    <th>Enable</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="order-number">1</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                    <td>
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                                            <label class="custom-control-label" for="customSwitch1"><span class="sr-only">Enable this filter</span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">2</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                    <td>
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                                                            <label class="custom-control-label" for="customSwitch2"><span class="sr-only">Enable this filter</span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">3</span><button class="btn btn-sm btn-light"><span class="sr-only">Move up </span><i class="fas fa-caret-up"></i></button><button class="btn btn-sm btn-light"><span class="sr-only">Move down </span><i class="fas fa-caret-down"></i></button></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                    <td>
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                                            <label class="custom-control-label" for="customSwitch3"><span class="sr-only">Enable this filter</span></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><a href="#"><span class="sr-only">Delete</span><i class="fas fa-trash"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table -->
+                                    </div>
+                                    <a href="#providerTop" class="btn btn-link" id="scrollToFilters"><i class="fas fa-arrow-up"></i> Back to top</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- View Provider: Previous Version -->
+                <article class="view d-none" id="vViewVersionProvider">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Provider Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Provider Configuration</h1>
+                            </div>
+                            <div class="section-body" id="providerVersionTop">
+                                <div class="options-table">
+                                    <div class="card enabled-status">
+                                        <div class="card-body">
+                                            <h2 class="card-title version-title">Version 2</h2>
+                                            <p class="card-text version-details">
+                                                Saved <span class="save-date">Mmm DD, YYYY</span>, by <span class="author">Username</span>
+                                            </p>
+                                            <p class="card-text"><span class="badge badge-secondary">Not Current</span> <button class="btn btn-link change-view" data-view="vCompareProviders">Compare to Current <i class="fas fa-angle-right"></i></button><button class="btn btn-link float-right change-view" data-view="vRestoreVersionProvider"><i class="fab fa-rev"></i> Restore this version</button></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <button type="button" class="btn btn-link change-view" data-view="vVersionHistoryProvider"><i class="fas fa-history"></i> Version History</button>
+                                            <a href="#providerVersionFilters" class="btn btn-link"><i class="fas fa-arrow-down"></i> Filters</a>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="view-toggle">
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-primary">Options</button>
+                                                    <button type="button" class="btn btn-light">XML</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Metadata Provider Type</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Metadata Provider Name (Display Only)</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata Provider Type</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Common Attributes</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata URL</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Initialize From Backup File?</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backing File</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backup File Init Next Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Valid Metadata</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fail Fast Initialization</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use Default Predicate Registry</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Satisfy Any Predicates</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">Reloading Attributes</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Min Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Max Refresh Delay</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Refresh Delay Factor</td>
+                                                    <td>0.5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">Metadata Filter Plugins</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Max Validity Interval</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Signed Root</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Certificate File</td>
+                                                    <td><a href="#">https://www.domanin.com/certificate</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Retained Roles</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Roleless Entity Descriptors</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Empty Entities Descriptors</td>
+                                                    <td>True</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group provider-filters" id="providerVersionFilters">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="text">Filters</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="order-number">1</span></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">2</span></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">3</span></td>
+                                                    <td>Filter Name</td>
+                                                    <td>filterType</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <a href="#providerVersionTop" class="btn btn-link"><i class="fas fa-arrow-up"></i> Back to top</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
+                <!-- Compare Versions: Providers -->
+                <article class="view d-none compare-versions" id="vCompareProviders">
+                    <section class="vs">
+                        <div class="vs-inner">
+                            <div class="section-header">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item change-view" data-view="vDashboard"><a href="#">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Metadata Provider Title</li>
+                                    </ol>
+                                </nav>
+                                <h1 class="section-title">Compare Provider Configuration</h1>
+                            </div>
+                            <div class="section-body">
+                                <div class="options-table">
+                                    <div class="column-stripe"></div>
+                                    <div class="actions">
+                                        <div class="row">
+                                            <div class="col-md">
+                                                <button type="button" class="btn btn-link change-view" data-view="vVersionHistory"><i class="fas fa-history"></i> Version History</button>
+                                            </div>
+                                            <div class="col-md">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">01</span><span class="text">Metadata Provider Type</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Current (v3)</th>
+                                                    <th>v2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Metadata Provider Name (Display Only)</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata Provider Type</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">02</span><span class="text">Common Attributes</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Current (v3)</th>
+                                                    <th>v2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Metadata URL</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Initialize From Backup File?</td>
+                                                    <td>True</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backing File</td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                    <td><a href="#">https://www.domanin.com/metadata</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Backup File Init Next Refresh Delay</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Valid Metadata</td>
+                                                    <td>True</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fail Fast Initialization</td>
+                                                    <td>True</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Use Default Predicate Registry</td>
+                                                    <td>True</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Satisfy Any Predicates</td>
+                                                    <td>False</td>
+                                                    <td>False</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">03</span><span class="text">Reloading Attributes</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Current (v3)</th>
+                                                    <th>v2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Min Refresh Delay</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Max Refresh Delay</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Refresh Delay Factor</td>
+                                                    <td>0.5</td>
+                                                    <td>0.5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="number">04</span><span class="text">Metadata Filter Plugins</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Current (v3)</th>
+                                                    <th>v2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Max Validity Interval</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Require Signed Root</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Certificate File</td>
+                                                    <td><a href="#">https://www.domanin.com/certificate</a></td>
+                                                    <td><a href="#">https://www.domanin.com/certificate</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Retained Roles</td>
+                                                    <td>Test</td>
+                                                    <td>Test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Roleless Entity Descriptors</td>
+                                                    <td>True</td>
+                                                    <td>True</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Remove Empty Entities Descriptors</td>
+                                                    <td>True</td>
+                                                    <td>True</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="config-group provider-filters">
+                                        <div class="numbered-header">
+                                            <h2 class="title h4"><span class="text">Filters</span></h2>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Current (v3)</th>
+                                                    <th>v2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="order-number">1</span></td>
+                                                    <td>Filter Name<br/>filterType</td>
+                                                    <td>Filter Name<br/>filterType</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">2</span></td>
+                                                    <td>Filter Name<br/>filterType</td>
+                                                    <td>Filter Name<br/>filterType</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="order-number">3</span></td>
+                                                    <td>Filter Name<br/>filterType</td>
+                                                    <td>Filter Name<br/>filterType</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </section>
+                </article>
+
                 <!-- View XML -->
                 <article class="view d-none" id="vViewXML">
                     <section class="vs">
@@ -2386,7 +3138,7 @@
                     </section>
                 </article>
 
-                <!-- Version History - Source -->
+                <!-- Version History: Source -->
                 <article class="view d-none" id="vVersionHistory">
                     <section class="vs">
                         <div class="vs-inner">
@@ -2478,7 +3230,7 @@
                     </section>
                 </article>
 
-                <!-- Version History - Provider -->
+                <!-- Version History: Provider -->
                 <article class="view d-none" id="vVersionHistoryProvider">
                     <section class="vs">
                         <div class="vs-inner">
@@ -2521,7 +3273,7 @@
                                                         <input type="checkbox" class="form-check-input" id="versionSelect2" aria-labelledby="v2label">
                                                     </div>
                                                 </td>
-                                                <td><a class="change-view" data-view="vViewProvider" href="#"><span id="v2label">v2</span></a></td>
+                                                <td><a class="change-view" data-view="vViewVersionProvider" href="#"><span id="v2label">v2</span></a></td>
                                                 <td>Aug 28, 2018 14:07</td>
                                                 <td>Username</td>
                                                 <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersionProvider"><i class="fab fa-rev"></i> Restore</a></span></td>
@@ -2532,7 +3284,7 @@
                                                         <input type="checkbox" class="form-check-input" id="versionSelect1" aria-labelledby="v1label">
                                                     </div>
                                                 </td>
-                                                <td><a class="change-view" data-view="vViewProvider" href="#"><span id="v1label">v1</span></a></td>
+                                                <td><a class="change-view" data-view="vViewVersionProvider" href="#"><span id="v1label">v1</span></a></td>
                                                 <td>May 07, 2018 16:42</td>
                                                 <td>Username</td>
                                                 <td><span class="action restore"><a href="#" class="change-view" data-view="vRestoreVersionProvider"><i class="fab fa-rev"></i> Restore</a></span></td>
@@ -2540,7 +3292,7 @@
                                         </tbody>
                                     </table>
                                     <div class="actions">
-                                        <button class="btn btn-primary change-view" data-view="vCompareOptions"><i class="fas fa-columns"></i> Compare Selected</button>
+                                        <button class="btn btn-primary change-view" data-view="vCompareProviders"><i class="fas fa-columns"></i> Compare Selected</button>
                                     </div>
                                 </div>
                             </div>
@@ -2548,7 +3300,7 @@
                     </section>
                 </article>
 
-                <!-- Restore Version - Source -->
+                <!-- Restore Version: Source -->
                 <article class="view d-none" id="vRestoreVersion">
                     <section class="vs">
                         <div class="vs-inner">
@@ -2575,7 +3327,7 @@
                     </section>
                 </article>
 
-                <!-- Restore Version - Provider -->
+                <!-- Restore Version: Provider -->
                 <article class="view d-none" id="vRestoreVersionProvider">
                     <section class="vs">
                         <div class="vs-inner">
