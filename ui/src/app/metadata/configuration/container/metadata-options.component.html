@@ -9,10 +9,19 @@
             <i class="fa fa-history sr-hidden"></i>&nbsp;
             <translate-i18n key="action.version-history">Version History</translate-i18n>
         </a>
-        <div class="btn-group">
-            <a class="btn" routerLink="../options" routerLinkActive="btn-primary" translate="action.options">Options</a>
-            <a class="btn" routerLink="../xml" routerLinkActive="btn-primary" translate="action.xml">XML</a>
+        <div class="btn-group" *ngIf="hasXml$ | async">
+            <a class="btn"
+                routerLink="../options"
+                routerLinkActive="btn-primary"
+                translate="action.options">Options</a>
+            <a class="btn"
+                routerLink="../xml"
+                routerLinkActive="btn-primary"
+                translate="action.xml">XML</a>
         </div>
     </div>
-    <metadata-configuration [configuration]="configuration$ | async"></metadata-configuration>
+    <metadata-configuration
+        [configuration]="configuration$ | async">
+    </metadata-configuration>
+    <filter-list [filters]="filters$ | async"></filter-list>
 </div>

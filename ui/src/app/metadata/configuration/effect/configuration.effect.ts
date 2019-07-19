@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { switchMap, catchError, map, tap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, catchError, map, tap, withLatestFrom, filter } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import { Store } from '@ngrx/store';
@@ -53,22 +53,11 @@ export class MetadataConfigurationEffects {
     @Effect()
     loadMetadataXml$ = this.actions$.pipe(
         ofType<LoadMetadataRequest>(ConfigurationActionTypes.LOAD_METADATA_REQUEST),
-        switchMap(action => {
-            let loader: Observable<string>;
-            switch (action.payload.type) {
-                case 'filter':
-                    loader = this.entityService.preview(action.payload.id);
-                    break;
-                default:
-                    loader = this.providerService.preview(action.payload.id);
-                    break;
-            }
-
-            return loader.pipe(
-                map(xml => new LoadXmlSuccess(xml)),
-                catchError(error => of(new LoadXmlError(error)))
-            );
-        })
+        filter(action => action.payload.type === 'resolver'),
+        switchMap(action => this.providerService.preview(action.payload.id).pipe(
+            map(xml => new LoadXmlSuccess(xml)),
+            catchError(error => of(new LoadXmlError(error)))
+        ))
     );
 
     @Effect()

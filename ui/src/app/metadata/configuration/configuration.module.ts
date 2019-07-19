@@ -25,6 +25,7 @@ import { HistoryListComponent } from './component/history-list.component';
 import { DomainModule } from '../domain/domain.module';
 import { MetadataComparisonComponent } from './container/metadata-comparison.component';
 import { CompareVersionEffects } from './effect/compare.effect';
+import { FilterModule } from '../filter/filter.module';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { CompareVersionEffects } from './effect/compare.effect';
         I18nModule,
         NgbPopoverModule,
         RouterModule,
-        DomainModule
+        DomainModule,
+        FilterModule
     ],
     exports: [],
     providers: []

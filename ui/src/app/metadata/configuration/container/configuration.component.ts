@@ -20,6 +20,7 @@ export class ConfigurationComponent implements OnDestroy {
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     name$: Observable<string>;
+    type$: Observable<string>
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
@@ -53,6 +54,7 @@ export class ConfigurationComponent implements OnDestroy {
         });
 
         this.name$ = this.store.select(fromReducer.getConfigurationModelName);
+        this.type$ = this.store.select(fromReducer.getConfigurationModelType);
     }
 
     ngOnDestroy() {

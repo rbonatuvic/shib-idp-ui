@@ -13,7 +13,11 @@
                     </li>
                 </ol>
             </nav>
-            <h2 class="mb-4">Source Configuration</h2>
+            <h2 class="mb-4" [ngSwitch]="type$ | async">
+                <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
+                <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+                Configuration
+            </h2>
             <ng-container *ngIf="name$ | async">
                 <router-outlet></router-outlet>
             </ng-container>

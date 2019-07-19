@@ -8,12 +8,14 @@ import { MetadataProviderEditorTypes } from '../../provider/model';
 import { Schema } from '../model/schema';
 import { TYPES } from '../configuration.values';
 import { ResolverService } from '../../domain/service/resolver.service';
+import { MetadataProviderService } from '../../domain/service/provider.service';
 
 @Injectable()
 export class MetadataConfigurationService {
 
     constructor(
         private resolverService: ResolverService,
+        private providerService: MetadataProviderService,
         private http: HttpClient
     ) {}
 
@@ -21,6 +23,8 @@ export class MetadataConfigurationService {
         switch (type) {
             case TYPES.resolver:
                 return this.resolverService.find(id);
+            case TYPES.provider:
+                return this.providerService.find(id);
             default:
                 return throwError(new Error('Type not supported'));
         }

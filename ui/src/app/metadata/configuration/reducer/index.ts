@@ -104,9 +104,15 @@ export const getConfigurationModelEnabledFn =
 export const getConfigurationModelNameFn =
     (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : false;
 
+export const getConfigurationModelTypeFn =
+    (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
+
 export const getConfigurationModelEnabled = createSelector(getConfigurationModel, getConfigurationModelEnabledFn);
 export const getConfigurationModelName = createSelector(getConfigurationModel, getConfigurationModelNameFn);
+export const getConfigurationModelType = createSelector(getConfigurationModel, getConfigurationModelTypeFn);
 
+export const getConfigurationHasXml = createSelector(getConfigurationXml, xml => !!xml);
+export const getConfigurationFilters = createSelector(getConfigurationModel, model => model.metadataFilters);
 // Version History
 
 export const getHistoryState = createSelector(getState, getHistoryStateFn);
