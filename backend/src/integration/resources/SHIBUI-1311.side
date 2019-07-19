@@ -596,7 +596,7 @@
         ["css=.badge > span", "css:finder"],
         ["xpath=//span/span", "xpath:position"]
       ],
-      "value": "3000"
+      "value": "10000"
     }, {
       "id": "f48dd1b5-607a-485b-b1d5-03301f99b9ce",
       "comment": "",
@@ -909,7 +909,7 @@
       "command": "waitForElementVisible",
       "target": "css=tr:nth-child(2) .badge",
       "targets": [],
-      "value": "3000"
+      "value": "10000"
     }, {
       "id": "f72a2169-08f3-4d7e-b814-bf6a61ffd6c9",
       "comment": "",
