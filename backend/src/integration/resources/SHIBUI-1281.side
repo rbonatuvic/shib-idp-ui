@@ -1740,7 +1740,7 @@
     }, {
       "id": "4e0fa4f5-817f-41fb-9885-60f37b699436",
       "comment": "",
-      "command": "waitForElementPresent",
+      "command": "waitForElementVisible",
       "target": "css=.badge-success",
       "targets": [
         ["css=tr > .text-right", "css:finder"],
