@@ -25,7 +25,7 @@ pipeline {
       }
       steps {
         sh '''
-        ./gradlew integrationTest
+        ./gradlew integrationTest -Dselenium.host=jenkins
         '''
       }
       post {
