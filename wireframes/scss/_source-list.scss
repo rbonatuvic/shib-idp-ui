@@ -104,6 +104,10 @@
     }
 }
 
+.search-filter {
+    margin-bottom: 1.25rem;
+}
+
 @include media-breakpoint-up(xs) {}
 @include media-breakpoint-up(sm) {}
 @include media-breakpoint-up(md) {
