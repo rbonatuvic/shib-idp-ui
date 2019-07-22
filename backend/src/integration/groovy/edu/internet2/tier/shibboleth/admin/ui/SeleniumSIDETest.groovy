@@ -73,6 +73,7 @@ class SeleniumSIDETest extends Specification {
         }
         def runner = new Runner()
         runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
+        runner.varsMap.put('SHIBUI950', Paths.get(this.class.getResource('/SHIBUI-950.xml').toURI()).toString())
         main.setupRunner(runner, config, [] as String[])
 
         expect:
@@ -105,8 +106,9 @@ class SeleniumSIDETest extends Specification {
 //        'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
 //        'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
 //        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side'
-        'SHIBUI-1281: Metadata Source Dashboard'            | '/SHIBUI-1281.side'
-        'SHIBUI-1311: Metadata Provider Dashboard'          | '/SHIBUI-1311.side'
+//        'SHIBUI-1281: Metadata Source Dashboard'            | '/SHIBUI-1281.side'
+//        'SHIBUI-1311: Metadata Provider Dashboard'          | '/SHIBUI-1311.side'
+        'SHIBUI-950: Metadata Source from XML w/ digest'    | '/SHIBUI-950.side'
     }
 }
 
