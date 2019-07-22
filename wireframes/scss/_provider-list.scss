@@ -23,6 +23,111 @@
     }
 }
 
+#providerFilters {
+    margin-bottom: $spacer;
+
+    .filter {
+        border-bottom: 1px solid rgba(0,0,0,0.35);
+    }
+
+    .filter-header {
+        display: grid;
+        grid-template-areas: "filter-order filter-name";
+        grid-template-columns: 7rem 1fr;
+        padding: $spacer;
+    }
+
+    .filter-order {
+        grid-area: "filter-order";
+        display: grid;
+        grid-template-areas: "filter-order-number filter-order-controls";
+
+        .order-number {
+            grid-area: "filter-order-number";
+        }
+
+        .order-controls {
+            grid-area: "filter-order-controls";
+        }
+    }
+
+    .order-number {
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 50%;
+        display: inline-block;
+        height: 2em;
+        width: 2em;
+        padding-top: 0.1em;
+        text-align: center;
+    }
+
+    .filter-name,
+    .filter-type,
+    .filter-enabled {
+        display: inline-block;
+    }
+
+    .filter-name,
+    .filter-type {
+        margin-right: 1rem;
+    }
+
+    .filter-name {
+        font-size: 1.2em;
+        font-weight: 600;
+        margin-left: 1rem;
+    }
+
+    .filter-body {
+        border-top: 1px solid rgba(0,0,0,0.2);
+        margin: 0 $spacer;
+        padding: $spacer;
+
+        .table-heading {
+            font-size: 1em;
+            text-transform: uppercase;
+        }
+
+        table {
+            td:last-child {
+                min-width: 6rem;
+            }
+
+            i {
+                font-size: 0.75em;
+            }
+
+            .yes {
+                color: $green;
+            }
+        }
+
+        .option-value {
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+
+            .option,
+            .value {
+                display: block;
+            }
+
+            .option {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .filter-actions {
+        margin-bottom: $spacer;
+
+        a {
+            display: inline-block;
+            margin-left: $spacer;
+        }
+    }
+}
+
 
 @include media-breakpoint-up(xs) {}
 @include media-breakpoint-up(sm) {}
