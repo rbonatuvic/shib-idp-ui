@@ -53,14 +53,14 @@
     text-align: right;
 }
 
-#vCompareOptions {
+.compare-versions {
 
     .options-table {
         max-width: 65em;
         position: relative;
 
         th, td {
-            width: 33%;
+            width: 33% !important;
         }
 
         /*
