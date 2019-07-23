@@ -26,6 +26,8 @@ import { DomainModule } from '../domain/domain.module';
 import { MetadataComparisonComponent } from './container/metadata-comparison.component';
 import { CompareVersionEffects } from './effect/compare.effect';
 import { FilterModule } from '../filter/filter.module';
+import { FilterConfigurationListComponent } from './component/filter-configuration-list.component';
+import { FilterConfigurationListItemComponent } from './component/filter-configuration-list-item.component';
 
 @NgModule({
     declarations: [
@@ -40,7 +42,9 @@ import { FilterModule } from '../filter/filter.module';
         MetadataHeaderComponent,
         MetadataHistoryComponent,
         HistoryListComponent,
-        MetadataComparisonComponent
+        MetadataComparisonComponent,
+        FilterConfigurationListComponent,
+        FilterConfigurationListItemComponent
     ],
     entryComponents: [],
     imports: [

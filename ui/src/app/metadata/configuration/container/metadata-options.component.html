@@ -1,14 +1,20 @@
-<div class="container">
+<div class="container" id="header">
     <metadata-header
         [isEnabled]="isEnabled$ | async"
         [version]="version$ | async"
         [versionNumber]="versionNumber$ | async"
         [isCurrent]="isCurrent$ | async"></metadata-header>
     <div class="px-3 my-3 d-flex justify-content-between">
-        <a class="btn btn-link" routerLink="../history">
-            <i class="fa fa-history sr-hidden"></i>&nbsp;
-            <translate-i18n key="action.version-history">Version History</translate-i18n>
-        </a>
+        <div>
+            <a class="btn btn-link" routerLink="../history">
+                <i class="fa fa-history sr-hidden"></i>&nbsp;
+                <translate-i18n key="action.version-history">Version History</translate-i18n>
+            </a>
+            <a class="btn btn-link" [routerLink]="['./']" fragment="filters">
+                <i class="fa fa-arrow-down sr-hidden"></i>&nbsp;
+                <translate-i18n key="label.filters">Filters</translate-i18n>
+            </a>
+        </div>
         <div class="btn-group" *ngIf="hasXml$ | async">
             <a class="btn"
                 routerLink="../options"
@@ -23,5 +29,27 @@
     <metadata-configuration
         [configuration]="configuration$ | async">
     </metadata-configuration>
-    <filter-list [filters]="filters$ | async"></filter-list>
+    <div *ngIf="kind === 'provider'" id="filters">
+        <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
+            <h2 class="title h4 m-0 ml-2 flex-grow-1">
+                <span class="text" translate="label.filters">Filters</span>
+            </h2>
+            <div class="actions px-2">
+                <a class="btn btn-link edit-link change-view"
+                    [routerLink]="['/', 'metadata', 'provider', id, 'filter', 'new']">
+                    <i class="fa fa-gear"></i>&nbsp;
+                    <span translate="action.add-filter">Add Filter</span>
+                </a>
+            </div>
+        </div>
+        <filter-configuration-list
+            (onUpdateOrderDown)="updateOrderDown($event)"
+            (onUpdateOrderUp)="updateOrderUp($event)"
+            (onRemove)="removeFilter($event)"
+            [filters]="filters$ | async"></filter-configuration-list>
+    </div>
+    <a class="btn btn-link" [routerLink]="['./']" fragment="configuration">
+        <i class="fa fa-chevron-up sr-hidden"></i>&nbsp;
+        <translate-i18n key="action.back-to-top">Back to Top</translate-i18n>
+    </a>
 </div>

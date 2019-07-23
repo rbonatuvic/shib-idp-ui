@@ -9,6 +9,8 @@ import { Schema } from '../model/schema';
 import { TYPES } from '../configuration.values';
 import { ResolverService } from '../../domain/service/resolver.service';
 import { MetadataProviderService } from '../../domain/service/provider.service';
+import { MetadataFilterEditorTypes } from '../../filter/model';
+import { getConfigurationSectionsFn } from '../reducer';
 
 @Injectable()
 export class MetadataConfigurationService {
@@ -31,11 +33,17 @@ export class MetadataConfigurationService {
     }
 
     getDefinition(type: string): Wizard<Metadata> {
-        return MetadataProviderEditorTypes.find(def => def.type === type) || new MetadataSourceEditor();
+        return MetadataProviderEditorTypes.find(def => def.type === type) ||
+            MetadataFilterEditorTypes.find(def => def.type === type) ||
+            new MetadataSourceEditor();
     }
 
     loadSchema(path: string): Observable<Schema> {
         return this.http.get<Schema>(path);
+    }
+
+    getMetadataConfiguration(model, definition, schema) {
+        return getConfigurationSectionsFn([model], definition, schema);
     }
 }
 

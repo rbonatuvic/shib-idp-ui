@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 
-import { LoadMetadataRequest, ClearConfiguration } from '../action/configuration.action';
+import { ClearConfiguration, SetMetadata } from '../action/configuration.action';
 import { LoadHistoryRequest, ClearHistory, SelectVersion } from '../action/history.action';
 import * as fromReducer from '../reducer';
 
@@ -20,7 +20,7 @@ export class ConfigurationComponent implements OnDestroy {
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     name$: Observable<string>;
-    type$: Observable<string>
+    type$: Observable<string>;
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
@@ -28,7 +28,7 @@ export class ConfigurationComponent implements OnDestroy {
     ) {
         this.routerState.params.pipe(
             takeUntil(this.ngUnsubscribe),
-            map(params => new LoadMetadataRequest({id: params.id, type: params.type}))
+            map(params => new SetMetadata({id: params.id, type: params.type}))
         ).subscribe(store);
 
         this.routerState.params.pipe(

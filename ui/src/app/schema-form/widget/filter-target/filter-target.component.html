@@ -44,7 +44,7 @@
                     </span>
                 </label>
                 <div class="d-flex justify-content-between">
-                    <div class="w-100" [ngSwitch]="this.targetType">
+                    <div class="flex-grow-1" [ngSwitch]="this.targetType">
                         <ng-container *ngSwitchDefault>
                             <auto-complete
                                 [fieldId]="'targetInput'"

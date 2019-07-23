@@ -12,6 +12,8 @@ import { Observable, of } from 'rxjs';
 })
 export class MetadataConfigurationComponent {
     @Input() configuration: MetadataConfiguration;
+    @Input() numbered = true;
+    @Input() editable = true;
 
     constructor(
         private router: Router,

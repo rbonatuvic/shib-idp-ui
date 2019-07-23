@@ -16,7 +16,7 @@ export class FilterListComponent {
 
     @Output() onUpdateOrderUp: EventEmitter<MetadataFilter> = new EventEmitter();
     @Output() onUpdateOrderDown: EventEmitter<MetadataFilter> = new EventEmitter();
-    @Output() onRemove: EventEmitter<MetadataFilter> = new EventEmitter();
+    @Output() onRemove: EventEmitter<string> = new EventEmitter();
     @Output() onToggleEnabled: EventEmitter<MetadataFilter> = new EventEmitter();
 
     formats = NAV_FORMATS;

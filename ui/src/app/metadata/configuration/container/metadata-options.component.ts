@@ -10,15 +10,25 @@ import {
     getSelectedIsCurrent,
     getConfigurationModelEnabled,
     getConfigurationHasXml,
-    getConfigurationModel
+    getConfigurationModel,
+    getConfigurationModelKind
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
 import { MetadataFilter } from '../../domain/model';
 import { getAdditionalFilters } from '../../filter/reducer';
-import { ClearFilters, LoadFilterRequest } from '../../filter/action/collection.action';
+import {
+    ClearFilters,
+    LoadFilterRequest,
+    ChangeFilterOrderDown,
+    ChangeFilterOrderUp,
+    RemoveFilterRequest
+} from '../../filter/action/collection.action';
 import { takeUntil, map } from 'rxjs/operators';
 import { Metadata } from '../../domain/domain.type';
+import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
+import { ModalService } from '../../../core/service/modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'metadata-options-page',
@@ -38,9 +48,12 @@ export class MetadataOptionsComponent implements OnDestroy {
     hasXml$: Observable<boolean>;
     filters$: Observable<unknown[]>;
     model$: Observable<Metadata>;
+    id: string;
+    kind: string;
 
     constructor(
-        private store: Store<ConfigurationState>
+        private store: Store<ConfigurationState>,
+        private modalService: NgbModal
     ) {
         this.configuration$ = this.store.select(getConfigurationSections);
         this.model$ = this.store.select(getConfigurationModel);
@@ -56,8 +69,35 @@ export class MetadataOptionsComponent implements OnDestroy {
                 takeUntil(this.ngUnsubscribe)
             )
             .subscribe(p => {
-                this.store.dispatch(new LoadFilterRequest(p.resourceId));
+                this.id = p.resourceId;
+                this.kind = '@type' in p ? 'provider' : 'resolver';
+                if (this.kind === 'provider') {
+                    this.store.dispatch(new LoadFilterRequest(this.id));
+                }
             });
+    }
+
+    updateOrderUp(filter: MetadataFilter): void {
+        this.store.dispatch(new ChangeFilterOrderUp(filter.resourceId));
+    }
+
+    updateOrderDown(filter: MetadataFilter): void {
+        this.store.dispatch(new ChangeFilterOrderDown(filter.resourceId));
+    }
+
+    removeFilter(id: string): void {
+        console.log(id);
+        this.modalService
+            .open(DeleteFilterComponent)
+            .result
+            .then(
+                success => {
+                    this.store.dispatch(new RemoveFilterRequest(id));
+                },
+                err => {
+                    console.log('Cancelled');
+                }
+            );
     }
 
     ngOnDestroy(): void {

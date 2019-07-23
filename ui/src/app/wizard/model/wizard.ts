@@ -1,7 +1,7 @@
 import { FormDefinition } from './form-definition';
 
 export interface Wizard<T> extends FormDefinition<T> {
-    steps: WizardStep[];
+    steps?: WizardStep[];
     schema: string;
 }
 
