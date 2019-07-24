@@ -42,13 +42,20 @@ export const NameIDFilterConfiguration: Wizard<MetadataFilter> = {
     formatter: (changes: MetadataFilter): any => changes,
     steps: [
         {
+            id: 'target',
+            label: 'label.target',
+            index: 1,
+            fields: [
+                'nameIdFormatFilterTarget'
+            ]
+        },
+        {
             id: 'options',
             label: 'label.options',
             index: 1,
             initialValues: [],
             fields: [
                 'name',
-                'nameIdFormatFilterTarget',
                 'filterEnabled',
                 '@type',
                 'resourceId',

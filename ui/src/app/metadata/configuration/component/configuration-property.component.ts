@@ -16,7 +16,8 @@ export class ConfigurationPropertyComponent {
         return Object.keys(schema.properties);
     }
 
-    getItemType(items: Property): string {
+    getItemType(property: Property): string {
+        const items = property.items;
         return items.widget ? items.widget.id : 'default';
     }
 

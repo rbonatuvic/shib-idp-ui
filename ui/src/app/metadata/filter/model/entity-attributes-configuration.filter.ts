@@ -48,16 +48,23 @@ export const EntityAttributesFilterConfiguration: Wizard<MetadataFilter> = {
     formatter: (changes: MetadataFilter): any => changes,
     steps: [
         {
+            id: 'target',
+            label: 'label.target',
+            index: 1,
+            fields: [
+                'entityAttributesFilterTarget'
+            ]
+        },
+        {
             id: 'options',
             label: 'label.options',
-            index: 1,
+            index: 2,
             initialValues: [],
             fields: [
                 'name',
                 '@type',
                 'resourceId',
                 'version',
-                'entityAttributesFilterTarget',
                 'filterEnabled',
                 'relyingPartyOverrides'
             ]
@@ -65,7 +72,7 @@ export const EntityAttributesFilterConfiguration: Wizard<MetadataFilter> = {
         {
             id: 'attributes',
             label: 'label.attributes',
-            index: 2,
+            index: 3,
             fields: [
                 'attributeRelease'
             ]

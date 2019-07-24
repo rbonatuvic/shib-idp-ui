@@ -28,6 +28,8 @@ import { CompareVersionEffects } from './effect/compare.effect';
 import { FilterModule } from '../filter/filter.module';
 import { FilterConfigurationListComponent } from './component/filter-configuration-list.component';
 import { FilterConfigurationListItemComponent } from './component/filter-configuration-list-item.component';
+import { SharedModule } from '../../shared/shared.module';
+import { FilterTargetPropertyComponent } from './component/filter-target-property.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +46,8 @@ import { FilterConfigurationListItemComponent } from './component/filter-configu
         HistoryListComponent,
         MetadataComparisonComponent,
         FilterConfigurationListComponent,
-        FilterConfigurationListItemComponent
+        FilterConfigurationListItemComponent,
+        FilterTargetPropertyComponent
     ],
     entryComponents: [],
     imports: [
@@ -53,7 +56,8 @@ import { FilterConfigurationListItemComponent } from './component/filter-configu
         NgbPopoverModule,
         RouterModule,
         DomainModule,
-        FilterModule
+        FilterModule,
+        SharedModule
     ],
     exports: [],
     providers: []

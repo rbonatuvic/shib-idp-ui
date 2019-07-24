@@ -1,4 +1,4 @@
-<div *ngIf="configuration">
+<div *ngIf="configuration" id="configuration">
     <section *ngFor="let section of configuration.sections; let i = index;" class="mb-4">
         <div class="config-group">
             <div class="numbered-header d-flex justify-content-start bg-light align-items-center"
@@ -29,7 +29,8 @@
                 class="d-block"
                 *ngIf="section"
                 [property]="section"
-                [columns]="configuration.dates.length">
+                [columns]="configuration.dates.length"
+                (preview)="onPreview($event)">
             </object-property>
         </div>
     </section>

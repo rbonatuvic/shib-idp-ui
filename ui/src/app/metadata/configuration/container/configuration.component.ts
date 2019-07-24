@@ -1,14 +1,15 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { takeUntil, map, withLatestFrom, filter } from 'rxjs/operators';
+import { Component, ChangeDetectionStrategy, OnDestroy, HostListener } from '@angular/core';
+import { ActivatedRoute, Router, Scroll, Event } from '@angular/router';
+import { takeUntil, map, withLatestFrom, filter, timeout, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, interval } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 
 import { ClearConfiguration, SetMetadata } from '../action/configuration.action';
 import { LoadHistoryRequest, ClearHistory, SelectVersion } from '../action/history.action';
 import * as fromReducer from '../reducer';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
     selector: 'configuration-page',

@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import {
@@ -24,11 +24,13 @@ import {
     ChangeFilterOrderUp,
     RemoveFilterRequest
 } from '../../filter/action/collection.action';
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil, map, filter, delay } from 'rxjs/operators';
 import { Metadata } from '../../domain/domain.type';
 import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
 import { ModalService } from '../../../core/service/modal.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, Event, Scroll } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
     selector: 'metadata-options-page',
@@ -51,9 +53,14 @@ export class MetadataOptionsComponent implements OnDestroy {
     id: string;
     kind: string;
 
+    htmlTags = ['DIV', 'A', 'METADATA-CONFIGURATION', 'METADATA-HEADER'];
+    currentSection: string;
+
     constructor(
         private store: Store<ConfigurationState>,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private router: Router,
+        private scroller: ViewportScroller
     ) {
         this.configuration$ = this.store.select(getConfigurationSections);
         this.model$ = this.store.select(getConfigurationModel);
@@ -75,6 +82,18 @@ export class MetadataOptionsComponent implements OnDestroy {
                     this.store.dispatch(new LoadFilterRequest(this.id));
                 }
             });
+
+        this.router.events.pipe(
+            takeUntil(this.ngUnsubscribe),
+            filter((e: Event): e is Scroll => e instanceof Scroll),
+            delay(1000)
+        ).subscribe(e => {
+            scroller.scrollToAnchor(e.anchor);
+        });
+    }
+
+    onScrollTo(element): void {
+        this.scroller.scrollToAnchor(element);
     }
 
     updateOrderUp(filter: MetadataFilter): void {

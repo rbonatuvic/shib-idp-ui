@@ -22,7 +22,7 @@
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property.items)">
+    <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property)">
         <ng-container *ngSwitchCase="'datalist'">
             <ng-template [ngTemplateOutlet]="listref"></ng-template>
         </ng-container>
@@ -30,32 +30,53 @@
             <ng-template [ngTemplateOutlet]="listref"></ng-template>
         </ng-container>
         <ng-container *ngSwitchDefault>
-            <div *ngFor="let attr of attributeList$ | async" class="d-flex justify-content-between border-bottom border-light">
-                <span class="p-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
-                <div *ngFor="let v of property.value"
-                    class="p-2"
-                    [ngStyle]="{'width': width}">
-                    <span *ngIf="v && v.indexOf(attr.key) > -1" translate="value.true">
-                        true
-                    </span>
-                    <span *ngIf="!v || !(v.indexOf(attr.key) > -1)" translate="value.false">
-                        false
-                    </span>
+            <div *ngIf="!property.widget || !property.widget.id">
+                <ng-template [ngTemplateOutlet]="listref"></ng-template>
+            </div>
+            <div *ngIf="property.widget && property.widget.dataUrl">
+                <div *ngFor="let attr of attributeList$ | async" class="d-flex justify-content-between border-bottom border-light">
+                    <span class="p-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
+                    <div *ngFor="let v of property.value" class="p-2" [ngStyle]="{'width': width}">
+                        <span *ngIf="v && v.indexOf(attr.key) > -1" translate="value.true">
+                            true
+                        </span>
+                        <span *ngIf="!v || !(v.indexOf(attr.key) > -1)" translate="value.false">
+                            false
+                        </span>
+                    </div>
                 </div>
             </div>
         </ng-container>
     </ng-container>
 </div>
 <ng-template #listref>
-    <div class="d-flex border-bottom border-light">
+    <div class="d-flex align-items-center border-bottom border-light">
         <span class="p-2" role="term" [translate]="property.name" [ngStyle]="{'width': width}">{{ property.name }}</span>
         <ng-container *ngFor="let v of property.value">
-            <p [ngStyle]="{'width': width}" class="text-secondary p-2" *ngIf="!v || !v.length">&mdash;</p>
-            <ul [ngStyle]="{'width': width}" class="list-unstyled py-2" *ngIf="v && v.length">
-                <li *ngFor="let item of v">
+            <p [ngStyle]="{'width': width}" class="text-secondary" *ngIf="!v || !v.length">&mdash;</p>
+            <span class="text-secondary" *ngIf="v && v.length && v.length === 1">{{ v }}</span>
+            <ul [ngStyle]="{'width': width}"
+                class="list-unstyled py-2"
+                *ngIf="v && v.length > 1"
+                [ngbPopover]="popContent"
+                triggers="mouseenter:mouseleave"
+                popoverClass="popover-lg">
+                <li *ngFor="let item of v; odd as isOdd" class="text-truncate" [ngClass]="{'bg-light': isOdd, 'p-2': v.length > 1}">
+                    <ng-container *ngIf="preview.observers.length > 0 && isUrl(item)">
+                        <button class="btn btn-link" (click)="preview.emit(item)">
+                            <i class="fa fa-eye fa-lg text-success"></i>
+                        </button>&nbsp;
+                    </ng-container>
                     {{ item }}
                 </li>
             </ul>
+            <ng-template #popContent>
+                <ul class="list-unstyled">
+                    <li *ngFor="let item of v; odd as isOdd" [ngClass]="{'bg-light': isOdd}" class="p-2">
+                        {{ item }}
+                    </li>
+                </ul>
+            </ng-template>
         </ng-container>
     </div>
 </ng-template>

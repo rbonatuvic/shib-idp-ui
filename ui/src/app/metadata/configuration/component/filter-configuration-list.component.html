@@ -1,4 +1,4 @@
-<ul class="list-group list-group-flush">
+<ul class="list-group list-group-flush" *ngIf="filters.length > 0">
     <li *ngFor="let filter of filters; let i = index; first as isFirst; last as isLast;"
         class="list-group-item">
         <filter-configuration-list-item
@@ -11,3 +11,7 @@
             (onRemove)="onRemove.emit($event)"></filter-configuration-list-item>
     </li>
 </ul>
+<div class="alert alert-info m-4" *ngIf="filters && filters.length < 1">
+    <h3 translate="message.no-filters">No Filters</h3>
+    <p translate="message.no-filters-added">No filters have been added to this Metadata Provider</p>
+</div>

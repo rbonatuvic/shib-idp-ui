@@ -20,6 +20,7 @@ export class FilterConfigurationListItemComponent implements OnChanges {
 
     open = false;
     configuration: MetadataConfiguration;
+    definition: any;
 
     constructor(
         private configService: MetadataConfigurationService
@@ -27,11 +28,11 @@ export class FilterConfigurationListItemComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.filter) {
-            const definition = this.configService.getDefinition(this.filter['@type']);
-            this.configService.loadSchema(definition.schema).subscribe(schema => {
+            this.definition = this.configService.getDefinition(this.filter['@type']);
+            this.configService.loadSchema(this.definition.schema).subscribe(schema => {
                 this.configuration = this.configService.getMetadataConfiguration(
                     this.filter,
-                    definition,
+                    this.definition,
                     schema
                 );
             });

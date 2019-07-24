@@ -7,6 +7,8 @@ export interface Property {
     properties: Property[];
     widget?: {
         id: string;
+        data?: {key: string, label: string}[];
+        dataUrl?: string;
         [propertyName: string]: any;
     };
 }
