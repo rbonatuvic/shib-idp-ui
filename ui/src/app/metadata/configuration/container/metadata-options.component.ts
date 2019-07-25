@@ -8,11 +8,13 @@ import {
     getConfigurationModel,
     getSelectedVersion,
     getSelectedVersionNumber,
-    getSelectedIsCurrent
+    getSelectedIsCurrent,
+    getConfigurationModelEnabled
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
 import { map } from 'rxjs/operators';
+import { Metadata } from '../../domain/domain.type';
 
 @Component({
     selector: 'metadata-options-page',
@@ -32,9 +34,7 @@ export class MetadataOptionsComponent {
         private store: Store<ConfigurationState>
     ) {
         this.configuration$ = this.store.select(getConfigurationSections);
-        this.isEnabled$ = this.store.select(getConfigurationModel).pipe(
-            map(config => config ? ('serviceEnabled' in config) ? config.serviceEnabled : config.enabled : false)
-        );
+        this.isEnabled$ = this.store.select(getConfigurationModelEnabled);
         this.version$ = this.store.select(getSelectedVersion);
         this.versionNumber$ = this.store.select(getSelectedVersionNumber);
         this.isCurrent$ = this.store.select(getSelectedIsCurrent);

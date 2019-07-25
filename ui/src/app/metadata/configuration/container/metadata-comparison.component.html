@@ -1,0 +1,15 @@
+<div class="container">
+    <!--<metadata-header
+        [isEnabled]="isEnabled$ | async"
+        [version]="version$ | async"
+        [versionNumber]="versionNumber$ | async"
+        [isCurrent]="isCurrent$ | async"></metadata-header>
+    -->
+    <div class="px-3 my-3 d-flex justify-content-start">
+        <a class="btn btn-link" routerLink="../history">
+            <i class="fa fa-history sr-hidden"></i>&nbsp;
+            <translate-i18n key="action.version-history">Version History</translate-i18n>
+        </a>
+    </div>
+    <metadata-configuration [configuration]="versions$ | async"></metadata-configuration>
+</div>

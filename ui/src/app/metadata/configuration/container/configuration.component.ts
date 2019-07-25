@@ -52,12 +52,7 @@ export class ConfigurationComponent implements OnDestroy {
             }
         });
 
-        this.name$ = this.store
-            .select(fromReducer.getConfigurationModel)
-            .pipe(
-                filter(model => !!model),
-                map(model => model ? ('serviceProviderName' in model) ? model.serviceProviderName : model.name : false)
-            );
+        this.name$ = this.store.select(fromReducer.getConfigurationModelName);
     }
 
     ngOnDestroy() {

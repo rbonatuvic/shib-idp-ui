@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Property } from '../../domain/model/property';
 import { Observable, of } from 'rxjs';
 import { AttributesService } from '../../domain/service/attributes.service';
@@ -10,13 +10,20 @@ import { ConfigurationPropertyComponent } from './configuration-property.compone
     styleUrls: []
 })
 
-export class ArrayPropertyComponent extends ConfigurationPropertyComponent {
+export class ArrayPropertyComponent extends ConfigurationPropertyComponent implements OnChanges {
     @Input() property: Property;
+
+    range = [];
 
     constructor(
         private attrService: AttributesService
     ) {
         super();
+    }
+
+    ngOnChanges(): void {
+        const keys = this.property.value.reduce((val, version) => version ? version.length > val ? version.length : val : val, 0);
+        this.range = [...Array(keys).keys()];
     }
 
     get attributeList$(): Observable<{ key: string, label: string }[]> {

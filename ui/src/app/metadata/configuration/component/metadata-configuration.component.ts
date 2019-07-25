@@ -1,6 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MetadataConfiguration } from '../model/metadata-configuration';
+import { Property } from '../../domain/model/property';
+import { Observable, of } from 'rxjs';
 
 @Component({
     selector: 'metadata-configuration',
@@ -18,5 +20,10 @@ export class MetadataConfigurationComponent {
 
     edit(id: string): void {
         this.router.navigate(['../', 'edit', id], { relativeTo: this.activatedRoute.parent });
+    }
+
+    get width(): string {
+        const columns = this.configuration.dates.length;
+        return `${Math.floor(100 / (columns + 1)) }%`;
     }
 }

@@ -1,7 +1,7 @@
 <ng-container *ngFor="let prop of property.properties">
     <ng-container [ngSwitch]="prop.type">
-        <primitive-property *ngSwitchDefault [property]="prop"></primitive-property>
-        <array-property *ngSwitchCase="'array'" [property]="prop"></array-property>
-        <object-property *ngSwitchCase="'object'" [property]="prop"></object-property>
+        <primitive-property *ngSwitchDefault [property]="prop" [columns]="columns"></primitive-property>
+        <array-property *ngSwitchCase="'array'" [property]="prop" [columns]="columns"></array-property>
+        <object-property *ngSwitchCase="'object'" [property]="prop" [columns]="columns"></object-property>
     </ng-container>
 </ng-container>

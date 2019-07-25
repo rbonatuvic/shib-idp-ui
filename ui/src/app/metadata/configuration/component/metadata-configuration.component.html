@@ -1,12 +1,14 @@
 <div *ngIf="configuration">
-    <section *ngFor="let section of configuration.sections; let i = index;">
+    <section *ngFor="let section of configuration.sections; let i = index;" class="mb-4">
         <div class="config-group">
             <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
                 <h2 class="title h4 m-0 flex-grow-1">
-                    <span class="d-inline-block px-2 py-1 mr-2 mb-0 h4 number border border-secondary bg-white rounded-lg"><span *ngIf="i + 1 < 10">0</span>{{ i + 1 }}</span>
+                    <span class="d-inline-block px-2 py-1 mr-2 mb-0 h4 number border border-secondary bg-white rounded-lg">
+                        <span *ngIf="i + 1 < 10">0</span>{{ i + 1 }}
+                    </span>
                     <span class="text">{{ section.label | translate }}</span>
                 </h2>
-                <div class="actions px-2">
+                <div class="actions px-2" *ngIf="configuration.dates.length === 1">
                     <button class="btn btn-link edit-link change-view" (click)="edit(section.id)">
                         <i class="fa fa-edit"></i>&nbsp;
                         <span translate="action.edit">Edit</span>
@@ -14,10 +16,18 @@
                 </div>
             </div>
             <div class="d-flex border-bottom border-light border-2 p-2">
-                <strong class="w-50" translate="label.option">Option</strong>
-                <strong class="w-50" translate="label.value">Value</strong>
+                <strong [ngStyle]="{'width': width}" translate="label.option">Option</strong>
+                <strong *ngFor="let date of configuration.dates" [ngStyle]="{'width': width}">
+                    <translate-i18n key="label.value" *ngIf="configuration.dates.length <= 1">Value</translate-i18n>
+                    <span *ngIf="configuration.dates.length > 1">{{ date | date:'medium' }}</span>
+                </strong>
             </div>
-            <object-property class="d-block" *ngIf="section" [property]="section"></object-property>
+            <object-property
+                class="d-block"
+                *ngIf="section"
+                [property]="section"
+                [columns]="configuration.dates.length">
+            </object-property>
         </div>
     </section>
 </div>

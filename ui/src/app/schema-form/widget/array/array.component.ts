@@ -18,9 +18,9 @@ export interface FormError {
     selector: 'array-component',
     templateUrl: `./array.component.html`
 })
-export class CustomArrayComponent extends ArrayWidget implements AfterViewInit, OnDestroy {
+export class CustomArrayComponent extends ArrayWidget implements AfterViewInit {
     errors$: Observable<FormError[]>;
-    hasErrors: boolean;
+    hasErrors$: Observable<boolean>;
     hasErrorSub: Subscription;
 
     messages = {
@@ -29,18 +29,15 @@ export class CustomArrayComponent extends ArrayWidget implements AfterViewInit, 
 
     ngAfterViewInit(): void {
         this.errors$ = this.formProperty.errorsChanges.pipe(
-            map(errors => errors ? errors.filter(err => err.code !== 'UNRESOLVABLE_REFERENCE').reduce((coll, err) => {
-                coll[err.code] = err;
-                return coll;
-            }, {}) : {}),
+            map(errors => errors ?
+                errors.filter(err => err.code !== 'UNRESOLVABLE_REFERENCE').reduce((coll, err) => {
+                    coll[err.code] = err;
+                    return coll;
+                }, {}) : {}),
             map(collection => Object.values(collection))
         );
 
-        this.hasErrorSub = this.errors$.subscribe(e => this.hasErrors = !!e.length);
-    }
-
-    ngOnDestroy(): void {
-        this.hasErrorSub.unsubscribe();
+        this.hasErrors$ = this.errors$.pipe(map(errors => !!errors.length));
     }
 
     removeItem(index: number, item: FormProperty = null): void {
