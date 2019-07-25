@@ -10,6 +10,7 @@ import { SCHEMA } from '../../../../testing/form-schema.stub';
 import { getStepProperties, getStepProperty } from '../../domain/utility/configuration';
 import { PrimitivePropertyComponent } from './primitive-property.component';
 import { ArrayPropertyComponent } from './array-property.component';
+import { FilterTargetPropertyComponent } from './filter-target-property.component';
 
 @Component({
     template: `
@@ -44,6 +45,7 @@ describe('Object Property Component', () => {
                 ObjectPropertyComponent,
                 PrimitivePropertyComponent,
                 ArrayPropertyComponent,
+                FilterTargetPropertyComponent,
                 TestHostComponent
             ]
         }).compileComponents();

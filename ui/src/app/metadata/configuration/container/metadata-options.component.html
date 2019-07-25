@@ -29,6 +29,7 @@
     </div>
     <metadata-configuration
         [configuration]="configuration$ | async"
+        (preview)="onPreview($event)"
         id="configuration">
     </metadata-configuration>
     <div *ngIf="kind === 'provider'" id="filters">

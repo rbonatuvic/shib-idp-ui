@@ -22,7 +22,7 @@ import { FilterCollectionEffects } from './effect/collection.effect';
 import { FormModule } from '../../schema-form/schema-form.module';
 import { I18nModule } from '../../i18n/i18n.module';
 import { FilterComponent } from './container/filter.component';
-import { FilterListComponent } from './container/filter-list.component';
+import { FilterListComponent } from './component/filter-list.component';
 
 @NgModule({
     declarations: [

@@ -1,6 +1,10 @@
 import { Store } from '@ngrx/store';
-import { Component, ChangeDetectionStrategy, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router, Event, Scroll } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { takeUntil, filter, delay } from 'rxjs/operators';
 
 import {
     ConfigurationState,
@@ -11,7 +15,7 @@ import {
     getConfigurationModelEnabled,
     getConfigurationHasXml,
     getConfigurationModel,
-    getConfigurationModelKind
+    getConfigurationDefinition
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
@@ -24,13 +28,11 @@ import {
     ChangeFilterOrderUp,
     RemoveFilterRequest
 } from '../../filter/action/collection.action';
-import { takeUntil, map, filter, delay } from 'rxjs/operators';
+
 import { Metadata } from '../../domain/domain.type';
 import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
-import { ModalService } from '../../../core/service/modal.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, Event, Scroll } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
+import { Wizard } from '../../../wizard/model';
+import { PreviewEntity } from '../../domain/action/entity.action';
 
 @Component({
     selector: 'metadata-options-page',
@@ -50,6 +52,7 @@ export class MetadataOptionsComponent implements OnDestroy {
     hasXml$: Observable<boolean>;
     filters$: Observable<unknown[]>;
     model$: Observable<Metadata>;
+    definition: Wizard<any>;
     id: string;
     kind: string;
 
@@ -73,10 +76,11 @@ export class MetadataOptionsComponent implements OnDestroy {
 
         this.model$
             .pipe(
-                takeUntil(this.ngUnsubscribe)
+                takeUntil(this.ngUnsubscribe),
+                filter(model => !!model)
             )
             .subscribe(p => {
-                this.id = p.resourceId;
+                this.id = 'resourceId' in p ? p.resourceId : p.id;
                 this.kind = '@type' in p ? 'provider' : 'resolver';
                 if (this.kind === 'provider') {
                     this.store.dispatch(new LoadFilterRequest(this.id));
@@ -90,6 +94,12 @@ export class MetadataOptionsComponent implements OnDestroy {
         ).subscribe(e => {
             scroller.scrollToAnchor(e.anchor);
         });
+
+        this.store.select(getConfigurationDefinition)
+            .pipe(
+                takeUntil(this.ngUnsubscribe)
+            )
+            .subscribe(d => this.definition = d);
     }
 
     onScrollTo(element): void {
@@ -105,7 +115,6 @@ export class MetadataOptionsComponent implements OnDestroy {
     }
 
     removeFilter(id: string): void {
-        console.log(id);
         this.modalService
             .open(DeleteFilterComponent)
             .result
@@ -117,6 +126,13 @@ export class MetadataOptionsComponent implements OnDestroy {
                     console.log('Cancelled');
                 }
             );
+    }
+
+    onPreview($event: { data: any, parent: Metadata }): void {
+        this.store.dispatch(new PreviewEntity({
+            id: $event.data,
+            entity: this.definition.getEntity($event.parent)
+        }));
     }
 
     ngOnDestroy(): void {

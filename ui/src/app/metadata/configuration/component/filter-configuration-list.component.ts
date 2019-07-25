@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FilterListComponent } from '../../filter/container/filter-list.component';
+import { FilterListComponent } from '../../filter/component/filter-list.component';
 
 @Component({
     selector: 'filter-configuration-list',

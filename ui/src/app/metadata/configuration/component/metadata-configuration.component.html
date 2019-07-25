@@ -31,7 +31,7 @@
                     *ngIf="section"
                     [property]="section"
                     [columns]="configuration.dates.length"
-                    (preview)="onPreview($event)">
+                    (preview)="preview.emit($event)">
                 </object-property>
             </div>
         </div>

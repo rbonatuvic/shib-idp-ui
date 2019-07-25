@@ -6,30 +6,20 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import * as fromConfiguration from '../reducer';
+import * as fromFilters from '../../filter/reducer';
+import * as fromProviders from '../../provider/reducer';
+import * as fromResolvers from '../../resolver/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MetadataOptionsComponent } from './metadata-options.component';
-import { Metadata } from '../../domain/domain.type';
-import { MetadataVersion } from '../model/version';
 import { CommonModule } from '@angular/common';
 
-@Component({
-    selector: 'metadata-configuration',
-    template: ``
-})
-class MetadataConfigurationComponent {
-    @Input() configuration: MetadataConfiguration;
-}
-
-@Component({
-    selector: 'metadata-header',
-    template: ``
-})
-class MetadataHeaderComponent {
-    @Input() isEnabled: boolean;
-    @Input() version: MetadataVersion;
-    @Input() versionNumber: number;
-    @Input() isCurrent: boolean;
-}
+import {
+    MetadataConfigurationComponentStub,
+    MetadataHeaderComponentStub
+} from '../../../../testing/metadata-configuration.stub';
+import {
+    FilterConfigurationListComponentStub
+} from '../../../../testing/filter-list.stub';
 
 @Component({
     template: `
@@ -59,6 +49,9 @@ describe('Metadata Options Page Component', () => {
                 NgbDropdownModule,
                 StoreModule.forRoot({
                     'metadata-configuration': combineReducers(fromConfiguration.reducers),
+                    'filters': combineReducers(fromFilters.reducers),
+                    'provider': combineReducers(fromProviders.reducers),
+                    'resolver': combineReducers(fromResolvers.reducers)
                 }),
                 MockI18nModule,
                 RouterTestingModule,
@@ -66,9 +59,10 @@ describe('Metadata Options Page Component', () => {
             ],
             declarations: [
                 MetadataOptionsComponent,
-                MetadataConfigurationComponent,
-                MetadataHeaderComponent,
-                TestHostComponent
+                MetadataConfigurationComponentStub,
+                MetadataHeaderComponentStub,
+                TestHostComponent,
+                FilterConfigurationListComponentStub
             ],
         }).compileComponents();
 
