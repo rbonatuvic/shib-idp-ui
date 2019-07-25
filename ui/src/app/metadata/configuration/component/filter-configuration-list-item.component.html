@@ -38,7 +38,8 @@
         [editable]="false"
         [configuration]="configuration"
         [entity]="filter"
-        [definition]="definition"></metadata-configuration>
+        [definition]="definition"
+        (preview)="onPreview($event)"></metadata-configuration>
     <button class="btn btn-link btn-sm" (click)="open = !open" [disabled]="isLast">
         <i class="fa fa-chevron-up sr-hidden"></i>&nbsp;
         <span translate="action.close">Close</span>

@@ -79,27 +79,21 @@ export class MetadataOptionsComponent implements OnDestroy {
                 takeUntil(this.ngUnsubscribe),
                 filter(model => !!model)
             )
-            .subscribe(p => {
-                this.id = 'resourceId' in p ? p.resourceId : p.id;
-                this.kind = '@type' in p ? 'provider' : 'resolver';
-                if (this.kind === 'provider') {
-                    this.store.dispatch(new LoadFilterRequest(this.id));
-                }
-            });
-
-        this.router.events.pipe(
-            takeUntil(this.ngUnsubscribe),
-            filter((e: Event): e is Scroll => e instanceof Scroll),
-            delay(1000)
-        ).subscribe(e => {
-            scroller.scrollToAnchor(e.anchor);
-        });
+            .subscribe(p => this.setModel(p));
 
         this.store.select(getConfigurationDefinition)
             .pipe(
                 takeUntil(this.ngUnsubscribe)
             )
             .subscribe(d => this.definition = d);
+    }
+
+    setModel(data: Metadata): void {
+        this.id = 'resourceId' in data ? data.resourceId : data.id;
+        this.kind = '@type' in data ? 'provider' : 'resolver';
+        if (this.kind === 'provider') {
+            this.store.dispatch(new LoadFilterRequest(this.id));
+        }
     }
 
     onScrollTo(element): void {
@@ -126,13 +120,6 @@ export class MetadataOptionsComponent implements OnDestroy {
                     console.log('Cancelled');
                 }
             );
-    }
-
-    onPreview($event: { data: any, parent: Metadata }): void {
-        this.store.dispatch(new PreviewEntity({
-            id: $event.data,
-            entity: this.definition.getEntity($event.parent)
-        }));
     }
 
     ngOnDestroy(): void {

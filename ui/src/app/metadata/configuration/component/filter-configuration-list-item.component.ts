@@ -1,8 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { MetadataFilter } from '../../domain/model';
 import { MetadataConfigurationService } from '../service/configuration.service';
-import { Wizard } from '../../../wizard/model';
 import { MetadataConfiguration } from '../model/metadata-configuration';
+import { PreviewEntity } from '../../domain/action/entity.action';
+import { Metadata } from '../../domain/domain.type';
+import * as fromRoot from '../../../app.reducer';
 
 @Component({
     selector: 'filter-configuration-list-item',
@@ -23,8 +26,16 @@ export class FilterConfigurationListItemComponent implements OnChanges {
     definition: any;
 
     constructor(
-        private configService: MetadataConfigurationService
+        private configService: MetadataConfigurationService,
+        private store: Store<fromRoot.State>
     ) {}
+
+    onPreview($event: { data: any, parent: Metadata }): void {
+        this.store.dispatch(new PreviewEntity({
+            id: $event.data,
+            entity: this.definition.getEntity($event.parent)
+        }));
+    }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.filter) {

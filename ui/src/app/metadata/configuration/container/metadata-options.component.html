@@ -29,7 +29,6 @@
     </div>
     <metadata-configuration
         [configuration]="configuration$ | async"
-        (preview)="onPreview($event)"
         id="configuration">
     </metadata-configuration>
     <div *ngIf="kind === 'provider'" id="filters">
@@ -49,6 +48,7 @@
             (onUpdateOrderDown)="updateOrderDown($event)"
             (onUpdateOrderUp)="updateOrderUp($event)"
             (onRemove)="removeFilter($event)"
+            (preview)="onPreview($event)"
             [filters]="filters$ | async"></filter-configuration-list>
     </div>
     <button class="btn btn-link" (click)="onScrollTo('header')">

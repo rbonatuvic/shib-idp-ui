@@ -6,7 +6,6 @@ import { ConfigurationPropertyComponent } from './configuration-property.compone
     templateUrl: './primitive-property.component.html',
     styleUrls: []
 })
-
 export class PrimitivePropertyComponent extends ConfigurationPropertyComponent {
     constructor() {
         super();

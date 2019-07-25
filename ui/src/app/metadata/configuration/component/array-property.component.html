@@ -13,7 +13,7 @@
                         container="body"
                         [ngStyle]="{'width': width}"
                         class="text-truncate"
-                        popoverClass="popover-lg">
+                        popoverClass="popover-lg popover-info">
                         {{ version[i][prop] }}
                     </div>
                     <div *ngIf="!version[i]" [ngStyle]="{'width': width}">
@@ -59,7 +59,7 @@
                 class="list-unstyled py-2 m-0"
                 [ngbPopover]="popContent"
                 triggers="mouseenter:mouseleave"
-                popoverClass="popover-lg"
+                popoverClass="popover-lg popover-info"
                 *ngIf="v && v.length > 0">
                 <li *ngFor="let item of v; odd as isOdd" class="text-truncate" [ngClass]="{'bg-light': isOdd, 'py-2': v.length > 1}">
                     <ng-container *ngIf="preview.observers.length > 0 && isUrl(item)">

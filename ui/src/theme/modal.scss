@@ -32,3 +32,11 @@ delete-dialog {
     width: auto;
     max-width: none;
 }
+
+.popover.popover-info {
+    $color: lighten($brand-info, 60%);
+    background: $color;
+    .arrow::after {
+      border-top-color: $color;
+    }
+}
