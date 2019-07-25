@@ -7,11 +7,11 @@
         ></metadata-header>
     <div class="px-3 my-3 d-flex justify-content-between" id="navigation">
         <div>
-            <!--<a class="btn btn-link" routerLink="../history">
+            <a class="btn btn-link" routerLink="../history">
                 <i class="fa fa-history sr-hidden"></i>&nbsp;
                 <translate-i18n key="action.version-history">Version History</translate-i18n>
-            </a>-->
-            <button class="btn btn-link" (click)="onScrollTo('filters')">
+            </a>
+            <button class="btn btn-link" (click)="onScrollTo('filters')" *ngIf="kind === 'provider'">
                 <i class="fa fa-arrow-down sr-hidden"></i>&nbsp;
                 <translate-i18n key="label.filters">Filters</translate-i18n>
             </button>

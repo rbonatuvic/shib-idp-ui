@@ -160,4 +160,4 @@ export const getVersionConfigurations = createSelector(
     getConfigurationSectionsFn
 );
 
-
+export const getVersionConfigurationCount = createSelector(getVersionConfigurations, (config) => config ? config.dates.length : 0);
