@@ -11,6 +11,7 @@
                 </label>
                 <div ngbDropdown>
                     <button ngbDropdownToggle
+                        [id]="formProperty._canonicalPath + '.valuedd'"
                         class="btn btn-outline-secondary dropdown-toggle"
                         type="button"
                         data-toggle="dropdown"
@@ -47,7 +48,7 @@
                     <div class="w-100" [ngSwitch]="this.targetType">
                         <ng-container *ngSwitchDefault>
                             <auto-complete
-                                [fieldId]="'targetInput'"
+                                [fieldId]="formProperty._canonicalPath + '.target'"
                                 class="component-control"
                                 limit="10"
                                 [formControl]="search"
@@ -59,7 +60,7 @@
                             </small>
                         </ng-container>
                         <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
-                            <p id="targetInput" role="textbox" class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
+                            <p [id]="formProperty._canonicalPath + '.target'" role="textbox" class="codearea form-control" rows="8" contenteditable [formControl]="script" name="script"></p>
                             <small id="script-help" class="text-danger">
                                 <ng-container *ngIf="script.invalid && script.touched">
                                     <translate-i18n key="message.required-for-scripts">Required for Scripts</translate-i18n>
@@ -68,7 +69,7 @@
                             </small>
                         </ng-container>
                         <ng-container *ngSwitchCase="'REGEX'">
-                            <input id="targetInput" class="form-control" type="text" [formControl]="script" name="script" />
+                            <input [id]="formProperty._canonicalPath + '.target'" class="form-control" type="text" [formControl]="script" name="script" />
                             <small id="regex-help" class="form-text text-secondary">
                                 <translate-i18n key="message.required-for-regex">Required for Regex</translate-i18n>
                                 &nbsp;

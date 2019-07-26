@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 
 import { ArrayWidget } from 'ngx-schema-form';
 import { map } from 'rxjs/operators';
@@ -40,7 +40,7 @@ export class CustomArrayComponent extends ArrayWidget implements AfterViewInit {
         this.hasErrors$ = this.errors$.pipe(map(errors => !!errors.length));
     }
 
-    removeItem(index: number, item: FormProperty = null): void {
+    removeItem(item: FormProperty = null): void {
         this.formProperty.properties = (<FormProperty[]>this.formProperty.properties).filter(i => i !== item);
         this.formProperty.updateValueAndValidity(false, true);
     }

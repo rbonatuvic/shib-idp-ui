@@ -8,9 +8,9 @@
                     [indeterminate]="control.value !== false && control.value !== true ? true :null"
                     type="checkbox"
                     [attr.disabled]="schema.readOnly?true:null"
-                    id="{{ name }}"
+                    [id]="formProperty._canonicalPath"
                     [disableValidation]="true">
-                <label for="{{ name }}" class="custom-control-label" [translate]="schema.title">
+                <label [attr.for]="formProperty._canonicalPath" class="custom-control-label" [translate]="schema.title">
                     {{ schema.title }}
                 </label>
             </div>
@@ -21,8 +21,10 @@
     </ng-container>
     <ng-container *ngIf="schema.type === 'array'">
         <div *ngFor="let option of schema.items.oneOf" class="checkbox">
-            <label class="horizontal control-label">
-                <input [attr.name]="name" 
+            <label class="horizontal control-label" [attr.for]="formProperty._canonicalPath">
+                <input
+                    [id]="formProperty._canonicalPath"
+                    [attr.name]="name" 
                     value="{{option.enum[0]}}"
                     type="checkbox"
                     [attr.disabled]="schema.readOnly?true:null"

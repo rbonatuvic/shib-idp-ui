@@ -10,6 +10,7 @@
     </label>
     <span *ngIf="schema.description" class="formHelp" [translate]="schema.description">{{schema.description}}</span>
     <input [attr.readonly]="schema.readOnly?true:null"
+        [id]="formProperty._canonicalPath"
         [name]="name"
         class="text-widget integer-widget form-control"
         [formControl]="control"
