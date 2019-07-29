@@ -22,6 +22,7 @@ import { FilterCollectionEffects } from './effect/collection.effect';
 import { FormModule } from '../../schema-form/schema-form.module';
 import { I18nModule } from '../../i18n/i18n.module';
 import { FilterComponent } from './container/filter.component';
+import { FilterListComponent } from './component/filter-list.component';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { FilterComponent } from './container/filter.component';
         EditFilterComponent,
         SelectFilterComponent,
         SearchDialogComponent,
-        FilterComponent
+        FilterComponent,
+        FilterListComponent
     ],
     entryComponents: [
         SearchDialogComponent
@@ -45,6 +47,9 @@ import { FilterComponent } from './container/filter.component';
         RouterModule,
         FormModule,
         I18nModule
+    ],
+    exports: [
+        FilterListComponent
     ]
 })
 export class FilterModule {

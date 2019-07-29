@@ -33,10 +33,13 @@ export function getStepProperties(schema: any, model: any, definitions: any = {}
     return Object
         .keys(schema.properties)
         .map(property => {
-            return getStepProperty(
-                schema.properties[property],
-                model && model.hasOwnProperty(property) ? model[property] : null,
-                definitions
-            );
+            return {
+                ...getStepProperty(
+                    schema.properties[property],
+                    model && model.hasOwnProperty(property) ? model[property] : null,
+                    definitions
+                ),
+                id: property
+            };
         });
 }

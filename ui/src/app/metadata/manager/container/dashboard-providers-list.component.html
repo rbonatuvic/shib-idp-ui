@@ -28,7 +28,7 @@
                         <tr *ngFor="let provider of limited$ | async; index as i; first as isFirst; last as isLast;">
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div *ngIf="!(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">{{ i }}</div>
+                                    <div *ngIf="!(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">{{ i + 1 }}</div>
                                     <div *ngIf="(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">&mdash;</div>
                                     &nbsp;
                                     <button class="btn btn-link px-1"
@@ -46,8 +46,7 @@
                                 </div>
                             </td>
                             <td>
-                                <!--<a [routerLink]="['/', 'metadata', 'provider', provider.id, 'configuration', 'options']">{{ provider.name }}</a>-->
-                                <a href="" (click)="edit(provider, $event)">{{ provider.name }}</a>
+                                <a [routerLink]="['/', 'metadata', 'provider', provider.id, 'configuration', 'options']">{{ provider.name }}</a>
                             </td>
                             <td>{{ provider['@type'] }}</td>
                             <td>{{ provider.createdBy }}</td>

@@ -1,14 +1,15 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { takeUntil, map, withLatestFrom, filter } from 'rxjs/operators';
+import { Component, ChangeDetectionStrategy, OnDestroy, HostListener } from '@angular/core';
+import { ActivatedRoute, Router, Scroll, Event } from '@angular/router';
+import { takeUntil, map, withLatestFrom, filter, timeout, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, interval } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 
-import { LoadMetadataRequest, ClearConfiguration } from '../action/configuration.action';
+import { ClearConfiguration, SetMetadata } from '../action/configuration.action';
 import { LoadHistoryRequest, ClearHistory, SelectVersion } from '../action/history.action';
 import * as fromReducer from '../reducer';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
     selector: 'configuration-page',
@@ -20,6 +21,7 @@ export class ConfigurationComponent implements OnDestroy {
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     name$: Observable<string>;
+    type$: Observable<string>;
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
@@ -27,7 +29,7 @@ export class ConfigurationComponent implements OnDestroy {
     ) {
         this.routerState.params.pipe(
             takeUntil(this.ngUnsubscribe),
-            map(params => new LoadMetadataRequest({id: params.id, type: params.type}))
+            map(params => new SetMetadata({id: params.id, type: params.type}))
         ).subscribe(store);
 
         this.routerState.params.pipe(
@@ -52,12 +54,8 @@ export class ConfigurationComponent implements OnDestroy {
             }
         });
 
-        this.name$ = this.store
-            .select(fromReducer.getConfigurationModel)
-            .pipe(
-                filter(model => !!model),
-                map(model => model ? ('serviceProviderName' in model) ? model.serviceProviderName : model.name : false)
-            );
+        this.name$ = this.store.select(fromReducer.getConfigurationModelName);
+        this.type$ = this.store.select(fromReducer.getConfigurationModelType);
     }
 
     ngOnDestroy() {

@@ -62,7 +62,8 @@ describe('Configuration Property Component', () => {
 
     describe('getItemType method', () => {
         it('should return the item`s type', () => {
-            expect(app.getItemType({ widget: { id: 'string' } } as Property)).toBe('string');
+            expect(app.getItemType({items: { widget: { id: 'string' } } } as Property)).toBe('string');
+            expect(app.getItemType({items: {}} as Property)).toBe('default');
             expect(app.getItemType({} as Property)).toBe('default');
         });
     });
