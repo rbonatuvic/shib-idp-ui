@@ -7,4 +7,4 @@ COPY loader.properties loader.properties
 
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/bin/java", "-jar", "app.jar"]
+ENTRYPOINT ["/usr/bin/java", "-XX:+PrintFlagsFinal", "-Xms2G", "-Xmx4G", "-jar", "app.jar"]

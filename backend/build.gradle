@@ -376,6 +376,6 @@ dockerRun {
     image 'unicon/shibui'
     ports '10101:8080'
     daemonize true
-    command '-Xmx2g', '--spring.profiles.include=very-dangerous,dev', '--shibui.default-password={noop}password'
+    command '-m 2G', '--spring.profiles.include=very-dangerous,dev', '--shibui.default-password={noop}password'
     clean true
 }
