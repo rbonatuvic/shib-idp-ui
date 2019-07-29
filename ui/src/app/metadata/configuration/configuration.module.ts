@@ -25,6 +25,11 @@ import { HistoryListComponent } from './component/history-list.component';
 import { DomainModule } from '../domain/domain.module';
 import { MetadataComparisonComponent } from './container/metadata-comparison.component';
 import { CompareVersionEffects } from './effect/compare.effect';
+import { FilterModule } from '../filter/filter.module';
+import { FilterConfigurationListComponent } from './component/filter-configuration-list.component';
+import { FilterConfigurationListItemComponent } from './component/filter-configuration-list-item.component';
+import { SharedModule } from '../../shared/shared.module';
+import { FilterTargetPropertyComponent } from './component/filter-target-property.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +44,10 @@ import { CompareVersionEffects } from './effect/compare.effect';
         MetadataHeaderComponent,
         MetadataHistoryComponent,
         HistoryListComponent,
-        MetadataComparisonComponent
+        MetadataComparisonComponent,
+        FilterConfigurationListComponent,
+        FilterConfigurationListItemComponent,
+        FilterTargetPropertyComponent
     ],
     entryComponents: [],
     imports: [
@@ -47,7 +55,9 @@ import { CompareVersionEffects } from './effect/compare.effect';
         I18nModule,
         NgbPopoverModule,
         RouterModule,
-        DomainModule
+        DomainModule,
+        FilterModule,
+        SharedModule
     ],
     exports: [],
     providers: []

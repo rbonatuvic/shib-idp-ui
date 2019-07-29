@@ -4,10 +4,6 @@ import { Schema } from '../model/schema';
 import { Wizard } from '../../../wizard/model';
 
 export enum ConfigurationActionTypes {
-    LOAD_METADATA_REQUEST = '[Metadata Configuration] Load Metadata Request',
-    LOAD_METADATA_SUCCESS = '[Metadata Configuration] Load Metadata Success',
-    LOAD_METADATA_ERROR = '[Metadata Configuration] Load Metadata Error',
-
     LOAD_SCHEMA_REQUEST = '[Metadata Configuration] Load Schema Request',
     LOAD_SCHEMA_SUCCESS = '[Metadata Configuration] Load Schema Success',
     LOAD_SCHEMA_ERROR = '[Metadata Configuration] Load Schema Error',
@@ -24,24 +20,6 @@ export enum ConfigurationActionTypes {
     DOWNLOAD_XML = '[Metadata Configuration] Download Metadata Xml',
 
     CLEAR = '[Metadata Configuration] Clear'
-}
-
-export class LoadMetadataRequest implements Action {
-    readonly type = ConfigurationActionTypes.LOAD_METADATA_REQUEST;
-
-    constructor(public payload: { id: string, type: string }) { }
-}
-
-export class LoadMetadataSuccess implements Action {
-    readonly type = ConfigurationActionTypes.LOAD_METADATA_SUCCESS;
-
-    constructor(public payload: Metadata) { }
-}
-
-export class LoadMetadataError implements Action {
-    readonly type = ConfigurationActionTypes.LOAD_METADATA_ERROR;
-
-    constructor(public payload: any) { }
 }
 
 export class LoadSchemaRequest implements Action {
@@ -83,7 +61,7 @@ export class LoadXmlError implements Action {
 export class SetMetadata implements Action {
     readonly type = ConfigurationActionTypes.SET_METADATA;
 
-    constructor(public payload: Metadata) { }
+    constructor(public payload: { id: string, type: string }) { }
 }
 
 export class SetDefinition implements Action {
@@ -113,9 +91,6 @@ export class ClearConfiguration implements Action {
 }
 
 export type ConfigurationActionsUnion =
-    | LoadMetadataRequest
-    | LoadMetadataSuccess
-    | LoadMetadataError
     | LoadSchemaRequest
     | LoadSchemaSuccess
     | LoadSchemaError

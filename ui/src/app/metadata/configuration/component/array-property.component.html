@@ -1,7 +1,7 @@
 <div>
     <ng-container *ngIf="property.items.type === 'object'">
-        <div class="p-2" role="term" [translate]="property.name">{{ property.name }}</div>
-        <div *ngFor="let item of range; let i = index;" class="p-2 bg-lighter border-top">
+        <div class="py-2" role="term" [translate]="property.name">{{ property.name }}</div>
+        <div *ngFor="let item of range; let i = index;" class="py-2 bg-lighter border-top">
             <div *ngFor="let prop of getKeys(property.items); let n = index;" class="d-flex py-2">
                 <div [ngStyle]="{'width': width}">
                     <span [translate]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</span>
@@ -11,18 +11,19 @@
                         [ngbPopover]="version[i][prop]"
                         triggers="mouseenter:mouseleave"
                         container="body"
-                        placement="left"
-                        [ngStyle]="{'width': width}">
+                        [ngStyle]="{'width': width}"
+                        class="text-truncate"
+                        popoverClass="popover-lg popover-info">
                         {{ version[i][prop] }}
                     </div>
                     <div *ngIf="!version[i]" [ngStyle]="{'width': width}">
-                        &mdash;
+                        -
                     </div>
                 </ng-container>
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property.items)">
+    <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property)">
         <ng-container *ngSwitchCase="'datalist'">
             <ng-template [ngTemplateOutlet]="listref"></ng-template>
         </ng-container>
@@ -30,32 +31,52 @@
             <ng-template [ngTemplateOutlet]="listref"></ng-template>
         </ng-container>
         <ng-container *ngSwitchDefault>
-            <div *ngFor="let attr of attributeList$ | async" class="d-flex justify-content-between border-bottom border-light">
-                <span class="p-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
-                <div *ngFor="let v of property.value"
-                    class="p-2"
-                    [ngStyle]="{'width': width}">
-                    <span *ngIf="v && v.indexOf(attr.key) > -1" translate="value.true">
-                        true
-                    </span>
-                    <span *ngIf="!v || !(v.indexOf(attr.key) > -1)" translate="value.false">
-                        false
-                    </span>
+            <div *ngIf="!property.widget || !property.widget.id">
+                <ng-template [ngTemplateOutlet]="listref"></ng-template>
+            </div>
+            <div *ngIf="property.widget && property.widget.dataUrl">
+                <div *ngFor="let attr of attributeList$ | async" class="d-flex justify-content-start border-bottom border-light">
+                    <span class="py-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
+                    <div *ngFor="let v of property.value" class="py-2" [ngStyle]="{'width': width}">
+                        <span *ngIf="v && v.indexOf(attr.key) > -1" translate="value.true">
+                            true
+                        </span>
+                        <span *ngIf="!v || !(v.indexOf(attr.key) > -1)" translate="value.false">
+                            false
+                        </span>
+                    </div>
                 </div>
             </div>
         </ng-container>
     </ng-container>
 </div>
 <ng-template #listref>
-    <div class="d-flex border-bottom border-light">
-        <span class="p-2" role="term" [translate]="property.name" [ngStyle]="{'width': width}">{{ property.name }}</span>
+    <div class="d-flex align-items-center border-bottom border-light">
+        <span class="py-2" role="term" [translate]="property.name" [ngStyle]="{'width': width}">{{ property.name }}</span>
         <ng-container *ngFor="let v of property.value">
-            <p [ngStyle]="{'width': width}" class="text-secondary p-2" *ngIf="!v || !v.length">&mdash;</p>
-            <ul [ngStyle]="{'width': width}" class="list-unstyled py-2" *ngIf="v && v.length">
-                <li *ngFor="let item of v">
+            <p [ngStyle]="{'width': width}" class="text-secondary" *ngIf="!v || !v.length">-</p>
+            <ul [ngStyle]="{'width': width}"
+                class="list-unstyled py-2 m-0"
+                [ngbPopover]="popContent"
+                triggers="mouseenter:mouseleave"
+                popoverClass="popover-lg popover-info"
+                *ngIf="v && v.length > 0">
+                <li *ngFor="let item of v; odd as isOdd" class="text-truncate" [ngClass]="{'bg-light': isOdd, 'py-2': v.length > 1}">
+                    <ng-container *ngIf="preview.observers.length > 0 && isUrl(item)">
+                        <button class="btn btn-link" (click)="preview.emit(item)">
+                            <i class="fa fa-eye fa-lg text-success"></i>
+                        </button>&nbsp;
+                    </ng-container>
                     {{ item }}
                 </li>
             </ul>
+            <ng-template #popContent>
+                <ul class="list-unstyled">
+                    <li *ngFor="let item of v; odd as isOdd" [ngClass]="{'bg-light': isOdd}" class="p-2">
+                        {{ item }}
+                    </li>
+                </ul>
+            </ng-template>
         </ng-container>
     </div>
 </ng-template>

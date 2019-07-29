@@ -5,34 +5,38 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { Property } from '../../domain/model/property';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
-import { ObjectPropertyComponent } from './object-property.component';
 import { SCHEMA } from '../../../../testing/form-schema.stub';
 import { getStepProperty } from '../../domain/utility/configuration';
-import { PrimitivePropertyComponent } from './primitive-property.component';
-import { ArrayPropertyComponent } from './array-property.component';
 import { FilterTargetPropertyComponent } from './filter-target-property.component';
+import { PrimitivePropertyComponent } from './primitive-property.component';
+import { ArrayPropertyComponentStub, PrimitivePropertyComponentStub } from '../../../../testing/property-component.stub';
+import { AttributesService } from '../../domain/service/attributes.service';
+import { of } from 'rxjs';
 
 @Component({
     template: `
-        <object-property [property]="property"></object-property>
+        <filter-target-property [property]="property"></filter-target-property>
     `
 })
 class TestHostComponent {
-    @ViewChild(ObjectPropertyComponent)
-    public componentUnderTest: ObjectPropertyComponent;
+    @ViewChild(FilterTargetPropertyComponent)
+    public componentUnderTest: FilterTargetPropertyComponent;
 
-    property: Property = getStepProperty(SCHEMA.properties.name, {
-        name: 'foo',
-        type: 'baz',
-        description: 'foo bar baz'
+    property: Property = getStepProperty(SCHEMA.properties.formatFilterTarget, {
+        formatFilterTargetType: 'ENTITY_ID',
+        value: [
+            'foo',
+            'bar',
+            'baz'
+        ]
     }, SCHEMA.definitions);
 }
 
-describe('Object Property Component', () => {
+describe('Filter Target Property Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let app: ObjectPropertyComponent;
+    let app: FilterTargetPropertyComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -42,12 +46,12 @@ describe('Object Property Component', () => {
                 RouterTestingModule
             ],
             declarations: [
-                ObjectPropertyComponent,
-                PrimitivePropertyComponent,
-                ArrayPropertyComponent,
                 FilterTargetPropertyComponent,
+                PrimitivePropertyComponentStub,
+                ArrayPropertyComponentStub,
                 TestHostComponent
-            ]
+            ],
+            providers: []
         }).compileComponents();
 
         fixture = TestBed.createComponent(TestHostComponent);

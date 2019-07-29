@@ -10,8 +10,12 @@ import * as utils from '../../domain/utility/configuration';
 import { getSplitSchema } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
 import { MetadataConfiguration } from '../model/metadata-configuration';
-import { Property } from '../../domain/model/property';
 import { Metadata } from '../../domain/domain.type';
+
+import * as fromResolver from '../../resolver/reducer';
+import * as fromProvider from '../../provider/reducer';
+import { provider } from '../../../../testing/provider.stub';
+import { resolver } from '../../../../testing/resolver.stub';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -34,9 +38,17 @@ export const getState = createFeatureSelector<ConfigurationState>('metadata-conf
 export const getConfigurationStateFn = (state: ConfigurationState) => state.configuration;
 export const getHistoryStateFn = (state: ConfigurationState) => state.history;
 export const getCompareStateFn = (state: ConfigurationState) => state.compare;
+export const getConfigurationModelFn = (kind, provider, resolver) => (kind === 'provider') ? provider : resolver;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
-export const getConfigurationModel = createSelector(getConfigurationState, fromConfiguration.getModel);
+export const getConfigurationModelKind = createSelector(getConfigurationState, fromConfiguration.getModelKind);
+export const getConfigurationModelId = createSelector(getConfigurationState, fromConfiguration.getModelId);
+export const getConfigurationModel = createSelector(
+    getConfigurationModelKind,
+    fromProvider.getSelectedProvider,
+    fromResolver.getSelectedResolver,
+    getConfigurationModelFn
+);
 export const getConfigurationModelList = createSelector(getConfigurationModel, (model) => [model]);
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
 export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
@@ -104,9 +116,15 @@ export const getConfigurationModelEnabledFn =
 export const getConfigurationModelNameFn =
     (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : false;
 
+export const getConfigurationModelTypeFn =
+    (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
+
 export const getConfigurationModelEnabled = createSelector(getConfigurationModel, getConfigurationModelEnabledFn);
 export const getConfigurationModelName = createSelector(getConfigurationModel, getConfigurationModelNameFn);
+export const getConfigurationModelType = createSelector(getConfigurationModel, getConfigurationModelTypeFn);
 
+export const getConfigurationHasXml = createSelector(getConfigurationXml, xml => !!xml);
+export const getConfigurationFilters = createSelector(getConfigurationModel, model => model.metadataFilters);
 // Version History
 
 export const getHistoryState = createSelector(getState, getHistoryStateFn);
@@ -142,4 +160,4 @@ export const getVersionConfigurations = createSelector(
     getConfigurationSectionsFn
 );
 
-
+export const getVersionConfigurationCount = createSelector(getVersionConfigurations, (config) => config ? config.dates.length : 0);

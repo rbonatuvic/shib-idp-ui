@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-start align-items-center">
+    <span class="mr-2">{{ index + 1 }}</span>
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-link btn-sm" (click)="onUpdateOrderUp.emit(filter)" [disabled]="isFirst">
+            <i class="fa fa-arrow-circle-up fa-2x sr-hidden"></i>
+            <span class="sr-only" translate="action.move-up">Move Up</span>
+        </button>
+        <button class="btn btn-link btn-sm" (click)="onUpdateOrderDown.emit(filter)" [disabled]="isLast">
+            <i class="fa fa-arrow-circle-down fa-2x sr-hidden"></i>
+            <span class="sr-only" translate="action.move-up">Move Down</span>
+        </button>
+    </div>
+    <button class="btn btn-link mx-4" (click)="open = !open">{{ filter.name }}</button>
+    <span class="">{{ filter['@type'] }}</span>
+    <span class="ml-4">
+        <span class="badge badge-primary" *ngIf="filter.filterEnabled">Enabled</span>
+        <span class="badge badge-primary" *ngIf="!filter.filterEnabled">Disabled</span>
+    </span>
+</div>
+<div *ngIf="open">
+    <hr class="my-2" />
+    <div class="d-flex justify-content-end mb-2">
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-link"
+                [routerLink]="['../../', 'filter', filter.resourceId, 'edit']">
+                <i class="fa fa-edit sr-hidden"></i>&nbsp;
+                <translate-i18n key="action.edit">Edit</translate-i18n>
+            </a>
+            <button class="btn btn-link"
+                (click)="onRemove.emit(filter.resourceId)">
+                <i class="fa fa-trash sr-hidden"></i>&nbsp;
+                <translate-i18n key="action.delete">Delete</translate-i18n>
+            </button>
+        </div>
+    </div>
+    <metadata-configuration
+        [numbered]="false"
+        [editable]="false"
+        [configuration]="configuration"
+        [entity]="filter"
+        [definition]="definition"
+        (preview)="onPreview($event)"></metadata-configuration>
+    <button class="btn btn-link btn-sm" (click)="open = !open">
+        <i class="fa fa-chevron-up sr-hidden"></i>&nbsp;
+        <span translate="action.close">Close</span>
+    </button>
+</div>

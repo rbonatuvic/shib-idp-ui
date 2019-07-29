@@ -117,10 +117,10 @@ describe('Metadata Version History Component', () => {
             ];
 
             const sorted = instance.sortVersionsByDate(versions);
-            expect(sorted[0].id).toEqual('bar');
-            expect(sorted[1].id).toEqual('baz');
-            expect(sorted[2].id).toEqual('foo');
-            expect(sorted[3].id).toEqual('baz2');
+            expect(sorted[0].id).toEqual('baz2');
+            expect(sorted[1].id).toEqual('foo');
+            expect(sorted[2].id).toEqual('baz');
+            expect(sorted[3].id).toEqual('bar');
         });
     });
 });

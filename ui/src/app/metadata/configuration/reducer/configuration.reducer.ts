@@ -4,14 +4,16 @@ import { Wizard } from '../../../wizard/model';
 import { Schema } from '../model/schema';
 
 export interface State {
-    model: Metadata;
+    modelType: string;
+    modelId: string;
     schema: Schema;
     definition: Wizard<Metadata>;
     xml: string;
 }
 
 export const initialState: State = {
-    model: null,
+    modelType: null,
+    modelId: null,
     schema: null,
     definition: null,
     xml: ''
@@ -32,7 +34,8 @@ export function reducer(state = initialState, action: ConfigurationActionsUnion)
         case ConfigurationActionTypes.SET_METADATA:
             return {
                 ...state,
-                model: action.payload
+                modelType: action.payload.type,
+                modelId: action.payload.id
             };
         case ConfigurationActionTypes.SET_XML:
             return {
@@ -49,7 +52,8 @@ export function reducer(state = initialState, action: ConfigurationActionsUnion)
     }
 }
 
-export const getModel = (state: State) => state.model;
+export const getModelKind = (state: State) => state.modelType;
+export const getModelId = (state: State) => state.modelId;
 export const getDefinition = (state: State) => state.definition;
 export const getSchema = (state: State) => state.schema;
 export const getXml = (state: State) => state.xml;

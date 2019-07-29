@@ -16,8 +16,10 @@ export class ConfigurationPropertyComponent {
         return Object.keys(schema.properties);
     }
 
-    getItemType(items: Property): string {
-        return items.widget ? items.widget.id : 'default';
+    getItemType(property: Property): string {
+        const items = property.items;
+        const def = 'default';
+        return items ? items.widget ? items.widget.id : def : def;
     }
 
     get width(): string {

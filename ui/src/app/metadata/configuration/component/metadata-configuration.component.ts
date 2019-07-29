@@ -1,8 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MetadataConfiguration } from '../model/metadata-configuration';
-import { Property } from '../../domain/model/property';
-import { Observable, of } from 'rxjs';
+import { Metadata } from '../../domain/domain.type';
 
 @Component({
     selector: 'metadata-configuration',
@@ -12,14 +11,24 @@ import { Observable, of } from 'rxjs';
 })
 export class MetadataConfigurationComponent {
     @Input() configuration: MetadataConfiguration;
+    @Input() definition: any;
+    @Input() entity: Metadata;
+    @Input() numbered = true;
+    @Input() editable = true;
+
+    @Output() preview: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute
-    ) { }
+    ) {}
 
     edit(id: string): void {
         this.router.navigate(['../', 'edit', id], { relativeTo: this.activatedRoute.parent });
+    }
+
+    onPreview($event): void {
+        this.preview.emit($event);
     }
 
     get width(): string {

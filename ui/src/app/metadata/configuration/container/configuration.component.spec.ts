@@ -7,6 +7,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { ConfigurationComponent } from './configuration.component';
 import * as fromConfiguration from '../reducer';
+import * as fromProviders from '../../provider/reducer';
+import * as fromResolvers from '../../resolver/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
@@ -36,6 +38,8 @@ describe('Metadata Configuration Page Component', () => {
                 NgbDropdownModule,
                 StoreModule.forRoot({
                     'metadata-configuration': combineReducers(fromConfiguration.reducers),
+                    'provider': combineReducers(fromProviders.reducers),
+                    'resolver': combineReducers(fromResolvers.reducers)
                 }),
                 MockI18nModule,
                 RouterTestingModule
