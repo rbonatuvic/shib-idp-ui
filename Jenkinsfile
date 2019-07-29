@@ -16,6 +16,25 @@ pipeline {
         }
       }
     }
+
+    stage('Run Selenium tests') {
+      when {
+        expression {
+          return GIT_BRANCH.startsWith('PR')
+        }
+      }
+      steps {
+        sh '''
+        ./gradlew integrationTest -Dselenium.host=jenkins
+        '''
+      }
+      post {
+        always {
+          junit 'backend/build/test-results/integrationTest/**/*.xml'
+        }
+      }
+    }
+
     stage('Build Docker images') {
       when {
         expression {
@@ -27,6 +46,7 @@ pipeline {
         '''
       }
     }
+
     stage('Deploy') {
       when {
         expression {

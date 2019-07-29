@@ -1,29 +1,54 @@
 {
   "id": "16b5f41b-30c1-4cc1-9c9e-bc15e40d1318",
-  "version": "1.1",
+  "version": "2.0",
   "name": "ShibUI",
   "url": "http://localhost:10101/",
   "tests": [{
     "id": "daacdb81-2f14-49f3-8d15-da5f5d52586c",
-    "name": "nada",
+    "name": "FBHMP Happy Path Save",
     "commands": [{
-      "id": "227fe3ca-ebb3-46ee-8067-eb1bd1290801",
+      "id": "c023f973-f799-4dc3-90d0-d75ccade0317",
       "comment": "",
       "command": "open",
-      "target": "/api/heheheheheheheWipeout",
+      "target": "/login",
       "targets": [],
       "value": ""
     }, {
-      "id": "853ef897-df38-4b31-ad06-3598bf9bc5e2",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
+      "id": "492f48b4-97f8-4cb7-b8de-abf963b576af",
+      "comment": "Use User Login",
+      "command": "type",
+      "target": "name=username",
       "targets": [
-        ["css=body", "css"],
-        ["css=body", "css:finder"],
-        ["xpath=//body", "xpath:position"]
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
       ],
-      "value": "yes, you did it"
+      "value": "admin"
+    }, {
+      "id": "f61dd17c-d2ee-4200-a8f7-96d841d4ccb8",
+      "comment": "Use User Password",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "fdb5a585-49aa-403c-8c23-c4fc548267b3",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
     }, {
       "id": "effbf04c-a1fa-411e-a47f-0b71acfbf4b2",
       "comment": "",
@@ -535,7 +560,6 @@
       "command": "click",
       "target": "css=div.px-2",
       "targets": [
-        ["css=div.px-2", "css"],
         ["css=.px-2", "css:finder"],
         ["xpath=//div[2]/div[2]", "xpath:position"]
       ],
@@ -544,13 +568,12 @@
       "id": "c3d80754-3e28-4b07-95f6-5bfac82e9a58",
       "comment": "",
       "command": "assertText",
-      "target": "css=div.px-2",
+      "target": "css=.row:nth-child(1) > .col:nth-child(2)",
       "targets": [
-        ["css=div.px-2", "css"],
-        ["css=.px-2", "css:finder"],
-        ["xpath=//div[2]/div[2]", "xpath:position"]
+        ["css=.row:nth-child(1) > .col:nth-child(2)", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div/div[2]", "xpath:position"]
       ],
-      "value": "Metadata Provider: FBHMP\\nFileBackedHttpMetadataResolver"
+      "value": "Metadata Provider: FBHMP"
     }]
   }],
   "suites": [{

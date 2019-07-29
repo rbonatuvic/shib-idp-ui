@@ -38,13 +38,13 @@ public class AddNewUserFilter implements Filter {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private EmailService emailService;
+    private Optional<EmailService> emailService;
 
     private Pac4jConfigurationProperties pac4jConfigurationProperties;
 
     private Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping;
 
-    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, EmailService emailService) {
+    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
@@ -85,11 +85,13 @@ public class AddNewUserFilter implements Filter {
                 User user;
                 if (!persistedUser.isPresent()) {
                     user = buildAndPersistNewUserFromProfile(profile);
-                    try {
-                        emailService.sendNewUserMail(username);
-                    } catch (MessagingException e) {
-                        logger.warn(String.format("Unable to send new user email for user [%s]", username), e);
-                    }
+                    emailService.ifPresent(e -> {
+                        try {
+                            e.sendNewUserMail(username);
+                        } catch (MessagingException e1) {
+                            logger.warn(String.format("Unable to send new user email for user [%s]", username), e);
+                        }
+                    });
                 } else {
                     user = persistedUser.get();
                 }
