@@ -9,7 +9,7 @@
     <div *ngFor="let option of schema.oneOf; let i=index;" class="form-check form-check-inline">
         <label class="control-label">
             <input
-                [id]="name + '-' + i"
+                [id]="formProperty._canonicalPath"
                 [formControl]="control"
                 [name]="name"
                 [value]="option.enum[0]"

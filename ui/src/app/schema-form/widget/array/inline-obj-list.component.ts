@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 
-import { ObjectWidget } from 'ngx-schema-form';
 import { CustomArrayComponent } from './array.component';
 
 /* tslint:disable */
