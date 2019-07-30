@@ -36,9 +36,7 @@ export class NewResolverComponent implements OnDestroy {
         this.actionsSubscription = this.route.queryParams.pipe(
             takeUntil(this.ngUnsubscribe),
             distinctUntilChanged(),
-            map(data => {
-                return new SelectDraftRequest(data.id);
-            })
+            map(data => new SelectDraftRequest(data.id))
         ).subscribe(this.store);
     }
     ngOnDestroy(): void {

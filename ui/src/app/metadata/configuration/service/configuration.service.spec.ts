@@ -6,10 +6,15 @@ import { FileBackedHttpMetadataProviderEditor } from '../../provider/model';
 import { MetadataSourceEditor } from '../../domain/model/wizards/metadata-source-editor';
 import { ResolverService } from '../../domain/service/resolver.service';
 import { of } from 'rxjs';
+import { MetadataProviderService } from '../../domain/service/provider.service';
 
 describe(`Configuration Service`, () => {
 
     let resolverService: any;
+
+    let mockService = {
+        find: () => of([])
+    };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -20,9 +25,12 @@ describe(`Configuration Service`, () => {
             providers: [
                 MetadataConfigurationService,
                 {
-                    provide: ResolverService, useValue: {
-                        find: () => of([])
-                    }
+                    provide: ResolverService,
+                    useValue: mockService
+                },
+                {
+                    provide: MetadataProviderService,
+                    useValue: mockService
                 }
             ]
         });

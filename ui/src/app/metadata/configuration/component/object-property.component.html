@@ -1,7 +1,17 @@
 <ng-container *ngFor="let prop of property.properties">
     <ng-container [ngSwitch]="prop.type">
-        <primitive-property *ngSwitchDefault [property]="prop"></primitive-property>
-        <array-property *ngSwitchCase="'array'" [property]="prop"></array-property>
-        <object-property *ngSwitchCase="'object'" [property]="prop"></object-property>
+        <primitive-property *ngSwitchDefault [property]="prop" [columns]="columns"></primitive-property>
+        <array-property *ngSwitchCase="'array'" [property]="prop" [columns]="columns"></array-property>
+        <ng-container *ngSwitchCase="'object'">
+            <object-property *ngIf="!prop.widget || !prop.widget.id || prop.widget.id !=='filter-target'"
+                [property]="prop"
+                [columns]="columns"></object-property>
+            <filter-target-property *ngIf="prop.widget && prop.widget.id && prop.widget.id ==='filter-target'"
+                [property]="prop"
+                [parent]="property"
+                [columns]="columns"
+                (preview)="preview.emit($event)">
+            </filter-target-property>
+        </ng-container>
     </ng-container>
 </ng-container>

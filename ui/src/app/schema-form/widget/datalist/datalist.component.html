@@ -10,8 +10,8 @@
     </label>
     <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
     <auto-complete
-        [id]="id"
-        [fieldId]="id"
+        [id]="formProperty._canonicalPath"
+        [fieldId]="formProperty._canonicalPath"
         [formControl]="control"
         [matches]="schema.widget.data"
         [required]="true"

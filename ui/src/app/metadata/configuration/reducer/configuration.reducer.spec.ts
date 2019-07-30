@@ -45,10 +45,10 @@ describe('Configuration Reducer', () => {
 
     describe('SET_METADATA action', () => {
         it('should set the state metadata model', () => {
-            const action = new actions.SetMetadata(model as MetadataResolver);
+            const action = new actions.SetMetadata({ id: model.id, type: 'resolver' });
             const result = reducer(initialState, action);
 
-            expect(result).toEqual({ ...initialState, model });
+            expect(result).toEqual({ ...initialState, modelId: model.id, modelType: 'resolver' });
         });
     });
 
@@ -66,7 +66,8 @@ describe('Configuration Reducer', () => {
             const action = new actions.ClearConfiguration();
             const result = reducer({
                 ...initialState,
-                model,
+                modelType: 'resolver',
+                modelId: model.id,
                 definition,
                 schema
             }, action);
@@ -84,7 +85,7 @@ describe('Configuration Reducer', () => {
         */
         describe('getModel', () => {
             it('should retrieve the model from state', () => {
-                expect(fromConfig.getModel({...initialState, model})).toBe(model);
+                expect(fromConfig.getModelKind({...initialState, modelType: 'resolver'})).toBe('resolver');
             });
         });
         describe('getDefinition', () => {
