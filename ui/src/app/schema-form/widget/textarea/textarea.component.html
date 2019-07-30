@@ -10,6 +10,7 @@
     </label>
     <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
     <textarea [attr.readonly]="schema.readOnly?true:null"
+        [id]="formProperty._canonicalPath"
         [name]="name"
         class="text-widget textarea-widget form-control"
         [attr.placeholder]="schema.placeholder"

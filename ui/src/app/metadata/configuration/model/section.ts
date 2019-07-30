@@ -1,11 +1,17 @@
-import { Property } from '../../domain/model/property';
-
 export interface Section {
     id: string;
     index: number;
     label: string;
     pageNumber: number;
-    properties: Property[];
+    properties: SectionProperty[];
 }
 
-export default Section;
+export interface SectionProperty {
+    label: string;
+    type: string;
+    value: any[];
+    widget?: {
+        id: string;
+        [propertyName: string]: any;
+    };
+}

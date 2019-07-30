@@ -79,4 +79,14 @@ describe('Metadata History List Component', () => {
             expect(instance.restore).toHaveBeenCalledWith(selected);
         });
     });
+
+    describe('toggleVersionSelected method', () => {
+        it('should add or remove the selected version', () => {
+            list.toggleVersionSelected(TestData.versions[0]);
+            fixture.detectChanges();
+            list.toggleVersionSelected(TestData.versions[0]);
+            fixture.detectChanges();
+            expect(list.selected.length).toBe(0);
+        });
+    });
 });

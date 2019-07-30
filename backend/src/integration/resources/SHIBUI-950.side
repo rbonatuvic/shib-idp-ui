@@ -127,29 +127,22 @@
       "id": "67ad4a51-7c15-41e1-bc34-62a9f3e83b46",
       "comment": "",
       "command": "click",
-      "target": "css=.direction",
+      "target": "css=.next",
       "targets": [
-        ["css=.direction", "css:finder"],
-        ["xpath=//span[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "6b05d265-a392-4fe4-ad3f-9b4da12ca2d2",
-      "comment": "",
-      "command": "click",
-      "target": "css=td:nth-child(2)",
-      "targets": [
-        ["css=td:nth-child(2)", "css:finder"],
-        ["xpath=//td[2]", "xpath:position"],
-        ["xpath=//td[contains(.,'https://wiki.shibboleth.net/shibboleth')]", "xpath:innerText"]
+        ["css=.next", "css:finder"],
+        ["xpath=//li[2]/button", "xpath:position"]
       ],
       "value": ""
     }, {
       "id": "cf4285d3-6f70-499e-ad3a-85278e27dbf0",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.badge",
-      "targets": [],
+      "target": "css=tr > .text-right",
+      "targets": [
+        ["css=tr > .text-right", "css:finder"],
+        ["xpath=//td[5]", "xpath:position"],
+        ["xpath=//td[contains(.,'Disabled')]", "xpath:innerText"]
+      ],
       "value": "10000"
     }, {
       "id": "185696df-a872-419e-81aa-7c9cfa1e2b90",

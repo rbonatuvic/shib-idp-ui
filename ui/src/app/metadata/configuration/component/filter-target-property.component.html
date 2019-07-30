@@ -1,0 +1,9 @@
+<ng-container *ngFor="let prop of property.properties">
+    <ng-container [ngSwitch]="prop.type">
+        <primitive-property *ngSwitchDefault [property]="prop" [columns]="columns"></primitive-property>
+        <array-property *ngSwitchCase="'array'"
+            [property]="prop"
+            [columns]="columns"
+            (preview)="onPreview($event)"></array-property>
+    </ng-container>
+</ng-container>

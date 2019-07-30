@@ -7,6 +7,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Property } from '../../domain/model/property';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'object-property',
@@ -14,6 +15,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
 })
 class ObjectPropertyComponent {
     @Input() property: Property;
+    @Input() columns = 1;
 }
 
 @Component({
@@ -25,7 +27,10 @@ class TestHostComponent {
     @ViewChild(MetadataConfigurationComponent)
     public componentUnderTest: MetadataConfigurationComponent;
 
-    configuration: MetadataConfiguration = {sections: []};
+    configuration: MetadataConfiguration = {
+        dates: [],
+        sections: []
+    };
 }
 
 describe('Metadata Configuration Component', () => {
@@ -33,6 +38,7 @@ describe('Metadata Configuration Component', () => {
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
     let app: MetadataConfigurationComponent;
+    let router: Router;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -51,10 +57,36 @@ describe('Metadata Configuration Component', () => {
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;
         app = instance.componentUnderTest;
+        router = TestBed.get(Router);
         fixture.detectChanges();
     }));
 
     it('should accept a configuration input', async(() => {
         expect(app).toBeTruthy();
     }));
+
+    describe('edit method', () => {
+        it('should call router.navigate', () => {
+            spyOn(router, 'navigate');
+            app.edit('foo');
+            expect(router.navigate).toHaveBeenCalled();
+        });
+    });
+
+    describe('width getter', () => {
+        it('should default to 100%', () => {
+            expect(app.width).toBe('100%');
+        });
+        it('should calculate the width based on dates', () => {
+            instance.configuration = {
+                ...instance.configuration,
+                dates: [
+                    new Date().toISOString(),
+                    new Date().toISOString()
+                ]
+            };
+            fixture.detectChanges();
+            expect(app.width).toBe('33%');
+        });
+    });
 });

@@ -1,7 +1,7 @@
 export interface FormDefinition<T> {
     label: string;
     type: string;
-    schema?: string;
+    schema: string;
     bindings?: any;
     getEntity?(entity: any): any;
     parser(changes: Partial<T>, schema?: any);

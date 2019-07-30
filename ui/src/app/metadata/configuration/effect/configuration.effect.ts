@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { switchMap, catchError, map, tap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, catchError, map, tap, withLatestFrom, filter } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import { Store } from '@ngrx/store';
 
 import { MetadataConfigurationService } from '../service/configuration.service';
 import {
-    LoadMetadataRequest,
-    LoadMetadataSuccess,
-    LoadMetadataError,
     ConfigurationActionTypes,
     SetMetadata,
     SetDefinition,
@@ -27,48 +24,38 @@ import { EntityIdService } from '../../domain/service/entity-id.service';
 import { State } from '../reducer/configuration.reducer';
 import { getConfigurationModel, getConfigurationXml } from '../reducer';
 import { MetadataResolver } from '../../domain/model';
+import {
+    SelectProviderRequest, SelectProviderSuccess, ProviderCollectionActionTypes
+} from '../../provider/action/collection.action';
+import {
+    SelectResolver,
+    SelectResolverSuccess,
+    ResolverCollectionActionTypes
+} from '../../resolver/action/collection.action';
 
 @Injectable()
 export class MetadataConfigurationEffects {
 
     @Effect()
     loadMetadata$ = this.actions$.pipe(
-        ofType<LoadMetadataRequest>(ConfigurationActionTypes.LOAD_METADATA_REQUEST),
-        switchMap(action =>
-            this.configService
-                .find(action.payload.id, action.payload.type)
-                .pipe(
-                    map(md => new LoadMetadataSuccess(md)),
-                    catchError(error => of(new LoadMetadataError(error)))
-                )
-        )
-    );
-
-    @Effect({dispatch: false})
-    loadMetadataError$ = this.actions$.pipe(
-        ofType<LoadMetadataError>(ConfigurationActionTypes.LOAD_METADATA_ERROR),
-        tap(action => console.log(action))
+        ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
+        map(action => action.payload),
+        map(payload => {
+            const action = (payload.type === 'resolver') ?
+                new SelectResolver(payload.id) :
+                new SelectProviderRequest(payload.id);
+            return action;
+        })
     );
 
     @Effect()
     loadMetadataXml$ = this.actions$.pipe(
-        ofType<LoadMetadataRequest>(ConfigurationActionTypes.LOAD_METADATA_REQUEST),
-        switchMap(action => {
-            let loader: Observable<string>;
-            switch (action.payload.type) {
-                case 'filter':
-                    loader = this.entityService.preview(action.payload.id);
-                    break;
-                default:
-                    loader = this.providerService.preview(action.payload.id);
-                    break;
-            }
-
-            return loader.pipe(
-                map(xml => new LoadXmlSuccess(xml)),
-                catchError(error => of(new LoadXmlError(error)))
-            );
-        })
+        ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
+        filter(action => action.payload.type === 'resolver'),
+        switchMap(action => this.resolverService.preview(action.payload.id).pipe(
+            map(xml => new LoadXmlSuccess(xml)),
+            catchError(error => of(new LoadXmlError(error)))
+        ))
     );
 
     @Effect()
@@ -78,14 +65,14 @@ export class MetadataConfigurationEffects {
     );
 
     @Effect()
-    setMetadataOnLoad$ = this.actions$.pipe(
-        ofType<LoadMetadataSuccess>(ConfigurationActionTypes.LOAD_METADATA_SUCCESS),
-        map(action => new SetMetadata(action.payload))
+    setDefinitionOnResolverDataLoad$ = this.actions$.pipe(
+        ofType<SelectResolverSuccess>(ResolverCollectionActionTypes.SELECT_SUCCESS),
+        map(action => new SetDefinition(this.configService.getDefinition('resolver')))
     );
 
     @Effect()
-    setDefinition$ = this.actions$.pipe(
-        ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
+    setDefinitionOnProviderLoad$ = this.actions$.pipe(
+        ofType<SelectProviderSuccess>(ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS),
         map(action => new SetDefinition(this.configService.getDefinition(action.payload['@type'])))
     );
 
@@ -131,7 +118,7 @@ export class MetadataConfigurationEffects {
     constructor(
         private configService: MetadataConfigurationService,
         private actions$: Actions,
-        private providerService: ResolverService,
+        private resolverService: ResolverService,
         private entityService: EntityIdService,
         private store: Store<State>
     ) { }
