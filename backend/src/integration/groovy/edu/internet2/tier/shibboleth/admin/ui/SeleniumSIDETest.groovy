@@ -105,7 +105,7 @@ class SeleniumSIDETest extends Specification {
 //        'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
 //        'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
 //        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side'
-        'SHIBUI-1281: Metadata Source Dashboard'            | '/SHIBUI-1281.side'
+//        'SHIBUI-1281: Metadata Source Dashboard'            | '/SHIBUI-1281.side'
         'SHIBUI-1311: Metadata Provider Dashboard'          | '/SHIBUI-1311.side'
     }
 }
