@@ -2,10 +2,6 @@ import * as fromIndex from './';
 import { MetadataResolver } from '../../metadata/domain/model';
 import { User } from '../../core/model/user';
 
-// export const totalUserFn = (users) => users.length;
-// export const totalMetadataFn = (md) => md.filter(obj => !obj.serviceEnabled).length;
-// export const totalActionsFn = (users, md) => md + users;
-
 let resolvers: MetadataResolver[] = [
     { id: '1', entityId: 'foo', serviceEnabled: true, serviceProviderName: 'bar', createdDate: 'Date' } as MetadataResolver,
     { id: '2', entityId: 'baz', serviceEnabled: false, serviceProviderName: 'fin', createdDate: 'Date' } as MetadataResolver
@@ -14,17 +10,35 @@ let resolvers: MetadataResolver[] = [
 let users: User[] = [
     {
         username: 'foo',
-        role: 'admin',
+        role: 'ROLE_ADMIN',
         firstName: 'foo',
         lastName: 'bar',
         emailAddress: 'foo@bar.com'
+    },
+    {
+        username: 'bar',
+        role: 'ROLE_NONE',
+        firstName: 'baz',
+        lastName: 'foo',
+        emailAddress: 'fooz@ball.com'
     }
 ];
 
 describe('admin dashboard state selectors', () => {
+    describe('getConfiguredAdminsFn', () => {
+        it('should return all users without the `ROLE_NONE` role', () => {
+            expect(fromIndex.getConfiguredAdminsFn(users).length).toBe(1);
+        });
+    });
+
+    describe('getNewUsersFn', () => {
+        it('should return all users with the `ROLE_NONE` role', () => {
+            expect(fromIndex.getNewUsersFn(users).length).toBe(1);
+        });
+    });
     describe('totalUserFn', () => {
         it('should get the length of the provided array', () => {
-            expect(fromIndex.totalUserFn(users)).toBe(1);
+            expect(fromIndex.totalUserFn(users)).toBe(2);
         });
     });
     describe('totalMetadataFn', () => {
