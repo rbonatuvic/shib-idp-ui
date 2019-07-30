@@ -217,6 +217,12 @@ export class FilterCollectionEffects {
     );
 
     @Effect()
+    getOrderOnUpdate$ = this.actions$.pipe(
+        ofType<SetOrderFilterSuccess>(FilterCollectionActionTypes.SET_ORDER_FILTER_SUCCESS),
+        map(() => new GetOrderFilterRequest())
+    );
+
+    @Effect()
     changeOrderUp$ = this.actions$.pipe(
         ofType<ChangeFilterOrderUp>(FilterCollectionActionTypes.CHANGE_FILTER_ORDER_UP),
         map(action => action.payload),

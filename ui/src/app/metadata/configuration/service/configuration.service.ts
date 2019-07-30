@@ -8,12 +8,16 @@ import { MetadataProviderEditorTypes } from '../../provider/model';
 import { Schema } from '../model/schema';
 import { TYPES } from '../configuration.values';
 import { ResolverService } from '../../domain/service/resolver.service';
+import { MetadataProviderService } from '../../domain/service/provider.service';
+import { MetadataFilterEditorTypes } from '../../filter/model';
+import { getConfigurationSectionsFn } from '../reducer';
 
 @Injectable()
 export class MetadataConfigurationService {
 
     constructor(
         private resolverService: ResolverService,
+        private providerService: MetadataProviderService,
         private http: HttpClient
     ) {}
 
@@ -21,17 +25,25 @@ export class MetadataConfigurationService {
         switch (type) {
             case TYPES.resolver:
                 return this.resolverService.find(id);
+            case TYPES.provider:
+                return this.providerService.find(id);
             default:
                 return throwError(new Error('Type not supported'));
         }
     }
 
     getDefinition(type: string): Wizard<Metadata> {
-        return MetadataProviderEditorTypes.find(def => def.type === type) || new MetadataSourceEditor();
+        return MetadataProviderEditorTypes.find(def => def.type === type) ||
+            MetadataFilterEditorTypes.find(def => def.type === type) ||
+            new MetadataSourceEditor();
     }
 
     loadSchema(path: string): Observable<Schema> {
         return this.http.get<Schema>(path);
+    }
+
+    getMetadataConfiguration(model, definition, schema) {
+        return getConfigurationSectionsFn([model], definition, schema);
     }
 }
 

@@ -14,8 +14,6 @@ export class EntityIdService {
     readonly entitiesEndpoint = '/entities';
     readonly base = '/api';
 
-    private subj: Subject<string[]> = new Subject();
-
     constructor(
         private http: HttpClient
     ) { }

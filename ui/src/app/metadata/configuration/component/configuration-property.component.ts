@@ -3,12 +3,12 @@ import { Property } from '../../domain/model/property';
 
 @Component({
     selector: 'configuration-property',
-    template: `{{ property | json }}`,
-    styleUrls: []
+    template: `{{ property | json }}`
 })
 
 export class ConfigurationPropertyComponent {
     @Input() property: Property;
+    @Input() columns = 1;
 
     constructor() { }
 
@@ -16,8 +16,14 @@ export class ConfigurationPropertyComponent {
         return Object.keys(schema.properties);
     }
 
-    getItemType(items: Property): string {
-        return items.widget ? items.widget.id : 'default';
+    getItemType(property: Property): string {
+        const items = property.items;
+        const def = 'default';
+        return items ? items.widget ? items.widget.id : def : def;
+    }
+
+    get width(): string {
+        return `${ Math.floor(100 / (this.columns + 1)) }%`;
     }
 }
 

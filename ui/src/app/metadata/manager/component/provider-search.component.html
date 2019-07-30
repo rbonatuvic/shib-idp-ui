@@ -10,7 +10,8 @@
             aria-label="To search for a source, enter name then press enter"
             formControlName="search"
             role="textbox"
-            (keyup)="search.emit($event.target.value)">
+            (keyup)="search.emit($event.target.value)"
+            disableValidation="true">
         <div class="input-group-append">
             <button class="btn btn-link"
                 type="button"

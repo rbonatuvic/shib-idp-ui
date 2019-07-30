@@ -73,13 +73,13 @@ describe('Resolver Reducer', () => {
     describe('Select Resolver', () => {
         it('should update the selected draft id', () => {
             let id = 'foo',
+                createdDate = new Date().toDateString(),
                 expected = { ...snapshot, selectedResolverId: id };
-            const action = new resolverActions.SelectResolver(id);
+            const action = new resolverActions.SelectResolverSuccess({ id, createdDate } as MetadataResolver);
             const result = reducer({ ...snapshot }, action);
 
-            expect(result).toEqual(
-                Object.assign({}, initialState, expected)
-            );
+            expect(result.selectedResolverId).toEqual(id);
+            expect(result.ids.length).toBe(3);
         });
     });
 });

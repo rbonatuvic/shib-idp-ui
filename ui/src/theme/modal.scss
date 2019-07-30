@@ -3,6 +3,7 @@
 }
 
 .modal.modal-xl {
+    max-width: 100% !important;
     .modal-dialog {
         width: 1200px;
         max-width: 98%;
@@ -24,5 +25,18 @@ delete-dialog {
         padding-left: 80px;
         color: $red;
         font-weight: 700;
+    }
+}
+
+.popover.popover-lg {
+    width: auto;
+    max-width: none;
+}
+
+.popover.popover-info {
+    $color: lighten($brand-info, 60%);
+    background: $color;
+    .arrow::after {
+      border-top-color: $color;
     }
 }

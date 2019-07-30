@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SchemaFormModule, SchemaValidatorFactory } from 'ngx-schema-form';
+import { SchemaFormModule } from 'ngx-schema-form';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -23,7 +23,6 @@ import { CustomObjectWidget } from './widget/object/object.component';
 import { CustomRadioComponent } from './widget/radio/radio.component';
 import { InlineObjectListComponent } from './widget/array/inline-obj-list.component';
 import { InlineObjectComponent } from './widget/object/inline-obj.component';
-import { CustomSchemaValidatorFactory } from './service/schema-validator';
 
 export const COMPONENTS = [
     BooleanRadioComponent,

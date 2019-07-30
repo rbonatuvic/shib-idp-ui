@@ -55,6 +55,54 @@ export const SCHEMA = {
                     }
                 ]
             }
+        },
+        'formatFilterTarget': {
+            'title': 'label.search-criteria',
+            'description': 'tooltip.search-criteria',
+            'type': 'object',
+            'widget': {
+                'id': 'filter-target',
+                'target': 'formatFilterTargetType'
+            },
+            'properties': {
+                'formatFilterTargetType': {
+                    'title': '',
+                    'type': 'string',
+                    'default': 'ENTITY',
+                    'oneOf': [
+                        {
+                            'enum': [
+                                'ENTITY'
+                            ],
+                            'description': 'value.entity-id'
+                        },
+                        {
+                            'enum': [
+                                'REGEX'
+                            ],
+                            'description': 'value.regex'
+                        },
+                        {
+                            'enum': [
+                                'CONDITION_SCRIPT'
+                            ],
+                            'description': 'value.script'
+                        }
+                    ]
+                },
+                'value': {
+                    'type': 'array',
+                    'minItems': 1,
+                    'uniqueItems': true,
+                    'items': {
+                        'type': 'string'
+                    }
+                }
+            },
+            'required': [
+                'value',
+                'nameIdFormatFilterTargetType'
+            ]
         }
     },
     'required': [

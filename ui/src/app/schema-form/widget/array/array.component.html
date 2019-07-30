@@ -12,7 +12,7 @@
         <span class="text-right" *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
-        <small class="form-text text-danger px-2" *ngIf="hasErrors">
+        <small class="form-text text-danger px-2" *ngIf="hasErrors$ | async">
             <ng-container *ngFor="let error of errors$ | async; let first=first;">
                 <ng-container *ngIf="!first">, </ng-container>
                 <translate-i18n [key]="messages[error.code]">{{ error.message }}</translate-i18n>
