@@ -9,4 +9,20 @@
         </a>
     </div>
     <metadata-configuration [configuration]="versions$ | async"></metadata-configuration>
+    <div *ngIf="kind === 'provider'" id="filters">
+        <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
+            <h2 class="title h4 m-0 ml-2 flex-grow-1">
+                <span class="text" translate="label.filters">Filters</span>
+            </h2>
+            <div class="actions px-2">
+                <a class="btn btn-link edit-link change-view"
+                    [routerLink]="['/', 'metadata', 'provider', id, 'filter', 'new']">
+                    <i class="fa fa-gear"></i>&nbsp;
+                    <span translate="action.add-filter">Add Filter</span>
+                </a>
+            </div>
+        </div>
+        <filter-version-list
+            [filters]="filters$ | async"></filter-version-list>
+    </div>
 </div>

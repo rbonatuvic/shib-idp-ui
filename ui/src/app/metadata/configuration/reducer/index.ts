@@ -161,3 +161,9 @@ export const getVersionConfigurations = createSelector(
 );
 
 export const getVersionConfigurationCount = createSelector(getVersionConfigurations, (config) => config ? config.dates.length : 0);
+
+export const getVersionsFiltersFn = (versions) => {
+    console.log(versions);
+    return [];
+};
+export const getVersionsFilters = createSelector(getVersionModels, getVersionsFiltersFn);

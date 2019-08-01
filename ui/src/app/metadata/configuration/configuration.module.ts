@@ -30,6 +30,7 @@ import { FilterConfigurationListComponent } from './component/filter-configurati
 import { FilterConfigurationListItemComponent } from './component/filter-configuration-list-item.component';
 import { SharedModule } from '../../shared/shared.module';
 import { FilterTargetPropertyComponent } from './component/filter-target-property.component';
+import { FilterVersionListComponent } from './component/filter-version-list.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { FilterTargetPropertyComponent } from './component/filter-target-propert
         MetadataComparisonComponent,
         FilterConfigurationListComponent,
         FilterConfigurationListItemComponent,
-        FilterTargetPropertyComponent
+        FilterTargetPropertyComponent,
+        FilterVersionListComponent
     ],
     entryComponents: [],
     imports: [
