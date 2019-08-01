@@ -824,11 +824,11 @@
       "id": "6c794e94-9c64-4683-816a-380432f2ed79",
       "comment": "",
       "command": "click",
-      "target": "id=/securityInfo/x509CertificateAvailable",
+      "target": "id=/securityInfo/x509CertificateAvailable.true",
       "targets": [
-        ["id=/securityInfo/x509CertificateAvailable", "id"],
-        ["css=.form-check:nth-child(3) #\\/securityInfo\\/x509CertificateAvailable", "css:finder"],
-        ["xpath=//input[@id='/securityInfo/x509CertificateAvailable']", "xpath:attributes"],
+        ["id=/securityInfo/x509CertificateAvailable.true", "id"],
+        ["css=#\\/securityInfo\\/x509CertificateAvailable\\.true", "css:finder"],
+        ["xpath=//input[@id='/securityInfo/x509CertificateAvailable.true']", "xpath:attributes"],
         ["xpath=//input", "xpath:position"]
       ],
       "value": ""
@@ -836,11 +836,11 @@
       "id": "f0ade90e-2c31-4a77-b936-3b2a00388477",
       "comment": "",
       "command": "click",
-      "target": "id=/securityInfo/authenticationRequestsSigned",
+      "target": "id=/securityInfo/authenticationRequestsSigned.true",
       "targets": [
-        ["id=/securityInfo/authenticationRequestsSigned", "id"],
-        ["css=.form-check:nth-child(3) #\\/securityInfo\\/authenticationRequestsSigned", "css:finder"],
-        ["xpath=//input[@id='/securityInfo/authenticationRequestsSigned']", "xpath:attributes"],
+        ["id=/securityInfo/authenticationRequestsSigned.true", "id"],
+        ["css=#\\/securityInfo\\/authenticationRequestsSigned\\.true", "css:finder"],
+        ["xpath=//input[@id='/securityInfo/authenticationRequestsSigned.true']", "xpath:attributes"],
         ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/boolean-radio/div/div/label/input", "xpath:position"]
       ],
       "value": ""
@@ -848,11 +848,11 @@
       "id": "e26eda6f-1897-42e2-9ea9-671b1ff88874",
       "comment": "",
       "command": "click",
-      "target": "id=/securityInfo/wantAssertionsSigned",
+      "target": "id=/securityInfo/wantAssertionsSigned.true",
       "targets": [
-        ["id=/securityInfo/wantAssertionsSigned", "id"],
-        ["css=.form-check:nth-child(3) #\\/securityInfo\\/wantAssertionsSigned", "css:finder"],
-        ["xpath=//input[@id='/securityInfo/wantAssertionsSigned']", "xpath:attributes"],
+        ["id=/securityInfo/wantAssertionsSigned.true", "id"],
+        ["css=#\\/securityInfo\\/wantAssertionsSigned\\.true", "css:finder"],
+        ["xpath=//input[@id='/securityInfo/wantAssertionsSigned.true']", "xpath:attributes"],
         ["xpath=//div[3]/sf-form-element/div/sf-widget-chooser/boolean-radio/div/div/label/input", "xpath:position"]
       ],
       "value": ""
@@ -886,12 +886,12 @@
       "id": "23ff8b87-ac6c-4f82-a779-aa91be11f49c",
       "comment": "",
       "command": "click",
-      "target": "id=/securityInfo/x509Certificates/0/type",
+      "target": "id=/securityInfo/x509Certificates/0/type.0",
       "targets": [
-        ["id=/securityInfo/x509Certificates/0/type", "id"],
-        ["name=field51", "name"],
-        ["css=.form-check:nth-child(3) > #\\/securityInfo\\/x509Certificates\\/0\\/type", "css:finder"],
-        ["xpath=//input[@id='/securityInfo/x509Certificates/0/type']", "xpath:attributes"],
+        ["id=/securityInfo/x509Certificates/0/type.0", "id"],
+        ["name=field55", "name"],
+        ["css=#\\/securityInfo\\/x509Certificates\\/0\\/type\\.0", "css:finder"],
+        ["xpath=//input[@id='/securityInfo/x509Certificates/0/type.0']", "xpath:attributes"],
         ["xpath=//div/div/input", "xpath:position"]
       ],
       "value": ""
@@ -960,10 +960,11 @@
       "id": "835ad053-0a10-4606-a148-c7ba36be316f",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) > #\\/securityInfo\\/x509Certificates\\/1\\/type",
+      "target": "id=/securityInfo/x509Certificates/1/type.1",
       "targets": [
-        ["css=.form-check:nth-child(4) > #\\/securityInfo\\/x509Certificates\\/1\\/type", "css:finder"],
-        ["xpath=(//input[@id='/securityInfo/x509Certificates/1/type'])[2]", "xpath:attributes"],
+        ["id=/securityInfo/x509Certificates/1/type.1", "id"],
+        ["css=#\\/securityInfo\\/x509Certificates\\/1\\/type\\.1", "css:finder"],
+        ["xpath=//input[@id='/securityInfo/x509Certificates/1/type.1']", "xpath:attributes"],
         ["xpath=//li[2]/div/div/div[2]/sf-form-element/div/sf-widget-chooser/custom-object/div/div/fieldset/div/div[2]/sf-form-element/div/sf-widget-chooser/custom-radio-widget/div/div[2]/input", "xpath:position"]
       ],
       "value": ""
