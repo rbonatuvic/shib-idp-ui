@@ -239,6 +239,18 @@
       ],
       "value": ""
     }, {
+      "id": "5ac765a9-4850-4a48-b0b4-6ea52003e5a4",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "css=#\\/dynamicMetadataResolverAttributes\\/maxCacheDuration-container .btn",
+      "targets": [
+        ["css=#\\/dynamicMetadataResolverAttributes\\/maxCacheDuration-container .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='/dynamicMetadataResolverAttributes/maxCacheDuration-container']/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[3]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
+      ],
+      "value": "10000"
+    }, {
       "id": "a5274853-084e-438f-8cea-9a74e55fd0b9",
       "comment": "",
       "command": "click",
@@ -292,10 +304,11 @@
       "id": "1176d384-4b0c-4a67-8e43-6cc3cbbcff73",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/dynamicMetadataResolverAttributes\\/removeIdleEntityData",
+      "target": "id=/dynamicMetadataResolverAttributes/removeIdleEntityData.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/dynamicMetadataResolverAttributes\\/removeIdleEntityData", "css:finder"],
-        ["xpath=(//input[@id='/dynamicMetadataResolverAttributes/removeIdleEntityData'])[2]", "xpath:attributes"],
+        ["id=/dynamicMetadataResolverAttributes/removeIdleEntityData.false", "id"],
+        ["css=#\\/dynamicMetadataResolverAttributes\\/removeIdleEntityData\\.false", "css:finder"],
+        ["xpath=//input[@id='/dynamicMetadataResolverAttributes/removeIdleEntityData.false']", "xpath:attributes"],
         ["xpath=//div[2]/label/input", "xpath:position"]
       ],
       "value": ""
