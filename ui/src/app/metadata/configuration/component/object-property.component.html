@@ -3,9 +3,10 @@
         <primitive-property *ngSwitchDefault [property]="prop" [columns]="columns"></primitive-property>
         <array-property *ngSwitchCase="'array'" [property]="prop" [columns]="columns"></array-property>
         <ng-container *ngSwitchCase="'object'">
-            <object-property *ngIf="!prop.widget || !prop.widget.id || prop.widget.id !=='filter-target'"
-                [property]="prop"
-                [columns]="columns"></object-property>
+            <ng-container *ngIf="!prop.widget || !prop.widget.id || prop.widget.id !=='filter-target'">
+                <h5 class="border-bottom py-2 mb-0 mt-3" *ngIf="prop.name">{{ prop.name | translate }}</h5>
+                <object-property [property]="prop" [columns]="columns"></object-property>
+            </ng-container>
             <filter-target-property *ngIf="prop.widget && prop.widget.id && prop.widget.id ==='filter-target'"
                 [property]="prop"
                 [parent]="property"
