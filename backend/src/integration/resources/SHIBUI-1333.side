@@ -1857,17 +1857,6 @@
       ],
       "value": "user@test.org"
     }, {
-      "id": "63c696b6-62ba-43c6-b9cb-06b2702c2d82",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "css=.mb-4:nth-child(2) .btn",
-      "targets": [
-        ["css=.mb-4:nth-child(2) .btn", "css:finder"],
-        ["xpath=//metadata-configuration[@id='configuration']/div/section[2]/div/div/div/button", "xpath:idRelative"],
-        ["xpath=//section[2]/div/div/div/button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "467409c7-1007-4c45-80d2-0b4eea5199a0",
       "comment": "",
       "command": "verifyText",
