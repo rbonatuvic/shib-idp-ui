@@ -111,6 +111,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-950: Metadata Source from XML w/ digest'    | '/SHIBUI-950.side'
         'SHIBUI-1352: Create LocalDynamic provider'         | '/SHIBUI-1352-1.side'
         'SHIBUI-1352: Create FileSystem provider'           | '/SHIBUI-1352-2.side'
+        'SHIBUI-1333: Verify metadata source configuration' | '/SHIBUI-1333.side'
     }
 }
 
