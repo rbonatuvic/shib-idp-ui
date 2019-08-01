@@ -149,10 +149,11 @@
       "id": "f0459917-b2a1-4e3c-8800-25273965129f",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/initializeFromBackupFile",
+      "target": "id=/initializeFromBackupFile.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/initializeFromBackupFile", "css:finder"],
-        ["xpath=(//input[@id='/initializeFromBackupFile'])[2]", "xpath:attributes"],
+        ["id=/initializeFromBackupFile.false", "id"],
+        ["css=#\\/initializeFromBackupFile\\.false", "css:finder"],
+        ["xpath=//input[@id='/initializeFromBackupFile.false']", "xpath:attributes"],
         ["xpath=//div[2]/label/input", "xpath:position"]
       ],
       "value": ""
@@ -198,10 +199,11 @@
       "id": "bf041d41-5d58-4f69-8fcc-49ec79e5547d",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/requireValidMetadata",
+      "target": "id=/requireValidMetadata.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/requireValidMetadata", "css:finder"],
-        ["xpath=(//input[@id='/requireValidMetadata'])[2]", "xpath:attributes"],
+        ["id=/requireValidMetadata.false", "id"],
+        ["css=#\\/requireValidMetadata\\.false", "css:finder"],
+        ["xpath=//input[@id='/requireValidMetadata.false']", "xpath:attributes"],
         ["xpath=//div[6]/sf-form-element/div/sf-widget-chooser/boolean-radio/div/div[2]/label/input", "xpath:position"]
       ],
       "value": ""
@@ -209,10 +211,11 @@
       "id": "fba85c75-e218-4deb-b5e1-888ff75b6a4e",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/failFastInitialization",
+      "target": "id=/failFastInitialization.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/failFastInitialization", "css:finder"],
-        ["xpath=(//input[@id='/failFastInitialization'])[2]", "xpath:attributes"],
+        ["id=/failFastInitialization.false", "id"],
+        ["css=#\\/failFastInitialization\\.false", "css:finder"],
+        ["xpath=//input[@id='/failFastInitialization.false']", "xpath:attributes"],
         ["xpath=//div[7]/sf-form-element/div/sf-widget-chooser/boolean-radio/div/div[2]/label/input", "xpath:position"]
       ],
       "value": ""
@@ -220,10 +223,11 @@
       "id": "375b8d6e-179b-4f14-8f00-d8a8cad29d7e",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/useDefaultPredicateRegistry",
+      "target": "id=/useDefaultPredicateRegistry.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/useDefaultPredicateRegistry", "css:finder"],
-        ["xpath=(//input[@id='/useDefaultPredicateRegistry'])[2]", "xpath:attributes"],
+        ["id=/useDefaultPredicateRegistry.false", "id"],
+        ["css=#\\/useDefaultPredicateRegistry\\.false", "css:finder"],
+        ["xpath=//input[@id='/useDefaultPredicateRegistry.false']", "xpath:attributes"],
         ["xpath=//div[8]/sf-form-element/div/sf-widget-chooser/boolean-radio/div/div[2]/label/input", "xpath:position"]
       ],
       "value": ""
@@ -231,11 +235,11 @@
       "id": "8b4bf341-62c0-491f-b775-d2faf55477bc",
       "comment": "",
       "command": "click",
-      "target": "id=/satisfyAnyPredicates",
+      "target": "id=/satisfyAnyPredicates.true",
       "targets": [
-        ["id=/satisfyAnyPredicates", "id"],
-        ["css=.form-check:nth-child(3) #\\/satisfyAnyPredicates", "css:finder"],
-        ["xpath=//input[@id='/satisfyAnyPredicates']", "xpath:attributes"],
+        ["id=/satisfyAnyPredicates.true", "id"],
+        ["css=#\\/satisfyAnyPredicates\\.true", "css:finder"],
+        ["xpath=//input[@id='/satisfyAnyPredicates.true']", "xpath:attributes"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/boolean-radio/div/div/label/input", "xpath:position"]
       ],
       "value": ""
@@ -674,10 +678,11 @@
       "id": "d389f80c-4923-40ad-bdb6-f1142cb95a5e",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/initializeFromBackupFile",
+      "target": "id=/initializeFromBackupFile.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/initializeFromBackupFile", "css:finder"],
-        ["xpath=(//input[@id='/initializeFromBackupFile'])[2]", "xpath:attributes"],
+        ["id=/initializeFromBackupFile.false", "id"],
+        ["css=#\\/initializeFromBackupFile\\.false", "css:finder"],
+        ["xpath=//input[@id='/initializeFromBackupFile.false']", "xpath:attributes"],
         ["xpath=//div[2]/label/input", "xpath:position"]
       ],
       "value": ""

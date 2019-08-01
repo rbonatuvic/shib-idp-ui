@@ -179,11 +179,12 @@
       "id": "88cf741f-0922-4dfb-aaea-9e4c146ed8e1",
       "comment": "",
       "command": "click",
-      "target": "css=.form-check:nth-child(4) #\\/doInitialization",
+      "target": "id=/doInitialization.false",
       "targets": [
-        ["css=.form-check:nth-child(4) #\\/doInitialization", "css:finder"],
-        ["xpath=(//input[@id='/doInitialization'])[2]", "xpath:attributes"],
-        ["xpath=//div[2]/label/input", "xpath:position"]
+        ["id=/doInitialization.true", "id"],
+        ["css=#\\/doInitialization\\.true", "css:finder"],
+        ["xpath=//input[@id='/doInitialization.true']", "xpath:attributes"],
+        ["xpath=//label/input", "xpath:position"]
       ],
       "value": ""
     }, {
