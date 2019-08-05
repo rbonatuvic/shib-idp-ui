@@ -24,9 +24,11 @@
                         <tr *ngFor="let value of property.value">
                             <td *ngFor="let prop of getKeys(property.items)"
                                 [ngbPopover]="value[prop]"
+                                popoverClass="popover-lg"
                                 triggers="mouseenter:mouseleave"
                                 container="body"
-                                placement="top">
+                                placement="top"
+                                class="break-all">
                                 {{ value[prop] }}
                             </td>
                         </tr>
