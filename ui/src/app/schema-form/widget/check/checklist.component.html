@@ -23,7 +23,7 @@
                                 role="checkbox"
                                 aria-checked="false"
                             />
-                            <label class="custom-control-label" for="input-{{ i }}">
+                            <label class="custom-control-label" [for]="formProperty._canonicalPath + '.' + i">
                                 <span class="sr-only">
                                     <translate-i18n key="action.toggle">Toggle</translate-i18n> {{ attr.label | translate }}
                                 </span>
