@@ -103,7 +103,7 @@
       "id": "add874d5-e3b2-4412-8039-2b9d2619ed19",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
         ["css=select-component > .widget", "css:finder"],
         ["xpath=//select-component/div", "xpath:position"]
@@ -603,7 +603,7 @@
       "id": "90dffd02-8971-4bf5-bc57-33194fdb27a2",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
         ["id=/@type", "id"],
         ["name=field38", "name"],

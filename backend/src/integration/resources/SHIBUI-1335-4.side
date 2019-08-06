@@ -541,6 +541,13 @@
       ],
       "value": ""
     }, {
+      "id": "ae27b108-a2f4-4d4b-b375-b582ccc0ef56",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=td:nth-child(3)",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "8c52471a-70f5-43aa-b670-6f8d22e18668",
       "comment": "",
       "command": "verifyText",
@@ -796,6 +803,13 @@
         ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "772bafa8-7089-4895-a66b-0d3c333c7245",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.td-lg:nth-child(4)",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "e9f4ddf4-db8a-4bda-88cc-66173717986c",
       "comment": "",
