@@ -61,4 +61,8 @@ export class CustomSelectComponent extends SelectWidget implements AfterViewInit
     getError(error: string): string {
         return HARD_CODED_REQUIRED_MSG.test(error) ? 'message.required' : error;
     }
+
+    get cleanId(): string {
+        return this.formProperty._canonicalPath.replace('@', '');
+    }
 }

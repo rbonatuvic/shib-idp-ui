@@ -54,14 +54,16 @@
     <div class="d-flex align-items-center border-bottom border-light">
         <span class="py-2" role="term" [translate]="property.name" [ngStyle]="{'width': width}">{{ property.name }}</span>
         <ng-container *ngFor="let v of property.value">
-            <p [ngStyle]="{'width': width}" class="text-secondary" *ngIf="!v || !v.length">-</p>
+            <p [ngStyle]="{'width': width}" class="text-secondary m-0" *ngIf="!v || !v.length">-</p>
             <ul [ngStyle]="{'width': width}"
                 class="list-unstyled py-2 m-0"
                 [ngbPopover]="popContent"
                 triggers="mouseenter:mouseleave"
                 popoverClass="popover-lg popover-info"
                 *ngIf="v && v.length > 0">
-                <li *ngFor="let item of v; odd as isOdd" class="text-truncate" [ngClass]="{'bg-light': isOdd, 'py-2': v.length > 1}">
+                <li *ngFor="let item of v; odd as isOdd; last as isLast"
+                    class="text-truncate border-bottom border-light"
+                    [ngClass]="{'py-2': v.length > 1, 'border-0': isLast}">
                     <ng-container *ngIf="preview.observers.length > 0 && isUrl(item)">
                         <button class="btn btn-link" (click)="preview.emit(item)">
                             <i class="fa fa-eye fa-lg text-success"></i>
@@ -72,7 +74,7 @@
             </ul>
             <ng-template #popContent>
                 <ul class="list-unstyled">
-                    <li *ngFor="let item of v; odd as isOdd" [ngClass]="{'bg-light': isOdd}" class="p-2">
+                    <li *ngFor="let item of v;" class="p-2 border-bottom border-light">
                         {{ item }}
                     </li>
                 </ul>

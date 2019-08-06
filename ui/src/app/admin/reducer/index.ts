@@ -32,12 +32,15 @@ export const getCollectionSaving = createSelector(getAdminCollectionState, fromA
 
 export const getAdminEntities = createSelector(getAdminCollectionState, fromAdminCollection.selectAdminEntities);
 export const getSelectedAdminId = createSelector(getAdminCollectionState, fromAdminCollection.getSelectedAdminId);
-export const getSelectedAdmin = createSelector(getAdminEntities, getSelectedAdminId, (entities, selectedId) => {
-    return selectedId && entities[selectedId];
-});
+export const getSelectedAdmin = createSelector(getAdminEntities, getSelectedAdminId, getInCollectionFn);
 export const getAdminIds = createSelector(getAdminCollectionState, fromAdminCollection.selectAdminIds);
-export const getAllConfiguredAdmins = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role !== 'ROLE_NONE'));
-export const getAllNewUsers = createSelector(getAllAdmins, (admins) => admins.filter(a => a.role === 'ROLE_NONE'));
+
+
+export const getConfiguredAdminsFn = (admins) => admins.filter(a => a.role !== 'ROLE_NONE');
+export const getAllConfiguredAdmins = createSelector(getAllAdmins, getConfiguredAdminsFn);
+
+export const getNewUsersFn = (admins) => admins.filter(a => a.role === 'ROLE_NONE');
+export const getAllNewUsers = createSelector(getAllAdmins, getNewUsersFn);
 
 /*
  *   Select pieces of Metadata Collection
