@@ -17,13 +17,13 @@
                                 class="custom-control-input"
                                 (change)="onCheck(attr.key)"
                                 [checked]="checked[attr.key]"
-                                id="input-{{ i }}"
+                                [id]="formProperty._canonicalPath + '.' + i"
                                 [attr.name]="attr.label | translate"
                                 [attr.aria-label]="attr.label | translate"
                                 role="checkbox"
                                 aria-checked="false"
                             />
-                            <label class="custom-control-label" for="input-{{ i }}">
+                            <label class="custom-control-label" [for]="formProperty._canonicalPath + '.' + i">
                                 <span class="sr-only">
                                     <translate-i18n key="action.toggle">Toggle</translate-i18n> {{ attr.label | translate }}
                                 </span>
@@ -35,7 +35,7 @@
             <tr>
                 <td scope="col" translate="label.check-all-attributes">Check All Attributes</td>
                 <td scope="col">
-                    <button class="btn btn-text text-success btn-sm" (click)="onCheckAll()">
+                    <button class="btn btn-text text-success btn-sm" (click)="onCheckAll()" [id]="formProperty._canonicalPath + '.checkall'">
                         <i class="fa fa-fw fa-check"></i>
                         <span class="sr-only" translate="label.check-all-attributes">Check All Attributes</span>
                     </button>
@@ -44,7 +44,7 @@
             <tr>
                 <td scope="col" translate="label.clear-all-attributes">Clear All Attributes</td>
                 <td scope="col">
-                    <button class="btn btn-text text-danger btn-sm" (click)="onCheckNone()">
+                    <button class="btn btn-text text-danger btn-sm" (click)="onCheckNone()" [id]="formProperty._canonicalPath + '.clearall'">
                         <i class="fa fa-fw fa-times"></i>
                         <span class="sr-only" translate="label.clear-all-attributes">Clear All Attributes</span>
                     </button>

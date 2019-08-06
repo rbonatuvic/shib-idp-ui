@@ -1,9 +1,9 @@
 <div class="widget form-group">
     <label [translate]="schema.title">{{schema.title}}</label>
     <span *ngIf="schema.description" class="formHelp" [translate]="schema.description">{{schema.description}}</span>
-    <ng-container *ngFor="let option of schema.oneOf">
+    <ng-container *ngFor="let option of schema.oneOf; let i = index;">
         <div class="form-check" [ngClass]="schema.widget.class">
-            <input class="form-check-input" [formControl]="control" type="radio" [attr.name]="name" [id]="name" value="{{option.enum[0]}}" [attr.disabled]="schema.readOnly">
+            <input class="form-check-input" [formControl]="control" type="radio" [attr.name]="name" [id]="formProperty._canonicalPath + '.' + i" [value]="option.enum[0]" [attr.disabled]="schema.readOnly">
             <label class="form-check-label" [for]="name" [translate]="option.description">{{option.description}}</label>
         </div>
     </ng-container>

@@ -12,7 +12,7 @@
         <span class="text-right" *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
-        <small class="form-text text-danger px-2" *ngIf="hasErrors">
+        <small class="form-text text-danger px-2" *ngIf="hasErrors$ | async">
             <ng-container *ngFor="let error of errors$ | async; let first=first;">
                 <ng-container *ngIf="!first">, </ng-container>
                 <translate-i18n [key]="messages[error.code]">{{ error.message }}</translate-i18n>
@@ -34,7 +34,7 @@
                                     <small class="sr-only" *ngIf="itemProperty.value.makeDefault === true" translate="label.default">(default)</small>
                                 </ng-container>
                             </span>
-                            <button class="btn btn-link pt-1" (click)="removeItem(i)" role="button">
+                            <button class="btn btn-link pt-1" (click)="removeItem(itemProperty)" role="button">
                                 <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
                                 <span class="sr-only" translate="action.remove">Remove</span>
                             </button>

@@ -1,0 +1,184 @@
+{
+  "id": "54fff28f-f924-44c3-bc09-8e1f30a6f849",
+  "version": "2.0",
+  "name": "SHIBUI-950",
+  "url": "http://localhost:10101",
+  "tests": [{
+    "id": "2394521d-a918-49b2-82ad-02776484ff27",
+    "name": "SHIBUI-950",
+    "commands": [{
+      "id": "48805970-6455-4208-8180-d23ac1cf7bfc",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d4160362-fe01-4999-a321-c7d57a408208",
+      "comment": "",
+      "command": "type",
+      "target": "name=username",
+      "targets": [
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "c8f31a6b-b56c-41db-9766-a868b6c5ea6c",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "040bc098-81ee-483c-be36-3e1e9bfbfab7",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "694012a7-3480-4af9-9dbc-2879ffd4d8b1",
+      "comment": "",
+      "command": "click",
+      "target": "css=#addNewDropdown > translate-i18n",
+      "targets": [
+        ["css=#addNewDropdown > translate-i18n", "css:finder"],
+        ["xpath=//button[@id='addNewDropdown']/translate-i18n", "xpath:idRelative"],
+        ["xpath=//translate-i18n", "xpath:position"],
+        ["xpath=//translate-i18n[contains(.,'Add New')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d000a81f-a776-44f6-80c4-dfb5ec892dc0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Metadata Source",
+      "targets": [
+        ["linkText=Metadata Source", "linkText"],
+        ["css=.dropdown-menu > .nav-link:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='navbar']/ul/li/div/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '')])[2]", "xpath:href"],
+        ["xpath=//div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1e8aba21-e7f4-45ef-b004-4aedcf2ab74e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.resolver-nav-option:nth-child(1) > .btn",
+      "targets": [
+        ["css=.resolver-nav-option:nth-child(1) > .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Upload/URL')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d1ab5623-6daa-4ccb-bc06-e16a3f504e1d",
+      "comment": "",
+      "command": "click",
+      "target": "id=serviceProviderName",
+      "targets": [
+        ["id=serviceProviderName", "id"],
+        ["css=#serviceProviderName", "css:finder"],
+        ["xpath=//input[@id='serviceProviderName']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b73c0d76-7fc8-4161-8cc9-b0b7eeff88d8",
+      "comment": "",
+      "command": "type",
+      "target": "id=serviceProviderName",
+      "targets": [
+        ["id=serviceProviderName", "id"],
+        ["css=#serviceProviderName", "css:finder"],
+        ["xpath=//input[@id='serviceProviderName']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "File Upload Test"
+    }, {
+      "id": "e5d771f5-57e2-4f11-af50-124c2121d36b",
+      "comment": "",
+      "command": "type",
+      "target": "id=fileInput",
+      "targets": [
+        ["id=fileInput", "id"],
+        ["name=file", "name"],
+        ["css=#fileInput", "css:finder"],
+        ["xpath=//input[@id='fileInput']", "xpath:attributes"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "${SHIBUI950}"
+    }, {
+      "id": "67ad4a51-7c15-41e1-bc34-62a9f3e83b46",
+      "comment": "",
+      "command": "click",
+      "target": "css=.next",
+      "targets": [
+        ["css=.next", "css:finder"],
+        ["xpath=//li[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cf4285d3-6f70-499e-ad3a-85278e27dbf0",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr > .text-right",
+      "targets": [
+        ["css=tr > .text-right", "css:finder"],
+        ["xpath=//td[5]", "xpath:position"],
+        ["xpath=//td[contains(.,'Disabled')]", "xpath:innerText"]
+      ],
+      "value": "10000"
+    }, {
+      "id": "185696df-a872-419e-81aa-7c9cfa1e2b90",
+      "comment": "",
+      "command": "verifyText",
+      "target": "linkText=File Upload Test",
+      "targets": [
+        ["linkText=File Upload Test", "linkText"],
+        ["css=td > a", "css:finder"],
+        ["xpath=//a[contains(text(),'File Upload Test')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/metadata/resolver/144a49cd-37f1-4399-9a4a-7f820aab724b/configuration/options')]", "xpath:href"],
+        ["xpath=//td/a", "xpath:position"],
+        ["xpath=//a[contains(.,'File Upload Test')]", "xpath:innerText"]
+      ],
+      "value": "File Upload Test"
+    }, {
+      "id": "25b4b805-3585-4f83-b9ba-a3e8b9ee1050",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=td:nth-child(2)",
+      "targets": [
+        ["css=td:nth-child(2)", "css:finder"],
+        ["xpath=//td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'https://wiki.shibboleth.net/shibboleth')]", "xpath:innerText"]
+      ],
+      "value": "https://wiki.shibboleth.net/shibboleth"
+    }]
+  }],
+  "suites": [{
+    "id": "9199306b-76bb-4caa-8493-4915a82d53f6",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["2394521d-a918-49b2-82ad-02776484ff27"]
+  }],
+  "urls": ["http://localhost:10101/"],
+  "plugins": []
+}

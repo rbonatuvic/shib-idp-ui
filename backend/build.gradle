@@ -6,7 +6,6 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.13'
     id 'com.palantir.docker' version '0.20.1'
     id 'com.palantir.docker-run' version '0.20.1'
-    // id 'com.avast.gradle.docker-compose' version '0.8.0'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -38,11 +37,11 @@ configurations.all {
 
 configurations {
     integrationTestCompile {
-        extendsFrom testCompile
+        extendsFrom compile
         
     }
     integrationTestRuntime {
-        extendsFrom testRuntime
+        extendsFrom runtime
     }
 }
 
@@ -60,8 +59,6 @@ sourceSets {
     integrationTest {
         groovy {
             srcDirs = ['src/integration/groovy']
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
         }
         resources {
             srcDir 'src/integration/resources'
@@ -196,8 +193,15 @@ dependencies {
     //JSON schema validator
     compile 'org.sharegov:mjson:1.4.1'
 
+    integrationTestRuntime configurations.runtime
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.compile
     integrationTestCompile 'com.saucelabs:sebuilder-interpreter:1.0.6'
-    integrationTestCompile 'jp.vmi:selenese-runner-java:3.19.2'
+    integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
+    integrationTestCompile "org.springframework.boot:spring-boot-starter-test"
+    integrationTestCompile "org.springframework.security:spring-security-test"
+    integrationTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    integrationTestCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
     
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
@@ -216,11 +220,40 @@ dependencies {
     enversTestRuntime configurations.testRuntime
 }
 
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy', 'src/main/java', generatedSrcDir]
+        }
+        java {
+            srcDirs = []
+        }
+        resources {
+            srcDir new File(buildDir, 'generated/ui')
+        }
+    }
+    integrationTest {
+        groovy {
+            srcDirs = ['src/integration/groovy']
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+        }
+        resources {
+            srcDir 'src/integration/resources'
+            srcDir new File(buildDir, 'generated/ui')
+        }
+    }
+}
+
+task copyUI(type: Copy) {
+    from tasks.findByPath(':ui:npm_run_buildProd').outputs
+    into new File(buildDir, 'generated/ui/static')
+}
+
 task integrationTest(type: Test) {
     group = 'verification'
     description = 'Run various integration tests'
-    dependsOn 'dockerRun', 'runChecker'
-    finalizedBy 'dockerStop'
+    dependsOn 'copyUI'
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     systemProperties = System.properties
@@ -345,40 +378,6 @@ dockerRun {
     image 'unicon/shibui'
     ports '10101:8080'
     daemonize true
-    command '--spring.profiles.include=no-auth,very-dangerous'
+    command '--spring.profiles.include=very-dangerous,dev', '--shibui.default-password={noop}password'
     clean true
 }
-
-task runChecker {
-    doLast {
-        def ready = false
-        while (!ready) {
-            try {
-                ready = 'http://localhost:10101'.toURL().text.length() > 0
-            } catch (IOException e) {
-                println 'cannot reach site'
-                sleep 5000
-            }
-        }
-    }
-}
-
-test {
-    forkEvery = 1
-    maxHeapSize = '4G'
-}
-
-/*
- * Docker Compose (gradle-docker-compose-plugin) settings.
- * Used to start and stop docker containers before running tests.
- */
-/*
-apply plugin: 'docker-compose'
-dockerCompose {
-    useComposeFiles = ['./src/test/docker-files/docker-compose.yml']
-    captureContainersOutput = true
-    waitForTcpPorts = false
-}
-
-dockerCompose.isRequiredBy(test)
- */

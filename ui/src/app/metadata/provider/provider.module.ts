@@ -26,6 +26,7 @@ import { DeleteFilterComponent } from './component/delete-filter.component';
 import { I18nModule } from '../../i18n/i18n.module';
 import { DomainModule } from '../domain/domain.module';
 import { MetadataProviderPageComponent } from './provider.component';
+import { FilterModule } from '../filter/filter.module';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { MetadataProviderPageComponent } from './provider.component';
         NgbDropdownModule,
         NgbModalModule,
         I18nModule,
-        DomainModule
+        DomainModule,
+        FilterModule
     ],
     exports: []
 })

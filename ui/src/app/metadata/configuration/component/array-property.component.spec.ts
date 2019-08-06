@@ -21,12 +21,12 @@ class TestHostComponent {
     @ViewChild(ArrayPropertyComponent)
     public componentUnderTest: ArrayPropertyComponent;
 
-    property: Property = getStepProperty(SCHEMA.properties.list, {
+    property: Property = getStepProperty(SCHEMA.properties.list, [{
         name: 'foo',
         type: 'baz',
         description: 'foo bar baz',
         list: []
-    }, SCHEMA.definitions);
+    }], SCHEMA.definitions);
 
     setProperty(property: Property): void {
         this.property = property;

@@ -1,3 +1,5 @@
 <div class="container">
-    <history-list [history]="history$ | async"></history-list>
+    <history-list
+        [history]="history$ | async"
+        (compare)="compareVersions($event)"></history-list>
 </div>

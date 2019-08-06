@@ -10,8 +10,7 @@ import { MetadataRoutingModule } from './metadata.routing';
 import { ProviderModule } from './provider/provider.module';
 import { I18nModule } from '../i18n/i18n.module';
 import { CustomWidgetRegistry } from '../schema-form/registry';
-import { WidgetRegistry, SchemaValidatorFactory } from 'ngx-schema-form';
-import { CustomSchemaValidatorFactory } from '../schema-form/service/schema-validator';
+import { WidgetRegistry } from 'ngx-schema-form';
 import { MetadataConfigurationModule } from './configuration/configuration.module';
 import { NavigationService } from '../core/service/navigation.service';
 import { MetadataResolver } from './domain/model';
@@ -32,11 +31,7 @@ import { Router } from '@angular/router';
         I18nModule
     ],
     providers: [
-        { provide: WidgetRegistry, useClass: CustomWidgetRegistry },
-        {
-            provide: SchemaValidatorFactory,
-            useClass: CustomSchemaValidatorFactory
-        }
+        { provide: WidgetRegistry, useClass: CustomWidgetRegistry }
     ],
     declarations: [
         MetadataPageComponent

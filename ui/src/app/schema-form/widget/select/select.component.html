@@ -15,7 +15,7 @@
         {{ schema.description }}
     </span>
     <select *ngIf="schema.type !== 'array'"
-        [id]="id"
+        [id]="formProperty._canonicalPath"
         [formControl]="control"
         [attr.name]="name"
         class="form-control"
@@ -36,7 +36,12 @@
             <option *ngFor="let option of options$ | async" [ngValue]="option.value" [translate]="option.label">{{ option.label }}</option>
         </ng-container>
     </select>
-    <select *ngIf="schema.type === 'array'" multiple [formControl]="control" [attr.name]="name" [attr.disabled]="schema.readOnly" class="form-control">
+    <select *ngIf="schema.type === 'array'"
+        [id]="formProperty._canonicalPath"
+        multiple [formControl]="control"
+        [attr.name]="name"
+        [attr.disabled]="schema.readOnly"
+        class="form-control">
         <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
     </select>
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">

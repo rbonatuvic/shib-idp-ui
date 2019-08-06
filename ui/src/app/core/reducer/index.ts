@@ -40,7 +40,7 @@ export const getVersionLoading = createSelector(getVersionState, fromVersion.get
 export const getVersionError = createSelector(getVersionState, fromVersion.getVersionError);
 
 export const filterRolesFn = (roles: string[]) => roles.filter(r => r !== 'ROLE_NONE');
-export const isUserAdminFn = (user) => user ? user.role === 'ROLE_ADMIN' : null;
+export const isUserAdminFn = (user) => user ? user.role === 'ROLE_ADMIN' : false;
 
 export const getConfigState = createSelector(getCoreFeature, getConfigStateFn);
 export const getRoles = createSelector(getConfigState, fromConfig.getRoles);
