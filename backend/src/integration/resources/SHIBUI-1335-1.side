@@ -75,6 +75,13 @@
       ],
       "value": ""
     }, {
+      "id": "7a42de04-995f-45aa-ba3f-095900a564ec",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/name",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "b2725ef6-b394-4f87-a2a5-031be085cedb",
       "comment": "",
       "command": "type",
@@ -91,12 +98,12 @@
       "id": "ca36b018-a4df-43d1-9fbd-973d6653d3e0",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
-        ["id=/@type", "id"],
+        ["id=/type", "id"],
         ["name=field2", "name"],
-        ["css=#\\/\\@type", "css:finder"],
-        ["xpath=//select[@id='/@type']", "xpath:attributes"],
+        ["css=#\\/type", "css:finder"],
+        ["xpath=//select[@id='/type']", "xpath:attributes"],
         ["xpath=//select", "xpath:position"]
       ],
       "value": "label=FileBackedHttpMetadataProvider"
@@ -551,6 +558,13 @@
         ["xpath=//option[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "8a52ad88-b583-41b7-92a6-bdb185b03a06",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/name",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "b1c779b1-d3ed-47cc-bc88-e5c280161c32",
       "comment": "",
@@ -1068,6 +1082,13 @@
       ],
       "value": ""
     }, {
+      "id": "4a663db9-9f10-4b12-9cb9-61aa01ecc0c0",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/name",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "92fdc836-2479-4faa-9e3d-447f5b82cc11",
       "comment": "",
       "command": "type",
@@ -1328,6 +1349,17 @@
         ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "c28d683a-552d-4752-aa89-465e33d60887",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr:nth-child(2) > .td-lg:nth-child(4)",
+      "targets": [
+        ["css=tr:nth-child(2) > .td-lg:nth-child(4)", "css:finder"],
+        ["xpath=//tr[2]/td[4]", "xpath:position"],
+        ["xpath=//td[contains(.,'NameIDFormat')]", "xpath:innerText"]
+      ],
+      "value": "10000"
     }, {
       "id": "100902ee-6d6e-4148-a69b-b37746a4ad6e",
       "comment": "",
