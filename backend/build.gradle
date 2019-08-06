@@ -55,13 +55,19 @@ sourceSets {
         java {
             srcDirs = []
         }
+        resources {
+            srcDir new File(buildDir, 'generated/ui')
+        }
     }
     integrationTest {
         groovy {
             srcDirs = ['src/integration/groovy']
+            compileClasspath += main.output
+            runtimeClasspath += main.output
         }
         resources {
             srcDir 'src/integration/resources'
+            srcDir new File(buildDir, 'generated/ui')
         }
     }
 
@@ -218,31 +224,6 @@ dependencies {
 
     enversTestRuntime configurations.runtime
     enversTestRuntime configurations.testRuntime
-}
-
-sourceSets {
-    main {
-        groovy {
-            srcDirs = ['src/main/groovy', 'src/main/java', generatedSrcDir]
-        }
-        java {
-            srcDirs = []
-        }
-        resources {
-            srcDir new File(buildDir, 'generated/ui')
-        }
-    }
-    integrationTest {
-        groovy {
-            srcDirs = ['src/integration/groovy']
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-        }
-        resources {
-            srcDir 'src/integration/resources'
-            srcDir new File(buildDir, 'generated/ui')
-        }
-    }
 }
 
 task copyUI(type: Copy) {
