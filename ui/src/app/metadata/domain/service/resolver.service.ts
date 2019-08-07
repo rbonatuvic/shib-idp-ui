@@ -15,24 +15,15 @@ export class ResolverService {
     ) {}
 
     query(): Observable<MetadataResolver[]> {
-        return this.http.get<MetadataResolver[]>(`${ this.base }${ this.endpoint }s`, {})
-            .pipe(
-                catchError(err => throwError([]))
-            );
+        return this.http.get<MetadataResolver[]>(`${ this.base }${ this.endpoint }s`, {});
     }
 
     queryForAdmin(): Observable<MetadataResolver[]> {
-        return this.http.get<MetadataResolver[]>(`${this.base}${this.endpoint}/disabledNonAdmin`, {})
-            .pipe(
-                catchError(err => throwError([]))
-            );
+        return this.http.get<MetadataResolver[]>(`${this.base}${this.endpoint}/disabledNonAdmin`, {});
     }
 
     find(id: string): Observable<MetadataResolver> {
-        return this.http.get<MetadataResolver>(`${ this.base }${ this.endpoint }/${ id }`)
-            .pipe(
-                catchError(err => throwError(err))
-            );
+        return this.http.get<MetadataResolver>(`${ this.base }${ this.endpoint }/${ id }`);
     }
 
     update(provider: MetadataResolver): Observable<MetadataResolver> {
@@ -52,9 +43,10 @@ export class ResolverService {
         return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, xml, {
             headers: new HttpHeaders().set('Content-Type', 'application/xml'),
             params: new HttpParams().set('spName', name)
-        }).pipe(catchError(error => {
-            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error.errorMessage}` });
-        }));
+        }).pipe(catchError(error => throwError({
+            errorCode: error.status,
+            errorMessage: `Unable to upload file ... ${error.error.errorMessage}`
+        })));
     }
 
     createFromUrl(name: string, url: string): Observable<MetadataResolver> {
@@ -62,9 +54,12 @@ export class ResolverService {
         return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, body, {
             headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
             params: new HttpParams().set('spName', name)
-        }).pipe(catchError(error => {
-            return throwError({ errorCode: error.status, errorMessage: `Unable to upload file ... ${error.error.errorMessage}` });
-        }));
+        }).pipe(catchError(error => throwError(
+            {
+                errorCode: error.status,
+                errorMessage: `Unable to upload file ... ${error.error.errorMessage}`
+            }
+        )));
     }
 
     preview(id: string): Observable<string> {

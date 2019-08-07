@@ -23,7 +23,7 @@
                     <strong [ngStyle]="{'width': width}" translate="label.option">Option</strong>
                     <strong *ngFor="let date of configuration.dates" [ngStyle]="{'width': width}">
                         <translate-i18n key="label.value" *ngIf="configuration.dates.length <= 1">Value</translate-i18n>
-                        <span *ngIf="configuration.dates.length > 1">{{ date | date:'medium' }}</span>
+                        <span *ngIf="configuration.dates.length > 1">{{ date | date:DATE_FORMAT }}</span>
                     </strong>
                 </div>
                 <object-property
