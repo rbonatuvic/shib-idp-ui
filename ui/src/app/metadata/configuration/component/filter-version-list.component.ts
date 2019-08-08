@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 const data = {
-    dates: ['2019-08-02T12:50:54.282', '2019-08-02T12:12:54.282'],
+    dates: ['2019-08-08T08:40:32.015', '2019-08-08T08:40:19.266'],
     filters: [
         [
             {
@@ -56,9 +56,14 @@ export class FilterVersionListComponent {
 
     filters = data;
     selected: string;
+    comparing: string;
 
     constructor() {
 
+    }
+
+    compare(id: string): void {
+        this.comparing = id;
     }
 
     get width(): string {
