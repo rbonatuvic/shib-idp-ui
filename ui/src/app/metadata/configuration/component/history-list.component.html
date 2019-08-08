@@ -23,7 +23,7 @@
             </td>
             <td *ngIf="i === 0"><translate-i18n key="label.current">Current</translate-i18n> (v{{ history.length - i }})</td>
             <td *ngIf="i > 0">v{{ history.length - (i) }}</td>
-            <td>{{ version.date | date:'medium' }}</td>
+            <td>{{ version.date | date:DATE_FORMAT }}</td>
             <td>{{ version.creator }}</td>
             <td>
                 <button class="btn btn-link" (click)="restore.emit(version)">

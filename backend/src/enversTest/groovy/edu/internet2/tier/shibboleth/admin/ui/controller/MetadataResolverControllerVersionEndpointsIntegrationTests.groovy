@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
@@ -101,6 +103,37 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
         mrv1.body.name == 'resolver'
         mrv2.statusCodeValue == 200
         mrv2.body.name == 'resolverUPDATED'
+    }
+
+    def "SHIBUI-1386"() {
+        MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'testme')
+        mr = repository.save(mr)
+
+        when: 'add a filter'
+        // def filterValue = '''{"type":"EntityAttributes","@type":"EntityAttributes","filterEnabled":true,"entityAttributesFilterTarget":{"entityAttributesFilterTargetType":"ENTITY","value":["https://idp.unicon.net/idp/shibboleth"]},"relyingPartyOverrides":{"signAssertion":false,"dontSignResponse":false,"turnOffEncryption":false,"useSha":false,"ignoreAuthenticationMethod":false,"omitNotBefore":false,"nameIdFormats":[],"authenticationMethods":[],"forceAuthn":false},"attributeRelease":[],"name":"Test Filter 1"}'''
+        def filter = new EntityAttributesFilter(
+                name: 'testme',
+                filterEnabled: true
+        ).with {
+            it.relyingPartyOverrides = [
+                    'signAssertion': true
+            ]
+            it.setEntityAttributesFilterTarget(new EntityAttributesFilterTarget().with {
+                it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+                it.value = ['https://testme/sp']
+                it
+            })
+            it
+        }
+        mr.metadataFilters.add(filter)
+        mr = repository.save(mr)
+
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+        def mrv2 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[1].id, MetadataResolver)
+
+        then:
+        noExceptionThrown()
     }
 
     private getAllMetadataResolverVersions(String resourceId, responseType) {

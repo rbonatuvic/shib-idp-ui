@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.AuditOverride;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class EntityAttributesFilterTarget extends AbstractAuditable {
     public enum EntityAttributesFilterTargetType {
         ENTITY, CONDITION_SCRIPT, CONDITION_REF, REGEX
