@@ -118,6 +118,13 @@
       ],
       "value": ""
     }, {
+      "id": "7d9109bb-f3b5-4d74-864e-5c647e90c9e4",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/xmlId",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "e7462621-f4e4-4512-b200-20afa5685fc6",
       "comment": "",
       "command": "type",

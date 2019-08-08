@@ -1,11 +1,11 @@
 {
   "id": "6c70c319-3e73-4a13-8ee7-d9da5f802b83",
   "version": "2.0",
-  "name": "SHIBUI-1334-2",
+  "name": "SHIBUI-1361",
   "url": "http://localhost:10101",
   "tests": [{
     "id": "1e7a4ca4-b2e6-4e5a-8e38-823ae8a1e20d",
-    "name": "SHIBUI-1334-2",
+    "name": "SHIBUI-1361",
     "commands": [{
       "id": "29bb3186-81c8-4b3e-a9d9-5ff55d225878",
       "comment": "",
@@ -119,6 +119,13 @@
         ["xpath=//li[2]/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "79f8f28b-8bcf-464a-850f-eb10552a9390",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/xmlId",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "86262eda-4a44-41b0-b7aa-fa46406e2601",
       "comment": "",
@@ -564,6 +571,39 @@
       ],
       "value": ""
     }, {
+      "id": "7a479ab7-f57d-426d-88ce-f11654733f45",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.save-date",
+      "targets": [],
+      "value": "10000"
+    }, {
+      "id": "fe1e9381-048e-4948-8a9a-f58d8afba258",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=.save-date",
+      "targets": [
+        ["css=.save-date", "css:finder"],
+        ["xpath=//div[@id='header']/metadata-header/div/div/h5/span", "xpath:idRelative"],
+        ["xpath=//h5/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Aug 08, 2019 15:50:04')]", "xpath:innerText"]
+      ],
+      "value": "saveDate"
+    }, {
+      "id": "a7b73d1f-87bb-4364-944a-5097f981b8c9",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "targets": [],
+      "value": "isDate"
+    }, {
+      "id": "d54fd23e-e330-48d3-a1f4-31786b087425",
+      "comment": "",
+      "command": "verify",
+      "target": "isDate",
+      "targets": [],
+      "value": "true"
+    }, {
       "id": "67578648-0800-4716-8c0c-27741770249a",
       "comment": "",
       "command": "click",
@@ -576,18 +616,12 @@
       ],
       "value": ""
     }, {
-      "id": "5636ef67-71fb-4bca-ba58-7ecf926c7bf0",
+      "id": "6a917493-6dfa-4126-ba9b-207f9c670867",
       "comment": "",
-      "command": "click",
+      "command": "waitForElementVisible",
       "target": "id=/xmlId",
-      "targets": [
-        ["id=/xmlId", "id"],
-        ["name=field38", "name"],
-        ["css=#\\/xmlId", "css:finder"],
-        ["xpath=//input[@id='/xmlId']", "xpath:attributes"],
-        ["xpath=//custom-string/div/input", "xpath:position"]
-      ],
-      "value": ""
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "7d641e58-47ce-4d20-908c-e0002ff73cfa",
       "comment": "",
@@ -911,7 +945,7 @@
       "id": "0092cd5c-a885-4a48-a233-b3af447b02bc",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-link:nth-child(1) > translate-i18n",
+      "target": "css=.btn-link:nth-child(1)",
       "targets": [
         ["css=.btn-link:nth-child(1) > translate-i18n", "css:finder"],
         ["xpath=//div[@id='navigation']/div/a/translate-i18n", "xpath:idRelative"],
@@ -919,6 +953,92 @@
         ["xpath=//translate-i18n[contains(.,'Version History')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "ca6537f7-73d1-4f02-ba06-c24f66c569e3",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=tr:nth-child(1) > td:nth-child(3)",
+      "targets": [
+        ["css=tr:nth-child(1) > td:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'Aug 08, 2019 16:10:01')]", "xpath:innerText"]
+      ],
+      "value": "10000"
+    }, {
+      "id": "6620688a-039a-4969-92be-b1fcfc8a4161",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=tr:nth-child(1) > td:nth-child(3)",
+      "targets": [
+        ["css=tr:nth-child(1) > td:nth-child(3)", "css:finder"],
+        ["xpath=//td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'Aug 08, 2019 16:10:01')]", "xpath:innerText"]
+      ],
+      "value": "saveDate"
+    }, {
+      "id": "910d8bf9-4875-4946-9ab8-0d3a9b13f020",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "targets": [],
+      "value": "isDate"
+    }, {
+      "id": "18458e4b-e414-4125-aa4d-fd27848d3c40",
+      "comment": "",
+      "command": "verify",
+      "target": "isDate",
+      "targets": [],
+      "value": "true"
+    }, {
+      "id": "48adfc53-ed95-4e59-aa57-45eb57128154",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=tr:nth-child(2) > td:nth-child(3)",
+      "targets": [
+        ["css=tr:nth-child(2) > td:nth-child(3)", "css:finder"],
+        ["xpath=//tr[2]/td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'Aug 08, 2019 16:09:55')]", "xpath:innerText"]
+      ],
+      "value": "saveDate"
+    }, {
+      "id": "a370624e-a6d6-43d7-a74a-eeb8c577fc06",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "targets": [],
+      "value": "isDate"
+    }, {
+      "id": "21e88ab8-7f11-42ae-8db8-ccc21116c303",
+      "comment": "",
+      "command": "verify",
+      "target": "isDate",
+      "targets": [],
+      "value": "true"
+    }, {
+      "id": "2a299cc4-7b22-42e6-89cd-4ae0aef8bb27",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=tr:nth-child(3) > td:nth-child(3)",
+      "targets": [
+        ["css=tr:nth-child(3) > td:nth-child(3)", "css:finder"],
+        ["xpath=//tr[3]/td[3]", "xpath:position"],
+        ["xpath=//td[contains(.,'Aug 08, 2019 16:09:52')]", "xpath:innerText"]
+      ],
+      "value": "saveDate"
+    }, {
+      "id": "4b305857-0369-4fad-821c-c944e9801395",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "targets": [],
+      "value": "isDate"
+    }, {
+      "id": "3fd48668-3df2-4264-85c9-01dac26acaee",
+      "comment": "",
+      "command": "verify",
+      "target": "isDate",
+      "targets": [],
+      "value": "true"
     }, {
       "id": "2cfe222d-a506-4f2b-8840-4b4a76cf2bfb",
       "comment": "",
@@ -999,6 +1119,56 @@
         ["xpath=//object-property/object-property/primitive-property[5]/div/span[2]", "xpath:position"]
       ],
       "value": "false"
+    }, {
+      "id": "cc2f6596-d135-48ef-abab-8f2c4bf44a2c",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=.mb-4:nth-child(1) strong:nth-child(2) > span",
+      "targets": [
+        ["css=.mb-4:nth-child(1) strong:nth-child(2) > span", "css:finder"],
+        ["xpath=//strong[2]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Aug 08, 2019 16:10:01')]", "xpath:innerText"]
+      ],
+      "value": "leftDate"
+    }, {
+      "id": "c1fda79e-9fa9-4969-92f5-83f9f54b9d3d",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return (new Date(${leftDate}) !== \"Invalid Date\" && !isNaN(new Date(${leftDate})))",
+      "targets": [],
+      "value": "leftDateIsDate"
+    }, {
+      "id": "30e8b9fb-254d-462e-9039-6b378ff4d245",
+      "comment": "",
+      "command": "verify",
+      "target": "leftDateIsDate",
+      "targets": [],
+      "value": "true"
+    }, {
+      "id": "a55513b6-d1dd-4036-9b99-4d03e845d65a",
+      "comment": "",
+      "command": "storeText",
+      "target": "css=.mb-4:nth-child(1) strong:nth-child(3) > span",
+      "targets": [
+        ["css=.mb-4:nth-child(1) strong:nth-child(3) > span", "css:finder"],
+        ["xpath=//strong[3]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Aug 08, 2019 16:09:55')]", "xpath:innerText"]
+      ],
+      "value": "rightDate"
+    }, {
+      "id": "dd3a52a4-de8b-4c25-a6e7-81b7ee9f8149",
+      "comment": "",
+      "command": "executeScript",
+      "target": "return (new Date(${rightDate}) !== \"Invalid Date\" && !isNaN(new Date(${rightDate})))",
+      "targets": [],
+      "value": "rightDateIsDate"
+    }, {
+      "id": "d973102f-964b-4021-93f4-44adf165b33e",
+      "comment": "",
+      "command": "verify",
+      "target": "rightDateIsDate",
+      "targets": [],
+      "value": "true"
     }]
   }],
   "suites": [{
