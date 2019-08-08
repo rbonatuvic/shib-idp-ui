@@ -20,7 +20,7 @@ pipeline {
     stage('Run Selenium tests') {
       when {
         expression {
-          return GIT_BRANCH.startsWith('PR')
+          return (GIT_BRANCH.startsWith('PR') || GIT_BRANCH.endsWith('-QA'))
         }
       }
       steps {

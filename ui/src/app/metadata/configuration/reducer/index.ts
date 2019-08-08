@@ -54,13 +54,17 @@ export const getConfigurationDefinition = createSelector(getConfigurationState, 
 export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
 export const getConfigurationXml = createSelector(getConfigurationState, fromConfiguration.getXml);
 
-export const assignValueToProperties = (models, properties): any[] => {
+export const assignValueToProperties = (models, properties, definition: any): any[] => {
     return properties.map(prop => {
         switch (prop.type) {
             case 'object':
                 return {
                     ...prop,
-                    properties: assignValueToProperties(models.map(model => model[prop.id] || {}), prop.properties)
+                    properties: assignValueToProperties(
+                        models.map(model => definition.formatter(model)[prop.id] || {}),
+                        prop.properties,
+                        definition
+                    )
                 };
             default:
                 return {
@@ -97,7 +101,7 @@ export const getConfigurationSectionsFn = (models, definition, schema): Metadata
                 .map((section: any) => {
                     return {
                         ...section,
-                        properties: assignValueToProperties(models, section.properties)
+                        properties: assignValueToProperties(models, section.properties, definition)
                     };
                 })
         });
