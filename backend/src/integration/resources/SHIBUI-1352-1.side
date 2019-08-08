@@ -104,7 +104,7 @@
       "id": "fd4257d7-488a-4eed-8d72-7f39034a1c72",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
         ["id=/@type", "id"],
         ["name=field2", "name"],

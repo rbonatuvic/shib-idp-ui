@@ -74,6 +74,13 @@
       ],
       "value": ""
     }, {
+      "id": "69432299-f150-4bea-9e07-7ef222d7c71f",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/name",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "b49d6ed7-75ea-4be8-9a79-c7fd83287aa0",
       "comment": "",
       "command": "click",
@@ -103,7 +110,7 @@
       "id": "add874d5-e3b2-4412-8039-2b9d2619ed19",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
         ["css=select-component > .widget", "css:finder"],
         ["xpath=//select-component/div", "xpath:position"]
@@ -119,6 +126,13 @@
         ["xpath=//li[2]/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "a237669b-daf4-42f6-bc7f-dc4cb5548f56",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/xmlId",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "86262eda-4a44-41b0-b7aa-fa46406e2601",
       "comment": "",
@@ -574,6 +588,13 @@
       ],
       "value": ""
     }, {
+      "id": "664722f5-86a5-49a8-b60e-fac67544fbea",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/name",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "6437379e-d34f-479e-82f1-bf52654a95cb",
       "comment": "",
       "command": "click",
@@ -603,7 +624,7 @@
       "id": "90dffd02-8971-4bf5-bc57-33194fdb27a2",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
         ["id=/@type", "id"],
         ["name=field38", "name"],
@@ -622,6 +643,13 @@
         ["xpath=//li[2]/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "a8d021db-c36c-4cf7-9211-17751cf0624a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/xmlId",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "5795f70f-79e1-4b45-9c38-ef96d5197e70",
       "comment": "",

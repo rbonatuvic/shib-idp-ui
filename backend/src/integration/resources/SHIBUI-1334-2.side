@@ -103,7 +103,7 @@
       "id": "add874d5-e3b2-4412-8039-2b9d2619ed19",
       "comment": "",
       "command": "select",
-      "target": "id=/@type",
+      "target": "id=/type",
       "targets": [
         ["css=select-component > .widget", "css:finder"],
         ["xpath=//select-component/div", "xpath:position"]

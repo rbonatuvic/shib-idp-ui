@@ -1,5 +1,5 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="horizontal control-label">
+    <label [attr.for]="cleanId" class="horizontal control-label">
         <span *ngIf="schema.title">
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
@@ -15,7 +15,7 @@
         {{ schema.description }}
     </span>
     <select *ngIf="schema.type !== 'array'"
-        [id]="formProperty._canonicalPath"
+        [id]="cleanId"
         [formControl]="control"
         [attr.name]="name"
         class="form-control"
@@ -37,7 +37,7 @@
         </ng-container>
     </select>
     <select *ngIf="schema.type === 'array'"
-        [id]="formProperty._canonicalPath"
+        [id]="cleanId"
         multiple [formControl]="control"
         [attr.name]="name"
         [attr.disabled]="schema.readOnly"
@@ -50,5 +50,5 @@
             <translate-i18n [key]="getError(error)">error</translate-i18n>
         </ng-container>
     </small>
-    <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
+    <input *ngIf="schema.readOnly" [id]="cleanId" [attr.name]="name" type="hidden" [formControl]="control">
 </div>
