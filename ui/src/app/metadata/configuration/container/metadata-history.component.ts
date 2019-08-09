@@ -44,4 +44,13 @@ export class MetadataHistoryComponent {
             }
         );
     }
+
+    restoreVersion(version: MetadataVersion): void {
+        this.router.navigate(
+            [ '../', 'restore' ],
+            {
+                relativeTo: this.route
+            }
+        );
+    }
 }
