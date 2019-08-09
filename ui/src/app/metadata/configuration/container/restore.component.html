@@ -1,12 +1,14 @@
 <h2 class="mb-4">
-    Restore Version
+    Restore Version ({{ date$ | async | date:DATE_FORMAT }})
 </h2>
 <div class="d-flex justify-content-center align-items-center">
     <div class="card m-4 w-50">
         <div class="card-body">
-            <h3 class="card-title">Create new version from {{ date | date:DATE_FORMAT }} settings</h3>
-            <p>Restoring this version will copy the configuration from the selected version and create a new version from these settings. You can then edit the configuration before saving the new version.</p>
-            <a href="#" class="btn btn-light">Cancel</a>&nbsp;<a href="#" class="btn btn-primary">Restore</a>
+            <h3 class="card-title">Create New Version from Version ({{ date$ | async | date:DATE_FORMAT }}) Settings</h3>
+            <p>Restoring this version will copy the Version ({{ date$ | async | date:DATE_FORMAT }}) configuration and create a new Version from the
+            selected version settings. You can then edit the configuration before saving the new version.</p>
+            <a [routerLink]="['../', 'history']" class="btn btn-light">Cancel</a>&nbsp;
+            <button class="btn btn-primary" (click)="restore()">Restore</button>
         </div>
     </div>
 </div>

@@ -37,7 +37,7 @@ export class ConfigurationComponent implements OnDestroy {
                 type,
                 version
             }))
-        ).subscribe(store);
+        ).subscribe(this.store);
 
         this.routerState.params.pipe(
             takeUntil(this.ngUnsubscribe),

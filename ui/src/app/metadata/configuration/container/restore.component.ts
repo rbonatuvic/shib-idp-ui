@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
+import { RestoreVersionRequest } from '../action/restore.action';
+import { withLatestFrom, map, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'restore-component',
@@ -13,19 +15,32 @@ import { CONFIG_DATE_FORMAT } from '../configuration.values';
     styleUrls: []
 })
 export class RestoreComponent implements OnDestroy {
-    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+    private subj = new Subject<any>();
+    restore$ = this.subj.asObservable();
+
+    date$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
 
     DATE_FORMAT = CONFIG_DATE_FORMAT;
 
-    date = new Date();
-
     constructor(
-        private store: Store<fromConfiguration.ConfigurationState>,
-        private routerState: ActivatedRoute
-    ) {}
+        private store: Store<fromConfiguration.ConfigurationState>
+    ) {
+        this.restore$.pipe(
+            withLatestFrom(
+                this.store.select(fromConfiguration.getSelectedVersionId),
+                this.store.select(fromConfiguration.getConfigurationModelType),
+                this.store.select(fromConfiguration.getConfigurationModelId)
+            ),
+            map(([restore, version, type, id]) => new RestoreVersionRequest({ id, type, version }))
+        ).subscribe(this.store);
+    }
 
-    ngOnDestroy() {
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
+    restore() {
+        this.subj.next();
+    }
+
+    ngOnDestroy(): void {
+        this.subj.complete();
     }
 }

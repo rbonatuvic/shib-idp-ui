@@ -6,7 +6,8 @@ import {
     RestoreActionTypes,
     SelectVersionRestoreRequest,
     SelectVersionRestoreError,
-    SelectVersionRestoreSuccess
+    SelectVersionRestoreSuccess,
+    RestoreVersionRequest
 } from '../action/restore.action';
 import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
@@ -16,10 +17,22 @@ import { of } from 'rxjs';
 export class RestoreVersionEffects {
 
     @Effect()
-    restoreVersionFromId$ = this.actions$.pipe(
+    selectVersionFromId$ = this.actions$.pipe(
         ofType<SelectVersionRestoreRequest>(RestoreActionTypes.SELECT_VERSION_REQUEST),
         map(action => action.payload),
         switchMap(({ type, id, version }) => {
+            return this.historyService.getVersion(id, version, type).pipe(
+                map(v => new SelectVersionRestoreSuccess(v)),
+                catchError(err => of(new SelectVersionRestoreError(err)))
+            );
+        })
+    );
+
+    @Effect()
+    restoreVersion$ = this.actions$.pipe(
+        ofType<RestoreVersionRequest>(RestoreActionTypes.RESTORE_VERSION_REQUEST),
+        map(action => action.payload),
+        switchMap(({ id, type, version }) => {
             return this.historyService.getVersion(id, version, type).pipe(
                 map(v => new SelectVersionRestoreSuccess(v)),
                 catchError(err => of(new SelectVersionRestoreError(err)))

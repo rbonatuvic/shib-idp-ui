@@ -183,3 +183,4 @@ export const getConfigurationModelType = createSelector(getConfigurationModel, g
 
 export const getConfigurationHasXml = createSelector(getConfigurationXml, xml => !!xml);
 export const getConfigurationFilters = createSelector(getConfigurationModel, model => model.metadataFilters);
+export const getConfigurationVersionDate = createSelector(getConfigurationModel, version => version.modifiedDate);
