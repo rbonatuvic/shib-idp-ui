@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { ConfigurationState, getVersionConfigurations, getVersionConfigurationCount } from '../reducer';
-import { Metadata } from '../../domain/domain.type';
 import { CompareVersionRequest } from '../action/compare.action';
 import { MetadataConfiguration } from '../model/metadata-configuration';
+import * as fromReducer from '../reducer';
 
 @Component({
     selector: 'metadata-comparison',
@@ -18,6 +18,7 @@ export class MetadataComparisonComponent {
 
     versions$: Observable<MetadataConfiguration>;
     numVersions$: Observable<number>;
+    type$: Observable<string>;
 
     constructor(
         private store: Store<ConfigurationState>,
@@ -30,5 +31,6 @@ export class MetadataComparisonComponent {
 
         this.versions$ = this.store.select(getVersionConfigurations);
         this.numVersions$ = this.store.select(getVersionConfigurationCount);
+        this.type$ = this.store.select(fromReducer.getConfigurationModelType);
     }
 }

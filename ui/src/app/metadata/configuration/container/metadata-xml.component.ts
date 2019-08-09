@@ -1,6 +1,6 @@
 import { Store } from '@ngrx/store';
 import { Component } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 import { Metadata } from '../../domain/domain.type';
@@ -17,12 +17,14 @@ export class MetadataXmlComponent {
     entity$: Observable<Metadata>;
     xml: string;
     xml$: Observable<string>;
+    type$: Observable<string>;
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>
     ) {
         this.xml$ = this.store.select(fromConfiguration.getConfigurationXml);
         this.entity$ = this.store.select(fromConfiguration.getConfigurationModel);
+        this.type$ = this.store.select(fromConfiguration.getConfigurationModelType);
     }
 
     preview(): void {
