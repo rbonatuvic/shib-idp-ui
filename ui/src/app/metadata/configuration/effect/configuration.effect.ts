@@ -20,18 +20,20 @@ import {
     DownloadXml
 } from '../action/configuration.action';
 import { ResolverService } from '../../domain/service/resolver.service';
-import { EntityIdService } from '../../domain/service/entity-id.service';
 import { State } from '../reducer/configuration.reducer';
 import { getConfigurationModel, getConfigurationXml } from '../reducer';
-import { MetadataResolver } from '../../domain/model';
+import { MetadataResolver, MetadataProvider } from '../../domain/model';
 import {
-    SelectProviderRequest, SelectProviderSuccess, ProviderCollectionActionTypes
+    SelectProviderSuccess,
+    ProviderCollectionActionTypes
 } from '../../provider/action/collection.action';
 import {
-    SelectResolver,
     SelectResolverSuccess,
     ResolverCollectionActionTypes
 } from '../../resolver/action/collection.action';
+import { MetadataHistoryService } from '../service/history.service';
+import { Metadata } from '../../domain/domain.type';
+import { SelectVersion } from '../action/history.action';
 
 @Injectable()
 export class MetadataConfigurationEffects {
@@ -40,12 +42,22 @@ export class MetadataConfigurationEffects {
     loadMetadata$ = this.actions$.pipe(
         ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
         map(action => action.payload),
-        map(payload => {
-            const action = (payload.type === 'resolver') ?
-                new SelectResolver(payload.id) :
-                new SelectProviderRequest(payload.id);
-            return action;
-        })
+        switchMap(payload =>
+            this.historyService.getVersion(payload.id, payload.type, payload.version).pipe(
+                map((response: Metadata) =>
+                    (payload.type === 'resolver') ?
+                        new SelectResolverSuccess(response as MetadataResolver) :
+                        new SelectProviderSuccess(response as MetadataProvider)
+                )
+            )
+        )
+    );
+
+    @Effect()
+    setMetadataVersion$ = this.actions$.pipe(
+        ofType<SetMetadata>(ConfigurationActionTypes.SET_METADATA),
+        map(action => action.payload),
+        map(({version}) => new SelectVersion(version))
     );
 
     @Effect()
@@ -119,7 +131,7 @@ export class MetadataConfigurationEffects {
         private configService: MetadataConfigurationService,
         private actions$: Actions,
         private resolverService: ResolverService,
-        private entityService: EntityIdService,
+        private historyService: MetadataHistoryService,
         private store: Store<State>
     ) { }
 }

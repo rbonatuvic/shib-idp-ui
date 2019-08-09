@@ -32,7 +32,11 @@ export class MetadataHistoryService {
         ));
     }
 
-    getVersion(resourceId: string, type: string, versionId: string): Observable<Metadata> {
-        return this.http.get<Metadata>(`/${this.base}/${PATHS[type]}/${resourceId}/${this.path}/${versionId}`);
+    getVersion(resourceId: string, type: string, versionId?: string): Observable<Metadata> {
+        const api = versionId ?
+            `/${this.base}/${PATHS[type]}/${resourceId}/${this.path}/${versionId}`
+            :
+            `/${this.base}/${PATHS[type]}/${resourceId}`;
+        return this.http.get<Metadata>(api);
     }
 }
