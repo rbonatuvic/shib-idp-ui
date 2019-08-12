@@ -7,10 +7,16 @@ import {
     SelectVersionRestoreRequest,
     SelectVersionRestoreError,
     SelectVersionRestoreSuccess,
-    RestoreVersionRequest
+    RestoreVersionRequest,
+    RestoreVersionSuccess,
+    RestoreVersionError
 } from '../action/restore.action';
 import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { AddNotification } from '../../../notification/action/notification.action';
+import { Notification, NotificationType } from '../../../notification/model/notification';
 
 
 @Injectable()
@@ -32,16 +38,40 @@ export class RestoreVersionEffects {
     restoreVersion$ = this.actions$.pipe(
         ofType<RestoreVersionRequest>(RestoreActionTypes.RESTORE_VERSION_REQUEST),
         map(action => action.payload),
-        switchMap(({ id, type, version }) => {
-            return this.historyService.getVersion(id, version, type).pipe(
-                map(v => new SelectVersionRestoreSuccess(v)),
-                catchError(err => of(new SelectVersionRestoreError(err)))
-            );
-        })
+        switchMap(({ id, type, version }) =>
+            this.historyService.restoreVersion(id, type, version).pipe(
+                map(v => new RestoreVersionSuccess({ id, type, model: v })),
+                catchError(err => of(new RestoreVersionError(err)))
+            )
+        )
+    );
+
+    @Effect()
+    restoreVersionSuccessNotification$ = this.actions$.pipe(
+        ofType<RestoreVersionSuccess>(RestoreActionTypes.RESTORE_VERSION_SUCCESS),
+        map(action => action.payload),
+        map((data) =>
+            new AddNotification(new Notification(
+                NotificationType.Success,
+                `Version Restored!`,
+                5000
+            ))
+        )
+    );
+
+    @Effect({dispatch: false})
+    restoreVersionSuccessRedirect$ = this.actions$.pipe(
+        ofType<RestoreVersionSuccess>(RestoreActionTypes.RESTORE_VERSION_SUCCESS),
+        map(action => action.payload),
+        switchMap((data) =>
+            this.router.navigate(['/metadata', data.type, data.id, 'configuration', 'options'])
+        )
     );
 
     constructor(
         private historyService: MetadataHistoryService,
-        private actions$: Actions
+        private actions$: Actions,
+        private router: Router,
+        private route: ActivatedRoute
     ) { }
 }

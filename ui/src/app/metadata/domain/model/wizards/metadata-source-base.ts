@@ -86,6 +86,7 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
         const checkOrg = (value, property, form) => {
             const org = property.parent;
             const orgValue = org.value || {};
+            console.log(orgValue);
             const err = Object.keys(orgValue) && !value ? {
                 code: 'ORG_INCOMPLETE',
                 path: `#${property.path}`,

@@ -29,7 +29,7 @@ export class RestoreComponent implements OnDestroy {
         this.restore$.pipe(
             withLatestFrom(
                 this.store.select(fromConfiguration.getSelectedVersionId),
-                this.store.select(fromConfiguration.getConfigurationModelType),
+                this.store.select(fromConfiguration.getConfigurationModelKind),
                 this.store.select(fromConfiguration.getConfigurationModelId)
             ),
             map(([restore, version, type, id]) => new RestoreVersionRequest({ id, type, version }))

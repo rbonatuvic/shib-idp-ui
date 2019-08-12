@@ -5,8 +5,9 @@ import { MetadataHistory } from '../model/history';
 
 import { PATHS } from '../../configuration/configuration.values';
 import { MetadataVersion } from '../model/version';
-import { map } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { Metadata } from '../../domain/domain.type';
+import { withLatestFrom } from 'rxjs-compat/operator/withLatestFrom';
 
 @Injectable()
 export class MetadataHistoryService {
@@ -38,5 +39,17 @@ export class MetadataHistoryService {
             :
             `/${this.base}/${PATHS[type]}/${resourceId}`;
         return this.http.get<Metadata>(api);
+    }
+
+    updateVersion(resourceId: string, type: string, model: Metadata): Observable<Metadata> {
+        return this.http.put<Metadata>(`/${this.base}/${PATHS[type]}/${resourceId}`, model);
+    }
+
+    restoreVersion(resourceId: string, type: string, versionId: string): Observable<Metadata> {
+        return this.getVersions(resourceId, [null, versionId], type).pipe(
+            switchMap(([current, toRestore]) =>
+                this.updateVersion(resourceId, type, { ...toRestore, version: current.version })
+            )
+        );
     }
 }

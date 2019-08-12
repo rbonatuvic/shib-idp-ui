@@ -7,8 +7,8 @@ export enum RestoreActionTypes {
     SELECT_VERSION_REQUEST = '[Restore Version] Select Version Request',
 
     RESTORE_VERSION_REQUEST = '[Restore Version] Restore Version Request',
-    RESTORE_VERSION_SUCCESS = '[Restore Version] Restore Version Request',
-    RESTORE_VERSION_ERROR = '[Restore Version] Restore Version Request',
+    RESTORE_VERSION_SUCCESS = '[Restore Version] Restore Version Success',
+    RESTORE_VERSION_ERROR = '[Restore Version] Restore Version Error',
 
     CLEAR_VERSION = '[Restore Version] Clear Versions'
 }
@@ -26,7 +26,7 @@ export class RestoreVersionRequest implements Action {
 
 export class RestoreVersionSuccess implements Action {
     readonly type = RestoreActionTypes.RESTORE_VERSION_SUCCESS;
-    constructor(public payload: Metadata) { }
+    constructor(public payload: { id: string, type: string, model: Metadata }) { }
 }
 
 export class RestoreVersionError implements Action {
