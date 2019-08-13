@@ -60,9 +60,9 @@ class EnversVersioningMetadataTests extends Specification {
 
         then:
         mrVersions[0].creator == mr.createdBy
-        mrVersions[0].date == mr.createdDateAsZonedDateTime()
+        mrVersions[0].date == mr.modifiedDateAsZonedDateTime()
         edVersions[0].creator == ed.createdBy
-        edVersions[0].date == ed.createdDateAsZonedDateTime()
+        edVersions[0].date == ed.modifiedDateAsZonedDateTime()
 
         when: 'new version due to update'
         mr.name = 'UPDATED'
