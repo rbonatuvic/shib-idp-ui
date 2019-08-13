@@ -22,6 +22,8 @@ export class ConfigurationComponent implements OnDestroy {
     name$: Observable<string>;
     type$: Observable<string>;
 
+    hasVersion = ([collection, params]) => params.version || collection && collection.length > 0 ? collection[0].id : null;
+
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
         private routerState: ActivatedRoute
@@ -50,10 +52,8 @@ export class ConfigurationComponent implements OnDestroy {
             withLatestFrom(
                 this.routerState.queryParams
             ),
-            map(([collection, params]) => params.version || collection && collection.length ? collection[0].id : null)
-        ).subscribe(version => {
-            this.store.dispatch(new SelectVersion(version));
-        });
+            map(this.hasVersion)
+        ).subscribe(version => this.store.dispatch(new SelectVersion(version)));
 
         this.name$ = this.store.select(fromReducer.getConfigurationModelName);
         this.type$ = this.store.select(fromReducer.getConfigurationModelType);

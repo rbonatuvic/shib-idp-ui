@@ -16,7 +16,7 @@ import { withLatestFrom, map, takeUntil } from 'rxjs/operators';
 })
 export class RestoreComponent implements OnDestroy {
 
-    private subj = new Subject<any>();
+    readonly subj = new Subject<any>();
     restore$ = this.subj.asObservable();
 
     date$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
