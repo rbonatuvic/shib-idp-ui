@@ -7,6 +7,7 @@ import * as fromConfiguration from '../reducer';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
 import { RestoreVersionRequest } from '../action/restore.action';
 import { withLatestFrom, map, takeUntil } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'restore-component',
@@ -20,11 +21,11 @@ export class RestoreComponent implements OnDestroy {
     restore$ = this.subj.asObservable();
 
     date$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
-
-    DATE_FORMAT = CONFIG_DATE_FORMAT;
+    date: string;
 
     constructor(
-        private store: Store<fromConfiguration.ConfigurationState>
+        private store: Store<fromConfiguration.ConfigurationState>,
+        private datePipe: DatePipe
     ) {
         this.restore$.pipe(
             withLatestFrom(
@@ -34,6 +35,10 @@ export class RestoreComponent implements OnDestroy {
             ),
             map(([restore, version, type, id]) => new RestoreVersionRequest({ id, type, version }))
         ).subscribe(this.store);
+
+        this.date$.pipe(takeUntil(this.subj)).subscribe(
+            (date) => this.date = this.datePipe.transform(date, CONFIG_DATE_FORMAT)
+        );
     }
 
     restore() {
