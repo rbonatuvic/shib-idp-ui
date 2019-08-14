@@ -2,14 +2,13 @@ import { Component, ChangeDetectionStrategy, OnDestroy, HostListener } from '@an
 import { ActivatedRoute, Router, Scroll, Event } from '@angular/router';
 import { takeUntil, map, withLatestFrom, filter, timeout, delay } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, interval } from 'rxjs';
+import { Observable, Subject, interval, combineLatest } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 
 import { ClearConfiguration, SetMetadata } from '../action/configuration.action';
 import { LoadHistoryRequest, ClearHistory, SelectVersion } from '../action/history.action';
 import * as fromReducer from '../reducer';
-import { ViewportScroller } from '@angular/common';
 
 @Component({
     selector: 'configuration-page',
@@ -27,9 +26,17 @@ export class ConfigurationComponent implements OnDestroy {
         private store: Store<fromConfiguration.ConfigurationState>,
         private routerState: ActivatedRoute
     ) {
-        this.routerState.params.pipe(
+
+        combineLatest(
+            this.routerState.params,
+            this.routerState.queryParams
+        ).pipe(
             takeUntil(this.ngUnsubscribe),
-            map(params => new SetMetadata({id: params.id, type: params.type}))
+            map(([{ id, type }, { version }]) => new SetMetadata({
+                id,
+                type,
+                version
+            }))
         ).subscribe(store);
 
         this.routerState.params.pipe(
@@ -38,20 +45,14 @@ export class ConfigurationComponent implements OnDestroy {
         ).subscribe(store);
 
         this.store.select(fromReducer.getVersionCollection).pipe(
+            filter(collection => collection && collection.length > 0),
             takeUntil(this.ngUnsubscribe),
             withLatestFrom(
                 this.routerState.queryParams
             ),
-            map(([collection, params]) => {
-                if (collection && collection.length) {
-                    return params.version || collection[0].id;
-                }
-                return null;
-            })
+            map(([collection, params]) => params.version || collection && collection.length ? collection[0].id : null)
         ).subscribe(version => {
-            if (version) {
-                this.store.dispatch(new SelectVersion(version));
-            }
+            this.store.dispatch(new SelectVersion(version));
         });
 
         this.name$ = this.store.select(fromReducer.getConfigurationModelName);

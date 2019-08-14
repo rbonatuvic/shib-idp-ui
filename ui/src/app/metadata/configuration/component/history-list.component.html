@@ -5,7 +5,6 @@
             <th scope="col">
                 <span class="sr-only" translate="label.select-version">Select Version</span>
             </th>
-            <th scope="col" translate="label.version">Version</th>
             <th scope="col" translate="label.save-date">Save Date</th>
             <th scope="col" translate="label.changed-by">Changed By</th>
             <th scope="col" translate="label.actions">Actions</th>
@@ -21,12 +20,19 @@
                     </label>
                 </div>
             </td>
-            <td *ngIf="i === 0"><translate-i18n key="label.current">Current</translate-i18n> (v{{ history.length - i }})</td>
-            <td *ngIf="i > 0">v{{ history.length - (i) }}</td>
-            <td>{{ version.date | date:DATE_FORMAT }}</td>
+            <td>
+                <a [routerLink]="['../', 'options']" [queryParams]="{'version': version.id}">
+                    <ng-container>
+                        {{ version.date | date:DATE_FORMAT }}&nbsp;
+                        <ng-container *ngIf="i === 0">
+                            (<translate-i18n key="label.current">Current</translate-i18n>)
+                        </ng-container>
+                    </ng-container>
+                </a>
+            </td>
             <td>{{ version.creator }}</td>
             <td>
-                <button class="btn btn-link" (click)="restore.emit(version)">
+                <button class="btn btn-text btn-link" (click)="restore.emit(version)"  *ngIf="i > 0">
                     <i class="fa fa-undo"></i>&nbsp;
                     <translate-i18n key="label.restore">Restore</translate-i18n>
                 </button>

@@ -1,3 +1,9 @@
+<h2 class="mb-4" [ngSwitch]="type$ | async">
+    Compare
+    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
+    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    Configuration
+</h2>
 <div class="" [ngClass]="{
     'container-fluid': (numVersions$ | async) > 2,
     'container': (numVersions$ | async) <= 2

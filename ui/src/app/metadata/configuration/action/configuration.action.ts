@@ -12,10 +12,11 @@ export enum ConfigurationActionTypes {
     LOAD_XML_SUCCESS = '[Metadata Configuration] Load XML Success',
     LOAD_XML_ERROR = '[Metadata Configuration] Load XML Error',
 
-    SET_METADATA = '[Metadata Configuration] Set Metadata Model',
+    SET_METADATA = '[Metadata Configuration] Set Metadata Attributes',
     SET_DEFINITION = '[Metadata Configuration] Set Metadata Definition',
     SET_SCHEMA = '[Metadata Configuration] Set Metadata Schema',
     SET_XML = '[Metadata Configuration] Set Metadata Xml',
+    SET_METADATA_MODEL = '[Metadata Configuration] Set Metadata Model',
 
     DOWNLOAD_XML = '[Metadata Configuration] Download Metadata Xml',
 
@@ -61,7 +62,13 @@ export class LoadXmlError implements Action {
 export class SetMetadata implements Action {
     readonly type = ConfigurationActionTypes.SET_METADATA;
 
-    constructor(public payload: { id: string, type: string }) { }
+    constructor(public payload: { id: string, type: string, version?: string }) { }
+}
+
+export class SetMetadataModel implements Action {
+    readonly type = ConfigurationActionTypes.SET_METADATA_MODEL;
+
+    constructor(public payload: Metadata) { }
 }
 
 export class SetDefinition implements Action {

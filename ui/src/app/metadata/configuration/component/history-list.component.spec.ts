@@ -4,6 +4,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { HistoryListComponent } from './history-list.component';
 import { MetadataHistory } from '../model/history';
 import { MetadataVersion } from '../model/version';
+import { RouterTestingModule } from '@angular/router/testing';
 
 export const TestData = {
     versions: [
@@ -37,7 +38,8 @@ describe('Metadata History List Component', () => {
         TestBed.configureTestingModule({
             providers: [],
             imports: [
-                MockI18nModule
+                MockI18nModule,
+                RouterTestingModule
             ],
             declarations: [
                 HistoryListComponent,
