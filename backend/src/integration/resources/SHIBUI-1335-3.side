@@ -785,10 +785,10 @@
     }, {
       "id": "455e24c1-5093-4da3-a62d-457bbf0cd5db",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=tr:nth-child(2) > .td-lg:nth-child(4)",
+      "command": "pause",
+      "target": "2000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "9f7e95cf-4dd5-415f-8577-a6f1bc54a85d",
       "comment": "",
@@ -810,6 +810,13 @@
         ["xpath=//td[contains(.,'NameIDFormat')]", "xpath:innerText"]
       ],
       "value": "NameIDFormat"
+    }, {
+      "id": "81970d9d-2892-4b42-ba56-ba1a14f453d2",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "63ac7307-0538-4c0d-8e98-2f05c767baaf",
       "comment": "",
