@@ -2,9 +2,9 @@ import { Store } from '@ngrx/store';
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, Event, Scroll } from '@angular/router';
+import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
-import { takeUntil, filter, delay } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import {
     ConfigurationState,
@@ -15,7 +15,8 @@ import {
     getConfigurationModelEnabled,
     getConfigurationHasXml,
     getConfigurationModel,
-    getConfigurationDefinition
+    getConfigurationDefinition,
+    getConfigurationModelType
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
@@ -32,7 +33,6 @@ import {
 import { Metadata } from '../../domain/domain.type';
 import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
 import { Wizard } from '../../../wizard/model';
-import { PreviewEntity } from '../../domain/action/entity.action';
 
 @Component({
     selector: 'metadata-options-page',
@@ -53,6 +53,7 @@ export class MetadataOptionsComponent implements OnDestroy {
     filters$: Observable<unknown[]>;
     model$: Observable<Metadata>;
     definition: Wizard<any>;
+    type$: Observable<string>;
     id: string;
     kind: string;
 
@@ -73,6 +74,7 @@ export class MetadataOptionsComponent implements OnDestroy {
         this.isCurrent$ = this.store.select(getSelectedIsCurrent);
         this.hasXml$ = this.store.select(getConfigurationHasXml);
         this.filters$ = this.store.select(getAdditionalFilters);
+        this.type$ = this.store.select(getConfigurationModelType);
 
         this.model$
             .pipe(

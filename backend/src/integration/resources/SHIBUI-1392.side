@@ -350,6 +350,13 @@
       ],
       "value": ""
     }, {
+      "id": "786cd3cb-46b2-4361-b449-8f679ff97135",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "id=/nameIdFormatFilterTarget.target",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "dcf31546-0976-44ae-9ffc-c29a5255d646",
       "comment": "",
       "command": "click",
@@ -366,13 +373,7 @@
       "comment": "",
       "command": "editContent",
       "target": "id=/nameIdFormatFilterTarget.target",
-      "targets": [
-        ["id=/nameIdFormatFilterTarget.target", "id"],
-        ["css=#\\/nameIdFormatFilterTarget\\.target", "css:finder"],
-        ["xpath=//p[@id='/nameIdFormatFilterTarget.target']", "xpath:attributes"],
-        ["xpath=//p", "xpath:position"],
-        ["xpath=//p[contains(.,'eval(true)')]", "xpath:innerText"]
-      ],
+      "targets": [],
       "value": "eval(true)"
     }, {
       "id": "05870356-d3db-4540-bb3f-db34b1cf65f1",
@@ -380,9 +381,19 @@
       "command": "sendKeys",
       "target": "id=/nameIdFormatFilterTarget.target",
       "targets": [],
-      "value": ";"
+      "value": "${KEY_END};"
     }, {
-      "id": "b544a0b1-fc04-4dc3-8a11-5769500e5503",
+      "id": "d7721254-68c9-4140-af2a-1757cce99da7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.section-body",
+      "targets": [
+        ["css=.section-body", "css:finder"],
+        ["xpath=//section/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ed6eb266-04f0-4517-b874-ea1d0ba68441",
       "comment": "",
       "command": "click",
       "target": "css=#\\/filterEnabled\\.parent > .custom-control-label",
@@ -436,7 +447,7 @@
     }, {
       "id": "ad613704-0718-4b83-97f1-b49897f510eb",
       "comment": "",
-      "command": "waitForElementEditable",
+      "command": "waitForElementVisible",
       "target": "id=/nameIdFormatFilterTarget.target",
       "targets": [],
       "value": "10000"
@@ -452,7 +463,7 @@
         ["xpath=//p", "xpath:position"],
         ["xpath=//p[contains(.,'eval(true)')]", "xpath:innerText"]
       ],
-      "value": "eval(true)"
+      "value": "eval(true);"
     }]
   }],
   "suites": [{

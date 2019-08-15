@@ -1,3 +1,8 @@
+<h2 class="mb-4" [ngSwitch]="type$ | async">
+    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
+    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    Configuration
+</h2>
 <div class="container-fluid">
     <div class="px-3 my-3 d-flex justify-content-end">
         <div class="btn-group">

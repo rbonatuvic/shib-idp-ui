@@ -4,6 +4,7 @@ import { MetadataOptionsComponent } from './container/metadata-options.component
 import { MetadataXmlComponent } from './container/metadata-xml.component';
 import { MetadataHistoryComponent } from './container/metadata-history.component';
 import { MetadataComparisonComponent } from './container/metadata-comparison.component';
+import { RestoreComponent } from './container/restore.component';
 
 export const ConfigurationRoutes: Routes = [
     {
@@ -29,6 +30,10 @@ export const ConfigurationRoutes: Routes = [
             {
                 path: 'compare',
                 component: MetadataComparisonComponent
+            },
+            {
+                path: 'restore',
+                component: RestoreComponent
             }
         ]
     }

@@ -1,5 +1,9 @@
+<h2 class="mb-4">
+    Version History
+</h2>
 <div class="container">
     <history-list
         [history]="history$ | async"
-        (compare)="compareVersions($event)"></history-list>
+        (compare)="compareVersions($event)"
+        (restore)="restoreVersion($event)"></history-list>
 </div>
