@@ -7,6 +7,13 @@
     "id": "1e7a4ca4-b2e6-4e5a-8e38-823ae8a1e20d",
     "name": "SHIBUI-1361",
     "commands": [{
+      "id": "58401038-5239-4643-b370-d7012a6f9486",
+      "comment": "",
+      "command": "store",
+      "target": "^[A-Z][a-z]{2}\\\\\\s\\\\\\d\\\\\\d?,\\\\\\s\\\\\\d{4}\\\\\\s\\\\\\d{2}:\\\\\\d{2}:\\\\\\d{2}$",
+      "targets": [],
+      "value": "dateRegex"
+    }, {
       "id": "29bb3186-81c8-4b3e-a9d9-5ff55d225878",
       "comment": "",
       "command": "open",
@@ -582,18 +589,13 @@
       "comment": "",
       "command": "storeText",
       "target": "css=.save-date",
-      "targets": [
-        ["css=.save-date", "css:finder"],
-        ["xpath=//div[@id='header']/metadata-header/div/div/h5/span", "xpath:idRelative"],
-        ["xpath=//h5/span", "xpath:position"],
-        ["xpath=//span[contains(.,'Aug 08, 2019 15:50:04')]", "xpath:innerText"]
-      ],
+      "targets": [],
       "value": "saveDate"
     }, {
       "id": "a7b73d1f-87bb-4364-944a-5097f981b8c9",
       "comment": "",
       "command": "executeScript",
-      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "target": "return RegExp(${dateRegex}).test(${saveDate});",
       "targets": [],
       "value": "isDate"
     }, {
@@ -979,7 +981,7 @@
       "id": "910d8bf9-4875-4946-9ab8-0d3a9b13f020",
       "comment": "",
       "command": "executeScript",
-      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "target": "return RegExp(${dateRegex}).test(${saveDate});",
       "targets": [],
       "value": "isDate"
     }, {
@@ -1004,7 +1006,7 @@
       "id": "a370624e-a6d6-43d7-a74a-eeb8c577fc06",
       "comment": "",
       "command": "executeScript",
-      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "target": "return RegExp(${dateRegex}).test(${saveDate});",
       "targets": [],
       "value": "isDate"
     }, {
@@ -1029,7 +1031,7 @@
       "id": "4b305857-0369-4fad-821c-c944e9801395",
       "comment": "",
       "command": "executeScript",
-      "target": "return (new Date(${saveDate}) !== \"Invalid Date\" && !isNaN(new Date(${saveDate})))",
+      "target": "return RegExp(${dateRegex}).test(${saveDate});",
       "targets": [],
       "value": "isDate"
     }, {
@@ -1134,7 +1136,7 @@
       "id": "c1fda79e-9fa9-4969-92f5-83f9f54b9d3d",
       "comment": "",
       "command": "executeScript",
-      "target": "return (new Date(${leftDate}) !== \"Invalid Date\" && !isNaN(new Date(${leftDate})))",
+      "target": "return RegExp(${dateRegex}).test(${leftDate});",
       "targets": [],
       "value": "leftDateIsDate"
     }, {
@@ -1159,7 +1161,7 @@
       "id": "dd3a52a4-de8b-4c25-a6e7-81b7ee9f8149",
       "comment": "",
       "command": "executeScript",
-      "target": "return (new Date(${rightDate}) !== \"Invalid Date\" && !isNaN(new Date(${rightDate})))",
+      "target": "return RegExp(${dateRegex}).test(${rightDate});",
       "targets": [],
       "value": "rightDateIsDate"
     }, {
