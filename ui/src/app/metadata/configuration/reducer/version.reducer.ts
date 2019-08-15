@@ -1,4 +1,4 @@
-import { RestoreActionTypes, RestoreActionsUnion } from '../action/restore.action';
+import { VersionActionTypes, VersionActionsUnion } from '../action/version.action';
 import { Metadata } from '../../domain/domain.type';
 
 export interface State {
@@ -17,22 +17,22 @@ export const initialState: State = {
     loaded: false
 };
 
-export function reducer(state = initialState, action: RestoreActionsUnion): State {
+export function reducer(state = initialState, action: VersionActionsUnion): State {
     switch (action.type) {
-        case RestoreActionTypes.SELECT_VERSION_REQUEST:
+        case VersionActionTypes.SELECT_VERSION_REQUEST:
             return {
                 ...state,
                 selectedMetadataId: action.payload.id,
                 selectedVersionId: action.payload.version,
                 selectedVersionType: action.payload.type
             };
-        case RestoreActionTypes.SELECT_VERSION_SUCCESS:
+        case VersionActionTypes.SELECT_VERSION_SUCCESS:
             return {
                 ...state,
                 model: action.payload,
                 loaded: true
             };
-        case RestoreActionTypes.CLEAR_VERSION:
+        case VersionActionTypes.CLEAR_VERSION:
             return {
                 ...initialState
             };
@@ -44,3 +44,7 @@ export function reducer(state = initialState, action: RestoreActionsUnion): Stat
 
 export const getVersionModel = (state: State) => state.model;
 export const getVersionModelLoaded = (state: State) => state.loaded;
+
+export const getSelectedMetadataId = (state: State) => state.selectedMetadataId;
+export const getSelectedVersionId = (state: State) => state.selectedVersionId;
+export const getSelectedVersionType = (state: State) => state.selectedVersionType;

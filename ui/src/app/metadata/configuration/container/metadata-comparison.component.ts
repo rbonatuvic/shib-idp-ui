@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { ConfigurationState, getVersionConfigurations, getVersionConfigurationCount } from '../reducer';
+import { ConfigurationState, getComparisonConfigurations, getComparisonConfigurationCount } from '../reducer';
 import { CompareVersionRequest } from '../action/compare.action';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import * as fromReducer from '../reducer';
@@ -29,8 +29,8 @@ export class MetadataComparisonComponent {
             map(versions => new CompareVersionRequest(versions))
         ).subscribe(this.store);
 
-        this.versions$ = this.store.select(getVersionConfigurations);
-        this.numVersions$ = this.store.select(getVersionConfigurationCount);
+        this.versions$ = this.store.select(getComparisonConfigurations);
+        this.numVersions$ = this.store.select(getComparisonConfigurationCount);
         this.type$ = this.store.select(fromReducer.getConfigurationModelType);
     }
 }

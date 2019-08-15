@@ -1,5 +1,5 @@
 <h2 class="mb-4">
-    <translate-i18n key="label.restore-version" [params]="{ 'date': date }">
+    <translate-i18n key="label.restore-version" [params]="{ 'date': (date$ | async) }">
         Restore Version ( date )
     </translate-i18n>
 </h2>
@@ -8,14 +8,14 @@
         <div class="card-body">
             <h3 class="card-title"
                 translate="message.create-new-version-from-version"
-                [translateParams]="{ 'date': date }">
+                [translateParams]="{ 'date': (date$ | async) }">
                 Create New Version from Version ( date ) Settings
             </h3>
             <p translate="message.restoring-this-version-will-copy"
-                [translateParams]="{ 'date': date }">
+                [translateParams]="{ 'date': (date$ | async) }">
                 Restoring this version will copy the Version ( date ) configuration and create a new Version from the selected version settings. You can then edit the configuration before saving the new version.
             </p>
-            <a [routerLink]="['../', 'history']" class="btn btn-light" translate="action.cancel">Cancel</a>&nbsp;
+            <button class="btn btn-light" (click)="cancel()" translate="action.cancel">Cancel</button>&nbsp;
             <button class="btn btn-primary" (click)="restore()" translate="action.restore">Restore</button>
         </div>
     </div>

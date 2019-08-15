@@ -31,7 +31,10 @@ import { FilterConfigurationListItemComponent } from './component/filter-configu
 import { SharedModule } from '../../shared/shared.module';
 import { FilterTargetPropertyComponent } from './component/filter-target-property.component';
 import { RestoreComponent } from './container/restore.component';
-import { RestoreVersionEffects } from './effect/restore.effect';
+import { RestoreEffects } from './effect/restore.effect';
+import { VersionComponent } from './container/version.component';
+import { VersionOptionsComponent } from './container/version-options.component';
+import { VersionEffects } from './effect/version.effect';
 
 @NgModule({
     declarations: [
@@ -50,7 +53,9 @@ import { RestoreVersionEffects } from './effect/restore.effect';
         FilterConfigurationListComponent,
         FilterConfigurationListItemComponent,
         FilterTargetPropertyComponent,
-        RestoreComponent
+        RestoreComponent,
+        VersionComponent,
+        VersionOptionsComponent
     ],
     entryComponents: [],
     imports: [
@@ -88,7 +93,8 @@ export class MetadataConfigurationModule {
                 MetadataConfigurationEffects,
                 MetadataHistoryEffects,
                 CompareVersionEffects,
-                RestoreVersionEffects
+                RestoreEffects,
+                VersionEffects
             ])
     ],
     providers: []

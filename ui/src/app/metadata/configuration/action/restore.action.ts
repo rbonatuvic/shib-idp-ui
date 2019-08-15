@@ -1,27 +1,19 @@
 import { Action } from '@ngrx/store';
 import { Metadata } from '../../domain/domain.type';
+import { VersionRequest } from '../model/request';
 
 export enum RestoreActionTypes {
-    SELECT_VERSION_SUCCESS = '[Restore Version] Select Version Success',
-    SELECT_VERSION_ERROR = '[Restore Version] Select Version Error',
-    SELECT_VERSION_REQUEST = '[Restore Version] Select Version Request',
-
     RESTORE_VERSION_REQUEST = '[Restore Version] Restore Version Request',
     RESTORE_VERSION_SUCCESS = '[Restore Version] Restore Version Success',
     RESTORE_VERSION_ERROR = '[Restore Version] Restore Version Error',
 
-    CLEAR_VERSION = '[Restore Version] Clear Versions'
-}
-
-export interface VersionRequest {
-    type: string;
-    id: string;
-    version: string;
+    CLEAR_VERSION = '[Restore Version] Clear Versions',
+    CANCEL_RESTORE = '[Restore Version] Cancel Restore'
 }
 
 export class RestoreVersionRequest implements Action {
     readonly type = RestoreActionTypes.RESTORE_VERSION_REQUEST;
-    constructor(public payload: VersionRequest) { }
+    constructor() { }
 }
 
 export class RestoreVersionSuccess implements Action {
@@ -34,32 +26,13 @@ export class RestoreVersionError implements Action {
     constructor(public payload: any) { }
 }
 
-export class SelectVersionRestoreRequest implements Action {
-    readonly type = RestoreActionTypes.SELECT_VERSION_REQUEST;
-
-    constructor(public payload: VersionRequest) { }
-}
-
-export class SelectVersionRestoreSuccess implements Action {
-    readonly type = RestoreActionTypes.SELECT_VERSION_SUCCESS;
-
-    constructor(public payload: Metadata) { }
-}
-export class SelectVersionRestoreError implements Action {
-    readonly type = RestoreActionTypes.SELECT_VERSION_ERROR;
-
-    constructor(public payload: any) { }
-}
-
-export class ClearVersionRestore implements Action {
-    readonly type = RestoreActionTypes.CLEAR_VERSION;
+export class CancelRestore implements Action {
+    readonly type = RestoreActionTypes.CANCEL_RESTORE;
+    constructor() { }
 }
 
 export type RestoreActionsUnion =
-    | SelectVersionRestoreRequest
-    | SelectVersionRestoreError
-    | SelectVersionRestoreSuccess
     | RestoreVersionRequest
     | RestoreVersionSuccess
     | RestoreVersionError
-    | ClearVersionRestore;
+    | CancelRestore;

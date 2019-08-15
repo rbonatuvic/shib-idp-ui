@@ -2,7 +2,6 @@ import { Store } from '@ngrx/store';
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { takeUntil, filter } from 'rxjs/operators';
 
@@ -10,48 +9,35 @@ import {
     ConfigurationState,
     getConfigurationSections,
     getSelectedVersion,
-    getSelectedVersionNumber,
-    getSelectedIsCurrent,
     getConfigurationModelEnabled,
-    getConfigurationHasXml,
-    getConfigurationModel,
-    getConfigurationDefinition,
     getConfigurationModelType
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
-import { MetadataFilter } from '../../domain/model';
-import { getAdditionalFilters } from '../../filter/reducer';
 import {
-    ClearFilters,
-    LoadFilterRequest,
-    ChangeFilterOrderDown,
-    ChangeFilterOrderUp,
-    RemoveFilterRequest
+    ClearFilters
 } from '../../filter/action/collection.action';
 
 import { Metadata } from '../../domain/domain.type';
-import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
+import { getVersionModel, getVersionConfigurationSections } from '../reducer';
 
 @Component({
-    selector: 'metadata-options-page',
+    selector: 'version-options-page',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    templateUrl: './metadata-options.component.html',
+    templateUrl: './version-options.component.html',
     styleUrls: []
 })
-export class MetadataOptionsComponent implements OnDestroy {
+export class VersionOptionsComponent implements OnDestroy {
 
     protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    configuration$: Observable<MetadataConfiguration> = this.store.select(getConfigurationSections);
+    configuration$: Observable<MetadataConfiguration> = this.store.select(getVersionConfigurationSections);
     isEnabled$: Observable<boolean> = this.store.select(getConfigurationModelEnabled);
-    isCurrent$: Observable<boolean> = this.store.select(getSelectedIsCurrent);
-    hasXml$: Observable<boolean> = this.store.select(getConfigurationHasXml);
-    filters$: Observable<unknown[]> = this.store.select(getAdditionalFilters);
-    model$: Observable<Metadata> = this.store.select(getConfigurationModel);
+    model$: Observable<Metadata> = this.store.select(getVersionModel);
     type$: Observable<string> = this.store.select(getConfigurationModelType);
     id: string;
     kind: string;
+    filters = [];
 
     constructor(
         protected store: Store<ConfigurationState>,
@@ -69,35 +55,10 @@ export class MetadataOptionsComponent implements OnDestroy {
     setModel(data: Metadata): void {
         this.id = 'resourceId' in data ? data.resourceId : data.id;
         this.kind = '@type' in data ? 'provider' : 'resolver';
-        if (this.kind === 'provider') {
-            this.store.dispatch(new LoadFilterRequest(this.id));
-        }
     }
 
     onScrollTo(element): void {
         this.scroller.scrollToAnchor(element);
-    }
-
-    updateOrderUp(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderUp(filter.resourceId));
-    }
-
-    updateOrderDown(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderDown(filter.resourceId));
-    }
-
-    removeFilter(id: string): void {
-        this.modalService
-            .open(DeleteFilterComponent)
-            .result
-            .then(
-                success => {
-                    this.store.dispatch(new RemoveFilterRequest(id));
-                },
-                err => {
-                    console.log('Cancelled');
-                }
-            );
     }
 
     ngOnDestroy(): void {

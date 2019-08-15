@@ -4,7 +4,7 @@ import * as fromRoot from '../../../app.reducer';
 import * as fromConfiguration from './configuration.reducer';
 import * as fromHistory from './history.reducer';
 import * as fromCompare from './compare.reducer';
-import * as fromRestore from './restore.reducer';
+import * as fromVersion from './version.reducer';
 import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
@@ -20,14 +20,14 @@ export interface ConfigurationState {
     configuration: fromConfiguration.State;
     history: fromHistory.HistoryState;
     compare: fromCompare.State;
-    restore: fromRestore.State;
+    version: fromVersion.State;
 }
 
 export const reducers = {
     configuration: fromConfiguration.reducer,
     history: fromHistory.reducer,
     compare: fromCompare.reducer,
-    restore: fromRestore.reducer
+    version: fromVersion.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -39,7 +39,7 @@ export const getState = createFeatureSelector<ConfigurationState>('metadata-conf
 export const getConfigurationStateFn = (state: ConfigurationState) => state.configuration;
 export const getHistoryStateFn = (state: ConfigurationState) => state.history;
 export const getCompareStateFn = (state: ConfigurationState) => state.compare;
-export const getRestoreStateFn = (state: ConfigurationState) => state.restore;
+export const getVersionStateFn = (state: ConfigurationState) => state.version;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
 export const getConfigurationModelKind = createSelector(getConfigurationState, fromConfiguration.getModelKind);
@@ -73,9 +73,9 @@ export const assignValueToProperties = (models, properties, definition: any): an
 };
 
 export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
-    return !definition || !schema ? null :
+    return !definition || !schema || !models ? null :
         ({
-            dates: models.map(m => m.modifiedDate),
+            dates: models.map(m => m ? m.modifiedDate : null),
             sections: definition.steps
                 .filter(step => step.id !== 'summary')
                 .map(
@@ -139,21 +139,28 @@ export const getSelectedIsCurrent = createSelector(
 // Version Comparison
 
 export const getCompareState = createSelector(getState, getCompareStateFn);
-export const getVersionModels = createSelector(getCompareState, fromCompare.getVersionModels);
-export const getVersionModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
-export const getVersionConfigurations = createSelector(
-    getVersionModels,
+export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
+export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
+export const getComparisonConfigurations = createSelector(
+    getComparisonModels,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
 );
 
-export const getVersionConfigurationCount = createSelector(getVersionConfigurations, (config) => config ? config.dates.length : 0);
+export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
 
 // Version Restoration
 
-export const getRestoreState = createSelector(getState, getRestoreStateFn);
-export const getRestoreModel = createSelector(getRestoreState, fromRestore.getVersionModel);
+export const getVersionState = createSelector(getState, getVersionStateFn);
+export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);
+export const getVersionModels = createSelector(getVersionModel, (model) => model ? [model] : null);
+export const getVersionConfigurationSections = createSelector(
+    getVersionModels,
+    getConfigurationDefinition,
+    getConfigurationSchema,
+    getConfigurationSectionsFn
+);
 
 // Mixed states
 

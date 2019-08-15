@@ -1,12 +1,11 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { ActivatedRoute, } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
-import { RestoreVersionRequest } from '../action/restore.action';
-import { withLatestFrom, map, takeUntil } from 'rxjs/operators';
+import { RestoreVersionRequest, CancelRestore } from '../action/restore.action';
+import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -15,37 +14,23 @@ import { DatePipe } from '@angular/common';
     templateUrl: './restore.component.html',
     styleUrls: []
 })
-export class RestoreComponent implements OnDestroy {
+export class RestoreComponent {
 
-    readonly subj = new Subject<any>();
-    restore$ = this.subj.asObservable();
-
-    date$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
-    date: string;
+    dateString$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
+    date$: Observable<string>;
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
         private datePipe: DatePipe
     ) {
-        this.restore$.pipe(
-            withLatestFrom(
-                this.store.select(fromConfiguration.getSelectedVersionId),
-                this.store.select(fromConfiguration.getConfigurationModelKind),
-                this.store.select(fromConfiguration.getConfigurationModelId)
-            ),
-            map(([restore, version, type, id]) => new RestoreVersionRequest({ id, type, version }))
-        ).subscribe(this.store);
-
-        this.date$.pipe(takeUntil(this.subj)).subscribe(
-            (date) => this.date = this.datePipe.transform(date, CONFIG_DATE_FORMAT)
-        );
+        this.date$ = this.dateString$.pipe(map((date) => this.datePipe.transform(date, CONFIG_DATE_FORMAT)));
     }
 
     restore() {
-        this.subj.next();
+        this.store.dispatch(new RestoreVersionRequest());
     }
 
-    ngOnDestroy(): void {
-        this.subj.complete();
+    cancel() {
+        this.store.dispatch(new CancelRestore());
     }
 }

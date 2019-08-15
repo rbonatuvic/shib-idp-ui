@@ -1,48 +1,57 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { map, catchError, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import {
     RestoreActionTypes,
-    SelectVersionRestoreRequest,
-    SelectVersionRestoreError,
-    SelectVersionRestoreSuccess,
     RestoreVersionRequest,
     RestoreVersionSuccess,
-    RestoreVersionError
+    RestoreVersionError,
+    CancelRestore
 } from '../action/restore.action';
 import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AddNotification } from '../../../notification/action/notification.action';
 import { Notification, NotificationType } from '../../../notification/model/notification';
+import { Store } from '@ngrx/store';
+import { ConfigurationState, getConfigurationModel, getVersionModel, getConfigurationModelId, getConfigurationModelKind } from '../reducer';
+import { SetMetadata } from '../action/configuration.action';
 
 
 @Injectable()
-export class RestoreVersionEffects {
-
-    @Effect()
-    selectVersionFromId$ = this.actions$.pipe(
-        ofType<SelectVersionRestoreRequest>(RestoreActionTypes.SELECT_VERSION_REQUEST),
-        map(action => action.payload),
-        switchMap(({ type, id, version }) => {
-            return this.historyService.getVersion(id, version, type).pipe(
-                map(v => new SelectVersionRestoreSuccess(v)),
-                catchError(err => of(new SelectVersionRestoreError(err)))
-            );
-        })
-    );
+export class RestoreEffects {
 
     @Effect()
     restoreVersion$ = this.actions$.pipe(
         ofType<RestoreVersionRequest>(RestoreActionTypes.RESTORE_VERSION_REQUEST),
-        map(action => action.payload),
-        switchMap(({ id, type, version }) =>
-            this.historyService.restoreVersion(id, type, version).pipe(
-                map(v => new RestoreVersionSuccess({ id, type, model: v })),
+        withLatestFrom(
+            this.store.select(getConfigurationModelId),
+            this.store.select(getConfigurationModelKind),
+            this.store.select(getConfigurationModel),
+            this.store.select(getVersionModel)
+        ),
+        switchMap(([action, id, kind, current, version]) =>
+            this.historyService.updateVersion(id, kind, {
+                ...version,
+                version: current.version
+            }).pipe(
+                map(v => new RestoreVersionSuccess({ id, type: kind, model: v })),
                 catchError(err => of(new RestoreVersionError(err)))
             )
+        )
+    );
+
+    @Effect({ dispatch: false })
+    restoreVersionCancel$ = this.actions$.pipe(
+        ofType<CancelRestore>(RestoreActionTypes.CANCEL_RESTORE),
+        withLatestFrom(
+            this.store.select(getConfigurationModelId),
+            this.store.select(getConfigurationModelKind)
+        ),
+        switchMap(([action, id, kind]) =>
+            this.router.navigate(['/', 'metadata', kind, id, 'configuration', 'history'])
         )
     );
 
@@ -68,10 +77,19 @@ export class RestoreVersionEffects {
         )
     );
 
+    @Effect()
+    restoreVersionSuccessReload$ = this.actions$.pipe(
+        ofType<RestoreVersionSuccess>(RestoreActionTypes.RESTORE_VERSION_SUCCESS),
+        map(action => action.payload),
+        map(({id, type}) =>
+            new SetMetadata({ id, type })
+        )
+    );
+
     constructor(
+        private store: Store<ConfigurationState>,
         private historyService: MetadataHistoryService,
         private actions$: Actions,
-        private router: Router,
-        private route: ActivatedRoute
+        private router: Router
     ) { }
 }
