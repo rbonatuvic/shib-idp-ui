@@ -151,6 +151,13 @@ export const getComparisonConfigurations = createSelector(
 export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
 
 // Version Restoration
+export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
+
+export const getVersionModelFiltersFn =
+    (model, kind) => kind === 'provider' ?
+    model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+    null;
 
 export const getVersionState = createSelector(getState, getVersionStateFn);
 export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);
@@ -160,6 +167,12 @@ export const getVersionConfigurationSections = createSelector(
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
+);
+
+export const getVersionModelFilters = createSelector(
+    getVersionModel,
+    getConfigurationModelKind,
+    getVersionModelFiltersFn
 );
 
 // Mixed states

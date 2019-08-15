@@ -10,7 +10,8 @@ import {
     getConfigurationSections,
     getSelectedVersion,
     getConfigurationModelEnabled,
-    getConfigurationModelType
+    getConfigurationModelType,
+    getVersionModelFilters
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
@@ -35,9 +36,9 @@ export class VersionOptionsComponent implements OnDestroy {
     isEnabled$: Observable<boolean> = this.store.select(getConfigurationModelEnabled);
     model$: Observable<Metadata> = this.store.select(getVersionModel);
     type$: Observable<string> = this.store.select(getConfigurationModelType);
+    filters$: Observable<any[]> = this.store.select(getVersionModelFilters);
     id: string;
     kind: string;
-    filters = [];
 
     constructor(
         protected store: Store<ConfigurationState>,
