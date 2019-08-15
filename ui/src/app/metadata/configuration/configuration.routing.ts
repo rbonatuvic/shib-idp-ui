@@ -7,6 +7,9 @@ import { MetadataComparisonComponent } from './container/metadata-comparison.com
 import { RestoreComponent } from './container/restore.component';
 import { VersionComponent } from './container/version.component';
 import { VersionOptionsComponent } from './container/version-options.component';
+import { RestoreEditComponent } from './container/restore-edit.component';
+import { IndexResolver } from './service/index-resolver.service';
+import { RestoreEditStepComponent } from './container/restore-edit-step.component';
 
 export const ConfigurationRoutes: Routes = [
     {
@@ -44,6 +47,23 @@ export const ConfigurationRoutes: Routes = [
                     {
                         path: 'restore',
                         component: RestoreComponent
+                    },
+                    {
+                        path: 'edit',
+                        redirectTo: 'edit/common'
+                    },
+                    {
+                        path: 'edit',
+                        component: RestoreEditComponent,
+                        children: [
+                            {
+                                path: ':index',
+                                component: RestoreEditStepComponent,
+                                resolve: {
+                                    index: IndexResolver
+                                }
+                            }
+                        ]
                     }
                 ]
             }

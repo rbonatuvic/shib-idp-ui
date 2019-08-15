@@ -7,7 +7,9 @@ import {
     RestoreVersionRequest,
     RestoreVersionSuccess,
     RestoreVersionError,
-    CancelRestore
+    CancelRestore,
+    UpdateRestorationChangesRequest,
+    UpdateRestorationChangesSuccess
 } from '../action/restore.action';
 import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
@@ -16,7 +18,14 @@ import { Router } from '@angular/router';
 import { AddNotification } from '../../../notification/action/notification.action';
 import { Notification, NotificationType } from '../../../notification/model/notification';
 import { Store } from '@ngrx/store';
-import { ConfigurationState, getConfigurationModel, getVersionModel, getConfigurationModelId, getConfigurationModelKind } from '../reducer';
+import {
+    ConfigurationState,
+    getConfigurationModel,
+    getVersionModel,
+    getConfigurationModelId,
+    getConfigurationModelKind,
+    getConfigurationDefinition
+} from '../reducer';
 import { SetMetadata } from '../action/configuration.action';
 
 
@@ -84,6 +93,31 @@ export class RestoreEffects {
         map(({id, type}) =>
             new SetMetadata({ id, type })
         )
+    );
+
+    @Effect()
+    updateRestorationChanges$ = this.actions$.pipe(
+        ofType<UpdateRestorationChangesRequest>(RestoreActionTypes.UPDATE_RESTORATION_REQUEST),
+        map(action => action.payload),
+        withLatestFrom(
+            this.store.select(getConfigurationDefinition),
+            this.store.select(getConfigurationModelKind),
+            this.store.select(getConfigurationModel)
+        ),
+        map(([changes, definition, kind, original]) => {
+            let parsed = definition.parser(changes);
+            if (kind === 'provider') {
+                parsed = {
+                    ...parsed,
+                    metadataFilters: [
+                        ...original.metadataFilters,
+                        ...(parsed.metadataFilters || [])
+                    ]
+                };
+            }
+            return (parsed);
+        }),
+        map(changes => new UpdateRestorationChangesSuccess(changes))
     );
 
     constructor(

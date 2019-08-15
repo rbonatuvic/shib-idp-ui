@@ -103,3 +103,9 @@ export const getAllResolvers = createSelector(getDraftCollection, getResolverCol
 export const getAllResolverIds = createSelector(getDraftIds, getResolverIds, combineAllFn);
 
 export const getAllEntityIds = createSelector(getAllResolvers, getEntityIdsFn);
+
+export const getAllOtherIds = createSelector(
+    getAllResolvers,
+    getSelectedResolverId,
+    (ids, selected) => ids.filter(id => id !== selected)
+);

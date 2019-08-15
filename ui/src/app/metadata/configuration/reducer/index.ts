@@ -5,6 +5,7 @@ import * as fromConfiguration from './configuration.reducer';
 import * as fromHistory from './history.reducer';
 import * as fromCompare from './compare.reducer';
 import * as fromVersion from './version.reducer';
+import * as fromRestore from './restore.reducer';
 import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
@@ -21,13 +22,15 @@ export interface ConfigurationState {
     history: fromHistory.HistoryState;
     compare: fromCompare.State;
     version: fromVersion.State;
+    restore: fromRestore.RestoreState;
 }
 
 export const reducers = {
     configuration: fromConfiguration.reducer,
     history: fromHistory.reducer,
     compare: fromCompare.reducer,
-    version: fromVersion.reducer
+    version: fromVersion.reducer,
+    restore: fromRestore.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -40,6 +43,7 @@ export const getConfigurationStateFn = (state: ConfigurationState) => state.conf
 export const getHistoryStateFn = (state: ConfigurationState) => state.history;
 export const getCompareStateFn = (state: ConfigurationState) => state.compare;
 export const getVersionStateFn = (state: ConfigurationState) => state.version;
+export const getRestoreStateFn = (state: ConfigurationState) => state.restore;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
 export const getConfigurationModelKind = createSelector(getConfigurationState, fromConfiguration.getModelKind);
@@ -151,6 +155,9 @@ export const getComparisonConfigurations = createSelector(
 export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
 
 // Version Restoration
+
+export const getRestoreState = createSelector(getState, getRestoreStateFn);
+
 export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
 export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
 
@@ -173,6 +180,19 @@ export const getVersionModelFilters = createSelector(
     getVersionModel,
     getConfigurationModelKind,
     getVersionModelFiltersFn
+);
+
+export const getRestorationIsValid = createSelector(getRestoreState, fromRestore.isRestorationValid);
+export const getRestorationIsSaved = createSelector(getRestoreState, fromRestore.isRestorationSaved);
+export const getRestorationChanges = createSelector(getRestoreState, fromRestore.getChanges);
+export const getRestorationIsSaving = createSelector(getRestoreState, fromRestore.isRestorationSaving);
+export const getRestorationFormStatus = createSelector(getRestoreState, fromRestore.getFormStatus);
+export const getInvalidRestorationForms = createSelector(getRestoreState, fromRestore.getInvalidRestorationForms);
+
+export const getFormattedModel = createSelector(
+    getVersionModel,
+    getConfigurationDefinition,
+    (model, definition) => definition.formatter(model)
 );
 
 // Mixed states

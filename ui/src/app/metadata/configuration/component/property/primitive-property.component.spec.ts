@@ -3,8 +3,8 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { Property } from '../../domain/model/property';
-import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { Property } from '../../../domain/model/property';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
 import { PrimitivePropertyComponent } from './primitive-property.component';
 
 @Component({

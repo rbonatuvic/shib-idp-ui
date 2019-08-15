@@ -7,6 +7,7 @@ import { CONFIG_DATE_FORMAT } from '../configuration.values';
 import { RestoreVersionRequest, CancelRestore } from '../action/restore.action';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'restore-component',
@@ -21,13 +22,15 @@ export class RestoreComponent {
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.date$ = this.dateString$.pipe(map((date) => this.datePipe.transform(date, CONFIG_DATE_FORMAT)));
     }
 
     restore() {
-        this.store.dispatch(new RestoreVersionRequest());
+        this.router.navigate(['../', 'edit'], { relativeTo: this.route });
     }
 
     cancel() {

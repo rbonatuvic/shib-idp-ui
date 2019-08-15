@@ -2,6 +2,7 @@ import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
+import { getFilterNames } from '../reducer';
 
 export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     label: 'EntityAttributes',
@@ -10,6 +11,7 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     getEntity(filter: MetadataFilter): EntityAttributesFilterEntity {
         return new EntityAttributesFilterEntity(filter);
     },
+    validatorParams: [getFilterNames],
     getValidators(namesList: string[] = []): any {
         const validators = {
             '/': (value, property, form_current) => {

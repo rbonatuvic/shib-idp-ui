@@ -1,0 +1,6 @@
+<metadata-editor
+    [schema]="schema$ | async"
+    [model]="model$ | async"
+    [validators]="validators$ | async"
+    (change)="onChange($event)"
+></metadata-editor>

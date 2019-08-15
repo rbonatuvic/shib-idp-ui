@@ -34,12 +34,6 @@ describe('Wizard Reducer', () => {
         });
     });
 
-    describe(`${WizardActionTypes.ADD_SCHEMA}`, () => {
-        it('should add the payload to the schema collection', () => {
-            expect(reducer(snapshot, new AddSchema({id: 'foo', schema: SCHEMA })).schemaCollection).toEqual({ 'foo': SCHEMA });
-        });
-    });
-
     describe(`${WizardActionTypes.SET_DISABLED}`, () => {
         it('should set the disabled property on the wizard', () => {
             expect(reducer(snapshot, new SetDisabled(true)).disabled).toBe(true);
@@ -108,7 +102,6 @@ describe('Wizard Reducer', () => {
 
     describe('selector functions', () => {
         it('should return pieces of state', () => {
-            expect(selectors.getCollection(snapshot)).toEqual(snapshot.schemaCollection);
             expect(selectors.getDefinition(snapshot)).toEqual(snapshot.definition);
             expect(selectors.getDisabled(snapshot)).toEqual(snapshot.disabled);
             expect(selectors.getIndex(snapshot)).toEqual(snapshot.index);
