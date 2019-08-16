@@ -914,7 +914,7 @@
       "id": "77dfeb05-38e3-4ef8-9566-06e7597d464c",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-primary > translate-i18n",
+      "target": "css=.btn-primary",
       "targets": [
         ["css=.btn-primary > translate-i18n", "css:finder"],
         ["xpath=//div/button/translate-i18n", "xpath:position"],
@@ -924,10 +924,10 @@
     }, {
       "id": "f79371b5-0081-45a0-bfb3-c403db903043",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "command": "pause",
+      "target": "2000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "a8ed628c-53f7-4551-9ce8-fef976cc96ce",
       "comment": "",
@@ -937,6 +937,13 @@
         ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
         ["xpath=//button[2]/i", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "6b3ec8f1-8b9a-40f5-816f-3a1e415b9d8d",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "be805934-2692-4a1c-a28f-afb3cc4eb5f4",
@@ -958,6 +965,13 @@
         ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
         ["xpath=//button[2]/i", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "403570ff-e1f0-4db9-925f-f90c5994b60e",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "8f2da627-e8ad-473a-a71a-bec5dd1f0999",
