@@ -26,7 +26,7 @@
             "default": false
         },
         "organization": {
-            "type": "object",
+            "type": ["object", "null"],
             "properties": {
                 "name": {
                     "title": "label.organization-name",
@@ -68,13 +68,13 @@
         "contacts": {
             "title": "label.contact-information",
             "description": "tooltip.contact-information",
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "$ref": "#/definitions/Contact"
             }
         },
         "mdui": {
-            "type": "object",
+            "type": ["object", "null"],
             "widget": {
                 "id": "fieldset"
             },
@@ -143,7 +143,7 @@
             }
         },
         "securityInfo": {
-            "type": "object",
+            "type": ["object", "null"],
             "widget": {
                 "id": "fieldset"
             },
@@ -245,13 +245,13 @@
         "assertionConsumerServices": {
             "title": "label.assertion-consumer-service-endpoints",
             "description": "",
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "$ref": "#/definitions/AssertionConsumerService"
             }
         },
         "serviceProviderSsoDescriptor": {
-            "type": "object",
+            "type": ["object", "null"],
             "widget": {
                 "id": "fieldset"
             },
@@ -299,17 +299,17 @@
         "logoutEndpoints": {
             "title": "label.logout-endpoints",
             "description": "tooltip.logout-endpoints",
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "$ref": "#/definitions/LogoutEndpoint"
             }
         },
         "relyingPartyOverrides": {
-            "type": "object",
+            "type": ["object", "null"],
             "properties": {}
         },
         "attributeRelease": {
-            "type": "array",
+            "type": ["array", "null"],
             "title": "label.attribute-release",
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
             "widget": {
