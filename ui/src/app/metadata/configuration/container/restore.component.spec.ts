@@ -10,6 +10,7 @@ import * as fromResolvers from '../../resolver/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { RestoreComponent } from './restore.component';
 import { of } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
     template: `
@@ -44,6 +45,9 @@ describe('Metadata Restore Page Component', () => {
                 RestoreComponent,
                 TestHostComponent
             ],
+            providers: [
+                DatePipe
+            ]
         }).compileComponents();
 
         store = TestBed.get(Store);

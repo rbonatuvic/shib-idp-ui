@@ -17,6 +17,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AddNotification } from '../../../notification/action/notification.action';
 import { Notification, NotificationType } from '../../../notification/model/notification';
+import { removeNulls } from '../../../shared/util';
 
 
 @Injectable()

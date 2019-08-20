@@ -8,6 +8,7 @@ import { MetadataVersion } from '../model/version';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { Metadata } from '../../domain/domain.type';
 import { withLatestFrom } from 'rxjs-compat/operator/withLatestFrom';
+import { removeNulls } from '../../../shared/util';
 
 @Injectable()
 export class MetadataHistoryService {
@@ -48,7 +49,7 @@ export class MetadataHistoryService {
     restoreVersion(resourceId: string, type: string, versionId: string): Observable<Metadata> {
         return this.getVersions(resourceId, [null, versionId], type).pipe(
             switchMap(([current, toRestore]) =>
-                this.updateVersion(resourceId, type, { ...toRestore, version: current.version })
+                this.updateVersion(resourceId, type, { ...removeNulls(toRestore), version: current.version })
             )
         );
     }
