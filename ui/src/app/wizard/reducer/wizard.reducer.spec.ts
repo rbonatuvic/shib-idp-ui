@@ -3,7 +3,6 @@ import * as selectors from './wizard.reducer';
 import {
     WizardActionTypes,
     ClearWizard,
-    AddSchema,
     SetDisabled,
     SetDefinition,
     SetIndex,

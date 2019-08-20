@@ -34,14 +34,10 @@ export class WizardSummaryComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.summary && this.summary) {
-            const schemas = this.summary.schema;
+            const schema = this.summary.schema;
             const model = this.summary.model;
             const def = this.summary.definition;
             const steps = def.steps;
-
-            const schema = Object.keys(schemas).reduce((coll, key) => ({
-                ...merge(coll, schemas[key])
-            }), {} as any);
 
             this.sections = steps
                 .filter(step => step.id !== 'summary')

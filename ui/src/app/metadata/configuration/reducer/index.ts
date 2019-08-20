@@ -195,6 +195,12 @@ export const getFormattedModel = createSelector(
     (model, definition) => definition.formatter(model)
 );
 
+export const getRestorationModel = createSelector(
+    getVersionModel,
+    getRestorationChanges,
+    (model, changes) => model
+);
+
 // Mixed states
 
 export const getConfigurationModelFn = (kind, version, provider, resolver) => {

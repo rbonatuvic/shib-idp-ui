@@ -24,7 +24,8 @@ import {
     getVersionModel,
     getConfigurationModelId,
     getConfigurationModelKind,
-    getConfigurationDefinition
+    getConfigurationDefinition,
+    getRestorationModel
 } from '../reducer';
 import { SetMetadata } from '../action/configuration.action';
 
@@ -39,7 +40,7 @@ export class RestoreEffects {
             this.store.select(getConfigurationModelId),
             this.store.select(getConfigurationModelKind),
             this.store.select(getConfigurationModel),
-            this.store.select(getVersionModel)
+            this.store.select(getRestorationModel)
         ),
         switchMap(([action, id, kind, current, version]) =>
             this.historyService.updateVersion(id, kind, {
