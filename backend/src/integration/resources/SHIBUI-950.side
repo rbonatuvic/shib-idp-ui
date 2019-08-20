@@ -113,15 +113,9 @@
     }, {
       "id": "e5d771f5-57e2-4f11-af50-124c2121d36b",
       "comment": "",
-      "command": "type",
+      "command": "attachFile",
       "target": "id=fileInput",
-      "targets": [
-        ["id=fileInput", "id"],
-        ["name=file", "name"],
-        ["css=#fileInput", "css:finder"],
-        ["xpath=//input[@id='fileInput']", "xpath:attributes"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
+      "targets": [],
       "value": "${SHIBUI950}"
     }, {
       "id": "67ad4a51-7c15-41e1-bc34-62a9f3e83b46",
