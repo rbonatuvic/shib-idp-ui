@@ -426,7 +426,7 @@
     }, {
       "id": "83f6f403-40b0-4f12-82e2-a14e301dd7ff",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.td-lg:nth-child(4)",
       "targets": [
         ["css=.td-lg:nth-child(4)", "css:finder"],
@@ -454,7 +454,7 @@
     }, {
       "id": "6762fdb2-6744-4238-a2df-d529ab3b6102",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "id=/nameIdFormatFilterTarget.target",
       "targets": [
         ["id=/nameIdFormatFilterTarget.target", "id"],

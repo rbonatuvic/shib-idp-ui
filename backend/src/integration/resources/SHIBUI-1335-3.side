@@ -343,7 +343,7 @@
     }, {
       "id": "7d059a57-60f7-4729-95af-b36619b98694",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
@@ -602,7 +602,7 @@
     }, {
       "id": "2b9c0a43-fd7a-4ffa-bfef-a7fc41746e16",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.td-lg:nth-child(4)",
       "targets": [
         ["css=.td-lg:nth-child(4)", "css:finder"],
@@ -800,9 +800,16 @@
       ],
       "value": ""
     }, {
+      "id": "afb97ce0-665f-4469-9aad-d17349c491cd",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "4a73b268-7d33-4e8c-8fa4-cb059be9768f",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
@@ -810,13 +817,6 @@
         ["xpath=//td[contains(.,'NameIDFormat')]", "xpath:innerText"]
       ],
       "value": "NameIDFormat"
-    }, {
-      "id": "81970d9d-2892-4b42-ba56-ba1a14f453d2",
-      "comment": "",
-      "command": "pause",
-      "target": "2000",
-      "targets": [],
-      "value": ""
     }, {
       "id": "63ac7307-0538-4c0d-8e98-2f05c767baaf",
       "comment": "",
@@ -828,9 +828,16 @@
       ],
       "value": ""
     }, {
+      "id": "5037edea-9d8f-496d-aedc-70b8763d5de2",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "ed8e07ff-0dce-47d6-8310-f1920bfe1367",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],

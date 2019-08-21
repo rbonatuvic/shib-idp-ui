@@ -550,7 +550,7 @@
     }, {
       "id": "8c52471a-70f5-43aa-b670-6f8d22e18668",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
@@ -813,7 +813,7 @@
     }, {
       "id": "e9f4ddf4-db8a-4bda-88cc-66173717986c",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.td-lg:nth-child(4)",
       "targets": [
         ["css=.td-lg:nth-child(4)", "css:finder"],
@@ -948,7 +948,7 @@
     }, {
       "id": "be805934-2692-4a1c-a28f-afb3cc4eb5f4",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
@@ -976,7 +976,7 @@
     }, {
       "id": "8f2da627-e8ad-473a-a71a-bec5dd1f0999",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],

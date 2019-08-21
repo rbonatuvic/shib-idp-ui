@@ -474,7 +474,7 @@
     }, {
       "id": "52f5680c-c63d-411e-8332-52901f12ea3b",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
       "targets": [
         ["css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
@@ -485,7 +485,7 @@
     }, {
       "id": "67ff44aa-1efd-4b13-a0e9-3648a09911dd",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
       "targets": [
         ["css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
@@ -516,7 +516,7 @@
     }, {
       "id": "f48dd1b5-607a-485b-b1d5-03301f99b9ce",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=Test Metadata Provider",
       "targets": [
         ["linkText=Test Metadata Provider", "linkText"],
@@ -530,7 +530,7 @@
     }, {
       "id": "5eccd4e9-a451-4ec8-a9e1-1e1f8e771677",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
@@ -541,7 +541,7 @@
     }, {
       "id": "c768c2c1-09d4-46fe-8007-42fb4b3f4aaa",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(4)",
       "targets": [
         ["css=td:nth-child(4)", "css:finder"],
@@ -692,7 +692,7 @@
     }, {
       "id": "68103f0e-e3f1-419b-903d-5d8c30bc6700",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(2)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(2)", "css:finder"],
@@ -703,7 +703,7 @@
     }, {
       "id": "a13198b9-7827-47e2-ade3-143b981d34ee",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(3)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(3)", "css:finder"],
@@ -713,7 +713,7 @@
     }, {
       "id": "3d83741c-299e-4fcb-9ce6-4b7291c423a4",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.d-block > primitive-property:nth-child(10) .d-block:nth-child(2)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(10) .d-block:nth-child(2)", "css:finder"],
@@ -723,7 +723,7 @@
     }, {
       "id": "190cc157-d427-4046-aff2-180392395ad3",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.d-block > primitive-property:nth-child(10) .d-block:nth-child(3)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(10) .d-block:nth-child(3)", "css:finder"],
@@ -961,7 +961,7 @@
     }, {
       "id": "8a2c6435-d77b-4c87-8e0e-e1ae6d4629b9",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(4) primitive-property:nth-child(2) .d-block:nth-child(2)",
       "targets": [
         ["css=.mb-4:nth-child(4) primitive-property:nth-child(2) .d-block:nth-child(2)", "css:finder"],
@@ -971,7 +971,7 @@
     }, {
       "id": "0687fe3f-c1af-4a5a-9708-09b7b92734bc",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(4) primitive-property:nth-child(3) .d-block:nth-child(2)",
       "targets": [
         ["css=.mb-4:nth-child(4) primitive-property:nth-child(3) .d-block:nth-child(2)", "css:finder"],
@@ -982,7 +982,7 @@
     }, {
       "id": "a007794f-ab91-47b8-b470-e4294e47a2a7",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=object-property:nth-child(1) > primitive-property:nth-child(4) .d-block:nth-child(2)",
       "targets": [
         ["css=object-property:nth-child(1) > primitive-property:nth-child(4) .d-block:nth-child(2)", "css:finder"],
@@ -992,7 +992,7 @@
     }, {
       "id": "5279bf64-46c1-4376-a527-e19e217b42fa",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=object-property:nth-child(1) > primitive-property:nth-child(5) .d-block:nth-child(2)",
       "targets": [
         ["css=object-property:nth-child(1) > primitive-property:nth-child(5) .d-block:nth-child(2)", "css:finder"],

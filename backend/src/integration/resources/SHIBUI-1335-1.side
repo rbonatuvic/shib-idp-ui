@@ -1366,7 +1366,7 @@
     }, {
       "id": "100902ee-6d6e-4148-a69b-b37746a4ad6e",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(3)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(3)", "css:finder"],
@@ -1394,7 +1394,7 @@
     }, {
       "id": "c9d498da-9f59-40ae-b5d4-cae397a13766",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(3)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(3)", "css:finder"],
@@ -1422,7 +1422,7 @@
     }, {
       "id": "441608df-24a3-4a60-bfce-50a90ff0ee16",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(3)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(3)", "css:finder"],

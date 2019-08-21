@@ -287,7 +287,7 @@
     }, {
       "id": "20f7b832-ec52-450a-8224-399f0d4de0a0",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
@@ -698,7 +698,7 @@
     }, {
       "id": "d722902b-5c10-45dc-99df-d96f46e78313",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
@@ -726,7 +726,7 @@
     }, {
       "id": "d7909094-96ce-4532-98b4-446cc013c9c8",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],

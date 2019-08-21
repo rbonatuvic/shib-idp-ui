@@ -141,7 +141,7 @@
     }, {
       "id": "185696df-a872-419e-81aa-7c9cfa1e2b90",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=File Upload Test",
       "targets": [
         ["linkText=File Upload Test", "linkText"],
@@ -155,7 +155,7 @@
     }, {
       "id": "25b4b805-3585-4f83-b9ba-a3e8b9ee1050",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(2)",
       "targets": [
         ["css=td:nth-child(2)", "css:finder"],
