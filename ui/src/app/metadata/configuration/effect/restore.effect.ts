@@ -28,7 +28,7 @@ export class RestoreVersionEffects {
         ofType<SelectVersionRestoreRequest>(RestoreActionTypes.SELECT_VERSION_REQUEST),
         map(action => action.payload),
         switchMap(({ type, id, version }) => {
-            return this.historyService.getVersion(id, version, type).pipe(
+            return this.historyService.getVersion(id, type, version).pipe(
                 map(v => new SelectVersionRestoreSuccess(v)),
                 catchError(err => of(new SelectVersionRestoreError(err)))
             );
