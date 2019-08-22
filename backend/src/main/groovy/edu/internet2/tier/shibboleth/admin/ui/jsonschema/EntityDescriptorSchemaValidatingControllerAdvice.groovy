@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import mjson.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpInputMessage
@@ -14,6 +13,7 @@ import javax.annotation.PostConstruct
 import java.lang.reflect.Type
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator.validatePayloadAgainstSchema
 
 /**
  * Controller advice implementation for validating relying party overrides payload coming from UI layer
@@ -22,7 +22,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocati
  * @author Dmitriy Kopylenko
  */
 @ControllerAdvice
-class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestBodyAdviceAdapter {
+class EntityDescriptorSchemaValidatingControllerAdvice extends RequestBodyAdviceAdapter {
 
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
@@ -38,22 +38,12 @@ class RelyingPartyOverridesJsonSchemaValidatingControllerAdvice extends RequestB
     HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter,
                                            Type targetType, Class<? extends HttpMessageConverter<?>> converterType)
             throws IOException {
-        def bytes = inputMessage.body.bytes
-        def schema = Json.schema(this.jsonSchemaLocation.uri)
 
-        def stream = new ByteArrayInputStream(bytes)
-        def validationResult = schema.validate(Json.read(stream.getText()))
-        if (!validationResult.at('ok')) {
-            throw new JsonSchemaValidationFailedException(validationResult.at('errors').asList())
-        }
-        return [
-                getBody: { new ByteArrayInputStream(bytes) },
-                getHeaders: { inputMessage.headers }
-        ] as HttpInputMessage
+        return validatePayloadAgainstSchema(inputMessage, this.jsonSchemaLocation.uri)
     }
 
     @PostConstruct
     void init() {
-        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry);
+        this.jsonSchemaLocation = metadataSourcesSchema(this.jsonSchemaResourceLocationRegistry)
     }
 }
