@@ -124,6 +124,25 @@ class MetadataResolverControllerSchemaValidationIntegrationTests extends Specifi
 
     }
 
+    def 'POST for FilesystemMetadataResolver with invalid payload according to schema validation'() {
+        given:
+        def postedJsonBody = """            
+            {
+                "name" : null,
+                "xmlId": "123",
+                "metadataFile": "%{shib.home}/metadata.xml",                                                                                                
+                "@type" : "FilesystemMetadataResolver"
+            }                
+        """
+
+        when:
+        def result = HTTP_POST(postedJsonBody)
+
+        then:
+        checkJsonValidationIsPerformed(result)
+
+    }
+
     private static HttpEntity<String> createRequestHttpEntityFor(String jsonBody) {
         new HttpEntity<String>(jsonBody, ['Content-Type': 'application/json'] as HttpHeaders)
     }
