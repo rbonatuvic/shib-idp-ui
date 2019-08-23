@@ -21,6 +21,7 @@ class LowLevelJsonSchemaValidator {
 
     static HttpInputMessage validateMetadataResolverTypePayloadAgainstSchema(HttpInputMessage inputMessage,
                                                                              JsonSchemaResourceLocationRegistry schemaRegistry) {
+
         def origInput = [inputMessage.body.bytes, inputMessage.headers]
         def json = extractJsonPayload(origInput)
         def schemaUri = null
@@ -37,10 +38,15 @@ class LowLevelJsonSchemaValidator {
             default:
                 break
         }
-        if(!schemaUri) {
+        if (!schemaUri) {
             return newInputMessage(origInput)
         }
         doValidate(origInput, Json.schema(schemaUri), json)
+    }
+
+    static HttpInputMessage validateMetadataFilterTypePayloadAgainstSchema(HttpInputMessage inputMessage,
+                                                                           JsonSchemaResourceLocationRegistry schemaRegistry) {
+        null
     }
 
     private static Json extractJsonPayload(List origInput) {

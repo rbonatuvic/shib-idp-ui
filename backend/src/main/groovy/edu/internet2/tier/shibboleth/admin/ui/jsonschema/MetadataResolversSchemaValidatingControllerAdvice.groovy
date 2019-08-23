@@ -21,7 +21,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSche
  * @author Dmitriy Kopylenko
  */
 @ControllerAdvice
-class MetadataResolverSchemaValidatingControllerAdvice extends RequestBodyAdviceAdapter {
+class MetadataResolversSchemaValidatingControllerAdvice extends RequestBodyAdviceAdapter {
 
     @Autowired
     JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry
