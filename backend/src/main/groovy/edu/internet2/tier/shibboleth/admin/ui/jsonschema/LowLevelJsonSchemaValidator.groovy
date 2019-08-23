@@ -44,11 +44,6 @@ class LowLevelJsonSchemaValidator {
         doValidate(origInput, Json.schema(schemaUri), json)
     }
 
-    static HttpInputMessage validateMetadataFilterTypePayloadAgainstSchema(HttpInputMessage inputMessage,
-                                                                           JsonSchemaResourceLocationRegistry schemaRegistry) {
-        null
-    }
-
     private static Json extractJsonPayload(List origInput) {
         Json.read(new ByteArrayInputStream(origInput[0]).getText())
     }
