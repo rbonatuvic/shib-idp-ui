@@ -147,7 +147,7 @@
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
-                    "type": "string",
+                    "type": "number",
                     "widget": {
                         "id": "string",
                         "help": "message.real-number"
@@ -578,7 +578,7 @@
         "metadataFilters": {
             "title": "",
             "description": "",
-            "type": "object",
+            "type": "array",
             "properties": {
                 "RequiredValidUntil": {
                     "title": "label.required-valid-until",

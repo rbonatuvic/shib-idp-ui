@@ -36,6 +36,8 @@ public class DynamicHttpMetadataResolver extends MetadataResolver {
 
     private Integer maxConnectionsPerRoute = 100;
 
+    private String metadataURL;
+
     @ElementCollection
     @OrderColumn
     private List<String> supportedContentTypes;

@@ -61,7 +61,7 @@
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
-                    "type": "string",
+                    "type": "number",
                     "widget": {
                         "id": "string",
                         "help": "message.real-number"

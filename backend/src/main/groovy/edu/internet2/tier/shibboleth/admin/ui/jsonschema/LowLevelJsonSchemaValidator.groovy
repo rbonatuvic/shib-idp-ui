@@ -13,14 +13,16 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocati
 class LowLevelJsonSchemaValidator {
 
     static HttpInputMessage validatePayloadAgainstSchema(HttpInputMessage inputMessage, URI schemaUri) {
-        def json = extractJsonPayload(inputMessage)
+        def origInput = [inputMessage.body.bytes, inputMessage.headers]
+        def json = extractJsonPayload(origInput)
         def schema = Json.schema(schemaUri)
-        doValidate(schema, json)
+        doValidate(origInput, schema, json)
     }
 
     static HttpInputMessage validateMetadataResolverTypePayloadAgainstSchema(HttpInputMessage inputMessage,
                                                                              JsonSchemaResourceLocationRegistry schemaRegistry) {
-        def json = extractJsonPayload(inputMessage)
+        def origInput = [inputMessage.body.bytes, inputMessage.headers]
+        def json = extractJsonPayload(origInput)
         def schemaUri = null
         switch (json.asMap()['@type']) {
             case 'LocalDynamicMetadataResolver':
@@ -36,23 +38,27 @@ class LowLevelJsonSchemaValidator {
                 break
         }
         if(!schemaUri) {
-            return inputMessage
+            return newInputMessage(origInput)
         }
-        doValidate(Json.schema(schemaUri), json)
+        doValidate(origInput, Json.schema(schemaUri), json)
     }
 
-    private static Json extractJsonPayload(HttpInputMessage inputMessage) {
-        Json.read(new ByteArrayInputStream(inputMessage.body.bytes).getText())
+    private static Json extractJsonPayload(List origInput) {
+        Json.read(new ByteArrayInputStream(origInput[0]).getText())
     }
 
-    private static HttpInputMessage doValidate(Json.Schema schema, Json json) {
+    private static HttpInputMessage doValidate(List origInput, Json.Schema schema, Json json) {
         def validationResult = schema.validate(json)
         if (!validationResult.at('ok')) {
             throw new JsonSchemaValidationFailedException(validationResult.at('errors').asList())
         }
-        return [
-                getBody   : { new ByteArrayInputStream(bytes) },
-                getHeaders: { inputMessage.headers }
+        newInputMessage(origInput)
+    }
+
+    private static newInputMessage(origInput) {
+        [
+                getBody   : { new ByteArrayInputStream(origInput[0]) },
+                getHeaders: { origInput[1] }
         ] as HttpInputMessage
     }
 }

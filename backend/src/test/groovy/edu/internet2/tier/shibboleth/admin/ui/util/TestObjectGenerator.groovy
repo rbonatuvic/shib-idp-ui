@@ -535,6 +535,7 @@ class TestObjectGenerator {
         new DynamicHttpMetadataResolver().with {
             it.name = 'DynamicHTTP'
             it.xmlId = 'DynamicHTTP'
+            it.metadataURL = 'http://metadata'
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
             }

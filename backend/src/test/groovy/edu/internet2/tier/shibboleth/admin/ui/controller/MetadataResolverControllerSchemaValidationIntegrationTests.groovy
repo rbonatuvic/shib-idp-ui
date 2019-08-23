@@ -17,6 +17,16 @@ class MetadataResolverControllerSchemaValidationIntegrationTests extends Specifi
 
     static RESOURCE_URI = '/api/MetadataResolvers'
 
+    private HTTP_POST = { body ->
+        this.restTemplate.postForEntity(RESOURCE_URI, createRequestHttpEntityFor(body), Map)
+    }
+
+    private static checkJsonValidationIsPerformed = {
+        assert it.statusCodeValue == 400
+        assert it.body.errorMessage.count('Type mistmatch for null') > 0
+        true
+    }
+
     def 'POST for LocalDynamicMetadataResolver with invalid payload according to schema validation'() {
         given:
         def postedJsonBody = """            
@@ -87,14 +97,36 @@ class MetadataResolverControllerSchemaValidationIntegrationTests extends Specifi
         """
 
         when:
-        def result = this.restTemplate.postForEntity(RESOURCE_URI, createRequestHttpEntityFor { postedJsonBody }, Map)
+        def result = HTTP_POST(postedJsonBody)
 
         then:
-        result.statusCodeValue == 400
-        result.body.errorMessage.count('Type mistmatch for null') > 0
+        checkJsonValidationIsPerformed(result)
+
     }
 
-    private static HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
-        new HttpEntity<String>(jsonBodySupplier(), ['Content-Type': 'application/json'] as HttpHeaders)
+    def 'POST for DynamicHttpMetadataResolver with invalid payload according to schema validation'() {
+        given:
+        def postedJsonBody = """            
+            {
+                "name" : null,
+                "xmlId": "123",
+                "metadataURL": "http://metadata",                
+                "metadataRequestURLConstructionScheme": {"@type": "MetadataQueryProtocol", "content": "scheme"},                                                                
+                "@type" : "DynamicHttpMetadataResolver"
+            }                
+        """
+
+        when:
+        def result = HTTP_POST(postedJsonBody)
+
+        then:
+        checkJsonValidationIsPerformed(result)
+
     }
+
+    private static HttpEntity<String> createRequestHttpEntityFor(String jsonBody) {
+        new HttpEntity<String>(jsonBody, ['Content-Type': 'application/json'] as HttpHeaders)
+    }
+
+
 }
