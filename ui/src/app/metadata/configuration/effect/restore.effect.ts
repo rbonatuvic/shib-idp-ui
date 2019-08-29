@@ -21,13 +21,13 @@ import { Store } from '@ngrx/store';
 import {
     ConfigurationState,
     getConfigurationModel,
-    getVersionModel,
     getConfigurationModelId,
     getConfigurationModelKind,
     getConfigurationDefinition,
     getRestorationModel
 } from '../reducer';
 import { SetMetadata } from '../action/configuration.action';
+import { removeNulls } from '../../../shared/util';
 
 
 @Injectable()
@@ -43,10 +43,10 @@ export class RestoreEffects {
             this.store.select(getRestorationModel)
         ),
         switchMap(([action, id, kind, current, version]) =>
-            this.historyService.updateVersion(id, kind, {
+            this.historyService.updateVersion(id, kind, removeNulls({
                 ...version,
                 version: current.version
-            }).pipe(
+            })).pipe(
                 map(v => new RestoreVersionSuccess({ id, type: kind, model: v })),
                 catchError(err => of(new RestoreVersionError(err)))
             )

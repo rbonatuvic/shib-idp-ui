@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
-import { RestoreVersionRequest, CancelRestore } from '../action/restore.action';
+import { CancelRestore } from '../action/restore.action';
 import { map } from 'rxjs/operators';
+
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 

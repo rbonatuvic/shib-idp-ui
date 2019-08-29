@@ -28,12 +28,13 @@ export class SchemaService {
             const conditions = formProperty.parent.schema.anyOf || [];
             const values = formProperty.parent.value;
             const currentConditions = conditions.filter(condition =>
-                Object
+                'properties' in condition ? Object
                     .keys(condition.properties)
                     .some(
                         key => values.hasOwnProperty(key) && condition.properties[key].enum ?
                             condition.properties[key].enum[0] === values[key] : false
                     )
+                : false
             );
             currentConditions.forEach(el => {
                 requiredFields = el.required || [];

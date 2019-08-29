@@ -91,6 +91,8 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             index: 1,
             initialValues: [],
             fields: [
+                'name',
+                '@type',
                 'enabled',
                 'xmlId',
                 'metadataURL',

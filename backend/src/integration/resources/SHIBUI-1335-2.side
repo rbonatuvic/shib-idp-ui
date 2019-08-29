@@ -691,10 +691,10 @@
     }, {
       "id": "eca1d3dd-9e47-49d2-b4a1-a45c2b6c8c3a",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "command": "pause",
+      "target": "2000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "d722902b-5c10-45dc-99df-d96f46e78313",
       "comment": "",
@@ -715,6 +715,13 @@
         ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
         ["xpath=//button[2]/i", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "d25400e1-127e-4b8c-b7e2-ade937cfd5a0",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "d7909094-96ce-4532-98b4-446cc013c9c8",
