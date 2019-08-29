@@ -9,7 +9,7 @@ import * as fromRestore from './restore.reducer';
 import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
-import { getSplitSchema } from '../../../wizard/reducer';
+import { getSplitSchema, getModel } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
@@ -192,13 +192,34 @@ export const getInvalidRestorationForms = createSelector(getRestoreState, fromRe
 export const getFormattedModel = createSelector(
     getVersionModel,
     getConfigurationDefinition,
-    (model, definition) => definition.formatter(model)
+    (model, definition) => definition ? definition.formatter(model) : null
+);
+
+export const getFormattedChanges = createSelector(
+    getRestorationChanges,
+    getConfigurationDefinition,
+    (model, definition) => definition ? definition.formatter(model) : null
+);
+
+export const getFormattedModelWithChanges = createSelector(
+    getVersionModel,
+    getRestorationChanges,
+    getConfigurationDefinition,
+    (model, changes, definition) => definition ? definition.formatter({
+        ...model,
+        ...changes
+    }) : null
 );
 
 export const getRestorationModel = createSelector(
     getVersionModel,
     getRestorationChanges,
-    (model, changes) => model
+    getModel,
+    (model, changes, empty) => ({
+        ...model,
+        ...empty,
+        ...changes
+    })
 );
 
 // Mixed states
@@ -229,4 +250,4 @@ export const getConfigurationModelType = createSelector(getConfigurationModel, g
 
 export const getConfigurationHasXml = createSelector(getConfigurationXml, xml => !!xml);
 export const getConfigurationFilters = createSelector(getConfigurationModel, model => model.metadataFilters);
-export const getConfigurationVersionDate = createSelector(getRestoreModel, version => version && version.modifiedDate);
+export const getConfigurationVersionDate = createSelector(getVersionModel, version => version && version.modifiedDate);

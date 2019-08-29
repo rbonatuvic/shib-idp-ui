@@ -18,9 +18,12 @@ export class MetadataEditorComponent {
 
     @Output() change: EventEmitter<any> = new EventEmitter();
     @Output() status: EventEmitter<any> = new EventEmitter();
+    @Output() onLockChange: EventEmitter<any> = new EventEmitter();
 
     lock: FormControl = new FormControl(true);
 
-    constructor() {}
+    constructor() {
+        this.lock.valueChanges.subscribe(locked => this.onLockChange.emit(locked));
+    }
 }
 

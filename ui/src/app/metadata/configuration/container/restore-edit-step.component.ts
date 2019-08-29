@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-import { Observable, combineLatest, of } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { Observable, combineLatest, of, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
-    ConfigurationState,
-    getFormattedModel,
-    getRestorationChanges
+    ConfigurationState, getFormattedModel
 } from '../reducer';
-import { getWizardDefinition, getSchema, getValidators } from '../../../wizard/reducer';
-import { Wizard } from '../../../wizard/model';
+import { getWizardDefinition, getSchema, getValidators, getCurrent, getWizardIndex } from '../../../wizard/reducer';
+import { Wizard, WizardStep } from '../../../wizard/model';
 import { Metadata } from '../../domain/domain.type';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
-import { UpdateRestorationChangesRequest } from '../action/restore.action';
+import { UpdateRestorationChangesRequest, UpdateRestoreFormStatus } from '../action/restore.action';
+import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'restore-edit-step',
@@ -20,11 +20,19 @@ import { UpdateRestorationChangesRequest } from '../action/restore.action';
     styleUrls: []
 })
 
-export class RestoreEditStepComponent {
+export class RestoreEditStepComponent implements OnDestroy {
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
+
+    readonly lockChange$: Subject<boolean> = new Subject<boolean>();
+    readonly statusChange$: Subject<any> = new Subject<any>();
 
     definition$: Observable<Wizard<Metadata>> = this.store.select(getWizardDefinition);
     schema$: Observable<any> = this.store.select(getSchema);
     model$: Observable<Metadata> = this.store.select(getFormattedModel);
+    step$: Observable<WizardStep> = this.store.select(getCurrent);
+
+    lockable$: Observable<boolean> = this.step$.pipe(map(step => step.locked));
 
     validators$: Observable<any>;
 
@@ -40,29 +48,31 @@ export class RestoreEditStepComponent {
             switchMap(selections => this.store.select(getValidators(selections)))
         );
 
-        this.store.select(getRestorationChanges).subscribe(console.log);
+        this.step$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(s => this.lockChange$.next(s && s.locked ? true : false));
+
+        this.lockChange$
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe(locked => this.store.dispatch(locked ? new LockEditor() : new UnlockEditor()));
+
+        this.statusChange$
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                withLatestFrom(this.store.select(getWizardIndex))
+            )
+            .subscribe(([errors, currentPage]) => {
+                const status = { [currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
+                this.store.dispatch(new UpdateRestoreFormStatus(status));
+            });
     }
 
     onChange(changes: any): void {
         this.store.dispatch(new UpdateRestorationChangesRequest(changes));
     }
-}
 
-/*
-this.valueChangeEmitted$.pipe(
-            map(changes => changes.value),
-            withLatestFrom(this.definition$, this.store.select(fromProvider.getSelectedProvider)),
-            filter(([changes, definition, provider]) => definition && changes && provider),
-            map(([changes, definition, provider]) => {
-                const parsed = definition.parser(changes);
-                return ({
-                    ...parsed,
-                    metadataFilters: [
-                        ...provider.metadataFilters,
-                        ...(parsed.metadataFilters || [])
-                    ]
-                });
-            })
-        )
-            .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));
-*/
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+}

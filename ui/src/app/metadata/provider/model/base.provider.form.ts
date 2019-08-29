@@ -1,12 +1,12 @@
 import { Wizard } from '../../../wizard/model';
 import { BaseMetadataProvider } from '../../domain/model/providers';
-import { getProviderNames, getProviderXmlIds } from '../reducer';
+import { getFilteredProviderNames, getFilteredProviderXmlIds } from '../reducer';
 
 export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
     label: 'BaseMetadataProvider',
     type: 'BaseMetadataResolver',
     schema: '',
-    validatorParams: [getProviderNames, getProviderXmlIds],
+    validatorParams: [getFilteredProviderNames, getFilteredProviderXmlIds],
     getValidators(namesList: string[], xmlIdList: string[]): any {
         const validators = {
             '/': (value, property, form_current) => {

@@ -5,7 +5,6 @@ export interface State {
     index: string;
     disabled: boolean;
     definition: Wizard<any>;
-
     schemaPath: string;
     loading: boolean;
     schema: any;

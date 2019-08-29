@@ -23,6 +23,20 @@ export function reducer(state = initialState, action: RestoreActionsUnion): Rest
                     ...action.payload
                 }
             };
+        case RestoreActionTypes.SET_SAVING_STATUS:
+            return {
+                ...state,
+                saving: action.payload
+            };
+        case RestoreActionTypes.UPDATE_STATUS: {
+            return {
+                ...state,
+                status: {
+                    ...state.status,
+                    ...action.payload
+                }
+            };
+        }
         default: {
             return state;
         }

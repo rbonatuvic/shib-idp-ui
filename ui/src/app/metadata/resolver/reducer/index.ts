@@ -5,6 +5,7 @@ import * as fromSearch from './search.reducer';
 import * as fromCopy from './copy.reducer';
 import * as fromDraft from './draft.reducer';
 import * as fromCollection from './collection.reducer';
+import * as fromWizard from '../../../wizard/reducer';
 
 import { combineAllFn, getEntityIdsFn, getInCollectionFn, doesExistFn } from '../../domain/domain.util';
 
@@ -109,3 +110,17 @@ export const getAllOtherIds = createSelector(
     getSelectedResolverId,
     (ids, selected) => ids.filter(id => id !== selected)
 );
+
+export const getDraftModelWithChanges = createSelector(
+    fromWizard.getSchema,
+    fromWizard.getModel,
+    getSelectedDraft,
+    getEntityChanges,
+    fromWizard.getWizardDefinition,
+    (schema, wizardModel, selectedDraft, changes, definition) => definition.formatter({
+        ...wizardModel,
+        ...selectedDraft,
+        ...changes
+    })
+);
+

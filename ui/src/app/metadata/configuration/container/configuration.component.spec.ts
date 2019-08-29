@@ -59,12 +59,4 @@ describe('Metadata Configuration Page Component', () => {
     it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
     }));
-
-    describe('hasVersion function', () => {
-        it('should determine if a version is defined', () => {
-            expect(app.hasVersion([[{id: 'foo'}], { version: 'foo' }])).toBe('foo');
-            expect(app.hasVersion([[{ id: 'foo' }], {}])).toBe('foo');
-            expect(app.hasVersion([[], {}])).toBeNull();
-        });
-    });
 });

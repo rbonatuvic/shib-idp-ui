@@ -12,6 +12,8 @@ import { SummaryPropertyComponent } from './summary-property.component';
 import { SCHEMA } from '../../../../testing/form-schema.stub';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MetadataProviderWizard } from '../../provider/model';
+import { AttributesService } from '../service/attributes.service';
+import { MockAttributeService } from '../../../../testing/attributes.stub';
 
 @Component({
     template: `
@@ -54,7 +56,8 @@ describe('Provider Wizard Summary Component', () => {
                 TestHostComponent
             ],
             providers: [
-                { provide: WidgetRegistry, useClass: DefaultWidgetRegistry }
+                { provide: WidgetRegistry, useClass: DefaultWidgetRegistry },
+                { provide: AttributesService, useClass: MockAttributeService }
             ]
         }).compileComponents();
 

@@ -4,14 +4,6 @@
             <editor-nav
                 [format]="formats.DROPDOWN"
                 [status]="status$ | async">
-                <a class="dropdown-item"
-                    *ngIf="canFilter$ | async"
-                    [routerLink]="['../', 'filters']"
-                    routerLinkActive="active"
-                    [attr.aria-label]="'label.filter-list' | translate"
-                    role="button">
-                    <translate-i18n key="label.filter-list"></translate-i18n>
-                </a>
             </editor-nav>
         </div>
         <div class="col-6 col-lg-3 order-2 text-right">
@@ -46,15 +38,8 @@
     <div class="row">
         <div class="col-lg-3 d-none d-lg-block">
             <editor-nav
+                [status]="status$ | async"
                 [format]="formats.TABS">
-                <a class="nav-link"
-                    *ngIf="canFilter$ | async"
-                    [routerLink]="['../', 'filters']"
-                    routerLinkActive="active"
-                    [attr.aria-label]="'label.filter-list' | translate"
-                    role="button">
-                    <translate-i18n key="label.filter-list"></translate-i18n>
-                </a>
             </editor-nav>
         </div>
         <div class="col-lg-9">

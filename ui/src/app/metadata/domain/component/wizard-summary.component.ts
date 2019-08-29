@@ -43,16 +43,19 @@ export class WizardSummaryComponent implements OnChanges {
                 .filter(step => step.id !== 'summary')
                 .map(
                     (step: WizardStep, num: number) => {
+                        const { id, index, label } = step;
+                        const split = getSplitSchema(schema, step);
+                        const properties = getStepProperties(
+                            split,
+                            def.formatter(model),
+                            schema.definitions || {}
+                        );
                         return ({
-                            id: step.id,
+                            id,
                             pageNumber: num + 1,
-                            index: step.index,
-                            label: step.label,
-                            properties: getStepProperties(
-                                getSplitSchema(schema, step),
-                                def.formatter(model),
-                                schema.definitions || {}
-                            )
+                            index,
+                            label,
+                            properties
                         });
                     }
                 );

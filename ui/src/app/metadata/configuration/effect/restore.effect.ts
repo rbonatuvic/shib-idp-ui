@@ -9,7 +9,8 @@ import {
     RestoreVersionError,
     CancelRestore,
     UpdateRestorationChangesRequest,
-    UpdateRestorationChangesSuccess
+    UpdateRestorationChangesSuccess,
+    SetSavingStatus
 } from '../action/restore.action';
 import { MetadataHistoryService } from '../service/history.service';
 import { of } from 'rxjs';
@@ -28,6 +29,7 @@ import {
 } from '../reducer';
 import { SetMetadata } from '../action/configuration.action';
 import { removeNulls } from '../../../shared/util';
+import { getModel } from '../../../wizard/reducer';
 
 
 @Injectable()
@@ -51,6 +53,24 @@ export class RestoreEffects {
                 catchError(err => of(new RestoreVersionError(err)))
             )
         )
+    );
+
+    @Effect()
+    restoreVersionSaving$ = this.actions$.pipe(
+        ofType<RestoreVersionRequest>(RestoreActionTypes.RESTORE_VERSION_REQUEST),
+        map(() => new SetSavingStatus(true))
+    );
+
+    @Effect()
+    restoreVersionSaved$ = this.actions$.pipe(
+        ofType<RestoreVersionSuccess>(RestoreActionTypes.RESTORE_VERSION_SUCCESS),
+        map(() => new SetSavingStatus(false))
+    );
+
+    @Effect()
+    restoreVersionError$ = this.actions$.pipe(
+        ofType<RestoreVersionError>(RestoreActionTypes.RESTORE_VERSION_ERROR),
+        map(() => new SetSavingStatus(false))
     );
 
     @Effect({ dispatch: false })

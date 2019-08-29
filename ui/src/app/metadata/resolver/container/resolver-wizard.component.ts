@@ -117,13 +117,13 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
 
         this.summary$ = combine(
             this.store.select(fromWizard.getWizardDefinition),
-            this.store.select(fromWizard.getSchema),
-            this.store.select(fromResolver.getEntityChanges)
+            this.store.select(fromWizard.getSchemaObject),
+            this.store.select(fromResolver.getDraftModelWithChanges)
         ).pipe(
             map(([definition, schema, model]) => (
                 {
                     definition,
-                    schema,
+                    schema: schema || {},
                     model
                 }
             ))
