@@ -44,11 +44,11 @@ export class MetadataConfigurationEffects {
         map(action => action.payload),
         switchMap(payload =>
             this.historyService.getVersion(payload.id, payload.type, payload.version).pipe(
-                map((response: Metadata) =>
-                    (payload.type === 'resolver') ?
+                map((response: Metadata) => {
+                    return (payload.type === 'resolver') ?
                         new SelectResolverSuccess(response as MetadataResolver) :
-                        new SelectProviderSuccess(response as MetadataProvider)
-                )
+                        new SelectProviderSuccess(response as MetadataProvider);
+                })
             )
         )
     );

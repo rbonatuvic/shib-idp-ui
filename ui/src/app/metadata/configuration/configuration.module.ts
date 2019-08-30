@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
@@ -63,7 +63,9 @@ import { RestoreVersionEffects } from './effect/restore.effect';
         SharedModule
     ],
     exports: [],
-    providers: []
+    providers: [
+        DatePipe
+    ]
 })
 export class MetadataConfigurationModule {
     static forRoot(): ModuleWithProviders {

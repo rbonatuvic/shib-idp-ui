@@ -49,6 +49,7 @@ export class MetadataHistoryComponent {
         this.router.navigate(
             [ '../', 'restore' ],
             {
+                queryParams: { version: version.id },
                 relativeTo: this.route
             }
         );

@@ -1,36 +1,33 @@
 import { Component, ViewChild, Input } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { StoreModule, combineReducers, Store } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { MetadataConfiguration } from '../model/metadata-configuration';
-import { ConfigurationComponent } from './configuration.component';
 import * as fromConfiguration from '../reducer';
 import * as fromProviders from '../../provider/reducer';
 import * as fromResolvers from '../../resolver/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { RestoreComponent } from './restore.component';
+import { of } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
     template: `
-        <configuration-page></configuration-page>
+        <restore-component></restore-component>
     `
 })
 class TestHostComponent {
-    @ViewChild(ConfigurationComponent)
-    public componentUnderTest: ConfigurationComponent;
-
-    configuration: MetadataConfiguration = {
-        dates: [],
-        sections: []
-    };
+    @ViewChild(RestoreComponent)
+    public componentUnderTest: RestoreComponent;
 }
 
-describe('Metadata Configuration Page Component', () => {
+describe('Metadata Restore Page Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let app: ConfigurationComponent;
+    let app: RestoreComponent;
+    let store: Store<fromConfiguration.State>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -45,10 +42,17 @@ describe('Metadata Configuration Page Component', () => {
                 RouterTestingModule
             ],
             declarations: [
-                ConfigurationComponent,
+                RestoreComponent,
                 TestHostComponent
             ],
+            providers: [
+                DatePipe
+            ]
         }).compileComponents();
+
+        store = TestBed.get(Store);
+        spyOn(store, 'dispatch');
+        spyOn(store, 'select').and.callFake(() => of(new Date().toDateString()));
 
         fixture = TestBed.createComponent(TestHostComponent);
         instance = fixture.componentInstance;
@@ -58,13 +62,15 @@ describe('Metadata Configuration Page Component', () => {
 
     it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
+        expect(store.select).toHaveBeenCalledTimes(4);
+        expect(store.dispatch).not.toHaveBeenCalled();
     }));
 
-    describe('hasVersion function', () => {
-        it('should determine if a version is defined', () => {
-            expect(app.hasVersion([[{id: 'foo'}], { version: 'foo' }])).toBe('foo');
-            expect(app.hasVersion([[{ id: 'foo' }], {}])).toBe('foo');
-            expect(app.hasVersion([[], {}])).toBeNull();
+    describe('restore method', () => {
+        it('should emit a value from the restore subject', () => {
+            spyOn(app.subj, 'next').and.callThrough();
+            app.restore();
+            expect(app.subj.next).toHaveBeenCalled();
         });
     });
 });
