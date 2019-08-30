@@ -79,13 +79,13 @@ describe('Restore Version Edit Step Component', () => {
 
     describe('updateStatus', () => {
         it('should dispatch an update form status event', () => {
-            app.updateStatus([{ value: 'foo' }, 'common']);
+            app.updateStatus({ value: 'foo' }, 'common');
             expect(store.dispatch).toHaveBeenCalled();
             expect(dispatchSpy.calls.mostRecent().args[0].type).toBe(RestoreActionTypes.UPDATE_STATUS);
         });
 
         it('should dispatch an update form status event', () => {
-            app.updateStatus([{}, 'common']);
+            app.updateStatus({}, 'common');
             expect(store.dispatch).toHaveBeenCalled();
             expect(dispatchSpy.calls.mostRecent().args[0].type).toBe(RestoreActionTypes.UPDATE_STATUS);
         });

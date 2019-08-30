@@ -54,21 +54,21 @@ export class RestoreEditStepComponent implements OnDestroy {
 
         this.lockChange$
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(this.updateLock);
+            .subscribe(locked => this.updateLock(locked));
 
         this.statusChange$
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 withLatestFrom(this.store.select(getWizardIndex))
             )
-            .subscribe(this.updateStatus);
+            .subscribe(([errors, currentPage]) => this.updateStatus(errors, currentPage));
     }
 
     onChange(changes: any): void {
         this.store.dispatch(new UpdateRestorationChangesRequest(changes));
     }
 
-    updateStatus([errors, currentPage]) {
+    updateStatus(errors, currentPage) {
         const status = { [currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
         this.store.dispatch(new UpdateRestoreFormStatus(status));
     }

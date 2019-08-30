@@ -1,20 +1,26 @@
-<h2 class="mb-4">
-    <translate-i18n key="label.restore-version" [params]="{ 'date': (date$ | async) }">
-        Restore Version ( date )
-    </translate-i18n>
-</h2>
-<div class="d-flex justify-content-center align-items-center">
-    <div class="card m-4 w-50">
-        <div class="card-body">
-            <h3 class="card-title" translate="message.create-new-version-from-version">
-                Create New Version from Previous Settings
-            </h3>
-            <p translate="message.restoring-this-version-will-copy"
-                [translateParams]="{ 'date': date$ | async }">
-                Restoring this version will copy the Version ( date ) configuration and create a new Version from the selected version settings. You can then edit the configuration before saving the new version.
-            </p>
-            <button class="btn btn-light" (click)="cancel()" translate="action.cancel">Cancel</button>&nbsp;
-            <button class="btn btn-primary" (click)="restore()" translate="action.restore">Restore</button>
+<ng-container *ngIf="loaded$ | async">
+    <h2 class="mb-4">
+        <translate-i18n key="label.restore-version" [params]="{ 'date': (date$ | async) }">
+            Restore Version ( date )
+        </translate-i18n>
+    </h2>
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="card m-4 w-50">
+            <div class="card-body">
+                <h3 class="card-title" translate="message.create-new-version-from-version">
+                    Create New Version from Previous Settings
+                </h3>
+                <p translate="message.restoring-this-version-will-copy"
+                    [translateParams]="{ 'date': date$ | async }">
+                    Restoring this version will copy the Version ( date ) configuration and create a new Version from the selected version settings. You can then edit the configuration before saving the new version.
+                </p>
+                <button class="btn btn-light" (click)="cancel()" translate="action.cancel">Cancel</button>&nbsp;
+                <button class="btn btn-primary" (click)="restore()" translate="action.restore">Restore</button>
+            </div>
         </div>
     </div>
+</ng-container>
+<div *ngIf="loading$ | async" class="d-flex justify-content-center">
+    <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
 </div>

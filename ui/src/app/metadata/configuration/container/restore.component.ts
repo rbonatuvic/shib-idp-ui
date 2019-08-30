@@ -19,6 +19,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class RestoreComponent {
 
     dateString$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
+    loading$ = this.store.select(fromConfiguration.getVersionLoading);
+    loaded$ = this.loading$.pipe(map(loading => !loading));
     date$: Observable<string>;
 
     constructor(

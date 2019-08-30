@@ -167,6 +167,9 @@ export const getVersionModelFiltersFn =
     null;
 
 export const getVersionState = createSelector(getState, getVersionStateFn);
+
+export const getVersionLoading = createSelector(getVersionState, fromVersion.isVersionLoading);
+
 export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);
 export const getVersionModels = createSelector(getVersionModel, (model) => model ? [model] : null);
 export const getVersionConfigurationSections = createSelector(

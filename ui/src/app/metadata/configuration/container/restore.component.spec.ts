@@ -65,7 +65,7 @@ describe('Metadata Restore Page Component', () => {
 
     it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
-        expect(store.select).toHaveBeenCalledTimes(1);
+        expect(store.select).toHaveBeenCalledTimes(2);
         expect(store.dispatch).not.toHaveBeenCalled();
     }));
 

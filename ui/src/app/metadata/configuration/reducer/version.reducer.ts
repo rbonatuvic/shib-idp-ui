@@ -7,6 +7,7 @@ export interface State {
     selectedVersionType: string;
     selectedMetadataId: string;
     loaded: Boolean;
+    loading: Boolean;
 }
 
 export const initialState: State = {
@@ -14,7 +15,8 @@ export const initialState: State = {
     selectedVersionId: null,
     selectedMetadataId: null,
     selectedVersionType: null,
-    loaded: false
+    loaded: false,
+    loading: false
 };
 
 export function reducer(state = initialState, action: VersionActionsUnion): State {
@@ -24,13 +26,22 @@ export function reducer(state = initialState, action: VersionActionsUnion): Stat
                 ...state,
                 selectedMetadataId: action.payload.id,
                 selectedVersionId: action.payload.version,
-                selectedVersionType: action.payload.type
+                selectedVersionType: action.payload.type,
+                loading: true
             };
         case VersionActionTypes.SELECT_VERSION_SUCCESS:
             return {
                 ...state,
                 model: action.payload,
-                loaded: true
+                loaded: true,
+                loading: false
+            };
+        case VersionActionTypes.SELECT_VERSION_ERROR:
+            return {
+                ...state,
+                model: null,
+                loaded: false,
+                loading: false
             };
         case VersionActionTypes.CLEAR_VERSION:
             return {
@@ -44,6 +55,7 @@ export function reducer(state = initialState, action: VersionActionsUnion): Stat
 
 export const getVersionModel = (state: State) => state.model;
 export const getVersionModelLoaded = (state: State) => state.loaded;
+export const isVersionLoading = (state: State) => state.loading;
 
 export const getSelectedMetadataId = (state: State) => state.selectedMetadataId;
 export const getSelectedVersionId = (state: State) => state.selectedVersionId;
