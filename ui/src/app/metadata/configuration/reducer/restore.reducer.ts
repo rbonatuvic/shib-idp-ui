@@ -4,7 +4,7 @@ import { RestoreActionTypes, RestoreActionsUnion } from '../action/restore.actio
 export interface RestoreState {
     saving: boolean;
     status: { [key: string]: string };
-    changes: Metadata;
+    changes: Partial<Metadata>;
 }
 
 export const initialState: RestoreState = {

@@ -34,12 +34,12 @@ export class RestoreVersionError implements Action {
 
 export class UpdateRestorationChangesRequest implements Action {
     readonly type = RestoreActionTypes.UPDATE_RESTORATION_REQUEST;
-    constructor(public payload: any) { }
+    constructor(public payload: Partial<Metadata>) { }
 }
 
 export class UpdateRestorationChangesSuccess implements Action {
     readonly type = RestoreActionTypes.UPDATE_RESTORATION_SUCCESS;
-    constructor(public payload: any) { }
+    constructor(public payload: Partial<Metadata>) { }
 }
 
 export class UpdateRestoreFormStatus implements Action {

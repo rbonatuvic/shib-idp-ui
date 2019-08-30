@@ -8,7 +8,7 @@ import {
 import { getWizardDefinition, getSchema, getValidators, getCurrent, getWizardIndex } from '../../../wizard/reducer';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { Metadata } from '../../domain/domain.type';
-import { map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
 import { UpdateRestorationChangesRequest, UpdateRestoreFormStatus } from '../action/restore.action';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
@@ -32,43 +32,49 @@ export class RestoreEditStepComponent implements OnDestroy {
     model$: Observable<Metadata> = this.store.select(getFormattedModel);
     step$: Observable<WizardStep> = this.store.select(getCurrent);
 
-    lockable$: Observable<boolean> = this.step$.pipe(map(step => step.locked));
+    lockable$: Observable<boolean> = this.step$.pipe(filter(s => !!s), map(step => step.locked));
 
     validators$: Observable<any>;
 
     formats = NAV_FORMATS;
 
     constructor(
-        private store: Store<ConfigurationState>,
-        private route: ActivatedRoute
+        private store: Store<ConfigurationState>
     ) {
         this.validators$ = this.definition$.pipe(
+            filter(def => !!def),
             map(def => def.validatorParams),
             switchMap(params => combineLatest(params.map(p => this.store.select(p)))),
             switchMap(selections => this.store.select(getValidators(selections)))
         );
 
         this.step$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(s => this.lockChange$.next(s && s.locked ? true : false));
+            .pipe(takeUntil(this.ngUnsubscribe), filter(step => !!step))
+            .subscribe(s => this.lockChange$.next(s.locked ? true : false));
 
         this.lockChange$
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(locked => this.store.dispatch(locked ? new LockEditor() : new UnlockEditor()));
+            .subscribe(this.updateLock);
 
         this.statusChange$
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 withLatestFrom(this.store.select(getWizardIndex))
             )
-            .subscribe(([errors, currentPage]) => {
-                const status = { [currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
-                this.store.dispatch(new UpdateRestoreFormStatus(status));
-            });
+            .subscribe(this.updateStatus);
     }
 
     onChange(changes: any): void {
         this.store.dispatch(new UpdateRestorationChangesRequest(changes));
+    }
+
+    updateStatus([errors, currentPage]) {
+        const status = { [currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
+        this.store.dispatch(new UpdateRestoreFormStatus(status));
+    }
+
+    updateLock(locked: boolean) {
+        this.store.dispatch(locked ? new LockEditor() : new UnlockEditor());
     }
 
     ngOnDestroy() {

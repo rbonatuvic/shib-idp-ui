@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ConfigurationComponent } from './configuration.component';
+import { VersionComponent } from './version.component';
 import * as fromConfiguration from '../reducer';
 import * as fromProviders from '../../provider/reducer';
 import * as fromResolvers from '../../resolver/reducer';
@@ -12,19 +12,19 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
 
 @Component({
     template: `
-        <configuration-page></configuration-page>
+        <version-page></version-page>
     `
 })
 class TestHostComponent {
-    @ViewChild(ConfigurationComponent)
-    public componentUnderTest: ConfigurationComponent;
+    @ViewChild(VersionComponent)
+    public componentUnderTest: VersionComponent;
 }
 
-describe('Metadata Configuration Page Component', () => {
+describe('Metadata Version Page Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let app: ConfigurationComponent;
+    let app: VersionComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -39,7 +39,7 @@ describe('Metadata Configuration Page Component', () => {
                 RouterTestingModule
             ],
             declarations: [
-                ConfigurationComponent,
+                VersionComponent,
                 TestHostComponent
             ],
         }).compileComponents();
@@ -50,7 +50,7 @@ describe('Metadata Configuration Page Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should load metadata objects', async(() => {
+    it('should compile', () => {
         expect(app).toBeTruthy();
-    }));
+    });
 });
