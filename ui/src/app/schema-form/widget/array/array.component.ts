@@ -9,9 +9,9 @@ export interface FormError {
     code: string;
     description: string;
     message: string;
-    params: any[];
+    params?: any[];
     path: string;
-    schemaId: any;
+    schemaId?: any;
 }
 
 @Component({

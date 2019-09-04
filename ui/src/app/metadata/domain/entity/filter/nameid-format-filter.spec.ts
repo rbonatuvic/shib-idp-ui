@@ -1,9 +1,9 @@
-import { EntityAttributesFilterEntity } from './entity-attributes-filter';
+import { NameIDFormatFilterEntity } from './nameid-format-filter';
 
-describe('EntityAttributesFilter Entity', () => {
-    let entity: EntityAttributesFilterEntity;
+describe('NameIDFormatFilterEntity Entity', () => {
+    let entity: NameIDFormatFilterEntity;
     beforeEach(() => {
-        entity = new EntityAttributesFilterEntity({
+        entity = new NameIDFormatFilterEntity({
             resourceId: 'foo',
             filterEnabled: false
         });
