@@ -121,6 +121,7 @@ export const getConfigurationModelTypeFn =
 
 export const getHistoryState = createSelector(getState, getHistoryStateFn);
 
+export const getHistoryLoading = createSelector(getHistoryState, fromHistory.getHistoryLoading);
 export const getVersionEntities = createSelector(getHistoryState, fromHistory.selectVersionEntities);
 export const getSelectedVersionId = createSelector(getHistoryState, fromHistory.getSelectedVersionId);
 export const getVersionIds = createSelector(getHistoryState, fromHistory.selectVersionIds);
@@ -143,6 +144,7 @@ export const getSelectedIsCurrent = createSelector(
 // Version Comparison
 
 export const getCompareState = createSelector(getState, getCompareStateFn);
+export const getComparisonLoading = createSelector(getCompareState, fromCompare.getComparisonLoading);
 export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
 export const getComparisonConfigurations = createSelector(

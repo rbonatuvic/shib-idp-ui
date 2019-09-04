@@ -9,17 +9,13 @@ import { takeUntil, filter } from 'rxjs/operators';
 import {
     ConfigurationState,
     getConfigurationSections,
-    getSelectedVersion,
-    getSelectedVersionNumber,
     getSelectedIsCurrent,
     getConfigurationModelEnabled,
     getConfigurationHasXml,
     getConfigurationModel,
-    getConfigurationDefinition,
     getConfigurationModelType
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
-import { MetadataVersion } from '../model/version';
 import { MetadataFilter } from '../../domain/model';
 import { getAdditionalFilters } from '../../filter/reducer';
 import {
@@ -32,6 +28,7 @@ import {
 
 import { Metadata } from '../../domain/domain.type';
 import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
+import { ClearHistory } from '../action/history.action';
 
 @Component({
     selector: 'metadata-options-page',
@@ -105,5 +102,6 @@ export class MetadataOptionsComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
 
         this.store.dispatch(new ClearFilters());
+        this.store.dispatch(new ClearHistory());
     }
 }

@@ -11,7 +11,8 @@ import {
     getSelectedVersion,
     getConfigurationModelEnabled,
     getConfigurationModelType,
-    getVersionModelFilters
+    getVersionModelFilters,
+    getVersionLoading
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { MetadataVersion } from '../model/version';
@@ -37,6 +38,7 @@ export class VersionOptionsComponent implements OnDestroy {
     model$: Observable<Metadata> = this.store.select(getVersionModel);
     type$: Observable<string> = this.store.select(getConfigurationModelType);
     filters$: Observable<any[]> = this.store.select(getVersionModelFilters);
+    loading$: Observable<boolean> = this.store.select(getVersionLoading);
     id: string;
     kind: string;
 

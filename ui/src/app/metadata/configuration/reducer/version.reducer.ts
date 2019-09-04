@@ -6,8 +6,8 @@ export interface State {
     selectedVersionId: string;
     selectedVersionType: string;
     selectedMetadataId: string;
-    loaded: Boolean;
-    loading: Boolean;
+    loaded: boolean;
+    loading: boolean;
 }
 
 export const initialState: State = {

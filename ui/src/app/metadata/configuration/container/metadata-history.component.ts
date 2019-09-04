@@ -5,7 +5,8 @@ import {
     ConfigurationState,
     getVersionCollection,
     getConfigurationModelId,
-    getConfigurationModelKind
+    getConfigurationModelKind,
+    getHistoryLoading
 } from '../reducer';
 import { MetadataVersion } from '../model/version';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -23,6 +24,7 @@ export class MetadataHistoryComponent implements OnDestroy {
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     history$: Observable<MetadataVersion[]>;
+    loading$: Observable<boolean> = this.store.select(getHistoryLoading);
 
     constructor(
         private store: Store<ConfigurationState>,
