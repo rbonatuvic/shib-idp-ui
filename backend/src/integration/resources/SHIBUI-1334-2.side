@@ -120,6 +120,13 @@
       ],
       "value": ""
     }, {
+      "id": "d072327c-78b4-4bdb-8020-b825cd26592d",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/xmlId",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "86262eda-4a44-41b0-b7aa-fa46406e2601",
       "comment": "",
       "command": "type",
@@ -578,16 +585,10 @@
     }, {
       "id": "5636ef67-71fb-4bca-ba58-7ecf926c7bf0",
       "comment": "",
-      "command": "click",
+      "command": "waitForElementEditable",
       "target": "id=/xmlId",
-      "targets": [
-        ["id=/xmlId", "id"],
-        ["name=field38", "name"],
-        ["css=#\\/xmlId", "css:finder"],
-        ["xpath=//input[@id='/xmlId']", "xpath:attributes"],
-        ["xpath=//custom-string/div/input", "xpath:position"]
-      ],
-      "value": ""
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "7d641e58-47ce-4d20-908c-e0002ff73cfa",
       "comment": "",
@@ -601,6 +602,13 @@
         ["xpath=//custom-string/div/input", "xpath:position"]
       ],
       "value": "123 v2"
+    }, {
+      "id": "b78c81e9-41ac-41db-837a-0db6bd4f77eb",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=/satisfyAnyPredicates.false",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "247b04c1-e690-42bc-ae15-dfbedb44d2e9",
       "comment": "",
@@ -623,6 +631,13 @@
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "eb08417b-b8f0-46dc-9e32-e8daf3bc205d",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "cf005a45-74ae-4f7a-a53c-ed59d63f7114",
@@ -782,6 +797,13 @@
       ],
       "value": ""
     }, {
+      "id": "863e9f5e-a3d6-47e9-8b65-de639029812a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=#\\/httpMetadataResolverAttributes\\/connectionRequestTimeout-container .btn",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "78967fb5-8f61-46ce-9c14-9b6ceb12b03a",
       "comment": "",
       "command": "click",
@@ -819,6 +841,13 @@
       ],
       "value": ""
     }, {
+      "id": "8277f894-0bbd-41f7-b3bb-1aba2a0f80be",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/httpMetadataResolverAttributes/connectionRequestTimeout__option--1",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "8ba62572-354d-47f4-bb72-f9309c1cb201",
       "comment": "",
       "command": "click",
@@ -845,6 +874,13 @@
       ],
       "value": ""
     }, {
+      "id": "7014a534-b908-482f-85d2-7f7031741b04",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/httpMetadataResolverAttributes/connectionTimeout__option--2",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "337ac160-7990-425f-83da-2788d8a0985e",
       "comment": "",
       "command": "click",
@@ -869,6 +905,13 @@
         ["xpath=//div[3]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "c28e3ee6-e536-4eb7-914b-896b2ec2cb9e",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/httpMetadataResolverAttributes/socketTimeout__option--3",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "34693225-4754-4b27-92ee-3e37304a8cd7",
       "comment": "",
