@@ -708,18 +708,18 @@
       "id": "68103f0e-e3f1-419b-903d-5d8c30bc6700",
       "comment": "",
       "command": "assertText",
-      "target": "css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(2)",
+      "target": "css=.d-block > primitive-property:nth-child(4) .d-block:nth-child(2)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(4) .d-block:nth-child(2)", "css:finder"],
         ["xpath=//primitive-property[4]/div/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'123 v2')]", "xpath:innerText"]
+        ["xpath=//span[contains(.,'123 version 2')]", "xpath:innerText"]
       ],
       "value": "123 version 2"
     }, {
       "id": "a13198b9-7827-47e2-ade3-143b981d34ee",
       "comment": "",
       "command": "assertText",
-      "target": "css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(4) .d-block:nth-child(3)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(4) .d-block:nth-child(3)", "css:finder"],
         ["xpath=//primitive-property[4]/div/span[3]", "xpath:position"]
@@ -729,7 +729,7 @@
       "id": "3d83741c-299e-4fcb-9ce6-4b7291c423a4",
       "comment": "",
       "command": "assertText",
-      "target": "css=.d-block > primitive-property:nth-child(10) .d-block:nth-child(2)",
+      "target": "css=.d-block > primitive-property:nth-child(12) .d-block:nth-child(2)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(12) .d-block:nth-child(2)", "css:finder"],
         ["xpath=//primitive-property[12]/div/span[2]", "xpath:position"]
@@ -739,7 +739,7 @@
       "id": "190cc157-d427-4046-aff2-180392395ad3",
       "comment": "",
       "command": "assertText",
-      "target": "css=.d-block > primitive-property:nth-child(10) .d-block:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(12) .d-block:nth-child(3)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(12) .d-block:nth-child(3)", "css:finder"],
         ["xpath=//primitive-property[12]/div/span[3]", "xpath:position"]
