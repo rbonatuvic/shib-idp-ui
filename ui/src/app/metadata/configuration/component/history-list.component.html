@@ -21,13 +21,11 @@
                 </div>
             </td>
             <td>
-                <a [routerLink]="['../', 'options']" [queryParams]="{'version': version.id}">
-                    <ng-container>
-                        {{ version.date | date:DATE_FORMAT }}&nbsp;
-                        <ng-container *ngIf="i === 0">
-                            (<translate-i18n key="label.current">Current</translate-i18n>)
-                        </ng-container>
-                    </ng-container>
+                <a [routerLink]="['../', 'options']" *ngIf="i === 0">
+                    {{ version.date | date:DATE_FORMAT }}&nbsp;(<translate-i18n key="label.current">Current</translate-i18n>)
+                </a>
+                <a [routerLink]="['../', 'version', version.id, 'options']" *ngIf="i > 0">
+                    {{ version.date | date:DATE_FORMAT }}
                 </a>
             </td>
             <td>{{ version.creator }}</td>

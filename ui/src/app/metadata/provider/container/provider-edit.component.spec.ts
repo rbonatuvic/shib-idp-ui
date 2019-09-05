@@ -62,8 +62,7 @@ describe('Provider Edit Component', () => {
                             schemaPath: '',
                             loading: false,
                             schema: {},
-                            locked: false,
-                            schemaCollection: []
+                            locked: false
                         }
                     })
                 }),

@@ -4,11 +4,12 @@ import * as fromRoot from '../../../app.reducer';
 import * as fromConfiguration from './configuration.reducer';
 import * as fromHistory from './history.reducer';
 import * as fromCompare from './compare.reducer';
+import * as fromVersion from './version.reducer';
 import * as fromRestore from './restore.reducer';
 import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
-import { getSplitSchema } from '../../../wizard/reducer';
+import { getSplitSchema, getModel } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
@@ -20,13 +21,15 @@ export interface ConfigurationState {
     configuration: fromConfiguration.State;
     history: fromHistory.HistoryState;
     compare: fromCompare.State;
-    restore: fromRestore.State;
+    version: fromVersion.State;
+    restore: fromRestore.RestoreState;
 }
 
 export const reducers = {
     configuration: fromConfiguration.reducer,
     history: fromHistory.reducer,
     compare: fromCompare.reducer,
+    version: fromVersion.reducer,
     restore: fromRestore.reducer
 };
 
@@ -39,6 +42,7 @@ export const getState = createFeatureSelector<ConfigurationState>('metadata-conf
 export const getConfigurationStateFn = (state: ConfigurationState) => state.configuration;
 export const getHistoryStateFn = (state: ConfigurationState) => state.history;
 export const getCompareStateFn = (state: ConfigurationState) => state.compare;
+export const getVersionStateFn = (state: ConfigurationState) => state.version;
 export const getRestoreStateFn = (state: ConfigurationState) => state.restore;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
@@ -73,9 +77,9 @@ export const assignValueToProperties = (models, properties, definition: any): an
 };
 
 export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
-    return !definition || !schema ? null :
+    return !definition || !schema || !models ? null :
         ({
-            dates: models.map(m => m.modifiedDate),
+            dates: models.map(m => m ? m.modifiedDate : null),
             sections: definition.steps
                 .filter(step => step.id !== 'summary')
                 .map(
@@ -117,6 +121,7 @@ export const getConfigurationModelTypeFn =
 
 export const getHistoryState = createSelector(getState, getHistoryStateFn);
 
+export const getHistoryLoading = createSelector(getHistoryState, fromHistory.getHistoryLoading);
 export const getVersionEntities = createSelector(getHistoryState, fromHistory.selectVersionEntities);
 export const getSelectedVersionId = createSelector(getHistoryState, fromHistory.getSelectedVersionId);
 export const getVersionIds = createSelector(getHistoryState, fromHistory.selectVersionIds);
@@ -139,21 +144,88 @@ export const getSelectedIsCurrent = createSelector(
 // Version Comparison
 
 export const getCompareState = createSelector(getState, getCompareStateFn);
-export const getVersionModels = createSelector(getCompareState, fromCompare.getVersionModels);
-export const getVersionModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
-export const getVersionConfigurations = createSelector(
+export const getComparisonLoading = createSelector(getCompareState, fromCompare.getComparisonLoading);
+export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
+export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
+export const getComparisonConfigurations = createSelector(
+    getComparisonModels,
+    getConfigurationDefinition,
+    getConfigurationSchema,
+    getConfigurationSectionsFn
+);
+
+export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
+
+// Version Restoration
+
+export const getRestoreState = createSelector(getState, getRestoreStateFn);
+
+export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
+
+export const getVersionModelFiltersFn =
+    (model, kind) => kind === 'provider' ?
+    model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+    null;
+
+export const getVersionState = createSelector(getState, getVersionStateFn);
+
+export const getVersionLoading = createSelector(getVersionState, fromVersion.isVersionLoading);
+
+export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);
+export const getVersionModels = createSelector(getVersionModel, (model) => model ? [model] : null);
+export const getVersionConfigurationSections = createSelector(
     getVersionModels,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
 );
 
-export const getVersionConfigurationCount = createSelector(getVersionConfigurations, (config) => config ? config.dates.length : 0);
+export const getVersionModelFilters = createSelector(
+    getVersionModel,
+    getConfigurationModelKind,
+    getVersionModelFiltersFn
+);
 
-// Version Restoration
+export const getRestorationIsValid = createSelector(getRestoreState, fromRestore.isRestorationValid);
+export const getRestorationIsSaved = createSelector(getRestoreState, fromRestore.isRestorationSaved);
+export const getRestorationChanges = createSelector(getRestoreState, fromRestore.getChanges);
+export const getRestorationIsSaving = createSelector(getRestoreState, fromRestore.isRestorationSaving);
+export const getRestorationFormStatus = createSelector(getRestoreState, fromRestore.getFormStatus);
+export const getInvalidRestorationForms = createSelector(getRestoreState, fromRestore.getInvalidRestorationForms);
 
-export const getRestoreState = createSelector(getState, getRestoreStateFn);
-export const getRestoreModel = createSelector(getRestoreState, fromRestore.getVersionModel);
+export const getFormattedModel = createSelector(
+    getVersionModel,
+    getConfigurationDefinition,
+    (model, definition) => definition ? definition.formatter(model) : null
+);
+
+export const getFormattedChanges = createSelector(
+    getRestorationChanges,
+    getConfigurationDefinition,
+    (model, definition) => definition ? definition.formatter(model) : null
+);
+
+export const getFormattedModelWithChanges = createSelector(
+    getVersionModel,
+    getRestorationChanges,
+    getConfigurationDefinition,
+    (model, changes, definition) => definition ? definition.formatter({
+        ...model,
+        ...changes
+    }) : null
+);
+
+export const getRestorationModel = createSelector(
+    getVersionModel,
+    getRestorationChanges,
+    getModel,
+    (model, changes, empty) => ({
+        ...model,
+        ...empty,
+        ...changes
+    })
+);
 
 // Mixed states
 
@@ -183,4 +255,4 @@ export const getConfigurationModelType = createSelector(getConfigurationModel, g
 
 export const getConfigurationHasXml = createSelector(getConfigurationXml, xml => !!xml);
 export const getConfigurationFilters = createSelector(getConfigurationModel, model => model.metadataFilters);
-export const getConfigurationVersionDate = createSelector(getRestoreModel, version => version && version.modifiedDate);
+export const getConfigurationVersionDate = createSelector(getVersionModel, version => version && version.modifiedDate);

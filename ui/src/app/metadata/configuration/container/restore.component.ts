@@ -1,13 +1,14 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { ActivatedRoute, } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
-import { RestoreVersionRequest, SelectVersionRestoreRequest } from '../action/restore.action';
-import { withLatestFrom, map, takeUntil } from 'rxjs/operators';
+import { CancelRestore } from '../action/restore.action';
+import { map } from 'rxjs/operators';
+
 import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'restore-component',
@@ -15,48 +16,27 @@ import { DatePipe } from '@angular/common';
     templateUrl: './restore.component.html',
     styleUrls: []
 })
-export class RestoreComponent implements OnDestroy {
+export class RestoreComponent {
 
-    readonly subj = new Subject<any>();
-    restore$ = this.subj.asObservable();
-
+    dateString$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
+    loading$ = this.store.select(fromConfiguration.getVersionLoading);
+    loaded$ = this.loading$.pipe(map(loading => !loading));
     date$: Observable<string>;
-    kind$: Observable<string> = this.store.select(fromConfiguration.getConfigurationModelKind);
-    id$: Observable<string> = this.store.select(fromConfiguration.getConfigurationModelId);
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
         private datePipe: DatePipe,
+        private router: Router,
         private route: ActivatedRoute
     ) {
-        this.restore$.pipe(
-            withLatestFrom(
-                this.store.select(fromConfiguration.getSelectedVersionId),
-                this.kind$,
-                this.id$
-            ),
-            map(([restore, version, type, id]) => new RestoreVersionRequest({ id, type, version }))
-        ).subscribe(this.store);
-
-        this.date$ = this.store
-            .select(fromConfiguration.getConfigurationVersionDate)
-            .pipe(
-                map((date) => this.datePipe.transform(date, CONFIG_DATE_FORMAT))
-            );
-
-        this.route.queryParams.pipe(
-            takeUntil(this.subj),
-            map(params => params.version),
-            withLatestFrom(this.id$, this.kind$),
-            map(([version, id, type]) => new SelectVersionRestoreRequest({ version, id, type }))
-        ).subscribe(this.store);
+        this.date$ = this.dateString$.pipe(map((date) => this.datePipe.transform(date, CONFIG_DATE_FORMAT)));
     }
 
     restore() {
-        this.subj.next();
+        this.router.navigate(['../', 'edit'], { relativeTo: this.route });
     }
 
-    ngOnDestroy(): void {
-        this.subj.complete();
+    cancel() {
+        this.store.dispatch(new CancelRestore());
     }
 }

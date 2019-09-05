@@ -3,7 +3,7 @@ import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
 import { RegexValidator } from '../../../shared/validation/regex.validator';
-
+import { getFilterNames } from '../reducer';
 import { memoize } from '../../../shared/memo';
 
 const checkRegex = memoize(RegexValidator.isValidRegex);
@@ -15,6 +15,7 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     getEntity(filter: MetadataFilter): EntityAttributesFilterEntity {
         return new EntityAttributesFilterEntity(filter);
     },
+    validatorParams: [getFilterNames],
     getValidators(namesList: string[] = []): any {
         const validators = {
             '/': (value, property, form_current) => {

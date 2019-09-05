@@ -80,21 +80,4 @@ describe(`Attributes Service`, () => {
             }
         )));
     });
-
-    describe('restoreVersion method', () => {
-        it(`should send a put request`, async(inject([MetadataHistoryService, HttpTestingController],
-            (service: MetadataHistoryService, backend: HttpTestingController) => {
-                const resourceId = 'foo';
-                const type = 'resource';
-                const versionId = '1';
-                const response = {version: 'bar'} as Metadata;
-                spyOn(service, 'getVersions').and.returnValue(of([response, { ...response, version: 'foo' }]));
-                spyOn(service, 'updateVersion').and.returnValue(of(response));
-                service.restoreVersion(resourceId, type, versionId).subscribe(updated => {
-                    expect(service.getVersions).toHaveBeenCalled();
-                    expect(service.updateVersion).toHaveBeenCalled();
-                });
-            }
-        )));
-    });
 });

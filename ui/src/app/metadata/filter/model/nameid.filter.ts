@@ -2,7 +2,7 @@ import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
 import { NameIDFormatFilterEntity } from '../../domain/entity/filter/nameid-format-filter';
 import { RegexValidator } from '../../../shared/validation/regex.validator';
-
+import { getFilterNames } from '../reducer';
 import { memoize } from '../../../shared/memo';
 
 const checkRegex = memoize(RegexValidator.isValidRegex);
@@ -14,6 +14,7 @@ export const NameIDFilter: FormDefinition<MetadataFilter> = {
     getEntity(filter: MetadataFilter): NameIDFormatFilterEntity {
         return new NameIDFormatFilterEntity(filter);
     },
+    validatorParams: [getFilterNames],
     getValidators(namesList: string[] = []): any {
         const validators = {
             '/': (value, property, form_current) => {

@@ -1,11 +1,17 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Observable, combineLatest, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { ConfigurationState, getVersionCollection } from '../reducer';
+import {
+    ConfigurationState,
+    getVersionCollection,
+    getConfigurationModelId,
+    getConfigurationModelKind,
+    getHistoryLoading
+} from '../reducer';
 import { MetadataVersion } from '../model/version';
-import { CompareVersionRequest } from '../action/compare.action';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
+import { LoadHistoryRequest, ClearHistory } from '../action/history.action';
 
 @Component({
     selector: 'metadata-history',
@@ -13,15 +19,27 @@ import { map } from 'rxjs/operators';
     templateUrl: './metadata-history.component.html',
     styleUrls: []
 })
-export class MetadataHistoryComponent {
+export class MetadataHistoryComponent implements OnDestroy {
+
+    private ngUnsubscribe: Subject<void> = new Subject<void>();
 
     history$: Observable<MetadataVersion[]>;
+    loading$: Observable<boolean> = this.store.select(getHistoryLoading);
 
     constructor(
         private store: Store<ConfigurationState>,
         private router: Router,
         private route: ActivatedRoute
     ) {
+        combineLatest(
+            this.store.select(getConfigurationModelId),
+            this.store.select(getConfigurationModelKind)
+        ).pipe(
+            takeUntil(this.ngUnsubscribe),
+            map(([id, kind]) => ({ id, type: kind })),
+            map(request => new LoadHistoryRequest(request))
+        ).subscribe(store);
+
         this.history$ = this.store.select(getVersionCollection)
             .pipe(map(versions => this.sortVersionsByDate(versions)));
     }
@@ -47,11 +65,16 @@ export class MetadataHistoryComponent {
 
     restoreVersion(version: MetadataVersion): void {
         this.router.navigate(
-            [ '../', 'restore' ],
+            [ '../', 'version', version.id, 'restore' ],
             {
-                queryParams: { version: version.id },
                 relativeTo: this.route
             }
         );
+    }
+
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+        this.store.dispatch(new ClearHistory());
     }
 }

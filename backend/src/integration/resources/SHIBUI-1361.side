@@ -602,6 +602,13 @@
       "targets": [],
       "value": "10000"
     }, {
+      "id": "0aae114c-3e79-4d57-8f40-e669887a8545",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "7d641e58-47ce-4d20-908c-e0002ff73cfa",
       "comment": "",
       "command": "type",
@@ -702,6 +709,13 @@
         ["xpath=//button[contains(.,'  Restore')]", "xpath:innerText"]
       ],
       "value": "10000"
+    }, {
+      "id": "271939a6-6196-4c14-aa13-e6c31e0373c2",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "c223e329-733c-41eb-9e85-c6f69a840179",
       "comment": "",
@@ -858,6 +872,13 @@
       ],
       "value": ""
     }, {
+      "id": "6e01f905-fd32-45a5-9517-9dd12191f7ae",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/httpMetadataResolverAttributes/connectionRequestTimeout__option--1",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "8ba62572-354d-47f4-bb72-f9309c1cb201",
       "comment": "",
       "command": "click",
@@ -884,6 +905,13 @@
       ],
       "value": ""
     }, {
+      "id": "01d5f751-6964-4fd8-a0de-36fd79d7be99",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/httpMetadataResolverAttributes/connectionTimeout__option--2",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "337ac160-7990-425f-83da-2788d8a0985e",
       "comment": "",
       "command": "click",
@@ -909,6 +937,13 @@
       ],
       "value": ""
     }, {
+      "id": "99c7ec5a-ad8c-4970-b97f-27997098c0d6",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=/httpMetadataResolverAttributes/socketTimeout__option--3",
+      "targets": [],
+      "value": "10000"
+    }, {
       "id": "34693225-4754-4b27-92ee-3e37304a8cd7",
       "comment": "",
       "command": "click",
@@ -932,6 +967,13 @@
         ["xpath=//button[contains(.,'Save')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "4e2831c6-d1ba-409d-a0cc-7a25dad75421",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "linkText=Test Metadata Provider",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "8868c054-2e6a-403e-ba2b-499a56730d71",
       "comment": "",
@@ -1051,6 +1093,13 @@
       "targets": [],
       "value": "true"
     }, {
+      "id": "48fc4781-3313-4f56-8546-00e8210d9641",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "2cfe222d-a506-4f2b-8840-4b4a76cf2bfb",
       "comment": "",
       "command": "click",
@@ -1065,7 +1114,7 @@
       "id": "a10e3e37-28f1-403f-b572-8b4020de7904",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(2) .custom-control-label",
+      "target": "css=tr:nth-child(3) .custom-control-label",
       "targets": [
         ["css=tr:nth-child(2) .custom-control-label", "css:finder"],
         ["xpath=//tr[2]/td/div/label", "xpath:position"]

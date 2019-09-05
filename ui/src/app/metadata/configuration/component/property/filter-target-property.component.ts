@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Property } from '../../domain/model/property';
+import { Property } from '../../../domain/model/property';
 import { ConfigurationPropertyComponent } from './configuration-property.component';
 
 @Component({

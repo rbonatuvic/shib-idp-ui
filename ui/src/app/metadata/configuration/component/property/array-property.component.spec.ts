@@ -3,13 +3,13 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { Property } from '../../domain/model/property';
-import { MockI18nModule } from '../../../../testing/i18n.stub';
-import { SCHEMA } from '../../../../testing/form-schema.stub';
-import { getStepProperty } from '../../domain/utility/configuration';
+import { Property } from '../../../domain/model/property';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { SCHEMA } from '../../../../../testing/form-schema.stub';
+import { getStepProperty } from '../../../domain/utility/configuration';
 import { ArrayPropertyComponent } from './array-property.component';
-import { AttributesService } from '../../domain/service/attributes.service';
-import { MockAttributeService } from '../../../../testing/attributes.stub';
+import { AttributesService } from '../../../domain/service/attributes.service';
+import { MockAttributeService } from '../../../../../testing/attributes.stub';
 import { of } from 'rxjs';
 
 @Component({

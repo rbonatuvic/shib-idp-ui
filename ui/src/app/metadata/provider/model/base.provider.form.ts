@@ -1,11 +1,13 @@
 import { Wizard } from '../../../wizard/model';
 import { BaseMetadataProvider } from '../../domain/model/providers';
+import { getFilteredProviderNames, getFilteredProviderXmlIds } from '../reducer';
 
 export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
     label: 'BaseMetadataProvider',
     type: 'BaseMetadataResolver',
     schema: '',
-    getValidators(namesList: string[]): any {
+    validatorParams: [getFilteredProviderNames, getFilteredProviderXmlIds],
+    getValidators(namesList: string[], xmlIdList: string[]): any {
         const validators = {
             '/': (value, property, form_current) => {
                 let errors;
@@ -26,6 +28,15 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
                     code: 'INVALID_NAME',
                     path: `#${property.path}`,
                     message: 'message.name-must-be-unique',
+                    params: [value]
+                } : null;
+                return err;
+            },
+            '/xmlId': (value, property, form) => {
+                const err = xmlIdList.indexOf(value) > -1 ? {
+                    code: 'INVALID_ID',
+                    path: `#${property.path}`,
+                    message: 'message.id-unique',
                     params: [value]
                 } : null;
                 return err;
