@@ -9,7 +9,6 @@ import { MetadataHeaderComponent } from './metadata-header.component';
         <metadata-header
             [isEnabled]="isEnabled"
             [version]="version"
-            [versionNumber]="versionNumber"
             [isCurrent]="isCurrent"
             ></metadata-header>
     `
@@ -25,7 +24,6 @@ class TestHostComponent {
         creator: 'foobar',
         date: new Date().toDateString()
     };
-    versionNumber = 1;
     isCurrent = false;
 }
 

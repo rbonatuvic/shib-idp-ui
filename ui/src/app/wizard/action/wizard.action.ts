@@ -58,12 +58,6 @@ export class Previous implements Action {
     constructor(public payload: string) { }
 }
 
-export class AddSchema implements Action {
-    readonly type = WizardActionTypes.ADD_SCHEMA;
-
-    constructor(public payload: { id: string, schema: any }) { }
-}
-
 export class ClearWizard implements Action {
     readonly type = WizardActionTypes.CLEAR;
 }
@@ -102,7 +96,6 @@ export type WizardActionUnion =
     | Next
     | Previous
     | ClearWizard
-    | AddSchema
     | LoadSchemaRequest
     | LoadSchemaSuccess
     | LoadSchemaFail

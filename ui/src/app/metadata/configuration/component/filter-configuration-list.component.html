@@ -6,6 +6,7 @@
             [index]="i"
             [isFirst]="isFirst"
             [isLast]="isLast"
+            [editable]="editable"
             (onUpdateOrderDown)="onUpdateOrderDown.emit($event)"
             (onUpdateOrderUp)="onUpdateOrderUp.emit($event)"
             (onRemove)="onRemove.emit($event)"></filter-configuration-list-item>

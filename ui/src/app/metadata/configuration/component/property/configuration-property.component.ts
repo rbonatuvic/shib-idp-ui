@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Property } from '../../domain/model/property';
+import { Property } from '../../../domain/model/property';
 
 @Component({
     selector: 'configuration-property',

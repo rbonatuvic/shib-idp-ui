@@ -52,8 +52,7 @@ describe('Provider Edit Step Component', () => {
                                     }
                                 }
                             },
-                            locked: false,
-                            schemaCollection: []
+                            locked: false
                         }
                     })
                 })

@@ -9,6 +9,7 @@ export interface State {
     schema: Schema;
     definition: Wizard<Metadata>;
     xml: string;
+    loading: boolean;
 }
 
 export const initialState: State = {
@@ -16,7 +17,8 @@ export const initialState: State = {
     modelId: null,
     schema: null,
     definition: null,
-    xml: ''
+    xml: '',
+    loading: false
 };
 
 export function reducer(state = initialState, action: ConfigurationActionsUnion): State {

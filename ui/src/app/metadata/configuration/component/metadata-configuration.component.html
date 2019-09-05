@@ -1,8 +1,7 @@
 <div *ngIf="configuration">
     <section *ngFor="let section of configuration.sections; let i = index;" class="mb-4">
         <div class="config-group">
-            <div class="numbered-header d-flex justify-content-start bg-light align-items-center"
-                [ngClass]="{'py-2': !editable}">
+            <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
                 <h2 class="title h4 m-0 flex-grow-1">
                     <span *ngIf="numbered"
                         class="d-inline-block px-2 py-1 mb-0 h4 number border border-secondary bg-white rounded-lg">

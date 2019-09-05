@@ -71,13 +71,13 @@ export class SetMetadataModel implements Action {
     constructor(public payload: Metadata) { }
 }
 
-export class SetDefinition implements Action {
+export class SetConfigurationDefinition implements Action {
     readonly type = ConfigurationActionTypes.SET_DEFINITION;
 
     constructor(public payload: Wizard<Metadata>) { }
 }
 
-export class SetSchema implements Action {
+export class SetConfigurationSchema implements Action {
     readonly type = ConfigurationActionTypes.SET_SCHEMA;
 
     constructor(public payload: Schema) { }
@@ -105,8 +105,8 @@ export type ConfigurationActionsUnion =
     | LoadXmlSuccess
     | LoadXmlError
     | SetMetadata
-    | SetDefinition
-    | SetSchema
+    | SetConfigurationDefinition
+    | SetConfigurationSchema
     | SetXml
     | DownloadXml
     | ClearConfiguration;

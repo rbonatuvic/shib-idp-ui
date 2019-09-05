@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-start align-items-center">
     <span class="mr-2">{{ index + 1 }}</span>
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between" *ngIf="editable">
         <button class="btn btn-link btn-sm" (click)="onUpdateOrderUp.emit(filter)" [disabled]="isFirst">
             <i class="fa fa-arrow-circle-up fa-2x sr-hidden"></i>
             <span class="sr-only" translate="action.move-up">Move Up</span>
@@ -19,7 +19,7 @@
 </div>
 <div *ngIf="open">
     <hr class="my-2" />
-    <div class="d-flex justify-content-end mb-2">
+    <div class="d-flex justify-content-end mb-2" *ngIf="editable">
         <div class="d-flex justify-content-between">
             <a class="btn btn-link"
                 [routerLink]="['../../', 'filter', filter.resourceId, 'edit']">

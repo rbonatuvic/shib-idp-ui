@@ -1,4 +1,9 @@
-<div id="{{ id }}-container" class="dropdown form-group" (keydown)="handleKeyDown($event)" role='combobox' [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'">
+<div id="{{ id }}-container"
+    class="dropdown form-group"
+    (keydown)="handleKeyDown($event)"
+    role='combobox'
+    [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'"
+    [attr.aria-label]="id">
     <div [ngClass]="{'input-group': dropdown}">
         <input
             #inputField

@@ -1,49 +1,45 @@
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-
+import { StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { Property } from '../../domain/model/property';
+
+import { VersionComponent } from './version.component';
+import * as fromConfiguration from '../reducer';
+import * as fromProviders from '../../provider/reducer';
+import * as fromResolvers from '../../resolver/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
-import { PrimitivePropertyComponent } from './primitive-property.component';
 
 @Component({
     template: `
-        <primitive-property [property]="property"></primitive-property>
+        <version-page></version-page>
     `
 })
 class TestHostComponent {
-    @ViewChild(PrimitivePropertyComponent)
-    public componentUnderTest: PrimitivePropertyComponent;
-
-    property: Property = {
-        title: 'foo',
-        type: 'string',
-        name: 'foo',
-        value: ['bar'],
-        items: null,
-        properties: null,
-        widget: {
-            id: 'string'
-        }
-    };
+    @ViewChild(VersionComponent)
+    public componentUnderTest: VersionComponent;
 }
 
-describe('Primitive Property Component', () => {
+describe('Metadata Version Page Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
-    let app: PrimitivePropertyComponent;
+    let app: VersionComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
+                StoreModule.forRoot({
+                    'metadata-configuration': combineReducers(fromConfiguration.reducers),
+                    'provider': combineReducers(fromProviders.reducers),
+                    'resolver': combineReducers(fromResolvers.reducers)
+                }),
                 MockI18nModule,
                 RouterTestingModule
             ],
             declarations: [
-                PrimitivePropertyComponent,
+                VersionComponent,
                 TestHostComponent
             ],
         }).compileComponents();
@@ -54,7 +50,7 @@ describe('Primitive Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should compile', () => {
         expect(app).toBeTruthy();
-    }));
+    });
 });

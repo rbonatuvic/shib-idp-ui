@@ -1,10 +1,9 @@
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { MetadataConfiguration } from '../model/metadata-configuration';
 import { ConfigurationComponent } from './configuration.component';
 import * as fromConfiguration from '../reducer';
 import * as fromProviders from '../../provider/reducer';
@@ -19,11 +18,6 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
 class TestHostComponent {
     @ViewChild(ConfigurationComponent)
     public componentUnderTest: ConfigurationComponent;
-
-    configuration: MetadataConfiguration = {
-        dates: [],
-        sections: []
-    };
 }
 
 describe('Metadata Configuration Page Component', () => {
@@ -59,12 +53,4 @@ describe('Metadata Configuration Page Component', () => {
     it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
     }));
-
-    describe('hasVersion function', () => {
-        it('should determine if a version is defined', () => {
-            expect(app.hasVersion([[{id: 'foo'}], { version: 'foo' }])).toBe('foo');
-            expect(app.hasVersion([[{ id: 'foo' }], {}])).toBe('foo');
-            expect(app.hasVersion([[], {}])).toBeNull();
-        });
-    });
 });

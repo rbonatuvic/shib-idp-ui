@@ -2,8 +2,6 @@ import * as fromRoot from '../../app.reducer';
 import * as fromWizard from './wizard.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Wizard, WizardStep } from '../model';
-import { diff } from 'deep-object-diff';
-import { SchemaService } from '../../schema-form/service/schema.service';
 
 export interface WizardState {
     wizard: fromWizard.State;
@@ -46,7 +44,6 @@ export const getState = createSelector(getWizardState, getWizardStateFn);
 export const getWizardIndex = createSelector(getState, fromWizard.getIndex);
 export const getWizardIsDisabled = createSelector(getState, fromWizard.getDisabled);
 export const getWizardDefinition = createSelector(getState, fromWizard.getDefinition);
-export const getSchemaCollection = createSelector(getState, fromWizard.getCollection);
 
 export const getSchemaPath = (wizard: Wizard<any>) => wizard ? wizard.schema : null;
 
@@ -135,3 +132,9 @@ export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
 export const getParsedSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
 
 export const getSchema = createSelector(getParsedSchema, getCurrent, getSplitSchema);
+
+export const getWizardDefinitionValidationParams = createSelector(getWizardDefinition, def => def.validatorParams);
+
+export const getValidators = (params: any) => createSelector(getWizardDefinition, (definition) => {
+    return definition.getValidators(...params);
+});

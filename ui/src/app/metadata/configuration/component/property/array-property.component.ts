@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-import { Property } from '../../domain/model/property';
+import { Property } from '../../../domain/model/property';
 import { Observable, of } from 'rxjs';
-import { AttributesService } from '../../domain/service/attributes.service';
+import { AttributesService } from '../../../domain/service/attributes.service';
 import { ConfigurationPropertyComponent } from './configuration-property.component';
-import UriValidator from '../../../shared/validation/uri.validator';
+import UriValidator from '../../../../shared/validation/uri.validator';
 
 @Component({
     selector: 'array-property',

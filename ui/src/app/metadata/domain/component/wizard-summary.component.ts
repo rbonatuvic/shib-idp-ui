@@ -34,29 +34,28 @@ export class WizardSummaryComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.summary && this.summary) {
-            const schemas = this.summary.schema;
+            const schema = this.summary.schema;
             const model = this.summary.model;
             const def = this.summary.definition;
             const steps = def.steps;
-
-            const schema = Object.keys(schemas).reduce((coll, key) => ({
-                ...merge(coll, schemas[key])
-            }), {} as any);
 
             this.sections = steps
                 .filter(step => step.id !== 'summary')
                 .map(
                     (step: WizardStep, num: number) => {
+                        const { id, index, label } = step;
+                        const split = getSplitSchema(schema, step);
+                        const properties = getStepProperties(
+                            split,
+                            def.formatter(model),
+                            schema.definitions || {}
+                        );
                         return ({
-                            id: step.id,
+                            id,
                             pageNumber: num + 1,
-                            index: step.index,
-                            label: step.label,
-                            properties: getStepProperties(
-                                getSplitSchema(schema, step),
-                                def.formatter(model),
-                                schema.definitions || {}
-                            )
+                            index,
+                            label,
+                            properties
                         });
                     }
                 );

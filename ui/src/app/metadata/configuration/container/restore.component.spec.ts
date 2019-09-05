@@ -11,6 +11,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { RestoreComponent } from './restore.component';
 import { of } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     template: `
@@ -28,6 +29,7 @@ describe('Metadata Restore Page Component', () => {
     let instance: TestHostComponent;
     let app: RestoreComponent;
     let store: Store<fromConfiguration.State>;
+    let router: Router;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -51,6 +53,7 @@ describe('Metadata Restore Page Component', () => {
         }).compileComponents();
 
         store = TestBed.get(Store);
+        router = TestBed.get(Router);
         spyOn(store, 'dispatch');
         spyOn(store, 'select').and.callFake(() => of(new Date().toDateString()));
 
@@ -62,15 +65,15 @@ describe('Metadata Restore Page Component', () => {
 
     it('should load metadata objects', async(() => {
         expect(app).toBeTruthy();
-        expect(store.select).toHaveBeenCalledTimes(4);
+        expect(store.select).toHaveBeenCalledTimes(2);
         expect(store.dispatch).not.toHaveBeenCalled();
     }));
 
     describe('restore method', () => {
-        it('should emit a value from the restore subject', () => {
-            spyOn(app.subj, 'next').and.callThrough();
+        it('should navigate to the restore edit page', () => {
+            spyOn(router, 'navigate').and.callThrough();
             app.restore();
-            expect(app.subj.next).toHaveBeenCalled();
+            expect(router.navigate).toHaveBeenCalled();
         });
     });
 });
