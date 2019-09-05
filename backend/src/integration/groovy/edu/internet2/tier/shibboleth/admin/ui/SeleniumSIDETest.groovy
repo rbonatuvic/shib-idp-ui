@@ -83,29 +83,7 @@ class SeleniumSIDETest extends Specification {
         assert result.level.exitCode == 0
 
         where:
-        //TODO: Update or delete where necessary
-        name                                                | file
-//        'Create Dynamic HTTP Metadata Resolver'             | '/dhmr.side'
-//        'Metadata Source Happy Path Save'                   | '/MetadataSourceHappyPathSAVE.side'
-//        'Metadata Provider Happy Path Save'                 | '/MetadataProviderHappyPathSAVE.side'
-//        'Create Filter Entity ID'                           | '/CreateFilterEntityID.side'
-//        'Create Filter REGEX'                               | '/CreateFilterREGEX.side'
-//        'Create Filter Script'                              | '/CreateFilterScript.side'
-//        'Create Metadata Source From XML'                   | '/CreateMetadataSourceFromXML.side'
-//        'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' // currently does not populate MDUI before copy (causes 400)
-//        'Create Metadata Source from URL'                   | '/CreateMetadataSourceFromURL.side'
-//        'Delete Entity ID Filter'                           | '/DeleteEntityIDFilter.side'
-//        'Delete REGEX Filter'                               | '/DeleteREGEXFilter.side'
-//        'Delete Incomplete Source'                          | '/DeleteIncompleteSource.side'
-//        'Admin Login'                                       | '/SHIBUI-1031_AdminLogin.side'
-//        'Delegated Admin: SubmitSource'                     | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side'
-//        'Create Filesystem Metadata Resolver'               | '/CreateFilesystemMetadataResolver.side'
-//        'Create Local Dynamic Metadata Resolver'            | '/CreateLocalDynamicMetadataResolver.side'
-//        'Delete Entity Attributes Script Filter'            | '/DeleteScriptFilter.side'
-//        'Create and Delete Name ID Format Entity ID Filter' | '/CreateAndDeleteNameIDFormatEntityIDFilter.side'
-//        'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
-//        'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
-//        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side'
+        name                                                                | file
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
         'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
