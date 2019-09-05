@@ -63,7 +63,7 @@ export class ProviderWizardComponent implements OnDestroy {
 
         this.summary$ = combineLatest(
             this.store.select(fromWizard.getWizardDefinition),
-            this.store.select(fromWizard.getSchemaCollection),
+            this.store.select(fromWizard.getSchemaObject),
             this.store.select(fromProvider.getEntityChanges)
         ).pipe(
             map(([ definition, schema, model ]) => ({ definition, schema, model }))

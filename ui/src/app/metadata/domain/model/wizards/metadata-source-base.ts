@@ -3,6 +3,7 @@ import { MetadataResolver } from '../metadata-resolver';
 import { FormProperty } from 'ngx-schema-form/lib/model/formproperty';
 import { ArrayProperty } from 'ngx-schema-form/lib/model/arrayproperty';
 import { ObjectProperty } from 'ngx-schema-form/lib/model/objectproperty';
+import { getAllOtherIds } from '../../../resolver/reducer';
 
 /*istanbul ignore next */
 export class MetadataSourceBase implements Wizard<MetadataResolver> {
@@ -10,6 +11,8 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     type = '@MetadataProvider';
     steps: WizardStep[] = [];
     schema = '';
+
+    validatorParams = [getAllOtherIds];
 
     bindings = {
         '/securityInfo/x509CertificateAvailable': [

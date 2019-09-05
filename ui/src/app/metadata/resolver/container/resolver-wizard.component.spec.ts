@@ -72,11 +72,6 @@ describe('Resolver Wizard Component', () => {
                             index: 'page',
                             disabled: false,
                             definition: new MetadataSourceWizard(),
-                            schemaCollection: {
-                                page: {
-                                    ...schema
-                                }
-                            },
                             schemaPath: '/foo/bar',
                             loading: false,
                             schema: {

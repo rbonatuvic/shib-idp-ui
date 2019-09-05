@@ -3,7 +3,6 @@ import * as selectors from './wizard.reducer';
 import {
     WizardActionTypes,
     ClearWizard,
-    AddSchema,
     SetDisabled,
     SetDefinition,
     SetIndex,
@@ -31,12 +30,6 @@ describe('Wizard Reducer', () => {
     describe(`${WizardActionTypes.CLEAR}`, () => {
         it('should reset to initial state', () => {
             expect(reducer(snapshot, new ClearWizard())).toEqual(snapshot);
-        });
-    });
-
-    describe(`${WizardActionTypes.ADD_SCHEMA}`, () => {
-        it('should add the payload to the schema collection', () => {
-            expect(reducer(snapshot, new AddSchema({id: 'foo', schema: SCHEMA })).schemaCollection).toEqual({ 'foo': SCHEMA });
         });
     });
 
@@ -108,7 +101,6 @@ describe('Wizard Reducer', () => {
 
     describe('selector functions', () => {
         it('should return pieces of state', () => {
-            expect(selectors.getCollection(snapshot)).toEqual(snapshot.schemaCollection);
             expect(selectors.getDefinition(snapshot)).toEqual(snapshot.definition);
             expect(selectors.getDisabled(snapshot)).toEqual(snapshot.disabled);
             expect(selectors.getIndex(snapshot)).toEqual(snapshot.index);

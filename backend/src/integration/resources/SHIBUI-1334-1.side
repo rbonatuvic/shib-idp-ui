@@ -2219,7 +2219,7 @@
       "id": "c2d29077-30c4-45cf-81c9-b5790294e11e",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-info > translate-i18n",
+      "target": "css=.btn-info",
       "targets": [
         ["css=.btn-info > translate-i18n", "css:finder"],
         ["xpath=//div[2]/button/translate-i18n", "xpath:position"],
@@ -2230,7 +2230,7 @@
       "id": "f2e3d420-5cf5-4165-94da-41688839cf82",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-link:nth-child(1) > translate-i18n",
+      "target": "css=.btn-link:nth-child(1)",
       "targets": [
         ["css=.btn-link:nth-child(1) > translate-i18n", "css:finder"],
         ["xpath=//div[@id='navigation']/div/a/translate-i18n", "xpath:idRelative"],
@@ -2253,7 +2253,7 @@
       "id": "68972f7d-8268-4701-865c-585a39987208",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(2) .custom-control-label",
+      "target": "css=tr:nth-child(3) .custom-control-label",
       "targets": [
         ["css=tr:nth-child(2) .custom-control-label", "css:finder"],
         ["xpath=//tr[2]/td/div/label", "xpath:position"]
@@ -2270,6 +2270,13 @@
         ["xpath=//button[contains(.,'Compare Selected(2)')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "98aafaee-a430-4a2d-9aa5-b4c9ce0c4908",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.mb-4:nth-child(2) primitive-property:nth-child(1) .d-block:nth-child(2)",
+      "targets": [],
+      "value": "10000"
     }, {
       "id": "5a976e2c-dc5f-4021-9cc6-3cad12e771ea",
       "comment": "",

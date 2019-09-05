@@ -1,10 +1,14 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { ActivatedRoute, } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as fromConfiguration from '../reducer';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
+import { CancelRestore } from '../action/restore.action';
+import { map } from 'rxjs/operators';
+
+import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'restore-component',
@@ -12,20 +16,27 @@ import { CONFIG_DATE_FORMAT } from '../configuration.values';
     templateUrl: './restore.component.html',
     styleUrls: []
 })
-export class RestoreComponent implements OnDestroy {
-    private ngUnsubscribe: Subject<void> = new Subject<void>();
+export class RestoreComponent {
 
-    DATE_FORMAT = CONFIG_DATE_FORMAT;
-
-    date = new Date();
+    dateString$ = this.store.select(fromConfiguration.getConfigurationVersionDate);
+    loading$ = this.store.select(fromConfiguration.getVersionLoading);
+    loaded$ = this.loading$.pipe(map(loading => !loading));
+    date$: Observable<string>;
 
     constructor(
         private store: Store<fromConfiguration.ConfigurationState>,
-        private routerState: ActivatedRoute
-    ) {}
+        private datePipe: DatePipe,
+        private router: Router,
+        private route: ActivatedRoute
+    ) {
+        this.date$ = this.dateString$.pipe(map((date) => this.datePipe.transform(date, CONFIG_DATE_FORMAT)));
+    }
 
-    ngOnDestroy() {
-        this.ngUnsubscribe.next();
-        this.ngUnsubscribe.complete();
+    restore() {
+        this.router.navigate(['../', 'edit'], { relativeTo: this.route });
+    }
+
+    cancel() {
+        this.store.dispatch(new CancelRestore());
     }
 }

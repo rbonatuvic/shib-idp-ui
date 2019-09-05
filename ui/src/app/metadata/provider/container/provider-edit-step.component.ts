@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { FormControl } from '@angular/forms';
 
 import * as fromProvider from '../reducer';
 import { UpdateStatus } from '../action/editor.action';
@@ -9,9 +10,8 @@ import { MetadataProvider } from '../../domain/model';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
-import { withLatestFrom, map, skipWhile, distinctUntilChanged, takeUntil, filter } from 'rxjs/operators';
+import { withLatestFrom, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { UpdateProvider } from '../action/entity.action';
-import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'provider-edit-step',

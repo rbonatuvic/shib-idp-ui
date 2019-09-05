@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ResourceLoader
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
@@ -23,7 +24,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaResour
  * @author Dmitriy Kopylenko
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("no-auth")
+@ActiveProfiles(["no-auth", "badjson"])
 class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Specification {
 
     @Autowired
@@ -42,6 +43,7 @@ class BadJSONMetadataSourcesUiDefinitionControllerIntegrationTests extends Speci
     }
 
     @TestConfiguration
+    @Profile('badjson')
     static class Config {
         @Bean
         JsonSchemaResourceLocationRegistry jsonSchemaResourceLocationRegistry(ResourceLoader resourceLoader,

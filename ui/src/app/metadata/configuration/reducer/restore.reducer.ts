@@ -1,46 +1,54 @@
-import { RestoreActionTypes, RestoreActionsUnion } from '../action/restore.action';
 import { Metadata } from '../../domain/domain.type';
+import { RestoreActionTypes, RestoreActionsUnion } from '../action/restore.action';
 
-export interface State {
-    model: Metadata;
-    selectedVersionId: string;
-    selectedVersionType: string;
-    selectedMetadataId: string;
-    loaded: Boolean;
+export interface RestoreState {
+    saving: boolean;
+    status: { [key: string]: string };
+    changes: Partial<Metadata>;
 }
 
-export const initialState: State = {
-    model: null,
-    selectedVersionId: null,
-    selectedMetadataId: null,
-    selectedVersionType: null,
-    loaded: false
+export const initialState: RestoreState = {
+    saving: false,
+    status: {},
+    changes: {} as Metadata
 };
 
-export function reducer(state = initialState, action: RestoreActionsUnion): State {
+export function reducer(state = initialState, action: RestoreActionsUnion): RestoreState {
     switch (action.type) {
-        case RestoreActionTypes.SELECT_VERSION_REQUEST:
+        case RestoreActionTypes.UPDATE_RESTORATION_SUCCESS:
             return {
                 ...state,
-                selectedMetadataId: action.payload.id,
-                selectedVersionId: action.payload.version,
-                selectedVersionType: action.payload.type
+                changes: {
+                    ...state.changes,
+                    ...action.payload
+                }
             };
-        case RestoreActionTypes.SELECT_VERSION_SUCCESS:
+        case RestoreActionTypes.SET_SAVING_STATUS:
             return {
                 ...state,
-                model: action.payload,
-                loaded: true
+                saving: action.payload
             };
-        case RestoreActionTypes.CLEAR_VERSION:
+        case RestoreActionTypes.UPDATE_STATUS: {
             return {
-                ...initialState
+                ...state,
+                status: {
+                    ...state.status,
+                    ...action.payload
+                }
             };
+        }
         default: {
             return state;
         }
     }
 }
 
-export const getVersionModel = (state: State) => state.model;
-export const getVersionModelLoaded = (state: State) => state.loaded;
+export const isRestorationSaved = (state: RestoreState) => !Object.keys(state.changes).length;
+export const getChanges = (state: RestoreState) => state.changes;
+export const isRestorationSaving = (state: RestoreState) => state.saving;
+export const getFormStatus = (state: RestoreState) => state.status;
+
+export const isRestorationValid = (state: RestoreState) =>
+    !Object.keys(state.status).some(key => state.status[key] === ('INVALID'));
+export const getInvalidRestorationForms = (state: RestoreState) =>
+    Object.keys(state.status).filter(key => state.status[key] === 'INVALID');

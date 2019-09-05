@@ -16,6 +16,7 @@ export class FilterConfigurationListItemComponent implements OnChanges {
     @Input() index: number;
     @Input() isFirst: boolean;
     @Input() isLast: boolean;
+    @Input() editable: boolean;
 
     @Output() onUpdateOrderUp: EventEmitter<MetadataFilter> = new EventEmitter();
     @Output() onUpdateOrderDown: EventEmitter<MetadataFilter> = new EventEmitter();

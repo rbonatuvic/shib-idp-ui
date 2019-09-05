@@ -1,0 +1,14 @@
+<div class="alert alert-danger d-flex justify-content-between font-weight-bold mb-3" *ngIf="lockable">
+    <span class="d-flex justify-content-between">
+        <toggle-switch id="toggle" [formControl]="lock"></toggle-switch>
+        <span class="p-1">{{ lock.value ? 'Locked' : 'Unlocked' }}</span>
+    </span>
+    <span class="p-1">For Advanced Knowledge Only</span>
+</div>
+<sf-form
+    [schema]="schema"
+    [model]="model"
+    [validators]="validators"
+    [bindings]="bindings"
+    (onChange)="change.emit($event.value)"
+    (onErrorChange)="status.emit($event)"></sf-form>

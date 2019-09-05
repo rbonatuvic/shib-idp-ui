@@ -42,25 +42,16 @@ class EntitiesControllerIntegrationTests extends Specification {
     def "GET /api/entities returns the proper json"() {
         given:
         def expectedBody = '''
-            {
-                "id":null,
-                "serviceProviderName":null,
-                "entityId":"http://test.scaldingspoon.org/test1",
-                "organization":null,
-                "contacts":null,
-                "mdui":null,
+            {               
+                "entityId":"http://test.scaldingspoon.org/test1",                
                 "serviceProviderSsoDescriptor": {
                     "protocolSupportEnum":"SAML 2",
                     "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
-                },
-                "logoutEndpoints":null,
-                "securityInfo":null,
+                },                
                 "assertionConsumerServices":[
                     {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
                 ],
-                "serviceEnabled":false,
-                "createdDate":null,
-                "modifiedDate":null,
+                "serviceEnabled":false,                
                 "relyingPartyOverrides":{},
                 "attributeRelease":["givenName","employeeNumber"]
             }

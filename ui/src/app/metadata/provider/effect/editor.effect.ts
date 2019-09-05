@@ -12,8 +12,7 @@ import {
     LoadSchemaSuccess,
     LoadSchemaFail,
     SetDefinition,
-    WizardActionTypes,
-    AddSchema
+    WizardActionTypes
 } from '../../../wizard/action/wizard.action';
 import { ResetChanges } from '../action/entity.action';
 
@@ -36,14 +35,6 @@ export class EditorEffects {
                     catchError(error => of(new LoadSchemaFail(error)))
                 )
         )
-    );
-
-    @Effect()
-    $loadSchemaSuccess = this.actions$.pipe(
-        ofType<LoadSchemaSuccess>(WizardActionTypes.LOAD_SCHEMA_SUCCESS),
-        map(action => action.payload),
-        withLatestFrom(this.store.select(fromWizard.getWizardIndex)),
-        map(([schema, id]) => new AddSchema({ id, schema }))
     );
 
     @Effect()

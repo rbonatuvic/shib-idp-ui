@@ -2,11 +2,11 @@ import { Component, ViewChild, Input } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { Property } from '../../domain/model/property';
-import { MockI18nModule } from '../../../../testing/i18n.stub';
-import { SCHEMA } from '../../../../testing/form-schema.stub';
-import { getStepProperties, getStepProperty } from '../../domain/utility/configuration';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { Property } from '../../../domain/model/property';
+import { MockI18nModule } from '../../../../../testing/i18n.stub';
+import { SCHEMA } from '../../../../../testing/form-schema.stub';
+import { getStepProperty } from '../../../domain/utility/configuration';
 import { ConfigurationPropertyComponent } from './configuration-property.component';
 
 @Component({

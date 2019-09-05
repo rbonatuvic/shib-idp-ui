@@ -4,7 +4,7 @@
     <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
     Configuration
 </h2>
-<div class="" [ngClass]="{
+<div *ngIf="!(loading$ | async)" class="" [ngClass]="{
     'container-fluid': (numVersions$ | async) > 2,
     'container': (numVersions$ | async) <= 2
 }">
@@ -14,5 +14,9 @@
             <translate-i18n key="action.version-history">Version History</translate-i18n>
         </a>
     </div>
-    <metadata-configuration [configuration]="versions$ | async"></metadata-configuration>
+    <metadata-configuration [configuration]="versions$ | async" [editable]="false"></metadata-configuration>
+</div>
+<div *ngIf="loading$ | async" class="d-flex justify-content-center">
+    <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
 </div>

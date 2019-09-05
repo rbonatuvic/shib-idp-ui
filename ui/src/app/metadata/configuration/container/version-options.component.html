@@ -1,0 +1,47 @@
+<h2 class="mb-4" [ngSwitch]="type$ | async">
+    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
+    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    Configuration
+</h2>
+<div class="container" id="header" *ngIf="!(loading$ | async)">
+    <metadata-header
+        [isEnabled]="isEnabled$ | async"
+        [version]="model$ | async"
+        [isCurrent]="false"
+        ></metadata-header>
+    <div class="px-3 my-3 d-flex justify-content-between" id="navigation">
+        <div>
+            <a class="btn btn-link" [routerLink]="['/', 'metadata', kind, id, 'configuration', 'history']">
+                <i class="fa fa-history sr-hidden"></i>&nbsp;
+                <translate-i18n key="action.version-history">Version History</translate-i18n>
+            </a>
+            <button class="btn btn-link" (click)="onScrollTo('filters')" *ngIf="kind === 'provider'">
+                <i class="fa fa-arrow-down sr-hidden"></i>&nbsp;
+                <translate-i18n key="label.filters">Filters</translate-i18n>
+            </button>
+        </div>
+    </div>
+    <metadata-configuration
+        [configuration]="configuration$ | async"
+        [editable]="false"
+        id="configuration">
+    </metadata-configuration>
+    <div *ngIf="kind === 'provider'" id="filters">
+        <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
+            <h2 class="title h4 m-0 ml-2 flex-grow-1">
+                <span class="text" translate="label.filters">Filters</span>
+            </h2>
+        </div>
+        <filter-configuration-list
+            [editable]="false"
+            [filters]="filters$ | async"></filter-configuration-list>
+    </div>
+    <button class="btn btn-link" (click)="onScrollTo('header')">
+        <i class="fa fa-chevron-up sr-hidden"></i>&nbsp;
+        <translate-i18n key="action.back-to-top">Back to Top</translate-i18n>
+    </button>
+</div>
+<div *ngIf="loading$ | async" class="d-flex justify-content-center">
+    <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+</div>
