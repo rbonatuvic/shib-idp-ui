@@ -7,7 +7,7 @@
                     <span [translate]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</span>
                 </div>
                 <ng-container *ngFor="let version of property.value">
-                    <div *ngIf="version && [i]"
+                    <div *ngIf="version && version[i]"
                         [ngbPopover]="version[i][prop]"
                         triggers="mouseenter:mouseleave"
                         container="body"
