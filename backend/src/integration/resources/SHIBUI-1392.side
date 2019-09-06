@@ -374,14 +374,14 @@
       "command": "editContent",
       "target": "id=/nameIdFormatFilterTarget.target",
       "targets": [],
-      "value": "eval(true)"
+      "value": "(true);"
     }, {
       "id": "05870356-d3db-4540-bb3f-db34b1cf65f1",
       "comment": "",
       "command": "sendKeys",
       "target": "id=/nameIdFormatFilterTarget.target",
       "targets": [],
-      "value": "${KEY_END};"
+      "value": "eval"
     }, {
       "id": "d7721254-68c9-4140-af2a-1757cce99da7",
       "comment": "",
