@@ -84,20 +84,22 @@ class SeleniumSIDETest extends Specification {
 
         where:
         name                                                                | file
-        'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
-        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
-        'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
-        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
-        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
-        'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
-        'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
-        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
-        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
-        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side'
-        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
-        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
+//        'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
+//        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
+//        'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
+//        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
+//        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
+//        'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
+//        'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
+//        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
+//        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
+//        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side'
+//        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
+//        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
+//        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
         'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
+//        'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
+//        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
     }
 }
 
