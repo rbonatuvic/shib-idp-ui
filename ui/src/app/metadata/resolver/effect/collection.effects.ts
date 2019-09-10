@@ -35,6 +35,7 @@ import { I18nService } from '../../../i18n/service/i18n.service';
 import * as fromRoot from '../../../app.reducer';
 import * as fromI18n from '../../../i18n/reducer';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { UpdateSaving } from '../action/entity.action';
 
 
 /* istanbul ignore next */
@@ -77,6 +78,21 @@ export class ResolverCollectionEffects {
                     })
                 );
         })
+    );
+
+    @Effect()
+    updateResolverSavingOnRequest$ = this.actions$.pipe(
+        ofType<UpdateResolverRequest>(ResolverCollectionActionTypes.UPDATE_RESOLVER_REQUEST),
+        map(action => new UpdateSaving(true)),
+    );
+
+    @Effect()
+    updateResolverSavingOnResult$ = this.actions$.pipe(
+        ofType<UpdateResolverSuccess | UpdateResolverFail>(
+            ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS,
+            ResolverCollectionActionTypes.UPDATE_RESOLVER_FAIL
+        ),
+        map(action => new UpdateSaving(false)),
     );
 
     @Effect({ dispatch: false })
