@@ -31,11 +31,11 @@ export class EntityAttributesFilterEntity implements MetadataFilter, MetadataEnt
     }
 
     getId(): string {
-        return this.entityId;
+        return this.resourceId;
     }
 
     getDisplayId(): string {
-        return this.entityId;
+        return this.resourceId;
     }
 
     isDraft(): boolean {

@@ -2,8 +2,8 @@ import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ObjectWidget } from 'ngx-schema-form';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { distinctUntilChanged, skipWhile, map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, skipWhile, takeUntil, map } from 'rxjs/operators';
 
 import * as fromRoot from '../../../app.reducer';
 import * as fromFilters from '../../../metadata/filter/reducer';
@@ -17,7 +17,7 @@ import { QueryEntityIds, ClearSearch } from '../../../metadata/filter/action/sea
     styleUrls: ['./filter-target.component.scss']
 })
 export class FilterTargetComponent extends ObjectWidget implements OnDestroy, AfterViewInit {
-
+    private ngUnsubscribe: Subject<null> = new Subject<null>();
     ids$: Observable<string[]>;
     ids: string[];
 
@@ -32,6 +32,9 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         [Validators.required]
     );
 
+    errors$: Observable<any[]>;
+    hasErrors$: Observable<boolean>;
+
     constructor(
         private store: Store<fromRoot.State>
     ) {
@@ -42,6 +45,7 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         this.search
             .valueChanges
             .pipe(
+                takeUntil(this.ngUnsubscribe),
                 distinctUntilChanged()
             )
             .subscribe(query => this.searchEntityIds(query));
@@ -49,6 +53,7 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         this.script
             .valueChanges
             .pipe(
+                takeUntil(this.ngUnsubscribe),
                 distinctUntilChanged(),
                 skipWhile(() => this.targetType === 'ENTITY')
             )
@@ -61,6 +66,31 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         super.ngAfterViewInit();
         this.script.setValue(this.targets[0]);
         this.search.setValidators(this.unique());
+
+        this.errors$ = this.formProperty.errorsChanges.pipe(
+            map(errors =>
+                errors && errors.length > 1 ?
+                    Array
+                    .from(new Set(errors.filter(e => e.code !== 'ARRAY_LENGTH_SHORT').map(e => e.code)))
+                    .map(id => ({ ...errors.find(e => e.code === id) }))
+                    : []
+        ));
+
+        this.errors$
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+                map(errors => errors.reduce((collection, e) => ({ ...collection, [e.code]: e.message }), {})),
+                map(errors => Object.keys(errors).length > 0 ? errors : null)
+            )
+            .subscribe(errors => this.script.setErrors(
+                errors,
+                {
+                    emitEvent: true
+                }
+            )
+        );
+
+        this.hasErrors$ = this.errors$.pipe(map(e => e && e.length > 0));
     }
 
     unique(): ValidatorFn {
@@ -138,5 +168,7 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearSearch());
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
     }
 }

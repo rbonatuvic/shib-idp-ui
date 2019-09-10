@@ -20,6 +20,20 @@
                 </div>
             </ng-container>
         </div>
+        <ng-container *ngFor="let version of property.value">
+            <div *ngIf="version && version[i]"
+                [ngbPopover]="version[i][prop]"
+                triggers="mouseenter:mouseleave"
+                container="body"
+                [ngStyle]="{'width': width}"
+                class="text-truncate"
+                popoverClass="popover-lg popover-info">
+                {{ version[i][prop] }}
+            </div>
+            <div *ngIf="!version || !version[i]" [ngStyle]="{'width': width}">
+                -
+            </div>
+        </ng-container>
     </div>
 </div>
 <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property)">

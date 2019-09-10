@@ -5,7 +5,8 @@ describe('Entity Attributes filter form', () => {
         it('should return an empty object for validators', () => {
             expect(Object.keys(EntityAttributesFilter.getValidators())).toEqual([
                 '/',
-                '/name'
+                '/name',
+                '/entityAttributesFilterTarget'
             ]);
         });
 
