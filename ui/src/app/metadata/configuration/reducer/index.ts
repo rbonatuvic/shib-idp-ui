@@ -162,6 +162,8 @@ export const getComparisonConfigurations = createSelector(
 
 export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
 
+export const getViewChangedOnly = createSelector(getCompareState, fromCompare.getViewChangedOnly);
+
 // Version Restoration
 
 export const getRestoreState = createSelector(getState, getRestoreStateFn);

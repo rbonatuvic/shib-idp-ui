@@ -8,7 +8,8 @@ export enum CompareActionTypes {
     COMPARE_METADATA_SUCCESS = '[Compare Version] Compare Version Success',
     COMPARE_METADATA_ERROR = '[Compare Version] Compare Version Error',
     SET_VERSIONS = '[Compare Version] Set Versions',
-    CLEAR_VERSIONS = '[Compare Version] Clear Versions'
+    CLEAR_VERSIONS = '[Compare Version] Clear Versions',
+    SET_VIEW_CHANGED = '[Compare Version] View Changed Only'
 }
 
 export class CompareVersionRequest implements Action {
@@ -35,6 +36,11 @@ export class SetMetadataVersions implements Action {
     constructor(public payload: Metadata[]) { }
 }
 
+export class ViewChanged implements Action {
+    readonly type = CompareActionTypes.SET_VIEW_CHANGED;
+    constructor(public payload: boolean) {  }
+}
+
 export class ClearVersions implements Action {
     readonly type = CompareActionTypes.CLEAR_VERSIONS;
 }
@@ -44,4 +50,5 @@ export type CompareActionsUnion =
     | CompareVersionSuccess
     | CompareVersionError
     | SetMetadataVersions
-    | ClearVersions;
+    | ClearVersions
+    | ViewChanged;
