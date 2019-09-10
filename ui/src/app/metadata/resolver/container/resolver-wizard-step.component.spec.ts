@@ -66,11 +66,6 @@ describe('Resolver Wizard Step Component', () => {
                             index: 'common',
                             disabled: false,
                             definition: new MetadataSourceWizard(),
-                            schemaCollection: {
-                                common: {
-                                    ...schema
-                                }
-                            },
                             schemaPath: '/foo/bar',
                             loading: false,
                             schema: {

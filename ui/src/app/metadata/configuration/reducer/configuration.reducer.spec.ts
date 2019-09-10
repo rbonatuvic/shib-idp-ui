@@ -27,7 +27,7 @@ describe('Configuration Reducer', () => {
 
     describe('SET_DEFINITION action', () => {
         it('should set the state definition', () => {
-            const action = new actions.SetDefinition(definition);
+            const action = new actions.SetConfigurationDefinition(definition);
             const result = reducer(initialState, action);
 
             expect(result).toEqual({ ...initialState, definition });
@@ -36,7 +36,7 @@ describe('Configuration Reducer', () => {
 
     describe('SET_SCHEMA action', () => {
         it('should set the state schema', () => {
-            const action = new actions.SetSchema(schema);
+            const action = new actions.SetConfigurationSchema(schema);
             const result = reducer(initialState, action);
 
             expect(result).toEqual({ ...initialState, schema });

@@ -56,4 +56,11 @@ describe('Metadata Xml Page Component', () => {
         expect(app).toBeTruthy();
         expect(store.select).toHaveBeenCalledTimes(3);
     }));
+
+    describe('preview method', () => {
+        it('should dispatch an action', () => {
+            app.preview();
+            expect(store.dispatch).toHaveBeenCalled();
+        });
+    });
 });

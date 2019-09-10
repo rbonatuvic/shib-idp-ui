@@ -4,6 +4,7 @@ import { MetadataVersion } from '../model/version';
 
 export interface HistoryState extends EntityState<MetadataVersion> {
     selectedVersionId: string;
+    loading: boolean;
 }
 
 export function sortByDate(a: MetadataVersion, b: MetadataVersion): number {
@@ -16,11 +17,23 @@ export const adapter: EntityAdapter<MetadataVersion> = createEntityAdapter<Metad
 });
 
 export const initialState: HistoryState = adapter.getInitialState({
-    selectedVersionId: null
+    selectedVersionId: null,
+    loading: false
 });
 
 export function reducer(state = initialState, action: HistoryActionsUnion): HistoryState {
     switch (action.type) {
+        case HistoryActionTypes.LOAD_HISTORY_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+        case HistoryActionTypes.LOAD_HISTORY_ERROR:
+        case HistoryActionTypes.LOAD_HISTORY_SUCCESS:
+            return {
+                ...state,
+                loading: false
+            };
         case HistoryActionTypes.SET_HISTORY:
             return adapter.addAll(action.payload.versions, {
                 ...state,
@@ -48,3 +61,5 @@ export const {
     selectAll: selectAllVersions,
     selectTotal: selectVersionTotal
 } = adapter.getSelectors();
+
+export const getHistoryLoading = (state: HistoryState) => state.loading;

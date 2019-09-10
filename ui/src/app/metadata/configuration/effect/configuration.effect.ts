@@ -9,10 +9,10 @@ import { MetadataConfigurationService } from '../service/configuration.service';
 import {
     ConfigurationActionTypes,
     SetMetadata,
-    SetDefinition,
+    SetConfigurationDefinition,
     LoadSchemaRequest,
     LoadSchemaSuccess,
-    SetSchema,
+    SetConfigurationSchema,
     LoadSchemaError,
     LoadXmlSuccess,
     LoadXmlError,
@@ -34,6 +34,11 @@ import {
 import { MetadataHistoryService } from '../service/history.service';
 import { Metadata } from '../../domain/domain.type';
 import { SelectVersion } from '../action/history.action';
+import {
+    SetDefinition,
+    LoadSchemaSuccess as LoadWizardSchemaSuccess,
+    LoadSchemaRequest as LoadWizardSchemaRequest
+} from '../../../wizard/action/wizard.action';
 
 @Injectable()
 export class MetadataConfigurationEffects {
@@ -44,11 +49,11 @@ export class MetadataConfigurationEffects {
         map(action => action.payload),
         switchMap(payload =>
             this.historyService.getVersion(payload.id, payload.type, payload.version).pipe(
-                map((response: Metadata) =>
-                    (payload.type === 'resolver') ?
+                map((response: Metadata) => {
+                    return (payload.type === 'resolver') ?
                         new SelectResolverSuccess(response as MetadataResolver) :
-                        new SelectProviderSuccess(response as MetadataProvider)
-                )
+                        new SelectProviderSuccess(response as MetadataProvider);
+                })
             )
         )
     );
@@ -79,19 +84,31 @@ export class MetadataConfigurationEffects {
     @Effect()
     setDefinitionOnResolverDataLoad$ = this.actions$.pipe(
         ofType<SelectResolverSuccess>(ResolverCollectionActionTypes.SELECT_SUCCESS),
-        map(action => new SetDefinition(this.configService.getDefinition('resolver')))
+        map(action => new SetConfigurationDefinition(this.configService.getDefinition('resolver')))
     );
 
     @Effect()
     setDefinitionOnProviderLoad$ = this.actions$.pipe(
         ofType<SelectProviderSuccess>(ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS),
-        map(action => new SetDefinition(this.configService.getDefinition(action.payload['@type'])))
+        map(action => new SetConfigurationDefinition(this.configService.getDefinition(action.payload['@type'])))
     );
 
     @Effect()
     loadSchemaOnDefinitionSet$ = this.actions$.pipe(
-        ofType<SetDefinition>(ConfigurationActionTypes.SET_DEFINITION),
+        ofType<SetConfigurationDefinition>(ConfigurationActionTypes.SET_DEFINITION),
         map(action => new LoadSchemaRequest(action.payload.schema))
+    );
+
+    @Effect()
+    setWizardDefinition$ = this.actions$.pipe(
+        ofType<SetConfigurationDefinition>(ConfigurationActionTypes.SET_DEFINITION),
+        map(action => new SetDefinition(action.payload))
+    );
+
+    @Effect()
+    setWizardSchema$ = this.actions$.pipe(
+        ofType<LoadSchemaSuccess>(ConfigurationActionTypes.LOAD_SCHEMA_SUCCESS),
+        map(action => new LoadWizardSchemaSuccess(action.payload))
     );
 
     @Effect()
@@ -110,7 +127,7 @@ export class MetadataConfigurationEffects {
     @Effect()
     setSchema$ = this.actions$.pipe(
         ofType<LoadSchemaSuccess>(ConfigurationActionTypes.LOAD_SCHEMA_SUCCESS),
-        map(action => new SetSchema(action.payload))
+        map(action => new SetConfigurationSchema(action.payload))
     );
 
     @Effect({dispatch: false})

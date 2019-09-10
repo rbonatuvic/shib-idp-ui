@@ -119,6 +119,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
         'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
     }
 }
 

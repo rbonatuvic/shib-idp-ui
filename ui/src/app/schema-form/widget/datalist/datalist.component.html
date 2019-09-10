@@ -1,5 +1,5 @@
 <div class="widget form-group">
-    <label [for]="id" class="d-flex justify-content-between control-label">
+    <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
