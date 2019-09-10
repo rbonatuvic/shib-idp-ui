@@ -67,6 +67,17 @@ describe('Array Property Component', () => {
         expect(app).toBeTruthy();
     }));
 
+    describe('isDifferent method', () => {
+        it('should return true if the value is different between any of the lists', () => {
+            expect(app.isDifferent('foo', [['foo', 'bar', 'baz'], ['bar', 'baz']])).toBe(true);
+            expect(app.isDifferent('bar', [['bar'], null])).toBe(true);
+        });
+
+        it('should return false if the list of values is the same', () => {
+            expect(app.isDifferent('foo', [['foo', 'baz'], ['foo', 'bar']])).toBe(false);
+        });
+    });
+
     describe('attributeList$ getter', () => {
         it('should return an empty list when no data or dataUrl is set', () => {
             app.attributeList$.subscribe((list) => {

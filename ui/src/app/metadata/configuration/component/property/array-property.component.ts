@@ -33,8 +33,7 @@ export class ArrayPropertyComponent extends ConfigurationPropertyComponent imple
         return UriValidator.isUri(str);
     }
 
-    isDifferent(key: string): boolean {
-        const model = this.property.value || [];
+    isDifferent(key: string, model: any): boolean {
         return model
             .map((value) => value ? value.indexOf(key) > -1 : false)
             .reduce((current, val) => current !== val ? true : false, false);

@@ -36,7 +36,7 @@
         <div *ngIf="property.widget && property.widget.dataUrl">
             <div *ngFor="let attr of attributeList$ | async"
                 class="d-flex justify-content-start border-bottom border-light"
-                [ngClass]="{'bg-diff': isDifferent(attr.key)}">
+                [ngClass]="{'bg-diff': isDifferent(attr.key, property.value || [])}">
                 <span class="p-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
                 <div *ngFor="let v of property.value"
                     class="py-2"
