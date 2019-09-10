@@ -4,6 +4,7 @@
     .bg-diff {
         background: #FEE8E9;
         position: relative;
+        border-color: #CCC !important;
         &::before {
             $size: 24px;
             content: "\f06a";
