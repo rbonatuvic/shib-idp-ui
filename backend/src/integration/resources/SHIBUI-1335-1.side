@@ -586,6 +586,13 @@
       ],
       "value": "Entity Attributes Filter"
     }, {
+      "id": "9ac14c43-206b-4a60-8e58-c4ce64efa2c8",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "a10a6faf-90cd-4713-8ea3-60c768ed935e",
       "comment": "",
       "command": "click",
@@ -597,6 +604,13 @@
         ["xpath=//fieldset/div/div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Entity ID')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "1f54a508-0b40-4dc0-b6e0-706971fb19bf",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "1f2b93b8-23ae-4a9c-b015-96ca890ae150",
@@ -611,6 +625,13 @@
         ["xpath=//div/div/a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Regex')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "b2a41370-db61-4bae-a5f7-a8c5e852e15e",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "5c2ed93d-3630-408c-bb89-0b2baffb73c0",
@@ -1109,6 +1130,13 @@
       ],
       "value": "Name ID Format Filter"
     }, {
+      "id": "563c9606-0174-4432-877a-ad769eb3206a",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "abfa17d5-ebfe-4bb2-b64a-ef5f127bac86",
       "comment": "",
       "command": "click",
@@ -1120,6 +1148,13 @@
         ["xpath=//fieldset/div/div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Entity ID')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "43878e34-28cc-424f-9044-87b8cb61db03",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "6040112e-86c4-4e98-b258-79d7e61dfb6d",
@@ -1134,6 +1169,13 @@
         ["xpath=//div/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Entity ID')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "70eba7e8-d84f-4b65-b5e8-d1523514dd29",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "bba23377-23a1-46d5-b044-15047a08ee53",

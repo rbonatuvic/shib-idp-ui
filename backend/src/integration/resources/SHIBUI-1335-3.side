@@ -688,6 +688,13 @@
       ],
       "value": "Name ID Format Filter"
     }, {
+      "id": "03d1d74e-efa5-4d0e-a780-900449bb4ac5",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "9b9d7604-7025-4ccb-bb95-862f57f696f1",
       "comment": "",
       "command": "click",
@@ -699,6 +706,13 @@
         ["xpath=//fieldset/div/div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Entity ID')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "5cda2bf9-f169-4e37-8071-a6f8d1d1407d",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "9e84c57f-c33d-48f8-85ac-ed50751eb37b",
@@ -713,6 +727,13 @@
         ["xpath=//div/div/a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Regex')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "82336d07-df2f-416e-b5c3-59eaf64a82d4",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "f3bc22e2-0e3a-4d58-b992-31d687148c57",
