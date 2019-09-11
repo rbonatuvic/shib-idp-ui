@@ -7,6 +7,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocati
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.entityAttributesFiltersSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.filesystemMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.nameIdFormatFilterSchema
 
 /**
  * Currently uses mjson library.
@@ -55,6 +56,9 @@ class LowLevelJsonSchemaValidator {
         switch (json.asMap()['@type']) {
             case 'EntityAttributes':
                 schemaUri = entityAttributesFiltersSchema(schemaRegistry).uri
+                break
+            case 'NameIDFormat':
+                schemaUri = nameIdFormatFilterSchema(schemaRegistry).uri
                 break
             default:
                 break

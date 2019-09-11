@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +36,7 @@ class MetadataFiltersControllerSchemaValidationIntegrationTests extends Specific
 
     def 'POST for EntityAttributesFilter with invalid payload according to schema validation'() {
         given:
-        def resolver = metadataResolverRepository.save(new FileBackedHttpMetadataResolver(name: 'fbmr', backingFile: '/tmp/metadata.xml'))
+        def resolver = metadataResolverRepository.save(new DynamicHttpMetadataResolver(name: 'dmr'))
         def postedJsonBody = """            
             {                    
                     "name" : "EntityAttributes",    
@@ -66,6 +67,29 @@ class MetadataFiltersControllerSchemaValidationIntegrationTests extends Specific
         then:
         checkJsonValidationIsPerformed(result)
 
+    }
+
+    def 'POST for NameIdFormatFilter with invalid payload according to schema validation'() {
+        given:
+        def resolver = metadataResolverRepository.save(new FileBackedHttpMetadataResolver(name: 'fbmr', backingFile: '/tmp/metadata.xml'))
+        def postedJsonBody = """
+            {              
+              "name" : null,              
+              "filterEnabled" : "not-a-boolean",
+              "removeExistingFormats" : false,
+              "formats" : [ "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent" ],
+              "nameIdFormatFilterTarget" : {                
+                "nameIdFormatFilterTargetType" : "ENTITY",
+                "value" : [ "https://sp1.example.org" ]                
+              },              
+              "@type" : "NameIDFormat"              
+            }"""
+
+        when:
+        def result = HTTP_POST(postedJsonBody, resolver.resourceId)
+
+        then:
+        checkJsonValidationIsPerformed(result)
     }
 
     private static HttpEntity<String> createRequestHttpEntityFor(String jsonBody) {
