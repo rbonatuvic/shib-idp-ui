@@ -810,11 +810,12 @@
       "id": "a97290c3-88ce-41d7-9619-f111ecbeb778",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(1) > sf-form-element > .has-success .custom-control-label",
+      "target": "id=/metadataFilters/SignatureValidation/requireSignedRoot",
       "targets": [
-        ["css=div:nth-child(1) > sf-form-element > .has-success .custom-control-label", "css:finder"],
-        ["xpath=//div/div/label", "xpath:position"],
-        ["xpath=//label[contains(.,'Require Signed Root')]", "xpath:innerText"]
+        ["id=/metadataFilters/SignatureValidation/requireSignedRoot.parent", "id"],
+        ["css=#\\/metadataFilters\\/SignatureValidation\\/requireSignedRoot\\.parent", "css:finder"],
+        ["xpath=//div[@id='/metadataFilters/SignatureValidation/requireSignedRoot.parent']", "xpath:attributes"],
+        ["xpath=//checkbox-component/div/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
