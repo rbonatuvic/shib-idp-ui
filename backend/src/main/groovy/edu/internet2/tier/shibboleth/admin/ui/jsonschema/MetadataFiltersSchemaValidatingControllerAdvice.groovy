@@ -12,7 +12,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import java.lang.reflect.Type
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator.validateMetadataFilterTypePayloadAgainstSchema
-import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator.validateMetadataResolverTypePayloadAgainstSchema
 
 /**
  * Controller advice implementation for validating metadata filters payload coming from UI layer
