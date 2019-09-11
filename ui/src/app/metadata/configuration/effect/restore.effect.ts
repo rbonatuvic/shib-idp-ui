@@ -30,6 +30,8 @@ import {
 import { SetMetadata } from '../action/configuration.action';
 import { removeNulls } from '../../../shared/util';
 import { getModel } from '../../../wizard/reducer';
+import { ClearProviderSelection } from '../../provider/action/collection.action';
+import { ClearResolverSelection } from '../../resolver/action/collection.action';
 
 
 @Injectable()
@@ -104,6 +106,15 @@ export class RestoreEffects {
         map(action => action.payload),
         switchMap((data) =>
             this.router.navigate(['/metadata', data.type, data.id, 'configuration', 'options'])
+        )
+    );
+
+    @Effect()
+    restoreVersionSuccessClear$ = this.actions$.pipe(
+        ofType<RestoreVersionSuccess>(RestoreActionTypes.RESTORE_VERSION_SUCCESS),
+        map(action => action.payload),
+        map(({ id, type }) =>
+            type === 'provider' ? new ClearProviderSelection() : new ClearResolverSelection()
         )
     );
 
