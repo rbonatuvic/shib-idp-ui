@@ -234,6 +234,13 @@
       ],
       "value": ""
     }, {
+      "id": "d0af8425-5f4c-4037-a549-52553b828179",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "9fe532ee-4ce6-4ff8-ab6c-ea92eb527ded",
       "comment": "",
       "command": "click",
@@ -242,6 +249,13 @@
         ["css=.next", "css:finder"],
         ["xpath=//li[3]/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "44e705a1-f284-4303-a0b6-c4bc9896c78d",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
       "value": ""
     }, {
       "id": "824b4515-ae14-436e-a56f-d631ea9e1edc",
