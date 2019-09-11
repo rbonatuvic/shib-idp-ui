@@ -2198,10 +2198,10 @@
     }, {
       "id": "e23ad673-a84c-4c28-a927-8baf21fe1f12",
       "comment": "",
-      "command": "waitForElementEditable",
-      "target": "id=/mdui/displayName",
+      "command": "pause",
+      "target": "5000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "6f422a9d-6c2f-4200-bdd3-411ed44773a3",
       "comment": "",
@@ -2215,6 +2215,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Display Name v3"
+    }, {
+      "id": "77bfef92-d0e6-41eb-9cd1-c2ede0cb9144",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "c2d29077-30c4-45cf-81c9-b5790294e11e",
       "comment": "",

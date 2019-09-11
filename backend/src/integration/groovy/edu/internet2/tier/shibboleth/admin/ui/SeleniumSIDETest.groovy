@@ -69,6 +69,9 @@ class SeleniumSIDETest extends Specification {
             } else {
                 it.baseurl = "http://localhost:${this.randomPort}"
             }
+            if (System.properties.getProperty('webdriver.headless')) {
+                it.addCliArgs('--headless')
+            }
             it
         }
         def runner = new Runner()

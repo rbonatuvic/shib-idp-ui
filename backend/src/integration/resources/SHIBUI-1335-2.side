@@ -373,6 +373,13 @@
       ],
       "value": "Entity Attributes"
     }, {
+      "id": "36dac228-9203-4f2e-a623-db41ef8c019f",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "f2c07797-07f6-4325-8c5f-57a676dc982c",
       "comment": "",
       "command": "click",
@@ -384,6 +391,13 @@
         ["xpath=//fieldset/div/div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Entity ID')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "1c424cfa-8201-40df-b8ed-ddec065dfd66",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
       "value": ""
     }, {
       "id": "bca61e15-7c13-4007-8c90-1a667bbef67d",
@@ -398,6 +412,13 @@
         ["xpath=//div/div/a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Regex')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "98f6eea0-36ff-449c-b042-98b87f0d3a70",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
       "value": ""
     }, {
       "id": "e0c65de5-d74a-4d87-aca0-9e9f4b37fb36",
