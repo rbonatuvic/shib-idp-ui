@@ -4,11 +4,14 @@ import mjson.Json
 import org.springframework.http.HttpInputMessage
 
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.dynamicHttpMetadataProviderSchema
+import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.entityAttributesFiltersSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.filesystemMetadataProviderSchema
 import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.localDynamicMetadataProviderSchema
 
 /**
  * Currently uses mjson library.
+ *
+ * @author Dmitriy Kopylenko
  */
 class LowLevelJsonSchemaValidator {
 
@@ -34,6 +37,24 @@ class LowLevelJsonSchemaValidator {
                 break
             case 'FilesystemMetadataResolver':
                 schemaUri = filesystemMetadataProviderSchema(schemaRegistry).uri
+                break
+            default:
+                break
+        }
+        if (!schemaUri) {
+            return newInputMessage(origInput)
+        }
+        doValidate(origInput, Json.schema(schemaUri), json)
+    }
+
+    static HttpInputMessage validateMetadataFilterTypePayloadAgainstSchema(HttpInputMessage inputMessage,
+                                                                           JsonSchemaResourceLocationRegistry schemaRegistry) {
+        def origInput = [inputMessage.body.bytes, inputMessage.headers]
+        def json = extractJsonPayload(origInput)
+        def schemaUri = null
+        switch (json.asMap()['@type']) {
+            case 'EntityAttributes':
+                schemaUri = entityAttributesFiltersSchema(schemaRegistry).uri
                 break
             default:
                 break
