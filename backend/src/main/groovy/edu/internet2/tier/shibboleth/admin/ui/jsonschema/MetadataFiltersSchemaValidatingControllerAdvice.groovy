@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.jsonschema
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.MethodParameter
 import org.springframework.http.HttpInputMessage
