@@ -68,6 +68,12 @@ export const assignValueToProperties = (models, properties, definition: any): an
             default:
                 return {
                     ...prop,
+                    differences: models.some((model, index, array) => {
+                        if (!array) {
+                            return false;
+                        }
+                        return JSON.stringify(model[prop.id]) !== JSON.stringify(array[0][prop.id]);
+                    }),
                     value: models.map(model => {
                         return model[prop.id];
                     })

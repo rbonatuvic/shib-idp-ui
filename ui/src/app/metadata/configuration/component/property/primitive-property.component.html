@@ -1,4 +1,6 @@
-<div *ngIf="property.name" class="d-flex border-bottom border-light py-2">
+<div *ngIf="property.name"
+    class="d-flex border-bottom border-light p-2"
+    [ngClass]="{'bg-diff' : property.differences}">
     <span class="d-block"
         role="term"
         [translate]="property.name"

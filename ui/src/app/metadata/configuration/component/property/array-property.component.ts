@@ -33,6 +33,12 @@ export class ArrayPropertyComponent extends ConfigurationPropertyComponent imple
         return UriValidator.isUri(str);
     }
 
+    isDifferent(key: string, model: any): boolean {
+        return model
+            .map((value) => value ? value.indexOf(key) > -1 : false)
+            .reduce((current, val) => current !== val ? true : false, false);
+    }
+
     get attributeList$(): Observable<{ key: string, label: string }[]> {
         if (this.property.widget && this.property.widget.hasOwnProperty('data')) {
             return of(this.property.widget.data);
