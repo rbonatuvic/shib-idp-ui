@@ -51,6 +51,13 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
             });
         }
 
+        case ResolverCollectionActionTypes.CLEAR_SELECTION: {
+            return {
+                ...state,
+                selectedResolverId: null
+            };
+        }
+
         default: {
             return state;
         }

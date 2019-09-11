@@ -2,7 +2,11 @@ import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
 import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilterEntity } from '../../domain/entity';
+import { RegexValidator } from '../../../shared/validation/regex.validator';
 import { getFilterNames } from '../reducer';
+import { memoize } from '../../../shared/memo';
+
+const checkRegex = memoize(RegexValidator.isValidRegex);
 
 export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     label: 'EntityAttributes',
@@ -37,6 +41,18 @@ export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
                     params: [value]
                 } : null;
                 return err;
+            },
+            '/entityAttributesFilterTarget': (value, property, form) => {
+                if (!form || !form.value || !form.value.entityAttributesFilterTarget ||
+                    form.value.entityAttributesFilterTarget.entityAttributesFilterTargetType !== 'REGEX') {
+                    return null;
+                }
+                return checkRegex(value.value[0]) ? null : {
+                    code: 'INVALID_REGEX',
+                    path: `#${property.path}`,
+                    message: 'message.invalid-regex-pattern',
+                    params: [value.value[0]]
+                };
             }
         };
         return validators;
