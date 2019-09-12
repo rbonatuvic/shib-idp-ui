@@ -521,6 +521,13 @@
       ],
       "value": ""
     }, {
+      "id": "7f9c9fb7-602c-4f8e-b262-866c744130ce",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "a0102f51-f1d8-4c38-9170-482022ea7397",
       "comment": "",
       "command": "click",
@@ -532,6 +539,13 @@
         ["xpath=//div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "209726b4-c0d8-4e9d-8886-88b9151f226c",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "9033e5ad-4255-4aa7-a878-c7beab69ee8e",
@@ -557,6 +571,13 @@
       ],
       "value": ""
     }, {
+      "id": "466ac624-8139-47cf-8ef2-32d1c3d179a2",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "c1534880-c4e5-4fbd-b200-c28f9f556ab9",
       "comment": "",
       "command": "click",
@@ -567,6 +588,13 @@
         ["xpath=//div[@id='/serviceProviderSsoDescriptor/nameIdFormats/1-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//li[2]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "a70176f9-e75e-47fc-b76a-42ae941fa64d",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "d07b2d83-3699-4f48-90e8-6fc883d3a02a",
@@ -593,6 +621,13 @@
       ],
       "value": ""
     }, {
+      "id": "a98f1890-298a-4167-a4d6-4ab173005068",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "97a98737-862d-4567-8b20-c5c991444ed0",
       "comment": "",
       "command": "click",
@@ -603,6 +638,13 @@
         ["xpath=//div[@id='/serviceProviderSsoDescriptor/nameIdFormats/2-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//li[3]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "ff21b982-e428-45d7-af8e-410e67759446",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "686e004c-2b0f-4308-8622-b04bc05a50a9",
@@ -629,6 +671,13 @@
       ],
       "value": ""
     }, {
+      "id": "ec3d16f9-c239-4e53-8626-11d8dc3dc43d",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "e2e8d5d4-8b6a-42d5-9fe7-abb8a84216e3",
       "comment": "",
       "command": "click",
@@ -639,6 +688,13 @@
         ["xpath=//div[@id='/serviceProviderSsoDescriptor/nameIdFormats/3-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//li[4]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "6b1d77e3-b6e8-4217-9dc4-fe54b3f880ed",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "b6ac5230-772b-44bc-b9d1-6ae8a58e0368",
@@ -1250,6 +1306,13 @@
       ],
       "value": ""
     }, {
+      "id": "cbd5d310-00af-4f40-adb8-82d261f3f339",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "2a91666b-5453-4064-8923-c3384835b6fd",
       "comment": "",
       "command": "click",
@@ -1261,6 +1324,13 @@
         ["xpath=//div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "77a8ca01-ba29-4240-8c85-df12c9729603",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "6e8718ef-e053-48d8-91e5-f5128e371f56",
@@ -1287,6 +1357,13 @@
       ],
       "value": ""
     }, {
+      "id": "2297cceb-4407-498f-a3f2-db15bc3de26f",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "fd33610c-dbca-410d-b2a4-117a1b2b6a79",
       "comment": "",
       "command": "click",
@@ -1297,6 +1374,13 @@
         ["xpath=//div[@id='/relyingPartyOverrides/nameIdFormats/1-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//li[2]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "2922852e-45b5-41b1-b7ae-10f6ef5980c6",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "3cd47415-5e57-4148-a40b-9571e6791f3f",
@@ -1323,6 +1407,13 @@
       ],
       "value": ""
     }, {
+      "id": "ccc0e141-6b42-4fdb-ac4e-fe741826eec6",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "208b33cf-f983-4a82-9b1b-19cdf2a937fc",
       "comment": "",
       "command": "click",
@@ -1333,6 +1424,13 @@
         ["xpath=//div[@id='/relyingPartyOverrides/nameIdFormats/2-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//li[3]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "76e5990c-7474-46db-9d8a-08b08fb058b7",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "b4beb2b3-8481-4431-9299-a39a4107f17f",
@@ -1359,6 +1457,13 @@
       ],
       "value": ""
     }, {
+      "id": "b1fb7e09-2778-4dd9-a52d-ac183d745486",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "788a5b63-a75f-4aeb-9a5d-17c41e8f718e",
       "comment": "",
       "command": "click",
@@ -1369,6 +1474,13 @@
         ["xpath=//div[@id='/relyingPartyOverrides/nameIdFormats/3-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//li[4]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "c486b622-751b-49f0-bf51-d1919bea0cf4",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "c82d6951-13e2-4d32-9e19-eac52bfdc188",
@@ -1427,6 +1539,13 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "0b950018-bd12-433a-b198-682d4ea55a90",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "cbf15c4c-35d9-4f80-ba3d-bfe960048cd1",
       "comment": "",
       "command": "click",
@@ -1437,6 +1556,13 @@
         ["xpath=//div[@id='/relyingPartyOverrides/authenticationMethods/0-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/array-component/div/ul/li/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "ab11537e-9959-4800-90d8-38946c8b277b",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "6c62d514-0143-49d9-97b3-6b7cb443df9d",
@@ -1462,6 +1588,13 @@
       ],
       "value": ""
     }, {
+      "id": "411ea71f-99b7-4f99-a5ce-7037ff78b8af",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "2b063eb8-f2d6-4a59-85bb-b04c467d9874",
       "comment": "",
       "command": "click",
@@ -1472,6 +1605,13 @@
         ["xpath=//div[@id='/relyingPartyOverrides/authenticationMethods/1-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/array-component/div/ul/li[2]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "3c59a5d7-9f48-4a5e-b6d1-0913c19adf2a",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "5a32d59b-1ac3-4cd0-a2d8-0e934f8182fd",
@@ -1497,6 +1637,13 @@
       ],
       "value": ""
     }, {
+      "id": "64b99135-c3fb-416a-b584-0e1b4b411295",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "64e215d9-6e46-422f-882c-13b6fb102622",
       "comment": "",
       "command": "click",
@@ -1507,6 +1654,13 @@
         ["xpath=//div[@id='/relyingPartyOverrides/authenticationMethods/2-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/array-component/div/ul/li[3]/div/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "426b095e-3b0c-4cc3-ad1e-3956dc7bd256",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "6a7bce1a-34be-4d4c-b732-d2f198e8b8a1",
@@ -2196,12 +2350,12 @@
       ],
       "value": ""
     }, {
-      "id": "e23ad673-a84c-4c28-a927-8baf21fe1f12",
+      "id": "e1748ca6-18b9-4195-8f09-5c18d317fc88",
       "comment": "",
-      "command": "waitForElementEditable",
-      "target": "id=/mdui/displayName",
+      "command": "pause",
+      "target": "2000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "6f422a9d-6c2f-4200-bdd3-411ed44773a3",
       "comment": "",

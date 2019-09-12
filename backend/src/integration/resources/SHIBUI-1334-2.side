@@ -178,6 +178,13 @@
       ],
       "value": "%{idp.home}/foo.txt"
     }, {
+      "id": "8172c545-e0de-4233-bf8f-66d76b6e9684",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "203d0d3c-d866-422a-8b48-b50181db00e9",
       "comment": "",
       "command": "click",
@@ -187,6 +194,13 @@
         ["xpath=//div[@id='/backupFileInitNextRefreshDelay-container']/div/div/button/i", "xpath:idRelative"],
         ["xpath=//div/button/i", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "01fa325e-0ab6-4124-b42f-661e190d8307",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "5fc6a348-0533-4d94-bb76-ebb891a0db8f",
@@ -261,6 +275,13 @@
       ],
       "value": ""
     }, {
+      "id": "6ec3d2b5-ca0c-4128-a5f0-3281bbd5d199",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "a188bc3e-fd98-4d49-ae35-a0b78a17607c",
       "comment": "",
       "command": "click",
@@ -272,6 +293,13 @@
         ["xpath=//div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "246b863d-0ecb-4db6-9774-74da4859419a",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "a159e056-c870-4e02-a7e9-4b3a60d83718",
@@ -288,15 +316,30 @@
       ],
       "value": ""
     }, {
+      "id": "558a1e8e-f67a-45f2-b806-c29cba8c7ac2",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "7a72cf6a-c97a-49f6-83d0-cbe42f0fdb7d",
       "comment": "",
       "command": "click",
-      "target": "css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .fa",
+      "target": "css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .btn",
       "targets": [
-        ["css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .fa", "css:finder"],
-        ["xpath=//div[@id='/reloadableMetadataResolverAttributes/maxRefreshDelay-container']/div/div/button/i", "xpath:idRelative"],
-        ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button/i", "xpath:position"]
+        ["css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='/reloadableMetadataResolverAttributes/maxRefreshDelay-container']/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "c4986f4d-5d38-47d4-a73e-b02e9aedc807",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "820397f5-aabb-46f5-a65a-56747ce29091",
@@ -335,6 +378,13 @@
       ],
       "value": ""
     }, {
+      "id": "6c47a16c-7398-4ff5-873d-11d236936073",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "232da257-962f-4a4b-8213-038ef90c96c3",
       "comment": "",
       "command": "click",
@@ -346,6 +396,13 @@
         ["xpath=//div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "d30605a0-013c-403d-86ab-780f471fe159",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "b8d999f1-0c59-4a9a-9991-91d222f52b8e",
@@ -365,7 +422,7 @@
       "id": "8af1abb5-2c7a-4a4c-a8f7-0eb287100dde",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(1) > sf-form-element > .has-success .custom-control-label",
+      "target": "id=/metadataFilters/SignatureValidation/requireSignedRoot",
       "targets": [
         ["css=div:nth-child(1) > sf-form-element > .has-success .custom-control-label", "css:finder"],
         ["xpath=//div/div/label", "xpath:position"],
@@ -815,12 +872,12 @@
       ],
       "value": ""
     }, {
-      "id": "863e9f5e-a3d6-47e9-8b65-de639029812a",
+      "id": "b4f41acc-cb2c-4bb1-92ef-452ae1dc420c",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=#\\/httpMetadataResolverAttributes\\/connectionRequestTimeout-container .btn",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "78967fb5-8f61-46ce-9c14-9b6ceb12b03a",
       "comment": "",
@@ -835,12 +892,12 @@
       ],
       "value": ""
     }, {
-      "id": "8277f894-0bbd-41f7-b3bb-1aba2a0f80be",
+      "id": "5febc53d-9179-4a5e-81a2-6d00495e0953",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=/httpMetadataResolverAttributes/connectionRequestTimeout__option--1",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "8ba62572-354d-47f4-bb72-f9309c1cb201",
       "comment": "",
@@ -856,6 +913,13 @@
       ],
       "value": ""
     }, {
+      "id": "753d2e1d-54cd-4edd-9718-3f875e617bc1",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "d7406190-0bb0-4df8-9c0b-7e393952b6a2",
       "comment": "",
       "command": "click",
@@ -868,12 +932,12 @@
       ],
       "value": ""
     }, {
-      "id": "7014a534-b908-482f-85d2-7f7031741b04",
+      "id": "0fd359bb-a5d0-47f8-aa99-2cf2f32eae3d",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=/httpMetadataResolverAttributes/connectionTimeout__option--2",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "337ac160-7990-425f-83da-2788d8a0985e",
       "comment": "",
@@ -888,6 +952,13 @@
       ],
       "value": ""
     }, {
+      "id": "bebea55c-1ac2-4556-ac7f-7e666731e569",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "19182110-0f86-4601-ae12-0b90967ef68a",
       "comment": "",
       "command": "click",
@@ -900,12 +971,12 @@
       ],
       "value": ""
     }, {
-      "id": "c28e3ee6-e536-4eb7-914b-896b2ec2cb9e",
+      "id": "c38b8d8d-e108-4895-bf2e-4cfc1fc28e5e",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=/httpMetadataResolverAttributes/socketTimeout__option--3",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "34693225-4754-4b27-92ee-3e37304a8cd7",
       "comment": "",
