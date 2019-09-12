@@ -837,15 +837,9 @@
     }, {
       "id": "78967fb5-8f61-46ce-9c14-9b6ceb12b03a",
       "comment": "",
-      "command": "click",
-      "target": "css=#\\/httpMetadataResolverAttributes\\/connectionRequestTimeout-container .btn",
-      "targets": [
-        ["css=#\\/httpMetadataResolverAttributes\\/connectionRequestTimeout-container .btn", "css:finder"],
-        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
-        ["xpath=//div[@id='/httpMetadataResolverAttributes/connectionRequestTimeout-container']/div/div/button", "xpath:idRelative"],
-        ["xpath=//auto-complete/div/div/div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
-      ],
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
       "value": ""
     }, {
       "id": "1cde012c-d521-4fd5-a7d5-7a680bba0e7b",
@@ -857,6 +851,13 @@
         ["xpath=//toggle-switch[@id='toggle']/label/span", "xpath:idRelative"],
         ["xpath=//label/span", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "cf14941d-698f-42ed-8731-51e6f7b90c63",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
       "value": ""
     }, {
       "id": "d00ecf98-7425-467c-acbb-3b39918e3462",
@@ -893,6 +894,13 @@
       ],
       "value": ""
     }, {
+      "id": "cce01c00-7d94-48ae-9de8-ead8624e2cf3",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "d7406190-0bb0-4df8-9c0b-7e393952b6a2",
       "comment": "",
       "command": "click",
@@ -923,6 +931,13 @@
         ["xpath=//ul[@id='/httpMetadataResolverAttributes/connectionTimeout__listbox']/li[3]", "xpath:idRelative"],
         ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/ul/li[3]", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "d585dc51-41b2-4be8-8d84-cb21b4dc92b6",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
       "value": ""
     }, {
       "id": "19182110-0f86-4601-ae12-0b90967ef68a",

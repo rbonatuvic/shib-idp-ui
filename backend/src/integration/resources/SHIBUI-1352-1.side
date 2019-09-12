@@ -382,7 +382,7 @@
     }, {
       "id": "f0232386-eb88-4f6c-98fa-b9065ed422b7",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=Test Local Dynamic Provider",
       "targets": [
         ["linkText=Test Local Dynamic Provider", "linkText"],
@@ -396,7 +396,7 @@
     }, {
       "id": "5e8993ae-47ee-4e65-b667-b291d7c934ec",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],

@@ -488,7 +488,7 @@
     }, {
       "id": "52f5680c-c63d-411e-8332-52901f12ea3b",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
       "targets": [
         ["css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
@@ -499,7 +499,7 @@
     }, {
       "id": "67ff44aa-1efd-4b13-a0e9-3648a09911dd",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
       "targets": [
         ["css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
@@ -530,7 +530,7 @@
     }, {
       "id": "f48dd1b5-607a-485b-b1d5-03301f99b9ce",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=Test Metadata Provider",
       "targets": [
         ["linkText=Test Metadata Provider", "linkText"],
@@ -544,7 +544,7 @@
     }, {
       "id": "5eccd4e9-a451-4ec8-a9e1-1e1f8e771677",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
@@ -555,7 +555,7 @@
     }, {
       "id": "c768c2c1-09d4-46fe-8007-42fb4b3f4aaa",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(4)",
       "targets": [
         ["css=td:nth-child(4)", "css:finder"],
@@ -766,6 +766,13 @@
       ],
       "value": ""
     }, {
+      "id": "a618d41d-77d2-43ef-9237-6f4f638a282d",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "9136f894-3cd3-4404-a1a8-9c09ee02f60d",
       "comment": "",
       "command": "click",
@@ -776,6 +783,13 @@
       ],
       "value": ""
     }, {
+      "id": "0b928b41-6638-4dc7-8e05-88b2c20ec90d",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "bcbc4aaf-e8f6-4369-b6aa-e33c0d9dddf1",
       "comment": "",
       "command": "click",
@@ -784,6 +798,13 @@
         ["css=.next", "css:finder"],
         ["xpath=//li[3]/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "aa2fbf24-a083-493c-aa82-ac8ac44b807c",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
       "value": ""
     }, {
       "id": "a97290c3-88ce-41d7-9619-f111ecbeb778",
@@ -807,6 +828,13 @@
       ],
       "value": ""
     }, {
+      "id": "2c9b0634-d28a-4623-adde-9e0be2549ac4",
+      "comment": "",
+      "command": "pause",
+      "target": "1000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "1237c623-a944-4525-9aea-b93fdd007f78",
       "comment": "",
       "command": "click",
@@ -826,7 +854,7 @@
     }, {
       "id": "b437068f-d3ed-43b5-9975-fb54decaf7ab",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=Test Metadata Provider",
       "targets": [
         ["linkText=Test Metadata Provider", "linkText"],
@@ -840,7 +868,7 @@
     }, {
       "id": "abf5ec9e-eeb3-480f-8919-1efecbae20d0",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=Test Provider 2",
       "targets": [
         ["linkText=Test Provider 2", "linkText"],
@@ -864,7 +892,7 @@
     }, {
       "id": "72123a28-c3be-478c-8f30-555e346837e2",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.badge-success > span",
       "targets": [
         ["css=.badge-success > span", "css:finder"],
@@ -884,7 +912,7 @@
     }, {
       "id": "ad8842de-2a4c-42a4-b919-dd7524a679c6",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.badge-danger > span",
       "targets": [
         ["css=.badge-danger > span", "css:finder"],
