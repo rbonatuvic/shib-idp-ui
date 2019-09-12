@@ -10,6 +10,7 @@ export interface Property {
         id: string;
         data?: {key: string, label: string}[];
         dataUrl?: string;
+        differences?: string;
         [propertyName: string]: any;
     };
 }
