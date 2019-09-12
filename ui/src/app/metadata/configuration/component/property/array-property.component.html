@@ -20,20 +20,6 @@
                 </div>
             </ng-container>
         </div>
-        <ng-container *ngFor="let version of property.value">
-            <div *ngIf="version && version[i]"
-                [ngbPopover]="version[i][prop]"
-                triggers="mouseenter:mouseleave"
-                container="body"
-                [ngStyle]="{'width': width}"
-                class="text-truncate"
-                popoverClass="popover-lg popover-info">
-                {{ version[i][prop] }}
-            </div>
-            <div *ngIf="!version || !version[i]" [ngStyle]="{'width': width}">
-                -
-            </div>
-        </ng-container>
     </div>
 </div>
 <ng-container *ngIf="property.items.type === 'string'" [ngSwitch]="getItemType(property)">
@@ -47,18 +33,18 @@
         <div *ngIf="!property.widget || !property.widget.id">
             <ng-template [ngTemplateOutlet]="listref"></ng-template>
         </div>
-        <div *ngIf="property.widget && property.widget.dataUrl">
-            <div *ngFor="let attr of attributeList$ | async"
+        <div *ngIf="property.widget && property.widget.data">
+            <div *ngFor="let item of dataList"
                 class="d-flex justify-content-start border-bottom border-light"
-                [ngClass]="{'bg-diff': isDifferent(attr.key, property.value || [])}">
-                <span class="p-2" role="term" [translate]="attr.label" [ngStyle]="{'width': width}">{{ attr.label }}</span>
+                [ngClass]="{'bg-diff': property.differences && item.differences}">
+                <span class="p-2" role="term" [translate]="item.label" [ngStyle]="{'width': width}">{{ item.label }}</span>
                 <div *ngFor="let v of property.value"
                     class="py-2"
                     [ngStyle]="{'width': width}">
-                    <span *ngIf="v && v.indexOf(attr.key) > -1" translate="value.true">
+                    <span *ngIf="v && v.indexOf(item.key) > -1" translate="value.true">
                         true
                     </span>
-                    <span *ngIf="!v || !(v.indexOf(attr.key) > -1)" translate="value.false">
+                    <span *ngIf="!v || !(v.indexOf(item.key) > -1)" translate="value.false">
                         false
                     </span>
                 </div>

@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { map, withLatestFrom } from 'rxjs/operators';
-import { ConfigurationState, getComparisonConfigurations, getComparisonConfigurationCount } from '../reducer';
+import { ConfigurationState, getComparisonConfigurationCount } from '../reducer';
 import { CompareVersionRequest, ClearVersions, ViewChanged } from '../action/compare.action';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import * as fromReducer from '../reducer';
@@ -35,9 +35,11 @@ export class MetadataComparisonComponent implements OnDestroy {
             map(versions => new CompareVersionRequest(versions))
         ).subscribe(this.store);
 
-        this.versions$ = this.store.select(getComparisonConfigurations);
+        this.versions$ = this.store.select(fromReducer.getLimitedComparisonConfigurations);
         this.numVersions$ = this.store.select(getComparisonConfigurationCount);
         this.type$ = this.store.select(fromReducer.getConfigurationModelType);
+
+        this.versions$.subscribe(console.log);
 
         this.sub = this.limiter.pipe(
             withLatestFrom(this.limited$),
