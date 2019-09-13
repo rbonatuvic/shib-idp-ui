@@ -8,6 +8,7 @@ import { CompareVersionRequest, ClearVersions, ViewChanged } from '../action/com
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import * as fromReducer from '../reducer';
 
+
 @Component({
     selector: 'metadata-comparison',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +26,7 @@ export class MetadataComparisonComponent implements OnDestroy {
     limited$: Observable<boolean> = this.store.select(fromReducer.getViewChangedOnly);
     sub: Subscription;
 
+
     constructor(
         private store: Store<ConfigurationState>,
         private activatedRoute: ActivatedRoute
@@ -38,8 +40,6 @@ export class MetadataComparisonComponent implements OnDestroy {
         this.versions$ = this.store.select(fromReducer.getLimitedComparisonConfigurations);
         this.numVersions$ = this.store.select(getComparisonConfigurationCount);
         this.type$ = this.store.select(fromReducer.getConfigurationModelType);
-
-        this.versions$.subscribe(console.log);
 
         this.sub = this.limiter.pipe(
             withLatestFrom(this.limited$),

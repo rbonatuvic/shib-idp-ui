@@ -1,0 +1,110 @@
+<ng-container *ngIf="filters.dates.length > 0">
+    <div class="d-flex border-bottom border-light border-2 py-2">
+        <span [ngStyle]="{'width.%': width}" *ngIf="!comparing">Order</span>
+        <span [ngStyle]="{'width.%': width}" *ngIf="comparing">Option</span>
+        <strong *ngFor="let date of filters.dates" [ngStyle]="{'width.%': width}">
+            {{ date | date:'medium' }}
+        </strong>
+    </div>
+    <ng-container *ngIf="!comparing">
+        <div class="">
+            <ng-container *ngFor="let version of filters.filters; let i = index; first as isFirst; last as isLast;"
+                class="list-group-item">
+                <div class="d-flex border-bottom border-light">
+                    <div [ngStyle]="{'width.%': width}" class="py-2">
+                        {{ i + 1 }}
+                    </div>
+                    <div *ngFor="let filter of version; let i = index; even as isEven"
+                        [ngStyle]="{'width.%': width}"
+                        class="border-primary p-2 d-flex align-items-center"
+                        [ngClass]="{'bg-lighter': isEven && selected !== filter.id, 'bg-primary-light': selected === filter.id}">
+                        <div class="w-50">
+                            <p>{{ filter.name }}</p>
+                            <p class="mb-0 text-muted">{{ filter.type }}</p>
+                        </div>
+                        <button class="btn btn-link mx-auto"
+                            *ngIf="filter.comparable"
+                            (click)="selected = (selected !== filter.id) ? filter.id : null">
+                            <i class="fa fa-lg"
+                                [ngClass]="{'fa-check-square-o': selected === filter.id, 'fa-square-o': selected !== filter.id}"
+                                aria-hidden="true"></i>
+                            <span class="sr-only">Compare</span>
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="d-flex justify-content-end my-2">
+            <button class="btn btn-primary" [disabled]="!selected" (click)="compare(selected)">
+                <translate-i18n key="label.compare-selected">Compare Selected</translate-i18n>
+            </button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="comparing">
+        <div class="d-flex border-bottom border-light py-2">
+            <span class="d-block"
+                role="term"
+                [ngStyle]="{'width.%': width}">Type</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">EntityAttributesFilter</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">EntityAttributesFilter</span>
+        </div>
+        <div class="d-flex border-bottom border-light py-2">
+            <span class="d-block"
+                role="term"
+                [ngStyle]="{'width.%': width}">Name</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">Test Filter 1</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">Renamed Filter</span>
+        </div>
+        <div class="d-flex border-bottom border-light py-2">
+            <span class="d-block"
+                role="term"
+                [ngStyle]="{'width.%': width}">Target Type</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">Entity ID</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">Entity ID</span>
+        </div>
+        <div class="d-flex border-bottom border-light py-2">
+            <span class="d-block"
+                role="term"
+                [ngStyle]="{'width.%': width}">Target Value</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">http://idp.unicon.net/idp/shibboleth</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">http://idp.unicon.net/idp/shibboleth</span>
+        </div>
+        <div class="d-flex border-bottom border-light py-2">
+            <span class="d-block"
+                role="term"
+                [ngStyle]="{'width.%': width}">Enabled?</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">false</span>
+            <span class="d-block"
+                role="definition"
+                [ngStyle]="{'width.%': width}">true</span>
+        </div>
+        <div class="d-flex justify-content-end my-2">
+            <button class="btn btn-success" (click)="comparing = null">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                Filter Versions
+            </button>
+        </div>
+    </ng-container>
+</ng-container>
+<div class="alert alert-info m-4" *ngIf="filters && filters.dates.length < 1">
+    <h3 translate="message.no-filters">No Filters</h3>
+    <p translate="message.no-filters-added">No filters have been added to this Metadata Provider</p>
+</div>
