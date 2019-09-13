@@ -2254,16 +2254,12 @@
       ],
       "value": ""
     }, {
-      "id": "90cb59ce-695b-49d0-983b-01e445f3a384",
+      "id": "978829e9-fa70-4548-9a55-0e2ffa0df9a4",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.d-block > primitive-property:nth-child(1) .d-block:nth-child(2)",
-      "targets": [
-        ["css=.d-block > primitive-property:nth-child(1) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div/span[2]", "xpath:position"],
-        ["xpath=//span[contains(.,'test-1234')]", "xpath:innerText"]
-      ],
-      "value": "10000"
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "1c0b7514-92b7-4e07-b462-467113f4a8cd",
       "comment": "",
@@ -2285,13 +2281,6 @@
         ["xpath=//span[contains(.,'Test Provider')]", "xpath:innerText"]
       ],
       "value": "Test Provider"
-    }, {
-      "id": "d3abb044-064c-4d68-8afa-84cc5f9b987e",
-      "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,157)",
-      "targets": [],
-      "value": ""
     }, {
       "id": "138ad58b-f0a2-436b-a8b0-43484f4180e6",
       "comment": "",
@@ -2427,10 +2416,10 @@
     }, {
       "id": "98aafaee-a430-4a2d-9aa5-b4c9ce0c4908",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.mb-4:nth-child(2) primitive-property:nth-child(1) .d-block:nth-child(2)",
+      "command": "pause",
+      "target": "5000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "5a976e2c-dc5f-4021-9cc6-3cad12e771ea",
       "comment": "",
@@ -2574,12 +2563,12 @@
       ],
       "value": ""
     }, {
-      "id": "305867cb-3514-49b8-870b-0a7fa9482c79",
+      "id": "92879253-4fee-4329-987c-781df80ad50a",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.d-block > primitive-property:nth-child(2) .d-block:nth-child(2)",
+      "command": "pause",
+      "target": "5000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "18918b08-9ae1-4bc3-836c-73feb1812cde",
       "comment": "",
