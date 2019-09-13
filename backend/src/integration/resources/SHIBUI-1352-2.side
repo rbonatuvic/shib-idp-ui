@@ -320,7 +320,7 @@
     }, {
       "id": "44749988-e30f-4328-9f78-dc9eaafa891a",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=Test File System Provider",
       "targets": [
         ["linkText=Test File System Provider", "linkText"],
@@ -334,7 +334,7 @@
     }, {
       "id": "6ddcb09b-9d3b-4a13-bb95-1b79028ba2af",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],

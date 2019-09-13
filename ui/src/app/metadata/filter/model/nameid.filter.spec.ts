@@ -5,7 +5,8 @@ describe('NameID Format filter form', () => {
         it('should return an empty object for validators', () => {
             expect(Object.keys(NameIDFilter.getValidators())).toEqual([
                 '/',
-                '/name'
+                '/name',
+                '/nameIdFormatFilterTarget'
             ]);
         });
 

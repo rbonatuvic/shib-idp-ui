@@ -16,6 +16,7 @@ import { Metadata } from '../../domain/domain.type';
 
 import * as fromResolver from '../../resolver/reducer';
 import * as fromProvider from '../../provider/reducer';
+import { SectionProperty } from '../model/section';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -55,10 +56,31 @@ export const getConfigurationXml = createSelector(getConfigurationState, fromCon
 
 export const assignValueToProperties = (models, properties, definition: any): any[] => {
     return properties.map(prop => {
+        const differences = models.some((model, index, array) => {
+            if (!array) {
+                return false;
+            }
+            return JSON.stringify(model[prop.id]) !== JSON.stringify(array[0][prop.id]);
+        });
+
+        const widget = prop.type === 'array' && prop.widget && prop.widget.data ? ({
+            ...prop.widget,
+            data: prop.widget.data.map(item => ({
+                ...item,
+                differences: models
+                    .map((model) => {
+                        const value = model[prop.id];
+                        return value ? value.indexOf(item.key) > -1 : false;
+                    })
+                    .reduce((current, val) => current !== val ? true : false, false)
+            }))
+        }) : null;
+
         switch (prop.type) {
             case 'object':
                 return {
                     ...prop,
+                    differences,
                     properties: assignValueToProperties(
                         models.map(model => definition.formatter(model)[prop.id] || {}),
                         prop.properties,
@@ -68,9 +90,11 @@ export const assignValueToProperties = (models, properties, definition: any): an
             default:
                 return {
                     ...prop,
+                    differences,
                     value: models.map(model => {
                         return model[prop.id];
-                    })
+                    }),
+                    widget
                 };
         }
     });
@@ -103,6 +127,10 @@ export const getConfigurationSectionsFn = (models, definition, schema): Metadata
                         properties: assignValueToProperties(models, section.properties, definition)
                     };
                 })
+                .map((section: any) => ({
+                    ...section,
+                    differences: section.properties.some(prop => prop.differences)
+                }))
         });
     };
 
@@ -127,18 +155,21 @@ export const getSelectedVersionId = createSelector(getHistoryState, fromHistory.
 export const getVersionIds = createSelector(getHistoryState, fromHistory.selectVersionIds);
 export const getVersionCollection = createSelector(getHistoryState, getVersionIds, fromHistory.selectAllVersions);
 export const getSelectedVersion = createSelector(getVersionEntities, getSelectedVersionId, getInCollectionFn);
+export const getSelectedVersionNumberFn = (versions, selectedId) => versions.indexOf(versions.find(v => v.id === selectedId)) + 1;
 export const getSelectedVersionNumber = createSelector(
     getVersionCollection,
     getSelectedVersionId,
-    (versions, selectedId) => versions.indexOf(versions.find(v => v.id === selectedId)) + 1
+    getSelectedVersionNumberFn
 );
+
+export const getSelectedIsCurrentFn = (selected, collection) => {
+    return selected ? collection[0].id === selected.id : false;
+};
 
 export const getSelectedIsCurrent = createSelector(
     getSelectedVersion,
     getVersionCollection,
-    (selected, collection) => {
-        return selected ? collection[0].id === selected.id : null;
-    }
+    getSelectedIsCurrentFn
 );
 
 // Version Comparison
@@ -155,6 +186,43 @@ export const getComparisonConfigurations = createSelector(
 );
 
 export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
+
+export const getViewChangedOnly = createSelector(getCompareState, fromCompare.getViewChangedOnly);
+
+export const getLimitedPropertiesFn = (properties: SectionProperty[]) => {
+    return ([
+        ...properties
+            .filter(p => p.differences)
+            .map(p => {
+                const parsed = { ...p };
+                if (p.widget && p.widget.data) {
+                    parsed.widget = {
+                        ...p.widget,
+                        data: p.widget.data.filter(item => item.differences)
+                    };
+                }
+                if (p.properties) {
+                    parsed.properties = getLimitedPropertiesFn(p.properties);
+                }
+                return parsed;
+            })
+    ]);
+};
+
+export const getLimitedConfigurationsFn = (configurations, limited) => configurations ? ({
+    ...configurations,
+    sections: limited ? configurations.sections :
+        configurations.sections.map(s => ({
+            ...s,
+            properties: getLimitedPropertiesFn(s.properties),
+        }))
+}) : configurations;
+
+export const getLimitedComparisonConfigurations = createSelector(
+    getComparisonConfigurations,
+    getViewChangedOnly,
+    getLimitedConfigurationsFn
+);
 
 // Version Restoration
 

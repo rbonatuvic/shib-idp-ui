@@ -1613,7 +1613,7 @@
     }, {
       "id": "3baa7bd3-55c0-4d10-8aa3-c0daa63ec4d4",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.px-3 > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
       "targets": [
         ["css=.px-3 > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
@@ -1624,7 +1624,7 @@
     }, {
       "id": "0d355ff0-0449-49a7-ae75-14d7c405b97c",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.px-3:nth-child(2) > summary-property:nth-child(2) tr:nth-child(2) > td:nth-child(1)",
       "targets": [
         ["css=.px-3:nth-child(2) > summary-property:nth-child(2) tr:nth-child(2) > td:nth-child(1)", "css:finder"],
@@ -1635,7 +1635,7 @@
     }, {
       "id": "e53030b6-f344-4361-981d-b8303a721c5d",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=summary-property:nth-child(2) > .mb-3 > .list-unstyled > li:nth-child(5)",
       "targets": [
         ["css=summary-property:nth-child(2) > .mb-3 > .list-unstyled > li:nth-child(5)", "css:finder"],
@@ -1646,7 +1646,7 @@
     }, {
       "id": "18636780-2feb-458f-97be-cf4a625b22e1",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=summary-property:nth-child(10) .d-block:nth-child(2)",
       "targets": [
         ["css=summary-property:nth-child(10) .d-block:nth-child(2)", "css:finder"],
@@ -1677,7 +1677,7 @@
     }, {
       "id": "ba9fb8e8-d332-45bd-accd-703284744136",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(1)",
       "targets": [
         ["linkText=Test Provider", "linkText"],
@@ -1691,7 +1691,7 @@
     }, {
       "id": "eff4c9fe-7daf-4082-a162-4a9dff323293",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(2)",
       "targets": [
         ["css=td:nth-child(2)", "css:finder"],
@@ -1702,7 +1702,7 @@
     }, {
       "id": "b2d9f789-fb94-459f-9947-5364cebc43d1",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(3)",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
@@ -1749,7 +1749,7 @@
     }, {
       "id": "a69f4347-8e82-483d-8a8a-e78a894e7aaa",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(2)",
       "targets": [
         ["css=td:nth-child(2)", "css:finder"],
@@ -1784,7 +1784,7 @@
     }, {
       "id": "6de4b65a-266e-4974-9729-cf70502bb8fd",
       "comment": "",
-      "command": "verifyElementNotPresent",
+      "command": "assertElementNotPresent",
       "target": "css=td:nth-child(2)",
       "targets": [],
       "value": ""
@@ -1824,7 +1824,7 @@
     }, {
       "id": "c9ea2708-7c12-43ce-b827-f0f34d2f2831",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.author",
       "targets": [
         ["css=.author", "css:finder"],
@@ -1836,7 +1836,7 @@
     }, {
       "id": "16271513-203c-4528-870f-dcf73f4d81cb",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.d-block > primitive-property:nth-child(1) .d-block:nth-child(2)",
       "targets": [
         ["css=.d-block > primitive-property:nth-child(1) .d-block:nth-child(2)", "css:finder"],
@@ -1848,7 +1848,7 @@
     }, {
       "id": "3f2c3eab-ecbf-45f3-bcdc-a5cad766b27c",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=array-property:nth-child(5) .py-2:nth-child(2) > .d-flex:nth-child(3) > .text-truncate",
       "targets": [
         ["css=array-property:nth-child(5) .py-2:nth-child(2) > .d-flex:nth-child(3) > .text-truncate", "css:finder"],
@@ -1859,7 +1859,7 @@
     }, {
       "id": "467409c7-1007-4c45-80d2-0b4eea5199a0",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(2) primitive-property:nth-child(2) .d-block:nth-child(2)",
       "targets": [
         ["css=.mb-4:nth-child(2) primitive-property:nth-child(2) .d-block:nth-child(2)", "css:finder"],
@@ -1871,7 +1871,7 @@
     }, {
       "id": "eaaf9d59-1466-4736-924c-56c9b3f7522f",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=array-property:nth-child(2) .text-truncate:nth-child(2)",
       "targets": [
         ["css=array-property:nth-child(2) .text-truncate:nth-child(2)", "css:finder"],
@@ -1883,7 +1883,7 @@
     }, {
       "id": "2a23096f-d5cd-4727-af1b-130388117aa0",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(4) .py-2:nth-child(3) > .d-flex:nth-child(1) > .text-truncate",
       "targets": [
         ["css=.mb-4:nth-child(4) .py-2:nth-child(3) > .d-flex:nth-child(1) > .text-truncate", "css:finder"],
@@ -1892,16 +1892,9 @@
       ],
       "value": "http://test.org/logout2"
     }, {
-      "id": "e1cba732-dd34-4c73-9d4c-89c440975dd8",
-      "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,2060)",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "fe47ffd2-d2a0-4264-90fe-31b998f81ac2",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(5) primitive-property:nth-child(3) .d-block:nth-child(2)",
       "targets": [
         ["css=.mb-4:nth-child(5) primitive-property:nth-child(3) .d-block:nth-child(2)", "css:finder"],
@@ -1912,7 +1905,7 @@
     }, {
       "id": "7300785c-b83e-49b8-97a6-d66516f6c133",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(6) .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate",
       "targets": [
         ["css=.mb-4:nth-child(6) .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate", "css:finder"],
@@ -1923,7 +1916,7 @@
     }, {
       "id": "951a21c9-4cd3-4989-8dc0-77760ca0dc95",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.mb-4:nth-child(7) primitive-property:nth-child(7) .d-block:nth-child(2)",
       "targets": [
         ["css=.mb-4:nth-child(7) primitive-property:nth-child(7) .d-block:nth-child(2)", "css:finder"],
@@ -1935,7 +1928,7 @@
     }, {
       "id": "e8b794fc-20e2-4317-8bdd-73eee8e94951",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=.d-flex:nth-child(3) > .py-2 > span",
       "targets": [
         ["css=.d-flex:nth-child(3) > .py-2 > span", "css:finder"],

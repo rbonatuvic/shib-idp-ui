@@ -7,6 +7,8 @@ export enum ResolverCollectionActionTypes {
     SELECT = '[Metadata Resolver] Select',
     SELECT_SUCCESS = '[Metadata Resolver] Select Success',
 
+    CLEAR_SELECTION = '[Metadata Resolver] Selection Clear',
+
     UPDATE_RESOLVER_REQUEST = '[Metadata Resolver] Update Request',
     UPDATE_RESOLVER_SUCCESS = '[Metadata Resolver] Update Success',
     UPDATE_RESOLVER_FAIL = '[Metadata Resolver] Update Fail',
@@ -143,6 +145,10 @@ export class CreateResolverFromUrlRequest implements Action {
     constructor(public payload: { name: string, url: string }) { }
 }
 
+export class ClearResolverSelection implements Action {
+    readonly type = ResolverCollectionActionTypes.CLEAR_SELECTION;
+}
+
 export type ResolverCollectionActionsUnion =
     | LoadResolverRequest
     | LoadResolverSuccess
@@ -162,4 +168,5 @@ export type ResolverCollectionActionsUnion =
     | UpdateResolverFail
     | UpdateResolverConflict
     | UploadResolverRequest
-    | CreateResolverFromUrlRequest;
+    | CreateResolverFromUrlRequest
+    | ClearResolverSelection;

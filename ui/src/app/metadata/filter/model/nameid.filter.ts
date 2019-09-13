@@ -1,7 +1,11 @@
 import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
 import { NameIDFormatFilterEntity } from '../../domain/entity/filter/nameid-format-filter';
+import { RegexValidator } from '../../../shared/validation/regex.validator';
 import { getFilterNames } from '../reducer';
+import { memoize } from '../../../shared/memo';
+
+const checkRegex = memoize(RegexValidator.isValidRegex);
 
 export const NameIDFilter: FormDefinition<MetadataFilter> = {
     label: 'NameIDFormat',
@@ -36,6 +40,18 @@ export const NameIDFilter: FormDefinition<MetadataFilter> = {
                     params: [value]
                 } : null;
                 return err;
+            },
+            '/nameIdFormatFilterTarget': (value, property, form) => {
+                if (!form || !form.value || !form.value.nameIdFormatFilterTarget ||
+                    form.value.nameIdFormatFilterTarget.nameIdFormatFilterTargetType !== 'REGEX') {
+                    return null;
+                }
+                return checkRegex(value.value[0]) ? null : {
+                    code: 'INVALID_REGEX',
+                    path: `#${property.path}`,
+                    message: 'message.invalid-regex-pattern',
+                    params: [value.value[0]]
+                };
             }
         };
         return validators;

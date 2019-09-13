@@ -18,20 +18,26 @@
                 </div>
             </div>
             <div class="p-2">
-                <div class="d-flex border-bottom border-light border-2 py-2">
-                    <strong [ngStyle]="{'width': width}" translate="label.option">Option</strong>
-                    <strong *ngFor="let date of configuration.dates" [ngStyle]="{'width': width}">
-                        <translate-i18n key="label.value" *ngIf="configuration.dates.length <= 1">Value</translate-i18n>
-                        <span *ngIf="configuration.dates.length > 1">{{ date | date:DATE_FORMAT }}</span>
-                    </strong>
-                </div>
-                <object-property
-                    class="d-block"
-                    *ngIf="section"
-                    [property]="section"
-                    [columns]="configuration.dates.length"
-                    (preview)="onPreview($event)">
-                </object-property>
+                <ng-container *ngIf="section && section.properties && section.properties.length">
+                    <div class="d-flex border-bottom border-light border-2 py-2">
+                        <strong [ngStyle]="{'width': width}" translate="label.option">Option</strong>
+                        <strong *ngFor="let date of configuration.dates" [ngStyle]="{'width': width}">
+                            <translate-i18n key="label.value" *ngIf="configuration.dates.length <= 1">Value</translate-i18n>
+                            <span *ngIf="configuration.dates.length > 1">{{ date | date:DATE_FORMAT }}</span>
+                        </strong>
+                    </div>
+                    <object-property
+                        class="d-block"
+                        [property]="section"
+                        [columns]="configuration.dates.length"
+                        (preview)="onPreview($event)">
+                    </object-property>
+                </ng-container>
+                <ng-container *ngIf="!section || !section.properties || !section.properties.length">
+                    <div class="alert">
+                        No Changes
+                    </div>
+                </ng-container>
             </div>
         </div>
     </section>
