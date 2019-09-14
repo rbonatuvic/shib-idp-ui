@@ -75,6 +75,13 @@
       ],
       "value": ""
     }, {
+      "id": "295789cf-0603-4fd2-9971-c2ed21d2fc81",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "218e51fd-49e6-400b-9d7f-61bcd8e0c074",
       "comment": "",
       "command": "click",
@@ -2160,18 +2167,12 @@
       ],
       "value": ""
     }, {
-      "id": "762e5039-7e5b-4a90-9db5-887b4ee8b625",
+      "id": "62348ea5-d2d9-426d-91ae-5e0f5871ad05",
       "comment": "",
-      "command": "waitForElementEditable",
-      "target": "id=/serviceProviderName",
-      "targets": [
-        ["id=/serviceProviderName", "id"],
-        ["name=field93", "name"],
-        ["css=#\\/serviceProviderName", "css:finder"],
-        ["xpath=//input[@id='/serviceProviderName']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "10000"
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "99731068-2016-4a7f-8a38-febfb711d027",
       "comment": "",
@@ -2473,6 +2474,13 @@
         ["xpath=//button[2]", "xpath:position"],
         ["xpath=//button[contains(.,'Restore')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "0e3e455b-e44c-41ee-8b6e-b50df56e7946",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
       "value": ""
     }, {
       "id": "db39c891-73da-4ad9-9360-00dd8b845f60",
