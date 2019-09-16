@@ -69,9 +69,7 @@ describe('Array Property Component', () => {
 
     describe('attributeList$ getter', () => {
         it('should return an empty list when no data or dataUrl is set', () => {
-            app.attributeList$.subscribe((list) => {
-                expect(list).toEqual([]);
-            });
+            expect(app.dataList).toBeUndefined();
         });
         it('should return a list of data items from the schema', () => {
             const datalist = [
@@ -87,29 +85,7 @@ describe('Array Property Component', () => {
                 }
             });
             fixture.detectChanges();
-            app.attributeList$.subscribe(list => {
-                expect(list).toEqual(datalist);
-            });
-        });
-
-        it('should call the attribute service with a provided dataUrl', () => {
-            const datalist = [
-                { key: 'foo', label: 'foo' },
-                { key: 'bar', label: 'bar' },
-                { key: 'baz', label: 'baz' },
-            ];
-            spyOn(service, 'query').and.returnValue(of(datalist));
-            instance.setProperty({
-                ...instance.property,
-                widget: {
-                    id: 'datalist',
-                    dataUrl: '/foo'
-                }
-            });
-            fixture.detectChanges();
-            app.attributeList$.subscribe(list => {
-                expect(list).toEqual(datalist);
-            });
+            expect(app.dataList).toEqual(datalist);
         });
     });
 });

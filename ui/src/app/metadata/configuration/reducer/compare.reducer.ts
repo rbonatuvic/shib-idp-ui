@@ -5,16 +5,23 @@ export interface State {
     models: Metadata[];
     loaded: boolean;
     loading: boolean;
+    compareChangedOnly: boolean;
 }
 
 export const initialState: State = {
     models: [],
     loaded: false,
-    loading: false
+    loading: false,
+    compareChangedOnly: false
 };
 
 export function reducer(state = initialState, action: CompareActionsUnion): State {
     switch (action.type) {
+        case CompareActionTypes.SET_VIEW_CHANGED:
+            return {
+                ...state,
+                compareChangedOnly: action.payload
+            };
         case CompareActionTypes.COMPARE_METADATA_REQUEST:
             return {
                 ...state,
@@ -45,3 +52,4 @@ export function reducer(state = initialState, action: CompareActionsUnion): Stat
 export const getVersionModels = (state: State) => state.models;
 export const getVersionModelsLoaded = (state: State) => state.loaded;
 export const getComparisonLoading = (state: State) => state.loading;
+export const getViewChangedOnly = (state: State) => state.compareChangedOnly;
