@@ -33,7 +33,7 @@ export class ArrayPropertyComponent extends ConfigurationPropertyComponent imple
         return UriValidator.isUri(str);
     }
 
-    get dataList(): { key: string, label: string }[] {
+    get dataList(): { key: string, label: string, differences?: boolean }[] {
         return this.property.widget.data;
     }
 }
