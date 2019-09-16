@@ -11,8 +11,8 @@ describe('RegexValidator', () => {
             expect(RegexValidator.isValidRegex(')')).toBe(false);
         });
 
-        it('should return false if the regex doesnt begin and end with slashes', () => {
-            expect(RegexValidator.isValidRegex('abc')).toBe(false);
+        it('should return true even if the regex doesnt begin and end with slashes', () => {
+            expect(RegexValidator.isValidRegex('abc')).toBe(true);
         });
     });
 });

@@ -1,9 +1,7 @@
-const regexChecker = new RegExp('^\/|\/$', 'g');
-
 export class RegexValidator {
     static isValidRegex(pattern: string): boolean {
         if (!pattern) {
-            return true;
+            return false;
         }
         let regex;
         try {
@@ -11,7 +9,7 @@ export class RegexValidator {
         } catch (err) {
             return false;
         }
-        return regexChecker.test(pattern);
+        return true;
     }
 }
 
