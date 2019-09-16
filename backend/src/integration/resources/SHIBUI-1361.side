@@ -185,6 +185,13 @@
       ],
       "value": "%{idp.home}/foo.txt"
     }, {
+      "id": "bf9467f5-780e-4b7c-8bf6-be062c15f867",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "203d0d3c-d866-422a-8b48-b50181db00e9",
       "comment": "",
       "command": "click",
@@ -194,6 +201,13 @@
         ["xpath=//div[@id='/backupFileInitNextRefreshDelay-container']/div/div/button/i", "xpath:idRelative"],
         ["xpath=//div/button/i", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "55da9393-72e3-47d7-87b0-324d8be38660",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "5fc6a348-0533-4d94-bb76-ebb891a0db8f",
@@ -268,6 +282,13 @@
       ],
       "value": ""
     }, {
+      "id": "135984e0-ceb3-4544-a753-24410762eca4",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "a188bc3e-fd98-4d49-ae35-a0b78a17607c",
       "comment": "",
       "command": "click",
@@ -279,6 +300,13 @@
         ["xpath=//div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "be2bef00-19c8-4f42-adea-e0ad0d664d23",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "a159e056-c870-4e02-a7e9-4b3a60d83718",
@@ -295,15 +323,29 @@
       ],
       "value": ""
     }, {
+      "id": "bd587f8c-de08-4cd7-b81e-9258c2ed6abe",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "7a72cf6a-c97a-49f6-83d0-cbe42f0fdb7d",
       "comment": "",
       "command": "click",
-      "target": "css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .fa",
+      "target": "css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .btn",
       "targets": [
         ["css=#\\/reloadableMetadataResolverAttributes\\/maxRefreshDelay-container .fa", "css:finder"],
         ["xpath=//div[@id='/reloadableMetadataResolverAttributes/maxRefreshDelay-container']/div/div/button/i", "xpath:idRelative"],
         ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button/i", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "5d9a4304-2e48-419b-a98a-3540df439f90",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "820397f5-aabb-46f5-a65a-56747ce29091",
@@ -342,6 +384,13 @@
       ],
       "value": ""
     }, {
+      "id": "0bc204b3-2adb-4446-899b-0665619aaec1",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "232da257-962f-4a4b-8213-038ef90c96c3",
       "comment": "",
       "command": "click",
@@ -353,6 +402,13 @@
         ["xpath=//div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "763ce787-9ee8-4c78-bff0-d4ad94dff963",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "b8d999f1-0c59-4a9a-9991-91d222f52b8e",
@@ -372,7 +428,7 @@
       "id": "8af1abb5-2c7a-4a4c-a8f7-0eb287100dde",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(1) > sf-form-element > .has-success .custom-control-label",
+      "target": "id=/metadataFilters/SignatureValidation/requireSignedRoot",
       "targets": [
         ["css=div:nth-child(1) > sf-form-element > .has-success .custom-control-label", "css:finder"],
         ["xpath=//div/div/label", "xpath:position"],
@@ -450,7 +506,7 @@
       "id": "5dfac033-ecfd-42e8-aa6f-931d5acd4d89",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(2) > sf-form-element > .has-success > sf-widget-chooser > checkbox-component .custom-control-label",
+      "target": "id=/metadataFilters/EntityRoleWhiteList/removeRolelessEntityDescriptors",
       "targets": [
         ["css=div:nth-child(2) > sf-form-element > .has-success > sf-widget-chooser > checkbox-component .custom-control-label", "css:finder"],
         ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/checkbox-component/div/div/div/label", "xpath:position"],
@@ -461,7 +517,7 @@
       "id": "9d5934f0-fe10-4539-9d71-80b454fc8612",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(3) > sf-form-element > .has-success > sf-widget-chooser > checkbox-component .custom-control-label",
+      "target": "id=/metadataFilters/EntityRoleWhiteList/removeEmptyEntitiesDescriptors",
       "targets": [
         ["css=div:nth-child(3) > sf-form-element > .has-success > sf-widget-chooser > checkbox-component .custom-control-label", "css:finder"],
         ["xpath=//div[3]/sf-form-element/div/sf-widget-chooser/checkbox-component/div/div/div/label", "xpath:position"],
@@ -853,10 +909,10 @@
       ],
       "value": ""
     }, {
-      "id": "cf14941d-698f-42ed-8731-51e6f7b90c63",
+      "id": "725d9ec1-3ce1-4a1d-a66a-d54629a9d3b5",
       "comment": "",
       "command": "pause",
-      "target": "1000",
+      "target": "500",
       "targets": [],
       "value": ""
     }, {
@@ -873,12 +929,12 @@
       ],
       "value": ""
     }, {
-      "id": "6e01f905-fd32-45a5-9517-9dd12191f7ae",
+      "id": "7379d277-790e-47ca-b74c-fc73cc2d8a42",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=/httpMetadataResolverAttributes/connectionRequestTimeout__option--1",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "8ba62572-354d-47f4-bb72-f9309c1cb201",
       "comment": "",
@@ -894,10 +950,10 @@
       ],
       "value": ""
     }, {
-      "id": "cce01c00-7d94-48ae-9de8-ead8624e2cf3",
+      "id": "8497a440-4e0c-4589-aaf8-f530dbefb3c7",
       "comment": "",
       "command": "pause",
-      "target": "1000",
+      "target": "500",
       "targets": [],
       "value": ""
     }, {
@@ -913,12 +969,12 @@
       ],
       "value": ""
     }, {
-      "id": "01d5f751-6964-4fd8-a0de-36fd79d7be99",
+      "id": "655375ab-b3e4-449e-acfa-577b0ab4957e",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=/httpMetadataResolverAttributes/connectionTimeout__option--2",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "337ac160-7990-425f-83da-2788d8a0985e",
       "comment": "",
@@ -933,10 +989,10 @@
       ],
       "value": ""
     }, {
-      "id": "d585dc51-41b2-4be8-8d84-cb21b4dc92b6",
+      "id": "855e85a8-d8c3-4b72-ae8a-763f2d86869a",
       "comment": "",
       "command": "pause",
-      "target": "1000",
+      "target": "500",
       "targets": [],
       "value": ""
     }, {
@@ -952,12 +1008,12 @@
       ],
       "value": ""
     }, {
-      "id": "99c7ec5a-ad8c-4970-b97f-27997098c0d6",
+      "id": "d0befeb0-e5e2-4233-803e-8c417ca570a0",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "id=/httpMetadataResolverAttributes/socketTimeout__option--3",
+      "command": "pause",
+      "target": "500",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "34693225-4754-4b27-92ee-3e37304a8cd7",
       "comment": "",
