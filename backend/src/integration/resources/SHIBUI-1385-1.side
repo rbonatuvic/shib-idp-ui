@@ -2286,9 +2286,9 @@
       "id": "138ad58b-f0a2-436b-a8b0-43484f4180e6",
       "comment": "",
       "command": "assertText",
-      "target": "css=array-property:nth-child(5) .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(2)",
+      "target": "css=.bg-diff > .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(3)",
       "targets": [
-        ["css=array-property:nth-child(5) .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(2)", "css:finder"],
+        ["css=.bg-diff > .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(3)", "css:finder"],
         ["xpath=//div[2]/div/div[2]", "xpath:position"]
       ],
       "value": "Test User v2"
@@ -2296,10 +2296,10 @@
       "id": "17049c95-4724-4521-ac47-6b64bde822aa",
       "comment": "",
       "command": "assertText",
-      "target": "css=array-property:nth-child(5) .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(3)",
+      "target": "css=.py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(4)",
       "targets": [
-        ["css=array-property:nth-child(5) .py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(3)", "css:finder"],
-        ["xpath=//div[3]", "xpath:position"]
+        ["css=.py-2:nth-child(2) > .d-flex:nth-child(1) > .text-truncate:nth-child(4)", "css:finder"],
+        ["xpath=//div/div[3]", "xpath:position"]
       ],
       "value": "Test User"
     }, {
