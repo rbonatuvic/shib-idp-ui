@@ -677,11 +677,11 @@
       "id": "f4a74feb-0372-4452-a085-64ae37a059cb",
       "comment": "",
       "command": "assertText",
-      "target": "css=.form-text",
+      "target": "css=.form-text:nth-child(2)",
       "targets": [
-        ["css=.form-text > translate-i18n", "css:finder"],
-        ["xpath=//small/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Invalid Regular Expression')]", "xpath:innerText"]
+        ["css=.form-text:nth-child(2)", "css:finder"],
+        ["xpath=//div/div/small", "xpath:position"],
+        ["xpath=//small[contains(.,'Invalid Regular Expression')]", "xpath:innerText"]
       ],
       "value": "Invalid Regular Expression"
     }, {
@@ -696,7 +696,7 @@
         ["xpath=//input[@id='/entityAttributesFilterTarget.target']", "xpath:attributes"],
         ["xpath=//div/div/input", "xpath:position"]
       ],
-      "value": ".*/"
+      "value": ".*"
     }]
   }],
   "suites": [{
