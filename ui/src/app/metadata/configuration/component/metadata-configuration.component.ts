@@ -8,7 +8,7 @@ import { CONFIG_DATE_FORMAT } from '../configuration.values';
     selector: 'metadata-configuration',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './metadata-configuration.component.html',
-    styleUrls: []
+    styleUrls: ['./metadata-configuration.component.scss']
 })
 export class MetadataConfigurationComponent {
     @Input() configuration: MetadataConfiguration;

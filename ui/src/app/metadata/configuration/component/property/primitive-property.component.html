@@ -1,4 +1,8 @@
-<div *ngIf="property.name" class="d-flex border-bottom border-light py-2">
+<div tabindex="0">
+<span class="sr-only" *ngIf="property.differences">Changed:</span>
+<div *ngIf="property.name"
+    class="d-flex border-bottom border-light p-2"
+    [ngClass]="{'bg-diff' : property.differences}">
     <span class="d-block"
         role="term"
         [translate]="property.name"
@@ -7,4 +11,5 @@
         class="d-block"
         role="definition"
         [ngStyle]="{'width': width}">{{ v ? v : (v === false) ? v : '-' }}</span>
+</div>
 </div>
