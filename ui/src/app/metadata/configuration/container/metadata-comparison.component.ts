@@ -1,13 +1,14 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { ConfigurationState, getComparisonConfigurationCount } from '../reducer';
 import { CompareVersionRequest, ClearVersions, ViewChanged } from '../action/compare.action';
-import { MetadataConfiguration } from '../model/metadata-configuration';
+import { MetadataConfiguration, FilterConfiguration } from '../model/metadata-configuration';
 import * as fromReducer from '../reducer';
-
+import { CompareFilterVersions } from '../action/filter.action';
+import { FilterComparison } from '../model/compare';
 
 @Component({
     selector: 'metadata-comparison',
@@ -25,7 +26,8 @@ export class MetadataComparisonComponent implements OnDestroy {
     loading$: Observable<boolean> = this.store.select(fromReducer.getComparisonLoading);
     limited$: Observable<boolean> = this.store.select(fromReducer.getViewChangedOnly);
     sub: Subscription;
-
+    filters$: Observable<FilterConfiguration> = this.store.select(fromReducer.getComparisonFilterConfiguration);
+    filterCompare$: Observable<MetadataConfiguration> = this.store.select(fromReducer.getLimitedFilterComparisonConfiguration);
 
     constructor(
         private store: Store<ConfigurationState>,
@@ -45,6 +47,12 @@ export class MetadataComparisonComponent implements OnDestroy {
             withLatestFrom(this.limited$),
             map(([compare, limit]) => new ViewChanged(!limit))
         ).subscribe(this.store);
+
+        this.filterCompare$.subscribe(console.log);
+    }
+
+    compareFilters (comparison: FilterComparison) {
+        this.store.dispatch(new CompareFilterVersions(comparison));
     }
 
     ngOnDestroy(): void {

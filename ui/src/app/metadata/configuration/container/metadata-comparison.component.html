@@ -25,7 +25,20 @@
     <metadata-configuration
         [configuration]="versions$ | async"
         [editable]="false"></metadata-configuration>
-    <filter-version-list class="d-block p-2"></filter-version-list>
+    
+    <div class="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
+        <h2 class="title h4 m-0 flex-grow-1">
+            <span class="text ml-2" translate="label.metadata-filters">Metadata Filters</span>
+        </h2>
+    </div>
+    <ng-container>
+        <filter-version-list
+            class="d-block p-2"
+            [filters]="filters$ | async"
+            (compare)="compareFilters($event)">
+        </filter-version-list>
+    </ng-container>
+    
 </div>
 <div *ngIf="loading$ | async" class="d-flex justify-content-center">
     <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>

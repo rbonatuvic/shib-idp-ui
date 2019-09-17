@@ -45,6 +45,7 @@ import { RestoreEditStepComponent } from './container/restore-edit-step.componen
 
 import { IndexResolver } from './service/index-resolver.service';
 import { FilterVersionListComponent } from './component/filter-version-list.component';
+import { FilterCompareVersionEffects } from './effect/filter.effect';
 
 @NgModule({
     declarations: [
@@ -111,6 +112,7 @@ export class MetadataConfigurationModule {
                 MetadataHistoryEffects,
                 CompareVersionEffects,
                 RestoreEffects,
+                FilterCompareVersionEffects,
                 VersionEffects
             ])
     ],

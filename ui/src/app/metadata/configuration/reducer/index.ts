@@ -6,6 +6,7 @@ import * as fromHistory from './history.reducer';
 import * as fromCompare from './compare.reducer';
 import * as fromVersion from './version.reducer';
 import * as fromRestore from './restore.reducer';
+import * as fromFilter from './filter.reducer';
 import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
@@ -24,6 +25,7 @@ export interface ConfigurationState {
     compare: fromCompare.State;
     version: fromVersion.State;
     restore: fromRestore.RestoreState;
+    filter: fromFilter.State;
 }
 
 export const reducers = {
@@ -31,7 +33,8 @@ export const reducers = {
     history: fromHistory.reducer,
     compare: fromCompare.reducer,
     version: fromVersion.reducer,
-    restore: fromRestore.reducer
+    restore: fromRestore.reducer,
+    filter: fromFilter.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -45,6 +48,7 @@ export const getHistoryStateFn = (state: ConfigurationState) => state.history;
 export const getCompareStateFn = (state: ConfigurationState) => state.compare;
 export const getVersionStateFn = (state: ConfigurationState) => state.version;
 export const getRestoreStateFn = (state: ConfigurationState) => state.restore;
+export const getFilterStateFn = (state: ConfigurationState) => state.filter;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
 export const getConfigurationModelKind = createSelector(getConfigurationState, fromConfiguration.getModelKind);
@@ -145,6 +149,14 @@ export const getConfigurationModelNameFn =
 export const getConfigurationModelTypeFn =
     (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
 
+export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
+
+export const getVersionModelFiltersFn =
+    (model, kind) => kind === 'provider' ?
+        model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+        null;
+
 // Version History
 
 export const getHistoryState = createSelector(getState, getHistoryStateFn);
@@ -172,12 +184,14 @@ export const getSelectedIsCurrent = createSelector(
     getSelectedIsCurrentFn
 );
 
+
 // Version Comparison
 
 export const getCompareState = createSelector(getState, getCompareStateFn);
 export const getComparisonLoading = createSelector(getCompareState, fromCompare.getComparisonLoading);
 export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
+export const getComparisonFilterId = createSelector(getCompareState, fromCompare.getFilterId);
 export const getComparisonConfigurations = createSelector(
     getComparisonModels,
     getConfigurationDefinition,
@@ -224,17 +238,58 @@ export const getLimitedComparisonConfigurations = createSelector(
     getLimitedConfigurationsFn
 );
 
+export const getComparisonFilterListFn = (models) => models.map(m => getVersionModelFiltersFn(m, 'provider'));
+export const getComparisonFilterList = createSelector(getComparisonModels, getComparisonFilterListFn);
+
+export const getComparisonDatesFn = (config) => config.map(m => m ? m.modifiedDate : null);
+export const getComparisonDates = createSelector(getComparisonModels, getComparisonDatesFn);
+
+export const getComparisonFilterOrderedFn = (list) =>
+    list.map(models =>
+        models.map(filter =>
+            ({
+                ...filter,
+                comparable: list
+                    .reduce((acc, v) => acc.concat(v), [])
+                    .map(v => v.resourceId)
+                    .some((id, index, coll) => {
+                        return coll.indexOf(filter.resourceId) !== coll.lastIndexOf(filter.resourceId);
+                    })
+            })
+));
+
+export const getComparisonFilterOrdered = createSelector(getComparisonFilterList, getComparisonFilterOrderedFn);
+
+export const getComparisonFilterConfiguration = createSelector(
+    getComparisonFilterOrdered,
+    getComparisonDates,
+    (filters, dates) => {
+        const rows = filters.reduce((num, version) => version.length > num ? version.length : num, 0);
+        const range = [...Array(rows).keys()];
+        return {
+            dates,
+            filters: range.reduce((collection, index) => {
+                const val = filters.map(version => version[index]);
+                collection[index] = val;
+                return collection;
+            }, [])
+        };
+    }
+);
+
+export const getComparisonSelectedFilters = createSelector(
+    getComparisonModels,
+    getComparisonDates,
+    getComparisonFilterId,
+    (models, dates, id) => ({
+        dates,
+        sections: []
+    })
+);
+
 // Version Restoration
 
 export const getRestoreState = createSelector(getState, getRestoreStateFn);
-
-export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
-export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
-
-export const getVersionModelFiltersFn =
-    (model, kind) => kind === 'provider' ?
-    model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
-    null;
 
 export const getVersionState = createSelector(getState, getVersionStateFn);
 
@@ -293,6 +348,25 @@ export const getRestorationModel = createSelector(
         ...empty,
         ...changes
     })
+);
+
+// Filter Comparison State
+
+export const getFilterState = createSelector(getState, getFilterStateFn);
+export const getFilterComparisonDefinition = createSelector(getFilterState, fromFilter.getDefinition);
+export const getFilterComparisonSchema = createSelector(getFilterState, fromFilter.getSchema);
+export const getFilterComparisonModels = createSelector(getFilterState, fromFilter.getModels);
+export const getFilterComparisonConfigurations = createSelector(
+    getFilterComparisonModels,
+    getFilterComparisonDefinition,
+    getFilterComparisonSchema,
+    getConfigurationSectionsFn
+);
+
+export const getLimitedFilterComparisonConfiguration = createSelector(
+    getFilterComparisonConfigurations,
+    getViewChangedOnly,
+    getLimitedConfigurationsFn
 );
 
 // Mixed states
