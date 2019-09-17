@@ -1892,13 +1892,6 @@
       ],
       "value": "http://test.org/logout2"
     }, {
-      "id": "e1cba732-dd34-4c73-9d4c-89c440975dd8",
-      "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,2060)",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "fe47ffd2-d2a0-4264-90fe-31b998f81ac2",
       "comment": "",
       "command": "assertText",
@@ -2131,13 +2124,6 @@
         ["xpath=//span[contains(.,'Test Provider')]", "xpath:innerText"]
       ],
       "value": "Test Provider"
-    }, {
-      "id": "d3abb044-064c-4d68-8afa-84cc5f9b987e",
-      "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,157)",
-      "targets": [],
-      "value": ""
     }, {
       "id": "138ad58b-f0a2-436b-a8b0-43484f4180e6",
       "comment": "",

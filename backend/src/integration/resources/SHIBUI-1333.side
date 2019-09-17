@@ -1892,13 +1892,6 @@
       ],
       "value": "http://test.org/logout2"
     }, {
-      "id": "e1cba732-dd34-4c73-9d4c-89c440975dd8",
-      "comment": "",
-      "command": "runScript",
-      "target": "window.scrollTo(0,2060)",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "fe47ffd2-d2a0-4264-90fe-31b998f81ac2",
       "comment": "",
       "command": "assertText",
