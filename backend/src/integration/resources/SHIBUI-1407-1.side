@@ -2141,6 +2141,13 @@
       ],
       "value": ""
     }, {
+      "id": "1a194216-9305-4151-a8d8-42a586ae8e47",
+      "comment": "",
+      "command": "pause",
+      "target": "3000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "2536386b-315e-4b39-b9a7-badcfd0dfbb1",
       "comment": "",
       "command": "click",
@@ -2153,6 +2160,13 @@
         ["xpath=//td/a", "xpath:position"],
         ["xpath=//a[contains(.,'Test Provider')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "b5140c25-a360-42d2-b2c4-b90143b0d8b5",
+      "comment": "",
+      "command": "pause",
+      "target": "3000",
+      "targets": [],
       "value": ""
     }, {
       "id": "2c46cdcd-d5a5-47fe-aa7b-0120fd2fcfc9",

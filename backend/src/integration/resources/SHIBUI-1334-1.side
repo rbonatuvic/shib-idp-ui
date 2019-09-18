@@ -2155,16 +2155,10 @@
     }, {
       "id": "762e5039-7e5b-4a90-9db5-887b4ee8b625",
       "comment": "",
-      "command": "waitForElementEditable",
-      "target": "id=/serviceProviderName",
-      "targets": [
-        ["id=/serviceProviderName", "id"],
-        ["name=field93", "name"],
-        ["css=#\\/serviceProviderName", "css:finder"],
-        ["xpath=//input[@id='/serviceProviderName']", "xpath:attributes"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "10000"
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "99731068-2016-4a7f-8a38-febfb711d027",
       "comment": "",
