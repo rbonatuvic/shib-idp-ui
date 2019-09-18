@@ -91,6 +91,12 @@ public class MetadataResolver extends AbstractAuditable {
         return this.hashCode();
     }
 
+    public void addFilter(MetadataFilter metadataFilter) {
+        //To make sure that Spring Data auditing infrastructure recognizes update and "touched" modifiedDate
+        markAsModified();
+        this.metadataFilters.add(metadataFilter);
+    }
+
     public void markAsModified() {
         this.versionModifiedTimestamp = System.currentTimeMillis();
     }
