@@ -198,6 +198,13 @@
       ],
       "value": ""
     }, {
+      "id": "b2d8c292-1fe1-435b-ad87-28e845825e78",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "d2e09813-fee8-4744-9ac9-72bdbac92b72",
       "comment": "",
       "command": "click",
@@ -209,6 +216,13 @@
         ["xpath=//div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "71cbee46-51ca-42fa-8ab8-0da3f2d9df59",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "d449fec4-84f9-4eda-98e5-2dc40d185a63",
@@ -225,6 +239,13 @@
       ],
       "value": ""
     }, {
+      "id": "5e9f1ec1-5309-4c45-a37a-7ec5a9d058be",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "54784d87-c835-4e3f-9467-9c39be596bb8",
       "comment": "",
       "command": "click",
@@ -235,6 +256,13 @@
         ["xpath=//div[@id='/reloadableMetadataResolverAttributes/maxRefreshDelay-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "d94909d2-9f00-4166-918a-837c78838acb",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "119a39c2-6d86-4d94-a093-6669e89e78e4",
