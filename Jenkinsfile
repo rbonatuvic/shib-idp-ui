@@ -31,7 +31,7 @@ pipeline {
       }
       post {
         always {
-          junit 'backend/build/test-results/integrationTest/**/*.xml'
+//          junit 'backend/build/test-results/integrationTest/**/*.xml'
         }
       }
     }
