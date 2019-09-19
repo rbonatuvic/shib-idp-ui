@@ -7,7 +7,7 @@ import { ConfigurationState, getComparisonConfigurationCount } from '../reducer'
 import { CompareVersionRequest, ClearVersions, ViewChanged } from '../action/compare.action';
 import { MetadataConfiguration, FilterConfiguration } from '../model/metadata-configuration';
 import * as fromReducer from '../reducer';
-import { CompareFilterVersions } from '../action/filter.action';
+import { CompareFilterVersions, ClearFilterComparison } from '../action/filter.action';
 import { FilterComparison } from '../model/compare';
 
 @Component({
@@ -47,16 +47,19 @@ export class MetadataComparisonComponent implements OnDestroy {
             withLatestFrom(this.limited$),
             map(([compare, limit]) => new ViewChanged(!limit))
         ).subscribe(this.store);
-
-        this.filterCompare$.subscribe(console.log);
     }
 
     compareFilters (comparison: FilterComparison) {
         this.store.dispatch(new CompareFilterVersions(comparison));
     }
 
+    resetCompareFilters () {
+        this.store.dispatch(new ClearFilterComparison());
+    }
+
     ngOnDestroy(): void {
         this.sub.unsubscribe();
         this.store.dispatch(new ClearVersions());
+        this.resetCompareFilters();
     }
 }
