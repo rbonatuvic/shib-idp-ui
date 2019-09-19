@@ -5,7 +5,7 @@ export interface MetadataVersion {
 }
 
 export interface FilterVersion {
-    id: string;
+    resourceId: string;
     name: string;
     type: string;
     comparable: boolean;
