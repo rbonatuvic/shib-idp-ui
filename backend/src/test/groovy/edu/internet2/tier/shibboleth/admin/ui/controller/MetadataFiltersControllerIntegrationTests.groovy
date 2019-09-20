@@ -188,6 +188,27 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
         resolverResult_3.body.metadataFilters.size == 5
     }
 
+    def "POST new Filter updates resolver's modifiedDate - SHIBUI-1500"() {
+        given: 'MetadataResolver with attached entity attributes is available in data store'
+        def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
+        def filter =  generator.entityAttributesFilter()
+        def resolverResourceId = resolver.resourceId
+        metadataResolverRepository.save(resolver)
+        MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(resolver)
+        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
+
+        when: 'Resolver without filter is fetched'
+        def result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", String)
+        def originalModifiedDate = jsonSlurper.parseText(result.body).modifiedDate
+
+        and: 'POST call is made with new filter'
+        result = restTemplate.postForEntity("$BASE_URI/$resolverResourceId/Filters", filter, String)
+        def afterFilterAddedModifiedDate = jsonSlurper.parseText(result.body).modifiedDate
+
+        then:
+        originalModifiedDate < afterFilterAddedModifiedDate
+    }
+
     private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
         new HttpEntity<String>(jsonBodySupplier(), ['Content-Type': 'application/json'] as HttpHeaders)
     }

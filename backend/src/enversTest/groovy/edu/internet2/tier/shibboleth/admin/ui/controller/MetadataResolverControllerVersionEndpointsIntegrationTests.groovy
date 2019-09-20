@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
@@ -134,6 +135,23 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
 
         then:
         noExceptionThrown()
+    }
+
+    def "SHIBUI-1500"() {
+        MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'shibui-1500')
+        mr = repository.save(mr)
+
+        when: 'add a filter'
+        def filter = new EntityRoleWhiteListFilter(name: 'shibui-1500', retainedRoles: ['role1'])
+        mr.addFilter(filter)
+        mr = repository.save(mr)
+
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+        def mrv2 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[1].id, MetadataResolver)
+
+        then:
+        (mrv1.getBody() as MetadataResolver).modifiedDate < (mrv2.getBody() as MetadataResolver).modifiedDate
     }
 
     private getAllMetadataResolverVersions(String resourceId, responseType) {
