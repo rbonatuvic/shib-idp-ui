@@ -8,8 +8,12 @@
         [translate]="property.name"
         [ngStyle]="{'width': width}">{{ property.name }}</span>
     <span *ngFor="let v of property.value"
-        class="d-block"
+        class="d-block text-truncate"
         role="definition"
+        [ngbPopover]="v"
+        [openDelay]="500"
+        triggers="mouseenter:mouseleave"
+        popoverClass="popover popover-info"
         [ngStyle]="{'width': width}">{{ v ? v : (v === false) ? v : '-' }}</span>
 </div>
 </div>
