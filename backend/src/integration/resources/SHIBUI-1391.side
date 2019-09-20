@@ -254,7 +254,7 @@
       "id": "44e705a1-f284-4303-a0b6-c4bc9896c78d",
       "comment": "",
       "command": "pause",
-      "target": "1000",
+      "target": "500",
       "targets": [],
       "value": ""
     }, {
@@ -271,6 +271,13 @@
       ],
       "value": ""
     }, {
+      "id": "207eaafc-845d-456d-b4b8-9182312a109e",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "9ee7065a-823e-4b4a-b212-0582eeaf7a00",
       "comment": "",
       "command": "click",
@@ -285,6 +292,13 @@
       ],
       "value": ""
     }, {
+      "id": "eafdda4f-8a61-4976-b3a6-447d9cc1681a",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "618cc5f1-417b-4bc6-9388-3238f2304904",
       "comment": "",
       "command": "click",
@@ -295,6 +309,13 @@
         ["xpath=//div[@id='/reloadableMetadataResolverAttributes/maxRefreshDelay-container']/div/div/button", "xpath:idRelative"],
         ["xpath=//div[2]/sf-form-element/div/sf-widget-chooser/datalist-component/div/auto-complete/div/div/div/button", "xpath:position"]
       ],
+      "value": ""
+    }, {
+      "id": "b7b4b979-81d9-4df9-84d7-1c7cab785bcf",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
       "value": ""
     }, {
       "id": "a89f1b4d-10bd-48f7-9b97-865710cfe01f",
