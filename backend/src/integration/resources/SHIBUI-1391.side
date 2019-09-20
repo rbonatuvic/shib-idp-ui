@@ -258,7 +258,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "824b4515-ae14-436e-a56f-d631ea9e1edc",
+      "id": "347b93b2-2fc6-43fb-b674-f3ef40d0adab",
       "comment": "",
       "command": "click",
       "target": "css=#\\/reloadableMetadataResolverAttributes\\/minRefreshDelay-container .btn",
@@ -271,14 +271,51 @@
       ],
       "value": ""
     }, {
-      "id": "207eaafc-845d-456d-b4b8-9182312a109e",
+      "id": "f78882a2-fd36-444f-b502-045b5ffb26e1",
       "comment": "",
       "command": "pause",
       "target": "500",
       "targets": [],
       "value": ""
     }, {
-      "id": "9ee7065a-823e-4b4a-b212-0582eeaf7a00",
+      "id": "07b46683-5914-4795-9f2a-b8f5316858d7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.section-body",
+      "targets": [
+        ["css=.section-body", "css:finder"],
+        ["xpath=//section/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ab04d081-59ad-4dab-8af4-ff313def82c0",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "239b5688-ecdd-4530-ba5c-379ea7490f04",
+      "comment": "",
+      "command": "click",
+      "target": "css=#\\/reloadableMetadataResolverAttributes\\/minRefreshDelay-container .btn",
+      "targets": [
+        ["css=#\\/reloadableMetadataResolverAttributes\\/minRefreshDelay-container .btn", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='/reloadableMetadataResolverAttributes/minRefreshDelay-container']/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Toggle Dropdown')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0997ef36-5d8d-45e7-b2a8-86b4c884e847",
+      "comment": "",
+      "command": "pause",
+      "target": "500",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d5bc189f-eb4f-4378-9507-c82d98d8ecb4",
       "comment": "",
       "command": "click",
       "target": "id=/reloadableMetadataResolverAttributes/minRefreshDelay__option--0",
@@ -292,7 +329,7 @@
       ],
       "value": ""
     }, {
-      "id": "eafdda4f-8a61-4976-b3a6-447d9cc1681a",
+      "id": "207eaafc-845d-456d-b4b8-9182312a109e",
       "comment": "",
       "command": "pause",
       "target": "500",
