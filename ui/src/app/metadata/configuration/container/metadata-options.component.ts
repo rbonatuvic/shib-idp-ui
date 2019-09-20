@@ -2,23 +2,20 @@ import { Store } from '@ngrx/store';
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router, Event, Scroll } from '@angular/router';
+import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
-import { takeUntil, filter, delay } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 
 import {
     ConfigurationState,
     getConfigurationSections,
-    getSelectedVersion,
-    getSelectedVersionNumber,
     getSelectedIsCurrent,
     getConfigurationModelEnabled,
     getConfigurationHasXml,
     getConfigurationModel,
-    getConfigurationDefinition
+    getConfigurationModelType
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
-import { MetadataVersion } from '../model/version';
 import { MetadataFilter } from '../../domain/model';
 import { getAdditionalFilters } from '../../filter/reducer';
 import {
@@ -31,8 +28,7 @@ import {
 
 import { Metadata } from '../../domain/domain.type';
 import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
-import { Wizard } from '../../../wizard/model';
-import { PreviewEntity } from '../../domain/action/entity.action';
+import { ClearHistory } from '../action/history.action';
 
 @Component({
     selector: 'metadata-options-page',
@@ -42,50 +38,29 @@ import { PreviewEntity } from '../../domain/action/entity.action';
 })
 export class MetadataOptionsComponent implements OnDestroy {
 
-    private ngUnsubscribe: Subject<void> = new Subject<void>();
+    protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    configuration$: Observable<MetadataConfiguration>;
-    isEnabled$: Observable<boolean>;
-    version$: Observable<MetadataVersion>;
-    versionNumber$: Observable<number>;
-    isCurrent$: Observable<boolean>;
-    hasXml$: Observable<boolean>;
-    filters$: Observable<unknown[]>;
-    model$: Observable<Metadata>;
-    definition: Wizard<any>;
+    configuration$: Observable<MetadataConfiguration> = this.store.select(getConfigurationSections);
+    isEnabled$: Observable<boolean> = this.store.select(getConfigurationModelEnabled);
+    isCurrent$: Observable<boolean> = this.store.select(getSelectedIsCurrent);
+    hasXml$: Observable<boolean> = this.store.select(getConfigurationHasXml);
+    filters$: Observable<unknown[]> = this.store.select(getAdditionalFilters);
+    model$: Observable<Metadata> = this.store.select(getConfigurationModel);
+    type$: Observable<string> = this.store.select(getConfigurationModelType);
     id: string;
     kind: string;
 
-    htmlTags = ['DIV', 'A', 'METADATA-CONFIGURATION', 'METADATA-HEADER'];
-    currentSection: string;
-
     constructor(
-        private store: Store<ConfigurationState>,
-        private modalService: NgbModal,
-        private router: Router,
-        private scroller: ViewportScroller
+        protected store: Store<ConfigurationState>,
+        protected modalService: NgbModal,
+        protected scroller: ViewportScroller
     ) {
-        this.configuration$ = this.store.select(getConfigurationSections);
-        this.model$ = this.store.select(getConfigurationModel);
-        this.isEnabled$ = this.store.select(getConfigurationModelEnabled);
-        this.version$ = this.store.select(getSelectedVersion);
-        this.versionNumber$ = this.store.select(getSelectedVersionNumber);
-        this.isCurrent$ = this.store.select(getSelectedIsCurrent);
-        this.hasXml$ = this.store.select(getConfigurationHasXml);
-        this.filters$ = this.store.select(getAdditionalFilters);
-
         this.model$
             .pipe(
                 takeUntil(this.ngUnsubscribe),
                 filter(model => !!model)
             )
             .subscribe(p => this.setModel(p));
-
-        this.store.select(getConfigurationDefinition)
-            .pipe(
-                takeUntil(this.ngUnsubscribe)
-            )
-            .subscribe(d => this.definition = d);
     }
 
     setModel(data: Metadata): void {
@@ -127,5 +102,6 @@ export class MetadataOptionsComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
 
         this.store.dispatch(new ClearFilters());
+        this.store.dispatch(new ClearHistory());
     }
 }

@@ -18,16 +18,7 @@ export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadata
         return base;
     },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
-        const validators = BaseMetadataProviderEditor.getValidators(namesList);
-        validators['/xmlId'] = (value, property, form) => {
-            const err = xmlIdList.indexOf(value) > -1 ? {
-                code: 'INVALID_ID',
-                path: `#${property.path}`,
-                message: 'message.id-unique',
-                params: [value]
-            } : null;
-            return err;
-        };
+        const validators = BaseMetadataProviderEditor.getValidators(namesList, xmlIdList);
         validators['/metadataURL'] = (value, property, form) => {
             return !UriValidator.isUri(value) ? {
                 code: 'INVALID_URI',
@@ -100,6 +91,8 @@ export const FileBackedHttpMetadataProviderEditor: Wizard<FileBackedHttpMetadata
             index: 1,
             initialValues: [],
             fields: [
+                'name',
+                '@type',
                 'enabled',
                 'xmlId',
                 'metadataURL',

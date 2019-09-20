@@ -21,7 +21,7 @@ export const initialState: CollectionState = adapter.getInitialState({
 export function reducer(state = initialState, action: ProviderCollectionActionsUnion): CollectionState {
     switch (action.type) {
         case ProviderCollectionActionTypes.SELECT_PROVIDER_SUCCESS: {
-            return adapter.addOne(action.payload, {
+            return adapter.upsertOne(action.payload, {
                 ...state,
                 selectedProviderId: action.payload.resourceId
             });

@@ -1,4 +1,5 @@
 import { FileBackedHttpMetadataResolver } from './file-backed-http-metadata-resolver';
+import { MetadataResolver } from '../../model';
 
 describe('Resolver construct', () => {
 
@@ -60,8 +61,8 @@ describe('Resolver construct', () => {
             }
         ],
         serviceEnabled: true,
-        createdDate: 'string (date)',
-        modifiedDate: 'string (date)',
+        createdDate: 'December 17, 1995 03:24:00',
+        modifiedDate: 'December 17, 1995 03:24:00',
         relyingPartyOverrides: {
             'signAssertion': true,
             'dontSignResponse': true,
@@ -83,11 +84,51 @@ describe('Resolver construct', () => {
             'mail'
         ]
     };
-    const entity = new FileBackedHttpMetadataResolver(config);
 
     it('should populate its own values', () => {
+        const entity = new FileBackedHttpMetadataResolver(config);
         Object.keys(config).forEach(key => {
             expect(entity[key]).toEqual(config[key]);
+        });
+    });
+
+    describe('isDraft method', () => {
+        it('should return false if no createDate defined', () => {
+            const entity = new FileBackedHttpMetadataResolver(config);
+            expect(entity.isDraft()).toBe(false);
+        });
+
+        it('should return false if no createDate defined', () => {
+            const { createdDate, ...rest } = config;
+            const entity = new FileBackedHttpMetadataResolver(rest as MetadataResolver);
+            expect(entity.isDraft()).toBe(true);
+        });
+    });
+
+    describe('getCreationDate method', () => {
+        it('should return false if no createDate defined', () => {
+            const entity = new FileBackedHttpMetadataResolver(config);
+            expect(entity.getCreationDate()).toBeDefined();
+        });
+
+        it('should return false if no createDate defined', () => {
+            const { createdDate, ...rest } = config;
+            const entity = new FileBackedHttpMetadataResolver(rest as MetadataResolver);
+            expect(entity.getCreationDate()).toBeNull();
+        });
+    });
+
+    describe('enabled getter', () => {
+        it('should return the serviceEnabled attribute', () => {
+            const entity = new FileBackedHttpMetadataResolver(config);
+            expect(entity.enabled).toBe(config.serviceEnabled);
+        });
+    });
+
+    describe('serialize method', () => {
+        it('should return itself', () => {
+            const entity = new FileBackedHttpMetadataResolver(config);
+            expect(entity.serialize()).toBe(entity);
         });
     });
 });

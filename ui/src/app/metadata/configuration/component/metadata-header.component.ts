@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Metadata, MetadataTypes } from '../../domain/domain.type';
-import { MetadataVersion } from '../model/version';
+import { Metadata } from '../../domain/domain.type';
+
+import { CONFIG_DATE_FORMAT } from '../configuration.values';
 
 @Component({
     selector: 'metadata-header',
@@ -10,9 +11,10 @@ import { MetadataVersion } from '../model/version';
 
 export class MetadataHeaderComponent {
     @Input() isEnabled: boolean;
-    @Input() version: MetadataVersion;
-    @Input() versionNumber: number;
+    @Input() version: Metadata;
     @Input() isCurrent: boolean;
+
+    DATE_FORMAT = CONFIG_DATE_FORMAT;
 
     constructor() {}
 }

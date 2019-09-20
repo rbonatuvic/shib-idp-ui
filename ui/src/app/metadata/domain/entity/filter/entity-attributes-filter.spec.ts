@@ -14,8 +14,8 @@ describe('EntityAttributesFilter Entity', () => {
         expect(entity.resourceId).toBe('foo');
         expect(entity.enabled).toBe(entity.filterEnabled);
         expect(entity.id).toBe(entity.resourceId);
-        expect(entity.getId()).toBe(entity.entityId);
-        expect(entity.getDisplayId()).toBe(entity.entityId);
+        expect(entity.getId()).toBe(entity.resourceId);
+        expect(entity.getDisplayId()).toBe(entity.resourceId);
         expect(entity.isDraft()).toBe(false);
     });
 });

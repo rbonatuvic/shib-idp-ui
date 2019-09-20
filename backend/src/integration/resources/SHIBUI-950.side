@@ -113,15 +113,9 @@
     }, {
       "id": "e5d771f5-57e2-4f11-af50-124c2121d36b",
       "comment": "",
-      "command": "type",
+      "command": "attachFile",
       "target": "id=fileInput",
-      "targets": [
-        ["id=fileInput", "id"],
-        ["name=file", "name"],
-        ["css=#fileInput", "css:finder"],
-        ["xpath=//input[@id='fileInput']", "xpath:attributes"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
+      "targets": [],
       "value": "${SHIBUI950}"
     }, {
       "id": "67ad4a51-7c15-41e1-bc34-62a9f3e83b46",
@@ -147,7 +141,7 @@
     }, {
       "id": "185696df-a872-419e-81aa-7c9cfa1e2b90",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "linkText=File Upload Test",
       "targets": [
         ["linkText=File Upload Test", "linkText"],
@@ -161,7 +155,7 @@
     }, {
       "id": "25b4b805-3585-4f83-b9ba-a3e8b9ee1050",
       "comment": "",
-      "command": "verifyText",
+      "command": "assertText",
       "target": "css=td:nth-child(2)",
       "targets": [
         ["css=td:nth-child(2)", "css:finder"],

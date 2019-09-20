@@ -80,7 +80,7 @@ public class MetadataFiltersController {
     @PostMapping("/Filters")
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
         MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
-        metadataResolver.getMetadataFilters().add(createdFilter);
+        metadataResolver.addFilter(createdFilter);
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
@@ -153,6 +153,8 @@ public class MetadataFiltersController {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
         }
         resolver.setMetadataFilters(updatedFilters);
+        //To support envers versioning from MetadataResolver side
+        resolver.markAsModified();
         repository.save(resolver);
         filterRepository.delete(filterToDelete);
 

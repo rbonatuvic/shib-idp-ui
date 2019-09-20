@@ -1,6 +1,7 @@
 import { Component, Input, EventEmitter, ChangeDetectionStrategy, Output } from '@angular/core';
 import { MetadataHistory } from '../model/history';
 import { MetadataVersion } from '../model/version';
+import { CONFIG_DATE_FORMAT } from '../configuration.values';
 
 @Component({
     selector: 'history-list',
@@ -14,6 +15,8 @@ export class HistoryListComponent {
     @Output() restore: EventEmitter<MetadataVersion> = new EventEmitter();
 
     selected: MetadataVersion[] = [];
+
+    DATE_FORMAT = CONFIG_DATE_FORMAT;
 
     constructor() {}
 

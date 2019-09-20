@@ -1,6 +1,5 @@
 import { Wizard } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
-import { removeNulls } from '../../../shared/util';
 import { EntityAttributesFilter } from './entity-attributes.filter';
 
 export const EntityAttributesFilterConfiguration: Wizard<MetadataFilter> = {

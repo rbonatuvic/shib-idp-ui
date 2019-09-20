@@ -1,5 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterModule } from '@angular/router';
@@ -11,10 +11,12 @@ import { ConfigurationComponent } from './container/configuration.component';
 import { MetadataConfigurationService } from './service/configuration.service';
 import * as fromConfig from './reducer';
 import { MetadataConfigurationEffects } from './effect/configuration.effect';
-import { ConfigurationPropertyComponent } from './component/configuration-property.component';
-import { PrimitivePropertyComponent } from './component/primitive-property.component';
-import { ObjectPropertyComponent } from './component/object-property.component';
-import { ArrayPropertyComponent } from './component/array-property.component';
+import { ConfigurationPropertyComponent } from './component/property/configuration-property.component';
+import { PrimitivePropertyComponent } from './component/property/primitive-property.component';
+import { ObjectPropertyComponent } from './component/property/object-property.component';
+import { ArrayPropertyComponent } from './component/property/array-property.component';
+import { FilterTargetPropertyComponent } from './component/property/filter-target-property.component';
+
 import { MetadataOptionsComponent } from './container/metadata-options.component';
 import { MetadataXmlComponent } from './container/metadata-xml.component';
 import { MetadataHeaderComponent } from './component/metadata-header.component';
@@ -29,7 +31,19 @@ import { FilterModule } from '../filter/filter.module';
 import { FilterConfigurationListComponent } from './component/filter-configuration-list.component';
 import { FilterConfigurationListItemComponent } from './component/filter-configuration-list-item.component';
 import { SharedModule } from '../../shared/shared.module';
-import { FilterTargetPropertyComponent } from './component/filter-target-property.component';
+
+import { RestoreComponent } from './container/restore.component';
+import { RestoreEffects } from './effect/restore.effect';
+import { VersionComponent } from './container/version.component';
+import { VersionOptionsComponent } from './container/version-options.component';
+import { VersionEffects } from './effect/version.effect';
+import { MetadataEditorComponent } from './component/editor.component';
+import { WizardModule } from '../../wizard/wizard.module';
+import { FormModule } from '../../schema-form/schema-form.module';
+import { RestoreEditComponent } from './container/restore-edit.component';
+import { RestoreEditStepComponent } from './container/restore-edit-step.component';
+
+import { IndexResolver } from './service/index-resolver.service';
 
 @NgModule({
     declarations: [
@@ -47,7 +61,13 @@ import { FilterTargetPropertyComponent } from './component/filter-target-propert
         MetadataComparisonComponent,
         FilterConfigurationListComponent,
         FilterConfigurationListItemComponent,
-        FilterTargetPropertyComponent
+        FilterTargetPropertyComponent,
+        RestoreComponent,
+        VersionComponent,
+        VersionOptionsComponent,
+        MetadataEditorComponent,
+        RestoreEditComponent,
+        RestoreEditStepComponent
     ],
     entryComponents: [],
     imports: [
@@ -57,10 +77,15 @@ import { FilterTargetPropertyComponent } from './component/filter-target-propert
         RouterModule,
         DomainModule,
         FilterModule,
-        SharedModule
+        SharedModule,
+        WizardModule,
+        FormModule
     ],
     exports: [],
-    providers: []
+    providers: [
+        DatePipe,
+        IndexResolver
+    ]
 })
 export class MetadataConfigurationModule {
     static forRoot(): ModuleWithProviders {
@@ -82,7 +107,9 @@ export class MetadataConfigurationModule {
             [
                 MetadataConfigurationEffects,
                 MetadataHistoryEffects,
-                CompareVersionEffects
+                CompareVersionEffects,
+                RestoreEffects,
+                VersionEffects
             ])
     ],
     providers: []

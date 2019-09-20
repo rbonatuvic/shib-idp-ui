@@ -67,8 +67,15 @@ export const getProviderCollectionIsLoaded = createSelector(getCollectionState, 
 
 export const getProviderNames = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.name));
 
+export const getFilteredListFn = (property: string) =>
+    (collection, provider) => !provider ? collection : collection.filter(val => val !== provider[property]);
+
+export const getFilteredProviderNames = createSelector(getProviderNames, getSelectedProvider, getFilteredListFn('name'));
+
 export const getProviderFilters = createSelector(getSelectedProvider, provider => provider.metadataFilters);
 
 export const getProviderXmlIds = createSelector(getAllProviders, (providers: MetadataProvider[]) => providers.map(p => p.xmlId));
 export const getOrderedProviders = createSelector(getAllProviders, getProviderOrder, utils.mergeOrderFn);
 export const getOrderedProvidersInSearch = createSelector(getAllProviders, getProviderOrder, utils.mergeOrderFn);
+
+export const getFilteredProviderXmlIds = createSelector(getProviderXmlIds, getSelectedProvider, getFilteredListFn('xmlId'));

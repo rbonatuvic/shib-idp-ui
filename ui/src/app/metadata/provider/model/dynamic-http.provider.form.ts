@@ -17,16 +17,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
         return base;
     },
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
-        const validators = BaseMetadataProviderEditor.getValidators(namesList);
-        validators['/xmlId'] = (value, property, form) => {
-            const err = xmlIdList.indexOf(value) > -1 ? {
-                code: 'INVALID_ID',
-                path: `#${property.path}`,
-                message: 'message.id-unique',
-                params: [value]
-            } : null;
-            return err;
-        };
+        const validators = BaseMetadataProviderEditor.getValidators(namesList, xmlIdList);
 
         validators['/metadataRequestURLConstructionScheme'] = (value, property, form) => {
             let errors;

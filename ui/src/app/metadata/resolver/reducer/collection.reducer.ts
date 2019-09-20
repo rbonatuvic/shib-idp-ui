@@ -33,7 +33,7 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
         }
 
         case ResolverCollectionActionTypes.SELECT_SUCCESS: {
-            return adapter.addOne(action.payload, {
+            return adapter.upsertOne(action.payload, {
                 ...state,
                 selectedResolverId: action.payload.id,
             });
@@ -49,6 +49,13 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
             return adapter.removeOne(action.payload.id, {
                 ...state
             });
+        }
+
+        case ResolverCollectionActionTypes.CLEAR_SELECTION: {
+            return {
+                ...state,
+                selectedResolverId: null
+            };
         }
 
         default: {

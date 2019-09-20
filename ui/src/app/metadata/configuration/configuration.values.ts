@@ -13,3 +13,5 @@ export enum TYPES {
 export const DEFINITIONS = {
     resolver: MetadataSourceEditor
 };
+
+export const CONFIG_DATE_FORMAT = 'MMM dd, yyyy HH:mm:ss';

@@ -69,6 +69,9 @@ class SeleniumSIDETest extends Specification {
             } else {
                 it.baseurl = "http://localhost:${this.randomPort}"
             }
+            if (System.properties.getProperty('webdriver.headless')) {
+                it.addCliArgs('--headless')
+            }
             it
         }
         def runner = new Runner()
@@ -83,37 +86,24 @@ class SeleniumSIDETest extends Specification {
         assert result.level.exitCode == 0
 
         where:
-        //TODO: Update or delete where necessary
-        name                                                | file
-//        'Create Dynamic HTTP Metadata Resolver'             | '/dhmr.side'
-//        'Metadata Source Happy Path Save'                   | '/MetadataSourceHappyPathSAVE.side'
-//        'Metadata Provider Happy Path Save'                 | '/MetadataProviderHappyPathSAVE.side'
-//        'Create Filter Entity ID'                           | '/CreateFilterEntityID.side'
-//        'Create Filter REGEX'                               | '/CreateFilterREGEX.side'
-//        'Create Filter Script'                              | '/CreateFilterScript.side'
-//        'Create Metadata Source From XML'                   | '/CreateMetadataSourceFromXML.side'
-//        'Create Metadata Source From Copy'                  | '/CreateMetadataSourceFromCopy.side' // currently does not populate MDUI before copy (causes 400)
-//        'Create Metadata Source from URL'                   | '/CreateMetadataSourceFromURL.side'
-//        'Delete Entity ID Filter'                           | '/DeleteEntityIDFilter.side'
-//        'Delete REGEX Filter'                               | '/DeleteREGEXFilter.side'
-//        'Delete Incomplete Source'                          | '/DeleteIncompleteSource.side'
-//        'Admin Login'                                       | '/SHIBUI-1031_AdminLogin.side'
-//        'Delegated Admin: SubmitSource'                     | '/SHIBUI-1058_DelegatedAdmin_SubmitSource.side'
-//        'Create Filesystem Metadata Resolver'               | '/CreateFilesystemMetadataResolver.side'
-//        'Create Local Dynamic Metadata Resolver'            | '/CreateLocalDynamicMetadataResolver.side'
-//        'Delete Entity Attributes Script Filter'            | '/DeleteScriptFilter.side'
-//        'Create and Delete Name ID Format Entity ID Filter' | '/CreateAndDeleteNameIDFormatEntityIDFilter.side'
-//        'Create and Delete Name ID Format Regex Filter'     | '/CreateAndDeleteNameIDFormatRegexFilter.side'
-//        'Create and Delete Name ID Format Script Filter'    | '/CreateAndDeleteNameIDFormatScriptFilter.side'
-//        'Create and Modify Filter Order'                    | '/ModifyFilterOrder.side'
-        'SHIBUI-1281: Metadata Source Dashboard'            | '/SHIBUI-1281.side'
-        'SHIBUI-1311: Metadata Provider Dashboard'          | '/SHIBUI-1311.side'
-        'SHIBUI-950: Metadata Source from XML w/ digest'    | '/SHIBUI-950.side'
-        'SHIBUI-1352: Create LocalDynamic provider'         | '/SHIBUI-1352-1.side'
-        'SHIBUI-1352: Create FileSystem provider'           | '/SHIBUI-1352-2.side'
-        'SHIBUI-1333: Verify metadata source configuration' | '/SHIBUI-1333.side'
-        'SHIBUI-1334: Verify metadata source versioning'    | '/SHIBUI-1334-1.side'
-        'SHIBUI-1334: Verify metadata provider versioning'  | '/SHIBUI-1334-2.side'
+        name                                                                | file
+        'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
+        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
+        'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
+        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
+        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
+        'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
+        'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
+        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
+        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
+        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side'
+        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
+        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
+        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
+        'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
+        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
+        'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
     }
 }
 

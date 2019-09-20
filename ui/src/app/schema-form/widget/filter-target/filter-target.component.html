@@ -69,10 +69,20 @@
                             </small>
                         </ng-container>
                         <ng-container *ngSwitchCase="'REGEX'">
-                            <input [id]="formProperty._canonicalPath + '.target'" class="form-control" type="text" [formControl]="script" name="script" />
-                            <small id="regex-help" class="form-text text-secondary">
+                            <input [id]="formProperty._canonicalPath + '.target'"
+                                class="form-control"
+                                type="text"
+                                [formControl]="script"
+                                name="script" />
+                            <small id="regex-help" class="form-text text-secondary" *ngIf="!(hasErrors$ | async)">
                                 <translate-i18n key="message.required-for-regex">Required for Regex</translate-i18n>
                                 &nbsp;
+                            </small>
+                            <small class="form-text text-danger" *ngIf="hasErrors$ | async">
+                                <ng-container *ngFor="let error of errors$ | async; let first=first;">
+                                    <ng-container *ngIf="!first">, </ng-container>
+                                    <translate-i18n [key]="error.message">{{ error.message }}</translate-i18n>
+                                </ng-container>
                             </small>
                         </ng-container>
                     </div>

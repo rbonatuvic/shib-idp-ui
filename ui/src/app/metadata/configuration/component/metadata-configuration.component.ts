@@ -2,12 +2,13 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 import { Router, ActivatedRoute } from '@angular/router';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
+import { CONFIG_DATE_FORMAT } from '../configuration.values';
 
 @Component({
     selector: 'metadata-configuration',
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './metadata-configuration.component.html',
-    styleUrls: []
+    styleUrls: ['./metadata-configuration.component.scss']
 })
 export class MetadataConfigurationComponent {
     @Input() configuration: MetadataConfiguration;
@@ -17,6 +18,8 @@ export class MetadataConfigurationComponent {
     @Input() editable = true;
 
     @Output() preview: EventEmitter<any> = new EventEmitter();
+
+    DATE_FORMAT = CONFIG_DATE_FORMAT;
 
     constructor(
         private router: Router,
