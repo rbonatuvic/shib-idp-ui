@@ -7,7 +7,7 @@ import {
     CompareFilterVersions
 } from '../action/filter.action';
 import { NameIDFilterConfiguration } from '../../filter/model/nameid-configuration.filter';
-import { Metadata } from '../../domain/domain.type';
+import { FilterVersion } from '../model/version';
 
 describe('Filter Comparison Reducer', () => {
     const initialState: fromFilterCompare.State = { ...fromFilterCompare.initialState };
@@ -43,7 +43,7 @@ describe('Filter Comparison Reducer', () => {
             const request = {
                 modelId: 'foo',
                 modelType: 'EntityAttributesFilter',
-                models: [{}, {}] as Metadata[]
+                models: [{}, {}] as FilterVersion[]
             };
             const action = new CompareFilterVersions(request);
             const result = reducer(initialState, action);
@@ -64,7 +64,7 @@ describe('Filter Comparison Reducer', () => {
     describe('selector functions', () => {
         describe('getModel', () => {
             it('should retrieve the model from state', () => {
-                const models = [{}, {}] as Metadata[];
+                const models = [{}, {}] as FilterVersion[];
                 expect(fromFilterCompare.getModelId({ ...initialState, modelId: 'foo' })).toBe('foo');
                 expect(fromFilterCompare.getModelType({ ...initialState, modelType: 'foo' })).toBe('foo');
                 expect(fromFilterCompare.getModels({ ...initialState, models })).toBe(models);

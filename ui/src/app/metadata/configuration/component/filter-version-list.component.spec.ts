@@ -7,37 +7,34 @@ import { FilterVersionListComponent } from './filter-version-list.component';
 import { FilterComparison } from '../model/compare';
 import { FilterConfiguration } from '../model/metadata-configuration';
 
-export const TestData = {
-    dates: ['abc', '123'],
+export const TestData: FilterConfiguration = {
+    dates: ['2019-09-23T20:54:31.081Z', '2019-10-23T20:54:31.081Z'],
     filters: [
-        {
-            resourceId: 'foo',
-            name: 'Test 1',
-            type: 'EntityAttributesFilter',
-            comparable: false
-        },
-        {
-            resourceId: 'bar',
-            name: 'Test 2',
-            type: 'EntityAttributesFilter',
-            comparable: false
-        }
+        [
+            {
+                resourceId: 'foo',
+                name: 'Test 1',
+                type: 'EntityAttributesFilter',
+                comparable: false
+            },
+            {
+                resourceId: 'bar',
+                name: 'Test 2',
+                type: 'EntityAttributesFilter',
+                comparable: false
+            }
+        ]
     ]
 };
 
 @Component({
-    template: `
-    <filter-version-list
-        [filters]="filters"
-        (compare)="compare($event)">
-    </filter-version-list>
-    `
+    template: `<filter-version-list [filters]="filters" (compare)="compare($event)"></filter-version-list>`
 })
 class TestHostComponent {
     @ViewChild(FilterVersionListComponent)
     public componentUnderTest: FilterVersionListComponent;
 
-    filters: FilterConfiguration = TestData;
+    filters = TestData;
 
     compare(versions: FilterComparison): void { }
 }
@@ -70,16 +67,14 @@ describe('Filter Version List Component', () => {
         expect(list).toBeDefined();
     });
 
-    /*
     describe('compareSelected', () => {
         it('should emit an event with the selected filter data', () => {
+            spyOn(instance, 'compare');
             list.selected = 'foo';
             fixture.detectChanges();
-            spyOn(instance, 'compare');
             list.compareSelected();
             fixture.detectChanges();
             expect(instance.compare).toHaveBeenCalled();
         });
     });
-    */
 });

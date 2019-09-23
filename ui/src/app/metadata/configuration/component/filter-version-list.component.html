@@ -1,4 +1,4 @@
-<ng-container *ngIf="filters.dates.length > 0">
+<ng-container *ngIf="filters && filters.dates.length > 0">
     <div class="d-flex border-bottom border-light border-2 py-2">
         <span [ngStyle]="{'width.%': width}" *ngIf="!comparing">Order</span>
         <span [ngStyle]="{'width.%': width}" *ngIf="comparing">Option</span>

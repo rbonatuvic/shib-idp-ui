@@ -8,5 +8,5 @@ export interface MetadataConfiguration {
 
 export interface FilterConfiguration {
     dates: string[];
-    filters: FilterVersion[];
+    filters: FilterVersion[][];
 }

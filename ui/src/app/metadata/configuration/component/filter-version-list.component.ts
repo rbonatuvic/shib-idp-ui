@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FilterConfiguration, MetadataConfiguration } from '../model/metadata-configuration';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FilterComparison } from '../model/compare';
 
 @Component({
@@ -9,8 +9,6 @@ import { FilterComparison } from '../model/compare';
     templateUrl: './filter-version-list.component.html'
 })
 export class FilterVersionListComponent {
-
-    private selectFiltersSubject: Subject<string> = new Subject();
 
     @Input() filters: FilterConfiguration;
     @Output() compare: EventEmitter<FilterComparison> = new EventEmitter();

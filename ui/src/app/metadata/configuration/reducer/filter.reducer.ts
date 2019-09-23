@@ -2,13 +2,14 @@ import { FilterCompareActionTypes, FilterCompareActionsUnion } from '../action/f
 import { Metadata } from '../../domain/domain.type';
 import { FormDefinition } from '../../../wizard/model';
 import { Schema } from '../model/schema';
+import { FilterVersion } from '../model/version';
 
 export interface State {
-    models: Metadata[];
+    models: FilterVersion[];
     modelType: string;
     modelId: string;
     schema: Schema;
-    definition: FormDefinition<Metadata>;
+    definition: FormDefinition<FilterVersion>;
     loading: boolean;
 }
 
