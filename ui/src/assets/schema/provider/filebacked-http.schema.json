@@ -498,31 +498,36 @@
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
-                    "type": "string",
+                    "type": "number",
                     "widget": {
-                        "id": "string",
-                        "help": "message.real-number"
+                        "id": "float",
+                        "help": "message.real-number",
+                        "step": 0.01
                     },
                     "placeholder": "label.real-number",
-                    "minimum": 0,
-                    "maximum": 1,
-                    "default": "",
-                    "pattern": "^(?:([0]*(\\.[0-9]+)?|[0]*\\.[0-9]*[1-9][0-9]*)|)$"
+                    "minimum": 0.01,
+                    "maximum": 1
                 }
             }
         },
         "metadataFilters": {
             "title": "",
             "description": "",
-            "type": "object",
-            "properties": {
-                "RequiredValidUntil": {
+            "type": "array",
+            "additionalItems": true,
+            "items": [
+                {
                     "title": "label.required-valid-until",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "RequiredValidUntil",
+                            "widget": "hidden"
+                        },
                         "maxValidityInterval": {
                             "title": "label.max-validity-interval",
                             "description": "tooltip.max-validity-interval",
@@ -532,10 +537,14 @@
                                 "id": "datalist",
                                 "data": [
                                     "PT0S",
-                                    "P14D",
-                                    "P7D",
-                                    "P1D",
-                                    "PT12H"
+                                    "PT30S",
+                                    "PT1M",
+                                    "PT10M",
+                                    "PT30M",
+                                    "PT1H",
+                                    "PT4H",
+                                    "PT12H",
+                                    "PT24H"
                                 ]
                             },
                             "default": null,
@@ -543,13 +552,18 @@
                         }
                     }
                 },
-                "SignatureValidation": {
+                {
                     "title": "label.signature-validation-filter",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "SignatureValidation",
+                            "widget": "hidden"
+                        },
                         "requireSignedRoot": {
                             "title": "label.require-signed-root",
                             "description": "tooltip.require-signed-root",
@@ -559,8 +573,7 @@
                         "certificateFile": {
                             "title": "label.certificate-file",
                             "description": "tooltip.certificate-file",
-                            "type": "string",
-                            "widget": "textline"
+                            "type": "string"
                         }
                     },
                     "anyOf": [
@@ -570,10 +583,6 @@
                                     "enum": [
                                         true
                                     ]
-                                },
-                                "certificateFile": {
-                                    "minLength": 1,
-                                    "type": "string"
                                 }
                             },
                             "required": [
@@ -591,13 +600,18 @@
                         }
                     ]
                 },
-                "EntityRoleWhiteList": {
+                {
                     "title": "label.entity-role-whitelist",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "EntityRoleWhiteList",
+                            "widget": "hidden"
+                        },
                         "retainedRoles": {
                             "title": "label.retained-roles",
                             "description": "tooltip.retained-roles",
@@ -610,13 +624,13 @@
                                 "oneOf": [
                                     {
                                         "enum": [
-                                            "md:SPSSODescriptor"
+                                            "SPSSODescriptor"
                                         ],
                                         "description": "value.spdescriptor"
                                     },
                                     {
                                         "enum": [
-                                            "md:AttributeAuthorityDescriptor"
+                                            "AttributeAuthorityDescriptor"
                                         ],
                                         "description": "value.attr-auth-descriptor"
                                     }
@@ -637,7 +651,7 @@
                         }
                     }
                 }
-            }
+            ]
         }
     }
 }

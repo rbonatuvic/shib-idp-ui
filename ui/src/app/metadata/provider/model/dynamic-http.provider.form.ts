@@ -97,9 +97,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             id: 'plugins',
             label: 'label.metadata-filter-plugins',
             index: 4,
-            initialValues: [
-                { key: 'metadataFilters', value: [] }
-            ],
+            initialValues: [],
             fields: [
                 'metadataFilters'
             ]
@@ -177,9 +175,7 @@ export const DynamicHttpMetadataProviderEditor: Wizard<DynamicHttpMetadataProvid
             id: 'plugins',
             label: 'label.metadata-filter-plugins',
             index: 4,
-            initialValues: [
-                { key: 'metadataFilters', value: [] }
-            ],
+            initialValues: [],
             fields: [
                 'metadataFilters'
             ]
