@@ -1,6 +1,6 @@
 <div *ngIf="configuration">
     <section *ngFor="let section of configuration.sections; let i = index;" class="mb-4">
-        <div class="config-group">
+        <div class="config-group"  *ngIf="section && section.properties && section.properties.length">
             <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
                 <h2 class="title h4 m-0 flex-grow-1">
                     <span *ngIf="numbered"
@@ -32,11 +32,6 @@
                         [columns]="configuration.dates.length"
                         (preview)="onPreview($event)">
                     </object-property>
-                </ng-container>
-                <ng-container *ngIf="!section || !section.properties || !section.properties.length">
-                    <div class="alert">
-                        No Changes
-                    </div>
                 </ng-container>
             </div>
         </div>

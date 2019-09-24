@@ -39,8 +39,6 @@ export class MetadataComparisonComponent implements OnDestroy {
         this.numVersions$ = this.store.select(getComparisonConfigurationCount);
         this.type$ = this.store.select(fromReducer.getConfigurationModelType);
 
-        this.versions$.subscribe(console.log);
-
         this.sub = this.limiter.pipe(
             withLatestFrom(this.limited$),
             map(([compare, limit]) => new ViewChanged(!limit))
