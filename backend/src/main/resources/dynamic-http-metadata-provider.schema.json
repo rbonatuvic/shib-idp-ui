@@ -4,7 +4,6 @@
         "name",
         "@type",
         "xmlId",
-        "metadataURL",
         "metadataRequestURLConstructionScheme"
     ],
     "properties": {
@@ -154,8 +153,8 @@
                         "step": 0.01
                     },
                     "placeholder": "label.real-number",
-                    "minimum": 0.01,
-                    "maximum": 1
+                    "minimum": 0.001,
+                    "maximum": 0.999
                 },
                 "minCacheDuration": {
                     "title": "label.min-cache-duration",
@@ -577,23 +576,20 @@
             }
         },
         "metadataFilters": {
+            "$id": "metadataFilters",
             "title": "",
             "description": "",
             "type": "array",
             "additionalItems": true,
             "items": [
                 {
+                    "$id": "RequiredValidUntil",
                     "title": "label.required-valid-until",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
-                        "@type": {
-                            "type": "string",
-                            "default": "RequiredValidUntil",
-                            "widget": "hidden"
-                        },
                         "maxValidityInterval": {
                             "title": "label.max-validity-interval",
                             "description": "tooltip.max-validity-interval",
@@ -619,17 +615,13 @@
                     }
                 },
                 {
+                    "$id": "SignatureValidation",
                     "title": "label.signature-validation-filter",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
-                        "@type": {
-                            "type": "string",
-                            "default": "SignatureValidation",
-                            "widget": "hidden"
-                        },
                         "requireSignedRoot": {
                             "title": "label.require-signed-root",
                             "description": "tooltip.require-signed-root",
@@ -667,17 +659,13 @@
                     ]
                 },
                 {
+                    "$id": "EntityRoleWhiteList",
                     "title": "label.entity-role-whitelist",
                     "type": "object",
                     "widget": {
                         "id": "fieldset"
                     },
                     "properties": {
-                        "@type": {
-                            "type": "string",
-                            "default": "EntityRoleWhiteList",
-                            "widget": "hidden"
-                        },
                         "retainedRoles": {
                             "title": "label.retained-roles",
                             "description": "tooltip.retained-roles",
