@@ -1,21 +1,13 @@
 import { Wizard } from '../../../wizard/model';
 import { DynamicHttpMetadataProvider } from '../../domain/model/providers/dynamic-http-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
+import { metadataFilterProcessor } from './utilities';
 
 export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvider> = {
     ...BaseMetadataProviderEditor,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
-    formatter: (changes: DynamicHttpMetadataProvider) => {
-        let base = BaseMetadataProviderEditor.formatter(changes);
-        if (base.dynamicMetadataResolverAttributes) {
-            if (base.dynamicMetadataResolverAttributes.refreshDelayFactor) {
-                base.dynamicMetadataResolverAttributes.refreshDelayFactor =
-                    base.dynamicMetadataResolverAttributes.refreshDelayFactor.toString();
-            }
-        }
-        return base;
-    },
+    schemaPreprocessor: metadataFilterProcessor,
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList, xmlIdList);
 

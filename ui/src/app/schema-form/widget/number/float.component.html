@@ -9,17 +9,17 @@
         </span>
     </label>
     <span *ngIf="schema.description" class="formHelp" [translate]="schema.description">{{schema.description}}</span>
-    <input [attr.readonly]="schema.readOnly?true:null"
+    <input #input
+        disableValidation="true"
+        [attr.readonly]="schema.readOnly?true:null"
         [id]="formProperty._canonicalPath"
         [name]="name"
-        class="text-widget integer-widget form-control"
+        class="text-widget float-widget form-control"
         [formControl]="control"
         [attr.type]="'number'"
         [attr.min]="schema.minimum"
         [attr.max]="schema.maximum"
         [attr.placeholder]="schema.placeholder | translate"
-        [attr.maxLength]="schema.maxLength || null"
-        [attr.minLength]="schema.minLength || null"
         [attr.step]="schema.multipleOf || schema.widget.step"
         [attr.aria-label]="schema.title">
 </div>

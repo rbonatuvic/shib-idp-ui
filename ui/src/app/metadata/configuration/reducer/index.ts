@@ -51,8 +51,17 @@ export const getConfigurationModelKind = createSelector(getConfigurationState, f
 export const getConfigurationModelId = createSelector(getConfigurationState, fromConfiguration.getModelId);
 
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
-export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
+export const getSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
 export const getConfigurationXml = createSelector(getConfigurationState, fromConfiguration.getXml);
+
+export const processSchemaFn = (definition, schema) => {
+    return definition && schema ?
+        definition.schemaPreprocessor ?
+            definition.schemaPreprocessor(schema) : schema
+        : schema;
+};
+
+export const getConfigurationSchema = createSelector(getConfigurationDefinition, getSchema, processSchemaFn);
 
 export const assignValueToProperties = (models, properties, definition: any): any[] => {
     return properties.map(prop => {
