@@ -259,7 +259,6 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         def resolver = new DynamicHttpMetadataResolver().with {
             it.name = 'DynamicHTTP'
             it.xmlId = 'DynamicHTTP'
-            it.metadataURL = 'http://metadata'
             it.metadataRequestURLConstructionScheme = new MetadataQueryProtocolScheme().with {
                 it.transformRef = 'transformRef'
                 it.content = 'content'
