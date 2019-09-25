@@ -104,6 +104,8 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
+        'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
+        'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
     }
 }
 

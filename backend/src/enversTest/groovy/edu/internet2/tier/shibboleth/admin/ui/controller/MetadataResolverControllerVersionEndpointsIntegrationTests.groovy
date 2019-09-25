@@ -3,6 +3,8 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
@@ -14,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
+
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
 
 /**
  * @author Dmitriy Kopylenko
@@ -152,6 +156,30 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
 
         then:
         (mrv1.getBody() as MetadataResolver).modifiedDate < (mrv2.getBody() as MetadataResolver).modifiedDate
+    }
+
+    def "SHIBUI-1499"() {
+        MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'shibui-1499')
+        mr = repository.save(mr)
+
+        when: 'add a name id filter'
+        def filter = new NameIdFormatFilter(name: 'nameIDFilter').with {
+            it.nameIdFormatFilterTarget = new NameIdFormatFilterTarget().with {
+                it.nameIdFormatFilterTargetType = ENTITY
+                it.value = ['https://testme/sp']
+                it
+            }
+            it
+        }
+        mr.addFilter(filter)
+        mr = repository.save(mr)
+
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+        def mrv2 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[1].id, MetadataResolver)
+
+        then:
+        noExceptionThrown()
     }
 
     private getAllMetadataResolverVersions(String resourceId, responseType) {
