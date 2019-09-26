@@ -145,6 +145,14 @@ export const getConfigurationModelNameFn =
 export const getConfigurationModelTypeFn =
     (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
 
+export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
+
+export const getVersionModelFiltersFn =
+    (model, kind) => kind === 'provider' ?
+        model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+        null;
+
 // Version History
 
 export const getHistoryState = createSelector(getState, getHistoryStateFn);
@@ -178,8 +186,16 @@ export const getCompareState = createSelector(getState, getCompareStateFn);
 export const getComparisonLoading = createSelector(getCompareState, fromCompare.getComparisonLoading);
 export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
+
+export const getComparisonModelsFilteredFn = (models) => models.map((model) => ({
+    ...model,
+    metadataFilters: getVersionModelFiltersFn(model, model.type)
+}));
+
+export const getComparisonModelsFiltered = createSelector(getComparisonModels, getComparisonModelsFilteredFn);
+
 export const getComparisonConfigurations = createSelector(
-    getComparisonModels,
+    getComparisonModelsFiltered,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
@@ -228,13 +244,7 @@ export const getLimitedComparisonConfigurations = createSelector(
 
 export const getRestoreState = createSelector(getState, getRestoreStateFn);
 
-export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
-export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
 
-export const getVersionModelFiltersFn =
-    (model, kind) => kind === 'provider' ?
-    model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
-    null;
 
 export const getVersionState = createSelector(getState, getVersionStateFn);
 
