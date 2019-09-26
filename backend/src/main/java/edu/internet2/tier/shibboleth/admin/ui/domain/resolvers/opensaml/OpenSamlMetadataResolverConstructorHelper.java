@@ -57,7 +57,7 @@ public class OpenSamlMetadataResolverConstructorHelper {
         }
 
         if (attributes.getRefreshDelayFactor() != null) {
-            dynamicMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor().floatValue());
+            dynamicMetadataResolver.setRefreshDelayFactor(attributes.getRefreshDelayFactor());
         }
 
         if (attributes.getRemoveIdleEntityData() != null) {

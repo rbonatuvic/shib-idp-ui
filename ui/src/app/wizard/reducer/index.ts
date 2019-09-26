@@ -128,8 +128,12 @@ export const getLockedStatus = createSelector(getState, fromWizard.getLocked);
 export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked : false : false;
 export const getLocked = createSelector(getCurrent, getLockedStatus, getSchemaLockedFn);
 
+export const getSchemaProcessedFn = (schema, definition) =>
+    definition.schemaPreprocessor ? definition.schemaPreprocessor(schema) : schema;
+
 export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
-export const getParsedSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
+export const getProcessedSchema = createSelector(getSchemaObject, getWizardDefinition, getSchemaProcessedFn);
+export const getParsedSchema = createSelector(getProcessedSchema, getLocked, getSchemaParseFn);
 
 export const getSchema = createSelector(getParsedSchema, getCurrent, getSplitSchema);
 

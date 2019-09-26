@@ -6,16 +6,6 @@ export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider
     ...BaseMetadataProviderEditor,
     label: 'FilesystemMetadataProvider',
     type: 'FilesystemMetadataResolver',
-    formatter: (changes: FileSystemMetadataProvider) => {
-        let base = BaseMetadataProviderEditor.formatter(changes);
-        if (base.reloadableMetadataResolverAttributes) {
-            if (base.reloadableMetadataResolverAttributes.refreshDelayFactor) {
-                base.reloadableMetadataResolverAttributes.refreshDelayFactor =
-                    base.reloadableMetadataResolverAttributes.refreshDelayFactor.toString();
-            }
-        }
-        return base;
-    },
     schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
     steps: [
         {

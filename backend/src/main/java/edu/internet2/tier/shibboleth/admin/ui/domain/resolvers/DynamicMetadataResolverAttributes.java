@@ -20,7 +20,7 @@ public class DynamicMetadataResolverAttributes {
 
     private String taskTimerRef;
 
-    private Double refreshDelayFactor = 0.75;
+    private Float refreshDelayFactor = 0.75F;
 
     private String minCacheDuration = "PT10M";
 
