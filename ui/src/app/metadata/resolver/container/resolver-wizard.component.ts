@@ -29,6 +29,8 @@ import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 import { Clear } from '../action/entity.action';
 import { DifferentialService } from '../../../core/service/differential.service';
+import { getConfigurationSections } from '../../configuration/reducer';
+import { MetadataConfiguration } from '../../configuration/model/metadata-configuration';
 
 @Component({
     selector: 'resolver-wizard-page',
@@ -60,7 +62,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
     valid$: Observable<boolean>;
     schema$: Observable<any>;
 
-    summary$: Observable<{ definition: Wizard<MetadataResolver>, schema: { [id: string]: any }, model: any }>;
+    summary$: Observable<MetadataConfiguration> = this.store.select(fromCollections.getResolverConfiguration);
 
     constructor(
         private store: Store<fromCollections.State>,
@@ -114,20 +116,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             skipWhile(() => this.saving),
             combineLatest(this.resolver$, (changes, base) => ({ ...base, ...changes }))
         ).subscribe(latest => this.latest = latest);
-
-        this.summary$ = combine(
-            this.store.select(fromWizard.getWizardDefinition),
-            this.store.select(fromWizard.getSchemaObject),
-            this.store.select(fromResolver.getDraftModelWithChanges)
-        ).pipe(
-            map(([definition, schema, model]) => (
-                {
-                    definition,
-                    schema: schema || {},
-                    model
-                }
-            ))
-        );
 
         this.changes$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(c => this.changes = c);
         this.resolver$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(r => this.resolver = r);

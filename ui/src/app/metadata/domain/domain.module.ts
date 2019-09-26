@@ -16,7 +16,6 @@ import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
 import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
-import { WizardSummaryComponent } from './component/wizard-summary.component';
 import { SummaryPropertyComponent } from './component/summary-property.component';
 
 import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
@@ -26,7 +25,6 @@ import { SharedModule } from '../../shared/shared.module';
 
 export const COMPONENTS = [
     PreviewDialogComponent,
-    WizardSummaryComponent,
     UnsavedEntityComponent,
     SummaryPropertyComponent,
     EditorNavComponent

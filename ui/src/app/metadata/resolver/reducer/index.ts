@@ -8,6 +8,7 @@ import * as fromCollection from './collection.reducer';
 import * as fromWizard from '../../../wizard/reducer';
 
 import { combineAllFn, getEntityIdsFn, getInCollectionFn, doesExistFn } from '../../domain/domain.util';
+import { getConfigurationSectionsFn } from '../../configuration/reducer/utilities';
 
 export interface ResolverState {
     entity: fromEntity.EntityState;
@@ -124,3 +125,11 @@ export const getDraftModelWithChanges = createSelector(
     })
 );
 
+export const getDraftModelList = createSelector(getDraftModelWithChanges, (model) => [model]);
+
+export const getResolverConfiguration = createSelector(
+    getDraftModelList,
+    fromWizard.getWizardDefinition,
+    fromWizard.getSchema,
+    getConfigurationSectionsFn
+);

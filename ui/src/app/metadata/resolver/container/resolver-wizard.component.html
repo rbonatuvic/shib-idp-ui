@@ -5,8 +5,8 @@
         <router-outlet></router-outlet>
     </div>
 </div>
-<wizard-summary
-    [summary]="summary$ | async"
-    (onPageSelect)="gotoPage($event)"
-    *ngIf="currentPage === 'summary'">
-</wizard-summary>
+<ng-container *ngIf="currentPage === 'summary'">
+    <metadata-configuration
+        [configuration]="summary$ | async"
+        id="configuration"></metadata-configuration>
+</ng-container>
