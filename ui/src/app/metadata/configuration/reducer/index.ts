@@ -192,8 +192,16 @@ export const getComparisonLoading = createSelector(getCompareState, fromCompare.
 export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
 export const getComparisonFilterId = createSelector(getCompareState, fromCompare.getFilterId);
+
+export const getComparisonModelsFilteredFn = (models) => models.map((model) => ({
+    ...model,
+    metadataFilters: getVersionModelFiltersFn(model, model.type)
+}));
+
+export const getComparisonModelsFiltered = createSelector(getComparisonModels, getComparisonModelsFilteredFn);
+
 export const getComparisonConfigurations = createSelector(
-    getComparisonModels,
+    getComparisonModelsFiltered,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
@@ -290,9 +298,7 @@ export const getComparisonSelectedFilters = createSelector(
 // Version Restoration
 
 export const getRestoreState = createSelector(getState, getRestoreStateFn);
-
 export const getVersionState = createSelector(getState, getVersionStateFn);
-
 export const getVersionLoading = createSelector(getVersionState, fromVersion.isVersionLoading);
 
 export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);
