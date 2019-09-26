@@ -67,12 +67,11 @@ export const processSchemaFn = (definition, schema) => {
 };
 
 export const getConfigurationSchema = createSelector(getConfigurationDefinition, getSchema, processSchemaFn);
-
 export const getConfigurationModelEnabledFn =
     (config: Metadata) => config ? ('serviceEnabled' in config) ? config.serviceEnabled : config.enabled : false;
 
 export const getConfigurationModelNameFn =
-    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : false;
+    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : '';
 
 export const getConfigurationModelTypeFn =
     (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
@@ -82,8 +81,8 @@ export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === 
 
 export const getVersionModelFiltersFn =
     (model, kind) => kind === 'provider' ?
-        model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
-        null;
+        model.metadataFilters ? model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+        [] : null;
 
 // Version History
 

@@ -28,7 +28,7 @@ export class MetadataConfigurationComponent implements OnChanges {
     ) {}
 
     ngOnChanges(): void {
-        this.zero = this.configuration.sections.some(s => !s.properties.length);
+        this.zero = !this.configuration.sections.some(s => !!s.properties.length);
     }
 
     edit(id: string): void {
