@@ -108,7 +108,9 @@ class SeleniumSIDETest extends Specification {
 //        'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
 //        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
 //        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
-        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
+//        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
+//        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
+        'SHIBUI-1364: DELETE ME BEFORE PR'                                  | '/false.side'
     }
 }
 

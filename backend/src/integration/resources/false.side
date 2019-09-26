@@ -2130,13 +2130,6 @@
       ],
       "value": ""
     }, {
-      "id": "ada8b6fe-93a7-4f43-9457-2d0256c90744",
-      "comment": "",
-      "command": "pause",
-      "target": "2000",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "7df630cc-9134-403c-956c-40ac6646b0d4",
       "comment": "",
       "command": "click",
