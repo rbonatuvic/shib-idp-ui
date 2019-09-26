@@ -10,4 +10,5 @@ export interface FormDefinition<T> {
     parser(changes: Partial<T>, schema?: any);
     formatter(changes: Partial<T>, schema?: any);
     getValidators?(...args: any[]): { [key: string]: any };
+    schemaPreprocessor?(schema: any): any;
 }

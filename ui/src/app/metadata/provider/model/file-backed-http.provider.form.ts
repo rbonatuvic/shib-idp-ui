@@ -3,20 +3,13 @@ import { FileBackedHttpMetadataProvider } from '../../domain/model/providers/fil
 import { BaseMetadataProviderEditor } from './base.provider.form';
 import { UriValidator } from '../../../shared/validation/uri.validator';
 
+import { metadataFilterProcessor } from './utilities';
+
 export const FileBackedHttpMetadataProviderWizard: Wizard<FileBackedHttpMetadataProvider> = {
     ...BaseMetadataProviderEditor,
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
-    formatter: (changes: FileBackedHttpMetadataProvider) => {
-        let base = BaseMetadataProviderEditor.formatter(changes);
-        if (base.reloadableMetadataResolverAttributes) {
-            if (base.reloadableMetadataResolverAttributes.refreshDelayFactor) {
-                base.reloadableMetadataResolverAttributes.refreshDelayFactor =
-                    base.reloadableMetadataResolverAttributes.refreshDelayFactor.toString();
-            }
-        }
-        return base;
-    },
+    schemaPreprocessor: metadataFilterProcessor,
     getValidators(namesList: string[] = [], xmlIdList: string[] = []): any {
         const validators = BaseMetadataProviderEditor.getValidators(namesList, xmlIdList);
         validators['/metadataURL'] = (value, property, form) => {

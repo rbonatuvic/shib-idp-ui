@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -27,6 +28,7 @@ import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.*
 import static org.springframework.http.HttpMethod.PUT
 
 /**
@@ -59,6 +61,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.setSerializationInclusion(NON_NULL)
         mapper.registerModule(new JavaTimeModule())
     }
 
@@ -254,7 +257,13 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     def "PUT concrete MetadataResolver with version conflict -> /api/MetadataResolvers/{resourceId}"() {
         given: 'One resolver is available in data store'
         def resolver = new DynamicHttpMetadataResolver().with {
-            it.name = 'Test DynamicHttpMetadataResolver'
+            it.name = 'DynamicHTTP'
+            it.xmlId = 'DynamicHTTP'
+            it.metadataRequestURLConstructionScheme = new MetadataQueryProtocolScheme().with {
+                it.transformRef = 'transformRef'
+                it.content = 'content'
+                it
+            }
             it
         }
         def resolverResourceId = resolver.resourceId

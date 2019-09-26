@@ -55,8 +55,17 @@ export const getConfigurationModelKind = createSelector(getConfigurationState, f
 export const getConfigurationModelId = createSelector(getConfigurationState, fromConfiguration.getModelId);
 
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
-export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
+export const getSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
 export const getConfigurationXml = createSelector(getConfigurationState, fromConfiguration.getXml);
+
+export const processSchemaFn = (definition, schema) => {
+    return definition && schema ?
+        definition.schemaPreprocessor ?
+            definition.schemaPreprocessor(schema) : schema
+        : schema;
+};
+
+export const getConfigurationSchema = createSelector(getConfigurationDefinition, getSchema, processSchemaFn);
 
 export const assignValueToProperties = (models, properties, definition: any): any[] => {
     return properties.map(prop => {
@@ -192,8 +201,16 @@ export const getComparisonLoading = createSelector(getCompareState, fromCompare.
 export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
 export const getComparisonFilterId = createSelector(getCompareState, fromCompare.getFilterId);
+
+export const getComparisonModelsFilteredFn = (models) => models.map((model) => ({
+    ...model,
+    metadataFilters: getVersionModelFiltersFn(model, model.type)
+}));
+
+export const getComparisonModelsFiltered = createSelector(getComparisonModels, getComparisonModelsFilteredFn);
+
 export const getComparisonConfigurations = createSelector(
-    getComparisonModels,
+    getComparisonModelsFiltered,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
@@ -290,9 +307,7 @@ export const getComparisonSelectedFilters = createSelector(
 // Version Restoration
 
 export const getRestoreState = createSelector(getState, getRestoreStateFn);
-
 export const getVersionState = createSelector(getState, getVersionStateFn);
-
 export const getVersionLoading = createSelector(getVersionState, fromVersion.isVersionLoading);
 
 export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);

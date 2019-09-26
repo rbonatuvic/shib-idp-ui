@@ -2188,6 +2188,13 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "c2fcb197-7e0d-4b64-82a5-ad24cf24126b",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=/serviceProviderName",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "99731068-2016-4a7f-8a38-febfb711d027",
       "comment": "",
       "command": "type",
