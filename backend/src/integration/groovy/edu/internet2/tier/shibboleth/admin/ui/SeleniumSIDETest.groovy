@@ -106,7 +106,9 @@ class SeleniumSIDETest extends Specification {
 //        'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
 //        'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
 //        'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+//        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+//        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
+        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
     }
 }
 

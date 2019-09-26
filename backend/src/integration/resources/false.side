@@ -2078,13 +2078,6 @@
       ],
       "value": ""
     }, {
-      "id": "f7da3042-0a66-4dbc-8d68-7f5ec9c448c1",
-      "comment": "",
-      "command": "pause",
-      "target": "3000",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "97c031ee-65f1-4089-ab43-a4a98bfb3798",
       "comment": "",
       "command": "click",
@@ -2095,13 +2088,6 @@
         ["xpath=//a/translate-i18n", "xpath:position"],
         ["xpath=//translate-i18n[contains(.,'Dashboard')]", "xpath:innerText"]
       ],
-      "value": ""
-    }, {
-      "id": "7e9c196e-0890-43a2-bdb4-48059b1bd17d",
-      "comment": "",
-      "command": "pause",
-      "target": "3000",
-      "targets": [],
       "value": ""
     }, {
       "id": "59391129-1806-43da-9aa1-df5658550d02",
@@ -2118,13 +2104,6 @@
       ],
       "value": ""
     }, {
-      "id": "dd64f34c-64bb-4c41-be84-fe6202113e71",
-      "comment": "",
-      "command": "pause",
-      "target": "3000",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "d5d78a35-098e-47c0-8f27-7ab8c79b0661",
       "comment": "",
       "command": "click",
@@ -2137,13 +2116,6 @@
         ["xpath=//td[2]/a", "xpath:position"],
         ["xpath=//a[contains(.,'File Backed HTTP Metadata Provider Version 2')]", "xpath:innerText"]
       ],
-      "value": ""
-    }, {
-      "id": "b2974120-ca60-487e-9ea5-7d7af93a6644",
-      "comment": "",
-      "command": "pause",
-      "target": "3000",
-      "targets": [],
       "value": ""
     }, {
       "id": "42bc2d8d-550f-462b-af96-c3811768e78c",
