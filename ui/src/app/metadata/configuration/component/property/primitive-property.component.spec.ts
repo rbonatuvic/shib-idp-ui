@@ -2,7 +2,7 @@ import { Component, ViewChild, Input } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { Property } from '../../../domain/model/property';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 import { PrimitivePropertyComponent } from './primitive-property.component';
@@ -39,6 +39,7 @@ describe('Primitive Property Component', () => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
+                NgbPopoverModule,
                 MockI18nModule,
                 RouterTestingModule
             ],

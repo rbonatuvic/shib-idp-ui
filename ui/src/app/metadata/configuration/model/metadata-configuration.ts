@@ -1,7 +1,12 @@
 import { Section } from './section';
-import { Metadata } from '../../domain/domain.type';
+import { FilterVersion } from './version';
 
 export interface MetadataConfiguration {
     sections: Section[];
     dates: String[];
+}
+
+export interface FilterConfiguration {
+    dates: string[];
+    filters: FilterVersion[][];
 }

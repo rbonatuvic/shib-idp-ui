@@ -1,6 +1,4 @@
 import { Action } from '@ngrx/store';
-import { MetadataHistory } from '../model/history';
-import { MetadataVersion } from '../model/version';
 import { Metadata } from '../../domain/domain.type';
 
 export enum CompareActionTypes {

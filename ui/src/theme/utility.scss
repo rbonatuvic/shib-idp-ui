@@ -6,6 +6,10 @@
     background: #FAFAFA !important;
 }
 
+.bg-primary-light {
+    background: lighten($brand-primary, 75%);
+}
+
 .w-15 {
     width: 15%;
 }

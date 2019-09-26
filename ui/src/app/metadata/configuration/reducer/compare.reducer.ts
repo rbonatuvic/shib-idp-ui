@@ -6,13 +6,15 @@ export interface State {
     loaded: boolean;
     loading: boolean;
     compareChangedOnly: boolean;
+    filter: string;
 }
 
 export const initialState: State = {
     models: [],
     loaded: false,
     loading: false,
-    compareChangedOnly: false
+    compareChangedOnly: false,
+    filter: null
 };
 
 export function reducer(state = initialState, action: CompareActionsUnion): State {
@@ -53,3 +55,4 @@ export const getVersionModels = (state: State) => state.models;
 export const getVersionModelsLoaded = (state: State) => state.loaded;
 export const getComparisonLoading = (state: State) => state.loading;
 export const getViewChangedOnly = (state: State) => state.compareChangedOnly;
+export const getFilterId = (state: State) => state.filter;
