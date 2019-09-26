@@ -15,6 +15,7 @@ import { CustomCheckboxComponent } from './widget/check/checkbox.component';
 import { CustomTextAreaComponent } from './widget/textarea/textarea.component';
 import { CustomArrayComponent } from './widget/array/array.component';
 import { CustomIntegerComponent } from './widget/number/number.component';
+import { CustomFloatComponent } from './widget/number/float.component';
 import { FilterTargetComponent } from './widget/filter-target/filter-target.component';
 import { ChecklistComponent } from './widget/check/checklist.component';
 import { IconButtonComponent } from './widget/button/icon-button.component';
@@ -34,6 +35,7 @@ export const COMPONENTS = [
     CustomTextAreaComponent,
     CustomArrayComponent,
     CustomIntegerComponent,
+    CustomFloatComponent,
     FilterTargetComponent,
     ChecklistComponent,
     IconButtonComponent,

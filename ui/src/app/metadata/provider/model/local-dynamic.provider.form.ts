@@ -7,16 +7,6 @@ export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProv
     ...BaseMetadataProviderEditor,
     label: 'LocalDynamicMetadataProvider',
     type: 'LocalDynamicMetadataResolver',
-    formatter: (changes: LocalDynamicMetadataProvider) => {
-        let base = BaseMetadataProviderEditor.formatter(changes);
-        if (base.dynamicMetadataResolverAttributes) {
-            if (base.dynamicMetadataResolverAttributes.refreshDelayFactor) {
-                base.dynamicMetadataResolverAttributes.refreshDelayFactor =
-                    base.dynamicMetadataResolverAttributes.refreshDelayFactor.toString();
-            }
-        }
-        return base;
-    },
     schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
     steps: [
         {
