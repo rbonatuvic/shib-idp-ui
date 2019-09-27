@@ -8,15 +8,13 @@ import * as fromVersion from './version.reducer';
 import * as fromRestore from './restore.reducer';
 import * as fromFilter from './filter.reducer';
 
-import * as utils from '../../domain/utility/configuration';
-import { getConfigurationSectionsFn } from './utilities';
+import { getConfigurationSectionsFn, getLimitedPropertiesFn } from './utilities';
 import { getModel } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
 import { Metadata } from '../../domain/domain.type';
 
 import * as fromResolver from '../../resolver/reducer';
 import * as fromProvider from '../../provider/reducer';
-import { SectionProperty } from '../model/section';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -135,26 +133,6 @@ export const getComparisonConfigurations = createSelector(
 export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
 
 export const getViewChangedOnly = createSelector(getCompareState, fromCompare.getViewChangedOnly);
-
-export const getLimitedPropertiesFn = (properties: SectionProperty[]) => {
-    return ([
-        ...properties
-            .filter(p => p.differences)
-            .map(p => {
-                const parsed = { ...p };
-                if (p.widget && p.widget.data) {
-                    parsed.widget = {
-                        ...p.widget,
-                        data: p.widget.data.filter(item => item.differences)
-                    };
-                }
-                if (p.properties) {
-                    parsed.properties = getLimitedPropertiesFn(p.properties);
-                }
-                return parsed;
-            })
-    ]);
-};
 
 export const getLimitedConfigurationsFn = (configurations, limited) => configurations ? ({
     ...configurations,

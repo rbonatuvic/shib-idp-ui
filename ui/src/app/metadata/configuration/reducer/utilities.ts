@@ -2,6 +2,7 @@ import { MetadataConfiguration } from '../model/metadata-configuration';
 import { WizardStep } from '../../../wizard/model';
 import * as utils from '../../domain/utility/configuration';
 import { getSplitSchema } from '../../../wizard/reducer';
+import { SectionProperty } from '../model/section';
 
 export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
     return !definition || !schema || !models ? null :
@@ -81,4 +82,24 @@ export const assignValueToProperties = (models, properties, definition: any): an
                 };
         }
     });
+};
+
+export const getLimitedPropertiesFn = (properties: SectionProperty[]) => {
+    return ([
+        ...properties
+            .filter(p => p.differences)
+            .map(p => {
+                const parsed = { ...p };
+                if (p.widget && p.widget.data) {
+                    parsed.widget = {
+                        ...p.widget,
+                        data: p.widget.data.filter(item => item.differences)
+                    };
+                }
+                if (p.properties) {
+                    parsed.properties = getLimitedPropertiesFn(p.properties);
+                }
+                return parsed;
+            })
+    ]);
 };

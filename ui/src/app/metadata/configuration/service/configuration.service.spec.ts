@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { MetadataProviderService } from '../../domain/service/provider.service';
 import { Metadata } from '../../domain/domain.type';
 import { SCHEMA } from '../../../../testing/form-schema.stub';
-import { getConfigurationSectionsFn } from '../reducer';
+import { getConfigurationSectionsFn } from '../reducer/utilities';
 
 describe(`Configuration Service`, () => {
 
