@@ -9,7 +9,7 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
-import { Observable, Subject, of, combineLatest as combine } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -28,8 +28,6 @@ import * as fromWizard from '../../../wizard/reducer';
 import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 import { Clear } from '../action/entity.action';
-import { DifferentialService } from '../../../core/service/differential.service';
-import { getConfigurationSections } from '../../configuration/reducer';
 import { MetadataConfiguration } from '../../configuration/model/metadata-configuration';
 
 @Component({
@@ -69,7 +67,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NgbModal,
-        private diffService: DifferentialService,
         @Inject(METADATA_SOURCE_WIZARD) private sourceWizard: Wizard<MetadataResolver>
     ) {
         this.store
@@ -151,16 +148,16 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         this.store.dispatch(new SetIndex(page));
     }
 
+    get blacklist(): string[] {
+        return ['id', 'resourceId'];
+    }
+
     hasChanges(changes: MetadataResolver): boolean {
-        // const updated = this.diffService.updatedDiff(this.resolver, changes);
-        // const deleted = this.diffService.deletedDiff(this.resolver, changes);
-        let blacklist = ['id', 'resourceId'];
-        return Object.keys(changes).filter(key => !(blacklist.indexOf(key) > -1)).length > 0;
+        return Object.keys(changes).filter(key => !(this.blacklist.indexOf(key) > -1)).length > 0;
     }
 
     isNew(changes: MetadataResolver): boolean {
-        let blacklist = ['id', 'resourceId'];
-        return Object.keys(changes).filter(key => !(blacklist.indexOf(key) > -1)).length === 0;
+        return Object.keys(changes).filter(key => !(this.blacklist.indexOf(key) > -1)).length === 0;
     }
 
     ngOnDestroy(): void {

@@ -130,6 +130,6 @@ export const getDraftModelList = createSelector(getDraftModelWithChanges, (model
 export const getResolverConfiguration = createSelector(
     getDraftModelList,
     fromWizard.getWizardDefinition,
-    fromWizard.getSchema,
+    fromWizard.getProcessedSchema,
     getConfigurationSectionsFn
 );

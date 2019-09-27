@@ -7,13 +7,11 @@ import * as fromCompare from './compare.reducer';
 import * as fromVersion from './version.reducer';
 import * as fromRestore from './restore.reducer';
 import * as fromFilter from './filter.reducer';
-import { WizardStep } from '../../../wizard/model';
 
 import * as utils from '../../domain/utility/configuration';
-import { getConfigurationSectionsFn, assignValueToProperties } from './utilities';
-import { getSplitSchema, getModel } from '../../../wizard/reducer';
+import { getConfigurationSectionsFn } from './utilities';
+import { getModel } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
-import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
 
 import * as fromResolver from '../../resolver/reducer';

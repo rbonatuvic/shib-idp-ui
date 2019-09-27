@@ -5,8 +5,9 @@
         <router-outlet></router-outlet>
     </div>
 </div>
-<ng-container *ngIf="currentPage === 'summary'">
+<div *ngIf="currentPage === 'summary'">
     <metadata-configuration
         [configuration]="summary$ | async"
+        (onEdit)="go($event)"
         id="configuration"></metadata-configuration>
-</ng-container>
+</div>
