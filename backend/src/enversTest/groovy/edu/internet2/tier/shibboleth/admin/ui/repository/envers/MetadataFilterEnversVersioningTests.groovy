@@ -334,25 +334,4 @@ class MetadataFilterEnversVersioningTests extends Specification {
         mrv1.metadataFilters.size() == 1
         mrv2.metadataFilters.size() == 0
     }
-
-    def "SHIBUI-1501"() {
-        when: 'Add initial filter'
-        def mr = new FileBackedHttpMetadataResolver(name: 'resolver')
-        mr = EnversTestsSupport.doInExplicitTransaction(txMgr) {
-            metadataResolverRepository.save(mr)
-        }
-        EntityAttributesFilter filter = this.generator.entityAttributesFilter()
-        mr.metadataFilters.add(filter)
-        mr = EnversTestsSupport.doInExplicitTransaction(txMgr) {
-            metadataResolverRepository.save(mr)
-        }
-        def versions = metadataResolverVersionService.findVersionsForMetadataResolver(mr.resourceId)
-        def mrv1 = metadataResolverVersionService.findSpecificVersionOfMetadataResolver(mr.resourceId, versions[0].id)
-        def mrv2 = metadataResolverVersionService.findSpecificVersionOfMetadataResolver(mr.resourceId, versions[1].id)
-
-        then:
-        versions.size() == 2
-        mrv1.metadataFilters.size() == 0
-        mrv2.metadataFilters.size() == 1
-    }
 }
