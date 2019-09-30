@@ -16,7 +16,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetad
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
-import edu.internet2.tier.shibboleth.admin.ui.util.AttributeReleaseAndOverridesX
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
