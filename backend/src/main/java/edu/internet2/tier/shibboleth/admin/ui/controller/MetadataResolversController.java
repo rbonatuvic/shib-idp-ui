@@ -170,6 +170,7 @@ public class MetadataResolversController {
     }
 
     @GetMapping("/MetadataResolvers/{resourceId}/Versions/{versionId}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
         MetadataResolver resolver = versionService.findSpecificVersionOfMetadataResolver(resourceId, versionId);
         if (resolver == null) {
