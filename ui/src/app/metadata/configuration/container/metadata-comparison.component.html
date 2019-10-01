@@ -25,32 +25,27 @@
     <metadata-configuration
         [configuration]="versions$ | async"
         [editable]="false"></metadata-configuration>
-    
-    <div class="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
-        <h2 class="title h4 m-0 flex-grow-1">
-            <span class="text ml-2" translate="label.metadata-filter">Metadata Filter</span>
-        </h2>
-    </div>
-    <ng-container *ngIf="!(filterCompare$ | async)">
-        <filter-version-list
-            class="d-block p-2"
-            [filters]="filters$ | async"
-            (compare)="compareFilters($event)">
-        </filter-version-list>
-    </ng-container>
-    <ng-container *ngIf="(filterCompare$ | async)">
-        <br />
-        <metadata-configuration
-            [configuration]="filterCompare$ | async"
-            [editable]="false"></metadata-configuration>
-        <div class="d-flex justify-content-end my-2">
-            <button class="btn btn-success" (click)="resetCompareFilters()">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;
-                <translate-i18n key="label.filter-versions">Filter Versions</translate-i18n>
-            </button>
+    <ng-container *ngIf="isProvider$ | async">
+        <div class="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
+            <h2 class="title h4 m-0 flex-grow-1">
+                <span class="text ml-2" translate="label.metadata-filter">Metadata Filter</span>
+            </h2>
         </div>
+        <ng-container *ngIf="!(filterCompare$ | async)">
+            <filter-version-list class="d-block p-2" [filters]="filters$ | async" (compare)="compareFilters($event)">
+            </filter-version-list>
+        </ng-container>
+        <ng-container *ngIf="(filterCompare$ | async)">
+            <br />
+            <metadata-configuration [configuration]="filterCompare$ | async" [editable]="false"></metadata-configuration>
+            <div class="d-flex justify-content-end my-2">
+                <button class="btn btn-success" (click)="resetCompareFilters()">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;
+                    <translate-i18n key="label.filter-versions">Filter Versions</translate-i18n>
+                </button>
+            </div>
+        </ng-container>
     </ng-container>
-    
 </div>
 <div *ngIf="loading$ | async" class="d-flex justify-content-center">
     <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
