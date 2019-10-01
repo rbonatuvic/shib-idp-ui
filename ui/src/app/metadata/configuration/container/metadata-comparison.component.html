@@ -53,7 +53,7 @@
             </ng-container>
             <ng-container *ngIf="(filterCompare$ | async)">
                 <br />
-                <metadata-configuration [configuration]="filterCompare$ | async" [editable]="false"></metadata-configuration>
+                <metadata-configuration [configuration]="filterCompare$ | async"></metadata-configuration>
                 <div class="d-flex justify-content-end my-2">
                     <button class="btn btn-success" (click)="resetCompareFilters()">
                         <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;
