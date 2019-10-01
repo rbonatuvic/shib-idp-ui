@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,6 +29,7 @@ import java.util.Map;
                @JsonSubTypes.Type(value=RegexScheme.class, name="Regex")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public abstract class MetadataRequestURLConstructionScheme extends AbstractAuditable {
     public enum SchemeType {
         METADATA_QUERY_PROTOCOL("MetadataQueryProtocol"),

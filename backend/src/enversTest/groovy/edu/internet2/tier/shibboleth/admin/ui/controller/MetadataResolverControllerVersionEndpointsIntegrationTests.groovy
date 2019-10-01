@@ -9,23 +9,33 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFil
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+
+import org.apache.commons.lang3.RandomStringUtils
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 
 /**
  * @author Dmitriy Kopylenko
@@ -236,6 +246,25 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
         mrv2.overrides(0).size() == resolver.overrides(0).size()
         mrv2.attributesRelease(0) == resolver.attributesRelease(0)
         mrv2.overrides(0) == resolver.overrides(0)
+    }
+
+    @Unroll
+    def "SHIBUI-1509 with #urlConstructionScheme"() {
+        MetadataResolver mr = new DynamicHttpMetadataResolver(name: randomAlphabetic(8)).with {
+            it.metadataRequestURLConstructionScheme = urlConstructionScheme
+            it
+        }
+        mr = repository.save(mr)
+
+        when:
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+
+        then:
+        noExceptionThrown()
+
+        where:
+        urlConstructionScheme << [new RegexScheme(match: ".*"), new MetadataQueryProtocolScheme(), new TemplateScheme()]
     }
 
     private getAllMetadataResolverVersions(String resourceId, responseType) {
