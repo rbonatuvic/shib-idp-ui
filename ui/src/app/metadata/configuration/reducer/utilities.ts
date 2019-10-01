@@ -44,7 +44,15 @@ export const assignValueToProperties = (models, properties, definition: any): an
             if (!array) {
                 return false;
             }
-            return JSON.stringify(model[prop.id]) !== JSON.stringify(array[0][prop.id]);
+            let prop1 = model[prop.id];
+            let prop2 = array[0][prop.id];
+            if (prop1 && prop1.modifiedDate) {
+                let { checkedModifiedDate, checkedProp } = prop1;
+                let { firstModifiedDate, firstProp } = prop2;
+                prop1 = checkedProp;
+                prop2 = firstProp;
+            }
+            return JSON.stringify(prop1) !== JSON.stringify(prop2);
         });
 
         const widget = prop.type === 'array' && prop.widget && prop.widget.data ? ({

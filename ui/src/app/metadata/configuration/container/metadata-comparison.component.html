@@ -39,28 +39,13 @@
         </ng-container>
         <ng-container *ngIf="(filterCompare$ | async)">
             <br />
-            <metadata-configuration
-                [configuration]="filterCompare$ | async"></metadata-configuration>
+            <metadata-configuration [configuration]="filterCompare$ | async"></metadata-configuration>
             <div class="d-flex justify-content-end my-2">
                 <button class="btn btn-success" (click)="resetCompareFilters()">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;
                     <translate-i18n key="label.filter-versions">Filter Versions</translate-i18n>
                 </button>
             </div>
-            <ng-container *ngIf="!(filterCompare$ | async)">
-                <filter-version-list class="d-block p-2" [filters]="filters$ | async" (compare)="compareFilters($event)">
-                </filter-version-list>
-            </ng-container>
-            <ng-container *ngIf="(filterCompare$ | async)">
-                <br />
-                <metadata-configuration [configuration]="filterCompare$ | async"></metadata-configuration>
-                <div class="d-flex justify-content-end my-2">
-                    <button class="btn btn-success" (click)="resetCompareFilters()">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;
-                        <translate-i18n key="label.filter-versions">Filter Versions</translate-i18n>
-                    </button>
-                </div>
-            </ng-container>
         </ng-container>
     </ng-container>
 </div>
