@@ -16,17 +16,17 @@ import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
 import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
-import { WizardSummaryComponent } from './component/wizard-summary.component';
 import { SummaryPropertyComponent } from './component/summary-property.component';
 
 import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
 import { EditorNavComponent } from './component/editor-nav.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { WizardSummaryComponent } from './component/wizard-summary.component';
 
 export const COMPONENTS = [
-    PreviewDialogComponent,
     WizardSummaryComponent,
+    PreviewDialogComponent,
     UnsavedEntityComponent,
     SummaryPropertyComponent,
     EditorNavComponent

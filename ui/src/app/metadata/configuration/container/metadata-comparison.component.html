@@ -23,9 +23,7 @@
         </button>
     </div>
     <metadata-configuration
-        [configuration]="versions$ | async"
-        [editable]="false"></metadata-configuration>
-    
+        [configuration]="versions$ | async"></metadata-configuration>
     <div class="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
         <h2 class="title h4 m-0 flex-grow-1">
             <span class="text ml-2" translate="label.metadata-filter">Metadata Filter</span>
@@ -41,8 +39,7 @@
     <ng-container *ngIf="(filterCompare$ | async)">
         <br />
         <metadata-configuration
-            [configuration]="filterCompare$ | async"
-            [editable]="false"></metadata-configuration>
+            [configuration]="filterCompare$ | async"></metadata-configuration>
         <div class="d-flex justify-content-end my-2">
             <button class="btn btn-success" (click)="resetCompareFilters()">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;

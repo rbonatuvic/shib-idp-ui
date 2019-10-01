@@ -84,7 +84,9 @@ import { FilterCompareVersionEffects } from './effect/filter.effect';
         WizardModule,
         FormModule
     ],
-    exports: [],
+    exports: [
+        MetadataConfigurationComponent
+    ],
     providers: [
         DatePipe,
         IndexResolver
@@ -114,7 +116,8 @@ export class MetadataConfigurationModule {
                 RestoreEffects,
                 FilterCompareVersionEffects,
                 VersionEffects
-            ])
+            ]
+        )
     ],
     providers: []
 })
