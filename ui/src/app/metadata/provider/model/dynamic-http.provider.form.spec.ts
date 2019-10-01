@@ -1,5 +1,51 @@
 import { DynamicHttpMetadataProviderWizard } from './dynamic-http.provider.form';
 
+const schema = {
+    'type': 'object',
+    'required': [
+        '@type',
+        'content'
+    ],
+    'properties': {
+        '@type': {
+            'title': 'label.md-request-type',
+            'description': 'tooltip.md-request-type',
+            'type': 'string',
+            'widget': {
+                'id': 'select'
+            },
+            'oneOf': [
+                {
+                    'enum': [
+                        'MetadataQueryProtocol'
+                    ],
+                    'description': 'value.md-query-protocol'
+                },
+                {
+                    'enum': [
+                        'Regex'
+                    ],
+                    'description': 'value.regex'
+                }
+            ]
+        },
+        'content': {
+            'title': 'label.md-request-value',
+            'description': 'tooltip.md-request-value',
+            'type': 'string'
+        },
+        'match': {
+            'title': 'label.match',
+            'description': 'tooltip.match',
+            'type': 'string',
+            'visibleIf': {
+                '@type': [
+                    'Regex'
+                ]
+            }
+        }
+    }
+};
 
 describe('DynamicHttpMetadataProviderWizard', () => {
 
@@ -120,6 +166,45 @@ describe('DynamicHttpMetadataProviderWizard', () => {
                 '/metadataRequestURLConstructionScheme/@type',
                 '/metadataRequestURLConstructionScheme/match'
             ]);
+        });
+    });
+
+    describe('validators', () => {
+        let validators,
+            metadataRequestURLConstructionScheme,
+            metadataRequestURLConstructionSchemeContent,
+            metadataRequestURLConstructionSchemeType,
+            metadataRequestURLConstructionSchemeMatch;
+
+        beforeEach(() => {
+            validators = getValidators([], []);
+        });
+
+        describe('metadataRequestURLConstructionScheme', () => {
+            it('should check other validators and propagate those errors up', () => {
+                const value = {
+                    content: null,
+                    '@type': null,
+                    match: 'foo'
+                };
+                const property = { value, schema, properties: null };
+                property.properties = {
+                    content: {
+                        path: 'content',
+                        parent: property
+                    },
+                    '@type': {
+                        path: '@type',
+                        parent: property
+                    },
+                    match: {
+                        path: 'match',
+                        parent: property
+                    }
+                };
+                const validator = validators['/metadataRequestURLConstructionScheme'];
+                expect(validator(value, property, null).length).toBe(2);
+            });
         });
     });
 });

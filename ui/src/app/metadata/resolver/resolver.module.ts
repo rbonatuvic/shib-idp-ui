@@ -36,6 +36,7 @@ import { MetadataSourceEditor } from '../domain/model/wizards/metadata-source-ed
 import { FinishFormComponent } from './component/finish-form.component';
 import { ProviderFormFragmentComponent } from './component/provider-form-fragment.component';
 import { MetadataResolverPageComponent } from './resolver.component';
+import { MetadataConfigurationModule } from '../configuration/configuration.module';
 
 @NgModule({
     declarations: [
@@ -67,7 +68,8 @@ import { MetadataResolverPageComponent } from './resolver.component';
         WizardModule,
         FormModule,
         NgbPopoverModule,
-        NgbModalModule
+        NgbModalModule,
+        MetadataConfigurationModule
     ],
     exports: [],
     providers: []

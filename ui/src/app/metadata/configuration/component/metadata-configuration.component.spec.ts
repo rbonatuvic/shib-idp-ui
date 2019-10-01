@@ -66,10 +66,10 @@ describe('Metadata Configuration Component', () => {
     }));
 
     describe('edit method', () => {
-        it('should call router.navigate', () => {
-            spyOn(router, 'navigate');
+        it('should call onEdit.emit', () => {
+            spyOn(app.onEdit, 'emit');
             app.edit('foo');
-            expect(router.navigate).toHaveBeenCalled();
+            expect(app.onEdit.emit).toHaveBeenCalled();
         });
     });
 

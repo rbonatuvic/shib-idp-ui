@@ -9,7 +9,7 @@ import {
     ActivatedRouteSnapshot,
     RouterStateSnapshot
 } from '@angular/router';
-import { Observable, Subject, of, combineLatest as combine } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { skipWhile, startWith, distinctUntilChanged, map, takeUntil, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,7 @@ import * as fromWizard from '../../../wizard/reducer';
 import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { UnsavedEntityComponent } from '../../domain/component/unsaved-entity.dialog';
 import { Clear } from '../action/entity.action';
-import { DifferentialService } from '../../../core/service/differential.service';
+import { MetadataConfiguration } from '../../configuration/model/metadata-configuration';
 
 @Component({
     selector: 'resolver-wizard-page',
@@ -60,14 +60,13 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
     valid$: Observable<boolean>;
     schema$: Observable<any>;
 
-    summary$: Observable<{ definition: Wizard<MetadataResolver>, schema: { [id: string]: any }, model: any }>;
+    summary$: Observable<MetadataConfiguration> = this.store.select(fromCollections.getResolverConfiguration);
 
     constructor(
         private store: Store<fromCollections.State>,
         private route: ActivatedRoute,
         private router: Router,
         private modalService: NgbModal,
-        private diffService: DifferentialService,
         @Inject(METADATA_SOURCE_WIZARD) private sourceWizard: Wizard<MetadataResolver>
     ) {
         this.store
@@ -115,20 +114,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
             combineLatest(this.resolver$, (changes, base) => ({ ...base, ...changes }))
         ).subscribe(latest => this.latest = latest);
 
-        this.summary$ = combine(
-            this.store.select(fromWizard.getWizardDefinition),
-            this.store.select(fromWizard.getSchemaObject),
-            this.store.select(fromResolver.getDraftModelWithChanges)
-        ).pipe(
-            map(([definition, schema, model]) => (
-                {
-                    definition,
-                    schema: schema || {},
-                    model
-                }
-            ))
-        );
-
         this.changes$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(c => this.changes = c);
         this.resolver$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(r => this.resolver = r);
     }
@@ -163,16 +148,16 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
         this.store.dispatch(new SetIndex(page));
     }
 
+    get blacklist(): string[] {
+        return ['id', 'resourceId'];
+    }
+
     hasChanges(changes: MetadataResolver): boolean {
-        // const updated = this.diffService.updatedDiff(this.resolver, changes);
-        // const deleted = this.diffService.deletedDiff(this.resolver, changes);
-        let blacklist = ['id', 'resourceId'];
-        return Object.keys(changes).filter(key => !(blacklist.indexOf(key) > -1)).length > 0;
+        return Object.keys(changes).filter(key => !(this.blacklist.indexOf(key) > -1)).length > 0;
     }
 
     isNew(changes: MetadataResolver): boolean {
-        let blacklist = ['id', 'resourceId'];
-        return Object.keys(changes).filter(key => !(blacklist.indexOf(key) > -1)).length === 0;
+        return Object.keys(changes).filter(key => !(this.blacklist.indexOf(key) > -1)).length === 0;
     }
 
     ngOnDestroy(): void {

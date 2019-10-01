@@ -32,7 +32,11 @@
         </div>
     </div>
     <ng-container *ngIf="configuration$ | async">
-        <metadata-configuration [configuration]="configuration$ | async" id="configuration"></metadata-configuration>
+        <metadata-configuration
+            [configuration]="configuration$ | async"
+            (onEdit)="edit($event)"
+            id="configuration">
+        </metadata-configuration>
     </ng-container>
     <ng-container *ngIf="!(configuration$ | async)">
         <div class="d-flex justify-content-center">

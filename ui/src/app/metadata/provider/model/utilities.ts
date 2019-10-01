@@ -1,5 +1,4 @@
 export const metadataFilterProcessor = (schema) => {
-    console.log(schema);
     if (!schema) {
         return null;
     }
@@ -20,6 +19,5 @@ export const metadataFilterProcessor = (schema) => {
             }
         }
     });
-    console.log(processed);
     return processed;
 };

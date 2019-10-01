@@ -1,5 +1,4 @@
 import { Component, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
-import merge from 'deepmerge';
 
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider, MetadataResolver } from '../../domain/model';
@@ -30,7 +29,7 @@ export class WizardSummaryComponent implements OnChanges {
     columns: Array<Section>[];
     steps: WizardStep[];
 
-    constructor() {}
+    constructor() { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.summary && this.summary) {

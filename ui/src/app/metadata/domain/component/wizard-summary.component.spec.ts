@@ -35,7 +35,7 @@ class TestHostComponent {
     }
 }
 
-describe('Provider Wizard Summary Component', () => {
+describe('Wizard Summary Component', () => {
 
     let fixture: ComponentFixture<TestHostComponent>;
     let instance: TestHostComponent;
