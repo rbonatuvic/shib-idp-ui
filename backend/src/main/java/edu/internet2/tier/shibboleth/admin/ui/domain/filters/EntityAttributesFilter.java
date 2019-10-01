@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromAttributeReleaseList;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromRelyingPartyOverridesRepresentation;
@@ -69,6 +70,8 @@ public class EntityAttributesFilter extends MetadataFilter {
 
     @PostLoad
     public void intoTransientRepresentation() {
+        //For some update operations, list of attributes could contain null values. Filter them out
+        this.attributes.removeIf(Objects::isNull);
         this.attributeRelease = getAttributeReleaseListFromAttributeList(this.attributes);
         this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(this.attributes);
     }
