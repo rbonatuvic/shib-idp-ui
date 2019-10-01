@@ -1,7 +1,7 @@
 <ng-container *ngIf="filters && filters.dates.length > 0">
     <div class="d-flex border-bottom border-light border-2 py-2">
-        <span [ngStyle]="{'width.%': width}" *ngIf="!comparing">Order</span>
-        <span [ngStyle]="{'width.%': width}" *ngIf="comparing">Option</span>
+        <strong [ngStyle]="{'width.%': width}" *ngIf="!comparing">Order</strong>
+        <strong [ngStyle]="{'width.%': width}" *ngIf="comparing">Option</strong>
         <strong *ngFor="let date of filters.dates" [ngStyle]="{'width.%': width}">
             {{ date | date:DATE_FORMAT }}
         </strong>
@@ -39,13 +39,13 @@
             </div>
         </ng-container>
     </div>
-    <div class="d-flex justify-content-end my-2">
+    <div class="alert alert-info m-4" *ngIf="filters ? filters.filters.length < 1 : false">
+        <h3 translate="message.no-filters">No Filters</h3>
+        <p translate="message.no-filters-added">No filters have been added to this Metadata Provider</p>
+    </div>
+    <div class="d-flex justify-content-end my-2" *ngIf="filters && filters.filters.length > 0">
         <button class="btn btn-primary" [disabled]="!selected" (click)="compareSelected()">
             <translate-i18n key="label.compare-selected">Compare Selected</translate-i18n>
         </button>
     </div>
 </ng-container>
-<div class="alert alert-info m-4" *ngIf="filters && filters.dates.length < 1">
-    <h3 translate="message.no-filters">No Filters</h3>
-    <p translate="message.no-filters-added">No filters have been added to this Metadata Provider</p>
-</div>
