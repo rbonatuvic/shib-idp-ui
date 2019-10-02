@@ -27,6 +27,7 @@ import { I18nModule } from '../../i18n/i18n.module';
 import { DomainModule } from '../domain/domain.module';
 import { MetadataProviderPageComponent } from './provider.component';
 import { FilterModule } from '../filter/filter.module';
+import { MetadataConfigurationModule } from '../configuration/configuration.module';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,8 @@ import { FilterModule } from '../filter/filter.module';
         NgbModalModule,
         I18nModule,
         DomainModule,
-        FilterModule
+        FilterModule,
+        MetadataConfigurationModule
     ],
     exports: []
 })
