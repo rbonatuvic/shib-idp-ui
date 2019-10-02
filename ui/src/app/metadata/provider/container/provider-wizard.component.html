@@ -19,7 +19,11 @@
                     <router-outlet></router-outlet>
                 </div>
             </div>
-            
+            <wizard-summary
+                [summary]="summary$ | async"
+                (onPageSelect)="gotoPage($event)"
+                *ngIf="currentPage === 'summary'">
+            </wizard-summary>
         </div>
     </div>
 </section>
