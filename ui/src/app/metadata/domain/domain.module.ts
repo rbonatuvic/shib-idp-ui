@@ -22,10 +22,8 @@ import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
 import { EditorNavComponent } from './component/editor-nav.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
-import { WizardSummaryComponent } from './component/wizard-summary.component';
 
 export const COMPONENTS = [
-    WizardSummaryComponent,
     PreviewDialogComponent,
     UnsavedEntityComponent,
     SummaryPropertyComponent,
