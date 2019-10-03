@@ -10,8 +10,7 @@
                         </span>
                         <span class="text ml-2">{{ section.label | translate }}</span>
                     </h2>
-                    <div class="actions px-2"
-                        *ngIf="editable && configuration.dates.length === 1">
+                    <div class="actions px-2" *ngIf="editable">
                         <button class="btn btn-link edit-link change-view" (click)="edit(section.id)">
                             <i class="fa fa-edit"></i>&nbsp;
                             <span translate="action.edit">Edit</span>
@@ -37,10 +36,5 @@
                 </div>
             </div>
         </section>
-    </ng-container>
-    <ng-container *ngIf="zero">
-        <div class="alert alert-info" role="alert">
-            No changes
-        </div>
     </ng-container>
 </div>

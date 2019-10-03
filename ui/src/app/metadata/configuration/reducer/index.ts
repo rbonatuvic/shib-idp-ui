@@ -7,17 +7,14 @@ import * as fromCompare from './compare.reducer';
 import * as fromVersion from './version.reducer';
 import * as fromRestore from './restore.reducer';
 import * as fromFilter from './filter.reducer';
-import { WizardStep } from '../../../wizard/model';
 
-import * as utils from '../../domain/utility/configuration';
-import { getSplitSchema, getModel } from '../../../wizard/reducer';
+import { getConfigurationSectionsFn, getLimitedPropertiesFn } from './utilities';
+import { getModel } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
-import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
 
 import * as fromResolver from '../../resolver/reducer';
 import * as fromProvider from '../../provider/reducer';
-import { SectionProperty } from '../model/section';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -66,94 +63,11 @@ export const processSchemaFn = (definition, schema) => {
 };
 
 export const getConfigurationSchema = createSelector(getConfigurationDefinition, getSchema, processSchemaFn);
-
-export const assignValueToProperties = (models, properties, definition: any): any[] => {
-    return properties.map(prop => {
-        const differences = models.some((model, index, array) => {
-            if (!array) {
-                return false;
-            }
-            return JSON.stringify(model[prop.id]) !== JSON.stringify(array[0][prop.id]);
-        });
-
-        const widget = prop.type === 'array' && prop.widget && prop.widget.data ? ({
-            ...prop.widget,
-            data: prop.widget.data.map(item => ({
-                ...item,
-                differences: models
-                    .map((model) => {
-                        const value = model[prop.id];
-                        return value ? value.indexOf(item.key) > -1 : false;
-                    })
-                    .reduce((current, val) => current !== val ? true : false, false)
-            }))
-        }) : null;
-
-        switch (prop.type) {
-            case 'object':
-                return {
-                    ...prop,
-                    differences,
-                    properties: assignValueToProperties(
-                        models.map(model => definition.formatter(model)[prop.id] || {}),
-                        prop.properties,
-                        definition
-                    )
-                };
-            default:
-                return {
-                    ...prop,
-                    differences,
-                    value: models.map(model => {
-                        return model[prop.id];
-                    }),
-                    widget
-                };
-        }
-    });
-};
-
-export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
-    return !definition || !schema || !models ? null :
-        ({
-            dates: models.map(m => m ? m.modifiedDate : null),
-            sections: definition.steps
-                .filter(step => step.id !== 'summary')
-                .map(
-                    (step: WizardStep, num: number) => {
-                        return ({
-                            id: step.id,
-                            pageNumber: num + 1,
-                            index: step.index,
-                            label: step.label,
-                            properties: utils.getStepProperties(
-                                getSplitSchema(schema, step),
-                                definition.formatter({}),
-                                schema.definitions || {}
-                            )
-                        });
-                    }
-                )
-                .map((section: any) => {
-                    return {
-                        ...section,
-                        properties: assignValueToProperties(models, section.properties, definition)
-                    };
-                })
-                .map((section: any) => ({
-                    ...section,
-                    differences: section.properties.some(prop => prop.differences)
-                }))
-        });
-    };
-
-
-
 export const getConfigurationModelEnabledFn =
     (config: Metadata) => config ? ('serviceEnabled' in config) ? config.serviceEnabled : config.enabled : false;
 
 export const getConfigurationModelNameFn =
-    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : false;
+    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : '';
 
 export const getConfigurationModelTypeFn =
     (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
@@ -163,8 +77,8 @@ export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === 
 
 export const getVersionModelFiltersFn =
     (model, kind) => kind === 'provider' ?
-        model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
-        null;
+        model.metadataFilters ? model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+        [] : null;
 
 // Version History
 
@@ -219,26 +133,6 @@ export const getComparisonConfigurations = createSelector(
 export const getComparisonConfigurationCount = createSelector(getComparisonConfigurations, (config) => config ? config.dates.length : 0);
 
 export const getViewChangedOnly = createSelector(getCompareState, fromCompare.getViewChangedOnly);
-
-export const getLimitedPropertiesFn = (properties: SectionProperty[]) => {
-    return ([
-        ...properties
-            .filter(p => p.differences)
-            .map(p => {
-                const parsed = { ...p };
-                if (p.widget && p.widget.data) {
-                    parsed.widget = {
-                        ...p.widget,
-                        data: p.widget.data.filter(item => item.differences)
-                    };
-                }
-                if (p.properties) {
-                    parsed.properties = getLimitedPropertiesFn(p.properties);
-                }
-                return parsed;
-            })
-    ]);
-};
 
 export const getLimitedConfigurationsFn = (configurations, limited) => configurations ? ({
     ...configurations,

@@ -129,7 +129,7 @@ export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked :
 export const getLocked = createSelector(getCurrent, getLockedStatus, getSchemaLockedFn);
 
 export const getSchemaProcessedFn = (schema, definition) =>
-    definition.schemaPreprocessor ? definition.schemaPreprocessor(schema) : schema;
+    definition && definition.schemaPreprocessor ? definition.schemaPreprocessor(schema) : schema;
 
 export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
 export const getProcessedSchema = createSelector(getSchemaObject, getWizardDefinition, getSchemaProcessedFn);

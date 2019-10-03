@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
-import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { RouterStateSnapshot } from '@angular/router';
 import { NgbDropdownModule, NgbPopoverModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 
@@ -18,6 +18,7 @@ import { MockWizardModule } from '../../../../testing/wizard.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { MetadataResolver } from '../../domain/model';
 import { DifferentialService } from '../../../core/service/differential.service';
+import { MetadataConfigurationComponentStub } from '../../../../testing/metadata-configuration.stub';
 
 @Component({
     template: `
@@ -85,7 +86,8 @@ describe('Resolver Wizard Component', () => {
             ],
             declarations: [
                 ResolverWizardComponent,
-                TestHostComponent
+                TestHostComponent,
+                MetadataConfigurationComponentStub
             ],
             providers: [
                 DifferentialService,
