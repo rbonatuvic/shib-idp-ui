@@ -8,6 +8,7 @@ import * as utils from '../../domain/domain.util';
 import * as fromWizard from '../../../wizard/reducer';
 
 import { MetadataProvider } from '../../domain/model';
+import { getConfigurationSectionsFn } from '../../configuration/reducer/utilities';
 
 export interface ProviderState {
     editor: fromEditor.EditorState;
@@ -79,3 +80,12 @@ export const getOrderedProviders = createSelector(getAllProviders, getProviderOr
 export const getOrderedProvidersInSearch = createSelector(getAllProviders, getProviderOrder, utils.mergeOrderFn);
 
 export const getFilteredProviderXmlIds = createSelector(getProviderXmlIds, getSelectedProvider, getFilteredListFn('xmlId'));
+
+export const getProviderModelList = createSelector(getEntityChanges, (model) => [model]);
+
+export const getProviderConfiguration = createSelector(
+    getProviderModelList,
+    fromWizard.getWizardDefinition,
+    fromWizard.getProcessedSchema,
+    getConfigurationSectionsFn
+);
