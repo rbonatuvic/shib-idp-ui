@@ -8,10 +8,10 @@ import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap'
 import { ProviderWizardComponent } from './provider-wizard.component';
 import * as fromRoot from '../reducer';
 import { WizardModule } from '../../../wizard/wizard.module';
-import { WizardSummaryComponent } from '../../domain/component/wizard-summary.component';
 import { SummaryPropertyComponent } from '../../domain/component/summary-property.component';
 import * as fromWizard from '../../../wizard/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { MetadataConfigurationComponentStub } from '../../../../testing/metadata-configuration.stub';
 
 @Component({
     template: `
@@ -46,7 +46,7 @@ describe('Provider Wizard Component', () => {
             declarations: [
                 ProviderWizardComponent,
                 SummaryPropertyComponent,
-                WizardSummaryComponent,
+                MetadataConfigurationComponentStub,
                 TestHostComponent
             ]
         }).compileComponents();
