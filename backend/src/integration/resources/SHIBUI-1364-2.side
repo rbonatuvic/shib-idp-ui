@@ -961,6 +961,13 @@
       ],
       "value": ""
     }, {
+      "id": "038f43a0-5870-4103-bb2e-97928dcc1afb",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "a5885119-3102-4d0a-a0ea-d5517a94c6d8",
       "comment": "",
       "command": "assertText",
