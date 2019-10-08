@@ -4,6 +4,33 @@ import * as utils from '../../domain/utility/configuration';
 import { getSplitSchema } from '../../../wizard/reducer';
 import { SectionProperty } from '../model/section';
 
+function omit(key, obj) {
+    if (!obj) {
+        return obj;
+    }
+    const { [key]: omitted, ...rest } = obj;
+    return rest;
+}
+
+export const rollupDifferences = (prop) => {
+    let updates = {
+        ...prop
+    };
+
+    if (prop.properties) {
+        updates = {
+            ...updates,
+            properties: [
+                ...prop.properties.map(p => rollupDifferences(p))
+            ]
+        };
+    }
+
+    prop.differences = prop.properties.some(p => p.differences);
+
+    return updates;
+};
+
 export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
     return !definition || !schema || !models ? null :
         ({
@@ -38,22 +65,20 @@ export const getConfigurationSectionsFn = (models, definition, schema): Metadata
         });
 };
 
+const getDifferences = (models, prop) => {
+    return models.some((model, index, array) => {
+        if (!array) {
+            return false;
+        }
+        const prop1 = omit('modifiedDate', model[prop.id]);
+        const prop2 = omit('modifiedDate', array[0][prop.id]);
+        return JSON.stringify(prop1) !== JSON.stringify(prop2);
+    });
+};
+
 export const assignValueToProperties = (models, properties, definition: any): any[] => {
     return properties.map(prop => {
-        const differences = models.some((model, index, array) => {
-            if (!array) {
-                return false;
-            }
-            let prop1 = model[prop.id];
-            let prop2 = array[0][prop.id];
-            if (prop1 && prop1.modifiedDate) {
-                let { checkedModifiedDate, checkedProp } = prop1;
-                let { firstModifiedDate, firstProp } = prop2;
-                prop1 = checkedProp;
-                prop2 = firstProp;
-            }
-            return JSON.stringify(prop1) !== JSON.stringify(prop2);
-        });
+        const differences = getDifferences(models, prop);
 
         const widget = prop.type === 'array' && prop.widget && prop.widget.data ? ({
             ...prop.widget,
@@ -72,12 +97,12 @@ export const assignValueToProperties = (models, properties, definition: any): an
             case 'object':
                 return {
                     ...prop,
-                    differences,
                     properties: assignValueToProperties(
                         models.map(model => definition.formatter(model)[prop.id] || {}),
                         prop.properties,
                         definition
-                    )
+                    ),
+                    differences: getDifferences(models, prop)
                 };
             default:
                 return {

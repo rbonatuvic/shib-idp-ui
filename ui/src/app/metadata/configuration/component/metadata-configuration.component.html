@@ -2,7 +2,8 @@
     <ng-container *ngFor="let section of configuration.sections; let i = index;">
         <section class="mb-4 config-section-list-item" *ngIf="section && section.properties && section.properties.length">
             <div class="config-group">
-                <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
+                <div class="numbered-header d-flex justify-content-start bg-light align-items-center"
+                    ngClass="{'bg-danger': !section.differences}">
                     <h2 class="title h4 m-0 flex-grow-1">
                         <span *ngIf="numbered"
                             class="d-inline-block px-2 py-1 mb-0 h4 number border border-secondary bg-white rounded-lg">
