@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -9,9 +9,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { ManagerComponent } from './container/manager.component';
-import { EntityItemComponent } from './component/entity-item.component';
-import { ProviderItemComponent } from './component/provider-item.component';
-import { ResolverItemComponent } from './component/resolver-item.component';
 import { ProviderSearchComponent } from './component/provider-search.component';
 import { DashboardResolversListComponent } from './container/dashboard-resolvers-list.component';
 import { DashboardProvidersListComponent } from './container/dashboard-providers-list.component';
@@ -21,17 +18,16 @@ import { DeleteDialogComponent } from './component/delete-dialog.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../shared/shared.module';
 import { I18nModule } from '../../i18n/i18n.module';
+import { ResolversListComponent } from './component/resolvers-list.component';
 
 @NgModule({
     declarations: [
         ManagerComponent,
-        EntityItemComponent,
-        ResolverItemComponent,
-        ProviderItemComponent,
         ProviderSearchComponent,
         DeleteDialogComponent,
         DashboardResolversListComponent,
-        DashboardProvidersListComponent
+        DashboardProvidersListComponent,
+        ResolversListComponent
     ],
     entryComponents: [
         DeleteDialogComponent
@@ -49,7 +45,7 @@ import { I18nModule } from '../../i18n/i18n.module';
         InfiniteScrollModule
     ],
     exports: [
-        ResolverItemComponent
+        ResolversListComponent
     ]
 })
 export class ManagerModule {

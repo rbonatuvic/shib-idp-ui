@@ -11,39 +11,25 @@ import * as fromMetadata from '../reducer';
 import { DeleteDialogComponent } from '../../metadata/manager/component/delete-dialog.component';
 import { PreviewEntity } from '../../metadata/domain/action/entity.action';
 import { FileBackedHttpMetadataResolver } from '../../metadata/domain/entity';
-import { RemoveMetadataRequest, UpdateMetadataRequest, LoadMetadataRequest } from '../action/metadata-collection.action';
+import { RemoveMetadataRequest, UpdateMetadataRequest } from '../action/metadata-collection.action';
 
 @Component({
     selector: 'enable-metadata',
     templateUrl: './enable-metadata.component.html'
 })
 
-export class EnableMetadataComponent implements OnInit {
-    resolvers$: Observable<FileBackedHttpMetadataResolver[]>;
-    loading$: Observable<boolean>;
-
-    total$: Observable<number>;
-    page = 1;
-    limit = 8;
-
-    entitiesOpen$: Observable<{ [key: string]: boolean }>;
+export class EnableMetadataComponent {
+    resolvers$: Observable<FileBackedHttpMetadataResolver[]> = this.store
+        .select(fromMetadata.getMetadataCollection)
+        .pipe(
+            map(resolvers => resolvers.map(r => new FileBackedHttpMetadataResolver(r)))
+        );
 
     constructor(
         private store: Store<fromDashboard.DashboardState>,
         private router: Router,
         private modalService: NgbModal
-    ) {
-        this.resolvers$ = this.store
-            .select(fromMetadata.getMetadataCollection)
-            .pipe(
-                map(resolvers => resolvers.map(r => new FileBackedHttpMetadataResolver(r)))
-            );
-        this.loading$ = this.store.select(fromDashboard.getSearchLoading);
-
-        this.total$ = this.resolvers$.pipe(map(list => list.length));
-    }
-
-    ngOnInit(): void {}
+    ) {}
 
     edit(entity: MetadataEntity): void {
         this.router.navigate(['metadata', 'resolver', entity.getId(), 'edit']);
@@ -53,8 +39,8 @@ export class EnableMetadataComponent implements OnInit {
         this.store.dispatch(new PreviewEntity({ id: entity.getId(), entity }));
     }
 
-    toggleResolverEnabled(entity: MetadataResolver, enabled: boolean): void {
-        let update = { ...entity, serviceEnabled: enabled };
+    toggleResolverEnabled(entity: MetadataResolver): void {
+        let update = { ...entity, serviceEnabled: !entity.serviceEnabled };
         this.store.dispatch(new UpdateMetadataRequest(update));
     }
 

@@ -11,7 +11,6 @@ import { RouterStub } from '../../../../testing/router.stub';
 import { NgbModalStub } from '../../../../testing/modal.stub';
 import { DashboardProvidersListComponent } from './dashboard-providers-list.component';
 import { MetadataProvider } from '../../domain/model';
-import { ProviderItemComponent } from '../component/provider-item.component';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
 import { of } from 'rxjs';
@@ -53,7 +52,6 @@ describe('Dashboard Providers List Page', () => {
             declarations: [
                 DashboardProvidersListComponent,
                 ProviderSearchComponent,
-                ProviderItemComponent,
                 DeleteDialogComponent,
                 CustomDatePipe
             ],
