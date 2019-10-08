@@ -136,7 +136,7 @@ export class CollectionEffects {
     createProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.navigateToProvider(provider.id))
+        tap(provider => this.navigateToProvider(provider.resourceId))
     );
 
     @Effect()
