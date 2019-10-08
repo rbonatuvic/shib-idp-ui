@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, withLatestFrom } from 'rxjs/operators';
 
 import {
     ConfigurationState,
@@ -63,6 +63,17 @@ export class MetadataOptionsComponent implements OnDestroy {
                 filter(model => !!model)
             )
             .subscribe(p => this.setModel(p));
+
+        const sub = this.filters$.pipe(
+            withLatestFrom(this.activatedRoute.fragment)
+        ).subscribe(([filters, fragment]) => {
+            if (filters && fragment) {
+                setTimeout(() => {
+                    scroller.scrollToAnchor(fragment);
+                    sub.unsubscribe();
+                }, 100);
+            }
+        });
     }
 
     edit(id: string) {

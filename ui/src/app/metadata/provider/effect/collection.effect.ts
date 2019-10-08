@@ -136,7 +136,7 @@ export class CollectionEffects {
     createProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']))
+        tap(provider => this.navigateToProvider(provider.id))
     );
 
     @Effect()
@@ -149,7 +149,7 @@ export class CollectionEffects {
             this.providerService
                 .update(provider)
                 .pipe(
-                    map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
+                    map(p => new UpdateProviderSuccess({id: p.resourceId, changes: p})),
                     catchError((e) => e.status === 409 ? of(new UpdateProviderConflict(provider)) : of(new UpdateProviderFail(e.error)))
                 )
         )
@@ -168,7 +168,7 @@ export class CollectionEffects {
         map(action => action.payload),
         tap(provider => {
             this.store.dispatch(new ClearProvider());
-            this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']);
+            this.navigateToProvider(provider.id);
         })
     );
 
@@ -269,4 +269,8 @@ export class CollectionEffects {
         private contentionService: ContentionService,
         private i18nService: I18nService
     ) { }
+
+    navigateToProvider(id) {
+        this.router.navigate(['/', 'metadata', 'provider', id, 'configuration', 'options']);
+    }
 }
