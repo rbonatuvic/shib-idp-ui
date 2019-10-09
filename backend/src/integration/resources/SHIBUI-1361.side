@@ -81,9 +81,9 @@
       ],
       "value": ""
     }, {
-      "id": "b49d6ed7-75ea-4be8-9a79-c7fd83287aa0",
+      "id": "55a876d6-70b7-46f6-aab1-7efacb79156f",
       "comment": "",
-      "command": "click",
+      "command": "waitForElementEditable",
       "target": "id=/name",
       "targets": [
         ["id=/name", "id"],
@@ -92,7 +92,7 @@
         ["xpath=//input[@id='/name']", "xpath:attributes"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": ""
+      "value": "30000"
     }, {
       "id": "54dc29f7-bbe0-4c2b-a76e-e67a61f57a96",
       "comment": "",
@@ -545,15 +545,25 @@
       "id": "52f5680c-c63d-411e-8332-52901f12ea3b",
       "comment": "",
       "command": "assertText",
-      "target": "css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
-      "targets": [],
+      "target": "css=.mb-4:nth-child(1) primitive-property:nth-child(1) .d-block:nth-child(2)",
+      "targets": [
+        ["css=.mb-4:nth-child(1) primitive-property:nth-child(1) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
+      ],
       "value": "Test Metadata Provider"
     }, {
       "id": "67ff44aa-1efd-4b13-a0e9-3648a09911dd",
       "comment": "",
       "command": "assertText",
-      "target": "css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
-      "targets": [],
+      "target": "css=.mb-4:nth-child(2) primitive-property:nth-child(1) .d-block:nth-child(2)",
+      "targets": [
+        ["css=.mb-4:nth-child(2) primitive-property:nth-child(1) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section[2]/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'123')]", "xpath:innerText"]
+      ],
       "value": "123"
     }, {
       "id": "f5197d46-41a7-4ef2-ac40-19f80c953929",
