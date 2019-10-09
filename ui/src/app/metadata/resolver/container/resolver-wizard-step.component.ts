@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { withLatestFrom, map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -64,14 +64,17 @@ export class ResolverWizardStepComponent implements OnDestroy {
             map(({ model, definition }) => definition.formatter(model))
         );
 
-        this.validators$ = this.definition$.pipe(
-            withLatestFrom(
-                this.store.select(fromResolver.getAllEntityIds),
-                this.model$
-            ),
-            map(([def, ids, resolver]) => def.getValidators(
-                ids.filter(id => id !== resolver.entityId)
-            ))
+        this.validators$ = combineLatest(
+            this.definition$,
+            this.store.select(fromResolver.getValidEntityIds),
+            this.model$
+        ).pipe(
+            map(([def, ids, resolver]) => {
+                console.log(resolver);
+                return def.getValidators(
+                    ids
+                );
+            })
         );
 
         this.valueChangeEmitted$.pipe(

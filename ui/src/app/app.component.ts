@@ -51,17 +51,5 @@ export class AppComponent implements OnInit {
         this.store.dispatch(new UserLoadRequestAction());
         this.store.dispatch(new VersionInfoLoadRequestAction());
         this.store.dispatch(new SetLocale(this.i18nService.getCurrentLocale()));
-
-        /*
-        this.router
-            .events
-            .pipe(
-                catchError(err => {
-                    console.error(err);
-                    return err;
-                })
-            )
-            .subscribe((ev) => console.log(ev));
-        */
     }
 }
