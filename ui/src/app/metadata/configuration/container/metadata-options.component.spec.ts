@@ -63,7 +63,7 @@ describe('Metadata Options Page Component', () => {
                 NgbDropdownModule,
                 StoreModule.forRoot({
                     'metadata-configuration': combineReducers(fromConfiguration.reducers),
-                    'filters': combineReducers(fromFilters.reducers),
+                    'filter': combineReducers(fromFilters.reducers),
                     'provider': combineReducers(fromProviders.reducers),
                     'resolver': combineReducers(fromResolvers.reducers)
                 }),

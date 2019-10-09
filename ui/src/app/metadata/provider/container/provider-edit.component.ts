@@ -90,9 +90,9 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         this.store.dispatch(new UpdateProviderRequest(this.latest));
     }
 
-    cancel(): void {
+    cancel(id): void {
         this.clear();
-        this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']);
+        this.router.navigate(['/', 'metadata', 'provider', id, 'configuration', 'options']);
     }
 
     canDeactivate(
