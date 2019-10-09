@@ -7,7 +7,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { StoreModule, Store } from '@ngrx/store';
 import { NewResolverComponent } from './new-resolver.component';
 
-import { BlankResolverComponent } from './blank-resolver.component';
 import { UploadResolverComponent } from './upload-resolver.component';
 import { CopyResolverComponent } from './copy-resolver.component';
 import { SharedModule } from '../../../shared/shared.module';
@@ -37,7 +36,6 @@ describe('New Resolver Page', () => {
             ],
             declarations: [
                 NewResolverComponent,
-                BlankResolverComponent,
                 UploadResolverComponent,
                 CopyResolverComponent
             ],
