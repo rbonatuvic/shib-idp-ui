@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbPaginationModule, NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import * as fromDashboard from '../reducer';
 import { ProviderSearchComponent } from '../component/provider-search.component';
@@ -13,7 +14,7 @@ import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { DashboardResolversListComponent } from './dashboard-resolvers-list.component';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { CustomDatePipe } from '../../../shared/pipe/date.pipe';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MockModule } from '../../../../testing/mock-module.stub';
 
 
 describe('Dashboard Resolvers List Page', () => {
@@ -51,7 +52,8 @@ describe('Dashboard Resolvers List Page', () => {
                 NgbModalModule,
                 MockI18nModule,
                 InfiniteScrollModule,
-                RouterModule
+                RouterModule,
+                MockModule
             ],
             declarations: [
                 DashboardResolversListComponent,
@@ -114,7 +116,7 @@ describe('Dashboard Resolvers List Page', () => {
     describe('onScroll method', () => {
         it('should call the loadMore method', () => {
             spyOn(instance, 'loadMore');
-            instance.onScroll(new Event('scrolled'));
+            instance.onScroll();
             expect(instance.loadMore).toHaveBeenCalledWith(instance.page + 1);
         });
     });

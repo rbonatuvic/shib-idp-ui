@@ -23,7 +23,6 @@ export const NameIDFilterConfiguration: Wizard<MetadataFilter> = {
                 'filterEnabled',
                 '@type',
                 'resourceId',
-                'version',
                 'removeExistingFormats',
                 'formats'
             ]

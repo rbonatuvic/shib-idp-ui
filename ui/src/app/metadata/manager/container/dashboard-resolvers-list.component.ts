@@ -69,7 +69,7 @@ export class DashboardResolversListComponent implements OnInit {
         this.page = 1;
     }
 
-    onScroll(event: Event): void {
+    onScroll(): void {
         this.loadMore(this.page + 1);
     }
 
