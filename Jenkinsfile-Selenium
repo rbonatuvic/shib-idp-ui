@@ -1,0 +1,37 @@
+pipeline {
+  agent any
+  options {
+    disableConcurrentBuilds()
+    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+  }
+  stages {
+    stage('Run Selenium tests') {
+      when {
+        expression {
+          return GIT_BRANCH == 'SHIBUI-1509'
+        }
+      }
+      steps {
+        sh '''
+          ./gradlew integrationTest -Dselenium.host=jenkins
+        '''
+      }
+      post {
+        always {
+          junit 'backend/build/test-results/integrationTest/**/*.xml'
+        }
+      }
+    }
+  }
+  post {
+    failure {
+      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: emailextrecipients([[$class: 'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']])])
+    }
+    success {
+      emailext body: '''${SCRIPT, template="groovy-text.template"}''', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: '[SHIBUI] Build Success'
+    }
+    always {
+      cleanWs()
+    }
+  }
+}
