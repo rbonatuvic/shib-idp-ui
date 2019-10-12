@@ -5,12 +5,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
   }
   stages {
-    stage('Run Selenium tests') {
-      when {
-        expression {
-          return GIT_BRANCH == 'SHIBUI-1509'
-        }
-      }
+    stage('Run Selenium tests') {      
       steps {
         sh '''
           ./gradlew integrationTest -Dselenium.host=jenkins
