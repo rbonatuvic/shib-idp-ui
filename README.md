@@ -2,7 +2,7 @@
 
 For more information, see `docs`
 
-## Requirements
+## Requirements_
 
 * Java 8 (note that ONLY Java 8 is supported at this time; other later versions might work)
 
