@@ -88,6 +88,10 @@ class SeleniumSIDETest extends Specification {
         // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:
         name                                                                | file
+        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
+        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
+        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
 //        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
@@ -107,10 +111,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
-        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
-        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
-        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
+
     }
 }
 
