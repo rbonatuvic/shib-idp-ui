@@ -546,10 +546,11 @@
       "id": "52f5680c-c63d-411e-8332-52901f12ea3b",
       "comment": "",
       "command": "assertText",
-      "target": "css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(1) primitive-property:nth-child(1) .d-block:nth-child(2)",
       "targets": [
-        ["css=.px-3:nth-child(1) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//summary-property/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(1) primitive-property:nth-child(1) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
       ],
       "value": "Test Metadata Provider"
@@ -557,10 +558,11 @@
       "id": "67ff44aa-1efd-4b13-a0e9-3648a09911dd",
       "comment": "",
       "command": "assertText",
-      "target": "css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(2) primitive-property:nth-child(1) .d-block:nth-child(2)",
       "targets": [
-        ["css=.px-3:nth-child(2) > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//section[2]/summary-property/div/span", "xpath:position"],
+        ["css=.mb-4:nth-child(2) primitive-property:nth-child(1) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section[2]/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[2]/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'123')]", "xpath:innerText"]
       ],
       "value": "123"
@@ -575,27 +577,49 @@
       ],
       "value": ""
     }, {
-      "id": "1067b0b4-8aff-4972-b6f5-e4479eca9150",
+      "id": "8ae5598c-a4b0-4816-859a-d30f38029f65",
       "comment": "",
-      "command": "waitForElementPresent",
-      "target": "css=.badge-success",
+      "command": "click",
+      "target": "linkText=Dashboard",
       "targets": [
-        ["css=.badge > span", "css:finder"],
-        ["xpath=//span/span", "xpath:position"]
+        ["linkText=Dashboard", "linkText"],
+        ["css=.nav-item > .nav-link", "css:finder"],
+        ["xpath=//div[@id='navbar']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Dashboard')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "dcc49d9d-c0c6-41e0-9683-8e5d6271b3e9",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Metadata Providers",
+      "targets": [
+        ["linkText=Metadata Providers", "linkText"],
+        ["css=.nav > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Metadata Providers')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/dashboard/metadata/manager/providers')]", "xpath:href"],
+        ["xpath=//dashboard-page/div/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Metadata Providers')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0acbec5-58ad-43de-837c-c40c2769fdd6",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=td:nth-child(2)",
+      "targets": [],
       "value": "10000"
     }, {
       "id": "f48dd1b5-607a-485b-b1d5-03301f99b9ce",
       "comment": "",
       "command": "assertText",
-      "target": "linkText=Test Metadata Provider",
+      "target": "css=td:nth-child(2)",
       "targets": [
-        ["linkText=Test Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/4cc9924f-fd9e-4ef3-bf57-3b24eec9f27f/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
+        ["css=td:nth-child(2)", "css:finder"],
+        ["xpath=//td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
       ],
       "value": "Test Metadata Provider"
     }, {
@@ -624,11 +648,14 @@
       "id": "211711a2-0af5-4f5e-a427-812c2de0264d",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-plus-circle",
+      "target": "id=addNewDropdown",
       "targets": [
-        ["css=.fa-plus-circle", "css:finder"],
-        ["xpath=//button[@id='addNewDropdown']/i", "xpath:idRelative"],
-        ["xpath=//i", "xpath:position"]
+        ["id=addNewDropdown", "id"],
+        ["css=#addNewDropdown", "css:finder"],
+        ["xpath=//button[@id='addNewDropdown']", "xpath:attributes"],
+        ["xpath=//div[@id='navbar']/ul/li/button", "xpath:idRelative"],
+        ["xpath=//li/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -914,6 +941,34 @@
       "targets": [
         ["css=.save", "css:finder"],
         ["xpath=//li[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c8b7c426-9afc-4fb0-8c09-211ae9ba0a62",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Dashboard",
+      "targets": [
+        ["linkText=Dashboard", "linkText"],
+        ["css=.nav-item > .nav-link", "css:finder"],
+        ["xpath=//div[@id='navbar']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Dashboard')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0ddad000-2e43-46f6-9558-6cb001a465dc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Metadata Providers",
+      "targets": [
+        ["linkText=Metadata Providers", "linkText"],
+        ["css=.nav > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Metadata Providers')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/dashboard/metadata/manager/providers')]", "xpath:href"],
+        ["xpath=//dashboard-page/div/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Metadata Providers')]", "xpath:innerText"]
       ],
       "value": ""
     }, {

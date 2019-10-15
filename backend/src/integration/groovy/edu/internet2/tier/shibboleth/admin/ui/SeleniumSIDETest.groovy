@@ -93,7 +93,7 @@ class SeleniumSIDETest extends Specification {
 //        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
 //        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
-//        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
+        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
 //        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
 //        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
