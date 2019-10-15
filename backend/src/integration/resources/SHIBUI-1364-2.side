@@ -1239,6 +1239,13 @@
         ["xpath=//section[2]/div/div[2]/object-property/primitive-property/div/div/span[3]", "xpath:position"]
       ],
       "value": "Name ID Filter"
+    }, {
+      "id": "5a4e74b2-fe33-462a-9739-37b2ffb099f0",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

@@ -163,6 +163,13 @@
         ["xpath=//td[contains(.,'https://wiki.shibboleth.net/shibboleth')]", "xpath:innerText"]
       ],
       "value": "https://wiki.shibboleth.net/shibboleth"
+    }, {
+      "id": "c5bfb51f-fd8e-4518-880d-2735077baebb",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

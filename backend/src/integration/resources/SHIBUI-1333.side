@@ -2104,6 +2104,13 @@
         ["xpath=//translate-i18n[contains(.,'Back to Top')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "8872eadd-b15a-48d3-8334-a54a3fa14e6d",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

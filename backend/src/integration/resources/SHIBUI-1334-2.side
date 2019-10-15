@@ -1114,6 +1114,13 @@
         ["xpath=//object-property/object-property/primitive-property[5]/div/span[2]", "xpath:position"]
       ],
       "value": "false"
+    }, {
+      "id": "a77b2cf6-c88d-458b-9421-2745634180a7",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

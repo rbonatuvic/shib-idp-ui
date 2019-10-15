@@ -2428,6 +2428,13 @@
       "target": "isPresent",
       "targets": [],
       "value": "true"
+    }, {
+      "id": "e901a20e-75e9-4f0d-abfc-f1fe8cf453b8",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

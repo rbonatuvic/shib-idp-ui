@@ -478,6 +478,13 @@
         ["xpath=//p[contains(.,'eval(true)')]", "xpath:innerText"]
       ],
       "value": "eval(true);"
+    }, {
+      "id": "29f454bc-2f1d-44b4-b9f9-fb390b2eddb2",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

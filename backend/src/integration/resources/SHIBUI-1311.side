@@ -991,6 +991,13 @@
         ["xpath=//tr[2]/td[6]/span/span", "xpath:position"]
       ],
       "value": "Disabled"
+    }, {
+      "id": "57d0e204-6c28-4be5-9888-28f8d7738508",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

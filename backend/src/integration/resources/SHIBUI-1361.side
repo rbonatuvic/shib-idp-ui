@@ -1297,6 +1297,13 @@
       "target": "rightDateIsDate",
       "targets": [],
       "value": "true"
+    }, {
+      "id": "bc352f8a-9212-4985-80b8-19a3814b5bfd",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

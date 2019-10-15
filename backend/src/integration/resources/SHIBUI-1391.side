@@ -755,6 +755,13 @@
         ["xpath=//div/div/input", "xpath:position"]
       ],
       "value": ".*"
+    }, {
+      "id": "f9d3ccc6-65d1-46dd-9d05-2d1bd74cc89e",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

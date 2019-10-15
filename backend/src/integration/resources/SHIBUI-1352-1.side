@@ -448,6 +448,13 @@
         ["xpath=//td[contains(.,'LocalDynamicMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "LocalDynamicMetadataResolver"
+    }, {
+      "id": "0da0b69c-a807-4961-ad8d-ef5eb1ba667e",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

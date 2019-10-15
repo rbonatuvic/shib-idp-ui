@@ -790,6 +790,13 @@
         ["xpath=//td[contains(.,'NameIDFormat')]", "xpath:innerText"]
       ],
       "value": "NameIDFormat"
+    }, {
+      "id": "d4c36d2c-c90e-45e6-ae49-a46b3c64a629",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

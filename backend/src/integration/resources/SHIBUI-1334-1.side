@@ -2441,6 +2441,13 @@
         ["xpath=//section[2]/div/div[2]/object-property/object-property/primitive-property/div/span[3]", "xpath:position"]
       ],
       "value": "Display Name"
+    }, {
+      "id": "c88d3154-c810-47cd-b8d8-48e705bad0f4",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

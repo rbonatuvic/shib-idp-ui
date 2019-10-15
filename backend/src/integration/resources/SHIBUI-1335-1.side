@@ -1693,6 +1693,13 @@
         ["xpath=//td[contains(.,'Entity Attributes Filter')]", "xpath:innerText"]
       ],
       "value": "Entity Attributes Filter"
+    }, {
+      "id": "13133548-1a88-4cc0-a861-7481794c65e0",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

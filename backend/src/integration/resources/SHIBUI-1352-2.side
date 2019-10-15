@@ -370,6 +370,13 @@
         ["xpath=//td[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FilesystemMetadataResolver"
+    }, {
+      "id": "4ff97235-563b-4d71-80b7-a8b263aeb90b",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

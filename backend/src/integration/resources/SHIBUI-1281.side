@@ -1944,6 +1944,13 @@
       "target": "css=td:nth-child(2)",
       "targets": [],
       "value": ""
+    }, {
+      "id": "3e7de570-9ff8-4dfe-9eaa-3417f3172d49",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{
