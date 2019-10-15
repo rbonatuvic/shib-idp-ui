@@ -2093,18 +2093,6 @@
       ],
       "value": "True"
     }, {
-      "id": "cf6660cb-2086-452f-a5e5-ad64db784d92",
-      "comment": "",
-      "command": "click",
-      "target": "css=.btn:nth-child(4) > translate-i18n",
-      "targets": [
-        ["css=.btn:nth-child(4) > translate-i18n", "css:finder"],
-        ["xpath=//div[@id='header']/button/translate-i18n", "xpath:idRelative"],
-        ["xpath=//div/button/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Back to Top')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "8872eadd-b15a-48d3-8334-a54a3fa14e6d",
       "comment": "",
       "command": "close",
