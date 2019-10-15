@@ -9,7 +9,6 @@ import { NgbDropdownModule, NgbPopoverModule, NgbModalModule } from '@ng-bootstr
 
 import { NewResolverComponent } from './container/new-resolver.component';
 import { UploadResolverComponent } from './container/upload-resolver.component';
-import { BlankResolverComponent } from './container/blank-resolver.component';
 import { CopyResolverComponent } from './container/copy-resolver.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchIdEffects } from './effect/search.effect';
@@ -42,7 +41,6 @@ import { MetadataConfigurationModule } from '../configuration/configuration.modu
     declarations: [
         NewResolverComponent,
         UploadResolverComponent,
-        BlankResolverComponent,
         CopyResolverComponent,
         ConfirmCopyComponent,
         ResolverEditComponent,

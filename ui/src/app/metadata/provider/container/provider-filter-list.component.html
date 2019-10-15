@@ -24,7 +24,12 @@
                     </a>
                 </editor-nav>
             </div>
-            <div class="col-6 col-lg-12 order-2 text-right">
+            <div class="col-6 col-lg-12 order-2 text-right d-flex justify-content-end justify-content-lg-between">
+                <a class="btn btn-link"
+                    [routerLink]="['/', 'metadata', 'provider', (provider$ | async).resourceId, 'configuration', 'options']">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>&nbsp;
+                    Return to Provider
+                </a>
                 <a [routerLink]="['../', 'filter', 'new']"
                     class="btn btn-success">
                     <i class="fa fa-plus-circle"></i>

@@ -104,7 +104,7 @@ export class FilterCollectionEffects {
         ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
+        tap(([filter, provider]) => this.navigateToParent(provider))
     );
 
     @Effect()
@@ -172,7 +172,7 @@ export class FilterCollectionEffects {
         ofType<UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        tap(([filter, provider]) => this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']))
+        tap(([filter, provider]) => this.navigateToParent(provider))
     );
 
     @Effect()
@@ -281,4 +281,20 @@ export class FilterCollectionEffects {
         private store: Store<fromFilter.State>,
         private i18nService: I18nService
     ) { }
+
+    navigateToParent(id) {
+        this.router.navigate(
+            [
+                '/',
+                'metadata',
+                'provider',
+                id,
+                'configuration',
+                'options'
+            ],
+            {
+                fragment: 'filters'
+            }
+        );
+    }
 }

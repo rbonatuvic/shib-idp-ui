@@ -104,10 +104,10 @@ describe('Provider Edit Component', () => {
     });
 
     describe('cancel method', () => {
-        it('should route to the metadata manager', () => {
+        it('should route to the provider', () => {
             spyOn(router, 'navigate');
             spyOn(app, 'clear');
-            app.cancel();
+            app.cancel('foo');
             expect(router.navigate).toHaveBeenCalled();
             expect(app.clear).toHaveBeenCalled();
         });
