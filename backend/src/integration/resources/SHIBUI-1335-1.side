@@ -572,20 +572,6 @@
       ],
       "value": ""
     }, {
-      "id": "12673aa7-fc4e-4877-9842-a9d88dbc2d97",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=File Backed HTTP Metadata Provider",
-      "targets": [
-        ["linkText=File Backed HTTP Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'File Backed HTTP Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/da22a0b7-40d7-418c-bbe9-7ba4c37d3905/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'File Backed HTTP Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "daa2d46a-d238-4a48-aca7-0f34c9b93d5f",
       "comment": "",
       "command": "click",
@@ -1630,21 +1616,23 @@
       "id": "100902ee-6d6e-4148-a69b-b37746a4ad6e",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(3)",
+      "target": "css=.list-group-item:nth-child(1) > filter-configuration-list-item > .d-flex > .btn",
       "targets": [
-        ["css=tr:nth-child(1) > .td-lg:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'Entity Attributes Filter')]", "xpath:innerText"]
+        ["css=.list-group-item:nth-child(1) > filter-configuration-list-item > .d-flex > .btn", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/button", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Entity Attributes Filter')]", "xpath:innerText"]
       ],
       "value": "Entity Attributes Filter"
     }, {
       "id": "9cc5dbab-bb39-455d-9338-6bdd054841e0",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(1) .fa-arrow-circle-down",
+      "target": "css=.list-group-item:nth-child(1) .btn:nth-child(2)",
       "targets": [
-        ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
-        ["xpath=//button[2]/i", "xpath:position"]
+        ["css=.list-group-item:nth-child(1) .btn:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1658,7 +1646,7 @@
       "id": "c9d498da-9f59-40ae-b5d4-cae397a13766",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(3)",
+      "target": "css=.list-group-item:nth-child(1) > filter-configuration-list-item > .d-flex > .btn",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(3)", "css:finder"],
         ["xpath=//td[3]", "xpath:position"],
@@ -1669,7 +1657,7 @@
       "id": "1b05bac6-3412-4f4d-b168-0f7fb124e5d0",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(1) .fa-arrow-circle-down",
+      "target": "css=.list-group-item:nth-child(1) .btn:nth-child(2)",
       "targets": [
         ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
         ["xpath=//button[2]/i", "xpath:position"]
@@ -1686,7 +1674,7 @@
       "id": "441608df-24a3-4a60-bfce-50a90ff0ee16",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(3)",
+      "target": "css=.list-group-item:nth-child(1) > filter-configuration-list-item > .d-flex > .btn",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(3)", "css:finder"],
         ["xpath=//td[3]", "xpath:position"],

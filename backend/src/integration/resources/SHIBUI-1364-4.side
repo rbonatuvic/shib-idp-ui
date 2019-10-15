@@ -607,34 +607,25 @@
       "id": "ae27b108-a2f4-4d4b-b375-b582ccc0ef56",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=td:nth-child(3)",
-      "targets": [],
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
+      "targets": [
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'DynamicHttpMetadataResolver')]", "xpath:innerText"]
+      ],
       "value": "10000"
     }, {
       "id": "8c52471a-70f5-43aa-b670-6f8d22e18668",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
         ["css=td:nth-child(3)", "css:finder"],
         ["xpath=//td[3]", "xpath:position"],
         ["xpath=//td[contains(.,'DynamicHttpMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "DynamicHttpMetadataResolver"
-    }, {
-      "id": "76629f3d-b0a3-40ac-b848-da22b0933c31",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Dynamic Http Metadata Provider",
-      "targets": [
-        ["linkText=Dynamic Http Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Dynamic Http Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/f5bb61ac-54fe-427e-8b6b-2fcdd66ba175/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Dynamic Http Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "31a8587f-8ac0-4512-98ec-6cd230dfb0b6",
       "comment": "",
@@ -884,29 +875,33 @@
       "id": "772bafa8-7089-4895-a66b-0d3c333c7245",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.td-lg:nth-child(4)",
+      "target": "css=span:nth-child(4)",
       "targets": [],
       "value": "10000"
     }, {
       "id": "e9f4ddf4-db8a-4bda-88cc-66173717986c",
       "comment": "",
       "command": "assertText",
-      "target": "css=.td-lg:nth-child(4)",
+      "target": "css=span:nth-child(4)",
       "targets": [
-        ["css=.td-lg:nth-child(4)", "css:finder"],
-        ["xpath=//td[4]", "xpath:position"],
-        ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
+        ["css=span:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/span[2]", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "EntityAttributes"
     }, {
       "id": "9a99cc7c-55e1-4f62-bf18-e5936e8a98a7",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-success",
+      "target": "linkText=Add Filter",
       "targets": [
-        ["css=.btn-success > translate-i18n", "css:finder"],
-        ["xpath=//div[2]/a/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Add Filter')]", "xpath:innerText"]
+        ["linkText=Add Filter", "linkText"],
+        ["css=#filters > .numbered-header .btn", "css:finder"],
+        ["xpath=//div[@id='filters']/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/provider/87ec177a-ad7c-4189-a154-2fe73caaf2e8/filter/new')]", "xpath:href"],
+        ["xpath=//div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'  Add Filter')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1020,60 +1015,6 @@
       ],
       "value": ""
     }, {
-      "id": "f967bc76-becf-4cf1-a2a1-11a9d7c9be49",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
-      "targets": [],
-      "value": "30000"
-    }, {
-      "id": "56e4a69d-0fcd-4d50-82c6-6716af892e39",
-      "comment": "",
-      "command": "click",
-      "target": "css=.nav-item translate-i18n",
-      "targets": [
-        ["css=.nav-item translate-i18n", "css:finder"],
-        ["xpath=//div[@id='navbar']/ul/li[2]/a/translate-i18n", "xpath:idRelative"],
-        ["xpath=//a/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Dashboard')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "b913ed4f-3802-4fb6-8a5b-0d5a9afb76d5",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Metadata Providers",
-      "targets": [
-        ["linkText=Metadata Providers", "linkText"],
-        ["css=.nav > .nav-item:nth-child(2) > .nav-link", "css:finder"],
-        ["xpath=//a[contains(text(),'Metadata Providers')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/dashboard/metadata/manager/providers')]", "xpath:href"],
-        ["xpath=//dashboard-page/div/ul/li[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Metadata Providers')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "4025491d-ad25-4b49-879a-af34ebd9ca7a",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=td > a",
-      "targets": [],
-      "value": "30000"
-    }, {
-      "id": "e28ed34b-a0bd-4339-844c-454835619d65",
-      "comment": "",
-      "command": "click",
-      "target": "css=td > a",
-      "targets": [
-        ["linkText=Dynamic Http Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Dynamic Http Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/e9de09a6-6d16-4e94-bba4-13fa38c312ff/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Dynamic Http Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "3535cbe5-1ade-4d00-ab7f-2a8d1a5a5f6c",
       "comment": "",
       "command": "pause",
@@ -1161,20 +1102,6 @@
       "command": "pause",
       "target": "2000",
       "targets": [],
-      "value": ""
-    }, {
-      "id": "1e0118a5-e853-4d3b-a017-225f41020fe8",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Dynamic Http Metadata Provider V2",
-      "targets": [
-        ["linkText=Dynamic Http Metadata Provider V2", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Dynamic Http Metadata Provider V2')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/e9de09a6-6d16-4e94-bba4-13fa38c312ff/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Dynamic Http Metadata Provider V2')]", "xpath:innerText"]
-      ],
       "value": ""
     }, {
       "id": "9a6b3095-e834-4f31-9d54-0561f556052f",

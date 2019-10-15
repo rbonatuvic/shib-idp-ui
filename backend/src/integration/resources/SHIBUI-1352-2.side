@@ -338,36 +338,34 @@
       "id": "3718c9f8-edb3-412a-9819-f3adc27f1226",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr > .text-right",
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
       "targets": [
-        ["css=tr > .text-right", "css:finder"],
-        ["xpath=//td[6]", "xpath:position"],
-        ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(1) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"]
       ],
       "value": "10000"
     }, {
       "id": "44749988-e30f-4328-9f78-dc9eaafa891a",
       "comment": "",
       "command": "assertText",
-      "target": "linkText=Test File System Provider",
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
       "targets": [
-        ["linkText=Test File System Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test File System Provider')]", "xpath:link"],
-        ["xpath=(//a[contains(@href, '')])[10]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test File System Provider')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(1) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"]
       ],
       "value": "Test File System Provider"
     }, {
       "id": "6ddcb09b-9d3b-4a13-bb95-1b79028ba2af",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
-        ["css=td:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FilesystemMetadataResolver"
     }, {

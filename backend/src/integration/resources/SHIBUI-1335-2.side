@@ -302,34 +302,21 @@
       "id": "27c0717e-f477-448b-8091-3bb2f3e6080f",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [],
       "value": "10000"
     }, {
       "id": "20f7b832-ec52-450a-8224-399f0d4de0a0",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
-        ["css=td:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FilesystemMetadataResolver"
-    }, {
-      "id": "7548f260-d328-4b47-97ed-cf6df394b6bc",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Filesystem Metadata Provider",
-      "targets": [
-        ["linkText=Filesystem Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Filesystem Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/5ddf2624-1a30-4709-8873-35bbba4a372f/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Filesystem Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "11d71ffb-3372-41cb-9832-72755ef298b5",
       "comment": "",
@@ -755,21 +742,23 @@
       "id": "d722902b-5c10-45dc-99df-d96f46e78313",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "target": "css=.list-group-item:nth-child(1) span:nth-child(4)",
       "targets": [
-        ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
-        ["xpath=//td[4]", "xpath:position"],
-        ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
+        ["css=.list-group-item:nth-child(1) span:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/span[2]", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "EntityAttributes"
     }, {
       "id": "c8d9bc5a-4b7e-4178-8aba-8b8280506c20",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(1) .fa-arrow-circle-down",
+      "target": "css=.list-group-item:nth-child(1) .btn:nth-child(2)",
       "targets": [
-        ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
-        ["xpath=//button[2]/i", "xpath:position"]
+        ["css=.list-group-item:nth-child(1) .btn:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -783,7 +772,7 @@
       "id": "d7909094-96ce-4532-98b4-446cc013c9c8",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "target": "css=.list-group-item:nth-child(1) span:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
         ["xpath=//td[4]", "xpath:position"],
