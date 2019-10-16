@@ -569,6 +569,13 @@
       ],
       "value": ""
     }, {
+      "id": "c5371051-48e0-4afd-9661-2db2ad0b22f0",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "1067b0b4-8aff-4972-b6f5-e4479eca9150",
       "comment": "",
       "command": "waitForElementPresent",
@@ -605,6 +612,13 @@
         ["xpath=//span[contains(.,'FileBackedHttpMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FileBackedHttpMetadataResolver"
+    }, {
+      "id": "67beda7f-7568-443b-9a60-03face9d936b",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "c768c2c1-09d4-46fe-8007-42fb4b3f4aaa",
       "comment": "",

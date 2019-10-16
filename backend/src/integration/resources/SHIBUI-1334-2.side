@@ -570,6 +570,13 @@
       ],
       "value": ""
     }, {
+      "id": "f72d07d6-e123-4698-a303-62a522ca45a1",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "debd4893-7551-4a7b-9e49-15aa89bf487f",
       "comment": "",
       "command": "click",
@@ -596,6 +603,13 @@
         ["xpath=//dashboard-page/div/ul/li[2]/a", "xpath:position"],
         ["xpath=//a[contains(.,'Metadata Providers')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "5886b5f7-440e-4430-910c-9e1c4e4a353f",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
       "value": ""
     }, {
       "id": "1067b0b4-8aff-4972-b6f5-e4479eca9150",

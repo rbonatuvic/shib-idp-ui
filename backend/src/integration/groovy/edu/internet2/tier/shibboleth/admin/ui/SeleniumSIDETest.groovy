@@ -29,36 +29,9 @@ class SeleniumSIDETest extends Specification {
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
-            } else {
-                it.driver = 'remote'
-                it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
-                it.remoteBrowser = 'firefox'
-            }
-            if (System.properties.getProperty('selenium.host')) {
-                it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
-            } else {
-                it.baseurl = "http://localhost:${this.randomPort}"
-            }
-            it
-        }
-        def runner = new Runner()
-        runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
-        main.setupRunner(runner, config, [] as String[])
-
-        expect:
-        def result = runner.run(file, this.class.getResourceAsStream(file))
-        runner.finish()
-
-        assert result.level.exitCode == 0
-    }
-
-    @Unroll
-    def "#name"() {
-        setup:
-        def main = new Main()
-        def config = new DefaultConfig([] as String[]).with {
-            if (System.properties.getProperty('webdriver.driver')) {
-                it.driver = System.properties.getProperty('webdriver.driver')
+                if (it.driver == "chrome") {
+                    it.addCliArgs('--disable-extensions')
+                }
             } else {
                 it.driver = 'remote'
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
@@ -84,6 +57,46 @@ class SeleniumSIDETest extends Specification {
         runner.finish()
 
         assert result.level.exitCode == 0
+    }
+
+    @Unroll
+    def "#name"() {
+        setup:
+        def main = new Main()
+        def config = new DefaultConfig([] as String[]).with {
+            if (System.properties.getProperty('webdriver.driver')) {
+                it.driver = System.properties.getProperty('webdriver.driver')
+                if (it.driver == "chrome") {
+                    it.addCliArgs('--disable-extensions')
+                }
+            } else {
+                it.driver = 'remote'
+                it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
+                it.remoteBrowser = 'firefox'
+            }
+            if (System.properties.getProperty('selenium.host')) {
+                it.baseurl = "http://${System.properties.getProperty('selenium.host')}:${this.randomPort}"
+            } else {
+                it.baseurl = "http://localhost:${this.randomPort}"
+            }
+            if (System.properties.getProperty('webdriver.headless')) {
+                it.addCliArgs('--headless')
+            }
+            it
+        }
+        def runner = new Runner()
+        runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
+        runner.varsMap.put('SHIBUI950', Paths.get(this.class.getResource('/SHIBUI-950.xml').toURI()).toString())
+        main.setupRunner(runner, config, [] as String[])
+
+        expect:
+        def result = runner.run(file, this.class.getResourceAsStream(file))
+        runner.finish()
+
+        assert result.level.exitCode == 0
+
+        cleanup:
+        runner.getWrappedDriver().quit()
 
         // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:

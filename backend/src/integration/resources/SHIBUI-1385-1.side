@@ -2292,6 +2292,13 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "3e8d20f4-879c-4105-8797-17afd60ba34b",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "id=/mdui/displayName",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "6f422a9d-6c2f-4200-bdd3-411ed44773a3",
       "comment": "",
       "command": "type",
