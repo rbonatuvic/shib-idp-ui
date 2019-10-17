@@ -606,10 +606,10 @@
     }, {
       "id": "ae27b108-a2f4-4d4b-b375-b582ccc0ef56",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
+      "command": "pause",
+      "target": "5000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "8c52471a-70f5-43aa-b670-6f8d22e18668",
       "comment": "",
