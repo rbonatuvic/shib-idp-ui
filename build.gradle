@@ -6,7 +6,7 @@ plugins {
 
 subprojects {
     tasks.withType(Test) {
-        maxHeapSize = "3g"        
+        maxHeapSize = "6g"        
     }
 }
 
