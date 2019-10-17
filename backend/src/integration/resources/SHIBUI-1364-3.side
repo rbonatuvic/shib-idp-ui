@@ -877,7 +877,7 @@
       "id": "455e24c1-5093-4da3-a62d-457bbf0cd5db",
       "comment": "",
       "command": "pause",
-      "target": "2000",
+      "target": "5000",
       "targets": [],
       "value": ""
     }, {
@@ -1456,6 +1456,13 @@
         ["xpath=//section[2]/div/div[2]/object-property/primitive-property/div/div/span[3]", "xpath:position"]
       ],
       "value": "Entity Attributes Filter"
+    }, {
+      "id": "5bf7126d-9dfb-4b97-8685-fd00778423eb",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

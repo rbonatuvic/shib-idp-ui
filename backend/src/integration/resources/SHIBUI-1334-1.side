@@ -1768,10 +1768,11 @@
       "id": "3baa7bd3-55c0-4d10-8aa3-c0daa63ec4d4",
       "comment": "",
       "command": "assertText",
-      "target": "css=.px-3 > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)",
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
       "targets": [
-        ["css=.px-3 > summary-property:nth-child(2) > .mb-3 > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//summary-property/div/span", "xpath:position"],
+        ["css=.d-block > primitive-property:nth-child(1) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'test-1234')]", "xpath:innerText"]
       ],
       "value": "test-1234"
@@ -1779,34 +1780,35 @@
       "id": "0d355ff0-0449-49a7-ae75-14d7c405b97c",
       "comment": "",
       "command": "assertText",
-      "target": "css=.px-3:nth-child(2) > summary-property:nth-child(2) tr:nth-child(2) > td:nth-child(1)",
+      "target": "css=.mb-4:nth-child(7) .py-2:nth-child(3) > .d-flex:nth-child(1) > .text-truncate",
       "targets": [
-        ["css=.px-3:nth-child(2) > summary-property:nth-child(2) tr:nth-child(2) > td:nth-child(1)", "css:finder"],
-        ["xpath=//div[2]/section[2]/summary-property/div/table/tbody/tr[2]/td", "xpath:position"],
-        ["xpath=//td[contains(.,'http://test.org/assert2')]", "xpath:innerText"]
+        ["css=.mb-4:nth-child(7) .py-2:nth-child(3) > .d-flex:nth-child(1) > .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section[7]/div/div[2]/object-property/array-property/div/div[3]/div/div[2]", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/object-property/array-property/div/div[3]/div/div[2]", "xpath:position"]
       ],
       "value": "http://test.org/assert2"
     }, {
       "id": "e53030b6-f344-4361-981d-b8303a721c5d",
       "comment": "",
       "command": "assertText",
-      "target": "css=summary-property:nth-child(2) > .mb-3 > .list-unstyled > li:nth-child(5)",
+      "target": "css=array-property:nth-child(8) .border-0",
       "targets": [
-        ["css=summary-property:nth-child(2) > .mb-3 > .list-unstyled > li:nth-child(5)", "css:finder"],
-        ["xpath=//li[5]", "xpath:position"],
-        ["xpath=//li[contains(.,'somethingElse')]", "xpath:innerText"]
+        ["css=array-property:nth-child(8) .border-0", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section[8]/div/div[2]/object-property/object-property/array-property/div/ul/li[5]", "xpath:idRelative"],
+        ["xpath=//section[8]/div/div[2]/object-property/object-property/array-property/div/ul/li[5]", "xpath:position"]
       ],
       "value": "somethingElse"
     }, {
       "id": "18636780-2feb-458f-97be-cf4a625b22e1",
       "comment": "",
       "command": "assertText",
-      "target": "css=summary-property:nth-child(10) .d-block:nth-child(2)",
+      "target": "css=.d-flex:nth-child(5) > .py-2 > span",
       "targets": [
-        ["css=summary-property:nth-child(10) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//summary-property[10]/div/span", "xpath:position"]
+        ["css=.d-flex:nth-child(5) > .py-2 > span", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section[9]/div/div[2]/object-property/array-property/div/div[5]/div/span", "xpath:idRelative"],
+        ["xpath=//div/div[5]/div/span", "xpath:position"]
       ],
-      "value": "true"
+      "value": "True"
     }, {
       "id": "1406d7e4-907d-4359-8de8-a40206f0993e",
       "comment": "",
@@ -2090,56 +2092,6 @@
         ["xpath=//section[8]/div/div[2]/object-property/array-property/div/div/div[3]/div/span", "xpath:position"]
       ],
       "value": "True"
-    }, {
-      "id": "cf6660cb-2086-452f-a5e5-ad64db784d92",
-      "comment": "",
-      "command": "click",
-      "target": "css=.btn:nth-child(4) > translate-i18n",
-      "targets": [
-        ["css=.btn:nth-child(4) > translate-i18n", "css:finder"],
-        ["xpath=//div[@id='header']/button/translate-i18n", "xpath:idRelative"],
-        ["xpath=//div/button/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Back to Top')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "6a183f25-1a9c-4774-a2cc-975a641ecef7",
-      "comment": "",
-      "command": "click",
-      "target": "css=.btn-link:nth-child(1) > translate-i18n",
-      "targets": [
-        ["css=.btn-link:nth-child(1) > translate-i18n", "css:finder"],
-        ["xpath=//div[@id='navigation']/div/a/translate-i18n", "xpath:idRelative"],
-        ["xpath=//div/a/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Version History')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "c0c0f9e1-af95-47b0-8aa8-ed141735d83b",
-      "comment": "",
-      "command": "click",
-      "target": "css=.breadcrumb-item > a",
-      "targets": [
-        ["css=.breadcrumb-item > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Dashboard')]", "xpath:link"],
-        ["xpath=(//a[contains(@href, '/dashboard')])[2]", "xpath:href"],
-        ["xpath=//ol/li/a", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "2536386b-315e-4b39-b9a7-badcfd0dfbb1",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Test Provider",
-      "targets": [
-        ["linkText=Test Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/resolver/5916c370-370b-4fae-94c2-a9a9675ae95b/configuration/options')]", "xpath:href"],
-        ["xpath=//td/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "2c46cdcd-d5a5-47fe-aa7b-0120fd2fcfc9",
       "comment": "",
@@ -2439,6 +2391,13 @@
         ["xpath=//section[2]/div/div[2]/object-property/object-property/primitive-property/div/span[3]", "xpath:position"]
       ],
       "value": "Display Name"
+    }, {
+      "id": "c88d3154-c810-47cd-b8d8-48e705bad0f4",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

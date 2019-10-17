@@ -1313,6 +1313,13 @@
         ["xpath=//span[3]", "xpath:position"]
       ],
       "value": "Test Metadata Provider"
+    }, {
+      "id": "03d7493c-75c4-4923-8330-686b12ff7a5b",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

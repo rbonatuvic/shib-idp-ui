@@ -936,6 +936,13 @@
         ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "EntityAttributes"
+    }, {
+      "id": "3c9a53c4-b56a-4a4b-9fef-12951d198754",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

@@ -581,20 +581,6 @@
       ],
       "value": ""
     }, {
-      "id": "12673aa7-fc4e-4877-9842-a9d88dbc2d97",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=File Backed HTTP Metadata Provider",
-      "targets": [
-        ["linkText=File Backed HTTP Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'File Backed HTTP Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/da22a0b7-40d7-418c-bbe9-7ba4c37d3905/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'File Backed HTTP Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "daa2d46a-d238-4a48-aca7-0f34c9b93d5f",
       "comment": "",
       "command": "click",
@@ -755,6 +741,13 @@
         ["xpath=//div/div/input", "xpath:position"]
       ],
       "value": ".*"
+    }, {
+      "id": "f9d3ccc6-65d1-46dd-9d05-2d1bd74cc89e",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{
