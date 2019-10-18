@@ -19,7 +19,7 @@ import { FilterListComponentStub } from '../../../../testing/filter-list.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderFilterListComponent)
+    @ViewChild(ProviderFilterListComponent, {static: true})
     public componentUnderTest: ProviderFilterListComponent;
 }
 

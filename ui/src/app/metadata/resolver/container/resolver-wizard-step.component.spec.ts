@@ -18,7 +18,7 @@ import { MetadataSourceWizard } from '../../domain/model/wizards/metadata-source
     `
 })
 class TestHostComponent {
-    @ViewChild(ResolverWizardStepComponent)
+    @ViewChild(ResolverWizardStepComponent, {static: true})
     public componentUnderTest: ResolverWizardStepComponent;
 }
 

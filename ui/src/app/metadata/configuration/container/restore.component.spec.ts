@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
     `
 })
 class TestHostComponent {
-    @ViewChild(RestoreComponent)
+    @ViewChild(RestoreComponent, {static: true})
     public componentUnderTest: RestoreComponent;
 }
 

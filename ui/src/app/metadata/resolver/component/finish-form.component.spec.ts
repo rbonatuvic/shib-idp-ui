@@ -25,7 +25,7 @@ class TestHostComponent {
         ...stubs.resolver
     });
 
-    @ViewChild(FinishFormComponent)
+    @ViewChild(FinishFormComponent, {static: true})
     public formUnderTest: FinishFormComponent;
 
     changeProvider(opts: any): void {

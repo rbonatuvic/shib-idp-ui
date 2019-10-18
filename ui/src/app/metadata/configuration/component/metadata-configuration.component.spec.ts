@@ -24,7 +24,7 @@ class ObjectPropertyComponent {
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataConfigurationComponent)
+    @ViewChild(MetadataConfigurationComponent, {static: true})
     public componentUnderTest: MetadataConfigurationComponent;
 
     configuration: MetadataConfiguration = {

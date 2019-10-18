@@ -1,6 +1,5 @@
-import { Injectable, ComponentRef } from '@angular/core';
-import { Http } from '@angular/http';
-import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 

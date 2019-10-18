@@ -17,7 +17,7 @@ import { RestoreActionTypes } from '../action/restore.action';
     `
 })
 class TestHostComponent {
-    @ViewChild(RestoreEditComponent)
+    @ViewChild(RestoreEditComponent, {static: true})
     public componentUnderTest: RestoreEditComponent;
 }
 

@@ -14,7 +14,7 @@ import { MetadataProvider } from '../../domain/model';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderSelectComponent)
+    @ViewChild(ProviderSelectComponent, {static: true})
     public componentUnderTest: ProviderSelectComponent;
 }
 

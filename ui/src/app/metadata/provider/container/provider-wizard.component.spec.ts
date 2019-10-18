@@ -19,7 +19,7 @@ import { MetadataConfigurationComponentStub } from '../../../../testing/metadata
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderWizardComponent)
+    @ViewChild(ProviderWizardComponent, {static: true})
     public componentUnderTest: ProviderWizardComponent;
 }
 

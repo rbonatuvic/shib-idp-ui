@@ -26,7 +26,7 @@ import { MetadataConfigurationComponentStub } from '../../../../testing/metadata
     `
 })
 class TestHostComponent {
-    @ViewChild(ResolverWizardComponent)
+    @ViewChild(ResolverWizardComponent, {static: true})
     public componentUnderTest: ResolverWizardComponent;
 }
 

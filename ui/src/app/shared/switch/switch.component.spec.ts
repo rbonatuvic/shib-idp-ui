@@ -12,7 +12,7 @@ class TestHostComponent {
 
     foo: FormControl = new FormControl(false);
 
-    @ViewChild(ToggleSwitchComponent)
+    @ViewChild(ToggleSwitchComponent, {static: true})
     public instanceUnderTest: ToggleSwitchComponent;
 }
 

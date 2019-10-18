@@ -16,7 +16,7 @@ import { ArrayPropertyComponentStub, PrimitivePropertyComponentStub } from '../.
     `
 })
 class TestHostComponent {
-    @ViewChild(FilterTargetPropertyComponent)
+    @ViewChild(FilterTargetPropertyComponent, {static: true})
     public componentUnderTest: FilterTargetPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.formatFilterTarget, {

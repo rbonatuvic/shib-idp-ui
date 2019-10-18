@@ -10,7 +10,7 @@ import { SchemaService } from '../../service/schema.service';
 })
 export class CustomFloatComponent extends IntegerWidget implements AfterViewInit {
     private _displayValue: string;
-    @ViewChild('input') element: ElementRef;
+    @ViewChild('input', { static: true }) element: ElementRef;
 
     constructor(
         private widgetService: SchemaService

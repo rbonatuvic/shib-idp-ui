@@ -1,5 +1,4 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { EffectsModule } from '@ngrx/effects';
 import { CommonModule } from '@angular/common';
 import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +37,6 @@ export const DECLARATIONS = [
     declarations: DECLARATIONS,
     entryComponents: COMPONENTS,
     imports: [
-        HttpModule,
         CommonModule,
         I18nModule,
         NgbPopoverModule,

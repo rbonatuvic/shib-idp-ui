@@ -18,7 +18,7 @@ import { NavigationServiceStub } from '../testing/navigation-service.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(AppComponent)
+    @ViewChild(AppComponent, {static: true})
     public componentUnderTest: AppComponent;
 }
 

@@ -14,7 +14,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
                 (save)="onSave($event)"></copy-resolver-form>`
 })
 class TestHostComponent {
-    @ViewChild(CopyResolverComponent)
+    @ViewChild(CopyResolverComponent, {static: true})
     public formUnderTest: CopyResolverComponent;
 
     onSave(event: any): void {}

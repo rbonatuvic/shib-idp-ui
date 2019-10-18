@@ -55,7 +55,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     @Output() more: EventEmitter<any> = new EventEmitter<any>();
     @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
 
-    @ViewChild('inputField') inputField: ElementRef;
+    @ViewChild('inputField', { static: true }) inputField: ElementRef;
     @ViewChildren('matchElement', { read: ElementRef }) listItems: QueryList<ElementRef>;
 
     focused: number;

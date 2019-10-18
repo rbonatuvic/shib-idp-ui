@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
     `
 })
 class TestHostComponent {
-    @ViewChild(VersionOptionsComponent)
+    @ViewChild(VersionOptionsComponent, {static: true})
     public componentUnderTest: VersionOptionsComponent;
 }
 

@@ -24,7 +24,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderEditComponent)
+    @ViewChild(ProviderEditComponent, {static: true})
     public componentUnderTest: ProviderEditComponent;
 }
 

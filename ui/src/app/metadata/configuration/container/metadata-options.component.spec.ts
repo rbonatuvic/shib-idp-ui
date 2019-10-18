@@ -32,7 +32,7 @@ import { NgbModalStub } from '../../../../testing/modal.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataOptionsComponent)
+    @ViewChild(MetadataOptionsComponent, {static: true})
     public componentUnderTest: MetadataOptionsComponent;
 
     configuration: MetadataConfiguration = {

@@ -20,7 +20,7 @@ export const TestData = {
     template: `<history-list [history]="history.versions" (compare)="compare($event)" (restore)="restore($event)"></history-list>`
 })
 class TestHostComponent {
-    @ViewChild(HistoryListComponent)
+    @ViewChild(HistoryListComponent, {static: true})
     public componentUnderTest: HistoryListComponent;
 
     history: MetadataHistory = TestData;

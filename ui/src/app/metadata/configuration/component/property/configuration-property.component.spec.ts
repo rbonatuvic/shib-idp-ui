@@ -15,7 +15,7 @@ import { ConfigurationPropertyComponent } from './configuration-property.compone
     `
 })
 class TestHostComponent {
-    @ViewChild(ConfigurationPropertyComponent)
+    @ViewChild(ConfigurationPropertyComponent, {static: true})
     public componentUnderTest: ConfigurationPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.name, {

@@ -31,7 +31,7 @@ export const TestData: FilterConfiguration = {
     template: `<filter-version-list [filters]="filters" (compare)="compare($event)"></filter-version-list>`
 })
 class TestHostComponent {
-    @ViewChild(FilterVersionListComponent)
+    @ViewChild(FilterVersionListComponent, {static: true})
     public componentUnderTest: FilterVersionListComponent;
 
     filters = TestData;

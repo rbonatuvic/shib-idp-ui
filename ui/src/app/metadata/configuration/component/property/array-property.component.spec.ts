@@ -18,7 +18,7 @@ import { of } from 'rxjs';
     `
 })
 class TestHostComponent {
-    @ViewChild(ArrayPropertyComponent)
+    @ViewChild(ArrayPropertyComponent, {static: true})
     public componentUnderTest: ArrayPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.list, [{
