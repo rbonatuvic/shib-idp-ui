@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { from } from 'rxjs';
 
 export const DEFAULT_MODAL_OPTIONS: NgbModalOptions = {
     size: 'lg'
@@ -21,6 +21,6 @@ export class ModalService {
         if (modal.hasOwnProperty('componentInstance')) {
             Object.keys(inputs).forEach(key => modal.componentInstance[key] = inputs[key]);
         }
-        return fromPromise(modal.result);
+        return from(modal.result);
     }
 } /* istanbul ignore next */

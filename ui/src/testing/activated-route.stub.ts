@@ -1,8 +1,8 @@
 /* istanbul ignore */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { convertToParamMap, ParamMap, ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { convertToParamMap, ParamMap } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 @Injectable()

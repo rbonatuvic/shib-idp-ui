@@ -1,5 +1,4 @@
 import { Component, Directive, Input, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NavigationExtras } from '@angular/router';
 
 /*tslint:disable*/

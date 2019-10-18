@@ -40,7 +40,6 @@
     "ngx-infinite-scroll": "^7.2.0",
     "ngx-schema-form": "2.3.5",
     "rxjs": "^6.5.3",
-    "rxjs-compat": "^6.5.1",
     "xml-formatter": "^1.0.1",
     "z-schema": "^3.22.0",
     "zone.js": "~0.9.1"
