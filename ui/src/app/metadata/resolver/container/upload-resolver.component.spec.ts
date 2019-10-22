@@ -16,7 +16,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
                 (fromUrl)="createFromUrl($event)"></upload-resolver-form>`
 })
 class TestHostComponent {
-    @ViewChild(UploadResolverComponent)
+    @ViewChild(UploadResolverComponent, {static: true})
     public formUnderTest: UploadResolverComponent;
 
     upload(event: Event): void {}

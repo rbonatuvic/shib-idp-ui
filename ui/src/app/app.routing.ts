@@ -5,11 +5,11 @@ const routes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
         path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
     },
     {
         path: 'metadata',
-        loadChildren: './metadata/metadata.module#MetadataModule'
+        loadChildren: () => import('./metadata/metadata.module').then(m => m.MetadataModule)
     }
 ];
 

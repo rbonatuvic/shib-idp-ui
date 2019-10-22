@@ -14,7 +14,7 @@ import { MetadataHeaderComponent } from './metadata-header.component';
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataHeaderComponent)
+    @ViewChild(MetadataHeaderComponent, {static: true})
     public componentUnderTest: MetadataHeaderComponent;
 
     isEnabled = true;

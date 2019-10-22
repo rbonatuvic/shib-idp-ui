@@ -16,7 +16,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(ConfigurationComponent)
+    @ViewChild(ConfigurationComponent, {static: true})
     public componentUnderTest: ConfigurationComponent;
 }
 

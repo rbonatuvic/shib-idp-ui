@@ -11,7 +11,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(UnsavedEntityComponent)
+    @ViewChild(UnsavedEntityComponent, {static: true})
     public componentUnderTest: UnsavedEntityComponent;
 }
 

@@ -18,7 +18,7 @@ import { FilterTargetPropertyComponent } from './filter-target-property.componen
     `
 })
 class TestHostComponent {
-    @ViewChild(ObjectPropertyComponent)
+    @ViewChild(ObjectPropertyComponent, {static: true})
     public componentUnderTest: ObjectPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.name, {

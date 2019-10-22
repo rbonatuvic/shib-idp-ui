@@ -15,7 +15,7 @@ import { MetadataXmlComponent } from './metadata-xml.component';
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataXmlComponent)
+    @ViewChild(MetadataXmlComponent, {static: true})
     public componentUnderTest: MetadataXmlComponent;
 }
 

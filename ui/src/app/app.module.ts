@@ -33,7 +33,13 @@ import { NavigationService } from './core/service/navigation.service';
     ],
     imports: [
         StoreModule.forRoot(reducers, {
-            metaReducers
+            metaReducers,
+            runtimeChecks: {
+                strictActionImmutability: false,
+                strictActionSerializability: false,
+                strictStateImmutability: false,
+                strictStateSerializability: false
+            }
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states
@@ -42,7 +48,7 @@ import { NavigationService } from './core/service/navigation.service';
         EffectsModule.forRoot([]),
         BrowserModule,
         CoreModule.forRoot(),
-        StoreRouterConnectingModule,
+        StoreRouterConnectingModule.forRoot(),
         NgbDropdownModule,
         NgbModalModule,
         NgbPopoverModule,

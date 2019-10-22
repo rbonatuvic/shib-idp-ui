@@ -45,7 +45,7 @@ class TestHostComponent {
         search: ['']
     });
 
-    @ViewChild(AutoCompleteComponent)
+    @ViewChild(AutoCompleteComponent, {static: true})
     public autoCompleteUnderTest: AutoCompleteComponent;
 
     configure(opts: any): void {

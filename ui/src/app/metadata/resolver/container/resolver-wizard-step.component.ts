@@ -70,7 +70,6 @@ export class ResolverWizardStepComponent implements OnDestroy {
             this.model$
         ).pipe(
             map(([def, ids, resolver]) => {
-                console.log(resolver);
                 return def.getValidators(
                     ids
                 );

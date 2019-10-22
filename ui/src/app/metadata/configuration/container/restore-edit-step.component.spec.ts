@@ -22,7 +22,7 @@ import { WizardActionTypes } from '../../../wizard/action/wizard.action';
     `
 })
 class TestHostComponent {
-    @ViewChild(RestoreEditStepComponent)
+    @ViewChild(RestoreEditStepComponent, {static: true})
     public componentUnderTest: RestoreEditStepComponent;
 }
 

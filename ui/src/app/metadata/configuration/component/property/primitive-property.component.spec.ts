@@ -13,7 +13,7 @@ import { PrimitivePropertyComponent } from './primitive-property.component';
     `
 })
 class TestHostComponent {
-    @ViewChild(PrimitivePropertyComponent)
+    @ViewChild(PrimitivePropertyComponent, {static: true})
     public componentUnderTest: PrimitivePropertyComponent;
 
     property: Property = {

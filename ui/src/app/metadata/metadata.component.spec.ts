@@ -13,7 +13,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataPageComponent)
+    @ViewChild(MetadataPageComponent, {static: true})
     public componentUnderTest: MetadataPageComponent;
 }
 

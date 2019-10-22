@@ -14,7 +14,7 @@ import { MockI18nModule } from '../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(WizardComponent)
+    @ViewChild(WizardComponent, {static: true})
     public componentUnderTest: WizardComponent;
 }
 

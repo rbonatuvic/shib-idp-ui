@@ -18,7 +18,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(EditorNavComponent)
+    @ViewChild(EditorNavComponent, {static: true})
     public componentUnderTest: EditorNavComponent;
 
     public format = NAV_FORMATS;

@@ -16,7 +16,7 @@ import { FileBackedHttpMetadataProviderEditor } from '../model';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderEditStepComponent)
+    @ViewChild(ProviderEditStepComponent, {static: true})
     public componentUnderTest: ProviderEditStepComponent;
 }
 

@@ -17,7 +17,7 @@ import { of } from 'rxjs';
     `
 })
 class TestHostComponent {
-    @ViewChild(SummaryPropertyComponent)
+    @ViewChild(SummaryPropertyComponent, {static: true})
     public componentUnderTest: SummaryPropertyComponent;
 
     private _property;

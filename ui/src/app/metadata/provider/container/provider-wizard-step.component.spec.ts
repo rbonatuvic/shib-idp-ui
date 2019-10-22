@@ -18,7 +18,7 @@ import { MetadataProviderWizard } from '../model';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderWizardStepComponent)
+    @ViewChild(ProviderWizardStepComponent, {static: true})
     public componentUnderTest: ProviderWizardStepComponent;
 }
 
