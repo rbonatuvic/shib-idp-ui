@@ -64,39 +64,6 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     }
 
     getValidators(entityIdList: string[]): { [key: string]: any } {
-        const checkRequiredChild = (value, property, form) => {
-            if (!value) {
-                return {
-                    code: 'REQUIRED',
-                    path: `#${property.path}`,
-                    message: `message.required`,
-                    params: [value]
-                };
-            }
-            return null;
-        };
-        const checkRequiredChildren = (value, property, form) => {
-            let errors;
-            Object.keys(value).forEach((item, index, all) => {
-                const error = checkRequiredChild(item, { path: `${index}` }, form);
-                if (error) {
-                    errors = errors || [];
-                    errors.push(error);
-                }
-            });
-            return errors;
-        };
-        const checkOrg = (value, property, form) => {
-            const org = property.parent;
-            const orgValue = org.value || {};
-            const err = Object.keys(orgValue) && !value ? {
-                code: 'ORG_INCOMPLETE',
-                path: `#${property.path}`,
-                message: `message.org-incomplete`,
-                params: [value]
-            } : null;
-            return err;
-        };
         const validators = {
             '/': (value, property, form_current) => {
                 let errors;
@@ -122,9 +89,19 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                 } : null;
                 return err;
             },
-            '/organization/name': checkOrg,
-            '/organization/displayName': checkOrg,
-            '/organization/url': checkOrg
+            '/relyingPartyOverrides': (value, property, form) => {
+                let errors;
+                if (!value.signAssertion && value.dontSignResponse) {
+                    errors = [];
+                    errors.push({
+                        code: 'INVALID_SIGNING',
+                        path: `#${property.path}`,
+                        message: 'message.invalid-signing',
+                        params: [value]
+                    });
+                }
+                return errors;
+            }
         };
         return validators;
     }
