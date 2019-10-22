@@ -1,4 +1,7 @@
 <div class="">
+    <ng-container *ngFor="let error of customErrors$ | async">
+        <div class="alert alert-danger">{{error.message | translate}}</div>
+    </ng-container>
     <div class="row">
         <ng-container *ngFor="let fieldset of formProperty.schema.fieldsets; let i = index;">
             <fieldset

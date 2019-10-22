@@ -1,7 +1,4 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Store } from '@ngrx/store';
-
-import * as fromRoot from '../app.reducer';
 
 @Component({
     selector: 'metadata-page',
@@ -10,7 +7,5 @@ import * as fromRoot from '../app.reducer';
     styleUrls: []
 })
 export class MetadataPageComponent {
-    constructor(
-        private store: Store<fromRoot.State>
-    ) {}
+    constructor() {}
 }

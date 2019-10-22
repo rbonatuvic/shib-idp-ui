@@ -41,9 +41,7 @@ describe('Metadata Source Base class', () => {
             expect(Object.keys(getValidators([]))).toEqual([
                 '/',
                 '/entityId',
-                '/organization/name',
-                '/organization/displayName',
-                '/organization/url'
+                '/relyingPartyOverrides'
             ]);
         });
     });
