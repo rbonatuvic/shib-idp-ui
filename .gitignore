@@ -385,3 +385,6 @@ gradle-app.setting
 
 # pac4j
 pac4j-module/out/
+
+#Local run shell script wrapper
+r

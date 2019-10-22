@@ -212,13 +212,19 @@ public class ModelRepresentationConversions {
                         overrideProperty.getAttributeFriendlyName(),
                         (String) o);
             case SET:
-                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                        overrideProperty.getAttributeFriendlyName(),
-                        (List<String>) o);
+                if(((List<String>)o).size() > 0) {
+                    return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                            overrideProperty.getAttributeFriendlyName(),
+                            (List<String>) o);
+                }
+                return null;
             case LIST:
-                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                        overrideProperty.getAttributeFriendlyName(),
-                        (List<String>) o);
+                if(((List<String>)o).size() > 0) {
+                    return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                            overrideProperty.getAttributeFriendlyName(),
+                            (List<String>) o);
+                }
+                return null;
             default:
                 throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
         }
