@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { switchMap, map } from 'rxjs/operators';
-
-import * as fromAdmin from '../reducer';
 import {
     LoadAdminRequest,
     AdminCollectionActionTypes,
@@ -91,7 +88,6 @@ export class AdminCollectionEffects {
 
     constructor(
         private actions$: Actions,
-        private adminService: AdminService,
-        private store: Store<fromAdmin.State>
+        private adminService: AdminService
     ) { }
 }

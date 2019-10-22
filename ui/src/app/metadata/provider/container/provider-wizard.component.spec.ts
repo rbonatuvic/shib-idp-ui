@@ -12,6 +12,8 @@ import { SummaryPropertyComponent } from '../../domain/component/summary-propert
 import * as fromWizard from '../../../wizard/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MetadataConfigurationComponentStub } from '../../../../testing/metadata-configuration.stub';
+import { WizardComponent } from '../../../wizard/component/wizard.component';
+import { EffectsModule } from '@ngrx/effects';
 
 @Component({
     template: `
@@ -33,6 +35,7 @@ describe('Provider Wizard Component', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
+                WizardModule.forRoot(),
                 WizardModule,
                 NgbDropdownModule,
                 NgbPopoverModule,
@@ -41,6 +44,7 @@ describe('Provider Wizard Component', () => {
                     provider: combineReducers(fromRoot.reducers),
                     wizard: combineReducers(fromWizard.reducers)
                 }),
+                EffectsModule.forRoot([]),
                 MockI18nModule
             ],
             declarations: [

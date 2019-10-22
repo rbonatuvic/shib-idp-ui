@@ -21,7 +21,6 @@ export class InfoIconComponent {
         private renderer: Renderer
     ) { }
     focus(element): void {
-        console.log(element.elementRef.nativeElement);
         this.renderer.invokeElementMethod(element.elementRef.nativeElement, 'focus');
     }
 }

@@ -14,6 +14,8 @@ import { UserEffects } from './effect/user.effect';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalService } from './service/modal.service';
 import { DifferentialService } from './service/differential.service';
+import { NavigatorService } from './service/navigator.service';
+import { NavigationService } from './service/navigation.service';
 
 export const COMPONENTS = [];
 
@@ -36,7 +38,9 @@ export class CoreModule {
                 FileService,
                 ModalService,
                 DifferentialService,
-                CanDeactivateGuard
+                CanDeactivateGuard,
+                NavigatorService,
+                NavigationService
             ]
         };
     }

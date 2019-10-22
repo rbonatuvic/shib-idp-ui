@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NavigatorService } from '../../core/service/navigator.service';
-import { getCurrentLanguage, getCurrentCountry, getCurrentLocale } from '../../shared/util';
+import { getCurrentLanguage, getCurrentLocale } from '../../shared/util';
 import { Messages } from '../model/Messages';
 
 @Injectable()
@@ -26,10 +26,6 @@ export class I18nService {
 
     getCurrentLanguage(): string {
         return getCurrentLanguage(this.navigator.native);
-    }
-
-    getCurrentCountry(): string {
-        return getCurrentCountry(this.navigator.native);
     }
 
     getCurrentLocale(): string {
