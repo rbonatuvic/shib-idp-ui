@@ -549,6 +549,13 @@
       ],
       "value": ""
     }, {
+      "id": "eab53a0d-32e6-4cb1-844b-d5fae8106820",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "094ce013-936c-4479-9c5b-ba26db4d05c9",
       "comment": "",
       "command": "waitForElementVisible",
@@ -567,6 +574,13 @@
       "target": "name=type",
       "targets": [],
       "value": "label=NameIDFormat"
+    }, {
+      "id": "85556730-f474-42bd-8c04-2620c8814202",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "471c00e2-52d8-4cf7-a071-00b50c98bf9e",
       "comment": "",

@@ -568,6 +568,13 @@
       ],
       "value": ""
     }, {
+      "id": "32c13864-5b11-4316-a27b-fd0042328924",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "094ce013-936c-4479-9c5b-ba26db4d05c9",
       "comment": "",
       "command": "waitForElementVisible",
@@ -586,6 +593,13 @@
       "target": "name=type",
       "targets": [],
       "value": "label=NameIDFormat"
+    }, {
+      "id": "c2598572-19aa-49d9-b336-f486a73e2579",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "471c00e2-52d8-4cf7-a071-00b50c98bf9e",
       "comment": "",
@@ -607,6 +621,13 @@
       ],
       "value": "Name ID Filter"
     }, {
+      "id": "4cc11ab2-b8e3-4669-ad58-9c8e9664a8de",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "ec49b089-a390-4cff-904f-363d3a57cb76",
       "comment": "",
       "command": "click",
@@ -620,10 +641,17 @@
       ],
       "value": ""
     }, {
+      "id": "7f746a0d-6006-4749-aa61-56b08b48c4fd",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "56abaabc-0c96-428c-9070-62a79ba90c6c",
       "comment": "",
       "command": "click",
-      "target": "linkText=Entity ID",
+      "target": "css=.show > .dropdown-item:nth-child(1)",
       "targets": [
         ["linkText=Entity ID", "linkText"],
         ["css=.show > .dropdown-item:nth-child(1)", "css:finder"],
