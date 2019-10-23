@@ -6,7 +6,7 @@ import { AdminCollectionEffects } from './admin-collection.effect';
 import { AdminService } from '../service/admin.service';
 import { Admin } from '../model/admin';
 import { LoadAdminRequest, LoadAdminSuccess, UpdateAdminSuccess } from '../action/admin-collection.action';
-import { AddNotification } from '../../notification/action/notification.action';
+import { AddNotification, ADD_NOTIFICATION } from '../../notification/action/notification.action';
 import { NotificationType, Notification } from '../../notification/model/notification';
 
 describe('Admin Collection Effects', () => {
@@ -77,13 +77,7 @@ describe('Admin Collection Effects', () => {
             actions.next(new UpdateAdminSuccess(payload));
 
             effects.updateAdminRoleSuccess$.subscribe(result => {
-                expect(result).toEqual(new AddNotification(
-                    new Notification(
-                        NotificationType.Success,
-                        `User update successful for ${payload.changes.username}`,
-                        5000
-                    )
-                ));
+                expect(result.type).toEqual(ADD_NOTIFICATION);
             });
         });
     });

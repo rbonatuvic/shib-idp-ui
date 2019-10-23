@@ -10,7 +10,7 @@ import { I18nService } from '../service/i18n.service';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
 import * as fromI18n from '../reducer';
 
-xdescribe('I18n Message Effects', () => {
+describe('I18n Message Effects', () => {
     let effects: MessageEffects;
     let actions: Subject<any>;
     let i18nService: I18nService;
@@ -20,7 +20,7 @@ xdescribe('I18n Message Effects', () => {
         TestBed.configureTestingModule({
             imports: [
                 StoreModule.forRoot({
-                    core: combineReducers(fromI18n.reducers, {
+                    i18n: combineReducers(fromI18n.reducers, {
                         messages: {
                             fetching: false,
                             messages: null,
@@ -32,7 +32,8 @@ xdescribe('I18n Message Effects', () => {
             ],
             providers: [
                 {
-                    provide: I18nService, useValue: {
+                    provide: I18nService,
+                    useValue: {
                         get: (locale: string) => of({})
                     }
                 },
