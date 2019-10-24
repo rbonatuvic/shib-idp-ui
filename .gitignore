@@ -388,3 +388,6 @@ pac4j-module/out/
 
 #Local run shell script wrapper
 r
+
+#Local integration test run shell script wrapper
+rinteg
