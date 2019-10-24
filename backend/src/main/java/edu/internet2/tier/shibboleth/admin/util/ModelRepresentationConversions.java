@@ -39,8 +39,7 @@ public class ModelRepresentationConversions {
         OpenSamlObjects openSamlObjects = new OpenSamlObjects();
         try {
             openSamlObjects.init();
-        }
-        catch (ComponentInitializationException e) {
+        } catch (ComponentInitializationException e) {
             throw new IllegalStateException(e);
         }
         ATTRIBUTE_UTILITY = new AttributeUtility(openSamlObjects);
@@ -81,7 +80,7 @@ public class ModelRepresentationConversions {
 
     public static Optional getOverrideByAttributeName(String attributeName) {
         return customPropertiesConfiguration.getOverrides().stream().filter(it -> it.getAttributeName().equals(attributeName)).findFirst();
-            }
+    }
 
     public static Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         Map<String, Object> relyingPartyOverrides = new HashMap<>();
@@ -91,8 +90,8 @@ public class ModelRepresentationConversions {
 
             Optional override = getOverrideByAttributeName(jpaAttribute.getName());
             if (override.isPresent()) {
-                relyingPartyOverrides.put(((RelyingPartyOverrideProperty)override.get()).getName(),
-                                          getOverrideFromAttribute(jpaAttribute));
+                relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(),
+                        getOverrideFromAttribute(jpaAttribute));
             }
         }
 
@@ -112,7 +111,7 @@ public class ModelRepresentationConversions {
                 .filter(it -> it.getAttributeFriendlyName().equals(attribute.getFriendlyName())).findFirst().get();
 
         List<XMLObject> attributeValues = attribute.getAttributeValues();
-        switch(AttributeTypes.valueOf(relyingPartyOverrideProperty.getDisplayType().toUpperCase())) {
+        switch (AttributeTypes.valueOf(relyingPartyOverrideProperty.getDisplayType().toUpperCase())) {
             case BOOLEAN:
                 if (relyingPartyOverrideProperty.getPersistType() != null
                         && (!relyingPartyOverrideProperty.getPersistType().equalsIgnoreCase("boolean"))) {
@@ -140,11 +139,11 @@ public class ModelRepresentationConversions {
         String objectType = xmlObject.getClass().getSimpleName();
         switch (objectType) {
             case "XSAny":
-                return ((XSAny)xmlObject).getTextContent();
+                return ((XSAny) xmlObject).getTextContent();
             case "XSString":
-                return ((XSString)xmlObject).getValue();
+                return ((XSString) xmlObject).getValue();
             case "XSBoolean":
-                return ((XSBoolean)xmlObject).getStoredValue();
+                return ((XSBoolean) xmlObject).getStoredValue();
             default:
                 throw new RuntimeException(String.format("Unsupported XML Object type [%s]", objectType));
         }
@@ -157,7 +156,7 @@ public class ModelRepresentationConversions {
             attributeList.add(ATTRIBUTE_UTILITY.createAttributeWithStringValues(MDDCConstants.RELEASE_ATTRIBUTES, attributeReleaseList));
         }
 
-        return (List<org.opensaml.saml.saml2.core.Attribute>)(List<? extends org.opensaml.saml.saml2.core.Attribute>)attributeList;
+        return (List<org.opensaml.saml.saml2.core.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) attributeList;
     }
 
     public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromRelyingPartyOverridesRepresentation
@@ -182,8 +181,8 @@ public class ModelRepresentationConversions {
     public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, RelyingPartyOverrideProperty overrideProperty) {
         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
             case BOOLEAN:
-                if ((o instanceof Boolean && ((Boolean)o)) ||
-                        (o instanceof String) && Boolean.valueOf((String)o)) {
+                if ((o instanceof Boolean && ((Boolean) o)) ||
+                        (o instanceof String) && Boolean.valueOf((String) o)) {
                     if (overrideProperty.getPersistType() != null &&
                             !overrideProperty.getPersistType().equalsIgnoreCase("boolean")) {
                         return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
@@ -195,7 +194,7 @@ public class ModelRepresentationConversions {
                                     overrideProperty.getAttributeFriendlyName(),
                                     Boolean.valueOf((String) o));
                         } else {
-                            Boolean value = Boolean.valueOf(overrideProperty.getInvert()) ^ (Boolean)o;
+                            Boolean value = Boolean.valueOf(overrideProperty.getInvert()) ^ (Boolean) o;
                             return ATTRIBUTE_UTILITY.createAttributeWithBooleanValue(overrideProperty.getAttributeName(),
                                     overrideProperty.getAttributeFriendlyName(),
                                     value);
@@ -212,24 +211,19 @@ public class ModelRepresentationConversions {
                         overrideProperty.getAttributeFriendlyName(),
                         (String) o);
             case SET:
-                if(((List<String>)o).size() > 0) {
-                    return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                            overrideProperty.getAttributeFriendlyName(),
-                            (List<String>) o);
-                }
-                return null;
+                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (List<String>) o);
+
             case LIST:
-                if(((List<String>)o).size() > 0) {
-                    return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                            overrideProperty.getAttributeFriendlyName(),
-                            (List<String>) o);
-                }
-                return null;
+                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
+                        overrideProperty.getAttributeFriendlyName(),
+                        (List<String>) o);
+
             default:
                 throw new UnsupportedOperationException("getAttributeListFromRelyingPartyOverridesRepresentation was called with an unsupported type (" + overrideProperty.getDisplayType() + ")!");
         }
     }
-
 
     public enum AttributeTypes {
         BOOLEAN,

@@ -64,7 +64,10 @@ public class AttributeUtility {
     }
 
     public edu.internet2.tier.shibboleth.admin.ui.domain.Attribute createAttributeWithStringValues(String name, String friendlyName, List<String> values) {
-        return createAttributeWithStringValues(name, friendlyName, values.toArray(new String[]{}));
+        if(values.size() > 0) {
+            return createAttributeWithStringValues(name, friendlyName, values.toArray(new String[]{}));
+        }
+        return null;
     }
 
     /* Calling this method with name = MDDCConstants.RELEASE_ATTRIBUTES seems to be a special case. In this case,
