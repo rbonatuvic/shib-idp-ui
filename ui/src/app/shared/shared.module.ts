@@ -9,7 +9,6 @@ import { ValidFormIconComponent } from './component/valid-form-icon.component';
 import { PrettyXml } from './pipe/pretty-xml.pipe';
 import { ToggleSwitchComponent } from './switch/switch.component';
 import { ContenteditableDirective } from './contenteditable/contenteditable.directive';
-import { ReplacePipe } from './pipe/replace.pipe';
 import { I18nModule } from '../i18n/i18n.module';
 import { CustomDatePipe } from './pipe/date.pipe';
 import { InfoIconComponent } from './component/info-icon.component';
@@ -31,7 +30,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         InputDefaultsDirective,
         ValidFormIconComponent,
         PrettyXml,
-        ReplacePipe,
         CustomDatePipe,
         ContenteditableDirective,
         InfoIconComponent
@@ -47,7 +45,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         ValidFormIconComponent,
         ValidationClassDirective,
         ContenteditableDirective,
-        ReplacePipe,
         CustomDatePipe,
         InfoIconComponent
     ]

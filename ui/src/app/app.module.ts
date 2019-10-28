@@ -18,7 +18,6 @@ import { CustomRouterStateSerializer } from './shared/util';
 import { AuthorizedInterceptor } from './core/service/authorized.interceptor';
 import { NotificationModule } from './notification/notification.module';
 import { ErrorInterceptor } from './core/service/error.interceptor';
-import { NavigatorService } from './core/service/navigator.service';
 import { ContentionModule } from './contention/contention.module';
 import { SharedModule } from './shared/shared.module';
 import { WizardModule } from './wizard/wizard.module';
@@ -64,8 +63,6 @@ import { NavigationService } from './core/service/navigation.service';
         AppRoutingModule
     ],
     providers: [
-        NavigatorService,
-        NavigationService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         {
             provide: HTTP_INTERCEPTORS,

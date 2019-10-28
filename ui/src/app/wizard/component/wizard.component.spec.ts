@@ -5,7 +5,8 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
 import * as fromWizard from '../reducer';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { WizardComponent, ICONS } from './wizard.component';
+import { WizardComponent } from './wizard.component';
+import { WizardService } from '../service/wizard.service';
 import { MockI18nModule } from '../../../testing/i18n.stub';
 
 @Component({
@@ -39,6 +40,9 @@ describe('Wizard Component', () => {
                 WizardComponent,
                 TestHostComponent
             ],
+            providers: [
+                WizardService
+            ]
         }).compileComponents();
 
         store = TestBed.get(Store);
@@ -52,15 +56,5 @@ describe('Wizard Component', () => {
 
     it('should compile without error', () => {
         expect(app).toBeTruthy();
-    });
-
-    describe('getIcon method', () => {
-        it('should return the check string for the last index', () => {
-            expect(app.getIcon({ index: 'foo' }, { index: 'foo' })).toEqual(ICONS.CHECK);
-        });
-        it('should return the index icon for other indexes', () => {
-            expect(app.getIcon({ index: 'foo' }, { index: 'bar' })).toEqual(ICONS.INDEX);
-            expect(app.getIcon({ index: 'foo' }, null)).toEqual(ICONS.INDEX);
-        });
     });
 });

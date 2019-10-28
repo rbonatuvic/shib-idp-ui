@@ -90,17 +90,15 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                 return err;
             },
             '/relyingPartyOverrides': (value, property, form) => {
-                let errors;
                 if (!value.signAssertion && value.dontSignResponse) {
-                    errors = [];
-                    errors.push({
+                    return {
                         code: 'INVALID_SIGNING',
                         path: `#${property.path}`,
                         message: 'message.invalid-signing',
                         params: [value]
-                    });
+                    };
                 }
-                return errors;
+                return null;
             }
         };
         return validators;

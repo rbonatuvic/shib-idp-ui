@@ -117,5 +117,14 @@ describe('FileBackedHttpMetadataProviderWizard', () => {
                 '/metadataURL'
             ]);
         });
+
+        it('should validate the metadataUrl format', () => {
+            const validators = getValidators();
+            const path = '/metadataURL';
+            const validator = validators[path];
+
+            expect(validator('foo', { path })).toBeDefined();
+            expect(validator('http://foo.com', { path })).toBeNull();
+        });
     });
 });

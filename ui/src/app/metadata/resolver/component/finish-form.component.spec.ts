@@ -83,7 +83,7 @@ describe('Finished Form Component', () => {
             expect(form.form.reset).toHaveBeenCalled();
         });
 
-        xit('should reset the form with serviceEnabled = false if no resolver', () => {
+        it('should reset the form with serviceEnabled = false if no resolver', () => {
             spyOn(form.form, 'reset').and.callThrough();
             delete instance.resolver;
             fixture.detectChanges();
