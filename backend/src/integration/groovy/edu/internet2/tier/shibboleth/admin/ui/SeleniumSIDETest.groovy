@@ -29,6 +29,9 @@ class SeleniumSIDETest extends Specification {
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
+                if (it.driver == "chrome") {
+                    it.addCliArgs('--disable-extensions')
+                }
             } else {
                 it.driver = 'remote'
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
@@ -39,10 +42,14 @@ class SeleniumSIDETest extends Specification {
             } else {
                 it.baseurl = "http://localhost:${this.randomPort}"
             }
+            if (System.properties.getProperty('webdriver.headless')) {
+                it.addCliArgs('--headless')
+            }
             it
         }
         def runner = new Runner()
         runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
+        runner.varsMap.put('SHIBUI950', Paths.get(this.class.getResource('/SHIBUI-950.xml').toURI()).toString())
         main.setupRunner(runner, config, [] as String[])
 
         expect:
@@ -59,6 +66,9 @@ class SeleniumSIDETest extends Specification {
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
+                if (it.driver == "chrome") {
+                    it.addCliArgs('--disable-extensions')
+                }
             } else {
                 it.driver = 'remote'
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
@@ -85,32 +95,35 @@ class SeleniumSIDETest extends Specification {
 
         assert result.level.exitCode == 0
 
+        cleanup:
+        runner.getWrappedDriver().quit()
+
         // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:
         name                                                                | file
-//        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
-//        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
-//        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
-//        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
+        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
+        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
+        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
-//        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
+        'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
-//        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
-//        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
+        'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
+        'SHIBUI-1352: Create FileSystem provider'                           | '/SHIBUI-1352-2.side'
         'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
         'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
-//        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
-//        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
-//        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side'
-//        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
-//        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-//        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
-//        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
+        'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
+        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
+        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side'
+        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
+        'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
+        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
-//        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
+        'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
-//        'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
+        'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
     }
 }
 

@@ -569,20 +569,28 @@
       ],
       "value": ""
     }, {
+      "id": "89e87484-d5b5-4788-816d-9ca4d22f053a",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "1067b0b4-8aff-4972-b6f5-e4479eca9150",
       "comment": "",
       "command": "waitForElementPresent",
-      "target": "css=.badge-success",
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
       "targets": [
-        ["css=.badge > span", "css:finder"],
-        ["xpath=//span/span", "xpath:position"]
+        ["css=.d-block > primitive-property:nth-child(1) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"]
       ],
       "value": "10000"
     }, {
       "id": "f48dd1b5-607a-485b-b1d5-03301f99b9ce",
       "comment": "",
       "command": "assertText",
-      "target": "linkText=Test Metadata Provider",
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
       "targets": [
         ["linkText=Test Metadata Provider", "linkText"],
         ["css=td > a", "css:finder"],
@@ -596,38 +604,33 @@
       "id": "5eccd4e9-a451-4ec8-a9e1-1e1f8e771677",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
-        ["css=td:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'FileBackedHttpMetadataResolver')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'FileBackedHttpMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FileBackedHttpMetadataResolver"
+    }, {
+      "id": "77643669-03f5-4c28-9239-885bdd53749c",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "c768c2c1-09d4-46fe-8007-42fb4b3f4aaa",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(4)",
+      "target": "css=.author",
       "targets": [
-        ["css=td:nth-child(4)", "css:finder"],
-        ["xpath=//td[4]", "xpath:position"],
-        ["xpath=//td[contains(.,'admin')]", "xpath:innerText"]
+        ["css=.author", "css:finder"],
+        ["xpath=//div[@id='header']/metadata-header/div/div/h5/span[2]", "xpath:idRelative"],
+        ["xpath=//span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'admin')]", "xpath:innerText"]
       ],
       "value": "admin"
-    }, {
-      "id": "8283ffc5-d46c-4a07-b95e-1534dfd34c02",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Test Metadata Provider",
-      "targets": [
-        ["linkText=Test Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/ae086029-5871-4951-bcf0-8903d7a1a1f7/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "67578648-0800-4716-8c0c-27741770249a",
       "comment": "",
@@ -696,20 +699,6 @@
       "command": "pause",
       "target": "2000",
       "targets": [],
-      "value": ""
-    }, {
-      "id": "cf005a45-74ae-4f7a-a53c-ed59d63f7114",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Test Metadata Provider",
-      "targets": [
-        ["linkText=Test Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/ae086029-5871-4951-bcf0-8903d7a1a1f7/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
-      ],
       "value": ""
     }, {
       "id": "ea880e6a-498a-427a-bc08-8058137d62e0",
