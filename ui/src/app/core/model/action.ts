@@ -4,4 +4,5 @@ export interface NavigationAction {
     label: string;
     content: string;
     icon?: string;
+    restrict?: string[];
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of, combineLatest } from 'rxjs';
+import { map, catchError, filter } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -44,7 +44,14 @@ export class AppComponent implements OnInit {
         this.formatted$ = this.version$.pipe(map(this.formatter));
         this.isAdmin$ = this.store.select(fromRoot.isCurrentUserAdmin);
 
-        this.nav$ = this.navService.emitter;
+        this.nav$ = combineLatest(
+            this.store.select(fromRoot.getCurrentUserRole).pipe(filter(r => !!r)),
+            this.navService.emitter
+        ).pipe(
+            map(([role, actions]) => actions.filter(
+                action => action.restrict ? action.restrict.includes(role) : action
+            )
+        ));
     }
 
     ngOnInit(): void {

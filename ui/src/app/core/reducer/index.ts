@@ -46,4 +46,6 @@ export const getConfigState = createSelector(getCoreFeature, getConfigStateFn);
 export const getRoles = createSelector(getConfigState, fromConfig.getRoles);
 
 export const getUserRoles = createSelector(getRoles, filterRolesFn);
+export const getCurrentUserRole = createSelector(getUser, u => u ? u.role : null);
+
 export const isCurrentUserAdmin = createSelector(getUser, isUserAdminFn);
