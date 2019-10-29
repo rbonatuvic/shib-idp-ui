@@ -31,17 +31,23 @@
                 "name": {
                     "title": "label.organization-name",
                     "description": "tooltip.organization-name",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "displayName": {
                     "title": "label.organization-display-name",
                     "description": "tooltip.organization-display-name",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "url": {
                     "title": "label.organization-url",
                     "description": "tooltip.organization-url",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 }
             },
             "dependencies": {
@@ -101,17 +107,23 @@
                 "displayName": {
                     "title": "label.display-name",
                     "description": "tooltip.mdui-display-name",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "informationUrl": {
                     "title": "label.information-url",
                     "description": "tooltip.mdui-information-url",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "privacyStatementUrl": {
                     "title": "label.privacy-statement-url",
                     "description": "tooltip.mdui-privacy-statement-url",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "description": {
                     "title": "label.description",
@@ -119,26 +131,28 @@
                     "type": "string",
                     "widget": {
                         "id": "textarea"
-                    }
+                    },
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "logoUrl": {
                     "title": "label.logo-url",
                     "description": "tooltip.mdui-logo-url",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
                 },
                 "logoHeight": {
                     "title": "label.logo-height",
                     "description": "tooltip.mdui-logo-height",
                     "min": 0,
-                    "type": "integer",
-                    "default": 0
+                    "type": "integer"
                 },
                 "logoWidth": {
                     "title": "label.logo-width",
                     "description": "tooltip.mdui-logo-width",
                     "min": 0,
-                    "type": "integer",
-                    "default": 0
+                    "type": "integer"
                 }
             }
         },

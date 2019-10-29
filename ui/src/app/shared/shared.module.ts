@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HighlightPipe } from './pipe/highlight.pipe';
 import { AutoCompleteComponent } from './autocomplete/autocomplete.component';
 import { ValidationClassDirective } from './validation/validation-class.directive';
-import { InputDefaultsDirective } from './directive/input-defaults.directive';
 import { ValidFormIconComponent } from './component/valid-form-icon.component';
 import { PrettyXml } from './pipe/pretty-xml.pipe';
 import { ToggleSwitchComponent } from './switch/switch.component';
@@ -27,7 +26,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         AutoCompleteComponent,
         ToggleSwitchComponent,
         ValidationClassDirective,
-        InputDefaultsDirective,
         ValidFormIconComponent,
         PrettyXml,
         CustomDatePipe,
@@ -41,7 +39,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
-        InputDefaultsDirective,
         ValidFormIconComponent,
         ValidationClassDirective,
         ContenteditableDirective,
