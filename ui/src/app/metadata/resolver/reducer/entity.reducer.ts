@@ -16,10 +16,10 @@ export const initialState: EntityState = {
 
 export function reducer(state = initialState, action: ResolverEntityActionUnion): EntityState {
     switch (action.type) {
-        case ResolverEntityActionTypes.UPDATE_CHANGES: {
+        case ResolverEntityActionTypes.UPDATE_CHANGES_SUCCESS: {
             return {
                 ...state,
-                changes: { ...state.changes, ...action.payload }
+                changes: { ...action.payload }
             };
         }
         case ResolverEntityActionTypes.UPDATE_STATUS: {

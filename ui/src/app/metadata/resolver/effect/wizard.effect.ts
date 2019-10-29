@@ -5,9 +5,9 @@ import { map, filter, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {
-    UpdateChanges,
     Clear,
-    ResolverEntityActionTypes
+    ResolverEntityActionTypes,
+    UpdateChangesSuccess
 } from '../action/entity.action';
 import {
     ResolverCollectionActionTypes,
@@ -17,18 +17,17 @@ import {
 import * as fromResolver from '../reducer';
 
 import { EntityDraftService } from '../../domain/service/draft.service';
-import { UpdateDraftRequest, SelectDraftSuccess, DraftActionTypes } from '../action/draft.action';
+import { UpdateDraftRequest } from '../action/draft.action';
 
 @Injectable()
 export class WizardEffects {
 
     @Effect()
     updateResolver$ = this.actions$.pipe(
-        ofType<UpdateChanges>(ResolverEntityActionTypes.UPDATE_CHANGES),
+        ofType<UpdateChangesSuccess>(ResolverEntityActionTypes.UPDATE_CHANGES_SUCCESS),
         map(action => action.payload),
         filter(provider => !provider.createdDate),
-        withLatestFrom(this.store.select(fromResolver.getSelectedDraft)),
-        map(([provider, draft]) => new UpdateDraftRequest({ ...draft, ...provider }))
+        map((provider) => new UpdateDraftRequest({ ...provider }))
     );
 
     @Effect()
