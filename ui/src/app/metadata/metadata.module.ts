@@ -16,7 +16,6 @@ import { NavigationService } from '../core/service/navigation.service';
 import { MetadataResolver } from './domain/model';
 import { AddDraftRequest } from './resolver/action/draft.action';
 import * as fromResolver from './resolver/reducer';
-import * as fromProvider from './provider/reducer';
 import { Router } from '@angular/router';
 
 @NgModule({
@@ -66,7 +65,8 @@ export class MetadataModule {
                 this.router.navigate(['/metadata', 'provider', 'wizard']);
             },
             category: 'metadata',
-            icon: 'fa-cubes'
+            icon: 'fa-cubes',
+            restrict: ['ROLE_ADMIN']
         });
     }
 }
