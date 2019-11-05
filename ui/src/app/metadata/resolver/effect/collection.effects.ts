@@ -26,7 +26,6 @@ import {
     CreateResolverFromUrlRequest
 } from '../action/collection.action';
 import * as draftActions from '../action/draft.action';
-import {  } from '../action/collection.action';
 import { ResolverService } from '../../domain/service/resolver.service';
 import { removeNulls } from '../../../shared/util';
 import { AddNotification } from '../../../notification/action/notification.action';
@@ -34,7 +33,6 @@ import { Notification, NotificationType } from '../../../notification/model/noti
 import { I18nService } from '../../../i18n/service/i18n.service';
 import * as fromRoot from '../../../app.reducer';
 import * as fromI18n from '../../../i18n/reducer';
-import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { UpdateSaving } from '../action/entity.action';
 
 

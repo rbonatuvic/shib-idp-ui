@@ -5,11 +5,14 @@ import { switchMap, map, withLatestFrom, tap } from 'rxjs/operators';
 
 import * as fromResolver from '../reducer';
 import * as fromRoot from '../../../app.reducer';
+import * as fromWizard from '../../../wizard/reducer';
 
 import {
     ResolverEntityActionTypes,
     Clear,
-    Cancel
+    Cancel,
+    UpdateChangesRequest,
+    UpdateChangesSuccess
 } from '../action/entity.action';
 import * as provider from '../action/collection.action';
 
@@ -23,6 +26,25 @@ import { ContentionService } from '../../../contention/service/contention.servic
 
 @Injectable()
 export class EntityEffects {
+
+    @Effect()
+    updateChanges$ = this.actions$.pipe(
+        ofType<UpdateChangesRequest>(ResolverEntityActionTypes.UPDATE_CHANGES_REQUEST),
+        map(action => action.payload),
+        withLatestFrom(
+            this.store.select(fromResolver.getEntityChanges),
+            this.store.select(fromWizard.getSchema)
+        ),
+        map(([changes, stored, schema]) => {
+            const props = Object.keys(schema.properties);
+            const diffed = props.reduce((changeObj, prop) => {
+                changeObj[prop] = !changes.hasOwnProperty(prop) && stored.hasOwnProperty(prop) ? null : changes[prop];
+                return changeObj;
+            }, {});
+            const update = { ...stored, ...diffed };
+            return new UpdateChangesSuccess(update);
+        })
+    );
 
     @Effect()
     cancelChanges$ = this.actions$.pipe(

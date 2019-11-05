@@ -1,9 +1,9 @@
 import { reducer } from './entity.reducer';
 import * as fromEntity from './entity.reducer';
 import {
-    UpdateChanges,
     UpdateStatus,
-    Clear
+    Clear,
+    UpdateChangesSuccess
 } from '../action/entity.action';
 import { MetadataResolver } from '../../domain/model';
 
@@ -42,7 +42,7 @@ describe('Entity Reducer', () => {
 
     describe('Entity Update Changes', () => {
         it('should add changes of the provided form', () => {
-            const action = new UpdateChanges(changes);
+            const action = new UpdateChangesSuccess(changes);
             const result = reducer(initialState, action);
             expect(result).toEqual(
                 {

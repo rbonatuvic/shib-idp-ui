@@ -56,6 +56,9 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     };
 
     parser(changes: Partial<MetadataResolver>, schema?: any): any {
+        if (!changes.organization) {
+            changes.organization = {};
+        }
         return changes;
     }
 

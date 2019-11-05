@@ -10,7 +10,7 @@ import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 import * as fromWizard from '../../../wizard/reducer';
 import { withLatestFrom, map, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { UpdateChanges } from '../action/entity.action';
+import { UpdateChangesRequest } from '../action/entity.action';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -103,7 +103,7 @@ export class ResolverEditStepComponent implements OnDestroy {
             map(([valueChange, definition, resolver, changes]) => definition.parser({ ...resolver, ...changes, ...valueChange }))
         )
         .subscribe(changes => {
-            this.store.dispatch(new UpdateChanges(changes));
+            this.store.dispatch(new UpdateChangesRequest(changes));
         });
 
         this.statusChangeEmitted$

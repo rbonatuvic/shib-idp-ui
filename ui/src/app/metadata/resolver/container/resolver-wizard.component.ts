@@ -149,7 +149,7 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
     }
 
     get blacklist(): string[] {
-        return ['id', 'resourceId'];
+        return ['id', 'resourceId', 'entityId', 'serviceProviderName'];
     }
 
     hasChanges(changes: MetadataResolver): boolean {

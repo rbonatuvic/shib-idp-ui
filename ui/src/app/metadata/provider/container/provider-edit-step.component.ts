@@ -94,9 +94,7 @@ export class ProviderEditStepComponent implements OnDestroy {
                 });
             }),
             filter(({ model, definition }) => definition && model),
-            map(({ model, definition }) => {
-                return definition ? definition.formatter(model) : {};
-            })
+            map(({ model, definition }) => definition ? definition.formatter(model) : {})
         );
 
         this.valueChangeEmitted$.pipe(
@@ -104,14 +102,18 @@ export class ProviderEditStepComponent implements OnDestroy {
             withLatestFrom(this.definition$, this.store.select(fromProvider.getSelectedProvider)),
             filter(([ changes, definition, provider ]) => definition && changes && provider),
             map(([ changes, definition, provider ]) => {
-                const parsed = definition.parser(changes);
-                return ({
-                    ...parsed,
-                    metadataFilters: [
-                        ...provider.metadataFilters,
-                        ...(parsed.metadataFilters || [])
-                    ]
-                });
+                const appliedFilters = changes && changes.metadataFilters ? {
+                    ...changes,
+                    metadataFilters: Object.keys(changes.metadataFilters).reduce((filters, filterType) => ({
+                        ...filters,
+                        [filterType]: {
+                            ...provider.metadataFilters.find(f => f['@type'] === filterType) || {},
+                            ...changes.metadataFilters[filterType]
+                        }
+                    }), {})
+                } : changes;
+                const parsed = definition.parser(appliedFilters);
+                return parsed;
             })
         )
         .subscribe(changes => this.store.dispatch(new UpdateProvider(changes)));

@@ -124,6 +124,9 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
+        'SHIBUI-1503: Non-admin can create metadata source'               | '/SHIBUI-1503-1.side'
+        'SHIBUI-1503: User can be deleted'                                | '/SHIBUI-1503-2.side'
+        'SHIBUI-1503: User can be enabled'                                | '/SHIBUI-1503-3.side'
     }
 }
 
