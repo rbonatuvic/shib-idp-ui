@@ -94,10 +94,7 @@ export class ProviderEditStepComponent implements OnDestroy {
                 });
             }),
             filter(({ model, definition }) => definition && model),
-            map(({ model, definition }) => {
-                // console.log(model, definition.formatter(model));
-                return definition ? definition.formatter(model) : {};
-            })
+            map(({ model, definition }) => definition ? definition.formatter(model) : {})
         );
 
         this.valueChangeEmitted$.pipe(

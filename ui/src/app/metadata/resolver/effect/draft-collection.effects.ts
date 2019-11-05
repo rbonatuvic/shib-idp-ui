@@ -15,8 +15,7 @@ import * as actions from '../action/draft.action';
 import { EntityDraftService } from '../../domain/service/draft.service';
 import * as fromResolver from '../reducer';
 import { Store } from '@ngrx/store';
-import { Clear } from '../action/entity.action';
-import { ClearWizard } from '../../../wizard/action/wizard.action';
+import { MetadataResolver } from '../../domain/model';
 
 export const getPayload = (action: any) => action.payload;
 

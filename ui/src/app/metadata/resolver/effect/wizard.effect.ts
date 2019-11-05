@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map, filter, tap, withLatestFrom } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { map, filter, withLatestFrom } from 'rxjs/operators';
 
 import {
     Clear,
@@ -13,11 +11,10 @@ import {
     ResolverCollectionActionTypes,
     AddResolverSuccess
 } from '../action/collection.action';
-
-import * as fromResolver from '../reducer';
-
-import { EntityDraftService } from '../../domain/service/draft.service';
 import { UpdateDraftRequest } from '../action/draft.action';
+import * as fromRoot from '../../../app.reducer';
+import { Store } from '@ngrx/store';
+import { getSelectedDraftId } from '../reducer';
 
 @Injectable()
 export class WizardEffects {
@@ -27,7 +24,10 @@ export class WizardEffects {
         ofType<UpdateChangesSuccess>(ResolverEntityActionTypes.UPDATE_CHANGES_SUCCESS),
         map(action => action.payload),
         filter(provider => !provider.createdDate),
-        map((provider) => new UpdateDraftRequest({ ...provider }))
+        withLatestFrom(this.store.select(getSelectedDraftId)),
+        map(([provider, id]) => {
+            return new UpdateDraftRequest({ id, ...provider });
+        })
     );
 
     @Effect()
@@ -38,10 +38,7 @@ export class WizardEffects {
     );
 
     constructor(
-        private store: Store<fromResolver.State>,
-        private actions$: Actions,
-        private draftService: EntityDraftService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router
+        private store: Store<fromRoot.State>,
+        private actions$: Actions
     ) { }
 }
