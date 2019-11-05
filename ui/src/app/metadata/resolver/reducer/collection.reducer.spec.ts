@@ -62,14 +62,6 @@ describe('Resolver Reducer', () => {
                 Object.assign({}, initialState, expected)
             );
         });
-
-        it('should return state if the entityId is not found', () => {
-            let changes = { ...resolvers[1], serviceEnabled: true, id: '4' };
-            const action = new resolverActions.UpdateResolverSuccess({id: changes.id, changes});
-            const result = reducer({ ...snapshot }, action);
-
-            expect(result).toEqual(snapshot);
-        });
     });
 
     describe('Select Resolver', () => {
