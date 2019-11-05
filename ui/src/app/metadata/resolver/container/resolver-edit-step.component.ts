@@ -98,9 +98,23 @@ export class ResolverEditStepComponent implements OnDestroy {
         this.valueChangeEmitted$.pipe(
             takeUntil(this.ngUnsubscribe),
             map(changes => changes.value),
-            withLatestFrom(this.definition$, this.store.select(fromResolver.getSelectedResolver), this.changes$),
+            withLatestFrom(
+                this.definition$,
+                this.store.select(fromResolver.getSelectedResolver),
+                this.changes$,
+                this.schema$
+            ),
             filter(([valueChange, definition, resolver]) => definition && resolver),
-            map(([valueChange, definition, resolver, changes]) => definition.parser({ ...resolver, ...changes, ...valueChange }))
+            map(([
+                valueChange,
+                definition,
+                resolver,
+                changes,
+                schema
+            ]) => {
+                const parsed = definition.parser({ ...valueChange }, schema);
+                return { ...resolver, ...changes, ...parsed };
+            })
         )
         .subscribe(changes => {
             this.store.dispatch(new UpdateChangesRequest(changes));

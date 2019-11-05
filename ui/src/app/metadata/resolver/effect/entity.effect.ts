@@ -32,16 +32,10 @@ export class EntityEffects {
         ofType<UpdateChangesRequest>(ResolverEntityActionTypes.UPDATE_CHANGES_REQUEST),
         map(action => action.payload),
         withLatestFrom(
-            this.store.select(fromResolver.getEntityChanges),
-            this.store.select(fromWizard.getSchema)
+            this.store.select(fromResolver.getEntityChanges)
         ),
-        map(([changes, stored, schema]) => {
-            const props = Object.keys(schema.properties);
-            const diffed = props.reduce((changeObj, prop) => {
-                changeObj[prop] = !changes.hasOwnProperty(prop) && stored.hasOwnProperty(prop) ? null : changes[prop];
-                return changeObj;
-            }, {});
-            const update = { ...stored, ...diffed };
+        map(([changes, storedChanges]) => {
+            const update = { ...storedChanges, ...changes };
             return new UpdateChangesSuccess(update);
         })
     );

@@ -77,9 +77,16 @@ export class ResolverWizardStepComponent implements OnDestroy {
         );
 
         this.valueChangeEmitted$.pipe(
-            withLatestFrom(this.definition$),
+            withLatestFrom(
+                this.definition$,
+                this.schema$,
+                this.store.select(fromResolver.getSelectedDraft)
+            ),
             filter(([ changes, definition ]) => (!!definition && !!changes)),
-            map(([ changes, definition ]) => definition.parser(changes.value))
+            map(([ changes, definition, schema, original ]) => {
+                const parsed = definition.parser(changes.value, schema);
+                return { ...original, ...parsed };
+            })
         )
         .subscribe(changes => {
             this.store.dispatch(new UpdateChangesRequest(changes));
