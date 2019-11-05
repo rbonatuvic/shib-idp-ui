@@ -336,6 +336,10 @@
         "AssertionConsumerService": {
             "type": "object",
             "title": "label.assertion-consumer-service-endpoint",
+            "required": [
+                "locationUrl",
+                "binding"
+            ],
             "properties": {
                 "locationUrl": {
                     "title": "label.assertion-consumer-service-location",
