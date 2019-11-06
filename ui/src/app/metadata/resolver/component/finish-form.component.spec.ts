@@ -12,7 +12,6 @@ import { RouterStub, RouterLinkStubDirective } from '../../../../testing/router.
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import * as stubs from '../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
-import { InputDefaultsDirective } from '../../../shared/directive/input-defaults.directive';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MockListValueService } from '../../../../testing/list-values.stub';
 import { MockSharedModule } from '../../../../testing/shared.stub';
@@ -58,7 +57,6 @@ describe('Finished Form Component', () => {
             declarations: [
                 FinishFormComponent,
                 RouterLinkStubDirective,
-                InputDefaultsDirective,
                 TestHostComponent
             ],
         });

@@ -38,7 +38,9 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
         }
 
         case ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS: {
-            return adapter.updateOne(action.payload, state);
+            const removed = adapter.removeOne(action.payload.id as string, state);
+            const addBack = adapter.upsertOne(action.payload.changes as MetadataResolver, removed);
+            return addBack;
         }
 
         case ResolverCollectionActionTypes.SELECT_SUCCESS: {
