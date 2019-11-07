@@ -87,12 +87,10 @@
                         </ng-container>
                     </div>
                     <div class="ml-2" *ngIf="targetType === 'ENTITY'">
-                        <button
-                            class="btn btn-success"
+                        <button class="btn btn-success"
                             [disabled]="search.invalid"
-                            (click)="onSelectValue(search.value)"
-                            translate="action.add-entity-id">
-                            Add Entity ID&nbsp;&nbsp;
+                            (click)="onSelectValue(search.value)">
+                            <translate-i18n key="action.add-entity-id">Add Entity ID</translate-i18n>&nbsp;&nbsp;
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </div>
