@@ -77,6 +77,9 @@ Json schema form
     font-family: monospace;
     min-height: 166px;
     margin-bottom: 0px;
+    &[contenteditable] {
+        overflow: scroll;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
