@@ -366,9 +366,33 @@
                         },
                         {
                             "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:PAOS"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:PAOS"
+                        },
+                        {
+                            "enum": [
                                 "urn:oasis:names:tc:SAML:1.0:profiles:browser-post"
                             ],
                             "description": "urn:oasis:names:tc:SAML:1.0:profiles:browser-post"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
                         }
                     ]
                 },
@@ -421,6 +445,12 @@
                                 "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
                             ],
                             "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
                         }
                     ]
                 }
