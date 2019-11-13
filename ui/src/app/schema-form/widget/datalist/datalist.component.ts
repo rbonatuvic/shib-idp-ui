@@ -28,6 +28,10 @@ export class DatalistComponent extends ControlWidget implements AfterViewInit {
         return this.widgetService.isRequired(this.formProperty);
     }
 
+    get title(): string {
+        return this.schema.title || this.formProperty.parent.schema.title;
+    }
+
     getError(error: string): string {
         return HARD_CODED_REQUIRED_MSG.test(error) ? 'message.required' : error;
     }

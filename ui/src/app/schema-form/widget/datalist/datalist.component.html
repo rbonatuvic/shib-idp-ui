@@ -1,7 +1,7 @@
 <div class="widget form-group">
     <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
-            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
+            <translate-i18n [key]="title">{{ title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
         </span>
         <span *ngIf="schema.description">
@@ -19,7 +19,7 @@
         [attr.placeholder]="schema.placeholder || '' | translate"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        [attr.aria-label]="schema.title | translate">
+        [attr.aria-label]="title | translate">
     </auto-complete>
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
