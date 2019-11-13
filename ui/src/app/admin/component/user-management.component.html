@@ -17,7 +17,12 @@
             <td>{{ user.firstName }} {{ user.lastName }}</td>
             <td>{{ user.emailAddress }}</td>
             <td>
-                <select [name]="user.username"
+                <label [for]="'role-' + user.username"
+                    translate="action.user-role"
+                    class="sr-only">User role</label>
+                <select
+                    [id]="'role-' + user.username"
+                    [name]="'role-' + user.username"
                     [ngModel]="user.role"
                     class="form-control"
                     (change)="setUserRole(user, $event.target.value)"
