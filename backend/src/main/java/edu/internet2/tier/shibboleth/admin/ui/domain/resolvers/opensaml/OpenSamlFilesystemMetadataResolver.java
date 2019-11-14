@@ -51,9 +51,16 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
 
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
+        //Necessary to make sure backing store is initialized by the super class to avoid NPE during re-filtering
+        try {
+            setBackingStore(createNewBackingStore());
+        }
+        catch(Throwable e) {
+            logger.warn("Error caught and ignored during initialization necessary to init backingStore", e);
+        }
+
         if (this.sourceResolver.getDoInitialization()) {
             super.initMetadataResolver();
-
             delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                     this.sourceResolver.getResourceId(),
                     indexWriter);
