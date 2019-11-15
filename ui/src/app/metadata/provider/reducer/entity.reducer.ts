@@ -41,7 +41,8 @@ export function reducer(state = initialState, action: EntityActionUnion | Provid
                 ...state,
                 changes: {
                     ...initialState.changes
-                }
+                },
+                saving: false
             };
         }
         case EntityActionTypes.UPDATE_PROVIDER: {
