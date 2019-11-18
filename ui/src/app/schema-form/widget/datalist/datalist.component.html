@@ -1,5 +1,5 @@
 <div class="widget form-group">
-    <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
+    <label [id]="formProperty._canonicalPath + '-label'" [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
             <translate-i18n [key]="title">{{ title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
@@ -10,16 +10,17 @@
     </label>
     <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
     <auto-complete
-        [id]="formProperty._canonicalPath"
+        [id]="formProperty._canonicalPath + 'autocomplete'"
         [fieldId]="formProperty._canonicalPath"
         [formControl]="control"
-        [matches]="schema.widget.data"
+        [matches]="data"
         [required]="true"
         [dropdown]="true"
         [attr.placeholder]="schema.placeholder || '' | translate"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        [attr.aria-label]="title | translate">
+        [attr.aria-label]="title | translate"
+        (onChange)="getData($event)">
     </auto-complete>
     <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
