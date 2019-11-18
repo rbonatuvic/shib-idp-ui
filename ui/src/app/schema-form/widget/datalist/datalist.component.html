@@ -1,8 +1,9 @@
 <div class="widget form-group">
     <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
-            <translate-i18n [key]="title">{{ title }}</translate-i18n>
+            {{ title | translate }}&nbsp;
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+            <span *ngIf="required" class="sr-only required" translate="message.required">required</span>
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
@@ -19,12 +20,25 @@
         [attr.placeholder]="schema.placeholder || '' | translate"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        [attr.aria-label]="title | translate">
+        [attr.aria-label]="title | translate"
+        [attr.required]="schema.isRequired || null"
+        [attr.aria-invalid]="errorMessages && errorMessages.length > 0"
+        [attr.aria-describedby]="formProperty._canonicalPath + '-help'">
     </auto-complete>
-    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
+    <small class="form-text text-danger"
+        [id]="formProperty._canonicalPath + '-help'"
+        [ngClass]="{'sr-only': !control.touched}"
+        *ngIf="errorMessages && errorMessages.length">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
             <ng-container *ngIf="!first">, </ng-container>
             <translate-i18n [key]="getError(error)">error</translate-i18n>
         </ng-container>
+    </small>
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        class="form-text text-secondary"
+        *ngIf="!(control.touched && errorMessages && errorMessages.length) && schema.widget.help"
+        [translate]="schema.widget.help">
+        {{ schema.widget.help }}
     </small>
 </div>

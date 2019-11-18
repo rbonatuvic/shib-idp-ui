@@ -65,7 +65,7 @@
                 <ul class="list-inline">
                     <li class="list-inline-item" [translate]="brand.footer.text">{{ brand.footer.text }}</li>
                     <li class="list-inline-item" *ngFor="let link of brand.footer.links; let i = index;">
-                        <a [href]="link.url" target="_blank" [attr.aria-label]="link.description" [title]="link.description">
+                        <a [href]="link.url" target="_blank" [attr.aria-label]="link.description | translate" [title]="link.description">
                             <translate-i18n [key]="link.label">{{ link.label }}</translate-i18n>
                         </a>
                     </li>
