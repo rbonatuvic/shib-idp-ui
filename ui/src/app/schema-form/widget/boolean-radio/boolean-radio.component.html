@@ -6,17 +6,24 @@
         </span>
     </label>
     <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
-    <div *ngFor="let option of schema.oneOf; let i=index;" class="form-check form-check-inline">
-        <label class="control-label">
-            <input
-                [id]="formProperty._canonicalPath + '.' + option.enum[0]"
-                [formControl]="control"
-                [name]="name"
-                [value]="option.enum[0]"
-                type="radio"
-                [attr.disabled]="schema.readOnly">&nbsp;
-            <translate-i18n [key]="option.description">{{ option.description }}</translate-i18n>
-        </label>
+    <div class="d-flex">
+        <ng-container *ngFor="let option of schema.oneOf; let i=index;">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input
+                    disableValidation="true"
+                    class="custom-control-input"
+                    [id]="formProperty._canonicalPath + '.' + option.enum[0]"
+                    [formControl]="control"
+                    [name]="name"
+                    [value]="option.enum[0]"
+                    type="radio"
+                    [attr.disabled]="schema.readOnly">
+                <label
+                    class="custom-control-label"
+                    [for]="formProperty._canonicalPath + '.' + option.enum[0]"
+                    [translate]="option.description">{{ option.description }}</label>
+            </div>
+        </ng-container>
     </div>
     <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
 </div>
