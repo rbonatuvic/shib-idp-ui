@@ -391,3 +391,7 @@ r
 
 #Local integration test run shell script wrapper
 rinteg
+
+#Local run with durable H2 shell script wrapper
+**/application-h2durable.properties
+rdurable
