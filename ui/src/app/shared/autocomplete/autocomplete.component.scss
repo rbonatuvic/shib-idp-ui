@@ -12,6 +12,8 @@
 }
 
 :host {
+    position: relative;
+
     .btn-outline-secondary {
         border-color: $input-border-color;
     }

@@ -52,11 +52,12 @@
                             <td>{{ provider.createdBy }}</td>
                             <td>{{ provider.createdDate | customDate }}</td>
                             <td class="text-right">
-                                <span class="badge"
+                                <span tabindex="0"
+                                    class="badge"
+                                    [attr.aria-label]="(provider.enabled ? 'value.enabled' : 'value.disabled') | translate"
                                     [class.badge-danger]="!provider.enabled"
                                     [class.badge-success]="provider.enabled">
-                                    <span *ngIf="provider.enabled" translate="value.enabled">Enabled</span>
-                                    <span *ngIf="!provider.enabled" translate="value.disabled">Enabled</span>
+                                    {{ (provider.enabled ? 'value.enabled' : 'value.disabled') | translate }}
                                 </span>
                             </td>
                         </tr>
