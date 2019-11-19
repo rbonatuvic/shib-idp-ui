@@ -8,6 +8,7 @@ import org.hibernate.envers.Audited;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,6 +32,7 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
 
     @ElementCollection
     @OrderColumn
+    @Column(length = 4000)
     private List<String> value;
 
     public EntityAttributesFilterTargetType getEntityAttributesFilterTargetType() {
