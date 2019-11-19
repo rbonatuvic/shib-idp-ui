@@ -1,8 +1,9 @@
 <div class="widget form-group">
-    <label [attr.for]="cleanId" class="horizontal control-label">
+    <label [for]="cleanId" class="horizontal control-label">
         <span *ngIf="schema.title">
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+            <span *ngIf="required" class="sr-only required" translate="message.required">required</span>
         </span>
         <span *ngIf="!schema.title" class="sr-only" [translate]="formProperty.parent.schema.title">
             {{ formProperty.parent.schema.title }}
@@ -19,7 +20,11 @@
         [formControl]="control"
         [attr.name]="name"
         class="form-control"
-        [attr.aria-label]="schema.title">
+        [attr.aria-label]="schema.title"
+        [ngClass]="{'text-muted': !this.formProperty.value}"
+        [attr.required]="schema.isRequired || null"
+        [attr.aria-invalid]="errorMessages && errorMessages.length > 0"
+        [attr.aria-describedby]="formProperty._canonicalPath + '-help'">
         <option selected value="">
             <translate-i18n *ngIf="schema.placeholder" [key]="schema.placeholder">{{ schema.placeholder }}</translate-i18n>
             <translate-i18n *ngIf="!schema.placeholder" [key]="schema.title">{{ schema.title }}</translate-i18n>
@@ -43,11 +48,20 @@
         class="form-control">
         <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
     </select>
-    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        [ngClass]="{'sr-only': !control.touched}"
+        class="form-text text-danger" *ngIf="errorMessages && errorMessages.length">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
             <ng-container *ngIf="!first">, </ng-container>
             <translate-i18n [key]="getError(error)">error</translate-i18n>
         </ng-container>
     </small>
-    <input *ngIf="schema.readOnly" [id]="cleanId" [attr.name]="name" type="hidden" [formControl]="control">
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        class="form-text text-secondary"
+        *ngIf="!(control.touched && errorMessages && errorMessages.length) && schema.widget.help"
+        [translate]="schema.widget.help">
+        {{ schema.widget.help }}
+    </small>
 </div>

@@ -25,6 +25,7 @@ export class DatalistComponent extends ControlWidget implements AfterViewInit {
         } else {
             this.control.enable();
         }
+        console.log(this.formProperty);
     }
 
     getData(query: string): void {

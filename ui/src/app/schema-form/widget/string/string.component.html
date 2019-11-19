@@ -1,8 +1,9 @@
 <div class="widget form-group" [class.d-none]="this.getInputType() === 'hidden'">
-    <label [attr.for]="id" class="d-flex justify-content-between control-label">
+    <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span>
-            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>&nbsp;
+            {{ schema.title | translate }}&nbsp;
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+            <span *ngIf="required" class="sr-only required" translate="message.required">required</span>
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
@@ -21,15 +22,22 @@
         [attr.maxLength]="schema.maxLength || null"
         [attr.minLength]="schema.minLength || null"
         [attr.disabled]="(schema.widget.id=='color' && schema.readOnly)?true:null"
-        [attr.aria-label]="schema.title">
+        [attr.required]="schema.isRequired || null"
+        [attr.aria-invalid]="errorMessages && errorMessages.length > 0"
+        [attr.aria-describedby]="formProperty._canonicalPath + '-help'">
     <input *ngIf="(schema.widget.id === 'color' && schema.readOnly)" [id]="formProperty._canonicalPath" [attr.name]="name" type="hidden" [formControl]="control">
-    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        [ngClass]="{'sr-only': !control.touched}"
+        class="form-text text-danger" *ngIf="errorMessages && errorMessages.length">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
             <ng-container *ngIf="!first">, </ng-container>
             <translate-i18n [key]="getError(error)">error</translate-i18n>
         </ng-container>
     </small>
-    <small class="form-text text-secondary"
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        class="form-text text-secondary"
         *ngIf="!(control.touched && errorMessages && errorMessages.length) && schema.widget.help"
         [translate]="schema.widget.help">
         {{ schema.widget.help }}

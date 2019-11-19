@@ -1,8 +1,9 @@
 <div class="widget form-group">
-    <label [attr.for]="id" class="d-flex justify-content-between control-label">
+    <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span>
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+            <span *ngIf="required" class="sr-only required" translate="message.required">required</span>
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
@@ -21,5 +22,24 @@
         [attr.max]="schema.maximum"
         [attr.placeholder]="schema.placeholder | translate"
         [attr.step]="schema.multipleOf || schema.widget.step"
-        [attr.aria-label]="schema.title">
+        [attr.required]="schema.isRequired || null"
+        [attr.aria-invalid]="errorMessages && errorMessages.length > 0"
+        [attr.aria-describedby]="formProperty._canonicalPath + '-help'">
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        class="form-text text-danger"
+        [ngClass]="{'sr-only': !control.touched}"
+        *ngIf="errorMessages && errorMessages.length">
+        <ng-container *ngFor="let error of errorMessages; let first=first;">
+            <ng-container *ngIf="!first">, </ng-container>
+            <translate-i18n [key]="getError(error)">error</translate-i18n>
+        </ng-container>
+    </small>
+    <small
+        [id]="formProperty._canonicalPath + '-help'"
+        class="form-text text-secondary"
+        *ngIf="!(control.touched && errorMessages && errorMessages.length) && schema.widget.help"
+        [translate]="schema.widget.help">
+        {{ schema.widget.help }}
+    </small>
 </div>
