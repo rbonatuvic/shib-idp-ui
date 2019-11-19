@@ -149,9 +149,6 @@
         },
         "serviceProviderSsoDescriptor": {
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "fieldsets": [
                 {
                     "type": "group",
