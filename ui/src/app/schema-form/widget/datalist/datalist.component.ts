@@ -9,6 +9,9 @@ import { HARD_CODED_REQUIRED_MSG } from '../../model/messages';
     templateUrl: `./datalist.component.html`
 })
 export class DatalistComponent extends ControlWidget implements AfterViewInit {
+
+    data: string[] = [];
+
     constructor(
         private widgetService: SchemaService
     ) {
@@ -22,6 +25,10 @@ export class DatalistComponent extends ControlWidget implements AfterViewInit {
         } else {
             this.control.enable();
         }
+    }
+
+    getData(query: string): void {
+        this.data = [...this.schema.widget.data];
     }
 
     get required(): boolean {

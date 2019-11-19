@@ -1,58 +1,52 @@
-<div id="{{ id }}-container"
-    class="dropdown form-group"
-    (keydown)="handleKeyDown($event)"
-    role='combobox'
-    [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'"
-    [attr.aria-label]="id">
-    <div [ngClass]="{'input-group': dropdown}">
-        <input
-            #inputField
-            [formControl]="input"
-            [disableValidation]="true"
-            [id]="fieldId || (id + '__input')"
-            class="form-control"
-            autoComplete="off"
-            type="text"
-            [attr.aria-activedescendant]="activeDescendant"
-            [placeholder]="placeholder"
-            attr.aria-owns="{{ id }}__listbox"
-            [attr.aria-labelledby]="id"
-            (focus)="handleInputFocus()"
-            (blur)="handleInputBlur()"
-        />
-        <div class="input-group-append" *ngIf="dropdown">
-            <button class="btn btn-outline-secondary"
-                type="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                [attr.aria-labelledby]="id"
-                (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
-                <i class="fa fa-caret-down"></i>
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-        </div>
+<div [ngClass]="{'input-group': dropdown}">
+    <input
+        #inputField
+        [formControl]="input"
+        [disableValidation]="true"
+        [id]="fieldId"
+        class="form-control"
+        autocomplete="off"
+        role="combobox"
+        type="text"
+        [placeholder]="placeholder"
+        [attr.aria-activedescendant]="activeDescendant"
+        aria-autocomplete="both"
+        aria-multiline="false"
+        [attr.aria-owns]="fieldId + '__listbox'"
+        [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'"
+        (focus)="handleInputFocus()"
+        (blur)="handleInputBlur()"
+    />
+    <div class="input-group-append" *ngIf="dropdown">
+        <button class="btn btn-outline-secondary"
+            type="button"
+            aria-haspopup="true"
+            [attr.aria-expanded]="state.currentState.menuOpen"
+            (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
+            <i class="fa fa-caret-down"></i>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
     </div>
-    <ul class="dropdown-menu"
-        id="{{ id }}__listbox"
-        role="listbox"
-        [class.show]="(menuIsVisible$ | async) && !processing && !input.disabled">
-        <li *ngFor="let option of matches; let i = index;"
-            #matchElement
-            class="dropdown-item"
-            [class.active]="state.currentState.selected === i"
-            [class.focused]="state.currentState.focused === i"
-            [id]="this.getOptionId(i)"
-            (focusout)="handleOptionBlur($event, i)"
-            (click)="handleOptionClick(i)"
-            (mousedown)="handleOptionMouseDown($event)"
-            (mouseenter)="handleOptionMouseEnter(i)"
-            (mouseout)="handleOptionMouseOut()"
-            role="option"
-            tabIndex="-1"
-            [attr.aria-selected]="state.currentState.focused === i"
-            [innerHTML]="option | highlight:this.input.value"></li>
-        <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
-            {{ noneFoundText }}
-        </li>
-    </ul>
 </div>
+<ul class="dropdown-menu"
+    [id]="fieldId + '__listbox'"
+    role="listbox"
+    [class.show]="(menuIsVisible$ | async) && !processing && !input.disabled">
+    <li *ngFor="let option of matches; let i = index;"
+        #matchElement
+        class="dropdown-item"
+        [class.active]="state.currentState.selected === i"
+        [class.focused]="state.currentState.focused === i"
+        [id]="this.getOptionId(i)"
+        (focusout)="handleOptionBlur($event, i)"
+        (click)="handleOptionClick(i)"
+        (mousedown)="handleOptionMouseDown($event)"
+        (mouseenter)="handleOptionMouseEnter(i)"
+        (mouseout)="handleOptionMouseOut()"
+        role="option"
+        [attr.aria-selected]="state.currentState.focused === i"
+        [innerHTML]="option | highlight:this.input.value"></li>
+    <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
+        {{ noneFoundText }}
+    </li>
+</ul>
