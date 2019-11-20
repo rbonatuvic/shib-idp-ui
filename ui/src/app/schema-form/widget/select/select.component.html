@@ -51,7 +51,8 @@
     <small
         [id]="formProperty._canonicalPath + '-help'"
         [ngClass]="{'sr-only': !control.touched}"
-        class="form-text text-danger" *ngIf="errorMessages && errorMessages.length">
+        class="form-text text-danger"
+        *ngIf="errorMessages && errorMessages.length">
         <ng-container *ngFor="let error of errorMessages; let first=first;">
             <ng-container *ngIf="!first">, </ng-container>
             <translate-i18n [key]="getError(error)">error</translate-i18n>

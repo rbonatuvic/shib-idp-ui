@@ -105,6 +105,17 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     };
                 }
                 return null;
+            },
+            '/serviceProviderSsoDescriptor': (value, property, form) => {
+                if (value.nameIdFormats && value.nameIdFormats.length && !value.protocolSupportEnum) {
+                    return {
+                        code: 'PROTOCOL_SUPPORT_ENUM_REQUIRED',
+                        path: `#${property.path}`,
+                        message: 'message.protocol-support-required',
+                        params: [value]
+                    };
+                }
+                return null;
             }
         };
         return validators;
