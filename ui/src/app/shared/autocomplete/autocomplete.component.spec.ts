@@ -20,6 +20,7 @@ const regularAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3)
         <div [formGroup]="group">
             <auto-complete
                 [id]="config.id"
+                [fieldId]="config.id"
                 [autoSelect]="config.autoSelect"
                 [matches]="config.options"
                 formControlName="search"

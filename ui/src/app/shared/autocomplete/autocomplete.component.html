@@ -11,7 +11,6 @@
         [placeholder]="placeholder"
         [attr.aria-activedescendant]="activeDescendant"
         aria-autocomplete="both"
-        aria-multiline="false"
         [attr.aria-owns]="fieldId + '__listbox'"
         [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'"
         (focus)="handleInputFocus()"

@@ -65,4 +65,12 @@ export class CustomSelectComponent extends SelectWidget implements AfterViewInit
     get cleanId(): string {
         return this.formProperty._canonicalPath.replace('@', '');
     }
+
+    get showHint(): boolean {
+        return (this.control.touched ? !this.showError : true) && this.schema.widget.help;
+    }
+
+    get showError(): boolean {
+        return !!this.errorMessages && this.errorMessages.length > 0;
+    }
 }

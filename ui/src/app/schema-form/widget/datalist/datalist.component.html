@@ -26,20 +26,19 @@
         [attr.aria-describedby]="formProperty._canonicalPath + '-help'"
         (onChange)="getData($event)">
     </auto-complete>
-    <small class="form-text text-danger"
-        [id]="formProperty._canonicalPath + '-help'"
-        [ngClass]="{'sr-only': !control.touched}"
-        *ngIf="errorMessages && errorMessages.length">
-        <ng-container *ngFor="let error of errorMessages; let first=first;">
-            <ng-container *ngIf="!first">, </ng-container>
-            <translate-i18n [key]="getError(error)">error</translate-i18n>
-        </ng-container>
-    </small>
-    <small
-        [id]="formProperty._canonicalPath + '-help'"
-        class="form-text text-secondary"
-        *ngIf="!(control.touched && errorMessages && errorMessages.length) && schema.widget.help"
-        [translate]="schema.widget.help">
-        {{ schema.widget.help }}
+    <small [id]="formProperty._canonicalPath + '-help'"
+        [ngClass]="{
+            'text-danger': !showHint && showError,
+            'text-secondary': !showError
+        }" class="form-text text-secondary">
+        <span *ngIf="showHint" [translate]="schema.widget.help">
+            {{ schema.widget.help }}
+        </span>
+        <span *ngIf="showError" [ngClass]="{'sr-only': !control.touched}">
+            <ng-container *ngFor="let error of errorMessages; let first=first;">
+                <ng-container *ngIf="!first">, </ng-container>
+                <translate-i18n [key]="getError(error)">error</translate-i18n>
+            </ng-container>
+        </span>
     </small>
 </div>

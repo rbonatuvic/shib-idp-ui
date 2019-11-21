@@ -41,7 +41,8 @@ describe('Metadata Source Base class', () => {
             expect(Object.keys(getValidators([]))).toEqual([
                 '/',
                 '/entityId',
-                '/relyingPartyOverrides'
+                '/relyingPartyOverrides',
+                '/serviceProviderSsoDescriptor'
             ]);
         });
 
