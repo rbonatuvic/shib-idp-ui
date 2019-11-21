@@ -42,4 +42,12 @@ export class DatalistComponent extends ControlWidget implements AfterViewInit {
     getError(error: string): string {
         return HARD_CODED_REQUIRED_MSG.test(error) ? 'message.required' : error;
     }
+
+    get showHint(): boolean {
+        return (this.control.touched ? !this.showError : true) && this.schema.widget.help;
+    }
+
+    get showError(): boolean {
+        return !!this.errorMessages && this.errorMessages.length > 0;
+    }
 }

@@ -13,6 +13,7 @@
 
 :host {
     position: relative;
+    display: block;
 
     .btn-outline-secondary {
         border-color: $input-border-color;
