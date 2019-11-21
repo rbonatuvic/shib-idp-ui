@@ -9,7 +9,11 @@
                     </h3>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link next btn clearfix" (click)="next()" [disabled]="providerForm.invalid" aria-label="Next: Step 2, Organization information">
+                    <button class="nav-link next btn clearfix"
+                        (click)="next()"
+                        [disabled]="providerForm.invalid"
+                        aria-label="Next: Step 2, Organization information"
+                        type="button">
                         <span class="label pull-left" translate="label.finish-summary-validation">
                             Finished!
                         </span>
@@ -69,7 +73,10 @@
                         <translate-i18n key="message.entity-id-must-be-unique">Entity ID must be unique</translate-i18n>
                     </small>
                 </div>
-                <button type="submit" class="btn btn-primary sr-only" [disabled]="providerForm.invalid">
+                <button type="button"
+                    class="btn btn-primary sr-only"
+                    [disabled]="providerForm.invalid"
+                    (click)="next()">
                     <translate-i18n key="action.next">Next</translate-i18n>
                     <i class="fa fa-fw fa-arrow-circle-right fa-lg"></i>
                 </button>
