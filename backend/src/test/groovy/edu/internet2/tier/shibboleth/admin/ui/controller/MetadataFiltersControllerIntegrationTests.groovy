@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService
@@ -23,6 +25,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT
 import static org.springframework.http.HttpMethod.PUT
 
 /**
@@ -191,7 +194,7 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
     def "POST new Filter updates resolver's modifiedDate - SHIBUI-1500"() {
         given: 'MetadataResolver with attached entity attributes is available in data store'
         def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
-        def filter =  generator.entityAttributesFilter()
+        def filter = generator.entityAttributesFilter()
         def resolverResourceId = resolver.resourceId
         metadataResolverRepository.save(resolver)
         MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(resolver)
@@ -207,6 +210,38 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
 
         then:
         originalModifiedDate < afterFilterAddedModifiedDate
+    }
+
+    def "EntityAttributesFilter with invalid script does not result in persisting that filter"() {
+        def resolver = generator.buildRandomMetadataResolverOfType('FileBacked')
+        def resolverResourceId = resolver.resourceId
+        metadataResolverRepository.save(resolver)
+        MetadataResolver openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(resolver)
+        OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
+        def filter = new EntityAttributesFilter().with {
+            it.name = 'SHIBUI-1249'
+            it.resourceId = 'SHIBUI-1249'
+            it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
+                it.entityAttributesFilterTargetType = CONDITION_SCRIPT
+                it.singleValue = """
+                    echo('invalid;
+                """
+                it
+            }
+            it
+        }
+
+        when:
+        def result = restTemplate.postForEntity("$BASE_URI/$resolverResourceId/Filters", filter, String)
+
+        then:
+        result.statusCodeValue == 400
+
+        when:
+        result = this.restTemplate.getForEntity("$BASE_URI/$resolverResourceId", Map)
+
+        then:
+        result.body.metadataFilters.size == 0
     }
 
     private HttpEntity<String> createRequestHttpEntityFor(Closure jsonBodySupplier) {
