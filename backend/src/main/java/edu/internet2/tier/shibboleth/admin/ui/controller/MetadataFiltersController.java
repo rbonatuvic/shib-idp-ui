@@ -97,6 +97,7 @@ public class MetadataFiltersController {
     }
 
     @PutMapping("/Filters/{resourceId}")
+    @Transactional
     public ResponseEntity<?> update(@PathVariable String metadataResolverId,
                                     @PathVariable String resourceId,
                                     @RequestBody MetadataFilter updatedFilter) {
