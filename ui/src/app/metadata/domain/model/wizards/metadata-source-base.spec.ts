@@ -57,13 +57,14 @@ describe('Metadata Source Base class', () => {
                     code: 'INVALID_SIGNING',
                     path: `#/relyingPartyOverrides`,
                     message: 'message.invalid-signing',
-                    params: [relyingPartyOverrides]
+                    params: [relyingPartyOverrides],
+                    invalidate: false
                 };
                 spyOn(validators, '/relyingPartyOverrides').and.returnValue(error);
 
                 const validated = validator(value, null, { getProperty: getPropertySpy });
 
-                expect(validated).toEqual([error]);
+                expect(validated).toBeUndefined();
             });
         });
 
@@ -76,7 +77,8 @@ describe('Metadata Source Base class', () => {
                     code: 'INVALID_SIGNING',
                     path: `#/relyingPartyOverrides`,
                     message: 'message.invalid-signing',
-                    params: [relyingPartyOverrides]
+                    params: [relyingPartyOverrides],
+                    invalidate: false
                 };
 
                 const validated = validator(relyingPartyOverrides, {path: '/relyingPartyOverrides'});
