@@ -21,6 +21,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.script.ScriptException;
+
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
 @EntityScan(basePackages = {"edu.internet2.tier.shibboleth.admin.ui.domain", "edu.internet2.tier.shibboleth.admin.ui.envers", "edu.internet2.tier.shibboleth.admin.ui.security.model"})
@@ -69,7 +71,16 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
             metadataResolverRepository.findAll()
                     .forEach(it -> {
                         logger.info(String.format("Reloading filters for resolver [%s: %s]", it.getName(), it.getResourceId()));
-                        metadataResolverService.reloadFilters(it.getResourceId());
+                        try {
+                            metadataResolverService.reloadFilters(it.getResourceId());
+                        }
+                        catch (Throwable ex) {
+                            if(ex instanceof ScriptException) {
+                                logger.warn("Caught invalid script parsing error. Please fix the script data.", ex);
+                                return;
+                            }
+                            throw ex;
+                        }
                     });
         }
     }
