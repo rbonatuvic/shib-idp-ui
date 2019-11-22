@@ -14,7 +14,7 @@
         validate="true"
         [attr.readonly]="schema.readOnly?true:null"
         class="text-widget.id textline-widget form-control"
-        [class.is-invalid]="control.touched && !control.value && errorMessages.length"
+        [class.is-invalid]="control.touched && !control.value && (errorMessages.length > 0)"
         [attr.type]="this.getInputType()"
         [id]="formProperty._canonicalPath"
         [formControl]="control"

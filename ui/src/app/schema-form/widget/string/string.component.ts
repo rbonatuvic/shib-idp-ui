@@ -34,6 +34,7 @@ export class CustomStringComponent extends StringWidget implements AfterViewInit
             if (!this.required) {
                 this.errorMessages = this.errorMessages.filter(e => e !== REQUIRED_MSG_OVERRIDE);
             }
+            console.log(this.errorMessages.length);
         });
     }
 

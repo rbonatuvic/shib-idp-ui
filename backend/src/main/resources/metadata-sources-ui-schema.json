@@ -287,7 +287,6 @@
                     "title": "label.certificate-name-display-only",
                     "description": "tooltip.certificate-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "type": {
