@@ -69,11 +69,11 @@ export class ProviderEditStepComponent implements OnDestroy {
                 this.store.select(fromProvider.getProviderXmlIds),
                 this.provider$
             ),
-            filter(([def, names, ids, provider]) => !def),
-            map(([def, names, ids, provider]) => def ? def.getValidators(
+            filter(([def, names, ids, provider]) => !!def),
+            map(([def, names, ids, provider]) => def.getValidators(
                 names.filter(n => n !== provider.name),
                 ids.filter(id => id !== provider.xmlId)
-            ) : {})
+            ))
         );
 
         this.model$ = this.schema$.pipe(
