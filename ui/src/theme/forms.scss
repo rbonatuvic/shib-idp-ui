@@ -81,8 +81,10 @@ select.form-control:disabled {
     font-family: monospace;
     min-height: 166px;
     margin-bottom: 0px;
+    word-break: break-word;
     &[contenteditable] {
-        overflow: scroll;
+        overflow-x: hidden;
+        overflow-y: scroll;
     }
 }
 
