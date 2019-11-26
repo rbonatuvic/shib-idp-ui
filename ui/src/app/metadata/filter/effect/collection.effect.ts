@@ -127,10 +127,12 @@ export class FilterCollectionEffects {
         map(action => action.payload.error),
         withLatestFrom(this.store.select(fromI18n.getMessages)),
         map(([error, messages]) => {
+            const message = error.errorMessage || error.cause || 'message.filter-fail';
+            const translated = this.i18nService.translate(message, null, messages);
             return new AddNotification(
                 new Notification(
                     NotificationType.Danger,
-                    `${error.errorCode}: ${this.i18nService.translate(error.errorMessage || 'message.filter-fail', null, messages)}`,
+                    `${error.errorCode}: ${translated}`,
                     8000
                 )
             );
