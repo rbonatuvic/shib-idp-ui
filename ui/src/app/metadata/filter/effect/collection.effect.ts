@@ -29,7 +29,8 @@ import {
     ChangeFilterOrderDown,
     RemoveFilterRequest,
     RemoveFilterSuccess,
-    RemoveFilterFail
+    RemoveFilterFail,
+    UpdateFilterConflict
 } from '../action/collection.action';
 import { FilterCollectionActionTypes } from '../action/collection.action';
 import * as fromFilter from '../reducer';
@@ -140,6 +141,24 @@ export class FilterCollectionEffects {
     );
 
     @Effect()
+    updateFilterFailNotification$ = this.actions$.pipe(
+        ofType<UpdateFilterFail>(FilterCollectionActionTypes.UPDATE_FILTER_FAIL),
+        map(action => action.payload.error),
+        withLatestFrom(this.store.select(fromI18n.getMessages)),
+        map(([error, messages]) => {
+            const message = error.errorMessage || error.cause || 'message.filter-fail';
+            const translated = this.i18nService.translate(message, null, messages);
+            return new AddNotification(
+                new Notification(
+                    NotificationType.Danger,
+                    `${error.errorCode}: ${translated}`,
+                    8000
+                )
+            );
+        })
+    );
+
+    @Effect()
     updateFilter$ = this.actions$.pipe(
         ofType<UpdateFilterRequest>(FilterCollectionActionTypes.UPDATE_FILTER_REQUEST),
         map(action => action.payload),
@@ -154,7 +173,7 @@ export class FilterCollectionEffects {
                         id: p.resourceId,
                         changes: p
                     })),
-                    catchError(err => of(new UpdateFilterFail(filter)))
+                    catchError(err => of(err.status === 409 ? new UpdateFilterConflict(filter) : new UpdateFilterFail(err)))
                 );
         })
     );

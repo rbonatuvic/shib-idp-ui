@@ -6,7 +6,7 @@ import { removeNulls } from '../../shared/util';
 @Injectable()
 export class ContentionService {
 
-    filterKeys = (key => (['version', 'modifiedDate', 'createdDate'].indexOf(key) === -1));
+    filterKeys = (key => (['version', 'modifiedDate', 'createdDate', 'createdBy', 'modifiedBy', 'audId'].indexOf(key) === -1));
 
     constructor(
         private diffService: DifferentialService
