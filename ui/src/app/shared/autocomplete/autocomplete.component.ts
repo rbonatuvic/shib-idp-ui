@@ -153,6 +153,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         });
     }
 
+    handleDropdown($event: MouseEvent | KeyboardEvent | Event): void {
+        const open = this.state.currentState.menuOpen;
+        this.state.setState({menuOpen: !open});
+        this.handleOptionFocus(0);
+    }
+
     handleViewMore($event: MouseEvent | KeyboardEvent | Event): void {
         $event.preventDefault();
         $event.stopPropagation();
@@ -235,6 +241,8 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             focused: index,
             selected: index
         });
+
+        console.log(this.activeDescendant);
     }
     handleOptionClick(index: number): void {
         const selectedOption = this.matches[index];
@@ -278,7 +286,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     handleDownArrow(event: KeyboardEvent): void {
-        event.preventDefault();
         let isNotAtBottom = this.state.currentState.selected !== this.matches.length - 1;
         if (this.showMoreAvailable) {
             isNotAtBottom = this.state.currentState.selected !== this.matches.length;
@@ -287,6 +294,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         if (allowMoveDown) {
             this.handleOptionFocus(this.state.currentState.selected + 1);
         }
+        event.preventDefault();
     }
 
     handleSpace(event: KeyboardEvent): void {
@@ -344,7 +352,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     getOptionId(index): string {
-        return `${this.fieldId}__option--${index}`;
+        return `${this.fieldId}__option--${index}`.replace('/', '');
     }
 
     get hasAutoselect(): boolean {

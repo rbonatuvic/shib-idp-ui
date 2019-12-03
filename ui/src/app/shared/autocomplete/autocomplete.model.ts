@@ -9,9 +9,9 @@ export const defaultState: AutoCompleteState = {
 };
 
 export interface AutoCompleteState {
-    focused: number | null;
-    selected: number | null;
-    hovered: number | null;
+    focused: number;
+    selected: number;
+    hovered: number;
     menuOpen: boolean;
 }
 
