@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +32,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true, exclude = "roles")
 @ToString(exclude = "roles")
+@Table(name = "USERS")
 public class User extends AbstractAuditable {
 
     @Column(nullable = false, unique = true)
