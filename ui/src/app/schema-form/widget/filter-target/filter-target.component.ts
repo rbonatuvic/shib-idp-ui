@@ -40,7 +40,9 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
     ) {
         super();
         this.ids$ = this.store.select(fromFilters.getEntityCollection);
-        this.ids$.subscribe(ids => this.ids = ids);
+        this.ids$.subscribe(ids => {
+            this.ids = [...ids];
+        });
 
         this.search
             .valueChanges
