@@ -45,7 +45,9 @@
         role="option"
         [attr.aria-selected]="state.currentState.focused === i"
         [innerHTML]="option | highlight:this.input.value"></li>
-    <li class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
+    <li class="dropdown-item dropdown-item-noresults"
+        role="option"
+        *ngIf="matches && matches.length === 0 && !processing">
         {{ noneFoundText }}
     </li>
 </ul>
