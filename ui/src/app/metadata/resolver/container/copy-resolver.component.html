@@ -38,39 +38,48 @@
                         [required]="true"
                         role="textbox"
                         i18n-aria-label="@@label.select-entity-id-to-copy"
-                        aria-label="Select the Entity ID to copy">
+                        aria-label="Select the Entity ID to copy"
+                        aria-describedby="target-help">
                     </auto-complete>
-                    <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
-                        <small class="form-text text-danger" *ngIf="providerForm.get('serviceProviderName').hasError('required')">
-                            <translate-i18n key="message.service-resolver-name-required">Service Resolver Name is Required</translate-i18n>
-                        </small>
-                    </ng-container>
+                    <small id="target-help"
+                        class="form-text text-danger"
+                        [ngClass]="{'sr-only': !(providerForm.get('target').touched && providerForm.get('target').invalid)}"
+                        *ngIf="providerForm.get('target').hasError('required')">
+                        <translate-i18n key="message.target-required">Entity ID to copy is Required</translate-i18n>
+                    </small>
                 </div>
                 <div class="form-group">
                     <label for="serviceProviderName">
                         <translate-i18n key="label.metadata-source-name-dashboard-display-only">Metadata Source Name (Dashboard Display Only)</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
-                    <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
-                    <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
-                        <small class="form-text text-danger" *ngIf="providerForm.get('serviceProviderName').hasError('required')">
-                            <translate-i18n key="message.service-resolver-name-required">Service Resolver Name is required</translate-i18n>
-                        </small>
-                    </ng-container>
+                    <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" aria-describedby="serviceProviderName-help" />
+                    <small class="form-text text-danger"
+                        [ngClass]="{'sr-only': !(providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid)}"
+                        *ngIf="providerForm.get('serviceProviderName').hasError('required')"
+                        id="serviceProviderName-help">
+                        <translate-i18n key="message.service-resolver-name-required">Service Resolver Name is required</translate-i18n>
+                    </small>
                 </div>
                 <div class="form-group">
                     <label for="entityId">
                         <translate-i18n key="label.service-resolver-entity-id">New Entity ID</translate-i18n>
                         <i class="fa fa-fw fa-asterisk text-danger" aria-hidden="true"></i>
                     </label>
-                    <input id="entityId" type="text" class="form-control" placeholder="" formControlName="entityId" />
-                    <ng-container *ngIf="providerForm.get('entityId').touched && providerForm.get('entityId').invalid">
-                        <small class="form-text text-danger" *ngIf="providerForm.get('entityId').hasError('required')">
+                    <input id="entityId" type="text"
+                        class="form-control"
+                        placeholder=""
+                        formControlName="entityId"
+                        aria-describedby="entityId-help"/>
+                    <small class="form-text text-danger"
+                        id="entityId-help"
+                        [ngClass]="{'sr-only': !(providerForm.get('entityId').touched && providerForm.get('entityId').invalid)}">
+                        <ng-container *ngIf="providerForm.get('entityId').hasError('required')">
                             <translate-i18n key="message.entity-id-required">Entity ID is required</translate-i18n>
-                        </small>
-                    </ng-container>
-                    <small class="form-text text-danger" *ngIf="providerForm.get('entityId').hasError('unique')">
-                        <translate-i18n key="message.entity-id-must-be-unique">Entity ID must be unique</translate-i18n>
+                        </ng-container>
+                        <ng-container *ngIf="providerForm.get('entityId').hasError('unique')">
+                            <translate-i18n key="message.entity-id-must-be-unique">Entity ID must be unique</translate-i18n>
+                        </ng-container>
                     </small>
                 </div>
                 <button type="button"
