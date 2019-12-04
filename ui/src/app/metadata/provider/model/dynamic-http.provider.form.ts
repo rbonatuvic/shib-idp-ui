@@ -2,6 +2,10 @@ import { Wizard } from '../../../wizard/model';
 import { DynamicHttpMetadataProvider } from '../../domain/model/providers/dynamic-http-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
 import { metadataFilterProcessor } from './utilities';
+import RegexValidator from '../../../shared/validation/regex.validator';
+import { memoize } from '../../../shared/memo';
+
+const checkRegex = memoize(RegexValidator.isValidRegex);
 
 export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvider> = {
     ...BaseMetadataProviderEditor,
@@ -50,13 +54,30 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
             if (!property.parent || !property.parent.value) {
                 return null;
             }
-            const isRegex = property.parent.value['@type'] === 'Regex';
-            const err = isRegex && !value ? {
-                code: 'REQUIRED',
+
+            const error = {
                 path: `#${property.path}`,
-                message: 'message.match-required',
                 params: [value]
-            } : null;
+            };
+
+            const isRegex = property.parent.value['@type'] === 'Regex';
+            let err = null;
+            if (isRegex) {
+                if (!value) {
+                    err = {
+                        ...error,
+                        code: 'REQUIRED',
+                        message: 'message.match-required'
+                    };
+                }
+                if (!checkRegex(value)) {
+                    err = {
+                        ...error,
+                        code: 'INVALID_REGEX',
+                        message: 'message.invalid-regex-pattern'
+                    };
+                }
+            }
             return err;
         };
 

@@ -79,7 +79,7 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     const validatorKey = `/${key}`;
                     const validator = validators.hasOwnProperty(validatorKey) ? validators[validatorKey] : null;
                     const error = validator ? validator(item, form_current.getProperty(key), form_current) : null;
-                    if (error) {
+                    if (error && error.invalidate) {
                         errors = errors || [];
                         errors.push(error);
                     }
@@ -91,7 +91,8 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     code: 'INVALID_ID',
                     path: `#${property.path}`,
                     message: 'message.id-unique',
-                    params: [value]
+                    params: [value],
+                    invalidate: true
                 } : null;
                 return err;
             },
@@ -101,7 +102,20 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                         code: 'INVALID_SIGNING',
                         path: `#${property.path}`,
                         message: 'message.invalid-signing',
-                        params: [value]
+                        params: [value],
+                        invalidate: false
+                    };
+                }
+                return null;
+            },
+            '/serviceProviderSsoDescriptor': (value, property, form) => {
+                if (value.nameIdFormats && value.nameIdFormats.length && !value.protocolSupportEnum) {
+                    return {
+                        code: 'PROTOCOL_SUPPORT_ENUM_REQUIRED',
+                        path: `#${property.path}`,
+                        message: 'message.protocol-support-required',
+                        params: [value],
+                        invalidate: true
                     };
                 }
                 return null;

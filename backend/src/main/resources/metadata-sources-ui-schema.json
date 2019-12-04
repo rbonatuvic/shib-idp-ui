@@ -149,9 +149,6 @@
         },
         "serviceProviderSsoDescriptor": {
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "fieldsets": [
                 {
                     "type": "group",
@@ -282,7 +279,6 @@
             "type": "object",
             "title": "label.certificate",
             "required": [
-                "name",
                 "type",
                 "value"
             ],
@@ -291,7 +287,6 @@
                     "title": "label.certificate-name-display-only",
                     "description": "tooltip.certificate-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "type": {

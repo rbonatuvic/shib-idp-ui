@@ -42,6 +42,7 @@ import { Notification, NotificationType } from '../../../notification/model/noti
 import { WizardActionTypes, SetDisabled } from '../../../wizard/action/wizard.action';
 import { I18nService } from '../../../i18n/service/i18n.service';
 import * as fromI18n from '../../../i18n/reducer';
+import { ClearEditor } from '../action/editor.action';
 
 
 /* istanbul ignore next */
@@ -57,7 +58,7 @@ export class CollectionEffects {
             this.providerService.find(current.resourceId).pipe(
                 map(data => new ShowContentionAction(this.contentionService.getContention(current, changes, data, {
                     resolve: (obj) => this.store.dispatch(new UpdateProviderRequest(<MetadataProvider>{ ...obj })),
-                    reject: (obj) => this.store.dispatch(new ResetChanges())
+                    reject: (obj) => this.gotoConfiguration(current)
                 })))
             )
         )
@@ -114,6 +115,7 @@ export class CollectionEffects {
         map(action => action.payload),
         withLatestFrom(this.store.select(fromI18n.getMessages)),
         map(([error, messages]) => {
+            console.log(error);
             let message = `${error.errorCode}: ${this.i18nService.translate(error.errorMessage, null, messages)}`;
             message = error.cause ? `${message} - ${error.cause}` : message;
             return new AddNotification(
@@ -235,7 +237,6 @@ export class CollectionEffects {
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
         map(([id, order]) => {
             const index = order.indexOf(id);
-            console.log(id, order);
             if (index > 0) {
                 const newOrder = array_move(order, index, index - 1);
                 return new SetOrderProviderRequest(newOrder);
@@ -272,5 +273,11 @@ export class CollectionEffects {
 
     navigateToProvider(id) {
         this.router.navigate(['/', 'metadata', 'provider', id, 'configuration', 'options']);
+    }
+
+    gotoConfiguration(provider) {
+        this.store.dispatch(new ClearProvider());
+        this.store.dispatch(new ClearEditor());
+        this.navigateToProvider(provider.resourceId);
     }
 }

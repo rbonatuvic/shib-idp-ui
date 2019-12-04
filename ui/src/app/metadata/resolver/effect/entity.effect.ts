@@ -40,10 +40,10 @@ export class EntityEffects {
         })
     );
 
-    @Effect()
+    @Effect({dispatch: false})
     cancelChanges$ = this.actions$.pipe(
         ofType<Cancel>(ResolverEntityActionTypes.CANCEL),
-        map(() => new provider.LoadResolverRequest()),
+        map(() => new Clear()),
         tap(() => this.router.navigate(['dashboard']))
     );
 
@@ -59,11 +59,11 @@ export class EntityEffects {
         ofType<provider.UpdateResolverConflict>(ResolverCollectionActionTypes.UPDATE_RESOLVER_CONFLICT),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromResolver.getSelectedResolver)),
-        switchMap(([filter, current]) => {
-            return this.service.find(filter.id).pipe(
-                map(data => new ShowContentionAction(this.contentionService.getContention(current, filter, data, {
+        switchMap(([resolver, current]) => {
+            return this.service.find(resolver.id).pipe(
+                map(data => new ShowContentionAction(this.contentionService.getContention(current, resolver, data, {
                     resolve: (obj) => this.store.dispatch(new provider.UpdateResolverRequest(obj)),
-                    reject: (obj) => this.store.dispatch(new Cancel())
+                    reject: (obj) => this.gotoConfiguration(resolver.id)
                 })))
             );
         })
@@ -76,4 +76,9 @@ export class EntityEffects {
         private router: Router,
         private contentionService: ContentionService
     ) { }
+
+    gotoConfiguration(id) {
+        this.store.dispatch(new Clear());
+        this.router.navigate(['metadata', 'resolver', id, 'configuration'])
+    }
 }

@@ -11,6 +11,7 @@ import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 
@@ -57,6 +58,15 @@ public class OpenSamlResourceBackedMetadataResolver extends ResourceBackedMetada
         delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                                                        this.sourceResolver.getResourceId(),
                                                        indexWriter);
+    }
+
+    @Nonnull
+    @Override
+    protected BatchEntityBackingStore getBackingStore() {
+        if (super.getBackingStore() == null) {
+            super.setBackingStore(super.createNewBackingStore());
+        }
+        return super.getBackingStore();
     }
 
     /**

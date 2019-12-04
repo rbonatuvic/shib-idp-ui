@@ -20,17 +20,17 @@ public class DynamicMetadataResolverAttributes {
 
     private String taskTimerRef;
 
-    private Float refreshDelayFactor = 0.75F;
+    private Float refreshDelayFactor;
 
-    private String minCacheDuration = "PT10M";
+    private String minCacheDuration;
 
-    private String maxCacheDuration = "PT8H";
+    private String maxCacheDuration;
 
-    private String maxIdleEntityData = "PT8H";
+    private String maxIdleEntityData;
 
     private Boolean removeIdleEntityData;
 
-    private String cleanupTaskInterval = "PT30M";
+    private String cleanupTaskInterval;
 
     private String persistentCacheManagerRef;
 
@@ -40,7 +40,7 @@ public class DynamicMetadataResolverAttributes {
 
     private Boolean initializeFromPersistentCacheInBackground = true;
 
-    private String backgroundInitializationFromCacheDelay = "PT2S";
+    private String backgroundInitializationFromCacheDelay;
 
     private String initializationFromCachePredicateRef;
 

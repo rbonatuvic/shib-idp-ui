@@ -9,6 +9,9 @@ import { HARD_CODED_REQUIRED_MSG } from '../../model/messages';
     templateUrl: `./datalist.component.html`
 })
 export class DatalistComponent extends ControlWidget implements AfterViewInit {
+
+    data: string[] = [];
+
     constructor(
         private widgetService: SchemaService
     ) {
@@ -24,11 +27,27 @@ export class DatalistComponent extends ControlWidget implements AfterViewInit {
         }
     }
 
+    getData(query: string): void {
+        this.data = [...this.schema.widget.data];
+    }
+
     get required(): boolean {
         return this.widgetService.isRequired(this.formProperty);
     }
 
+    get title(): string {
+        return this.schema.title || this.formProperty.parent.schema.title;
+    }
+
     getError(error: string): string {
         return HARD_CODED_REQUIRED_MSG.test(error) ? 'message.required' : error;
+    }
+
+    get showHint(): boolean {
+        return (this.control.touched ? !this.showError : true) && this.schema.widget.help;
+    }
+
+    get showError(): boolean {
+        return !!this.errorMessages && this.errorMessages.length > 0;
     }
 }

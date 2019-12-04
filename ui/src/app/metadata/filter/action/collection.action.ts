@@ -11,6 +11,7 @@ export enum FilterCollectionActionTypes {
     UPDATE_FILTER_REQUEST = '[Metadata Filter Collection] Update Filter Request',
     UPDATE_FILTER_SUCCESS = '[Metadata Filter Collection] Update Filter Success',
     UPDATE_FILTER_FAIL = '[Metadata Filter Collection] Update Filter Fail',
+    UPDATE_FILTER_CONFLICT = '[Metadata Filter Collection] Update Filter Conflict',
 
     LOAD_FILTER_REQUEST = '[Metadata Filter Collection] Load Filter Request',
     LOAD_FILTER_SUCCESS = '[Metadata Filter Collection] Load Filter Success',
@@ -89,6 +90,12 @@ export class UpdateFilterSuccess implements Action {
 
 export class UpdateFilterFail implements Action {
     readonly type = FilterCollectionActionTypes.UPDATE_FILTER_FAIL;
+
+    constructor(public payload: any) { }
+}
+
+export class UpdateFilterConflict implements Action {
+    readonly type = FilterCollectionActionTypes.UPDATE_FILTER_CONFLICT;
 
     constructor(public payload: MetadataFilter) { }
 }
@@ -197,6 +204,7 @@ export type FilterCollectionActionsUnion =
     | UpdateFilterRequest
     | UpdateFilterSuccess
     | UpdateFilterFail
+    | UpdateFilterConflict
     | ClearFilters
     | ChangeFilterOrderDown
     | ChangeFilterOrderUp
