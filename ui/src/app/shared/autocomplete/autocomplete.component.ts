@@ -51,6 +51,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     @Input() processing = false;
     @Input() dropdown = false;
     @Input() placeholder = '';
+    @Input() count = null;
 
     @Output() more: EventEmitter<any> = new EventEmitter<any>();
     @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
@@ -118,14 +119,16 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.matches && this.matches) {
+        if (changes.matches && this.matches && this.state.currentState.menuOpen) {
             this.announceResults();
         }
     }
 
     announceResults(): void {
         const count = this.matches.length;
-        this.live.announce(count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`);
+        this.live.announce(count === 0 ?
+            `${this.noneFoundText}` :
+            `${count} result${count === 1 ? '' : 's'} available`, 'polite', 5000);
     }
 
     writeValue(value: any): void {
@@ -222,7 +225,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     handleInputChange(query: string): void {
         query = query || '';
-
         const queryEmpty = query.length === 0;
         const autoselect = this.hasAutoselect;
         const optionsAvailable = this.matches.length > 0;
@@ -233,8 +235,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null
         });
         this.propagateChange(query);
-
-        setTimeout(() => this.announceResults(), 250);
     }
 
     handleInputFocus(): void {
@@ -247,8 +247,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             focused: index,
             selected: index
         });
-
-        console.log(this.activeDescendant);
     }
     handleOptionClick(index: number): void {
         const selectedOption = this.matches[index];
@@ -357,7 +355,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
         return !!(agent.match(/(iPod|iPhone|iPad)/g) && agent.match(/AppleWebKit/g));
     }
 
-    getOptionId(index): string {
+    getOptionId(index: string | number): string {
         return `${this.fieldId}__option--${index}`.replace('/', '');
     }
 
