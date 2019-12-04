@@ -54,7 +54,9 @@
         [attr.aria-label]="this.input.value"
         [innerHTML]="option | highlight:this.input.value">
     </button>
-    <p class="dropdown-item dropdown-item-noresults" *ngIf="matches && matches.length === 0 && !processing">
+    <p class="dropdown-item dropdown-item-noresults"
+        role="option"
+        *ngIf="matches && matches.length === 0 && !processing">
         {{ noneFoundText }}
     </p>
 </div>

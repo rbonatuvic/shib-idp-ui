@@ -119,9 +119,13 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.matches && this.matches) {
-            const count = this.matches.length;
-            this.live.announce(count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`);
+            this.announceResults();
         }
+    }
+
+    announceResults(): void {
+        const count = this.matches.length;
+        this.live.announce(count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`);
     }
 
     writeValue(value: any): void {
@@ -229,6 +233,8 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             selected: searchForOptions ? ((autoselect && optionsAvailable) ? 0 : -1) : null
         });
         this.propagateChange(query);
+
+        setTimeout(() => this.announceResults(), 250);
     }
 
     handleInputFocus(): void {
@@ -370,4 +376,4 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, Afte
             ...this.state.currentState
         };
     }
-} /* istanbul ignore next */
+}
