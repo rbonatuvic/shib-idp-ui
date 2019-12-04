@@ -21,8 +21,8 @@
             </button>
         </div>
         <div *ngIf="hasXml$ | async">
-            <div class="btn-group">
-                <a class="btn" routerLink="../options" routerLinkActive="btn-primary">
+            <div class="btn-group" role="group" aria-label="Options selected">
+                <a class="btn" routerLink="../options" routerLinkActive="btn-primary" aria-pressed="true">
                     <span class="sr-only" translate="action.toggle-view">Toggle view:</span>
                     Options
                 </a>
