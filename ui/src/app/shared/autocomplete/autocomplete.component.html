@@ -6,32 +6,38 @@
         [id]="fieldId"
         class="form-control"
         autocomplete="off"
+        autocorrect="off"
+        aria-autocomplete="list"
         role="combobox"
         type="text"
         [placeholder]="placeholder"
         [attr.aria-activedescendant]="activeDescendant"
-        aria-autocomplete="both"
         [attr.aria-owns]="fieldId + '__listbox'"
         [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'"
+        [attr.aria-haspopup]="fieldId + '__listbox'"
         (focus)="handleInputFocus()"
         (blur)="handleInputBlur()"
     />
     <div class="input-group-append" *ngIf="dropdown">
         <button class="btn btn-outline-secondary"
             type="button"
+            role="button"
             aria-haspopup="true"
             [attr.aria-expanded]="state.currentState.menuOpen"
-            (click)="state.setState({menuOpen: !state.currentState.menuOpen})">
+            [attr.aria-activedescendant]="activeDescendant"
+            [attr.aria-owns]="fieldId + '__listbox'"
+            [attr.aria-expanded]="(menuIsVisible$ | async) ? 'true' : 'false'"
+            (click)="handleDropdown($event)">
             <i class="fa fa-caret-down"></i>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
     </div>
 </div>
-<ul class="dropdown-menu"
+<div class="dropdown-menu"
     [id]="fieldId + '__listbox'"
     role="listbox"
     [class.show]="(menuIsVisible$ | async) && !processing && !input.disabled">
-    <li *ngFor="let option of matches; let i = index;"
+    <button *ngFor="let option of matches; let i = index;"
         #matchElement
         class="dropdown-item"
         [class.active]="state.currentState.selected === i"
@@ -42,12 +48,14 @@
         (mousedown)="handleOptionMouseDown($event)"
         (mouseenter)="handleOptionMouseEnter(i)"
         (mouseout)="handleOptionMouseOut()"
+        tabindex="0"
         role="option"
         [attr.aria-selected]="state.currentState.focused === i"
-        [innerHTML]="option | highlight:this.input.value"></li>
-    <li class="dropdown-item dropdown-item-noresults"
-        role="option"
+        [attr.aria-label]="this.input.value"
+        [innerHTML]="option | highlight:this.input.value">
+    </button>
+    <p class="dropdown-item dropdown-item-noresults m-0"
         *ngIf="matches && matches.length === 0 && !processing">
         {{ noneFoundText }}
-    </li>
-</ul>
+    </p>
+</div>
