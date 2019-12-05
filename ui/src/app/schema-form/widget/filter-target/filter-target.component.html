@@ -52,7 +52,8 @@
                                 class="component-control"
                                 limit="10"
                                 [formControl]="search"
-                                [matches]="ids"
+                                [matches]="ids$ | async"
+                                [count]="idCount$ | async"
                                 (keydown.enter)="onSelectValue(search.value)">
                             </auto-complete>
                             <small [class.text-danger]="search.invalid && search.touched" translate="message.entity-id-min-unique">
