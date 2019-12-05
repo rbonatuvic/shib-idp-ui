@@ -4,8 +4,10 @@ import lombok.EqualsAndHashCode;
 import org.opensaml.core.xml.util.AttributeMap;
 
 import javax.annotation.Nonnull;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
@@ -51,7 +53,9 @@ public class RequestInitiator extends AbstractElementExtensibleXMLObject impleme
         this.responseLocation = location;
     }
 
-    @ElementCollection
+    //@ElementCollection
+    //@MapKeyColumn(length = 1000)
+    @Transient
     private Map<QName,String> storageAttributeMap = new HashMap<>();
 
     @Transient

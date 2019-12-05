@@ -32,7 +32,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true, exclude = "roles")
 @ToString(exclude = "roles")
-@Table(name = "\"USER\"")
+@Table(name = "USERS")
 public class User extends AbstractAuditable {
 
     @Column(nullable = false, unique = true)

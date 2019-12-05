@@ -32,7 +32,7 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
 
     @ElementCollection
     @OrderColumn
-    @Column(length = 4000)
+    //@Column(length = 1000)
     private List<String> value;
 
     public EntityAttributesFilterTargetType getEntityAttributesFilterTargetType() {
