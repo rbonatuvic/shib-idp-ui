@@ -98,16 +98,6 @@ export class ResolverWizardComponent implements OnDestroy, CanComponentDeactivat
 
         this.resolver$ = this.store.select(fromCollections.getSelectedDraft);
 
-        this.route.params
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-                map(params => params.index),
-                distinctUntilChanged()
-            )
-            .subscribe(index => {
-                this.store.dispatch(new SetIndex(index));
-            });
-
         this.changes$.pipe(
             takeUntil(this.ngUnsubscribe),
             skipWhile(() => this.saving),

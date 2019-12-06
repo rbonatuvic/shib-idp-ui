@@ -37,7 +37,6 @@ export class AppComponent implements OnInit {
     constructor(
         private store: Store<fromRoot.State>,
         private i18nService: I18nService,
-        private router: Router,
         private navService: NavigationService
     ) {
         this.version$ = this.store.select(fromRoot.getVersionInfo);

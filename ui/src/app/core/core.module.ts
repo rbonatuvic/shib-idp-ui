@@ -16,8 +16,11 @@ import { ModalService } from './service/modal.service';
 import { DifferentialService } from './service/differential.service';
 import { NavigatorService } from './service/navigator.service';
 import { NavigationService } from './service/navigation.service';
+import { PageTitleComponent } from './component/page-title.component';
 
-export const COMPONENTS = [];
+export const COMPONENTS = [
+    PageTitleComponent
+];
 
 @NgModule({
     imports: [

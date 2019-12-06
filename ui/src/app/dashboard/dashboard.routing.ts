@@ -26,8 +26,17 @@ const routes: Routes = [
                         component: ManagerComponent,
                         children: [
                             { path: '', redirectTo: 'resolvers', pathMatch: 'prefix' },
-                            { path: 'resolvers', component: DashboardResolversListComponent },
-                            { path: 'providers', component: DashboardProvidersListComponent, canActivate: [AdminGuard] },
+                            {
+                                path: 'resolvers',
+                                component: DashboardResolversListComponent,
+                                data: { title: 'Metadata Source Dashboard' }
+                            },
+                            {
+                                path: 'providers',
+                                component: DashboardProvidersListComponent,
+                                canActivate: [AdminGuard],
+                                data: { title: 'Metadata Provider Dashboard' }
+                            },
                         ]
                     }
                 ]
@@ -42,11 +51,13 @@ const routes: Routes = [
                         children: [
                             {
                                 path: 'management',
-                                component: AdminManagementPageComponent
+                                component: AdminManagementPageComponent,
+                                data: { title: 'User Administration Dashboard' }
                             },
                             {
                                 path: 'actions',
-                                component: ActionRequiredPageComponent
+                                component: ActionRequiredPageComponent,
+                                data: { title: 'Administrator Actions Required Dashboard' }
                             }
                         ]
                     }

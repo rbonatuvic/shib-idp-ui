@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
+import { StoreModule, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
@@ -24,7 +24,6 @@ import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
 import { I18nModule } from './i18n/i18n.module';
-import { NavigationService } from './core/service/navigation.service';
 
 @NgModule({
     declarations: [
@@ -46,6 +45,7 @@ import { NavigationService } from './core/service/navigation.service';
         }),
         EffectsModule.forRoot([]),
         BrowserModule,
+        CoreModule,
         CoreModule.forRoot(),
         StoreRouterConnectingModule.forRoot(),
         NgbDropdownModule,
@@ -77,4 +77,4 @@ import { NavigationService } from './core/service/navigation.service';
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
