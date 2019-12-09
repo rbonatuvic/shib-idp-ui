@@ -22,19 +22,23 @@ export const ConfigurationRoutes: Routes = [
             },
             {
                 path: 'options',
-                component: MetadataOptionsComponent
+                component: MetadataOptionsComponent,
+                data: { title: `Metadata Configuration Options` }
             },
             {
                 path: 'xml',
-                component: MetadataXmlComponent
+                component: MetadataXmlComponent,
+                data: { title: `Metadata Configuration XML` }
             },
             {
                 path: 'history',
-                component: MetadataHistoryComponent
+                component: MetadataHistoryComponent,
+                data: { title: `Metadata History` }
             },
             {
                 path: 'compare',
-                component: MetadataComparisonComponent
+                component: MetadataComparisonComponent,
+                data: { title: `Metadata Comparison` }
             },
             {
                 path: 'version/:version',
@@ -42,11 +46,13 @@ export const ConfigurationRoutes: Routes = [
                 children: [
                     {
                         path: 'options',
-                        component: VersionOptionsComponent
+                        component: VersionOptionsComponent,
+                        data: { title: `Metadata Version Options` }
                     },
                     {
                         path: 'restore',
-                        component: RestoreComponent
+                        component: RestoreComponent,
+                        data: { title: `Restore Metadata Version` }
                     },
                     {
                         path: 'edit',
@@ -61,7 +67,8 @@ export const ConfigurationRoutes: Routes = [
                                 component: RestoreEditStepComponent,
                                 resolve: {
                                     index: IndexResolver
-                                }
+                                },
+                                data: { title: `Edit Metadata` }
                             }
                         ]
                     }
