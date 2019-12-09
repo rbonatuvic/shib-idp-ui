@@ -53,9 +53,7 @@ public class RequestInitiator extends AbstractElementExtensibleXMLObject impleme
         this.responseLocation = location;
     }
 
-    //@ElementCollection
-    //@MapKeyColumn(length = 1000)
-    @Transient
+    @ElementCollection
     private Map<QName,String> storageAttributeMap = new HashMap<>();
 
     @Transient

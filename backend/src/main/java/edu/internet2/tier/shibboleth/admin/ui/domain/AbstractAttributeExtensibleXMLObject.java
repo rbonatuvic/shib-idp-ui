@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -34,10 +35,7 @@ public abstract class AbstractAttributeExtensibleXMLObject extends AbstractXMLOb
         return this.unknownAttributes;
     }
 
-    //@ElementCollection
-    //@MapKeyColumn(length = 1000)
-    //@NotAudited
-    @Transient
+    @ElementCollection
     private Map<QName,String> storageAttributeMap = new HashMap<>();
 
     @PrePersist
