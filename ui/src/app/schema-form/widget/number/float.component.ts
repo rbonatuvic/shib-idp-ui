@@ -20,20 +20,11 @@ export class CustomFloatComponent extends IntegerWidget implements AfterViewInit
     }
 
     ngAfterViewInit() {
-        super.ngAfterViewInit();
         const control = this.control;
-        this.formProperty.valueChanges.subscribe((newValue) => {
-            if (typeof this._displayValue !== 'undefined') {
-                // Ignore the model value, use the display value instead
-                if (control.value !== this._displayValue) {
-                    control.setValue(this._displayValue, { emitEvent: false });
-                }
-            } else {
-                if (control.value !== newValue) {
-                    control.setValue(newValue, { emitEvent: false });
-                }
-            }
-        });
+
+        if (this.formProperty.value) {
+            control.setValue(this.formProperty.value, { emitEvent: false });
+        }
         this.formProperty.errorsChanges.subscribe((errors) => {
             control.setErrors(errors, { emitEvent: true });
             const messages = (errors || [])
@@ -46,13 +37,15 @@ export class CustomFloatComponent extends IntegerWidget implements AfterViewInit
         control.valueChanges.subscribe((newValue) => {
             const native = (<HTMLInputElement>this.element.nativeElement);
             this._displayValue = newValue;
-            this.formProperty.setValue(newValue, false);
             if (newValue === '' && native.validity.badInput) {
+                this.formProperty.setValue(native.valueAsNumber, false);
                 this.formProperty.extendErrors([{
                     code: 'INVALID_NUMBER',
                     path: `#${this.formProperty.path}`,
                     message: 'Invalid number',
                 }]);
+            } else {
+                this.formProperty.setValue(newValue, false);
             }
         });
     }
