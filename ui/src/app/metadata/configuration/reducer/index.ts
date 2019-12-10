@@ -78,7 +78,14 @@ export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === 
 export const getVersionModelFiltersFn =
     (model, kind) => kind === 'provider' ?
         model.metadataFilters ? model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
-        [] : null;
+            [] : null;
+
+export const getVersionModelFilterPluginsFn = (model, kind) => {
+    const filters = kind === 'provider' ?
+        model.metadataFilters ? model.metadataFilters.filter(filter => filterPluginTypes.indexOf(filter['@type']) > -1) :
+            [] : null;
+    return filters;
+};
 
 // Version History
 
@@ -116,10 +123,15 @@ export const getComparisonModels = createSelector(getCompareState, fromCompare.g
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
 export const getComparisonFilterId = createSelector(getCompareState, fromCompare.getFilterId);
 
-export const getComparisonModelsFilteredFn = (models) => models.map((model) => ({
-    ...model,
-    metadataFilters: getVersionModelFiltersFn(model, model.type)
-}));
+export const getComparisonModelsFilteredFn = (models) => models.map((model) => {
+    return ({
+        ...model,
+        metadataFilters: getVersionModelFilterPluginsFn(
+            model,
+            model.hasOwnProperty('@type') ? model.hasOwnProperty('metadataFilters') ? 'provider' : 'filter' : 'resolver'
+        )
+    });
+});
 
 export const getComparisonModelsFiltered = createSelector(getComparisonModels, getComparisonModelsFilteredFn);
 
@@ -134,14 +146,16 @@ export const getComparisonConfigurationCount = createSelector(getComparisonConfi
 
 export const getViewChangedOnly = createSelector(getCompareState, fromCompare.getViewChangedOnly);
 
-export const getLimitedConfigurationsFn = (configurations, limited) => configurations ? ({
-    ...configurations,
-    sections: limited ? configurations.sections :
-        configurations.sections.map(s => ({
-            ...s,
-            properties: getLimitedPropertiesFn(s.properties),
-        }))
-}) : configurations;
+export const getLimitedConfigurationsFn = (configurations, limited) => {
+    return configurations ? ({
+        ...configurations,
+        sections: limited ? configurations.sections :
+            configurations.sections.map(s => ({
+                ...s,
+                properties: getLimitedPropertiesFn(s.properties),
+            }))
+    }) : configurations;
+};
 
 export const getLimitedComparisonConfigurations = createSelector(
     getComparisonConfigurations,
