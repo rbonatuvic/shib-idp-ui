@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import * as fromRoot from './core/reducer';
 import { NotificationModule } from './notification/notification.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { MockTranslatePipe, MockI18nService, MockI18nModule } from '../testing/i18n.stub';
+import { MockI18nService, MockI18nModule } from '../testing/i18n.stub';
 import { I18nService } from './i18n/service/i18n.service';
 import { NavigationService } from './core/service/navigation.service';
 import { NavigationServiceStub } from '../testing/navigation-service.stub';
+import { MockPageTitleComponent } from '../testing/page-title-component.stub';
 
 @Component({
     template: `
@@ -46,6 +47,7 @@ describe('AppComponent', () => {
             ],
             declarations: [
                 AppComponent,
+                MockPageTitleComponent,
                 TestHostComponent
             ],
         }).compileComponents();

@@ -31,7 +31,8 @@ export const ProviderRoutes: Routes = [
                 children: [
                     {
                         path: 'new',
-                        component: ProviderWizardStepComponent
+                        component: ProviderWizardStepComponent,
+                        data: { title: `Create Provider`, subtitle: true }
                     }
                 ]
             },
@@ -45,7 +46,8 @@ export const ProviderRoutes: Routes = [
                         children: [
                             {
                                 path: 'filter/new',
-                                component: NewFilterComponent
+                                component: NewFilterComponent,
+                                data: { title: `Create New Filter` }
                             },
                             {
                                 path: 'filter/:id',
@@ -54,7 +56,8 @@ export const ProviderRoutes: Routes = [
                                 children: [
                                     {
                                         path: 'edit',
-                                        component: EditFilterComponent
+                                        component: EditFilterComponent,
+                                        data: { title: `Edit Metadata Filter` }
                                     }
                                 ]
                             }
@@ -62,7 +65,8 @@ export const ProviderRoutes: Routes = [
                     },
                     {
                         path: 'filters',
-                        component: ProviderFilterListComponent
+                        component: ProviderFilterListComponent,
+                        data: { title: `Metadata Filter List` }
                     },
                     {
                         path: 'edit',
@@ -71,7 +75,8 @@ export const ProviderRoutes: Routes = [
                             { path: '', redirectTo: 'common', pathMatch: 'prefix' },
                             {
                                 path: ':form',
-                                component: ProviderEditStepComponent
+                                component: ProviderEditStepComponent,
+                                data: { title: `Edit Metadata Provider`, subtitle: true }
                             }
                         ],
                         canDeactivate: [

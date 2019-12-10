@@ -13,7 +13,7 @@ export interface MessageState {
 
 export const initialState: MessageState = {
     fetching: false,
-    messages: null,
+    messages: {},
     error: null,
     locale: null
 };

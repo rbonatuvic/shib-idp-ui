@@ -14,6 +14,7 @@ import { ResolverEditComponent } from './container/resolver-edit.component';
 import { ResolverEditStepComponent } from './container/resolver-edit-step.component';
 import { ResolverSelectComponent } from './container/resolver-select.component';
 import { MetadataResolverPageComponent } from './resolver.component';
+import { IndexResolver } from '../configuration/service/index-resolver.service';
 
 export const ResolverRoutes: Routes = [
     {
@@ -28,32 +29,38 @@ export const ResolverRoutes: Routes = [
                     {
                         path: 'blank/:index',
                         component: ResolverWizardComponent,
+                        resolve: [IndexResolver],
                         canDeactivate: [
                             CanDeactivateGuard
                         ],
                         children: [
                             {
                                 path: '',
-                                component: ResolverWizardStepComponent
+                                component: ResolverWizardStepComponent,
+                                data: { title: `Create Metadata Source`, subtitle: true },
+                                resolve: []
                             }
                         ]
                     },
                     {
                         path: 'upload',
                         component: UploadResolverComponent,
-                        canDeactivate: []
+                        canDeactivate: [],
+                        data: { title: `Upload Metadata Source` }
                     },
                     {
                         path: 'copy',
                         component: CopyResolverComponent,
-                        canDeactivate: []
+                        canDeactivate: [],
+                        data: { title: `Copy Metadata Source` }
                     }
                 ]
             },
             {
                 path: 'new/copy/confirm',
                 component: ConfirmCopyComponent,
-                canActivate: [CopyIsSetGuard]
+                canActivate: [CopyIsSetGuard],
+                data: { title: `Confirm Metadata Source Copy` }
             },
             {
                 path: ':id',
@@ -65,8 +72,10 @@ export const ResolverRoutes: Routes = [
                         children: [
                             { path: '', redirectTo: 'common', pathMatch: 'prefix' },
                             {
-                                path: ':form',
-                                component: ResolverEditStepComponent
+                                path: ':index',
+                                resolve: [IndexResolver],
+                                component: ResolverEditStepComponent,
+                                data: { title: `Edit Metadata Source`, subtitle: true }
                             }
                         ],
                         canDeactivate: [
