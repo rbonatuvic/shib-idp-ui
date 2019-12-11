@@ -13,7 +13,6 @@ import javax.persistence.Table;
  */
 @Entity
 @RevisionEntity(PrincipalEnhancingRevisionListener.class)
-@Table(name = "REVINFO")
 @Getter
 @Setter
 public class PrincipalAwareRevisionEntity extends DefaultTrackingModifiedEntitiesRevisionEntity {

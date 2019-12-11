@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.hibernate;
 
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
@@ -11,9 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+/**
+ * Hibernate custom UserType needed to properly persist QName objects.
+ * Base implementation is taken from {@link https://github.com/tomsontom/emf-databinding-example/blob/0ae7faa67697a84171846852a5c5b0492d9a8f7d/org.eclipse.emf.teneo.hibernate/src/org/eclipse/emf/teneo/hibernate/mapping/QNameUserType.java}
+ */
 public class QNameUserType implements UserType {
 
-    private static final int[] SQL_TYPES = new int[] { Types.VARCHAR };
+    private static final int[] SQL_TYPES = new int[]{Types.VARCHAR};
 
     /*
      * (non-Javadoc)
@@ -42,25 +47,14 @@ public class QNameUserType implements UserType {
         return (Serializable) value;
     }
 
-    /** Compares the int values of the enumerates */
     public boolean equals(Object x, Object y) throws HibernateException {
-        // todo: check compare on null values
-        if (x == null && y == null) {
+        if (x == y) {
             return true;
-        }
-
-        if (x == null || y == null) {
+        } else if (x == null || y == null) {
             return false;
+        } else {
+            return x.equals(y);
         }
-
-        if (x.getClass() != y.getClass()) {
-            return false;
-        }
-
-        final QName q1 = (QName) x;
-        final QName q2 = (QName) y;
-
-        return q1.toString().compareTo(q2.toString()) == 0;
     }
 
     /*
@@ -69,13 +63,48 @@ public class QNameUserType implements UserType {
      * @see org.hibernate.usertype.UserType#hashCode(java.lang.Object)
      */
     public int hashCode(Object x) throws HibernateException {
-        return x.toString().hashCode();
+        return x.hashCode();
     }
 
-    /** Not mutable */
+    /**
+     * Not mutable
+     */
     public boolean isMutable() {
         return false;
     }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[],
+     *      java.lang.Object)
+     */
+    /*public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor sessionContractImplementor, Object owner) throws HibernateException, SQLException {
+        final String namespaceURI = rs.getString(names[0]);
+        if (rs.wasNull()) {
+            return null;
+        }
+        final String localPart = rs.getString(names[1]);
+        final String prefix = rs.getString(names[2]);
+        return QNameSupport.constructQName(namespaceURI, localPart, prefix);
+    }*/
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement,
+     *      java.lang.Object, int)
+     */
+    /*public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor sessionContractImplementor) throws HibernateException, SQLException {
+        if (value == null) {
+            st.setNull(index, Types.VARCHAR);
+        } else {
+            QName qName = (QName) value;
+            st.setString(index, qName.getNamespaceURI());
+            st.setString(index + 1, qName.getLocalPart());
+            st.setString(index + 2, qName.getPrefix());
+        }
+    }*/
 
     /*
      * (non-Javadoc)
@@ -115,12 +144,16 @@ public class QNameUserType implements UserType {
         return original;
     }
 
-    /** Returns the parameterizezd enumType */
+    /**
+     * Returns the parameterizezd enumType
+     */
     public Class<?> returnedClass() {
         return QName.class;
     }
 
-    /** An enum is stored in one varchar */
+    /**
+     * An enum is stored in one varchar
+     */
     public int[] sqlTypes() {
         return SQL_TYPES;
     }
@@ -145,6 +178,6 @@ public class QNameUserType implements UserType {
         final String ns = str.substring(1, endIndexNS);
         final String prefix = str.substring(endIndexNS + 1, prefixIndex);
         final String localPart = str.substring(prefixIndex + 1);
-        return new QName(ns, localPart, prefix);
+        return QNameSupport.constructQName(ns, localPart, prefix);
     }
 }

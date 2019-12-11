@@ -1,16 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 
 import javax.annotation.Nonnull;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
