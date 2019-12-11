@@ -200,7 +200,7 @@ class MetadataResolverRepositoryTests extends Specification {
         basicPersistenceOfResolverIsCorrectFor { it instanceof LocalDynamicMetadataResolver }
     }
 
-    def "persisting entity attributes filter target with script of more than 255 characters"() {
+    def "persisting entity attributes filter target with script of 760 max chars, as defied in DB schema mapping"() {
         given:
         def mdr = new MetadataResolver().with {
             it.name = "SHIBUI-1588"
@@ -211,18 +211,7 @@ class MetadataResolverRepositoryTests extends Specification {
             it.resourceId = 'SHIBUI-1588'
             it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
                 it.entityAttributesFilterTargetType = CONDITION_SCRIPT
-                it.singleValue = """
-                /*
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
-                labore et dolore magna aliqua. Cras fermentum odio eu feugiat pretium nibh ipsum. Sed augue lacus viverra vitae. 
-                Fermentum et sollicitudin ac orci. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim. 
-                Rhoncus urna neque viverra justo nec ultrices dui sapien. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. 
-                Massa id neque aliquam vestibulum morbi blandit cursus risus. Metus aliquam eleifend mi in nulla posuere sollicitudin. 
-                Arcu ac tortor dignissim convallis aenean. Et tortor consequat id porta nibh venenatis cras. 
-                Netus et malesuada fames ac turpis egestas. Bibendum arcu vitae elementum curabitur. 
-                Volutpat consequat mauris nunc congue nisi vitae suscipit.
-                */
-                """
+                it.singleValue = '/*' + ('X' * 756) + '*/'
                 it
             }
             it

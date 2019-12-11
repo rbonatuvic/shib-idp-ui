@@ -157,6 +157,7 @@ public class MetadataResolversController {
     //Versioning endpoints
 
     @GetMapping("/MetadataResolvers/{resourceId}/Versions")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
         MetadataResolver resolver = resolverRepository.findByResourceId(resourceId);
         if (resolver == null) {

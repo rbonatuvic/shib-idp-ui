@@ -71,6 +71,7 @@ public class EntityDescriptorController {
     }
 
     @PostMapping("/EntityDescriptor")
+    @Transactional
     public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) {
         final String entityId = edRepresentation.getEntityId();
 
@@ -93,11 +94,13 @@ public class EntityDescriptorController {
     }
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/xml")
+    @Transactional
     public ResponseEntity<?> upload(@RequestBody byte[] entityDescriptorXml, @RequestParam String spName) throws Exception {
         return handleUploadingEntityDescriptorXml(entityDescriptorXml, spName);
     }
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/x-www-form-urlencoded")
+    @Transactional
     public ResponseEntity<?> upload(@RequestParam String metadataUrl, @RequestParam String spName) throws Exception {
         try {
             byte[] xmlContents = this.restTemplate.getForObject(metadataUrl, byte[].class);
@@ -112,6 +115,7 @@ public class EntityDescriptorController {
     }
 
     @PutMapping("/EntityDescriptor/{resourceId}")
+    @Transactional
     public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
         User currentUser = userService.getCurrentUser();
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(resourceId);
@@ -163,6 +167,7 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(@PathVariable String resourceId) {
         User currentUser = userService.getCurrentUser();
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
@@ -180,6 +185,7 @@ public class EntityDescriptorController {
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException {
         User currentUser = userService.getCurrentUser();
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
@@ -195,7 +201,7 @@ public class EntityDescriptorController {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
     public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() {
         return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
@@ -205,6 +211,7 @@ public class EntityDescriptorController {
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping(value = "/EntityDescriptor/{resourceId}")
+    @Transactional
     public ResponseEntity<?> deleteOne(@PathVariable String resourceId) {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
@@ -220,6 +227,7 @@ public class EntityDescriptorController {
     //Versioning endpoints
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
@@ -236,6 +244,7 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
         EntityDescriptorRepresentation edRepresentation =
                 versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
