@@ -79,39 +79,6 @@ public class QNameUserType implements UserType {
      * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[],
      *      java.lang.Object)
      */
-    /*public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor sessionContractImplementor, Object owner) throws HibernateException, SQLException {
-        final String namespaceURI = rs.getString(names[0]);
-        if (rs.wasNull()) {
-            return null;
-        }
-        final String localPart = rs.getString(names[1]);
-        final String prefix = rs.getString(names[2]);
-        return QNameSupport.constructQName(namespaceURI, localPart, prefix);
-    }*/
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement,
-     *      java.lang.Object, int)
-     */
-    /*public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor sessionContractImplementor) throws HibernateException, SQLException {
-        if (value == null) {
-            st.setNull(index, Types.VARCHAR);
-        } else {
-            QName qName = (QName) value;
-            st.setString(index, qName.getNamespaceURI());
-            st.setString(index + 1, qName.getLocalPart());
-            st.setString(index + 2, qName.getPrefix());
-        }
-    }*/
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[],
-     *      java.lang.Object)
-     */
     public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor sessionContractImplementor, Object owner) throws HibernateException, SQLException {
         final String str = rs.getString(names[0]);
         if (rs.wasNull()) {
