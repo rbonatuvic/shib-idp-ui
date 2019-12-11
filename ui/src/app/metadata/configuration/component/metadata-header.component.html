@@ -2,7 +2,7 @@
     <div class="card-body">
         <h5 class="card-title version-title">
             <translate-i18n key="label.saved">Saved</translate-i18n>:&nbsp;
-            <span class="save-date">{{ version.modifiedDate | date:DATE_FORMAT }}</span>
+            <span class="save-date">{{ (version.modifiedDate) | date:DATE_FORMAT }}</span>
             <br />
             <translate-i18n key="label.by">By</translate-i18n>:&nbsp;
             <span class="author">{{ version.createdBy }}</span>
