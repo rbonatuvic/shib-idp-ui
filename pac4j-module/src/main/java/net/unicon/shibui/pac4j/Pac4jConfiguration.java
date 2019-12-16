@@ -7,10 +7,12 @@ import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.client.SAML2ClientConfiguration;
 import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 public class Pac4jConfiguration {
     @Bean
     public SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator(UserRepository userRepository) {
