@@ -1,6 +1,5 @@
 plugins {
     id 'groovy'
-    id 'com.palantir.docker' version '0.20.1'
     id 'jacoco'
     id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
@@ -39,20 +38,4 @@ dependencies {
     testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-    docker project(':backend')
 }
-
-docker {
-    name 'unicon/shibui-pac4j'
-    tags 'latest-pac4j'
-    files configurations.runtime, tasks.jar.outputs
-    noCache true
-}
-
-task testme(type: Copy) {
-    from configurations.runtime
-    into temporaryDir
-}
-
-tasks.docker.dependsOn(tasks.jar, ':backend:docker')

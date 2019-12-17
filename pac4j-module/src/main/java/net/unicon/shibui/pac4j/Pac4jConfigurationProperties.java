@@ -1,5 +1,6 @@
 package net.unicon.shibui.pac4j;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "shibui.pac4j")
 @EnableConfigurationProperties
+@ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 public class Pac4jConfigurationProperties {
     private String keystorePath = "/tmp/samlKeystore.jks";
     private String keystorePassword = "changeit";

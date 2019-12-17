@@ -210,6 +210,9 @@ dependencies {
     // Envers for persistent entities versioning
     compile 'org.hibernate:hibernate-envers'
 
+    //Pacj4 sub-project
+    runtimeOnly project(':pac4j-module')
+
     enversTestCompile sourceSets.main.output
     enversTestCompile sourceSets.test.output
     enversTestCompile configurations.compile
