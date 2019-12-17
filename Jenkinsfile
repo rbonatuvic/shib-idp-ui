@@ -38,7 +38,7 @@ pipeline {
       steps {
         sh '''
         docker stop shibui || true && docker rm shibui || true
-        docker run -d --restart always --name shibui -p 8080:8080 -v /etc/shibui:/conf -v /etc/shibui/application.yml:/application.yml -m 4GB --memory-swap=4GB unicon/shibui-pac4j:latest /usr/bin/java -Xmx3G -jar app.jar
+        docker run -d --restart always --name shibui -p 8080:8080 -v /etc/shibui:/conf -v /etc/shibui/application.yml:/application.yml -m 4GB --memory-swap=4GB unicon/shibui:latest /usr/bin/java -Xmx3G -jar app.jar
         '''
       }
     }
