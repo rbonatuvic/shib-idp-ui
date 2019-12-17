@@ -2,6 +2,7 @@ FROM gcr.io/distroless/java
 
 ARG JAR_FILE
 
+COPY loader.properties loader.properties
 COPY ${JAR_FILE} app.jar
 
 EXPOSE 8080

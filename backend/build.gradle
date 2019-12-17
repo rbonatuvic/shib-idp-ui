@@ -370,6 +370,7 @@ docker {
     pull true
     noCache true
     files tasks.bootJar.outputs
+    files 'src/main/docker-files/loader.properties'
     buildArgs(['JAR_FILE': "shibui-${version}.jar"])
 }
 
