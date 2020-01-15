@@ -1,7 +1,13 @@
 package edu.internet2.tap.beacon;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static edu.internet2.tap.beacon.Beacon.IMAGE;
 import static edu.internet2.tap.beacon.Beacon.LOG_HOST;
@@ -18,9 +24,9 @@ import static edu.internet2.tap.beacon.Beacon.VERSION;
  */
 public class DefaultBeaconPublisher implements BeaconPublisher {
 
-    private String endpointUri;
+    private URL enpointUrl;
 
-    private Map<String, String> dataToPublish;
+    private String jsonPayload;
 
     public DefaultBeaconPublisher(Map<String, String> beaconDetails) {
 
@@ -37,29 +43,52 @@ public class DefaultBeaconPublisher implements BeaconPublisher {
                 || beaconDetails.get(MAINTAINER) == null) {
             throw new IllegalArgumentException("Not all the necessary beacon data is available to be able to publish to beacon");
         }
-        this.endpointUri = String.format("http://%s:%s", beaconDetails.get(LOG_HOST), beaconDetails.get(LOG_PORT));
+        try {
+            this.enpointUrl = new URL(String.format("http://%s:%s", beaconDetails.get(LOG_HOST), beaconDetails.get(LOG_PORT)));
+        } catch (MalformedURLException ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
 
-        this.dataToPublish = new HashMap<>();
-        this.dataToPublish.put("msgType", "TIERBEACON");
-        this.dataToPublish.put("msgName", "TIER");
-        this.dataToPublish.put("msgVersion", "1.0");
-        this.dataToPublish.put("tbProduct", beaconDetails.get(IMAGE));
-        this.dataToPublish.put("tbProductVersion", beaconDetails.get(VERSION));
-        this.dataToPublish.put("tbTIERRelease", beaconDetails.get(TIERVERSION));
-        this.dataToPublish.put("tbMaintainer", beaconDetails.get(MAINTAINER));
+        Map<String, String> dataToPublish = new HashMap<>();
+        dataToPublish.put("msgType", "TIERBEACON");
+        dataToPublish.put("msgName", "TIER");
+        dataToPublish.put("msgVersion", "1.0");
+        dataToPublish.put("tbProduct", beaconDetails.get(IMAGE));
+        dataToPublish.put("tbProductVersion", beaconDetails.get(VERSION));
+        dataToPublish.put("tbTIERRelease", beaconDetails.get(TIERVERSION));
+        dataToPublish.put("tbMaintainer", beaconDetails.get(MAINTAINER));
+
+        //Create JSON payload without any 3-rd party library
+        this.jsonPayload = "{" + dataToPublish.entrySet().stream()
+                .map(e -> "\"" + e.getKey() + "\"" + ":\"" + e.getValue() + "\"")
+                .collect(Collectors.joining(", ")) + "}";
     }
 
     @Override
     public void run() {
-        //log.debug("Posting data {} to beacon endpoint {}", dataToPublish, endpointUri);
+        try {
+            HttpURLConnection con = (HttpURLConnection) this.enpointUrl.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json; utf-8");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+            try(OutputStream os = con.getOutputStream()){
+                byte[] input = jsonPayload.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     //Below are package-private getters used in unit tests
     String getEndpointUri() {
-        return this.endpointUri;
+        return enpointUrl.toString();
     }
 
-    Map<String, String> getDataToPublish() {
-        return this.dataToPublish;
+    String getJsonPayload() {
+        return jsonPayload;
     }
 }
