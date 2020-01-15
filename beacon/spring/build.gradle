@@ -1,0 +1,29 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'groovy'
+    id 'jacoco'
+    id 'org.springframework.boot' version '2.0.0.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+    id 'io.franzbecker.gradle-lombok' version '1.13'
+}
+
+repositories {
+    jcenter()
+}
+
+jar {
+    archiveName = "beacon-spring-${version}.jar"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+lombok {
+    version = "1.18.4"
+    //TODO: get new sha256
+    sha256 = ""
+}

@@ -1,13 +1,15 @@
 package edu.internet2.tap.beacon;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DefaultBeaconPublisherTests {
 
     @Test
     public void checkCorrectInvariantsWithBeaconDataNull() {
-        Assertions.assertTrue(true);
-        //new DefaultBeaconPublisher(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new DefaultBeaconPublisher(null);
+        });
     }
 }
