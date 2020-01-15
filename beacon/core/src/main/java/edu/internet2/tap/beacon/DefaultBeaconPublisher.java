@@ -81,12 +81,12 @@ public class DefaultBeaconPublisher implements BeaconPublisher {
 
     }
 
-    //Below are package-private getters used in unit tests
-    String getEndpointUri() {
+    //getters used in unit tests and calling components for debugging purposes
+    public String getEndpointUri() {
         return enpointUrl.toString();
     }
 
-    String getJsonPayload() {
+    public String getJsonPayload() {
         return jsonPayload;
     }
 }

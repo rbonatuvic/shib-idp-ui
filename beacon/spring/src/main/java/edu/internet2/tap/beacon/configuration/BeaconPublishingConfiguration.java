@@ -1,6 +1,5 @@
 package edu.internet2.tap.beacon.configuration;
 
-import edu.internet2.tap.beacon.BeaconPublisher;
 import edu.internet2.tap.beacon.DefaultBeaconPublisher;
 import edu.internet2.tap.beacon.configuration.condition.ConditionalOnBeaconEnvironmentVariablesPresent;
 import org.slf4j.Logger;
@@ -43,10 +42,9 @@ public class BeaconPublishingConfiguration {
     }
 
     public static class BeaconPublishingTask {
+        private DefaultBeaconPublisher beaconPublisher;
 
-        private BeaconPublisher beaconPublisher;
-
-        public BeaconPublishingTask(BeaconPublisher beaconPublisher) {
+        public BeaconPublishingTask(DefaultBeaconPublisher beaconPublisher) {
             this.beaconPublisher = beaconPublisher;
         }
 
@@ -54,6 +52,9 @@ public class BeaconPublishingConfiguration {
         @Scheduled(cron = "0 ${random.int[0,59]} ${random.int[0,3]} ? * *}")
         @Async
         void publish() {
+            logger.debug("Publishing payload: {} to beacon endpoint: {}",
+                    beaconPublisher.getJsonPayload(),
+                    beaconPublisher.getEndpointUri());
             beaconPublisher.run();
         }
     }
