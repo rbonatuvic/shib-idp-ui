@@ -12,16 +12,12 @@ public class DefaultBeaconPublisherTests {
 
     @Test
     public void checkCorrectInvariantsWithBeaconDataNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DefaultBeaconPublisher(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new DefaultBeaconPublisher(null));
     }
 
     @Test
     public void checkCorrectInvariantsWithBeaconDataEmpty() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new DefaultBeaconPublisher(new HashMap<>());
-        });
+        assertThrows(IllegalArgumentException.class, () -> new DefaultBeaconPublisher(new HashMap<>()));
     }
 
     @Test

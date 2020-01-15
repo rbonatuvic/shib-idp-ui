@@ -24,7 +24,7 @@ import static edu.internet2.tap.beacon.Beacon.VERSION;
  */
 public class DefaultBeaconPublisher implements BeaconPublisher {
 
-    private URL enpointUrl;
+    private URL endpointUrl;
 
     private String jsonPayload;
 
@@ -42,7 +42,7 @@ public class DefaultBeaconPublisher implements BeaconPublisher {
             throw new IllegalArgumentException("Not all the necessary beacon data is available to be able to publish to beacon");
         }
         try {
-            this.enpointUrl = new URL(String.format("http://%s:%s", beaconDetails.get(LOG_HOST), beaconDetails.get(LOG_PORT)));
+            this.endpointUrl = new URL(String.format("http://%s:%s", beaconDetails.get(LOG_HOST), beaconDetails.get(LOG_PORT)));
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
@@ -65,7 +65,7 @@ public class DefaultBeaconPublisher implements BeaconPublisher {
     @Override
     public void run() {
         try {
-            HttpURLConnection con = (HttpURLConnection) this.enpointUrl.openConnection();
+            HttpURLConnection con = (HttpURLConnection) this.endpointUrl.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
@@ -77,13 +77,11 @@ public class DefaultBeaconPublisher implements BeaconPublisher {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     //getters used in unit tests and calling components for debugging purposes
     public String getEndpointUri() {
-        return enpointUrl.toString();
+        return endpointUrl.toString();
     }
 
     public String getJsonPayload() {
