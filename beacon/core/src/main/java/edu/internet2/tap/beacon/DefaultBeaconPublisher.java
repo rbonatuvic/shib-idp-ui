@@ -29,8 +29,6 @@ public class DefaultBeaconPublisher implements BeaconPublisher {
     private String jsonPayload;
 
     public DefaultBeaconPublisher(Map<String, String> beaconDetails) {
-
-
         //Do data validation checks here. If any of the necessary beacon data not available here, throw a Runtime exception
         if (beaconDetails == null) {
             throw new IllegalArgumentException("beaconDetails Map must not be null");

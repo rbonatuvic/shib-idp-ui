@@ -213,6 +213,9 @@ dependencies {
     //Pacj4 sub-project
     runtimeOnly project(':pac4j-module')
 
+    //Beacon
+    runtimeOnly project(':beacon:spring')
+
     enversTestCompile sourceSets.main.output
     enversTestCompile sourceSets.test.output
     enversTestCompile configurations.compile
