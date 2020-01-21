@@ -4,6 +4,7 @@ import { BaseMetadataProviderEditor } from './base.provider.form';
 import { metadataFilterProcessor } from './utilities';
 import RegexValidator from '../../../shared/validation/regex.validator';
 import { memoize } from '../../../shared/memo';
+import API_BASE_PATH from '../../../app.constant';
 
 const checkRegex = memoize(RegexValidator.isValidRegex);
 
@@ -83,7 +84,7 @@ export const DynamicHttpMetadataProviderWizard: Wizard<DynamicHttpMetadataProvid
 
         return validators;
     },
-    schema: '/api/ui/MetadataResolver/DynamicHttpMetadataResolver',
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
     steps: [
         {
             id: 'common',

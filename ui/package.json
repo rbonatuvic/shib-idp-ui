@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve --proxy-config proxy.conf.json --base-href /shibui/",
     "build": "ng build",
     "test": "ng test --code-coverage --source-map=true",
     "lint": "ng lint",

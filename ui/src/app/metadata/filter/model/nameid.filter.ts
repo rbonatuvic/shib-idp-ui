@@ -4,13 +4,14 @@ import { NameIDFormatFilterEntity } from '../../domain/entity/filter/nameid-form
 import { RegexValidator } from '../../../shared/validation/regex.validator';
 import { getFilterNames } from '../reducer';
 import { memoize } from '../../../shared/memo';
+import API_BASE_PATH from '../../../app.constant';
 
 const checkRegex = memoize(RegexValidator.isValidRegex);
 
 export const NameIDFilter: FormDefinition<MetadataFilter> = {
     label: 'NameIDFormat',
     type: 'NameIDFormat',
-    schema: '/api/ui/NameIdFormatFilter',
+    schema: `${API_BASE_PATH}/ui/NameIdFormatFilter`,
     getEntity(filter: MetadataFilter): NameIDFormatFilterEntity {
         return new NameIDFormatFilterEntity(filter);
     },

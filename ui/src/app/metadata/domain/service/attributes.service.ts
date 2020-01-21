@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, shareReplay, map } from 'rxjs/operators';
 import { ReleaseAttribute } from '../model/properties/release-attribute';
+import API_BASE_PATH from '../../../app.constant';
 
 const CACHE_SIZE = 1;
 
@@ -10,7 +11,7 @@ const CACHE_SIZE = 1;
 export class AttributesService {
 
     readonly endpoint = '/customAttributes';
-    readonly base = '/api';
+    readonly base = API_BASE_PATH;
 
     private cache$: Observable<ReleaseAttribute[]>;
 

@@ -13,7 +13,7 @@ import { VersionInfo } from '../model/version';
 export class VersionEffects {
 
     private endpoint = '/info';
-    private base = '/actuator';
+    private base = 'actuator';
 
     @Effect()
     loadVersionInfo$ = this.actions$

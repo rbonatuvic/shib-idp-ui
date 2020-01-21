@@ -57,6 +57,9 @@ export class MetadataOptionsComponent implements OnDestroy {
         protected router: Router,
         protected activatedRoute: ActivatedRoute
     ) {
+
+        console.log('metadata options');
+
         this.model$
             .pipe(
                 takeUntil(this.ngUnsubscribe),

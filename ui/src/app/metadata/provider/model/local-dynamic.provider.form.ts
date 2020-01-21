@@ -1,13 +1,13 @@
 import { Wizard } from '../../../wizard/model';
 import { LocalDynamicMetadataProvider } from '../../domain/model/providers/local-dynamic-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
-import { MetadataProvider } from '../../domain/model';
+import API_BASE_PATH from '../../../app.constant';
 
 export const LocalDynamicMetadataProviderWizard: Wizard<LocalDynamicMetadataProvider> = {
     ...BaseMetadataProviderEditor,
     label: 'LocalDynamicMetadataProvider',
     type: 'LocalDynamicMetadataResolver',
-    schema: '/api/ui/MetadataResolver/LocalDynamicMetadataResolver',
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
     steps: [
         {
             id: 'common',

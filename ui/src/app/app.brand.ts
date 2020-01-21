@@ -6,9 +6,9 @@ export const brand: Brand = {
         title: 'brand.header.title'
     },
     logo: {
-        default: '/assets/shibboleth_logowordmark_color.png',
-        small: '/assets/shibboleth_icon_color_130x130.png',
-        large: '/assets/shibboleth_logowordmark_color.png',
+        default: 'assets/shibboleth_logowordmark_color.png',
+        small: 'assets/shibboleth_icon_color_130x130.png',
+        large: 'assets/shibboleth_logowordmark_color.png',
         alt: 'brand.logo-alt',
         link: {
             label: 'brand.logo-link-label', // shibboleth

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { MetadataProvider } from '../../domain/model';
+import API_BASE_PATH from '../../../app.constant';
 
 
 @Injectable()
@@ -11,7 +12,7 @@ export class MetadataProviderService {
 
     readonly endpoint = '/MetadataResolvers';
     readonly order = '/MetadataResolversPositionOrder';
-    readonly base = '/api';
+    readonly base = API_BASE_PATH;
 
     constructor(
         private http: HttpClient
@@ -24,6 +25,7 @@ export class MetadataProviderService {
     }
 
     find(id: string): Observable<MetadataProvider> {
+        console.log(id);
         return this.http.get<MetadataProvider>(`${this.base}${this.endpoint}/${id}`);
     }
 

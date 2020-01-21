@@ -1,9 +1,10 @@
 import { Wizard, WizardStep } from '../../../../wizard/model';
 import { MetadataResolver } from '../metadata-resolver';
 import { MetadataSourceBase } from './metadata-source-base';
+import API_BASE_PATH from '../../../../app.constant';
 
 export class MetadataSourceWizard extends MetadataSourceBase implements Wizard<MetadataResolver> {
-    schema = '/api/ui/MetadataSources';
+    schema = `${API_BASE_PATH}/ui/MetadataSources`;
     steps: WizardStep[] = [
         {
             index: 1,

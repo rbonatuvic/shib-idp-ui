@@ -7,11 +7,12 @@ import { PATHS } from '../../configuration/configuration.values';
 import { MetadataVersion } from '../model/version';
 import { map } from 'rxjs/operators';
 import { Metadata } from '../../domain/domain.type';
+import API_BASE_PATH from '../../../app.constant';
 
 @Injectable()
 export class MetadataHistoryService {
 
-    readonly base = `api`;
+    readonly base = API_BASE_PATH;
     readonly path = `Versions`;
 
     constructor(
@@ -34,9 +35,9 @@ export class MetadataHistoryService {
 
     getVersion(resourceId: string, type: string, versionId: string = null): Observable<Metadata> {
         const api = versionId ?
-            `/${this.base}/${PATHS[type]}/${resourceId}/${this.path}/${versionId}`
+            `${this.base}/${PATHS[type]}/${resourceId}/${this.path}/${versionId}`
             :
-            `/${this.base}/${PATHS[type]}/${resourceId}`;
+            `${this.base}/${PATHS[type]}/${resourceId}`;
         return this.http.get<Metadata>(api);
     }
 
