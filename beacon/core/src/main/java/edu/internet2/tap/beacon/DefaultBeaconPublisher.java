@@ -24,9 +24,9 @@ import static edu.internet2.tap.beacon.Beacon.VERSION;
  */
 public class DefaultBeaconPublisher implements BeaconPublisher {
 
-    private URL endpointUrl;
+    private final URL endpointUrl;
 
-    private String jsonPayload;
+    private final String jsonPayload;
 
     public DefaultBeaconPublisher(Map<String, String> beaconDetails) {
         //Do data validation checks here. If any of the necessary beacon data not available here, throw a Runtime exception
