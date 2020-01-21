@@ -31,7 +31,3 @@ dependencies {
 jar {
     archiveName = "beacon-core-${version}.jar"
 }
-
-/*test {
-    useJUnitPlatform()
-}*/
