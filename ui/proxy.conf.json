@@ -15,7 +15,7 @@
             "^/shibui": ""
         }
     },
-    "/shibui/login": {
+    "/login": {
         "target": "http://localhost:8080",
         "secure": false,
         "logLevel": "debug",
@@ -23,7 +23,7 @@
             "^/shibui": ""
         }
     },
-    "/shibui/logout": {
+    "/logout": {
         "target": "http://localhost:8080",
         "secure": false,
         "logLevel": "debug",

@@ -20,7 +20,7 @@ export class MetadataHistoryService {
     ) { }
 
     query(resourceId: string, type: string): Observable<MetadataHistory> {
-        return this.http.get<MetadataVersion[]>(`/${this.base}/${PATHS[type]}/${resourceId}/${this.path}`).pipe(
+        return this.http.get<MetadataVersion[]>(`${this.base}/${PATHS[type]}/${resourceId}/${this.path}`).pipe(
             map(resp => ({
                 versions: resp
             }))
@@ -42,6 +42,6 @@ export class MetadataHistoryService {
     }
 
     updateVersion(resourceId: string, type: string, model: Metadata): Observable<Metadata> {
-        return this.http.put<Metadata>(`/${this.base}/${PATHS[type]}/${resourceId}`, model);
+        return this.http.put<Metadata>(`${this.base}/${PATHS[type]}/${resourceId}`, model);
     }
 }
