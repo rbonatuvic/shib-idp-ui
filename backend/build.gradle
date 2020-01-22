@@ -90,8 +90,7 @@ bootWar {
         )
     }
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        // into '/'
-        into '/public'
+        into 'WEB-INF/classes/resources'
     }
     archiveName = "${baseName}-${version}.war"
 }
@@ -107,8 +106,7 @@ bootJar {
         )
     }
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        // into '/'
-        into '/public'
+        into 'WEB-INF/classes/resources'
     }
     archiveName = "${baseName}-${version}.jar"
 }
