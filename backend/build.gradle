@@ -90,7 +90,12 @@ bootWar {
         )
     }
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
+        into 'WEB-INF/classes/templates'
+        include 'index.html'
+    }
+    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
         into 'WEB-INF/classes/resources'
+        //include 'index.html'
     }
     archiveName = "${baseName}-${version}.war"
 }
