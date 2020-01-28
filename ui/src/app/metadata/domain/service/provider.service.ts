@@ -25,7 +25,6 @@ export class MetadataProviderService {
     }
 
     find(id: string): Observable<MetadataProvider> {
-        console.log(id);
         return this.http.get<MetadataProvider>(`${this.base}${this.endpoint}/${id}`);
     }
 

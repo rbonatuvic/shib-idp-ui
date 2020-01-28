@@ -10,7 +10,6 @@ export class ApiPathInterceptor implements HttpInterceptor {
     ) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const apiReq = req.clone({ url: `${this.baseHref}${req.url}` });
-        console.log(req);
         return next.handle(apiReq);
     }
 }

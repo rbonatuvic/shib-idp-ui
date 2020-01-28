@@ -115,7 +115,6 @@ export class CollectionEffects {
         map(action => action.payload),
         withLatestFrom(this.store.select(fromI18n.getMessages)),
         map(([error, messages]) => {
-            console.log(error);
             let message = `${error.errorCode}: ${this.i18nService.translate(error.errorMessage, null, messages)}`;
             message = error.cause ? `${message} - ${error.cause}` : message;
             return new AddNotification(

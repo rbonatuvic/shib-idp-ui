@@ -24,7 +24,6 @@ export class ResolverService {
     }
 
     find(id: string): Observable<MetadataResolver> {
-        console.log(API_BASE_PATH);
         return this.http.get<MetadataResolver>(`${ this.base }${ this.endpoint }/${ id }`);
     }
 
