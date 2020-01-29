@@ -5,13 +5,14 @@ import { EntityAttributesFilterEntity } from '../../domain/entity';
 import { RegexValidator } from '../../../shared/validation/regex.validator';
 import { getFilterNames } from '../reducer';
 import { memoize } from '../../../shared/memo';
+import API_BASE_PATH from '../../../app.constant';
 
 const checkRegex = memoize(RegexValidator.isValidRegex);
 
 export const EntityAttributesFilter: FormDefinition<MetadataFilter> = {
     label: 'EntityAttributes',
     type: 'EntityAttributes',
-    schema: '/api/ui/EntityAttributesFilters',
+    schema: `${API_BASE_PATH}/ui/EntityAttributesFilters`,
     getEntity(filter: MetadataFilter): EntityAttributesFilterEntity {
         return new EntityAttributesFilterEntity(filter);
     },

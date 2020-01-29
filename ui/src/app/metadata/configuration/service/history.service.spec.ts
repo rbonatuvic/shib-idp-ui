@@ -47,7 +47,7 @@ describe(`Attributes Service`, () => {
                 const type = 'resource';
                 service.getVersion(resourceId, type).subscribe();
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `/${service.base}/${PATHS[type]}/${resourceId}`
+                    return req.url === `${service.base}/${PATHS[type]}/${resourceId}`
                         && req.method === 'GET';
                 }, `GET schema by path`);
             }
@@ -59,7 +59,7 @@ describe(`Attributes Service`, () => {
                 const versionId = '1';
                 service.getVersion(resourceId, type, versionId).subscribe();
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `/${service.base}/${PATHS[type]}/${resourceId}/${service.path}/${versionId}`
+                    return req.url === `${service.base}/${PATHS[type]}/${resourceId}/${service.path}/${versionId}`
                         && req.method === 'GET';
                 }, `GET schema by path`);
             }
@@ -74,7 +74,7 @@ describe(`Attributes Service`, () => {
                 const versionId = '1';
                 service.updateVersion(resourceId, type, {} as Metadata).subscribe();
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === `/${service.base}/${PATHS[type]}/${resourceId}`
+                    return req.url === `${service.base}/${PATHS[type]}/${resourceId}`
                         && req.method === 'PUT';
                 }, `PUT schema by path`);
             }

@@ -21,7 +21,7 @@
             "type": "string",
             "widget": {
                 "id": "select",
-                "dataUrl": "/api/ui/MetadataResolver/types"
+                "dataUrl": "api/ui/MetadataResolver/types"
             }
         }
     },

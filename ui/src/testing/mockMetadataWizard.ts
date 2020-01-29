@@ -23,7 +23,7 @@ export const MockMetadataWizard: Wizard<MockMetadata> = {
     getValidators(): { [key: string]: any } {
         return {};
     },
-    schema: '/api/ui/MetadataSources',
+    schema: 'api/ui/MetadataSources',
     steps: [
         {
             index: 1,

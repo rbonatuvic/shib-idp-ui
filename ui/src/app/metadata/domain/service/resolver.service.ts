@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MetadataResolver } from '../model';
+import API_BASE_PATH from '../../../app.constant';
 
 @Injectable()
 export class ResolverService {
 
     private endpoint = '/EntityDescriptor';
-    private base = '/api';
+    private base = API_BASE_PATH;
 
     constructor(
         private http: HttpClient

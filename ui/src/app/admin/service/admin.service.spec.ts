@@ -3,6 +3,7 @@ import { AdminService } from './admin.service';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpRequest, HttpClientModule } from '@angular/common/http';
 import { Admin } from '../model/admin';
+import API_BASE_PATH from '../../app.constant';
 
 let users = <Admin[]>[
     {
@@ -43,7 +44,7 @@ describe('Admin Service', () => {
                 service.query().subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === '/api/admin/users'
+                    return req.url === `${API_BASE_PATH}/admin/users`
                         && req.method === 'GET';
                 }, `GET admin collection`);
             }
@@ -55,7 +56,7 @@ describe('Admin Service', () => {
                 service.update({...users[0]}).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === '/api/admin/users/abc'
+                    return req.url === `${API_BASE_PATH}/admin/users/abc`
                         && req.method === 'PATCH';
                 }, `PATCH admin user`);
             }
@@ -67,7 +68,7 @@ describe('Admin Service', () => {
                 service.remove(users[0].username).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
-                    return req.url === '/api/admin/users/abc'
+                    return req.url === `${API_BASE_PATH}/admin/users/abc`
                         && req.method === 'DELETE';
                 }, `DELETE admin user`);
             }

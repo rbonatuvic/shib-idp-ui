@@ -6,7 +6,7 @@ import { ReleaseAttribute } from '../app/metadata/domain/model/properties/releas
 export class MockAttributeService {
 
     readonly path = '/customAttributes';
-    readonly base = '/api';
+    readonly base = 'api';
 
     constructor() { }
 

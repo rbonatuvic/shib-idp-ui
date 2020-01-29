@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { StoreModule, Store } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
@@ -24,6 +24,8 @@ import { WizardModule } from './wizard/wizard.module';
 import { FormModule } from './schema-form/schema-form.module';
 import { environment } from '../environments/environment.prod';
 import { I18nModule } from './i18n/i18n.module';
+import { ApiPathInterceptor } from './core/service/api-path.interceptor';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -63,7 +65,17 @@ import { I18nModule } from './i18n/i18n.module';
         AppRoutingModule
     ],
     providers: [
-        { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+        {
+            provide: APP_BASE_HREF,
+            useFactory: () => {
+                const url = new URL(document.getElementsByTagName('base')[0].href);
+                return url.pathname;
+            }
+        },
+        {
+            provide: RouterStateSerializer,
+            useClass: CustomRouterStateSerializer
+        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthorizedInterceptor,
@@ -72,6 +84,11 @@ import { I18nModule } from './i18n/i18n.module';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ApiPathInterceptor,
             multi: true
         }
     ],

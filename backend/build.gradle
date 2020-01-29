@@ -90,8 +90,10 @@ bootWar {
         )
     }
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        // into '/'
-        into '/public'
+        //Copying into this particular classpath location due too
+        //deployment to external Tomcat would not work with /public location
+        //This way, it works with both embedded and extarnal Tomcat
+        into 'WEB-INF/classes/resources'
     }
     archiveName = "${baseName}-${version}.war"
 }
@@ -107,8 +109,10 @@ bootJar {
         )
     }
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        // into '/'
-        into '/public'
+        //Copying into this particular classpath location due too
+        //deployment to external Tomcat would not work with /public location
+        //This way, it works with both embedded and external Tomcat
+        into 'WEB-INF/classes/resources'
     }
     archiveName = "${baseName}-${version}.jar"
 }
@@ -166,7 +170,6 @@ dependencies {
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
 
-    // TODO: these will likely only be runtimeOnly or test scope, unless we want to ship the libraries with the final product
     compile "com.h2database:h2"
     runtimeOnly "org.postgresql:postgresql"
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.2.0'

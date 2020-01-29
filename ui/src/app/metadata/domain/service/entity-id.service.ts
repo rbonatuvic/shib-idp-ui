@@ -6,13 +6,14 @@ import { map, catchError } from 'rxjs/operators';
 
 import { QueryParams } from '../../../core/model/query';
 import { MDUI } from '../model';
+import API_BASE_PATH from '../../../app.constant';
 
 @Injectable()
 export class EntityIdService {
 
     readonly searchEndpoint = '/EntityIds/search';
     readonly entitiesEndpoint = '/entities';
-    readonly base = '/api';
+    readonly base = API_BASE_PATH;
 
     constructor(
         private http: HttpClient

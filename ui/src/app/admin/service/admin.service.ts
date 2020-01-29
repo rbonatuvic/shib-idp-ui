@@ -4,11 +4,13 @@ import { Admin } from '../model/admin';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 
+import API_BASE_PATH from '../../app.constant';
+
 @Injectable()
 export class AdminService {
 
     private endpoint = '/admin/users';
-    private base = '/api';
+    private base = API_BASE_PATH;
 
     constructor(
         private http: HttpClient

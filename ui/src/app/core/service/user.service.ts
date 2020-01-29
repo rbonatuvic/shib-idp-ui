@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from '../model/user';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { API_BASE_PATH } from '../../app.constant';
 
 @Injectable()
 export class UserService {
 
-    readonly base = `/api`;
+    readonly base = API_BASE_PATH;
 
     constructor(
         private http: HttpClient
