@@ -92,29 +92,10 @@ bootWar {
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
         //Copying into this particular classpath location due too
         //deployment to external Tomcat would not work with /public location
-        //This way, it works with both embedded and extarnal Tomcat
-        into 'WEB-INF/classes/resources'
-    }
-    archiveName = "${baseName}-${version}.war"
-}
-
-bootJar.dependsOn ':ui:npm_run_buildProd'
-bootJar.baseName = 'shibui'
-bootJar {
-    manifest {
-        attributes(
-                "Manifest-Version" : "1.0",
-                "Implementation-Version" : "${project.version}",
-                'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
-        )
-    }
-    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        //Copying into this particular classpath location due too
-        //deployment to external Tomcat would not work with /public location
         //This way, it works with both embedded and external Tomcat
         into 'WEB-INF/classes/resources'
     }
-    archiveName = "${baseName}-${version}.jar"
+    archiveName = "${baseName}-${version}.war"
 }
 
 springBoot {
@@ -366,15 +347,15 @@ jacocoTestReport {
     }
 }
 
-tasks.docker.dependsOn tasks.bootJar
+tasks.docker.dependsOn tasks.bootWar
 docker {
     name 'unicon/shibui'
     tags 'latest'
     pull true
     noCache true
-    files tasks.bootJar.outputs
+    files tasks.bootWar.outputs
     files 'src/main/docker-files/loader.properties'
-    buildArgs(['JAR_FILE': "shibui-${version}.jar"])
+    buildArgs(['JAR_FILE': "shibui-${version}.war"])
 }
 
 tasks.dockerRun.dependsOn tasks.docker

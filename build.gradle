@@ -16,7 +16,7 @@ githubRelease {
     token project.'i2.github.token'
     owner project.'i2.github.owner'
     repo project.'i2.github.repo'
-    releaseAssets project('backend').getTasksByName('bootWar', false).outputs, project('backend').getTasksByName('bootJar', false).outputs
+    releaseAssets project('backend').getTasksByName('bootWar', false).outputs
     overwrite true
     apiEndpoint project.'i2.github.apiEndpoint'
 }
