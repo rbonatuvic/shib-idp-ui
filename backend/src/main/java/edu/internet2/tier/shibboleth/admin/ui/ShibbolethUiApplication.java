@@ -16,6 +16,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ import javax.script.ScriptException;
 @EnableJpaAuditing
 @EnableScheduling
 @EnableWebSecurity
+@EnableAsync
 public class ShibbolethUiApplication extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(ShibbolethUiApplication.class);
