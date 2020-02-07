@@ -63,6 +63,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
         mapper.setSerializationInclusion(NON_NULL)
         mapper.registerModule(new JavaTimeModule())
+        metadataResolverRepository.deleteAll()
     }
 
     def cleanup() {
