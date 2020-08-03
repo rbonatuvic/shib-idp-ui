@@ -14,7 +14,7 @@
         </MetadataFilter>
     </MetadataProvider>
     <MetadataProvider id='HTTPMetadata' xsi:type='FileBackedHTTPMetadataProvider' backingFile='%{idp.home}/metadata/metadata.xml' metadataURL='https://idp.unicon.net/idp/shibboleth' minRefreshDelay='PT0M' maxRefreshDelay='P1D' />
-    <MetadataProvider sourceDirectory='/tmp' id='LocalDynamic' xsi:type='DynamicHttpMetadataProvider' removeIdleEntityData='true' />
+    <MetadataProvider sourceDirectory='/tmp' id='LocalDynamic' xsi:type='LocalDynamicMetadataProvider' removeIdleEntityData='true' />
     <MetadataProvider id='ClasspathResourceMetadata' xsi:type='ResourceBackedMetadataProvider' refreshDelayFactor='0.3'>
         <MetadataResource xmlns:resource='urn:mace:shibboleth:2.0:resource' xsi:type='resource:ClasspathResource' file='metadata/metadata.xml' />
     </MetadataProvider>
