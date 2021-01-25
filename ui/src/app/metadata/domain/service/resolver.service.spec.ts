@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ResolverService } from './resolver.service';
@@ -20,7 +20,7 @@ describe(`Resolver Service`, () => {
     });
 
     describe('query', () => {
-        it(`should send an expected query request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected query request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.query().subscribe();
 
@@ -31,7 +31,7 @@ describe(`Resolver Service`, () => {
             }
         )));
 
-        it(`should emit 'true' for 200 Ok`, async(inject([ResolverService, HttpTestingController],
+        it(`should emit 'true' for 200 Ok`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.query().subscribe((next) => {
                     expect(next).toBeTruthy();
@@ -43,7 +43,7 @@ describe(`Resolver Service`, () => {
     });
 
     describe('queryForAdmin', () => {
-        it(`should send an expected query request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected query request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.queryForAdmin().subscribe();
 
@@ -54,7 +54,7 @@ describe(`Resolver Service`, () => {
             }
         )));
 
-        it(`should emit 'true' for 200 Ok`, async(inject([ResolverService, HttpTestingController],
+        it(`should emit 'true' for 200 Ok`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.queryForAdmin().subscribe((next) => {
                     expect(next).toBeTruthy();
@@ -68,7 +68,7 @@ describe(`Resolver Service`, () => {
     describe('find', () => {
         let id = 'foo';
 
-        it(`should send an expected GET request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.find(id).subscribe();
 
@@ -85,7 +85,7 @@ describe(`Resolver Service`, () => {
             serviceProviderName = 'Test Provider',
             createdBy = 'admin';
 
-        it(`should send an expected PUT request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected PUT request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.update({id, serviceProviderName, createdBy}).subscribe();
 
@@ -102,7 +102,7 @@ describe(`Resolver Service`, () => {
             serviceProviderName = 'Test Provider',
             createdBy = 'admin';
 
-        it(`should send an expected POST request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected POST request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.save({ id, serviceProviderName, createdBy }).subscribe();
 
@@ -119,7 +119,7 @@ describe(`Resolver Service`, () => {
             serviceProviderName = 'Test Provider',
             createdBy = 'admin';
 
-        it(`should send an expected PUT request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected PUT request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.remove({ id, serviceProviderName, createdBy }).subscribe();
 
@@ -134,7 +134,7 @@ describe(`Resolver Service`, () => {
     describe('preview', () => {
         let id = 'foo';
 
-        it(`should send an expected GET request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 service.preview(id).subscribe();
 
@@ -149,7 +149,7 @@ describe(`Resolver Service`, () => {
     });
 
     describe('upload', () => {
-        it(`should send an expected POST request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected POST request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 const name = 'foo', xml = '<foo></foo>';
                 service.upload(name, xml).subscribe();
@@ -164,7 +164,7 @@ describe(`Resolver Service`, () => {
     });
 
     describe('createFromUrl', () => {
-        it(`should send an expected POST request`, async(inject([ResolverService, HttpTestingController],
+        it(`should send an expected POST request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
                 const name = 'foo', url = 'http://goo.gle';
                 service.createFromUrl(name, url).subscribe();

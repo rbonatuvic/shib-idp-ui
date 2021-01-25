@@ -42,14 +42,14 @@ export const PIPES = [
     ],
 })
 export class I18nModule {
-    static forRoot() {
-        return {
-            ngModule: RootI18nModule,
-            providers: [
-                I18nService
-            ]
-        };
-    }
+    static forRoot(): ModuleWithProviders<RootI18nModule> {
+    return {
+        ngModule: RootI18nModule,
+        providers: [
+            I18nService
+        ]
+    };
+}
 }
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +38,7 @@ describe('Summary Property Component', () => {
     let app: SummaryPropertyComponent;
     let service: AttributesService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -66,12 +66,12 @@ describe('Summary Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 
     describe('attribute list getter', () => {
-        it('should return the data from the property schema', async(() => {
+        it('should return the data from the property schema', waitForAsync(() => {
             let list = [{ key: 'foo', label: 'foo' }];
             app.property = {
                 type: 'array',
@@ -90,7 +90,7 @@ describe('Summary Property Component', () => {
             });
         }));
 
-        it('should return fetch data from the supplied path', async(() => {
+        it('should return fetch data from the supplied path', waitForAsync(() => {
             let list = [{key: 'foo', label: 'foo'}];
             spyOn(service, 'query').and.returnValue(of(list));
             app.property = {
@@ -110,7 +110,7 @@ describe('Summary Property Component', () => {
             });
         }));
 
-        it('should return an empty array if no data is found', async(() => {
+        it('should return an empty array if no data is found', waitForAsync(() => {
             let list = [];
             spyOn(service, 'query').and.returnValue(of(list));
             app.property = {

@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +26,7 @@ describe('Metadata Xml Page Component', () => {
     let app: MetadataXmlComponent;
     let store: Store<fromConfiguration.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -52,7 +52,7 @@ describe('Metadata Xml Page Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should load metadata objects', async(() => {
+    it('should load metadata objects', waitForAsync(() => {
         expect(app).toBeTruthy();
         expect(store.select).toHaveBeenCalledTimes(3);
     }));

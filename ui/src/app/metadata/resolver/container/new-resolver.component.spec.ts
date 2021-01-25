@@ -31,7 +31,7 @@ describe('New Resolver Page', () => {
                 StoreModule.forRoot(fromResolver.reducers),
                 ReactiveFormsModule,
                 SharedModule,
-                RouterModule.forRoot([]),
+                RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }),
                 MockI18nModule
             ],
             declarations: [

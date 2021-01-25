@@ -48,7 +48,7 @@ export const DECLARATIONS = [
     providers: []
 })
 export class DomainModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootDomainModule> {
         return {
             ngModule: RootDomainModule,
             providers: [

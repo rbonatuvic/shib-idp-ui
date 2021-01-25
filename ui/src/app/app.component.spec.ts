@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { AppComponent } from './app.component';
@@ -30,7 +30,7 @@ describe('AppComponent', () => {
     let app: AppComponent;
     let store: Store<fromRoot.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             providers: [
                 {provide: I18nService, useClass: MockI18nService },
@@ -61,12 +61,12 @@ describe('AppComponent', () => {
         fixture.detectChanges();
     }));
 
-    it('should create the app', async(() => {
+    it('should create the app', waitForAsync(() => {
         expect(app).toBeTruthy();
         expect(store.dispatch).toHaveBeenCalledTimes(3);
     }));
 
-    it(`should have as title 'Shib-UI'`, async(() => {
+    it(`should have as title 'Shib-UI'`, waitForAsync(() => {
         expect(app.title).toEqual('Shib UI');
     }));
 

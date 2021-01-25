@@ -62,7 +62,7 @@ import { MetadataConfigurationModule } from '../configuration/configuration.modu
     exports: []
 })
 export class ProviderModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootProviderModule> {
         return {
             ngModule: RootProviderModule
         };

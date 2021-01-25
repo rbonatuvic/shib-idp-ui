@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataFilterService } from './filter.service';
@@ -21,7 +21,7 @@ describe(`Metadata Filter Service`, () => {
     });
 
     describe('query method', () => {
-        it(`should send an expected GET[] request`, async(inject([MetadataFilterService, HttpTestingController],
+        it(`should send an expected GET[] request`, waitForAsync(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
                 service.query(provider).subscribe();
 
@@ -33,7 +33,7 @@ describe(`Metadata Filter Service`, () => {
         )));
     });
     describe('find method', () => {
-        it(`should send an expected GET request`, async(inject([MetadataFilterService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
                 const id = 'bar';
                 service.find(provider, id).subscribe();
@@ -46,7 +46,7 @@ describe(`Metadata Filter Service`, () => {
         )));
     });
     describe('update method', () => {
-        it(`should send an expected PUT request`, async(inject([MetadataFilterService, HttpTestingController],
+        it(`should send an expected PUT request`, waitForAsync(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
                 const id = 'bar';
                 const filter = new EntityAttributesFilterEntity({ resourceId: id });
@@ -60,7 +60,7 @@ describe(`Metadata Filter Service`, () => {
         )));
     });
     describe('save method', () => {
-        it(`should send an expected POST request`, async(inject([MetadataFilterService, HttpTestingController],
+        it(`should send an expected POST request`, waitForAsync(inject([MetadataFilterService, HttpTestingController],
             (service: MetadataFilterService, backend: HttpTestingController) => {
                 const id = 'bar';
                 const filter = new EntityAttributesFilterEntity({ resourceId: id });

@@ -33,20 +33,20 @@ export const COMPONENTS = [
     exports: COMPONENTS,
 })
 export class CoreModule {
-    static forRoot() {
-        return {
-            ngModule: RootCoreModule,
-            providers: [
-                UserService,
-                FileService,
-                ModalService,
-                DifferentialService,
-                CanDeactivateGuard,
-                NavigatorService,
-                NavigationService
-            ]
-        };
-    }
+    static forRoot(): ModuleWithProviders<RootCoreModule> {
+    return {
+        ngModule: RootCoreModule,
+        providers: [
+            UserService,
+            FileService,
+            ModalService,
+            DifferentialService,
+            CanDeactivateGuard,
+            NavigatorService,
+            NavigationService
+        ]
+    };
+}
 }
 
 @NgModule({

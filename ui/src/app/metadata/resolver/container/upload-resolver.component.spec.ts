@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
@@ -83,7 +83,7 @@ describe('Upload Resolver Page', () => {
     });
 
     describe('saveFromFile method', () => {
-        it('should retrieve the file text from a service and call the provided upload emitter', async((done) => {
+        it('should retrieve the file text from a service and call the provided upload emitter', waitForAsync((done) => {
             fixture.detectChanges();
             spyOn(fileService, 'readAsText').and.callFake(() => of('foo'));
             form.providerForm.setValue({ serviceProviderName: 'foo', file: '', url: '' });
@@ -99,7 +99,7 @@ describe('Upload Resolver Page', () => {
     });
 
     describe('saveFromUrl method', () => {
-        it('should retrieve the file text from a service and call the provided upload emitter', async((done) => {
+        it('should retrieve the file text from a service and call the provided upload emitter', waitForAsync((done) => {
             fixture.detectChanges();
             form.saveFromUrl({ serviceProviderName: 'foo', url: 'foo.bar' });
             form.fromUrl.subscribe(v => {
@@ -113,7 +113,7 @@ describe('Upload Resolver Page', () => {
     });
 
     describe('fileChange method', () => {
-        it('should set the reactive form value based on the provided event', async((done) => {
+        it('should set the reactive form value based on the provided event', waitForAsync((done) => {
             let evt = {
                 target: {
                     files: [{name: 'foo'}]
@@ -125,7 +125,7 @@ describe('Upload Resolver Page', () => {
             expect(form.providerForm.get('file').value).toBe('foo');
         }));
 
-        it('should do nothing if no file is selected', async((done) => {
+        it('should do nothing if no file is selected', waitForAsync((done) => {
             let evt = {
                 target: {
                     files: []

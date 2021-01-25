@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MetadataVersion } from '../model/version';
 import { MetadataHeaderComponent } from './metadata-header.component';
@@ -33,7 +33,7 @@ describe('Metadata Header Component', () => {
     let instance: TestHostComponent;
     let app: MetadataHeaderComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 MockI18nModule
@@ -50,7 +50,7 @@ describe('Metadata Header Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should accept a property input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

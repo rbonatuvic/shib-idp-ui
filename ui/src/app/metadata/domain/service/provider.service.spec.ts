@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MetadataProviderService } from './provider.service';
@@ -19,7 +19,7 @@ describe(`Metadata Provider Service`, () => {
     });
 
     describe('query method', () => {
-        it(`should send an expected GET[] request`, async(inject([MetadataProviderService, HttpTestingController],
+        it(`should send an expected GET[] request`, waitForAsync(inject([MetadataProviderService, HttpTestingController],
             (service: MetadataProviderService, backend: HttpTestingController) => {
                 service.query().subscribe();
 
@@ -31,7 +31,7 @@ describe(`Metadata Provider Service`, () => {
         )));
     });
     describe('find method', () => {
-        it(`should send an expected GET request`, async(inject([MetadataProviderService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([MetadataProviderService, HttpTestingController],
             (service: MetadataProviderService, backend: HttpTestingController) => {
                 const id = 'foo';
                 service.find(id).subscribe();
@@ -44,7 +44,7 @@ describe(`Metadata Provider Service`, () => {
         )));
     });
     describe('update method', () => {
-        it(`should send an expected PUT request`, async(inject([MetadataProviderService, HttpTestingController],
+        it(`should send an expected PUT request`, waitForAsync(inject([MetadataProviderService, HttpTestingController],
             (service: MetadataProviderService, backend: HttpTestingController) => {
                 const id = 'foo';
                 const provider = <MetadataProvider>{ resourceId: id };
@@ -58,7 +58,7 @@ describe(`Metadata Provider Service`, () => {
         )));
     });
     describe('save method', () => {
-        it(`should send an expected POST request`, async(inject([MetadataProviderService, HttpTestingController],
+        it(`should send an expected POST request`, waitForAsync(inject([MetadataProviderService, HttpTestingController],
             (service: MetadataProviderService, backend: HttpTestingController) => {
                 const id = 'foo';
                 const provider = <MetadataProvider>{ resourceId: id };

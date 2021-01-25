@@ -93,7 +93,7 @@ import { FilterCompareVersionEffects } from './effect/filter.effect';
     ]
 })
 export class MetadataConfigurationModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootMetadataConfigurationModule> {
         return {
             ngModule: RootMetadataConfigurationModule,
             providers: [

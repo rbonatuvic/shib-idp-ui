@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MetadataConfigurationComponent } from './metadata-configuration.component';
 
@@ -40,7 +40,7 @@ describe('Metadata Configuration Component', () => {
     let app: MetadataConfigurationComponent;
     let router: Router;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -61,7 +61,7 @@ describe('Metadata Configuration Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a configuration input', async(() => {
+    it('should accept a configuration input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 

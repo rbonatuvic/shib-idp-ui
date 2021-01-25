@@ -64,14 +64,14 @@ export const COMPONENTS = [
     ],
 })
 export class FormModule {
-    static forRoot() {
-        return {
-            ngModule: RootFormModule,
-            providers: [
-                SchemaService
-            ]
-        };
-    }
+    static forRoot(): ModuleWithProviders<RootFormModule> {
+    return {
+        ngModule: RootFormModule,
+        providers: [
+            SchemaService
+        ]
+    };
+}
 }
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +26,7 @@ describe('Metadata Configuration Page Component', () => {
     let instance: TestHostComponent;
     let app: ConfigurationComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -50,7 +50,7 @@ describe('Metadata Configuration Page Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should load metadata objects', async(() => {
+    it('should load metadata objects', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

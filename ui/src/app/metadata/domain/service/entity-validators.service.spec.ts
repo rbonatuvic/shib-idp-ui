@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { EntityValidators } from './entity-validators.service';
 import { Observable, of } from 'rxjs';
 import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ describe(`Entity Validators service`, () => {
     });
 
     describe('createUniqueIdValidator', () => {
-        it('should detect that a provided id is already used', async(inject([FormBuilder], (fb) => {
+        it('should detect that a provided id is already used', waitForAsync(inject([FormBuilder], (fb) => {
             let obs = of(ids),
                 validator = EntityValidators.createUniqueIdValidator(obs),
                 ctrl = fb.control('foo');
@@ -28,7 +28,7 @@ describe(`Entity Validators service`, () => {
             });
         })));
 
-        it('should detect that a provided id is NOT already used', async(inject([FormBuilder], (fb) => {
+        it('should detect that a provided id is NOT already used', waitForAsync(inject([FormBuilder], (fb) => {
             let obs = of(ids),
                 validator = EntityValidators.createUniqueIdValidator(obs),
                 ctrl = fb.control('hi');
@@ -39,7 +39,7 @@ describe(`Entity Validators service`, () => {
     });
 
     describe('createOrgValidator', () => {
-        it('should detect that all controls in a group have a value', async(inject([FormBuilder], (fb) => {
+        it('should detect that all controls in a group have a value', waitForAsync(inject([FormBuilder], (fb) => {
             let validator = EntityValidators.createOrgValidator(),
                 group = fb.group({
                     foo: '',
@@ -53,7 +53,7 @@ describe(`Entity Validators service`, () => {
             });
         })));
 
-        it('should not validate if all controls are empty', async(inject([FormBuilder], (fb) => {
+        it('should not validate if all controls are empty', waitForAsync(inject([FormBuilder], (fb) => {
             let validator = EntityValidators.createOrgValidator(),
                 group = fb.group({
                     foo: '',
@@ -65,7 +65,7 @@ describe(`Entity Validators service`, () => {
             });
         })));
 
-        it('should not validate if all controls are empty', async(inject([FormBuilder], (fb) => {
+        it('should not validate if all controls are empty', waitForAsync(inject([FormBuilder], (fb) => {
             let validator = EntityValidators.createOrgValidator(),
                 group = fb.group({
                     foo: '',
@@ -81,7 +81,7 @@ describe(`Entity Validators service`, () => {
             });
         })));
 
-        it('should return an empty observable when no control is provided', async(inject([FormBuilder], (fb) => {
+        it('should return an empty observable when no control is provided', waitForAsync(inject([FormBuilder], (fb) => {
             let validator = EntityValidators.createOrgValidator();
             validator(null).subscribe(next => {
                 expect(next).toBeFalsy();
@@ -90,7 +90,7 @@ describe(`Entity Validators service`, () => {
     });
 
     describe('createUniqueIdValidator', () => {
-        it('should detect that a provided id is in the collection', async(inject([FormBuilder], (fb) => {
+        it('should detect that a provided id is in the collection', waitForAsync(inject([FormBuilder], (fb) => {
             let obs = of(ids),
                 validator = EntityValidators.existsInCollection(obs),
                 ctrl = fb.control('foo');
@@ -99,7 +99,7 @@ describe(`Entity Validators service`, () => {
             });
         })));
 
-        it('should detect that a provided id is not in the collection', async(inject([FormBuilder], (fb) => {
+        it('should detect that a provided id is not in the collection', waitForAsync(inject([FormBuilder], (fb) => {
             let obs = of(ids),
                 validator = EntityValidators.existsInCollection(obs),
                 ctrl = fb.control('hi');
