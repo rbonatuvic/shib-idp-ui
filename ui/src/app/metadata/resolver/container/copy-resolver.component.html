@@ -14,8 +14,10 @@
                         [disabled]="providerForm.invalid"
                         aria-label="Next: Step 2, Organization information"
                         type="button">
-                        <span class="label pull-left" translate="label.finish-summary-validation">
+                        <span class="label pull-left">
+                            <translate-i18n key="label.finish-summary-validation">
                             Finished!
+                            </translate-i18n>
                         </span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw fa-arrow-circle-right d-block fa-2x"></i>
@@ -96,8 +98,8 @@
         <table class="table table-striped table-sm">
             <thead>
                 <tr class="table-secondary">
-                    <th translate="label.sections-to-copy">Sections to Copy?</th>
-                    <th translate="label.yes">Yes</th>
+                    <th><translate-i18n key="label.sections-to-copy">Sections to Copy?</translate-i18n></th>
+                    <th><translate-i18n key="label.yes">Yes</translate-i18n></th>
                 </tr>
             </thead>
             <tbody>
@@ -121,20 +123,20 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col" translate="label.check-all-attributes">Check All Attributes</td>
+                    <td scope="col"><translate-i18n key="label.check-all-attributes">Check All Attributes</translate-i18n></td>
                     <td scope="col">
                         <button class="btn btn-text text-success btn-sm" (click)="onCheckAll()">
                             <i class="fa fa-fw fa-check"></i>
-                            <span class="sr-only" translate="label.check-all-attributes">Check All Attributes</span>
+                            <span class="sr-only"><translate-i18n key="label.check-all-attributes">Check All Attributes</translate-i18n></span>
                         </button>
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col" translate="label.clear-all-attributes">Clear All Attributes</td>
+                    <td scope="col"><translate-i18n key="label.clear-all-attributes">Clear All Attributes</translate-i18n></td>
                     <td scope="col">
                         <button class="btn btn-text text-danger btn-sm" (click)="onCheckNone()">
                             <i class="fa fa-fw fa-times"></i>
-                            <span class="sr-only" translate="label.clear-all-attributes">Clear All Attributes</span>
+                            <span class="sr-only"><translate-i18n key="label.clear-all-attributes">Clear All Attributes</translate-i18n></span>
                         </button>
                     </td>
                 </tr>

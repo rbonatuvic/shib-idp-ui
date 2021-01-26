@@ -40,8 +40,8 @@
         </ng-container>
     </div>
     <div class="alert alert-info m-4" *ngIf="filters ? filters.filters.length < 1 : false">
-        <h3 translate="message.no-filters">No Filters</h3>
-        <p translate="message.no-filters-added">No filters have been added to this Metadata Provider</p>
+        <h3><translate-i18n key="message.no-filters">No Filters</translate-i18n></h3>
+        <p><translate-i18n key="message.no-filters-added">No filters have been added to this Metadata Provider</translate-i18n></p>
     </div>
     <div class="d-flex justify-content-end my-2" *ngIf="filters && filters.filters.length > 0">
         <button class="btn btn-primary" [disabled]="!selected" (click)="compareSelected()">

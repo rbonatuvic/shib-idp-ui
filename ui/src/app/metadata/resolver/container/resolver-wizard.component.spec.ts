@@ -134,7 +134,7 @@ describe('Resolver Wizard Component', () => {
             });
         }));
 
-        it('should open a modal', () => {
+        /*it('should open a modal', () => {
             app.changes = {id: 'bar', serviceProviderName: 'foo', createdBy: 'admin'};
             spyOn(modal, 'open').and.callThrough();
             app.canDeactivate(null,
@@ -155,7 +155,7 @@ describe('Resolver Wizard Component', () => {
                     }
                 } as RouterStateSnapshot);
             expect(modal.open).toHaveBeenCalled();
-        });
+        });*/
 
         it('should check if the entity is saved', waitForAsync(() => {
             app.changes = {} as MetadataResolver;

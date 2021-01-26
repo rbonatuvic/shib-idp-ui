@@ -1,10 +1,12 @@
 <fieldset [attr.aria-label]="schema.description" tabindex="0">
-    <legend *ngIf="schema.title" [translate]="schema.title">{{ schema.title }}</legend>
+    <legend *ngIf="schema.title">
+        <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
+    </legend>
     <table class="table table-striped table-sm">
         <thead>
             <tr class="table-secondary">
-                <th translate="label.attribute-name">Attribute Name</th>
-                <th translate="label.yes">Yes</th>
+                <th><translate-i18n key="label.attribute-name">Attribute Name</translate-i18n></th>
+                <th><translate-i18n key="label.yes">Yes</translate-i18n></th>
             </tr>
         </thead>
         <tbody>
@@ -33,20 +35,20 @@
                 </td>
             </tr>
             <tr>
-                <td scope="col" translate="label.check-all-attributes">Check All Attributes</td>
+                <td scope="col"><translate-i18n key="label.check-all-attributes">Check All Attributes</translate-i18n></td>
                 <td scope="col">
                     <button class="btn btn-text text-success btn-sm" (click)="onCheckAll()" [id]="formProperty._canonicalPath + '.checkall'">
                         <i class="fa fa-fw fa-check"></i>
-                        <span class="sr-only" translate="label.check-all-attributes">Check All Attributes</span>
+                        <span class="sr-only"><translate-i18n key="label.check-all-attributes">Check All Attributes</translate-i18n></span>
                     </button>
                 </td>
             </tr>
             <tr>
-                <td scope="col" translate="label.clear-all-attributes">Clear All Attributes</td>
+                <td scope="col"><translate-i18n key="label.clear-all-attributes">Clear All Attributes</translate-i18n></td>
                 <td scope="col">
                     <button class="btn btn-text text-danger btn-sm" (click)="onCheckNone()" [id]="formProperty._canonicalPath + '.clearall'">
                         <i class="fa fa-fw fa-times"></i>
-                        <span class="sr-only" translate="label.clear-all-attributes">Clear All Attributes</span>
+                        <span class="sr-only"><translate-i18n key="label.clear-all-attributes">Clear All Attributes</translate-i18n></span>
                     </button>
                 </td>
             </tr>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -9,7 +9,6 @@ import { I18nService } from './service/i18n.service';
 import { MessageEffects } from './effect/message.effect';
 import { TranslatePipe } from './pipe/i18n.pipe';
 import { CoreModule } from '../core/core.module';
-import { TranslateDirective } from './directive/translate.directive';
 import { TranslateComponent } from './component/translate.component';
 import { I18nTextComponent } from './component/i18n-text.component';
 
@@ -17,9 +16,7 @@ export const COMPONENTS = [
     TranslateComponent,
     I18nTextComponent
 ];
-export const DIRECTIVES = [
-    TranslateDirective
-];
+export const DIRECTIVES = [];
 export const PIPES = [
     TranslatePipe
 ];

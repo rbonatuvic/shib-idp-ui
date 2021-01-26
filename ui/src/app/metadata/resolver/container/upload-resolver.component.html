@@ -10,8 +10,10 @@
                 </li>
                 <li class="nav-item">
                     <button class="nav-link next btn clearfix" (click)="save()" [disabled]="providerForm.invalid" aria-label="Save metadata resolver">
-                        <span class="label pull-left" translate="action.save">
+                        <span class="label pull-left">
+                            <translate-i18n key="action.save">
                             Save
+                            </translate-i18n>
                         </span>
                         <span class="direction pull-right">
                             <i class="fa fa-fw fa-save d-block fa-2x"></i>
@@ -28,19 +30,21 @@
                     </label>
                     <input id="serviceProviderName" type="text" class="form-control" placeholder="" formControlName="serviceProviderName" />
                     <ng-container *ngIf="providerForm.get('serviceProviderName').touched && providerForm.get('serviceProviderName').invalid">
-                        <small class="form-text text-danger"
-                            *ngIf="providerForm.get('serviceProviderName').hasError('required')"
-                            translate="message.service-resolver-name-required">
+                        <small class="form-text text-danger" *ngIf="providerForm.get('serviceProviderName').hasError('required')">
+                            <translate-i18n key="message.service-resolver-name-required">
                             Service Resolver Name is required
+                            </translate-i18n>
                         </small>
                     </ng-container>
                 </div>
                 <div class="form-group">
-                    <label translate="label.service-resolver-file">Select Resolver Metadata File</label>
+                    <label><translate-i18n key="label.service-resolver-file">Select Resolver Metadata File</translate-i18n></label>
                     <div class="custom-file d-block">
                         <input id="fileInput" type="file" name="file" class="custom-file-input" (change)="fileChange($event)" />
                         <label for="fileInput" class="custom-file-label">
-                            <span *ngIf="!providerForm.get('file').value" class="custom-file-control" translate="action.choose-file">Choose File</span>
+                            <span *ngIf="!providerForm.get('file').value" class="custom-file-control">
+                                <translate-i18n key="action.choose-file">Choose File</translate-i18n>
+                            </span>
                             <span *ngIf="providerForm.get('file').value" class="custom-file-control">{{ providerForm.get('file').value }}</span>
                         </label>
                     </div>
@@ -51,11 +55,11 @@
                     &mdash;
                 </div>
                 <div class="form-group">
-                    <label translate="label.service-resolver-metadata-url" for="url">Service Resolver Metadata URL</label>
+                    <label><translate-i18n key="label.service-resolver-metadata-url" for="url">Service Resolver Metadata URL</translate-i18n></label>
                     <input id="url" type="text" class="form-control" placeholder="" formControlName="url" />
                 </div>
                 <div class="alert alert-danger" role="alert">
-                    <span translate="message.file-upload-alert">Note: You can only import a file with a single entityID (EntityDescriptor element) in it. Anything more in that file will result in an error.</span>
+                    <span><translate-i18n key="message.file-upload-alert">Note: You can only import a file with a single entityID (EntityDescriptor element) in it. Anything more in that file will result in an error.</translate-i18n></span>
                 </div>
             </fieldset>
         </form>

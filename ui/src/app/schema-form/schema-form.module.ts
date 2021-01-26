@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { SchemaFormModule } from 'ngx-schema-form';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';

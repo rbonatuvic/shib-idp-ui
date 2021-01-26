@@ -1,4 +1,4 @@
-import { Component, ViewChild, RootRenderer, Renderer2 } from '@angular/core';
+import { Component, ViewChild, Renderer2 } from '@angular/core';
 import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockI18nModule } from '../../../testing/i18n.stub';
@@ -33,7 +33,7 @@ describe('Info Icon Component', () => {
                 InfoIconComponent
             ],
             providers: [
-                Renderer
+                Renderer2
             ]
         }).compileComponents();
 

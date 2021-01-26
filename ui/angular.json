@@ -31,7 +31,13 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "aot": true
+            "aot": true,
+            "allowedCommonJsDependencies": [
+              "deep-object-diff",
+              "file-saver",
+              "jexl",
+              "z-schema"
+            ]
           },
           "configurations": {
             "production": {

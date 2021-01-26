@@ -3,11 +3,11 @@
     <div class="d-flex justify-content-between" *ngIf="editable">
         <button class="btn btn-link btn-sm" (click)="onUpdateOrderUp.emit(filter)" [disabled]="isFirst">
             <i class="fa fa-arrow-circle-up fa-2x sr-hidden"></i>
-            <span class="sr-only" translate="action.move-up">Move Up</span>
+            <span class="sr-only"><translate-i18n key="action.move-up">Move Up</translate-i18n></span>
         </button>
         <button class="btn btn-link btn-sm" (click)="onUpdateOrderDown.emit(filter)" [disabled]="isLast">
             <i class="fa fa-arrow-circle-down fa-2x sr-hidden"></i>
-            <span class="sr-only" translate="action.move-up">Move Down</span>
+            <span class="sr-only"><translate-i18n key="action.move-up">Move Down</translate-i18n></span>
         </button>
     </div>
     <button class="btn btn-link mx-4" (click)="open = !open">{{ filter.name }}</button>
@@ -41,6 +41,6 @@
         (preview)="onPreview($event)"></metadata-configuration>
     <button class="btn btn-link btn-sm" (click)="open = !open">
         <i class="fa fa-chevron-up sr-hidden"></i>&nbsp;
-        <span translate="action.close">Close</span>
+        <translate-i18n key="action.close">Close</translate-i18n>
     </button>
 </div>

@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-md fixed-top">
     <a class="navbar-brand" [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.description | translate">
         <img [src]="brand.logo.small" width="30" height="30" class="d-inline-block align-top" [alt]="brand.logo.alt">
-        <span class="d-lg-inline d-none" [translate]="brand.logo.link.label">{{ brand.logo.link.label }}</span>
+        <span class="d-lg-inline d-none"><translate-i18n [key]="brand.logo.link.label"></translate-i18n></span>
     </a>
-    <span class="navbar-text" [translate]="brand.header.title">{{ brand.header.title }}</span>
+    <span class="navbar-text"><translate-i18n [key]="brand.header.title"></translate-i18n></span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -25,7 +25,7 @@
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
                     <ng-container *ngFor="let action of nav$ | async">
-                        <a  href=""
+                        <a href=""
                             class="nav-link"
                             (click)="action.action($event); dropdown.close()"
                             [attr.aria-label]="action.label | translate"
@@ -64,10 +64,10 @@
         <div class="col-md-6 copyright">
             <div class="d-flex flex-column align-items-start justify-content-between p-2">
                 <ul class="list-inline">
-                    <li class="list-inline-item" [translate]="brand.footer.text">{{ brand.footer.text }}</li>
+                    <li class="list-inline-item"><translate-i18n [key]="brand.footer.text"></translate-i18n></li>
                     <li class="list-inline-item" *ngFor="let link of brand.footer.links; let i = index;">
                         <a [href]="link.url" target="_blank" [attr.aria-label]="link.description | translate" [title]="link.description">
-                            <translate-i18n [key]="link.label">{{ link.label }}</translate-i18n>
+                            <translate-i18n [key]="link.label"></translate-i18n>
                         </a>
                     </li>
                 </ul>

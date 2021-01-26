@@ -17,16 +17,16 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        [translate]="this.displayType">
-                        {{ this.displayType }}
+                        >
+                        <translate-i18n [key]="this.displayType">{{ this.displayType }}</translate-i18n>
                     </button>
                     <div class="dropdown-menu" ngbDropdownMenu>
                         <a *ngFor="let option of typeOptions"
                             class="dropdown-item"
                             href="#"
                             (click)="$event.preventDefault(); select(option.value);"
-                            [translate]="option.description">
-                            {{ option.description }}
+                            >
+                            <translate-i18n [key]="option.description">{{ option.description }}</translate-i18n>
                         </a>
                     </div>
                 </div>
@@ -56,8 +56,10 @@
                                 [count]="idCount$ | async"
                                 (keydown.enter)="onSelectValue(search.value)">
                             </auto-complete>
-                            <small [class.text-danger]="search.invalid && search.touched" translate="message.entity-id-min-unique">
+                            <small [class.text-danger]="search.invalid && search.touched">
+                                <translate-i18n key="message.entity-id-min-unique">
                                 You must add at least one entity id target and they must each be unique.
+                                </translate-i18n>
                             </small>
                         </ng-container>
                         <ng-container *ngSwitchCase="'CONDITION_SCRIPT'">
@@ -99,7 +101,7 @@
             </div>
         </div>
         <div class="col-lg-6" *ngIf="targetType === 'ENTITY'">
-            <label class="control-label" translate="label.entity-ids-added">Entity Ids Added</label>
+            <label class="control-label"><translate-i18n key="label.entity-ids-added">Entity Ids Added</translate-i18n></label>
             <hr />
             <ul class="list-group list-group-sm list-group-scroll">
                 <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let id of targets">

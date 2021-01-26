@@ -21,3 +21,21 @@
 .break-all {
     word-break: break-all;
 }
+
+
+.bg-diff {
+    background: #FEE8E9;
+    position: relative;
+    border-color: #CCC !important;
+    &::before {
+        $size: 24px;
+        content: "\f06a";
+        font-family: 'FontAwesome';
+        text-align: center;
+        width: $size;
+        height: $size;
+        position: absolute;
+        left: -$size;
+        top: 0.5rem;
+    }
+}

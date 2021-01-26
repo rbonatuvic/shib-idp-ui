@@ -1,13 +1,13 @@
 <table class="table">
-    <caption class="sr-only" translate="label.name-and-entityid">Metadata Version History</caption>
+    <caption class="sr-only"><translate-i18n key="label.name-and-entityid">Metadata Version History</translate-i18n></caption>
     <thead>
         <tr>
             <th scope="col">
-                <span class="sr-only" translate="label.select-version">Select Version</span>
+                <span class="sr-only"><translate-i18n key="label.select-version">Select Version</translate-i18n></span>
             </th>
-            <th scope="col" translate="label.save-date">Save Date</th>
-            <th scope="col" translate="label.changed-by">Changed By</th>
-            <th scope="col" translate="label.actions">Actions</th>
+            <th scope="col"><translate-i18n key="label.save-date">Save Date</translate-i18n></th>
+            <th scope="col"><translate-i18n key="label.changed-by">Changed By</translate-i18n></th>
+            <th scope="col"><translate-i18n key="label.actions">Actions</translate-i18n></th>
         </tr>
     </thead>
     <tbody>
@@ -16,7 +16,7 @@
                 <div class="custom-control custom-checkbox" (click)="toggleVersionSelected(version)">
                     <input [title]="'check-' + i" type="checkbox" class="custom-control-input" [checked]="selected.indexOf(version) > -1">
                     <label class="custom-control-label" [for]="'check-' + i">
-                        <span class="sr-only" translate="label.check-to-select">Check to select</span>
+                        <span class="sr-only"><translate-i18n key="label.check-to-select">Check to select</translate-i18n></span>
                     </label>
                 </div>
             </td>

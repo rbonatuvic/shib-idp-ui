@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Update } from '@ngrx/entity/entity';
+import { Update } from '@ngrx/entity';
 import { MetadataResolver } from '../../domain/model';
 
 export enum DraftActionTypes {

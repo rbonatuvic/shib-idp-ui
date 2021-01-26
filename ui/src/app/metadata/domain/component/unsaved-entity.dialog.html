@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="message">
     <div aria-label="Save your information? modal" role="region" tabindex="0">
         <div class="modal-header">
-            <h4 class="modal-title" translate="message.unsaved-dialog-title">Save your information?</h4>
+            <h4 class="modal-title"><translate-i18n key="message.unsaved-dialog-title">Save your information?</translate-i18n></h4>
         </div>
         <div class="modal-body">
             <p *ngSwitchCase="'resolver'">
@@ -13,18 +13,20 @@
                 <i class="fa fa-fw fa-edit"></i>
                 <translate-i18n key="message.unsaved-source-2">icon on the dashboard.</translate-i18n>
             </p>
-            <p *ngSwitchDefault [translate]="message">You have not saved your changes. If you exit this screen, your changes will be lost.</p>
+            <p *ngSwitchDefault>
+                <translate-i18n [key]="message">You have not saved your changes. If you exit this screen, your changes will be lost.</translate-i18n>
+            </p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" (click)="this.close()">
-                <span *ngSwitchCase="'resolver'" translate="action.finish-later" [attr.aria-label]="'action.finish-later' | translate">
-                    Finish Later
+                <span *ngSwitchCase="'resolver'"><translate-i18n key="action.finish-later" [attr.aria-label]="'action.finish-later' | translate">
+                    Finish Later</translate-i18n>
                 </span>
-                <span *ngSwitchDefault translate="action.discard-changes" [attr.aria-label]="'action.discard-changes' | translate">
+                <span *ngSwitchDefault><translate-i18n key="action.discard-changes" [attr.aria-label]="'action.discard-changes' | translate">
                     Discard Changes
-                </span>
+                </translate-i18n></span>
             </button>
-            <button type="button" class="btn btn-secondary" (click)="this.dismiss()" translate="action.cancel" aria-label="Close modal and go back to editing">Cancel</button>
+            <button type="button" class="btn btn-secondary" (click)="this.dismiss()"><translate-i18n key="action.cancel" aria-label="Close modal and go back to editing">Cancel</translate-i18n></button>
         </div>
     </div>
 </ng-container>

@@ -1,10 +1,10 @@
 <div *ngIf="property.items.type === 'object'" [ngClass]="{'bg-diff': property.differences}">
-    <div class="p-2" role="term" [translate]="property.name">{{ property.name }}</div>
+    <div class="p-2" role="term"><translate-i18n [key]="property.name">{{ property.name }}</translate-i18n></div>
     <div *ngFor="let item of range; let i = index;" class="py-2 border-top" ngClass="{'bg-diff': !property.differences}">
         <div *ngFor="let prop of getKeys(property.items); let n = index;" class="d-flex py-2" tabindex="0">
             <span class="sr-only" *ngIf="property.differences">Changed:</span>
             <div [ngStyle]="{'width': width}" class="pl-4">
-                <span [translate]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</span>
+                <translate-i18n [key]="property.items.properties[prop].title">{{ property.items.properties[prop].title }}</translate-i18n>
             </div>
             <ng-container *ngFor="let version of property.value">
                 <div *ngIf="version && version[i]"
@@ -40,15 +40,15 @@
                 [ngClass]="{'bg-diff': property.differences && item.differences}"
                 tabindex="0">
                 <span class="sr-only" *ngIf="item.differences">Changed:</span>
-                <span class="p-2" role="term" [translate]="item.label" [ngStyle]="{'width': width}">{{ item.label }}</span>
+                <span class="p-2" role="term" [ngStyle]="{'width': width}"><translate-i18n [key]="item.label" >{{ item.label }}</translate-i18n></span>
                 <div *ngFor="let v of property.value"
                     class="py-2"
                     [ngStyle]="{'width': width}">
-                    <span *ngIf="v && v.indexOf(item.key) > -1" translate="value.true">
-                        true
+                    <span *ngIf="v && v.indexOf(item.key) > -1"><translate-i18n key="value.true">
+                        true</translate-i18n>
                     </span>
-                    <span *ngIf="!v || !(v.indexOf(item.key) > -1)" translate="value.false">
-                        false
+                    <span *ngIf="!v || !(v.indexOf(item.key) > -1)"><translate-i18n key="value.false">
+                        false</translate-i18n>
                     </span>
                 </div>
             </div>
@@ -58,7 +58,7 @@
 <ng-template #listref>
     <div class="d-flex align-items-start border-bottom border-light" [ngClass]="{'bg-diff': property.differences}" tabindex="0">
         <span class="sr-only" *ngIf="property.differences">Changed:</span>
-        <span class="p-2" role="term" [translate]="property.name" [ngStyle]="{'width': width}">{{ property.name }}</span>
+        <span class="p-2" role="term" [ngStyle]="{'width': width}"><translate-i18n [key]="property.name">{{ property.name }}</translate-i18n></span>
         <ng-container *ngFor="let v of property.value">
             <p [ngStyle]="{'width': width}" class="text-secondary m-0" *ngIf="!v || !v.length">-</p>
             <ul [ngStyle]="{'width': width}"
