@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { AdminService } from './admin.service';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpRequest, HttpClientModule } from '@angular/common/http';
@@ -39,7 +39,7 @@ describe('Admin Service', () => {
     });
 
     describe('query', () => {
-        it(`should send an expected query request`, async(inject([AdminService, HttpTestingController],
+        it(`should send an expected query request`, waitForAsync(inject([AdminService, HttpTestingController],
             (service: AdminService, backend: HttpTestingController) => {
                 service.query().subscribe();
 
@@ -51,7 +51,7 @@ describe('Admin Service', () => {
         )));
     });
     describe('update method', () => {
-        it(`should send an expected patch request`, async(inject([AdminService, HttpTestingController],
+        it(`should send an expected patch request`, waitForAsync(inject([AdminService, HttpTestingController],
             (service: AdminService, backend: HttpTestingController) => {
                 service.update({...users[0]}).subscribe();
 
@@ -63,7 +63,7 @@ describe('Admin Service', () => {
         )));
     });
     describe('remove method', () => {
-        it(`should send an expected delete request`, async(inject([AdminService, HttpTestingController],
+        it(`should send an expected delete request`, waitForAsync(inject([AdminService, HttpTestingController],
             (service: AdminService, backend: HttpTestingController) => {
                 service.remove(users[0].username).subscribe();
 

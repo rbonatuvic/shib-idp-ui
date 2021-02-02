@@ -8,11 +8,11 @@
             <span class="author">{{ version.createdBy }}</span>
         </h5>
         <p class="card-text">
-            <span class="badge badge-primary" *ngIf="isEnabled" translate="value.enabled">Enabled</span>
-            <span class="badge badge-danger" *ngIf="!isEnabled" translate="value.disabled">Disabled</span>
+            <span class="badge badge-primary" *ngIf="isEnabled"><translate-i18n key="value.enabled">Enabled</translate-i18n></span>
+            <span class="badge badge-danger" *ngIf="!isEnabled"><translate-i18n key="value.disabled">Disabled</translate-i18n></span>
             &nbsp;
-            <span class="badge badge-primary" *ngIf="isCurrent" translate="value.current">Current</span>
-            <span class="badge badge-warning" *ngIf="!isCurrent" translate="value.not-current">Not Current</span>
+            <span class="badge badge-primary" *ngIf="isCurrent"><translate-i18n key="value.current">Current</translate-i18n></span>
+            <span class="badge badge-warning" *ngIf="!isCurrent"><translate-i18n key="value.not-current">Not Current</translate-i18n></span>
         </p>
     </div>
 </div>

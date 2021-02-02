@@ -4,11 +4,11 @@
 <table class="table table-striped" *ngIf="hasUsers$ | async">
     <thead class="thead-primary">
         <tr>
-            <th scope="col" translate="label.user-id">UserId</th>
-            <th scope="col" translate="label.name">Name</th>
-            <th scope="col" translate="label.email">Email</th>
-            <th scope="col" translate="label.role">Role</th>
-            <th scope="col" translate="label.delete">Delete?</th>
+            <th scope="col"><translate-i18n key="label.user-id">UserId</translate-i18n></th>
+            <th scope="col" ><translate-i18n key="label.name">Name</translate-i18n></th>
+            <th scope="col"><translate-i18n key="label.email">Email</translate-i18n></th>
+            <th scope="col" ><translate-i18n key="label.role">Role</translate-i18n></th>
+            <th scope="col"><translate-i18n key="label.delete">Delete?</translate-i18n></th>
         </tr>
     </thead>
     <tbody>
@@ -18,8 +18,7 @@
             <td>{{ user.emailAddress }}</td>
             <td>
                 <label [for]="'role-' + user.username"
-                    translate="action.user-role"
-                    class="sr-only">User role</label>
+                    class="sr-only"><translate-i18n key="action.user-role">User role</translate-i18n></label>
                 <select
                     [id]="'role-' + user.username"
                     [name]="'role-' + user.username"
@@ -32,8 +31,8 @@
             </td>
             <td>
                 <button class="btn btn-link" (click)="deleteUser(user.username)" *ngIf="!(currentUser.username === user.username)">
-                    <span class="sr-only" translate="label.delete-user">
-                        Delete User
+                    <span class="sr-only">
+                        <translate-i18n key="label.delete-user">Delete User</translate-i18n>
                     </span>
                     <i class="fa fa-trash fa-lg text-danger"></i>
                 </button>

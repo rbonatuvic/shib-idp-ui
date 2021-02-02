@@ -22,7 +22,7 @@ import { WizardService } from './service/wizard.service';
     ]
 })
 export class WizardModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootWizardModule> {
         return {
             ngModule: RootWizardModule,
             providers: [WizardService]

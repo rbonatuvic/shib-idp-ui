@@ -1,7 +1,7 @@
 <h2 class="mb-4" [ngSwitch]="type$ | async">
     Compare
-    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
-    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    <ng-container *ngSwitchCase="'resolver'"><translate-i18n key="label.source">Source</translate-i18n></ng-container>
+    <ng-container *ngSwitchDefault><translate-i18n key="label.provider">Provider</translate-i18n></ng-container>
     Configuration
 </h2>
 <div *ngIf="!(loading$ | async)" class="" [ngClass]="{
@@ -27,7 +27,7 @@
     <ng-container *ngIf="isProvider$ | async">
         <div class="numbered-header d-flex justify-content-start bg-light align-items-center py-1">
             <h2 class="title h4 m-0 flex-grow-1">
-                <span class="text ml-2" translate="label.metadata-filter">Metadata Filter</span>
+                <span class="text ml-2"><translate-i18n key="label.metadata-filter">Metadata Filter</translate-i18n></span>
             </h2>
         </div>
         <ng-container *ngIf="!(filterCompare$ | async)">

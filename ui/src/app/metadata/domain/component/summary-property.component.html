@@ -2,13 +2,13 @@
     <ng-container [ngSwitch]="property.type">
         <ng-container *ngSwitchDefault>
             <ng-container *ngIf="property.name">
-                <strong class="text-primary d-block" role="term" [translate]="property.name">{{ property.name }}</strong>
-                <span class="d-block" role="definition">{{ property.value || property.value === false ? property.value : '-' }}</span>
+                <strong class="text-primary d-block" role="term"><translate-i18n [key]="property.name">{{ property.name }}</translate-i18n></strong>
+                <span class="d-block" role="definition">{{ (property.value || !property.value) ? property.value : '-' }}</span>
             </ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'array'">
             <ng-container *ngIf="property.name">
-                <strong class="text-primary d-block" role="term" [translate]="property.name">{{ property.name }}</strong>
+                <strong class="text-primary d-block" role="term"><translate-i18n [key]="property.name">{{ property.name }}</translate-i18n></strong>
             </ng-container>
             <ng-container *ngIf="property.items.type === 'object'">
                 <p class="text-secondary" *ngIf="!property.value || !property.value.length">&mdash;</p>
@@ -56,14 +56,14 @@
                     <table class="table table-sm table-bordered table-striped">
                         <thead>
                             <tr class="table-secondary">
-                                <th scope="col" translate="label.name">Name</th>
-                                <th scope="col" translate="label.true">True</th>
-                                <th scope="col" translate="label.false">False</th>
+                                <th scope="col"><translate-i18n key="label.name">Name</translate-i18n></th>
+                                <th scope="col"><translate-i18n key="label.true">True</translate-i18n></th>
+                                <th scope="col"><translate-i18n key="label.false">False</translate-i18n></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let attr of attributeList$ | async">
-                                <td [translate]="attr.label">{{ attr.label }}</td>
+                                <td><translate-i18n [key]="attr.label">{{ attr.label }}</translate-i18n></td>
                                 <td>
                                     <i class="fa fa-fw fa-check" *ngIf="property.value.indexOf(attr.key) > -1"></i>
                                 </td>
@@ -78,7 +78,7 @@
         </ng-container>
         <ng-container *ngSwitchCase="'object'">
             <ng-container *ngIf="property.name">
-                <span class="text-primary d-block" role="term" [translate]="property.name">{{ property.name }}</span>
+                <span class="text-primary d-block" role="term"><translate-i18n [key]="property.name">{{ property.name }}</translate-i18n></span>
             </ng-container>
             <ng-container *ngIf="property.properties">
                 <summary-property *ngFor="let prop of property.properties" [property]="prop"></summary-property>

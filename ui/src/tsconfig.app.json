@@ -5,10 +5,11 @@
         "baseUrl": "./",
         "types": []
     },
-    "exclude": [
-        "test.ts",
-        "**/*.spec.ts",
-        "**/*.stub.ts",
-        "./testing/**/*"
+    "files": [
+      "main.ts",
+      "polyfills.ts"
+    ],
+    "include": [
+      "**/*.d.ts"
     ]
 }

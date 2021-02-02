@@ -13,14 +13,14 @@
                     <div class="actions px-2" *ngIf="editable">
                         <button class="btn btn-link edit-link change-view" (click)="edit(section.id)">
                             <i class="fa fa-edit"></i>&nbsp;
-                            <span translate="action.edit">Edit</span>
+                            <translate-i18n key="action.edit">Edit</translate-i18n>
                         </button>
                     </div>
                 </div>
                 <div class="p-2">
                     <ng-container *ngIf="section && section.properties && section.properties.length">
                         <div class="d-flex border-bottom border-light border-2 py-2">
-                            <strong [ngStyle]="{'width': width}" translate="label.option">Option</strong>
+                            <strong [ngStyle]="{'width': width}"><translate-i18n key="label.option">Option</translate-i18n></strong>
                             <strong *ngFor="let date of configuration.dates" [ngStyle]="{'width': width}">
                                 <translate-i18n key="label.value" *ngIf="configuration.dates.length <= 1">Value</translate-i18n>
                                 <span *ngIf="configuration.dates.length > 1">{{ date | date:DATE_FORMAT }}</span>

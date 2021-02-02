@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { EntityValidators } from './entity-validators.service';
 import { Observable, of } from 'rxjs';
 import { ListValuesService } from './list-values.service';

@@ -33,7 +33,7 @@ export class RestoreComponent {
     }
 
     restore() {
-        this.router.navigate(['../', 'edit'], { relativeTo: this.route });
+        this.router.navigate(['../', 'edit', 'common'], { relativeTo: this.route });
     }
 
     cancel() {

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
@@ -26,7 +26,7 @@ describe('Wizard Component', () => {
     let app: WizardComponent;
     let store: Store<fromWizard.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,

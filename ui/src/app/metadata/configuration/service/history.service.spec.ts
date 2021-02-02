@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { MetadataHistoryService } from './history.service';
@@ -20,7 +20,7 @@ describe(`Attributes Service`, () => {
     });
 
     describe('query method', () => {
-        it(`should return a MetadataHistory`, async(inject([MetadataHistoryService, HttpTestingController],
+        it(`should return a MetadataHistory`, waitForAsync(inject([MetadataHistoryService, HttpTestingController],
             (service: MetadataHistoryService) => {
                 service.query('foo', 'resolver').subscribe(history => {
                     expect(history).toBeDefined();
@@ -30,7 +30,7 @@ describe(`Attributes Service`, () => {
     });
 
     describe('getVersions method', () => {
-        it(`should join a list of observables`, async(inject([MetadataHistoryService, HttpTestingController],
+        it(`should join a list of observables`, waitForAsync(inject([MetadataHistoryService, HttpTestingController],
             (service: MetadataHistoryService) => {
                 spyOn(service, 'getVersion').and.returnValue(of());
                 service.getVersions('foo', ['abc', 'def'], 'resolver').subscribe(history => {
@@ -41,7 +41,7 @@ describe(`Attributes Service`, () => {
     });
 
     describe('getVersion method', () => {
-        it(`should get the primary version of the resource`, async(inject([MetadataHistoryService, HttpTestingController],
+        it(`should get the primary version of the resource`, waitForAsync(inject([MetadataHistoryService, HttpTestingController],
             (service: MetadataHistoryService, backend: HttpTestingController) => {
                 const resourceId = 'foo';
                 const type = 'resource';
@@ -52,7 +52,7 @@ describe(`Attributes Service`, () => {
                 }, `GET schema by path`);
             }
         )));
-        it(`should get the provided version of the resource`, async(inject([MetadataHistoryService, HttpTestingController],
+        it(`should get the provided version of the resource`, waitForAsync(inject([MetadataHistoryService, HttpTestingController],
             (service: MetadataHistoryService, backend: HttpTestingController) => {
                 const resourceId = 'foo';
                 const type = 'resource';
@@ -67,7 +67,7 @@ describe(`Attributes Service`, () => {
     });
 
     describe('updateVersion method', () => {
-        it(`should send a put request`, async(inject([MetadataHistoryService, HttpTestingController],
+        it(`should send a put request`, waitForAsync(inject([MetadataHistoryService, HttpTestingController],
             (service: MetadataHistoryService, backend: HttpTestingController) => {
                 const resourceId = 'foo';
                 const type = 'resource';

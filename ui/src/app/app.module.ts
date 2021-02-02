@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { StoreRouterConnectingModule, RouterStateSerializer } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, RouterStateSerializer, DefaultRouterStateSerializer } from '@ngrx/router-store';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { NgbDropdownModule, NgbModalModule, NgbPopoverModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
@@ -49,7 +49,7 @@ import { APP_BASE_HREF } from '@angular/common';
         BrowserModule,
         CoreModule,
         CoreModule.forRoot(),
-        StoreRouterConnectingModule.forRoot(),
+        StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
         NgbDropdownModule,
         NgbModalModule,
         NgbPopoverModule,

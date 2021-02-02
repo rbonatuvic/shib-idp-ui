@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { SchemaFormModule } from 'ngx-schema-form';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -64,14 +64,14 @@ export const COMPONENTS = [
     ],
 })
 export class FormModule {
-    static forRoot() {
-        return {
-            ngModule: RootFormModule,
-            providers: [
-                SchemaService
-            ]
-        };
-    }
+    static forRoot(): ModuleWithProviders<RootFormModule> {
+    return {
+        ngModule: RootFormModule,
+        providers: [
+            SchemaService
+        ]
+    };
+}
 }
 
 @NgModule({

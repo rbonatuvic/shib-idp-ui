@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +26,7 @@ describe('User Management Component', () => {
     let instance: TestHostComponent;
     let store: Store<fromAdmin.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 FormsModule,
@@ -58,7 +58,7 @@ describe('User Management Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should compile without error', async(() => {
+    it('should compile without error', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

@@ -31,12 +31,14 @@
                                 <translate-i18n key="label.new-of-type" [params]="{ type: (itemProperty.schema.title | translate) }"></translate-i18n>
                                 <ng-container *ngIf="itemProperty.schema.properties.makeDefault">
                                     <i class="fa fa-fw fa-check-square fa-lg text-success" aria-hidden="true" *ngIf="itemProperty.value.makeDefault === true"></i>
-                                    <small class="sr-only" *ngIf="itemProperty.value.makeDefault === true" translate="label.default">(default)</small>
+                                    <small class="sr-only" *ngIf="itemProperty.value.makeDefault === true">
+                                        <translate-i18n key="label.default">(default)</translate-i18n>
+                                    </small>
                                 </ng-container>
                             </span>
                             <button class="btn btn-link pt-1" (click)="removeItem(itemProperty)" role="button">
                                 <i class="fa fa-fw fa-trash fa-lg text-danger"></i>
-                                <span class="sr-only" translate="action.remove">Remove</span>
+                                <span class="sr-only"><translate-i18n key="action.remove">Remove</translate-i18n></span>
                             </button>
                         </div>
                         <div class="collapse" [ngClass]="{'show': !acc.isHidden}">

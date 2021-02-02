@@ -1,5 +1,5 @@
-import { Component, ViewChild, Renderer, RootRenderer } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { Component, ViewChild, Renderer2 } from '@angular/core';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { MockI18nModule } from '../../../testing/i18n.stub';
 import { InfoIconComponent } from './info-icon.component';
@@ -22,7 +22,7 @@ describe('Info Icon Component', () => {
     let instance: TestHostComponent;
     let app: InfoIconComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbPopoverModule,
@@ -33,7 +33,7 @@ describe('Info Icon Component', () => {
                 InfoIconComponent
             ],
             providers: [
-                Renderer
+                Renderer2
             ]
         }).compileComponents();
 
@@ -43,7 +43,7 @@ describe('Info Icon Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should display an information icon', async(() => {
+    it('should display an information icon', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

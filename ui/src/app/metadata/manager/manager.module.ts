@@ -49,7 +49,7 @@ import { ResolversListComponent } from './component/resolvers-list.component';
     ]
 })
 export class ManagerModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootManagerModule> {
         return {
             ngModule: RootManagerModule,
             providers: []

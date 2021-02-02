@@ -3,17 +3,17 @@
         <span *ngIf="schema.title">
             <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
-            <span *ngIf="required" class="sr-only required" translate="message.required">required</span>
+            <span *ngIf="required" class="sr-only required"><translate-i18n key="message.required">required</translate-i18n></span>
         </span>
-        <span *ngIf="!schema.title" class="sr-only" [translate]="formProperty.parent.schema.title">
-            {{ formProperty.parent.schema.title }}
+        <span *ngIf="!schema.title" class="sr-only">
+            <translate-i18n [key]="formProperty.parent.schema.title">{{ formProperty.parent.schema.title }}</translate-i18n>
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
     </label>
-    <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">
-        {{ schema.description }}
+    <span *ngIf="schema.description" class="sr-only">
+        <translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n>
     </span>
     <select *ngIf="schema.type !== 'array'"
         [id]="cleanId"
@@ -30,13 +30,14 @@
         </option>
         <ng-container *ngIf="schema.oneOf">
             <option *ngFor="let option of schema.oneOf"
-                [ngValue]="option.enum[0]"
-                [translate]="option.description">
-                {{ option.description }}
+                [ngValue]="option.enum[0]">
+                <translate-i18n [key]="option.description">{{ option.description }}</translate-i18n>
             </option>
         </ng-container>
         <ng-container *ngIf="options$ | async">
-            <option *ngFor="let option of options$ | async" [ngValue]="option.value" [translate]="option.label">{{ option.label }}</option>
+            <option *ngFor="let option of options$ | async" [ngValue]="option.value">
+                <translate-i18n [key]="option.label">{{ option.label }}</translate-i18n>
+            </option>
         </ng-container>
     </select>
     <select *ngIf="schema.type === 'array'"
@@ -45,15 +46,17 @@
         [attr.name]="name"
         [attr.disabled]="schema.readOnly"
         class="form-control">
-        <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]" [translate]="option.description">{{ option.description }}</option>
+        <option *ngFor="let option of schema.items.oneOf" [ngValue]="option.enum[0]">
+            <translate-i18n [key]="option.description">{{ option.description }}</translate-i18n>
+        </option>
     </select>
     <small [id]="formProperty._canonicalPath + '-help'"
         [ngClass]="{
             'text-danger': !showHint && showError,
             'text-secondary': !showError
         }" class="form-text text-secondary">
-        <span *ngIf="showHint" [translate]="schema.widget.help">
-            {{ schema.widget.help }}
+        <span *ngIf="showHint">
+            <translate-i18n [key]="schema.widget.help">{{ schema.widget.help }}</translate-i18n>
         </span>
         <span *ngIf="showError" [ngClass]="{'sr-only': !control.touched}">
             <ng-container *ngFor="let error of errorMessages; let first=first;">

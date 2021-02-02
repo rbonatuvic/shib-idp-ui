@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { I18nService } from './i18n.service';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { NavigatorService } from '../../core/service/navigator.service';
@@ -36,7 +36,7 @@ describe('i18n Service', () => {
     });
 
     describe('get method', () => {
-        it(`should send an expected GET request`, async(inject([I18nService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([I18nService, HttpTestingController],
             (i18n: I18nService, backend: HttpTestingController) => {
                 const lang = 'en';
                 i18n.get(lang).subscribe();

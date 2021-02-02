@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient, HttpRequest } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -27,7 +27,7 @@ describe('API Path Interceptor Service', () => {
     });
 
     describe('query', () => {
-        it(`should send an expected query request`, async(inject([HttpClient, HttpTestingController],
+        it(`should send an expected query request`, waitForAsync(inject([HttpClient, HttpTestingController],
             (service: HttpClient, backend: HttpTestingController) => {
                 service.get('foo').subscribe();
 

@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -35,7 +35,7 @@ describe('Primitive Property Component', () => {
     let instance: TestHostComponent;
     let app: PrimitivePropertyComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -55,7 +55,7 @@ describe('Primitive Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should accept a property input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

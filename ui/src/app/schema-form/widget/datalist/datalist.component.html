@@ -3,13 +3,13 @@
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
             {{ title | translate }}&nbsp;
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
-            <span *ngIf="required" class="sr-only required" translate="message.required">required</span>
+            <span *ngIf="required" class="sr-only required"><translate-i18n key="message.required">required</translate-i18n></span>
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
     </label>
-    <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
+    <span *ngIf="schema.description" class="sr-only"><translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n></span>
     <auto-complete
         [id]="formProperty._canonicalPath + 'autocomplete'"
         [fieldId]="formProperty._canonicalPath"
@@ -31,8 +31,8 @@
             'text-danger': !showHint && showError,
             'text-secondary': !showError
         }" class="form-text text-secondary">
-        <span *ngIf="showHint" [translate]="schema.widget.help">
-            {{ schema.widget.help }}
+        <span *ngIf="showHint">
+            <translate-i18n [key]="schema.widget.help">{{ schema.widget.help }}</translate-i18n>
         </span>
         <span *ngIf="showError" [ngClass]="{'sr-only': !control.touched}">
             <ng-container *ngFor="let error of errorMessages; let first=first;">

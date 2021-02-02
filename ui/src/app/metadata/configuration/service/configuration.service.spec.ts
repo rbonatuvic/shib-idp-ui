@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { MetadataConfigurationService } from './configuration.service';
@@ -45,7 +45,7 @@ describe(`Configuration Service`, () => {
     });
 
     describe('find method', () => {
-        it(`should call the resolver service when type is resolver`, async(inject([MetadataConfigurationService, HttpTestingController],
+        it(`should call the resolver service when type is resolver`, waitForAsync(inject([MetadataConfigurationService, HttpTestingController],
             (service: MetadataConfigurationService, backend: HttpTestingController) => {
                 spyOn(resolverService, 'find').and.callThrough();
                 const type = 'resolver';
@@ -54,7 +54,7 @@ describe(`Configuration Service`, () => {
                 expect(resolverService.find).toHaveBeenCalledWith(id);
             }
         )));
-        it(`should call the provider service when type is resolver`, async(inject([MetadataConfigurationService, HttpTestingController],
+        it(`should call the provider service when type is resolver`, waitForAsync(inject([MetadataConfigurationService, HttpTestingController],
             (service: MetadataConfigurationService, backend: HttpTestingController) => {
                 spyOn(providerService, 'find').and.callThrough();
                 const type = 'provider';
@@ -63,7 +63,7 @@ describe(`Configuration Service`, () => {
                 expect(providerService.find).toHaveBeenCalledWith(id);
             }
         )));
-        it(`should throw an error when a type is not found`, async(inject([MetadataConfigurationService, HttpTestingController],
+        it(`should throw an error when a type is not found`, waitForAsync(inject([MetadataConfigurationService, HttpTestingController],
             (service: MetadataConfigurationService, backend: HttpTestingController) => {
                 spyOn(providerService, 'find').and.callThrough();
                 const type = 'bar';
@@ -76,7 +76,7 @@ describe(`Configuration Service`, () => {
     });
 
     describe('loadSchema method', () => {
-        it(`should send an expected GET request`, async(inject([MetadataConfigurationService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([MetadataConfigurationService, HttpTestingController],
             (service: MetadataConfigurationService, backend: HttpTestingController) => {
                 const path = '/foo.json';
                 service.loadSchema(path).subscribe();
@@ -89,14 +89,14 @@ describe(`Configuration Service`, () => {
     });
 
     describe('getDefinition method', () => {
-        it(`should retrieve the editor definition by model type`, async(inject([MetadataConfigurationService, HttpTestingController],
+        it(`should retrieve the editor definition by model type`, waitForAsync(inject([MetadataConfigurationService, HttpTestingController],
             (service: MetadataConfigurationService, backend: HttpTestingController) => {
                 const def = service.getDefinition('FileBackedHttpMetadataResolver');
                 expect(def).toBe(FileBackedHttpMetadataProviderEditor);
             }
         )));
 
-        it(`should instantiate an editor for resolvers`, async(inject([MetadataConfigurationService],
+        it(`should instantiate an editor for resolvers`, waitForAsync(inject([MetadataConfigurationService],
             (service: MetadataConfigurationService) => {
                 const def = service.getDefinition('foo');
                 expect(def instanceof MetadataSourceEditor).toBe(true);
@@ -105,7 +105,7 @@ describe(`Configuration Service`, () => {
     });
 
     describe('getMetadataConfiguration method', () => {
-        it('should return the parsed configuration', async(inject([MetadataConfigurationService],
+        it('should return the parsed configuration', waitForAsync(inject([MetadataConfigurationService],
             (service: MetadataConfigurationService) => {
                 const model = {} as Metadata;
                 const definition = {steps: []};

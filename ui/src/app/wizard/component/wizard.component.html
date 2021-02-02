@@ -43,8 +43,10 @@
                 aria-label="Save"
                 [disabled]="disabled$ | async"
                 (click)="onSave.emit()">
-                <span class="label pull-left" translate="action.save">
+                <span class="label pull-left">
+                    <translate-i18n key="action.save">
                     Save
+                    </translate-i18n>
                 </span>
                 <span class="direction pull-right">
                     <i class="fa fa-fw next d-block fa-2x"

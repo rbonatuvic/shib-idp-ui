@@ -58,7 +58,7 @@ describe('Content Editable Directive', () => {
             fixture.componentInstance.control.disable();
             fixture.detectChanges();
             fixture.componentInstance.control.enable();
-            expect(element.attributes.disabled).toBeNull();
+            expect(element.attributes.disabled).toBeUndefined();
         });
 
         it('should set the field to enabled', () => {

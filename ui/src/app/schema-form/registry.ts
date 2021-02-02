@@ -21,7 +21,9 @@ import { CustomRadioComponent } from './widget/radio/radio.component';
 import { InlineObjectListComponent } from './widget/array/inline-obj-list.component';
 import { InlineObjectComponent } from './widget/object/inline-obj.component';
 import { CustomFloatComponent } from './widget/number/float.component';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class CustomWidgetRegistry extends WidgetRegistry {
     constructor() {
         super();

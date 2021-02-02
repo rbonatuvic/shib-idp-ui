@@ -1,34 +1,22 @@
 {
-    "/shibui/api": {
+    "/api": {
         "target": "http://localhost:8080",
         "secure": false,
-        "logLevel": "debug",
-        "pathRewrite": {
-            "^/shibui": ""
-        }
+        "logLevel": "debug"
     },
-    "/shibui/actuator": {
+    "/actuator": {
         "target": "http://localhost:8080",
         "secure": false,
-        "logLevel": "debug",
-        "pathRewrite": {
-            "^/shibui": ""
-        }
+        "logLevel": "debug"
     },
     "/login": {
         "target": "http://localhost:8080",
         "secure": false,
-        "logLevel": "debug",
-        "pathRewrite": {
-            "^/shibui": ""
-        }
+        "logLevel": "debug"
     },
     "/logout": {
         "target": "http://localhost:8080",
         "secure": false,
-        "logLevel": "debug",
-        "pathRewrite": {
-            "^/shibui": ""
-        }
+        "logLevel": "debug"
     }
 }

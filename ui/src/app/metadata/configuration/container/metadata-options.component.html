@@ -1,6 +1,6 @@
 <h2 class="mb-4" [ngSwitch]="type$ | async">
-    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
-    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    <ng-container *ngSwitchCase="'resolver'"><translate-i18n key="label.source">Source</translate-i18n></ng-container>
+    <ng-container *ngSwitchDefault><translate-i18n key="label.provider">Provider</translate-i18n></ng-container>
     Configuration
 </h2>
 <div class="container" id="header">
@@ -23,11 +23,11 @@
         <div *ngIf="hasXml$ | async">
             <div class="btn-group" role="group" aria-label="Options selected">
                 <a class="btn" routerLink="../options" routerLinkActive="btn-primary" aria-pressed="true">
-                    <span class="sr-only" translate="action.toggle-view">Toggle view:</span>
+                    <span class="sr-only"><translate-i18n key="action.toggle-view">Toggle view:</translate-i18n></span>
                     Options
                 </a>
                 <a class="btn" routerLink="../xml" routerLinkActive="btn-primary">
-                    <span class="sr-only" translate="action.toggle-view">Toggle view:</span>
+                    <span class="sr-only"><translate-i18n key="action.toggle-view">Toggle view:</translate-i18n></span>
                     XML
                 </a>
             </div>
@@ -50,13 +50,14 @@
         <ng-container *ngIf="kind === 'provider'">
             <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
                 <h2 class="title h4 m-0 ml-2 flex-grow-1">
-                    <span class="text" translate="label.filters">Filters</span>
+                    <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
+                    <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
                 </h2>
                 <div class="actions px-2">
                     <a class="btn btn-link edit-link change-view"
                         [routerLink]="['/', 'metadata', 'provider', id, 'filter', 'new']">
                         <i class="fa fa-gear"></i>&nbsp;
-                        <span translate="action.add-filter">Add Filter</span>
+                        <translate-i18n key="action.add-filter">Add Filter</translate-i18n>
                     </a>
                 </div>
             </div>

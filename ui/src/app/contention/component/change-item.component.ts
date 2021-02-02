@@ -34,6 +34,10 @@ export class ChangeItemComponent implements OnChanges {
         this.display = this.getValue(value);
     }
 
+    get isList(): boolean {
+        return Array.isArray(this.item.value);
+    }
+
     getType(value: any): string {
         return Array.isArray(value) ? 'array' : typeof value;
     }
