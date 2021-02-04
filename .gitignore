@@ -395,3 +395,6 @@ rinteg
 #Local run with durable H2 shell script wrapper
 **/application-h2durable.properties
 rdurable
+
+#Local build with no tests script wrapper
+build-no-tests
