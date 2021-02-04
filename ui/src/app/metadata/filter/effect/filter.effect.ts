@@ -11,7 +11,7 @@ import * as fromProvider from '../../provider/reducer';
 import * as fromRoot from '../../../app.reducer';
 import {
     FilterCollectionActionTypes,
-    UpdateFilterFail,
+    UpdateFilterConflict,
     UpdateFilterRequest
 } from '../action/collection.action';
 import {
@@ -26,6 +26,7 @@ import { MetadataProviderService } from '../../domain/service/provider.service';
 import { ShowContentionAction } from '../../../contention/action/contention.action';
 import { MetadataFilter } from '../../domain/model';
 import { ContentionService } from '../../../contention/service/contention.service';
+import { MetadataFilterService } from '../../domain/service/filter.service';
 
 @Injectable()
 export class FilterEffects {
@@ -44,11 +45,14 @@ export class FilterEffects {
 
     @Effect()
     openContention$ = this.actions$.pipe(
-        ofType<UpdateFilterFail>(FilterCollectionActionTypes.UPDATE_FILTER_FAIL),
+        ofType<UpdateFilterConflict>(FilterCollectionActionTypes.UPDATE_FILTER_CONFLICT),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromFilter.getSelectedFilter)),
-        switchMap(([filter, current]) =>
-            this.resolverService.find(filter.id).pipe(
+        withLatestFrom(
+            this.store.select(fromFilter.getSelectedFilter),
+            this.store.select(fromProvider.getSelectedProviderId)
+        ),
+        switchMap(([filter, current, providerId]) =>
+            this.filterService.find(providerId, filter.resourceId).pipe(
                 map(data => new ShowContentionAction(this.contentionService.getContention(current, filter, data, {
                     resolve: (obj) => this.store.dispatch(new UpdateFilterRequest(<MetadataFilter>{ ...obj })),
                     reject: (obj) => this.store.dispatch(new CancelCreateFilter())
@@ -71,7 +75,7 @@ export class FilterEffects {
         private actions$: Actions,
         private router: Router,
         private idService: EntityIdService,
-        private resolverService: MetadataProviderService,
+        private filterService: MetadataFilterService,
         private contentionService: ContentionService
     ) { }
 }

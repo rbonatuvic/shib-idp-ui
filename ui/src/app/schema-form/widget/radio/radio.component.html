@@ -1,11 +1,21 @@
 <div class="widget form-group">
-    <label [translate]="schema.title">{{schema.title}}</label>
-    <span *ngIf="schema.description" class="formHelp" [translate]="schema.description">{{schema.description}}</span>
+    <label><translate-i18n [key]="schema.title">{{schema.title}}</translate-i18n></label>
+    <span *ngIf="schema.description" class="formHelp">
+        <translate-i18n [key]="schema.description">{{schema.description}}</translate-i18n>
+    </span>
     <ng-container *ngFor="let option of schema.oneOf; let i = index;">
-        <div class="form-check" [ngClass]="schema.widget.class">
-            <input class="form-check-input" [formControl]="control" type="radio" [attr.name]="name" [id]="formProperty._canonicalPath + '.' + i" [value]="option.enum[0]" [attr.disabled]="schema.readOnly">
-            <label class="form-check-label" [for]="name" [translate]="option.description">{{option.description}}</label>
+        <div class="custom-control custom-radio custom-control-inline" [ngClass]="schema.widget.class">
+            <input class="custom-control-input"
+                [formControl]="control"
+                type="radio"
+                [attr.name]="name"
+                [id]="formProperty._canonicalPath + '.' + i"
+                [value]="option.enum[0]"
+                [attr.disabled]="schema.readOnly"
+                disableValidation="true">
+            <label class="custom-control-label" [for]="formProperty._canonicalPath + '.' + i">
+                <translate-i18n [key]="option.description">{{option.description}}</translate-i18n>
+            </label>
         </div>
     </ng-container>
-    <input *ngIf="schema.readOnly" [attr.name]="name" type="hidden" [formControl]="control">
 </div>

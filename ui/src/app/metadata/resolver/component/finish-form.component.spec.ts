@@ -12,7 +12,6 @@ import { RouterStub, RouterLinkStubDirective } from '../../../../testing/router.
 import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 import * as stubs from '../../../../testing/resolver.stub';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
-import { InputDefaultsDirective } from '../../../shared/directive/input-defaults.directive';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MockListValueService } from '../../../../testing/list-values.stub';
 import { MockSharedModule } from '../../../../testing/shared.stub';
@@ -25,7 +24,7 @@ class TestHostComponent {
         ...stubs.resolver
     });
 
-    @ViewChild(FinishFormComponent)
+    @ViewChild(FinishFormComponent, {static: true})
     public formUnderTest: FinishFormComponent;
 
     changeProvider(opts: any): void {
@@ -58,7 +57,6 @@ describe('Finished Form Component', () => {
             declarations: [
                 FinishFormComponent,
                 RouterLinkStubDirective,
-                InputDefaultsDirective,
                 TestHostComponent
             ],
         });
@@ -83,7 +81,7 @@ describe('Finished Form Component', () => {
             expect(form.form.reset).toHaveBeenCalled();
         });
 
-        xit('should reset the form with serviceEnabled = false if no resolver', () => {
+        it('should reset the form with serviceEnabled = false if no resolver', () => {
             spyOn(form.form, 'reset').and.callThrough();
             delete instance.resolver;
             fixture.detectChanges();

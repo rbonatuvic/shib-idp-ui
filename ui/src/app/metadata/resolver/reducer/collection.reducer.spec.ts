@@ -13,7 +13,8 @@ snapshot: fromCollection.CollectionState = {
         [resolvers[0].id]: resolvers[0],
         [resolvers[1].id]: resolvers[1]
     },
-    selectedResolverId: null
+    selectedResolverId: null,
+    loading: false
 };
 
 describe('Resolver Reducer', () => {
@@ -21,6 +22,7 @@ describe('Resolver Reducer', () => {
         ids: [],
         entities: {},
         selectedResolverId: null,
+        loading: false
     };
 
     describe('undefined action', () => {
@@ -59,14 +61,6 @@ describe('Resolver Reducer', () => {
             expect(result).toEqual(
                 Object.assign({}, initialState, expected)
             );
-        });
-
-        it('should return state if the entityId is not found', () => {
-            let changes = { ...resolvers[1], serviceEnabled: true, id: '4' };
-            const action = new resolverActions.UpdateResolverSuccess({id: changes.id, changes});
-            const result = reducer({ ...snapshot }, action);
-
-            expect(result).toEqual(snapshot);
         });
     });
 

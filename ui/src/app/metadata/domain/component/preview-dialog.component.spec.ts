@@ -12,7 +12,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     template: `<preview-dialog></preview-dialog>`
 })
 class TestHostComponent {
-    @ViewChild(PreviewDialogComponent)
+    @ViewChild(PreviewDialogComponent, {static: true})
     public formUnderTest: PreviewDialogComponent;
 }
 

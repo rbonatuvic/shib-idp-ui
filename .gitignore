@@ -385,3 +385,13 @@ gradle-app.setting
 
 # pac4j
 pac4j-module/out/
+
+#Local run shell script wrapper
+r
+
+#Local integration test run shell script wrapper
+rinteg
+
+#Local run with durable H2 shell script wrapper
+**/application-h2durable.properties
+rdurable

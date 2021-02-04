@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Observable, combineLatest, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import * as fromProvider from '../reducer';
@@ -11,9 +11,9 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { Wizard, WizardStep } from '../../../wizard/model';
 import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';
-import { map } from 'rxjs/operators';
 import { AddProviderRequest } from '../action/collection.action';
 import { MetadataProviderWizard } from '../model';
+import { MetadataConfiguration } from '../../configuration/model/metadata-configuration';
 
 @Component({
     selector: 'provider-wizard',
@@ -33,7 +33,7 @@ export class ProviderWizardComponent implements OnDestroy {
     nextStep: WizardStep;
     previousStep: WizardStep;
 
-    summary$: Observable<{ definition: Wizard<MetadataProvider>, schema: { [id: string]: any }, model: any }>;
+    summary$: Observable<MetadataConfiguration> = this.store.select(fromProvider.getProviderConfiguration);
 
     provider: MetadataProvider;
 
@@ -60,14 +60,6 @@ export class ProviderWizardComponent implements OnDestroy {
             .subscribe((valid) => {
                 this.store.dispatch(new SetDisabled(!valid));
             });
-
-        this.summary$ = combineLatest(
-            this.store.select(fromWizard.getWizardDefinition),
-            this.store.select(fromWizard.getSchemaObject),
-            this.store.select(fromProvider.getEntityChanges)
-        ).pipe(
-            map(([ definition, schema, model ]) => ({ definition, schema, model }))
-        );
 
         this.changes$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(c => this.provider = c);
 

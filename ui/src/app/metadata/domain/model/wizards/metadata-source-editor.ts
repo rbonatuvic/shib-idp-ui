@@ -1,9 +1,12 @@
 import { Wizard, WizardStep } from '../../../../wizard/model';
 import { MetadataResolver } from '../metadata-resolver';
 import { MetadataSourceBase } from './metadata-source-base';
+import API_BASE_PATH from '../../../../app.constant';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class MetadataSourceEditor extends MetadataSourceBase implements Wizard<MetadataResolver> {
-    schema = '/api/ui/MetadataSources';
+    schema = `${API_BASE_PATH}/ui/MetadataSources`;
     steps: WizardStep[] = [
         {
             index: 1,

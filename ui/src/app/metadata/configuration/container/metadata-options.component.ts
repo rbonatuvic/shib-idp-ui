@@ -2,9 +2,9 @@ import { Store } from '@ngrx/store';
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, withLatestFrom } from 'rxjs/operators';
 
 import {
     ConfigurationState,
@@ -53,7 +53,9 @@ export class MetadataOptionsComponent implements OnDestroy {
     constructor(
         protected store: Store<ConfigurationState>,
         protected modalService: NgbModal,
-        protected scroller: ViewportScroller
+        protected scroller: ViewportScroller,
+        protected router: Router,
+        protected activatedRoute: ActivatedRoute
     ) {
         this.model$
             .pipe(
@@ -61,6 +63,21 @@ export class MetadataOptionsComponent implements OnDestroy {
                 filter(model => !!model)
             )
             .subscribe(p => this.setModel(p));
+
+        const sub = this.filters$.pipe(
+            withLatestFrom(this.activatedRoute.fragment)
+        ).subscribe(([filters, fragment]) => {
+            if (filters && fragment) {
+                setTimeout(() => {
+                    scroller.scrollToAnchor(fragment);
+                    sub.unsubscribe();
+                }, 100);
+            }
+        });
+    }
+
+    edit(id: string) {
+        this.router.navigate(['../', 'edit', id], { relativeTo: this.activatedRoute.parent });
     }
 
     setModel(data: Metadata): void {

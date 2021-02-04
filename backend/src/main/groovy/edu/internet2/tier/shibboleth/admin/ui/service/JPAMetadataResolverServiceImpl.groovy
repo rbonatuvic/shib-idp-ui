@@ -489,7 +489,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 sourceKeyGeneratorRef: resolver.sourceKeyGeneratorRef,
 
                 id: resolver.xmlId,
-                'xsi:type': 'DynamicHttpMetadataProvider',
+                'xsi:type': 'LocalDynamicMetadataProvider',
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
                 sortKey: resolver.sortKey,

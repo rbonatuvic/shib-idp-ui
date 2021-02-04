@@ -10,7 +10,7 @@ import { TYPES } from '../configuration.values';
 import { ResolverService } from '../../domain/service/resolver.service';
 import { MetadataProviderService } from '../../domain/service/provider.service';
 import { MetadataFilterEditorTypes } from '../../filter/model';
-import { getConfigurationSectionsFn } from '../reducer';
+import { getConfigurationSectionsFn } from '../reducer/utilities';
 
 @Injectable()
 export class MetadataConfigurationService {

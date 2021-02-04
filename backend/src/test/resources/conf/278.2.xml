@@ -1,66 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- This file is an EXAMPLE metadata configuration file. -->
-<MetadataProvider id="ShibbolethMetadata" xsi:type="ChainingMetadataProvider"
-                  xmlns="urn:mace:shibboleth:2.0:metadata"
-                  xmlns:resource="urn:mace:shibboleth:2.0:resource"
-                  xmlns:security="urn:mace:shibboleth:2.0:security"
-                  xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-                  xsi:schemaLocation="urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd">
-    <MetadataProvider backgroundInitializationFromCacheDelay="PT2S"
-                      cleanupTaskInterval="PT30M"
-                      connectionRequestTimeout="PT5S"
-                      connectionTimeout="PT5S"
-                      id="DynamicHTTP"
-                      maxCacheDuration="PT8H"
-                      maxConnectionsPerRoute="100"
-                      maxConnectionsTotal="100"
-                      maxIdleEntityData="PT8H"
-                      minCacheDuration="PT10M"
-                      refreshDelayFactor="0.75"
-                      removeIdleEntityData="true"
-                      socketTimeout="PT5S"
-                      supportedContentTypes="[]"
-                      xsi:type="DynamicHttpMetadataProvider">
-        <MetadataQueryProtocol transformRef="transformRef">content</MetadataQueryProtocol>
-        <MetadataFilter certificateFile="%{idp.home}/credentials/inc-md-cert.pem" xsi:type="SignatureValidation"/>
-        <MetadataFilter maxValidityInterval="P14D" xsi:type="RequiredValidUntil"/>
-        <MetadataFilter xsi:type="EntityAttributes">
-            <saml:Attribute
-                    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="here" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-                <saml:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="xsd:string">there</saml:AttributeValue>
-            </saml:Attribute>
+<MetadataProvider id='ShibbolethMetadata' xmlns='urn:mace:shibboleth:2.0:metadata' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:type='ChainingMetadataProvider' xsi:schemaLocation='urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'>
+    <MetadataProvider id='DynamicHTTP' xsi:type='DynamicHttpMetadataProvider' removeIdleEntityData='true' maxConnectionsTotal='100' maxConnectionsPerRoute='100' supportedContentTypes='[]' connectionRequestTimeout='PT5S' connectionTimeout='PT5S' socketTimeout='PT5S'>
+        <MetadataQueryProtocol transformRef='transformRef'>content</MetadataQueryProtocol>
+        <MetadataFilter xsi:type='SignatureValidation' xmlns:md='urn:oasis:names:tc:SAML:2.0:metadata' certificateFile='%{idp.home}/credentials/inc-md-cert.pem' />
+        <MetadataFilter xsi:type='RequiredValidUntil' maxValidityInterval='P14D' />
+        <MetadataFilter xsi:type='EntityAttributes'><saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="here" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+            <saml:AttributeValue xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="xsd:string">there</saml:AttributeValue>
+        </saml:Attribute>
+
             <Entity>https://sp1.example.org</Entity>
         </MetadataFilter>
-        <MetadataFilter xsi:type="EntityRoleWhiteList" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+        <MetadataFilter xsi:type='EntityRoleWhiteList' xmlns:md='urn:oasis:names:tc:SAML:2.0:metadata'>
             <RetainedRole>md:SPSSODescriptor</RetainedRole>
         </MetadataFilter>
     </MetadataProvider>
-    <MetadataProvider id="HTTPMetadata"
-                      xsi:type="FileBackedHTTPMetadataProvider"
-                      backingFile="%{idp.home}/metadata/metadata.xml"
-                      metadataURL="https://idp.unicon.net/idp/shibboleth"
-                      minRefreshDelay='PT0M'
-                      maxRefreshDelay='P1D'>
+    <MetadataProvider id='HTTPMetadata' xsi:type='FileBackedHTTPMetadataProvider' backingFile='%{idp.home}/metadata/metadata.xml' metadataURL='https://idp.unicon.net/idp/shibboleth' minRefreshDelay='PT0M' maxRefreshDelay='P1D' />
+    <MetadataProvider sourceDirectory='/tmp' id='LocalDynamic' xsi:type='LocalDynamicMetadataProvider' removeIdleEntityData='true' />
+    <MetadataProvider id='ClasspathResourceMetadata' xsi:type='ResourceBackedMetadataProvider' refreshDelayFactor='0.3'>
+        <MetadataResource xmlns:resource='urn:mace:shibboleth:2.0:resource' xsi:type='resource:ClasspathResource' file='metadata/metadata.xml' />
     </MetadataProvider>
-    <MetadataProvider id="LocalDynamic"
-                      backgroundInitializationFromCacheDelay="PT2S"
-                      cleanupTaskInterval="PT30M"
-                      maxCacheDuration="PT8H"
-                      maxIdleEntityData="PT8H"
-                      minCacheDuration="PT10M"
-                      refreshDelayFactor="0.75"
-                      removeIdleEntityData="true"
-                      sourceDirectory="/tmp"
-                      xsi:type="DynamicHttpMetadataProvider">
-    </MetadataProvider>
-    <MetadataProvider id="ClasspathResourceMetadata"
-                      refreshDelayFactor="0.3"
-                      xsi:type="ResourceBackedMetadataProvider">
-        <MetadataResource xmlns:resource="urn:mace:shibboleth:2.0:resource"
-                          xsi:type="resource:ClasspathResource"
-                          file="metadata/metadata.xml" />
-    </MetadataProvider>
-
 </MetadataProvider>

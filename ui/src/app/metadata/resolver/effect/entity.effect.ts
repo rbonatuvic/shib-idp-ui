@@ -5,11 +5,14 @@ import { switchMap, map, withLatestFrom, tap } from 'rxjs/operators';
 
 import * as fromResolver from '../reducer';
 import * as fromRoot from '../../../app.reducer';
+import * as fromWizard from '../../../wizard/reducer';
 
 import {
     ResolverEntityActionTypes,
     Clear,
-    Cancel
+    Cancel,
+    UpdateChangesRequest,
+    UpdateChangesSuccess
 } from '../action/entity.action';
 import * as provider from '../action/collection.action';
 
@@ -25,9 +28,22 @@ import { ContentionService } from '../../../contention/service/contention.servic
 export class EntityEffects {
 
     @Effect()
+    updateChanges$ = this.actions$.pipe(
+        ofType<UpdateChangesRequest>(ResolverEntityActionTypes.UPDATE_CHANGES_REQUEST),
+        map(action => action.payload),
+        withLatestFrom(
+            this.store.select(fromResolver.getEntityChanges)
+        ),
+        map(([changes, storedChanges]) => {
+            const update = { ...storedChanges, ...changes };
+            return new UpdateChangesSuccess(update);
+        })
+    );
+
+    @Effect({dispatch: false})
     cancelChanges$ = this.actions$.pipe(
         ofType<Cancel>(ResolverEntityActionTypes.CANCEL),
-        map(() => new provider.LoadResolverRequest()),
+        map(() => new Clear()),
         tap(() => this.router.navigate(['dashboard']))
     );
 
@@ -43,11 +59,11 @@ export class EntityEffects {
         ofType<provider.UpdateResolverConflict>(ResolverCollectionActionTypes.UPDATE_RESOLVER_CONFLICT),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromResolver.getSelectedResolver)),
-        switchMap(([filter, current]) => {
-            return this.service.find(filter.id).pipe(
-                map(data => new ShowContentionAction(this.contentionService.getContention(current, filter, data, {
+        switchMap(([resolver, current]) => {
+            return this.service.find(resolver.id).pipe(
+                map(data => new ShowContentionAction(this.contentionService.getContention(current, resolver, data, {
                     resolve: (obj) => this.store.dispatch(new provider.UpdateResolverRequest(obj)),
-                    reject: (obj) => this.store.dispatch(new Cancel())
+                    reject: (obj) => this.gotoConfiguration(resolver.id)
                 })))
             );
         })
@@ -60,4 +76,9 @@ export class EntityEffects {
         private router: Router,
         private contentionService: ContentionService
     ) { }
+
+    gotoConfiguration(id) {
+        this.store.dispatch(new Clear());
+        this.router.navigate(['metadata', 'resolver', id, 'configuration'])
+    }
 }

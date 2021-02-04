@@ -1,6 +1,6 @@
 <h2 class="mb-4" [ngSwitch]="type$ | async">
-    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
-    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    <ng-container *ngSwitchCase="'resolver'"><translate-i18n key="label.source">Source</translate-i18n></ng-container>
+    <ng-container *ngSwitchDefault><translate-i18n key="label.provider">Provider</translate-i18n></ng-container>
     Configuration
 </h2>
 <div class="container" id="header" *ngIf="!(loading$ | async)">
@@ -23,13 +23,12 @@
     </div>
     <metadata-configuration
         [configuration]="configuration$ | async"
-        [editable]="false"
         id="configuration">
     </metadata-configuration>
     <div *ngIf="kind === 'provider'" id="filters">
         <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
             <h2 class="title h4 m-0 ml-2 flex-grow-1">
-                <span class="text" translate="label.filters">Filters</span>
+                <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
             </h2>
         </div>
         <filter-configuration-list

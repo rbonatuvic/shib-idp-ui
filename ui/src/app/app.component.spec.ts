@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { AppComponent } from './app.component';
@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import * as fromRoot from './core/reducer';
 import { NotificationModule } from './notification/notification.module';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { MockTranslatePipe, MockI18nService, MockI18nModule } from '../testing/i18n.stub';
+import { MockI18nService, MockI18nModule } from '../testing/i18n.stub';
 import { I18nService } from './i18n/service/i18n.service';
 import { NavigationService } from './core/service/navigation.service';
 import { NavigationServiceStub } from '../testing/navigation-service.stub';
+import { MockPageTitleComponent } from '../testing/page-title-component.stub';
 
 @Component({
     template: `
@@ -18,7 +19,7 @@ import { NavigationServiceStub } from '../testing/navigation-service.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(AppComponent)
+    @ViewChild(AppComponent, {static: true})
     public componentUnderTest: AppComponent;
 }
 
@@ -29,7 +30,7 @@ describe('AppComponent', () => {
     let app: AppComponent;
     let store: Store<fromRoot.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             providers: [
                 {provide: I18nService, useClass: MockI18nService },
@@ -46,6 +47,7 @@ describe('AppComponent', () => {
             ],
             declarations: [
                 AppComponent,
+                MockPageTitleComponent,
                 TestHostComponent
             ],
         }).compileComponents();
@@ -59,12 +61,12 @@ describe('AppComponent', () => {
         fixture.detectChanges();
     }));
 
-    it('should create the app', async(() => {
+    it('should create the app', waitForAsync(() => {
         expect(app).toBeTruthy();
         expect(store.dispatch).toHaveBeenCalledTimes(3);
     }));
 
-    it(`should have as title 'Shib-UI'`, async(() => {
+    it(`should have as title 'Shib-UI'`, waitForAsync(() => {
         expect(app.title).toEqual('Shib UI');
     }));
 

@@ -1,30 +1,44 @@
 <div class="widget form-group">
-    <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
+    <label [id]="formProperty._canonicalPath + '-label'" [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span [ngClass]="{'sr-only': formProperty.parent.schema.type === 'array'}">
-            <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
+            {{ title | translate }}&nbsp;
             <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+            <span *ngIf="required" class="sr-only required"><translate-i18n key="message.required">required</translate-i18n></span>
         </span>
         <span *ngIf="schema.description">
             <info-icon [description]="schema.description | translate"></info-icon>
         </span>
     </label>
-    <span *ngIf="schema.description" class="sr-only" [translate]="schema.description">{{ schema.description }}</span>
+    <span *ngIf="schema.description" class="sr-only"><translate-i18n [key]="schema.description">{{ schema.description }}</translate-i18n></span>
     <auto-complete
-        [id]="formProperty._canonicalPath"
+        [id]="formProperty._canonicalPath + 'autocomplete'"
         [fieldId]="formProperty._canonicalPath"
         [formControl]="control"
-        [matches]="schema.widget.data"
+        [matches]="data"
         [required]="true"
         [dropdown]="true"
         [attr.placeholder]="schema.placeholder || '' | translate"
         [attr.disabled]="schema.readOnly?true:null"
         role="textbox"
-        [attr.aria-label]="schema.title | translate">
+        [attr.aria-label]="title | translate"
+        [attr.required]="schema.isRequired || null"
+        [attr.aria-invalid]="errorMessages && errorMessages.length > 0"
+        [attr.aria-describedby]="formProperty._canonicalPath + '-help'"
+        (onChange)="getData($event)">
     </auto-complete>
-    <small class="form-text text-danger" *ngIf="errorMessages && errorMessages.length && control.touched">
-        <ng-container *ngFor="let error of errorMessages; let first=first;">
-            <ng-container *ngIf="!first">, </ng-container>
-            <translate-i18n [key]="getError(error)">error</translate-i18n>
-        </ng-container>
+    <small [id]="formProperty._canonicalPath + '-help'"
+        [ngClass]="{
+            'text-danger': !showHint && showError,
+            'text-secondary': !showError
+        }" class="form-text text-secondary">
+        <span *ngIf="showHint">
+            <translate-i18n [key]="schema.widget.help">{{ schema.widget.help }}</translate-i18n>
+        </span>
+        <span *ngIf="showError" [ngClass]="{'sr-only': !control.touched}">
+            <ng-container *ngFor="let error of errorMessages; let first=first;">
+                <ng-container *ngIf="!first">, </ng-container>
+                <translate-i18n [key]="getError(error)">error</translate-i18n>
+            </ng-container>
+        </span>
     </small>
 </div>

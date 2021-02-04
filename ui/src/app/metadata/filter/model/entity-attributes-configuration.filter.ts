@@ -22,7 +22,6 @@ export const EntityAttributesFilterConfiguration: Wizard<MetadataFilter> = {
                 'name',
                 '@type',
                 'resourceId',
-                'version',
                 'filterEnabled',
                 'relyingPartyOverrides'
             ]

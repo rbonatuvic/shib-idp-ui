@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -17,6 +18,7 @@ import java.util.List;
 @ToString
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class NameIdFormatFilterTarget extends AbstractAuditable {
 
     public enum NameIdFormatFilterTargetType {

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
@@ -18,7 +18,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(EditorNavComponent)
+    @ViewChild(EditorNavComponent, {static: true})
     public componentUnderTest: EditorNavComponent;
 
     public format = NAV_FORMATS;
@@ -38,7 +38,7 @@ describe('Editor Nav Component', () => {
         initialValues: []
     };
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -68,7 +68,7 @@ describe('Editor Nav Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 

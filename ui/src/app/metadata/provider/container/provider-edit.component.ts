@@ -42,6 +42,8 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
 
     formats = NAV_FORMATS;
 
+    latest$: Observable<MetadataProvider>;
+
     constructor(
         private store: Store<fromProvider.ProviderState>,
         private router: Router,
@@ -70,7 +72,8 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
             });
 
         this.provider$.subscribe(p => this.provider = p);
-        this.store.select(fromProvider.getEntityChanges).subscribe(changes => this.latest = changes);
+        this.latest$ = this.store.select(fromProvider.getEntityChanges);
+        this.latest$.subscribe(changes => this.latest = changes);
 
         this.canFilter$ = this.definition$.pipe(map(def => FilterableProviders.indexOf(def.type) > -1));
     }
@@ -90,9 +93,9 @@ export class ProviderEditComponent implements OnDestroy, CanComponentDeactivate 
         this.store.dispatch(new UpdateProviderRequest(this.latest));
     }
 
-    cancel(): void {
+    cancel(id): void {
         this.clear();
-        this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']);
+        this.router.navigate(['/', 'metadata', 'provider', id, 'configuration', 'options']);
     }
 
     canDeactivate(

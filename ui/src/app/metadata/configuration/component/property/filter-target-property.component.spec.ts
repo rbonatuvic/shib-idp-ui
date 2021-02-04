@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ import { ArrayPropertyComponentStub, PrimitivePropertyComponentStub } from '../.
     `
 })
 class TestHostComponent {
-    @ViewChild(FilterTargetPropertyComponent)
+    @ViewChild(FilterTargetPropertyComponent, {static: true})
     public componentUnderTest: FilterTargetPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.formatFilterTarget, {
@@ -35,7 +35,7 @@ describe('Filter Target Property Component', () => {
     let instance: TestHostComponent;
     let app: FilterTargetPropertyComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbPopoverModule,
@@ -57,7 +57,7 @@ describe('Filter Target Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should accept a property input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

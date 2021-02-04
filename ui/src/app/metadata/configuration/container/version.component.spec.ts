@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(VersionComponent)
+    @ViewChild(VersionComponent, {static: true})
     public componentUnderTest: VersionComponent;
 }
 
@@ -26,7 +26,7 @@ describe('Metadata Version Page Component', () => {
     let instance: TestHostComponent;
     let app: VersionComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,

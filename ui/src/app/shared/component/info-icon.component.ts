@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Renderer } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Renderer2 } from '@angular/core';
 import { NgbPopover, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -18,10 +18,9 @@ export class InfoIconComponent {
     placement = ['top'];
 
     constructor(
-        private renderer: Renderer
+        private renderer: Renderer2
     ) { }
     focus(element): void {
-        console.log(element.elementRef.nativeElement);
-        this.renderer.invokeElementMethod(element.elementRef.nativeElement, 'focus');
+        element.elementRef.nativeElement.focus();
     }
 }

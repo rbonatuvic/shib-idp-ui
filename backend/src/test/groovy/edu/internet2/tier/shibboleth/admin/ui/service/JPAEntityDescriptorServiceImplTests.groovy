@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAnyBuilder
@@ -25,6 +26,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import org.opensaml.saml.ext.saml2mdattr.EntityAttributes
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -875,6 +877,31 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         then:
         assert representation.relyingPartyOverrides.get('useSha') instanceof Boolean
         assert representation.relyingPartyOverrides.get('ignoreAuthenticationMethod') instanceof Boolean
+    }
+
+    def "SHIBUI-1522"() {
+        when:
+        EntityDescriptor inputEd = openSamlObjects.unmarshalFromXml this.class.getResource('/metadata/SHIBUI-1522.xml').bytes
+        EntityDescriptorRepresentation edr = service.createRepresentationFromDescriptor(inputEd)
+        edr.relyingPartyOverrides = [nameIdFormats: [], authenticationMethods: []]
+        EntityDescriptor outputEd = service.createDescriptorFromRepresentation(edr)
+
+        then:
+        outputEd.getExtensions().unknownXMLObjects[0].attributes.size() == 0
+
+        when:
+        edr.relyingPartyOverrides = [nameIdFormats: ['format1', 'format2']]
+        outputEd = service.createDescriptorFromRepresentation(edr)
+
+        then:
+        outputEd.getExtensions().unknownXMLObjects[0].attributes.size() == 1
+
+        when:
+        edr.relyingPartyOverrides = [nameIdFormats: ['format1', 'format2'], authenticationMethods: ['auth1', 'auth2']]
+        outputEd = service.createDescriptorFromRepresentation(edr)
+
+        then:
+        outputEd.getExtensions().unknownXMLObjects[0].attributes.size() == 2
     }
 
     EntityDescriptor generateRandomEntityDescriptor() {

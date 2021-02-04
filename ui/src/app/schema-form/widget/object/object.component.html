@@ -1,4 +1,7 @@
 <div class="">
+    <ng-container *ngFor="let error of customErrors$ | async">
+        <div class="alert alert-danger">{{error.message | translate}}</div>
+    </ng-container>
     <div class="row">
         <ng-container *ngFor="let fieldset of formProperty.schema.fieldsets; let i = index;">
             <fieldset
@@ -10,7 +13,9 @@
                 <legend class="text-primary" *ngIf="fieldset.title">
                     <translate-i18n [key]="fieldset.title">{{ fieldset.title }}</translate-i18n>
                 </legend>
-                <p *ngIf="fieldset.description" [translate]="fieldset.description">{{ fieldset.description }}</p>
+                <p *ngIf="fieldset.description">
+                    <translate-i18n [key]="fieldset.description">{{ fieldset.description }}</translate-i18n>
+                </p>
                 <div [ngClass]="{
                     'bg-light border rounded px-4 pt-4 pb-1': fieldset.type === 'section' || (!fieldset.type && formProperty.schema.widget.id === 'fieldset')
                 }">

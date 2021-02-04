@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ import { FileBackedHttpMetadataProviderEditor } from '../model';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderEditStepComponent)
+    @ViewChild(ProviderEditStepComponent, {static: true})
     public componentUnderTest: ProviderEditStepComponent;
 }
 
@@ -28,7 +28,7 @@ describe('Provider Edit Step Component', () => {
     let store: Store<fromRoot.State>;
     let storeSpy: any;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -75,7 +75,7 @@ describe('Provider Edit Step Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 

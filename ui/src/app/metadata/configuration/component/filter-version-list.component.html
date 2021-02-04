@@ -1,0 +1,51 @@
+<ng-container *ngIf="filters && filters.dates.length > 0">
+    <div class="d-flex border-bottom border-light border-2 py-2">
+        <strong [ngStyle]="{'width.%': width}" *ngIf="!comparing">Order</strong>
+        <strong [ngStyle]="{'width.%': width}" *ngIf="comparing">Option</strong>
+        <strong *ngFor="let date of filters.dates" [ngStyle]="{'width.%': width}">
+            {{ date | date:DATE_FORMAT }}
+        </strong>
+    </div>
+    <div class="">
+        <ng-container *ngFor="let version of filters.filters; let i = index; first as isFirst; last as isLast;">
+            <div class="d-flex border-bottom border-light">
+                <div [ngStyle]="{'width.%': width}" class="py-2">
+                    {{ i + 1 }}
+                </div>
+                <div *ngFor="let filter of version; let i = index; even as isEven"
+                    [ngStyle]="{'width.%': width}"
+                    class="border-primary">
+                    <div class="p-2 w-100" *ngIf="!filter">-</div>
+                    <div *ngIf="filter"
+                        class="p-2 d-flex align-items-center"
+                        [ngClass]="{
+                            'bg-lighter': isEven && selected !== filter.resourceId,
+                            'bg-primary-light': selected === filter.resourceId
+                        }">
+                        <div class="w-50">
+                            <p class="mb-0">{{ filter.name }}</p>
+                            <p class="mb-0 text-muted">{{ filter['@type'] }}</p>
+                        </div>
+                        <button class="btn btn-link mx-auto" *ngIf="filter.comparable"
+                            (click)="selected = (selected !== filter.resourceId) ? filter.resourceId : null">
+                            <i class="fa fa-lg"
+                                [ngClass]="{'fa-check-square-o': selected === filter.resourceId, 'fa-square-o': selected !== filter.resourceId}"
+                                aria-hidden="true"></i>
+                            <span class="sr-only">Compare</span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </ng-container>
+    </div>
+    <div class="alert alert-info m-4" *ngIf="filters ? filters.filters.length < 1 : false">
+        <h3><translate-i18n key="message.no-filters">No Filters</translate-i18n></h3>
+        <p><translate-i18n key="message.no-filters-added">No filters have been added to this Metadata Provider</translate-i18n></p>
+    </div>
+    <div class="d-flex justify-content-end my-2" *ngIf="filters && filters.filters.length > 0">
+        <button class="btn btn-primary" [disabled]="!selected" (click)="compareSelected()">
+            <translate-i18n key="label.compare-selected">Compare Selected</translate-i18n>
+        </button>
+    </div>
+</ng-container>

@@ -1,22 +1,13 @@
 import { Wizard } from '../../../wizard/model';
 import { FileSystemMetadataProvider } from '../../domain/model/providers/file-system-metadata-provider';
 import { BaseMetadataProviderEditor } from './base.provider.form';
+import API_BASE_PATH from '../../../app.constant';
 
 export const FileSystemMetadataProviderWizard: Wizard<FileSystemMetadataProvider> = {
     ...BaseMetadataProviderEditor,
     label: 'FilesystemMetadataProvider',
     type: 'FilesystemMetadataResolver',
-    formatter: (changes: FileSystemMetadataProvider) => {
-        let base = BaseMetadataProviderEditor.formatter(changes);
-        if (base.reloadableMetadataResolverAttributes) {
-            if (base.reloadableMetadataResolverAttributes.refreshDelayFactor) {
-                base.reloadableMetadataResolverAttributes.refreshDelayFactor =
-                    base.reloadableMetadataResolverAttributes.refreshDelayFactor.toString();
-            }
-        }
-        return base;
-    },
-    schema: '/api/ui/MetadataResolver/FilesystemMetadataResolver',
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/FilesystemMetadataResolver`,
     steps: [
         {
             id: 'common',

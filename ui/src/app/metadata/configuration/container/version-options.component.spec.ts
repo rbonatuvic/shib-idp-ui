@@ -1,5 +1,5 @@
 import { Component, ViewChild, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import { ViewportScroller } from '@angular/common';
     `
 })
 class TestHostComponent {
-    @ViewChild(VersionOptionsComponent)
+    @ViewChild(VersionOptionsComponent, {static: true})
     public componentUnderTest: VersionOptionsComponent;
 }
 
@@ -29,7 +29,7 @@ describe('Metadata Version Options Page Component', () => {
     let app: VersionOptionsComponent;
     let scroller: ViewportScroller;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,

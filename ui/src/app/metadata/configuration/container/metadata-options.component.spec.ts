@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule, SpyNgModuleFactoryLoader } from '@angular/router/testing';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
 import { NgbDropdownModule, NgbModalModule, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -32,7 +32,7 @@ import { NgbModalStub } from '../../../../testing/modal.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataOptionsComponent)
+    @ViewChild(MetadataOptionsComponent, {static: true})
     public componentUnderTest: MetadataOptionsComponent;
 
     configuration: MetadataConfiguration = {
@@ -57,13 +57,13 @@ describe('Metadata Options Page Component', () => {
     } as MetadataFilter;
     let modal: NgbModal;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
                 StoreModule.forRoot({
                     'metadata-configuration': combineReducers(fromConfiguration.reducers),
-                    'filters': combineReducers(fromFilters.reducers),
+                    'filter': combineReducers(fromFilters.reducers),
                     'provider': combineReducers(fromProviders.reducers),
                     'resolver': combineReducers(fromResolvers.reducers)
                 }),
@@ -98,7 +98,7 @@ describe('Metadata Options Page Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should load metadata objects', async(() => {
+    it('should load metadata objects', waitForAsync(() => {
         expect(app).toBeTruthy();
         expect(store.select).toHaveBeenCalled();
     }));

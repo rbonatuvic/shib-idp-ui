@@ -18,7 +18,7 @@ import {
 
 import { SearchDialogComponent } from '../component/search-dialog.component';
 import { EntityIdService } from '../../domain/service/entity-id.service';
-import { fromPromise } from 'rxjs/internal-compatibility';
+import { from } from 'rxjs';
 import { SelectId } from '../action/filter.action';
 import * as fromProvider from '../../provider/reducer';
 
@@ -50,7 +50,7 @@ export class SearchIdEffects {
             const modal = this.modalService.open(SearchDialogComponent) as NgbModalRef;
             const res = modal.result;
             modal.componentInstance.term = q;
-            return fromPromise(res).pipe(
+            return from(res).pipe(
                 map(id => new SelectId(id)),
                 catchError(() => of(new CancelViewMore()))
             );

@@ -6,17 +6,15 @@ import * as fromHistory from './history.reducer';
 import * as fromCompare from './compare.reducer';
 import * as fromVersion from './version.reducer';
 import * as fromRestore from './restore.reducer';
-import { WizardStep } from '../../../wizard/model';
+import * as fromFilter from './filter.reducer';
 
-import * as utils from '../../domain/utility/configuration';
-import { getSplitSchema, getModel } from '../../../wizard/reducer';
+import { getConfigurationSectionsFn, getLimitedPropertiesFn } from './utilities';
+import { getModel } from '../../../wizard/reducer';
 import { getInCollectionFn } from '../../domain/domain.util';
-import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
 
 import * as fromResolver from '../../resolver/reducer';
 import * as fromProvider from '../../provider/reducer';
-import { SectionProperty } from '../model/section';
 
 export interface ConfigurationState {
     configuration: fromConfiguration.State;
@@ -24,6 +22,7 @@ export interface ConfigurationState {
     compare: fromCompare.State;
     version: fromVersion.State;
     restore: fromRestore.RestoreState;
+    filter: fromFilter.State;
 }
 
 export const reducers = {
@@ -31,7 +30,8 @@ export const reducers = {
     history: fromHistory.reducer,
     compare: fromCompare.reducer,
     version: fromVersion.reducer,
-    restore: fromRestore.reducer
+    restore: fromRestore.reducer,
+    filter: fromFilter.reducer
 };
 
 export interface State extends fromRoot.State {
@@ -45,105 +45,47 @@ export const getHistoryStateFn = (state: ConfigurationState) => state.history;
 export const getCompareStateFn = (state: ConfigurationState) => state.compare;
 export const getVersionStateFn = (state: ConfigurationState) => state.version;
 export const getRestoreStateFn = (state: ConfigurationState) => state.restore;
+export const getFilterStateFn = (state: ConfigurationState) => state.filter;
 
 export const getConfigurationState = createSelector(getState, getConfigurationStateFn);
 export const getConfigurationModelKind = createSelector(getConfigurationState, fromConfiguration.getModelKind);
 export const getConfigurationModelId = createSelector(getConfigurationState, fromConfiguration.getModelId);
 
 export const getConfigurationDefinition = createSelector(getConfigurationState, fromConfiguration.getDefinition);
-export const getConfigurationSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
+export const getSchema = createSelector(getConfigurationState, fromConfiguration.getSchema);
 export const getConfigurationXml = createSelector(getConfigurationState, fromConfiguration.getXml);
 
-export const assignValueToProperties = (models, properties, definition: any): any[] => {
-    return properties.map(prop => {
-        const differences = models.some((model, index, array) => {
-            if (!array) {
-                return false;
-            }
-            return JSON.stringify(model[prop.id]) !== JSON.stringify(array[0][prop.id]);
-        });
-
-        const widget = prop.type === 'array' && prop.widget && prop.widget.data ? ({
-            ...prop.widget,
-            data: prop.widget.data.map(item => ({
-                ...item,
-                differences: models
-                    .map((model) => {
-                        const value = model[prop.id];
-                        return value ? value.indexOf(item.key) > -1 : false;
-                    })
-                    .reduce((current, val) => current !== val ? true : false, false)
-            }))
-        }) : null;
-
-        switch (prop.type) {
-            case 'object':
-                return {
-                    ...prop,
-                    differences,
-                    properties: assignValueToProperties(
-                        models.map(model => definition.formatter(model)[prop.id] || {}),
-                        prop.properties,
-                        definition
-                    )
-                };
-            default:
-                return {
-                    ...prop,
-                    differences,
-                    value: models.map(model => {
-                        return model[prop.id];
-                    }),
-                    widget
-                };
-        }
-    });
+export const processSchemaFn = (definition, schema) => {
+    return definition && schema ?
+        definition.schemaPreprocessor ?
+            definition.schemaPreprocessor(schema) : schema
+        : schema;
 };
 
-export const getConfigurationSectionsFn = (models, definition, schema): MetadataConfiguration => {
-    return !definition || !schema || !models ? null :
-        ({
-            dates: models.map(m => m ? m.modifiedDate : null),
-            sections: definition.steps
-                .filter(step => step.id !== 'summary')
-                .map(
-                    (step: WizardStep, num: number) => {
-                        return ({
-                            id: step.id,
-                            pageNumber: num + 1,
-                            index: step.index,
-                            label: step.label,
-                            properties: utils.getStepProperties(
-                                getSplitSchema(schema, step),
-                                definition.formatter({}),
-                                schema.definitions || {}
-                            )
-                        });
-                    }
-                )
-                .map((section: any) => {
-                    return {
-                        ...section,
-                        properties: assignValueToProperties(models, section.properties, definition)
-                    };
-                })
-                .map((section: any) => ({
-                    ...section,
-                    differences: section.properties.some(prop => prop.differences)
-                }))
-        });
-    };
-
-
-
+export const getConfigurationSchema = createSelector(getConfigurationDefinition, getSchema, processSchemaFn);
 export const getConfigurationModelEnabledFn =
     (config: Metadata) => config ? ('serviceEnabled' in config) ? config.serviceEnabled : config.enabled : false;
 
 export const getConfigurationModelNameFn =
-    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : false;
+    (config: Metadata) => config ? ('serviceProviderName' in config) ? config.serviceProviderName : config.name : '';
 
 export const getConfigurationModelTypeFn =
     (config: Metadata) => config ? ('@type' in config) ? config['@type'] : 'resolver' : null;
+
+export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
+export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
+
+export const getVersionModelFiltersFn =
+    (model, kind) => kind === 'provider' ?
+        model.metadataFilters ? model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
+            [] : null;
+
+export const getVersionModelFilterPluginsFn = (model, kind) => {
+    const filters = kind === 'provider' ?
+        model.metadataFilters ? model.metadataFilters.filter(filter => filterPluginTypes.indexOf(filter['@type']) > -1) :
+            [] : null;
+    return filters;
+};
 
 // Version History
 
@@ -172,14 +114,29 @@ export const getSelectedIsCurrent = createSelector(
     getSelectedIsCurrentFn
 );
 
+
 // Version Comparison
 
 export const getCompareState = createSelector(getState, getCompareStateFn);
 export const getComparisonLoading = createSelector(getCompareState, fromCompare.getComparisonLoading);
 export const getComparisonModels = createSelector(getCompareState, fromCompare.getVersionModels);
 export const getComparisonModelsLoaded = createSelector(getCompareState, fromCompare.getVersionModelsLoaded);
+export const getComparisonFilterId = createSelector(getCompareState, fromCompare.getFilterId);
+
+export const getComparisonModelsFilteredFn = (models) => models.map((model) => {
+    return ({
+        ...model,
+        metadataFilters: getVersionModelFilterPluginsFn(
+            model,
+            model.hasOwnProperty('@type') ? model.hasOwnProperty('metadataFilters') ? 'provider' : 'filter' : 'resolver'
+        )
+    });
+});
+
+export const getComparisonModelsFiltered = createSelector(getComparisonModels, getComparisonModelsFilteredFn);
+
 export const getComparisonConfigurations = createSelector(
-    getComparisonModels,
+    getComparisonModelsFiltered,
     getConfigurationDefinition,
     getConfigurationSchema,
     getConfigurationSectionsFn
@@ -189,34 +146,16 @@ export const getComparisonConfigurationCount = createSelector(getComparisonConfi
 
 export const getViewChangedOnly = createSelector(getCompareState, fromCompare.getViewChangedOnly);
 
-export const getLimitedPropertiesFn = (properties: SectionProperty[]) => {
-    return ([
-        ...properties
-            .filter(p => p.differences)
-            .map(p => {
-                const parsed = { ...p };
-                if (p.widget && p.widget.data) {
-                    parsed.widget = {
-                        ...p.widget,
-                        data: p.widget.data.filter(item => item.differences)
-                    };
-                }
-                if (p.properties) {
-                    parsed.properties = getLimitedPropertiesFn(p.properties);
-                }
-                return parsed;
-            })
-    ]);
+export const getLimitedConfigurationsFn = (configurations, limited) => {
+    return configurations ? ({
+        ...configurations,
+        sections: limited ? configurations.sections :
+            configurations.sections.map(s => ({
+                ...s,
+                properties: getLimitedPropertiesFn(s.properties),
+            }))
+    }) : configurations;
 };
-
-export const getLimitedConfigurationsFn = (configurations, limited) => configurations ? ({
-    ...configurations,
-    sections: limited ? configurations.sections :
-        configurations.sections.map(s => ({
-            ...s,
-            properties: getLimitedPropertiesFn(s.properties),
-        }))
-}) : configurations;
 
 export const getLimitedComparisonConfigurations = createSelector(
     getComparisonConfigurations,
@@ -224,20 +163,59 @@ export const getLimitedComparisonConfigurations = createSelector(
     getLimitedConfigurationsFn
 );
 
+export const getComparisonFilterListFn = (models) => models.map(m => getVersionModelFiltersFn(m, 'provider'));
+export const getComparisonFilterList = createSelector(getComparisonModels, getComparisonFilterListFn);
+
+export const getComparisonDatesFn = (config) => config.map(m => m ? m.modifiedDate : null);
+export const getComparisonDates = createSelector(getComparisonModels, getComparisonDatesFn);
+
+export const getComparisonFilterOrderedFn = (list) =>
+    list.map(models =>
+        models.map(filter =>
+            ({
+                ...filter,
+                comparable: list
+                    .reduce((acc, v) => acc.concat(v), [])
+                    .map(v => v.resourceId)
+                    .some((id, index, coll) => {
+                        return coll.indexOf(filter.resourceId) !== coll.lastIndexOf(filter.resourceId);
+                    })
+            })
+));
+
+export const getComparisonFilterOrdered = createSelector(getComparisonFilterList, getComparisonFilterOrderedFn);
+
+export const getComparisonFilterConfiguration = createSelector(
+    getComparisonFilterOrdered,
+    getComparisonDates,
+    (filters, dates) => {
+        const rows = filters.reduce((num, version) => version.length > num ? version.length : num, 0);
+        const range = [...Array(rows).keys()];
+        return {
+            dates,
+            filters: range.reduce((collection, index) => {
+                const val = filters.map(version => version[index]);
+                collection[index] = val;
+                return collection;
+            }, [])
+        };
+    }
+);
+
+export const getComparisonSelectedFilters = createSelector(
+    getComparisonModels,
+    getComparisonDates,
+    getComparisonFilterId,
+    (models, dates, id) => ({
+        dates,
+        sections: []
+    })
+);
+
 // Version Restoration
 
 export const getRestoreState = createSelector(getState, getRestoreStateFn);
-
-export const filterPluginTypes = ['RequiredValidUntil', 'SignatureValidation', 'EntityRoleWhiteList'];
-export const isAdditionalFilter = (type) => filterPluginTypes.indexOf(type) === -1;
-
-export const getVersionModelFiltersFn =
-    (model, kind) => kind === 'provider' ?
-    model.metadataFilters.filter(filter => isAdditionalFilter(filter['@type'])) :
-    null;
-
 export const getVersionState = createSelector(getState, getVersionStateFn);
-
 export const getVersionLoading = createSelector(getVersionState, fromVersion.isVersionLoading);
 
 export const getVersionModel = createSelector(getVersionState, fromVersion.getVersionModel);
@@ -293,6 +271,25 @@ export const getRestorationModel = createSelector(
         ...empty,
         ...changes
     })
+);
+
+// Filter Comparison State
+
+export const getFilterState = createSelector(getState, getFilterStateFn);
+export const getFilterComparisonDefinition = createSelector(getFilterState, fromFilter.getDefinition);
+export const getFilterComparisonSchema = createSelector(getFilterState, fromFilter.getSchema);
+export const getFilterComparisonModels = createSelector(getFilterState, fromFilter.getModels);
+export const getFilterComparisonConfigurations = createSelector(
+    getFilterComparisonModels,
+    getFilterComparisonDefinition,
+    getFilterComparisonSchema,
+    getConfigurationSectionsFn
+);
+
+export const getLimitedFilterComparisonConfiguration = createSelector(
+    getFilterComparisonConfigurations,
+    getViewChangedOnly,
+    getLimitedConfigurationsFn
 );
 
 // Mixed states

@@ -44,6 +44,8 @@ import { RestoreEditComponent } from './container/restore-edit.component';
 import { RestoreEditStepComponent } from './container/restore-edit-step.component';
 
 import { IndexResolver } from './service/index-resolver.service';
+import { FilterVersionListComponent } from './component/filter-version-list.component';
+import { FilterCompareVersionEffects } from './effect/filter.effect';
 
 @NgModule({
     declarations: [
@@ -67,7 +69,8 @@ import { IndexResolver } from './service/index-resolver.service';
         VersionOptionsComponent,
         MetadataEditorComponent,
         RestoreEditComponent,
-        RestoreEditStepComponent
+        RestoreEditStepComponent,
+        FilterVersionListComponent
     ],
     entryComponents: [],
     imports: [
@@ -81,14 +84,16 @@ import { IndexResolver } from './service/index-resolver.service';
         WizardModule,
         FormModule
     ],
-    exports: [],
+    exports: [
+        MetadataConfigurationComponent
+    ],
     providers: [
         DatePipe,
         IndexResolver
     ]
 })
 export class MetadataConfigurationModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootMetadataConfigurationModule> {
         return {
             ngModule: RootMetadataConfigurationModule,
             providers: [
@@ -109,8 +114,10 @@ export class MetadataConfigurationModule {
                 MetadataHistoryEffects,
                 CompareVersionEffects,
                 RestoreEffects,
+                FilterCompareVersionEffects,
                 VersionEffects
-            ])
+            ]
+        )
     ],
     providers: []
 })

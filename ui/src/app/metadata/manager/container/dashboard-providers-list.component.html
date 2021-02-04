@@ -3,7 +3,7 @@
         <div class="section-header bg-primary p-2 text-light">
             <div class="row justify-content-between">
                 <div class="col-12">
-                    <span class="lead" translate="label.current-metadata-providers">Current Metadata Providers</span>
+                    <span class="lead"><translate-i18n key="label.current-metadata-providers">Current Metadata Providers</translate-i18n></span>
                 </div>
             </div>
         </div>
@@ -17,12 +17,12 @@
             <div class="table-responsive mt-3" *ngIf="limited$ | async;">
                 <table class="table table-striped w-100 table-hover table-providers">
                     <thead>
-                        <th translate="label.order">Order</th>
-                        <th class="w-25" translate="label.title">Title</th>
-                        <th class="w-15" translate="label.provider-type">Provider Type</th>
-                        <th class="w-15" translate="label.author">Author</th>
-                        <th class="w-15" translate="label.creation-date">Created Date</th>
-                        <th class="text-right w-15" translate="label.enabled">Enabled</th>
+                        <th><translate-i18n key="label.order">Order</translate-i18n></th>
+                        <th class="w-25"><translate-i18n key="label.title">Title</translate-i18n></th>
+                        <th class="w-15"><translate-i18n key="label.provider-type">Provider Type</translate-i18n></th>
+                        <th class="w-15"><translate-i18n key="label.author">Author</translate-i18n></th>
+                        <th class="w-15"><translate-i18n key="label.creation-date">Created Date</translate-i18n></th>
+                        <th class="text-right w-15"><translate-i18n key="label.enabled">Enabled</translate-i18n></th>
                     </thead>
                     <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll($event)">
                         <tr *ngFor="let provider of limited$ | async; index as i; first as isFirst; last as isLast;">
@@ -52,11 +52,12 @@
                             <td>{{ provider.createdBy }}</td>
                             <td>{{ provider.createdDate | customDate }}</td>
                             <td class="text-right">
-                                <span class="badge"
+                                <span tabindex="0"
+                                    class="badge"
+                                    [attr.aria-label]="(provider.enabled ? 'value.enabled' : 'value.disabled') | translate"
                                     [class.badge-danger]="!provider.enabled"
                                     [class.badge-success]="provider.enabled">
-                                    <span *ngIf="provider.enabled" translate="value.enabled">Enabled</span>
-                                    <span *ngIf="!provider.enabled" translate="value.disabled">Enabled</span>
+                                    {{ (provider.enabled ? 'value.enabled' : 'value.disabled') | translate }}
                                 </span>
                             </td>
                         </tr>

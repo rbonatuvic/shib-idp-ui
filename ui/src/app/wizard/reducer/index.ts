@@ -48,7 +48,7 @@ export const getWizardDefinition = createSelector(getState, fromWizard.getDefini
 export const getSchemaPath = (wizard: Wizard<any>) => wizard ? wizard.schema : null;
 
 export const getSplitSchema = (schema: any, step: WizardStep) => {
-    if (!schema || !step.fields || !step.fields.length || !schema.properties) {
+    if (!schema || !step || !step.fields || !step.fields.length || !schema.properties) {
         return schema;
     }
     const keys = Object.keys(schema.properties).filter(key => step.fields.indexOf(key) > -1);
@@ -128,8 +128,12 @@ export const getLockedStatus = createSelector(getState, fromWizard.getLocked);
 export const getSchemaLockedFn = (step, locked) => step ? step.locked ? locked : false : false;
 export const getLocked = createSelector(getCurrent, getLockedStatus, getSchemaLockedFn);
 
+export const getSchemaProcessedFn = (schema, definition) =>
+    definition && definition.schemaPreprocessor ? definition.schemaPreprocessor(schema) : schema;
+
 export const getSchemaObject = createSelector(getState, fromWizard.getSchema);
-export const getParsedSchema = createSelector(getSchemaObject, getLocked, getSchemaParseFn);
+export const getProcessedSchema = createSelector(getSchemaObject, getWizardDefinition, getSchemaProcessedFn);
+export const getParsedSchema = createSelector(getProcessedSchema, getLocked, getSchemaParseFn);
 
 export const getSchema = createSelector(getParsedSchema, getCurrent, getSplitSchema);
 

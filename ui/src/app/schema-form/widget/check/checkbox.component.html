@@ -11,8 +11,8 @@
                     [attr.disabled]="schema.readOnly?true:null"
                     [id]="formProperty._canonicalPath"
                     [disableValidation]="true">
-                <label [attr.for]="formProperty._canonicalPath" class="custom-control-label" [translate]="schema.title">
-                    {{ schema.title }}
+                <label [attr.for]="formProperty._canonicalPath" class="custom-control-label">
+                    <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
                 </label>
             </div>
             <div>

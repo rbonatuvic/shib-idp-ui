@@ -16,10 +16,13 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.script.ScriptException;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "edu.internet2.tier.shibboleth.admin.ui.configuration.auto.*"))
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableJpaAuditing
 @EnableScheduling
 @EnableWebSecurity
+@EnableAsync
 public class ShibbolethUiApplication extends SpringBootServletInitializer {
 
     private static final Logger logger = LoggerFactory.getLogger(ShibbolethUiApplication.class);
@@ -69,7 +73,16 @@ public class ShibbolethUiApplication extends SpringBootServletInitializer {
             metadataResolverRepository.findAll()
                     .forEach(it -> {
                         logger.info(String.format("Reloading filters for resolver [%s: %s]", it.getName(), it.getResourceId()));
-                        metadataResolverService.reloadFilters(it.getResourceId());
+                        try {
+                            metadataResolverService.reloadFilters(it.getResourceId());
+                        }
+                        catch (Throwable ex) {
+                            if(ex instanceof ScriptException) {
+                                logger.warn("Caught invalid script parsing error. Please fix the script data.", ex);
+                                return;
+                            }
+                            throw ex;
+                        }
                     });
         }
     }

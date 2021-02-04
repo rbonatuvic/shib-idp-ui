@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { map, catchError, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -127,7 +126,6 @@ export class MetadataCollectionEffects {
     constructor(
         private descriptorService: ResolverService,
         private actions$: Actions,
-        private router: Router,
         private store: Store<fromRoot.State>,
         private i18nService: I18nService
     ) { }

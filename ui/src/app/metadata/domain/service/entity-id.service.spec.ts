@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule, HttpRequest, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { EntityIdService } from './entity-id.service';
@@ -25,7 +25,7 @@ describe(`EntityIdService`, () => {
             offset: 1
         };
 
-        it(`should send an expected GET request`, async(inject([EntityIdService, HttpTestingController],
+        it(`should send an expected GET request`, waitForAsync(inject([EntityIdService, HttpTestingController],
             (service: EntityIdService, backend: HttpTestingController) => {
                 service.query(query).subscribe();
 

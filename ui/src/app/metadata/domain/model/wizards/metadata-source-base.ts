@@ -56,6 +56,12 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     };
 
     parser(changes: Partial<MetadataResolver>, schema?: any): any {
+        if (!schema || !schema.properties) {
+            return changes;
+        }
+        if (schema.properties.hasOwnProperty('organization') && !changes.organization) {
+            changes.organization = {};
+        }
         return changes;
     }
 
@@ -64,39 +70,6 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
     }
 
     getValidators(entityIdList: string[]): { [key: string]: any } {
-        const checkRequiredChild = (value, property, form) => {
-            if (!value) {
-                return {
-                    code: 'REQUIRED',
-                    path: `#${property.path}`,
-                    message: `message.required`,
-                    params: [value]
-                };
-            }
-            return null;
-        };
-        const checkRequiredChildren = (value, property, form) => {
-            let errors;
-            Object.keys(value).forEach((item, index, all) => {
-                const error = checkRequiredChild(item, { path: `${index}` }, form);
-                if (error) {
-                    errors = errors || [];
-                    errors.push(error);
-                }
-            });
-            return errors;
-        };
-        const checkOrg = (value, property, form) => {
-            const org = property.parent;
-            const orgValue = org.value || {};
-            const err = Object.keys(orgValue) && !value ? {
-                code: 'ORG_INCOMPLETE',
-                path: `#${property.path}`,
-                message: `message.org-incomplete`,
-                params: [value]
-            } : null;
-            return err;
-        };
         const validators = {
             '/': (value, property, form_current) => {
                 let errors;
@@ -106,7 +79,7 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     const validatorKey = `/${key}`;
                     const validator = validators.hasOwnProperty(validatorKey) ? validators[validatorKey] : null;
                     const error = validator ? validator(item, form_current.getProperty(key), form_current) : null;
-                    if (error) {
+                    if (error && error.invalidate) {
                         errors = errors || [];
                         errors.push(error);
                     }
@@ -118,13 +91,35 @@ export class MetadataSourceBase implements Wizard<MetadataResolver> {
                     code: 'INVALID_ID',
                     path: `#${property.path}`,
                     message: 'message.id-unique',
-                    params: [value]
+                    params: [value],
+                    invalidate: true
                 } : null;
                 return err;
             },
-            '/organization/name': checkOrg,
-            '/organization/displayName': checkOrg,
-            '/organization/url': checkOrg
+            '/relyingPartyOverrides': (value, property, form) => {
+                if (!value.signAssertion && value.dontSignResponse) {
+                    return {
+                        code: 'INVALID_SIGNING',
+                        path: `#${property.path}`,
+                        message: 'message.invalid-signing',
+                        params: [value],
+                        invalidate: false
+                    };
+                }
+                return null;
+            },
+            '/serviceProviderSsoDescriptor': (value, property, form) => {
+                if (value.nameIdFormats && value.nameIdFormats.length && !value.protocolSupportEnum) {
+                    return {
+                        code: 'PROTOCOL_SUPPORT_ENUM_REQUIRED',
+                        path: `#${property.path}`,
+                        message: 'message.protocol-support-required',
+                        params: [value],
+                        invalidate: true
+                    };
+                }
+                return null;
+            }
         };
         return validators;
     }

@@ -5,19 +5,22 @@ const routes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
         path: 'dashboard',
-        loadChildren: './dashboard/dashboard.module#DashboardModule'
+        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
     },
     {
         path: 'metadata',
-        loadChildren: './metadata/metadata.module#MetadataModule'
+        loadChildren: () => import('./metadata/metadata.module').then(m => m.MetadataModule)
     }
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, {
-        preloadingStrategy: PreloadAllModules,
-        scrollOffset: [0, 64]
-    })],
+    preloadingStrategy: PreloadAllModules,
+    scrollOffset: [0, 64],
+    anchorScrolling: 'enabled',
+    scrollPositionRestoration: 'enabled',
+    relativeLinkResolution: 'legacy'
+})],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

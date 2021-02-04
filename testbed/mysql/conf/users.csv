@@ -1,0 +1,2 @@
+root,{bcrypt}$2a$10$V1jeTIc0b2u7Y3yU.LqkXOPRVTBFc7SW07QaJR4KrBAmWGgTcO9H.,first,last,ROLE_ADMIN,user1@example.org
+jj,{bcrypt}$2a$10$V1jeTIc0b2u7Y3yU.LqkXOPRVTBFc7SW07QaJR4KrBAmWGgTcO9H.,first,last,ROLE_ADMIN,jj@example.org

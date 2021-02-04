@@ -29,6 +29,9 @@ class SeleniumSIDETest extends Specification {
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
+                if (it.driver == "chrome") {
+                    it.addCliArgs('--disable-extensions')
+                }
             } else {
                 it.driver = 'remote'
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
@@ -39,10 +42,14 @@ class SeleniumSIDETest extends Specification {
             } else {
                 it.baseurl = "http://localhost:${this.randomPort}"
             }
+            if (System.properties.getProperty('webdriver.headless')) {
+                it.addCliArgs('--headless')
+            }
             it
         }
         def runner = new Runner()
         runner.varsMap.put('xmlUpload', Paths.get(this.class.getResource('/TestUpload.xml').toURI()).toString())
+        runner.varsMap.put('SHIBUI950', Paths.get(this.class.getResource('/SHIBUI-950.xml').toURI()).toString())
         main.setupRunner(runner, config, [] as String[])
 
         expect:
@@ -59,6 +66,9 @@ class SeleniumSIDETest extends Specification {
         def config = new DefaultConfig([] as String[]).with {
             if (System.properties.getProperty('webdriver.driver')) {
                 it.driver = System.properties.getProperty('webdriver.driver')
+                if (it.driver == "chrome") {
+                    it.addCliArgs('--disable-extensions')
+                }
             } else {
                 it.driver = 'remote'
                 it.remoteUrl = 'http://selenium-hub:4444/wd/hub'
@@ -85,8 +95,16 @@ class SeleniumSIDETest extends Specification {
 
         assert result.level.exitCode == 0
 
+        cleanup:
+        runner.getWrappedDriver().quit()
+
+        // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:
         name                                                                | file
+        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+        'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
+        'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
+        'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
         'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
         'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
@@ -104,6 +122,11 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
+        'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
+        'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
+        'SHIBUI-1503: Non-admin can create metadata source'               | '/SHIBUI-1503-1.side'
+        'SHIBUI-1503: User can be deleted'                                | '/SHIBUI-1503-2.side'
+        'SHIBUI-1503: User can be enabled'                                | '/SHIBUI-1503-3.side'
     }
 }
 

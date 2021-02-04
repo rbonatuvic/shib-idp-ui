@@ -8,6 +8,7 @@ import * as fromCollection from './collection.reducer';
 import * as fromWizard from '../../../wizard/reducer';
 
 import { combineAllFn, getEntityIdsFn, getInCollectionFn, doesExistFn } from '../../domain/domain.util';
+import { getConfigurationSectionsFn } from '../../configuration/reducer/utilities';
 
 export interface ResolverState {
     entity: fromEntity.EntityState;
@@ -80,7 +81,10 @@ export const getSelectedResolverId = createSelector(getCollectionState, fromColl
 export const getResolverIds = createSelector(getCollectionState, fromCollection.selectResolverIds);
 
 export const getResolverCollection = createSelector(getCollectionState, getResolverIds, fromCollection.selectAllResolvers);
+export const getResolverEntityIdCollectionFn = (resolvers) => resolvers.map(r => r.entityId);
+export const getResolverEntityIdCollection = createSelector(getResolverCollection, getResolverEntityIdCollectionFn);
 export const getSelectedResolver = createSelector(getResolverEntities, getSelectedResolverId, getInCollectionFn);
+export const getResolversLoading = createSelector(getCollectionState, fromCollection.getResolversLoading);
 
 
 /*
@@ -104,11 +108,15 @@ export const getAllResolvers = createSelector(getDraftCollection, getResolverCol
 export const getAllResolverIds = createSelector(getDraftIds, getResolverIds, combineAllFn);
 
 export const getAllEntityIds = createSelector(getAllResolvers, getEntityIdsFn);
+export const getResolverUniqueValidEntityIdsFn = (ids) => [...new Set(ids.filter(id => !!id))];
+export const getValidEntityIds = createSelector(getResolverEntityIdCollection, getResolverUniqueValidEntityIdsFn);
+
+export const getAllOtherIdsFn = (ids, selected) => ids.filter(id => id !== selected);
 
 export const getAllOtherIds = createSelector(
     getAllResolvers,
     getSelectedResolverId,
-    (ids, selected) => ids.filter(id => id !== selected)
+    getAllOtherIdsFn
 );
 
 export const getDraftModelWithChanges = createSelector(
@@ -124,3 +132,11 @@ export const getDraftModelWithChanges = createSelector(
     })
 );
 
+export const getDraftModelList = createSelector(getDraftModelWithChanges, (model) => [model]);
+
+export const getResolverConfiguration = createSelector(
+    getDraftModelList,
+    fromWizard.getWizardDefinition,
+    fromWizard.getProcessedSchema,
+    getConfigurationSectionsFn
+);

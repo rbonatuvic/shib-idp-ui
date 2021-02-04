@@ -7,15 +7,14 @@
     <div class="d-flex justify-content-center align-items-center">
         <div class="card m-4 w-50">
             <div class="card-body">
-                <h3 class="card-title" translate="message.create-new-version-from-version">
-                    Create New Version from Previous Settings
+                <h3 class="card-title">
+                    <translate-i18n key="message.create-new-version-from-version">Create New Version from Previous Settings</translate-i18n>
                 </h3>
-                <p translate="message.restoring-this-version-will-copy"
-                    [translateParams]="{ 'date': date$ | async }">
-                    Restoring this version will copy the Version ( date ) configuration and create a new Version from the selected version settings. You can then edit the configuration before saving the new version.
+                <p><translate-i18n key="message.restoring-this-version-will-copy" [params]="{ 'date': date$ | async }">
+                    Restoring this version will copy the Version ( date ) configuration and create a new Version from the selected version settings. You can then edit the configuration before saving the new version.</translate-i18n>
                 </p>
-                <button class="btn btn-light" (click)="cancel()" translate="action.cancel">Cancel</button>&nbsp;
-                <button class="btn btn-primary" (click)="restore()" translate="action.restore">Restore</button>
+                <button class="btn btn-light" (click)="cancel()"><translate-i18n key="action.cancel">Cancel</translate-i18n></button>&nbsp;
+                <button class="btn btn-primary" (click)="restore()"><translate-i18n key="action.restore">Restore</translate-i18n></button>
             </div>
         </div>
     </div>

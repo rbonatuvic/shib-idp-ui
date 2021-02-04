@@ -1,6 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository.envers
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.EntitiesVersioningConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
@@ -19,6 +23,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMet
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -48,6 +54,22 @@ class MetadataFilterEnversVersioningTests extends Specification {
 
     @Autowired
     PlatformTransactionManager txMgr
+
+    @Autowired
+    AttributeUtility attributeUtility
+
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
+    ObjectMapper mapper
+    TestObjectGenerator generator
+
+    def setup() {
+        generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
+        mapper = new ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.registerModule(new JavaTimeModule())
+    }
 
 
     def "test versioning of MetadataResolver with EntityRoleWhiteListFilter"() {

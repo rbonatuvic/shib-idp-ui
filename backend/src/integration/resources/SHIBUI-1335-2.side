@@ -302,34 +302,21 @@
       "id": "27c0717e-f477-448b-8091-3bb2f3e6080f",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [],
       "value": "10000"
     }, {
       "id": "20f7b832-ec52-450a-8224-399f0d4de0a0",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
-        ["css=td:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'FilesystemMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "FilesystemMetadataResolver"
-    }, {
-      "id": "7548f260-d328-4b47-97ed-cf6df394b6bc",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Filesystem Metadata Provider",
-      "targets": [
-        ["linkText=Filesystem Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Filesystem Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/5ddf2624-1a30-4709-8873-35bbba4a372f/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Filesystem Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "11d71ffb-3372-41cb-9832-72755ef298b5",
       "comment": "",
@@ -581,6 +568,13 @@
       ],
       "value": ""
     }, {
+      "id": "32c13864-5b11-4316-a27b-fd0042328924",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "094ce013-936c-4479-9c5b-ba26db4d05c9",
       "comment": "",
       "command": "waitForElementVisible",
@@ -599,6 +593,13 @@
       "target": "name=type",
       "targets": [],
       "value": "label=NameIDFormat"
+    }, {
+      "id": "c2598572-19aa-49d9-b336-f486a73e2579",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
     }, {
       "id": "471c00e2-52d8-4cf7-a071-00b50c98bf9e",
       "comment": "",
@@ -620,6 +621,13 @@
       ],
       "value": "Name ID Filter"
     }, {
+      "id": "4cc11ab2-b8e3-4669-ad58-9c8e9664a8de",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "ec49b089-a390-4cff-904f-363d3a57cb76",
       "comment": "",
       "command": "click",
@@ -633,10 +641,17 @@
       ],
       "value": ""
     }, {
+      "id": "7f746a0d-6006-4749-aa61-56b08b48c4fd",
+      "comment": "",
+      "command": "pause",
+      "target": "2000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "56abaabc-0c96-428c-9070-62a79ba90c6c",
       "comment": "",
       "command": "click",
-      "target": "linkText=Entity ID",
+      "target": "css=.show > .dropdown-item:nth-child(1)",
       "targets": [
         ["linkText=Entity ID", "linkText"],
         ["css=.show > .dropdown-item:nth-child(1)", "css:finder"],
@@ -755,21 +770,23 @@
       "id": "d722902b-5c10-45dc-99df-d96f46e78313",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "target": "css=.list-group-item:nth-child(1) span:nth-child(4)",
       "targets": [
-        ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
-        ["xpath=//td[4]", "xpath:position"],
-        ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
+        ["css=.list-group-item:nth-child(1) span:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/span[2]", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "EntityAttributes"
     }, {
       "id": "c8d9bc5a-4b7e-4178-8aba-8b8280506c20",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(1) .fa-arrow-circle-down",
+      "target": "css=.list-group-item:nth-child(1) .btn:nth-child(2)",
       "targets": [
-        ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
-        ["xpath=//button[2]/i", "xpath:position"]
+        ["css=.list-group-item:nth-child(1) .btn:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -783,13 +800,20 @@
       "id": "d7909094-96ce-4532-98b4-446cc013c9c8",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "target": "css=.list-group-item:nth-child(1) span:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
         ["xpath=//td[4]", "xpath:position"],
         ["xpath=//td[contains(.,'NameIDFormat')]", "xpath:innerText"]
       ],
       "value": "NameIDFormat"
+    }, {
+      "id": "d4c36d2c-c90e-45e6-ae49-a46b3c64a629",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

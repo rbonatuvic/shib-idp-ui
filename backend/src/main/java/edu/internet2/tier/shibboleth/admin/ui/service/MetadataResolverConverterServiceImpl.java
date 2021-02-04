@@ -13,6 +13,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import org.apache.lucene.index.IndexWriter;
@@ -21,13 +22,10 @@ import org.opensaml.core.xml.persist.XMLObjectLoadSaveManager;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 
 import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers.placeholderResolverService;
 
@@ -46,8 +44,8 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
 
         OpenSamlFunctionDrivenDynamicHTTPMetadataResolver openSamlResolver = new OpenSamlFunctionDrivenDynamicHTTPMetadataResolver(openSamlObjects.getParserPool(),
-                                                                     indexWriter,
-                                                                     resolver);
+                indexWriter,
+                resolver);
         openSamlResolver.initialize();
         return openSamlResolver;
     }
@@ -68,31 +66,25 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         }
 
         OpenSamlFilesystemMetadataResolver openSamlResolver = new OpenSamlFilesystemMetadataResolver(openSamlObjects.getParserPool(),
-                                                      indexWriter,
-                                                      resolver,
-                                                      metadataFile);
+                indexWriter,
+                resolver,
+                metadataFile);
         openSamlResolver.initialize();
         return openSamlResolver;
     }
 
     private OpenSamlLocalDynamicMetadataResolver convertToOpenSamlRepresentation(LocalDynamicMetadataResolver resolver) throws IOException, ComponentInitializationException {
-        IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
-
-        XMLObjectLoadSaveManager manager = null;
-        if (resolver.getDoInitialization()) {
-            try {
-                manager = new FilesystemLoadSaveManager(placeholderResolverService()
-                        .resolveValueFromPossibleTokenPlaceholder(resolver.getSourceDirectory()));
-            } catch (ConstraintViolationException e) {
-                // the base directory string instance was null or empty
-                //TODO: What should we do here? Currently, this causes a test to fail.
-                throw new RuntimeException("An exception occurred while attempting to instantiate a FilesystemLoadSaveManger for the path: " + resolver.getSourceDirectory(), e);
-            }
+        try {
+            IndexWriter indexWriter = indexWriterService.getIndexWriter(resolver.getResourceId());
+            XMLObjectLoadSaveManager manager = new FilesystemLoadSaveManager(new AlwaysExistingVirtualMetadataDirectory(placeholderResolverService()
+                    .resolveValueFromPossibleTokenPlaceholder(resolver.getSourceDirectory())));
+            OpenSamlLocalDynamicMetadataResolver openSamlResolver = new OpenSamlLocalDynamicMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver, manager);
+            openSamlResolver.initialize();
+            return openSamlResolver;
+        } catch (ConstraintViolationException e) {
+            // the base directory string instance was null or empty
+            throw new RuntimeException("An exception occurred while attempting to instantiate a FilesystemLoadSaveManger for the path: " + resolver.getSourceDirectory(), e);
         }
-
-        OpenSamlLocalDynamicMetadataResolver openSamlResolver = new OpenSamlLocalDynamicMetadataResolver(openSamlObjects.getParserPool(), indexWriter, resolver, manager);
-        openSamlResolver.initialize();
-        return openSamlResolver;
     }
 
     private OpenSamlResourceBackedMetadataResolver convertToOpenSamlRepresentation(ResourceBackedMetadataResolver resolver) throws IOException, ComponentInitializationException {
@@ -112,9 +104,9 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
         }
 
         OpenSamlResourceBackedMetadataResolver openSamlResolver = new OpenSamlResourceBackedMetadataResolver(openSamlObjects.getParserPool(),
-                                                          indexWriter,
-                                                          resolver,
-                                                          resource);
+                indexWriter,
+                resolver,
+                resource);
         openSamlResolver.initialize();
         return openSamlResolver;
     }
@@ -134,6 +126,29 @@ public class MetadataResolverConverterServiceImpl implements MetadataResolverCon
                 return convertToOpenSamlRepresentation((ResourceBackedMetadataResolver) resolver);
             default:
                 throw new RuntimeException("Unsupported metadata resolver type!");
+        }
+    }
+
+    /**
+     * Use this class when creating FilesystemLoadSaveManager for OpenSamlLocalDynamicMetadataResolver
+     * as we guard the system from any file-related exceptions during init of open saml object representation.
+     * File with the same name might exist and we don't force the
+     * system to create a directory in this case. Shibboleth Idp would take care of these directory-creating aspects
+     * instead.
+     */
+    private static class AlwaysExistingVirtualMetadataDirectory extends File {
+        public AlwaysExistingVirtualMetadataDirectory(String pathname) {
+            super(pathname);
+        }
+
+        @Override
+        public boolean exists() {
+            return true;
+        }
+
+        @Override
+        public boolean isDirectory() {
+            return true;
         }
     }
 }

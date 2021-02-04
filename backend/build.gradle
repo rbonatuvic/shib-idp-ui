@@ -26,7 +26,7 @@ repositories {
 configurations.all {
     resolutionStrategy {
         force 'org.cryptacular:cryptacular:1.1.3'
-        
+
         eachDependency { details ->
             if (details.requested.group == 'org.seleniumhq.selenium' && details.requested.name != 'htmlunit-driver') {
                 details.useVersion '3.141.59'
@@ -38,7 +38,7 @@ configurations.all {
 configurations {
     integrationTestCompile {
         extendsFrom compile
-        
+
     }
     integrationTestRuntime {
         extendsFrom runtime
@@ -96,27 +96,12 @@ bootWar {
         )
     }
     from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        // into '/'
-        into '/public'
+        //Copying into this particular classpath location due too
+        //deployment to external Tomcat would not work with /public location
+        //This way, it works with both embedded and external Tomcat
+        into 'WEB-INF/classes/resources'
     }
     archiveName = "${baseName}-${version}.war"
-}
-
-bootJar.dependsOn ':ui:npm_run_buildProd'
-bootJar.baseName = 'shibui'
-bootJar {
-    manifest {
-        attributes(
-                "Manifest-Version" : "1.0",
-                "Implementation-Version" : "${project.version}",
-                'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
-        )
-    }
-    from(tasks.findByPath(':ui:npm_run_buildProd').outputs) {
-        // into '/'
-        into '/public'
-    }
-    archiveName = "${baseName}-${version}.jar"
 }
 
 springBoot {
@@ -174,10 +159,10 @@ dependencies {
     // runtime libraries for later java versions
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
 
-    // TODO: these will likely only be runtimeOnly or test scope, unless we want to ship the libraries with the final product
     compile "com.h2database:h2"
     runtimeOnly "org.postgresql:postgresql"
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.2.0'
+    runtimeOnly 'mysql:mysql-connector-java:5.1.48'
 
     //Swagger
     compile 'io.springfox:springfox-swagger2:2.9.2'
@@ -195,7 +180,7 @@ dependencies {
     //JSON schema generator
     testCompile 'com.kjetland:mbknor-jackson-jsonschema_2.12:1.0.29'
     testCompile 'javax.validation:validation-api:2.0.1.Final'
-    
+
     //JSON schema validator
     compile 'org.sharegov:mjson:1.4.1'
 
@@ -208,7 +193,7 @@ dependencies {
     integrationTestCompile "org.springframework.security:spring-security-test"
     integrationTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
     integrationTestCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
-    
+
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
 
@@ -216,6 +201,12 @@ dependencies {
 
     // Envers for persistent entities versioning
     compile 'org.hibernate:hibernate-envers'
+
+    //Pacj4 sub-project
+    runtimeOnly project(':pac4j-module')
+
+    //Beacon
+    runtimeOnly project(':beacon:spring')
 
     enversTestCompile sourceSets.main.output
     enversTestCompile sourceSets.test.output
@@ -342,15 +333,15 @@ jacocoTestReport {
     }
 }
 
-tasks.docker.dependsOn tasks.bootJar
+tasks.docker.dependsOn tasks.bootWar
 docker {
     name 'unicon/shibui'
     tags 'latest'
     pull true
     noCache true
-    files tasks.bootJar.outputs
+    files tasks.bootWar.outputs
     files 'src/main/docker-files/loader.properties'
-    buildArgs(['JAR_FILE': "shibui-${version}.jar"])
+    buildArgs(['JAR_FILE': "shibui-${version}.war"])
 }
 
 tasks.dockerRun.dependsOn tasks.docker

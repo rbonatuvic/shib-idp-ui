@@ -1,16 +1,19 @@
 <nav class="navbar navbar-expand-md fixed-top">
     <a class="navbar-brand" [href]="brand.logo.link.url" target="_blank" [title]="brand.logo.link.description | translate">
         <img [src]="brand.logo.small" width="30" height="30" class="d-inline-block align-top" [alt]="brand.logo.alt">
-        <span class="d-lg-inline d-none" [translate]="brand.logo.link.label">{{ brand.logo.link.label }}</span>
+        <span class="d-lg-inline d-none"><translate-i18n [key]="brand.logo.link.label"></translate-i18n></span>
     </a>
-    <span class="navbar-text" [translate]="brand.header.title">{{ brand.header.title }}</span>
+    <span class="navbar-text"><translate-i18n [key]="brand.header.title"></translate-i18n></span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav ml-auto">
-            <li class="dropdown d-flex align-items-center" ngbDropdown placement="bottom-right" #dropdown="ngbDropdown">
+            <li class="dropdown d-flex align-items-center"
+                ngbDropdown
+                placement="bottom-right"
+                #dropdown="ngbDropdown">
                 <button
                     class="btn btn-outline-primary btn-sm"
                     id="addNewDropdown"
@@ -22,9 +25,9 @@
                 </button>
                 <div ngbDropdownMenu aria-labelledby="addNewDropdown">
                     <ng-container *ngFor="let action of nav$ | async">
-                        <a  href=""
+                        <a href=""
                             class="nav-link"
-                            (click)="action.action($event)"
+                            (click)="action.action($event); dropdown.close()"
                             [attr.aria-label]="action.label | translate"
                             role="button">
                             <ng-container *ngIf="action.icon">
@@ -52,6 +55,7 @@
     </div>
 </nav>
 <main class="pad-content">
+    <page-title class="sr-only sr-only-focusable"></page-title>
     <router-outlet></router-outlet>
     <notification-list></notification-list>
 </main>
@@ -60,10 +64,10 @@
         <div class="col-md-6 copyright">
             <div class="d-flex flex-column align-items-start justify-content-between p-2">
                 <ul class="list-inline">
-                    <li class="list-inline-item" [translate]="brand.footer.text">{{ brand.footer.text }}</li>
+                    <li class="list-inline-item"><translate-i18n [key]="brand.footer.text"></translate-i18n></li>
                     <li class="list-inline-item" *ngFor="let link of brand.footer.links; let i = index;">
-                        <a [href]="link.url" target="_blank" [attr.aria-label]="link.description" [title]="link.description">
-                            <translate-i18n [key]="link.label">{{ link.label }}</translate-i18n>
+                        <a [href]="link.url" target="_blank" [attr.aria-label]="link.description | translate" [title]="link.description">
+                            <translate-i18n [key]="link.label"></translate-i18n>
                         </a>
                     </li>
                 </ul>
@@ -80,11 +84,11 @@
             <div class="d-flex align-items-end justify-content-end p-2">
                 <translate-i18n key="brand.in-partnership-with" class="flex-item mr-2">In partnership with</translate-i18n>&nbsp;
                 <a href="https://www.unicon.net" target="_blank" title="Unicon" class="flex-item">
-                    <img src="/assets/logo_unicon.png" class="img-fluid float-right" alt="Unicon Logo">
+                    <img src="assets/logo_unicon.png" class="img-fluid float-right" alt="Unicon Logo">
                 </a>
                 &nbsp;<translate-i18n key="brand.and" class="flex-item mx-2">and</translate-i18n>&nbsp;
                 <a href="https://www.internet2.edu/" target="_blank" title="Internet 2" class="flex-item">
-                    <img src="/assets/logo_internet2.png" class="img-fluid float-right" alt="Internet 2 Logo">
+                    <img src="assets/logo_internet2.png" class="img-fluid float-right" alt="Internet 2 Logo">
                 </a>
             </div>
         </div>

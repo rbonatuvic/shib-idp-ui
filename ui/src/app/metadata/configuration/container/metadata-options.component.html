@@ -1,6 +1,6 @@
 <h2 class="mb-4" [ngSwitch]="type$ | async">
-    <ng-container *ngSwitchCase="'resolver'" translate="label.source">Source</ng-container>
-    <ng-container *ngSwitchDefault translate="label.provider">Provider</ng-container>
+    <ng-container *ngSwitchCase="'resolver'"><translate-i18n key="label.source">Source</translate-i18n></ng-container>
+    <ng-container *ngSwitchDefault><translate-i18n key="label.provider">Provider</translate-i18n></ng-container>
     Configuration
 </h2>
 <div class="container" id="header">
@@ -20,19 +20,25 @@
                 <translate-i18n key="label.filters">Filters</translate-i18n>
             </button>
         </div>
-        <div class="btn-group" *ngIf="hasXml$ | async">
-            <a class="btn"
-                routerLink="../options"
-                routerLinkActive="btn-primary"
-                translate="action.options">Options</a>
-            <a class="btn"
-                routerLink="../xml"
-                routerLinkActive="btn-primary"
-                translate="action.xml">XML</a>
+        <div *ngIf="hasXml$ | async">
+            <div class="btn-group" role="group" aria-label="Options selected">
+                <a class="btn" routerLink="../options" routerLinkActive="btn-primary" aria-pressed="true">
+                    <span class="sr-only"><translate-i18n key="action.toggle-view">Toggle view:</translate-i18n></span>
+                    Options
+                </a>
+                <a class="btn" routerLink="../xml" routerLinkActive="btn-primary">
+                    <span class="sr-only"><translate-i18n key="action.toggle-view">Toggle view:</translate-i18n></span>
+                    XML
+                </a>
+            </div>
         </div>
     </div>
     <ng-container *ngIf="configuration$ | async">
-        <metadata-configuration [configuration]="configuration$ | async" id="configuration"></metadata-configuration>
+        <metadata-configuration
+            [configuration]="configuration$ | async"
+            (onEdit)="edit($event)"
+            id="configuration">
+        </metadata-configuration>
     </ng-container>
     <ng-container *ngIf="!(configuration$ | async)">
         <div class="d-flex justify-content-center">
@@ -40,24 +46,27 @@
             <span class="sr-only">Loading...</span>
         </div>
     </ng-container>
-    <div *ngIf="kind === 'provider'" id="filters">
-        <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
-            <h2 class="title h4 m-0 ml-2 flex-grow-1">
-                <span class="text" translate="label.filters">Filters</span>
-            </h2>
-            <div class="actions px-2">
-                <a class="btn btn-link edit-link change-view"
-                    [routerLink]="['/', 'metadata', 'provider', id, 'filter', 'new']">
-                    <i class="fa fa-gear"></i>&nbsp;
-                    <span translate="action.add-filter">Add Filter</span>
-                </a>
+    <div id="filters">
+        <ng-container *ngIf="kind === 'provider'">
+            <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
+                <h2 class="title h4 m-0 ml-2 flex-grow-1">
+                    <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
+                    <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
+                </h2>
+                <div class="actions px-2">
+                    <a class="btn btn-link edit-link change-view"
+                        [routerLink]="['/', 'metadata', 'provider', id, 'filter', 'new']">
+                        <i class="fa fa-gear"></i>&nbsp;
+                        <translate-i18n key="action.add-filter">Add Filter</translate-i18n>
+                    </a>
+                </div>
             </div>
-        </div>
-        <filter-configuration-list
-            (onUpdateOrderDown)="updateOrderDown($event)"
-            (onUpdateOrderUp)="updateOrderUp($event)"
-            (onRemove)="removeFilter($event)"
-            [filters]="filters$ | async"></filter-configuration-list>
+            <filter-configuration-list
+                (onUpdateOrderDown)="updateOrderDown($event)"
+                (onUpdateOrderUp)="updateOrderUp($event)"
+                (onRemove)="removeFilter($event)"
+                [filters]="filters$ | async"></filter-configuration-list>
+        </ng-container>
     </div>
     <button class="btn btn-link" (click)="onScrollTo('header')">
         <i class="fa fa-chevron-up sr-hidden"></i>&nbsp;

@@ -1,33 +1,38 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { MetadataConfiguration } from '../model/metadata-configuration';
 import { Metadata } from '../../domain/domain.type';
 import { CONFIG_DATE_FORMAT } from '../configuration.values';
 
 @Component({
     selector: 'metadata-configuration',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './metadata-configuration.component.html',
     styleUrls: ['./metadata-configuration.component.scss']
 })
-export class MetadataConfigurationComponent {
+export class MetadataConfigurationComponent implements OnChanges {
     @Input() configuration: MetadataConfiguration;
     @Input() definition: any;
     @Input() entity: Metadata;
     @Input() numbered = true;
-    @Input() editable = true;
 
     @Output() preview: EventEmitter<any> = new EventEmitter();
+    @Output() onEdit: EventEmitter<string> = new EventEmitter();
+
+    zero = false;
 
     DATE_FORMAT = CONFIG_DATE_FORMAT;
 
-    constructor(
-        private router: Router,
-        private activatedRoute: ActivatedRoute
-    ) {}
+    ngOnChanges(): void {
+        if (this.configuration) {
+            this.zero = !this.configuration.sections.some(s => !!s.properties.length);
+        }
+    }
+
+    get editable(): boolean {
+        return !!this.onEdit.observers.length;
+    }
 
     edit(id: string): void {
-        this.router.navigate(['../', 'edit', id], { relativeTo: this.activatedRoute.parent });
+        this.onEdit.emit(id);
     }
 
     onPreview($event): void {

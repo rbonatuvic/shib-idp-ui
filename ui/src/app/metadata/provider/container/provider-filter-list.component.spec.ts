@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +19,7 @@ import { FilterListComponentStub } from '../../../../testing/filter-list.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderFilterListComponent)
+    @ViewChild(ProviderFilterListComponent, {static: true})
     public componentUnderTest: ProviderFilterListComponent;
 }
 
@@ -30,7 +30,7 @@ describe('Provider Filter List Component', () => {
     let app: ProviderFilterListComponent;
     let store: Store<fromRoot.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -63,7 +63,7 @@ describe('Provider Filter List Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 

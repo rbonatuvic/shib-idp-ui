@@ -1,5 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
+import { TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

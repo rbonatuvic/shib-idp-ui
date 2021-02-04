@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -99,5 +100,15 @@ public class MetadataResolver extends AbstractAuditable {
 
     public void markAsModified() {
         this.versionModifiedTimestamp = System.currentTimeMillis();
+    }
+
+    public void entityAttributesFilterIntoTransientRepresentation() {
+        //expose explicit API to call to convert into transient representation
+        //used in unit/integration tests where JPA's @PostLoad callback execution engine is not available
+        this.metadataFilters
+                .stream()
+                .filter(EntityAttributesFilter.class::isInstance)
+                .map(EntityAttributesFilter.class::cast)
+                .forEach(EntityAttributesFilter::intoTransientRepresentation);
     }
 }

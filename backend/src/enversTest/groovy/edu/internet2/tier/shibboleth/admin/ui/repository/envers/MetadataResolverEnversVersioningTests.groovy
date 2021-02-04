@@ -54,7 +54,7 @@ class MetadataResolverEnversVersioningTests extends Specification {
 
         when:
         LocalDynamicMetadataResolver resolver = new LocalDynamicMetadataResolver(name: 'ldmr').with {
-            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes()
+            it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes(refreshDelayFactor: 0.75)
             it
         }
         def resolverHistory = updateAndGetRevisionHistoryOfMetadataResolver(resolver,

@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
     `
 })
 class TestHostComponent {
-    @ViewChild(RestoreComponent)
+    @ViewChild(RestoreComponent, {static: true})
     public componentUnderTest: RestoreComponent;
 }
 
@@ -31,7 +31,7 @@ describe('Metadata Restore Page Component', () => {
     let store: Store<fromConfiguration.State>;
     let router: Router;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -63,7 +63,7 @@ describe('Metadata Restore Page Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should load metadata objects', async(() => {
+    it('should load metadata objects', waitForAsync(() => {
         expect(app).toBeTruthy();
         expect(store.select).toHaveBeenCalledTimes(2);
         expect(store.dispatch).not.toHaveBeenCalled();

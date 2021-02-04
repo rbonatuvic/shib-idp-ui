@@ -42,6 +42,7 @@ import { Notification, NotificationType } from '../../../notification/model/noti
 import { WizardActionTypes, SetDisabled } from '../../../wizard/action/wizard.action';
 import { I18nService } from '../../../i18n/service/i18n.service';
 import * as fromI18n from '../../../i18n/reducer';
+import { ClearEditor } from '../action/editor.action';
 
 
 /* istanbul ignore next */
@@ -57,7 +58,7 @@ export class CollectionEffects {
             this.providerService.find(current.resourceId).pipe(
                 map(data => new ShowContentionAction(this.contentionService.getContention(current, changes, data, {
                     resolve: (obj) => this.store.dispatch(new UpdateProviderRequest(<MetadataProvider>{ ...obj })),
-                    reject: (obj) => this.store.dispatch(new ResetChanges())
+                    reject: (obj) => this.gotoConfiguration(current)
                 })))
             )
         )
@@ -136,7 +137,7 @@ export class CollectionEffects {
     createProviderSuccessRedirect$ = this.actions$.pipe(
         ofType<AddProviderSuccess>(ProviderCollectionActionTypes.ADD_PROVIDER_SUCCESS),
         map(action => action.payload),
-        tap(provider => this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']))
+        tap(provider => this.navigateToProvider(provider.resourceId))
     );
 
     @Effect()
@@ -149,7 +150,7 @@ export class CollectionEffects {
             this.providerService
                 .update(provider)
                 .pipe(
-                    map(p => new UpdateProviderSuccess({id: p.id, changes: p})),
+                    map(p => new UpdateProviderSuccess({id: p.resourceId, changes: p})),
                     catchError((e) => e.status === 409 ? of(new UpdateProviderConflict(provider)) : of(new UpdateProviderFail(e.error)))
                 )
         )
@@ -168,7 +169,7 @@ export class CollectionEffects {
         map(action => action.payload),
         tap(provider => {
             this.store.dispatch(new ClearProvider());
-            this.router.navigate(['dashboard', 'metadata', 'manager', 'providers']);
+            this.navigateToProvider(provider.id);
         })
     );
 
@@ -235,7 +236,6 @@ export class CollectionEffects {
         withLatestFrom(this.store.select(fromProvider.getProviderOrder)),
         map(([id, order]) => {
             const index = order.indexOf(id);
-            console.log(id, order);
             if (index > 0) {
                 const newOrder = array_move(order, index, index - 1);
                 return new SetOrderProviderRequest(newOrder);
@@ -269,4 +269,14 @@ export class CollectionEffects {
         private contentionService: ContentionService,
         private i18nService: I18nService
     ) { }
+
+    navigateToProvider(id) {
+        this.router.navigate(['/', 'metadata', 'provider', id, 'configuration', 'options']);
+    }
+
+    gotoConfiguration(provider) {
+        this.store.dispatch(new ClearProvider());
+        this.store.dispatch(new ClearEditor());
+        this.navigateToProvider(provider.resourceId);
+    }
 }

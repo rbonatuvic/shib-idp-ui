@@ -9,7 +9,6 @@ import { NgbDropdownModule, NgbPopoverModule, NgbModalModule } from '@ng-bootstr
 
 import { NewResolverComponent } from './container/new-resolver.component';
 import { UploadResolverComponent } from './container/upload-resolver.component';
-import { BlankResolverComponent } from './container/blank-resolver.component';
 import { CopyResolverComponent } from './container/copy-resolver.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SearchIdEffects } from './effect/search.effect';
@@ -36,12 +35,12 @@ import { MetadataSourceEditor } from '../domain/model/wizards/metadata-source-ed
 import { FinishFormComponent } from './component/finish-form.component';
 import { ProviderFormFragmentComponent } from './component/provider-form-fragment.component';
 import { MetadataResolverPageComponent } from './resolver.component';
+import { MetadataConfigurationModule } from '../configuration/configuration.module';
 
 @NgModule({
     declarations: [
         NewResolverComponent,
         UploadResolverComponent,
-        BlankResolverComponent,
         CopyResolverComponent,
         ConfirmCopyComponent,
         ResolverEditComponent,
@@ -67,13 +66,14 @@ import { MetadataResolverPageComponent } from './resolver.component';
         WizardModule,
         FormModule,
         NgbPopoverModule,
-        NgbModalModule
+        NgbModalModule,
+        MetadataConfigurationModule
     ],
     exports: [],
     providers: []
 })
 export class ResolverModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootResolverModule> {
         return {
             ngModule: RootResolverModule,
             providers: [

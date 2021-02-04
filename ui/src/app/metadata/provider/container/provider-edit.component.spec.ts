@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { TestBed, async, ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NgbDropdownModule, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +24,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderEditComponent)
+    @ViewChild(ProviderEditComponent, {static: true})
     public componentUnderTest: ProviderEditComponent;
 }
 
@@ -42,7 +42,7 @@ describe('Provider Edit Component', () => {
     activatedRoute.firstChild = child;
 
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -92,7 +92,7 @@ describe('Provider Edit Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 
@@ -104,10 +104,10 @@ describe('Provider Edit Component', () => {
     });
 
     describe('cancel method', () => {
-        it('should route to the metadata manager', () => {
+        it('should route to the provider', () => {
             spyOn(router, 'navigate');
             spyOn(app, 'clear');
-            app.cancel();
+            app.cancel('foo');
             expect(router.navigate).toHaveBeenCalled();
             expect(app.clear).toHaveBeenCalled();
         });

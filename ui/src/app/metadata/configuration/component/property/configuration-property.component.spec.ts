@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,7 @@ import { ConfigurationPropertyComponent } from './configuration-property.compone
     `
 })
 class TestHostComponent {
-    @ViewChild(ConfigurationPropertyComponent)
+    @ViewChild(ConfigurationPropertyComponent, {static: true})
     public componentUnderTest: ConfigurationPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.name, {
@@ -31,7 +31,7 @@ describe('Configuration Property Component', () => {
     let instance: TestHostComponent;
     let app: ConfigurationPropertyComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbPopoverModule,
@@ -50,7 +50,7 @@ describe('Configuration Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should accept a property input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 

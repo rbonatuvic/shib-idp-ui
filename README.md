@@ -1,8 +1,6 @@
 # shibui
 
-For more information, see `docs`
-
-## Requirements
+## Requirements_
 
 * Java 8 (note that ONLY Java 8 is supported at this time; other later versions might work)
 
@@ -39,7 +37,7 @@ For complete information on overriding default configuration, see [https://docs.
 
 ### Deploying as a WAR
 
-The application can be deployed as a WAR file in a Java Servlet 3.0 container. Currently, the application must be run in the root context.
+The application can be deployed as a WAR file in a Java Servlet 3.0 container.
 
 To override default configuration, see [https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html].
 The easiest way to do this in a servlet container is through the use of system properties

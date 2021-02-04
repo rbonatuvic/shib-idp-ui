@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import { of } from 'rxjs';
     `
 })
 class TestHostComponent {
-    @ViewChild(ArrayPropertyComponent)
+    @ViewChild(ArrayPropertyComponent, {static: true})
     public componentUnderTest: ArrayPropertyComponent;
 
     property: Property = getStepProperty(SCHEMA.properties.list, [{
@@ -40,7 +40,7 @@ describe('Array Property Component', () => {
     let app: ArrayPropertyComponent;
     let service: AttributesService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbPopoverModule,
@@ -63,7 +63,7 @@ describe('Array Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should accept a property input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 

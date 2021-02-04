@@ -1,8 +1,8 @@
 import { Component, ViewChild, Input } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { Property } from '../../../domain/model/property';
 import { MockI18nModule } from '../../../../../testing/i18n.stub';
 import { PrimitivePropertyComponent } from './primitive-property.component';
@@ -13,7 +13,7 @@ import { PrimitivePropertyComponent } from './primitive-property.component';
     `
 })
 class TestHostComponent {
-    @ViewChild(PrimitivePropertyComponent)
+    @ViewChild(PrimitivePropertyComponent, {static: true})
     public componentUnderTest: PrimitivePropertyComponent;
 
     property: Property = {
@@ -35,10 +35,11 @@ describe('Primitive Property Component', () => {
     let instance: TestHostComponent;
     let app: PrimitivePropertyComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
+                NgbPopoverModule,
                 MockI18nModule,
                 RouterTestingModule
             ],
@@ -54,7 +55,7 @@ describe('Primitive Property Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should accept a property input', async(() => {
+    it('should accept a property input', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

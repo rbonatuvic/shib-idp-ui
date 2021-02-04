@@ -26,6 +26,8 @@ import spock.lang.Specification
 
 import javax.persistence.EntityManager
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT
+
 /**
  * Testing persistence of the MetadataResolver models
  */
@@ -200,7 +202,31 @@ class MetadataResolverRepositoryTests extends Specification {
         basicPersistenceOfResolverIsCorrectFor { it instanceof LocalDynamicMetadataResolver }
     }
 
+    def "persisting entity attributes filter target with script of 760 max chars, as defied in DB schema mapping"() {
+        given:
+        def mdr = new MetadataResolver().with {
+            it.name = "SHIBUI-1588"
+            it
+        }
+        def filter = new EntityAttributesFilter().with {
+            it.name = 'SHIBUI-1588'
+            it.resourceId = 'SHIBUI-1588'
+            it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
+                it.entityAttributesFilterTargetType = CONDITION_SCRIPT
+                it.singleValue = '/*' + ('X' * 756) + '*/'
+                it
+            }
+            it
+        }
+        mdr.addFilter(filter)
 
+        when:
+        metadataResolverRepository.save(mdr)
+        entityManager.flush()
+
+        then:
+        noExceptionThrown()
+    }
 
     private void basicPersistenceOfResolverIsCorrectFor(Closure resolverTypeCheck) {
         assert metadataResolverRepository.findAll().size() > 0
@@ -229,5 +255,4 @@ class MetadataResolverRepositoryTests extends Specification {
         }
         resolver
     }
-
 }

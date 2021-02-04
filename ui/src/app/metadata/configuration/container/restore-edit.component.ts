@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
     ConfigurationState,
@@ -36,9 +36,7 @@ export class RestoreEditComponent {
 
     constructor(
         private store: Store<ConfigurationState>
-    ) {
-        // this.status$.subscribe(console.log);
-    }
+    ) {}
 
     save() {
         this.store.dispatch(new RestoreVersionRequest());

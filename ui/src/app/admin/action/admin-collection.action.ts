@@ -3,9 +3,6 @@ import { Update } from '@ngrx/entity';
 import { Admin } from '../model/admin';
 
 export enum AdminCollectionActionTypes {
-    SELECT_ADMIN_REQUEST = '[Admin Collection] Select Admin Request',
-    SELECT_ADMIN_SUCCESS = '[Admin Collection] Select Admin Success',
-    SELECT_ADMIN_FAIL = '[Admin Collection] Select Admin Fail',
 
     UPDATE_ADMIN_REQUEST = '[Admin Collection] Update Admin Request',
     UPDATE_ADMIN_SUCCESS = '[Admin Collection] Update Admin Success',
@@ -25,24 +22,6 @@ export enum AdminCollectionActionTypes {
 
     CLEAR_ADMINS = '[Admin Collection] Clear Admins'
 
-}
-
-export class SelectAdmin implements Action {
-    readonly type = AdminCollectionActionTypes.SELECT_ADMIN_REQUEST;
-
-    constructor(public payload: string) { }
-}
-
-export class SelectAdminSuccess implements Action {
-    readonly type = AdminCollectionActionTypes.SELECT_ADMIN_SUCCESS;
-
-    constructor(public payload: Admin) { }
-}
-
-export class SelectAdminFail implements Action {
-    readonly type = AdminCollectionActionTypes.SELECT_ADMIN_FAIL;
-
-    constructor(public payload: Error) { }
 }
 
 export class LoadAdminRequest implements Action {
@@ -132,9 +111,6 @@ export type AdminCollectionActionsUnion =
     | RemoveAdminRequest
     | RemoveAdminSuccess
     | RemoveAdminFail
-    | SelectAdmin
-    | SelectAdminSuccess
-    | SelectAdminFail
     | UpdateAdminRequest
     | UpdateAdminSuccess
     | UpdateAdminFail

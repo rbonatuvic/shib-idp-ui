@@ -3,13 +3,14 @@ import { Observable, of } from 'rxjs';
 import { Admin } from '../model/admin';
 import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { AdminEntity } from '../model/admin-entity';
+
+import API_BASE_PATH from '../../app.constant';
 
 @Injectable()
 export class AdminService {
 
     private endpoint = '/admin/users';
-    private base = '/api';
+    private base = API_BASE_PATH;
 
     constructor(
         private http: HttpClient
@@ -17,16 +18,12 @@ export class AdminService {
     query(): Observable<Admin[]> {
         return this.http.get<Admin[]>(
             `${this.base}${this.endpoint}`, {}
-        ).pipe(
-            map(users => users.map(u => new AdminEntity(u)))
         );
     }
 
     queryByRole(role: string): Observable<Admin[]> {
         return this.http.get<Admin[]>(
             `${this.base}${this.endpoint}/role/${role}`, {}
-        ).pipe(
-            map(users => users.map(u => new AdminEntity(u)))
         );
     }
 

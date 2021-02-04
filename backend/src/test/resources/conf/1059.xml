@@ -12,6 +12,6 @@
                       initializeFromPersistentCacheInBackground="true"
                       removeIdleEntityData="true"
                       sourceDirectory="/tmp"
-                      xsi:type="DynamicHttpMetadataProvider">
+                      xsi:type="LocalDynamicMetadataProvider">
     </MetadataProvider>
 </MetadataProvider>

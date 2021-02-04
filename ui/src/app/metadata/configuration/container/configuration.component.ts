@@ -25,7 +25,6 @@ export class ConfigurationComponent implements OnDestroy {
         private store: Store<fromConfiguration.ConfigurationState>,
         private routerState: ActivatedRoute
     ) {
-
         this.routerState.params.pipe(
             takeUntil(this.ngUnsubscribe),
             map(({ id, type, version }) => new SetMetadata({

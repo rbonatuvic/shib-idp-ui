@@ -4,7 +4,6 @@
         "name",
         "@type",
         "xmlId",
-        "metadataURL",
         "metadataRequestURLConstructionScheme"
     ],
     "properties": {
@@ -147,14 +146,15 @@
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
-                    "type": "string",
+                    "type": "number",
                     "widget": {
-                        "id": "string",
-                        "help": "message.real-number"
+                        "id": "float",
+                        "help": "message.real-number",
+                        "step": 0.01
                     },
                     "placeholder": "label.real-number",
-                    "default": "",
-                    "pattern": "^(?:([0]*(\\.[0-9]+)?|[0]*\\.[0-9]*[1-9][0-9]*)|)$"
+                    "minimum": 0.001,
+                    "maximum": 0.999
                 },
                 "minCacheDuration": {
                     "title": "label.min-cache-duration",
@@ -576,11 +576,14 @@
             }
         },
         "metadataFilters": {
+            "$id": "metadataFilters",
             "title": "",
             "description": "",
-            "type": "object",
-            "properties": {
-                "RequiredValidUntil": {
+            "type": "array",
+            "additionalItems": true,
+            "items": [
+                {
+                    "$id": "RequiredValidUntil",
                     "title": "label.required-valid-until",
                     "type": "object",
                     "widget": {
@@ -611,7 +614,8 @@
                         }
                     }
                 },
-                "SignatureValidation": {
+                {
+                    "$id": "SignatureValidation",
                     "title": "label.signature-validation-filter",
                     "type": "object",
                     "widget": {
@@ -654,7 +658,8 @@
                         }
                     ]
                 },
-                "EntityRoleWhiteList": {
+                {
+                    "$id": "EntityRoleWhiteList",
                     "title": "label.entity-role-whitelist",
                     "type": "object",
                     "widget": {
@@ -700,7 +705,7 @@
                         }
                     }
                 }
-            }
+            ]
         }
     }
 }

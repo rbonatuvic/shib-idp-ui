@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class NavigatorService {
     constructor() {}
 
-    get native(): any {
+    get native(): Navigator {
         return window.navigator;
     }
-} /* istanbul ignore next */
+}

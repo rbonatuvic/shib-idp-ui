@@ -4,12 +4,7 @@ import { Wizard, WizardStep } from '../model';
 import * as fromWizard from '../reducer';
 import { Observable } from 'rxjs';
 import { withLatestFrom, map } from 'rxjs/operators';
-
-export enum ICONS {
-    CHECK = 'CHECK',
-    INDEX = 'INDEX'
-}
-
+import { WizardService } from '../service/wizard.service';
 
 /*tslint:disable:component-selector */
 @Component({
@@ -38,10 +33,11 @@ export class WizardComponent {
 
     currentIcon$: Observable<string>;
 
-    icons = ICONS;
+    icons = this.service.icons;
 
     constructor(
-        private store: Store<fromWizard.WizardState>
+        private store: Store<fromWizard.WizardState>,
+        private service: WizardService
     ) {
         this.index$ = this.store.select(fromWizard.getWizardIndex);
         this.definition$ = this.store.select(fromWizard.getWizardDefinition);
@@ -53,11 +49,7 @@ export class WizardComponent {
 
         this.currentIcon$ = this.current$.pipe(
             withLatestFrom(this.last$),
-            map(([current, last]) => this.getIcon(current, last))
+            map(([current, last]) => this.service.getIcon(current, last))
         );
-    }
-
-    getIcon(current, last): string {
-        return (last && current.index === last.index) ? ICONS.CHECK : ICONS.INDEX;
     }
 }

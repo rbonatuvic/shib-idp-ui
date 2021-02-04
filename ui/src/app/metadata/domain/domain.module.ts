@@ -1,5 +1,4 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { EffectsModule } from '@ngrx/effects';
 import { CommonModule } from '@angular/common';
 import { NgbPopoverModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +15,6 @@ import { PreviewDialogComponent } from './component/preview-dialog.component';
 import { MetadataFilterService } from './service/filter.service';
 import { AttributesService } from './service/attributes.service';
 import { I18nModule } from '../../i18n/i18n.module';
-import { WizardSummaryComponent } from './component/wizard-summary.component';
 import { SummaryPropertyComponent } from './component/summary-property.component';
 
 import { UnsavedEntityComponent } from './component/unsaved-entity.dialog';
@@ -26,7 +24,6 @@ import { SharedModule } from '../../shared/shared.module';
 
 export const COMPONENTS = [
     PreviewDialogComponent,
-    WizardSummaryComponent,
     UnsavedEntityComponent,
     SummaryPropertyComponent,
     EditorNavComponent
@@ -40,7 +37,6 @@ export const DECLARATIONS = [
     declarations: DECLARATIONS,
     entryComponents: COMPONENTS,
     imports: [
-        HttpModule,
         CommonModule,
         I18nModule,
         NgbPopoverModule,
@@ -52,7 +48,7 @@ export const DECLARATIONS = [
     providers: []
 })
 export class DomainModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootDomainModule> {
         return {
             ngModule: RootDomainModule,
             providers: [

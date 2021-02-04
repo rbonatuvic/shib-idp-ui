@@ -3,25 +3,22 @@
         <li class="nav-item">
             <a class="nav-link"
                 [routerLink]="['./', 'metadata', 'manager', 'resolvers']"
-                routerLinkActive="active"
-                translate="label.metadata-sources">
-                Metadata Sources
+                routerLinkActive="active">
+                <translate-i18n key="label.metadata-sources">Metadata Sources</translate-i18n>
             </a>
         </li>
         <li class="nav-item" *ngIf="isAdmin$ | async">
             <a class="nav-link"
                 [routerLink]="['./', 'metadata', 'manager', 'providers']"
-                routerLinkActive="active"
-                translate="label.metadata-providers">
-                Metadata Providers
+                routerLinkActive="active">
+                <translate-i18n key="label.metadata-providers">Metadata Providers</translate-i18n>
             </a>
         </li>
         <li class="nav-item" *ngIf="isAdmin$ | async">
             <a class="nav-link"
                 [routerLink]="['./', 'admin', 'management']"
-                routerLinkActive="active"
-                translate="label.admin">
-                Admin
+                routerLinkActive="active">
+                <translate-i18n key="label.admin">Admin</translate-i18n>
             </a>
         </li>
         <li class="nav-item" *ngIf="isAdmin$ | async">

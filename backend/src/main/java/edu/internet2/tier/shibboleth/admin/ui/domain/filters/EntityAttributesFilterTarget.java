@@ -5,12 +5,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +23,11 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
         ENTITY, CONDITION_SCRIPT, CONDITION_REF, REGEX
     }
 
-    private static Logger LOGGER = LoggerFactory.getLogger(EntityAttributesFilterTarget.class);
-
     private EntityAttributesFilterTargetType entityAttributesFilterTargetType;
 
     @ElementCollection
     @OrderColumn
+    @Column(length = 760)
     private List<String> value;
 
     public EntityAttributesFilterTargetType getEntityAttributesFilterTargetType() {

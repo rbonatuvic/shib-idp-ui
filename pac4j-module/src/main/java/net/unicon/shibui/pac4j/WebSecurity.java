@@ -9,6 +9,7 @@ import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -24,7 +25,9 @@ import java.util.Optional;
 
 @Configuration
 @AutoConfigureOrder(-1)
+@ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 @AutoConfigureAfter(EmailConfiguration.class)
+
 public class WebSecurity {
     @Bean("webSecurityConfig")
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
@@ -33,6 +36,7 @@ public class WebSecurity {
 
     @Configuration
     @Order(0)
+    @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
     public static class FaviconSecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -42,6 +46,7 @@ public class WebSecurity {
 
     @Configuration
     @Order(1)
+    @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
     public static class UnsecuredSecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -51,6 +56,7 @@ public class WebSecurity {
 
     @Configuration
     @Order(2)
+    @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
     public static class ErrorSecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -102,7 +108,7 @@ public class WebSecurity {
     }
 
     @Bean
-    public AuditorAware<String> defaultAuditorAware() {
+    public AuditorAware<String> pac4jAuditorAware() {
         return new Pac4jAuditorAware();
     }
 }

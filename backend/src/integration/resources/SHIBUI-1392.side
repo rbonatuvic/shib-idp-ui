@@ -264,20 +264,6 @@
       ],
       "value": ""
     }, {
-      "id": "1566f2a0-790c-4594-806c-7dd6c9c47143",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Test Provider with Script Filter",
-      "targets": [
-        ["linkText=Test Provider with Script Filter", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test Provider with Script Filter')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/194c05bb-df26-4fd3-b970-ca30f8855e0b/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test Provider with Script Filter')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "3b38c153-5b8d-4a3c-a8c2-f089d86e2ae3",
       "comment": "",
       "command": "click",
@@ -390,19 +376,12 @@
       ],
       "value": ""
     }, {
-      "id": "84be6a98-5739-42e8-b7ca-06a6c86e9f40",
-      "comment": "",
-      "command": "editContent",
-      "target": "id=/nameIdFormatFilterTarget.target",
-      "targets": [],
-      "value": "(true);"
-    }, {
       "id": "05870356-d3db-4540-bb3f-db34b1cf65f1",
       "comment": "",
       "command": "sendKeys",
       "target": "id=/nameIdFormatFilterTarget.target",
       "targets": [],
-      "value": "eval"
+      "value": "eval(true);"
     }, {
       "id": "d7721254-68c9-4140-af2a-1757cce99da7",
       "comment": "",
@@ -441,14 +420,19 @@
       "id": "c51608a2-5e1a-4f70-8856-cbef5eb588ed",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.td-lg:nth-child(4)",
-      "targets": [],
+      "target": "css=span:nth-child(4)",
+      "targets": [
+        ["css=span:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/span[2]", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'NameIDFormat')]", "xpath:innerText"]
+      ],
       "value": "10000"
     }, {
       "id": "83f6f403-40b0-4f12-82e2-a14e301dd7ff",
       "comment": "",
       "command": "assertText",
-      "target": "css=.td-lg:nth-child(4)",
+      "target": "css=span:nth-child(4)",
       "targets": [
         ["css=.td-lg:nth-child(4)", "css:finder"],
         ["xpath=//td[4]", "xpath:position"],
@@ -459,24 +443,30 @@
       "id": "1b449f50-1c54-41a0-a50b-65364340b7d2",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-edit",
+      "target": "css=.mx-4",
       "targets": [
-        ["css=.fa-edit", "css:finder"],
-        ["xpath=//td[6]/a/i", "xpath:position"]
+        ["css=.mx-4", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/button", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Filter with Script')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
       "id": "ad613704-0718-4b83-97f1-b49897f510eb",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "id=/nameIdFormatFilterTarget.target",
-      "targets": [],
+      "target": "css=.list-unstyled:nth-child(2)",
+      "targets": [
+        ["css=.list-unstyled:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div[2]/metadata-configuration/div/section/div/div[2]/object-property/filter-target-property/array-property/div/div/ul", "xpath:idRelative"],
+        ["xpath=//div/div/ul", "xpath:position"]
+      ],
       "value": "10000"
     }, {
       "id": "6762fdb2-6744-4238-a2df-d529ab3b6102",
       "comment": "",
       "command": "assertText",
-      "target": "id=/nameIdFormatFilterTarget.target",
+      "target": "css=.list-unstyled:nth-child(2)",
       "targets": [
         ["id=/nameIdFormatFilterTarget.target", "id"],
         ["css=#\\/nameIdFormatFilterTarget\\.target", "css:finder"],
@@ -485,6 +475,13 @@
         ["xpath=//p[contains(.,'eval(true)')]", "xpath:innerText"]
       ],
       "value": "eval(true);"
+    }, {
+      "id": "29f454bc-2f1d-44b4-b9f9-fb390b2eddb2",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

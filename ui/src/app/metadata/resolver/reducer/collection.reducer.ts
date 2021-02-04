@@ -4,6 +4,7 @@ import { ResolverCollectionActionsUnion, ResolverCollectionActionTypes } from '.
 
 export interface CollectionState extends EntityState<MetadataResolver> {
     selectedResolverId: string | null;
+    loading: boolean;
 }
 
 export function sortByDate(a: MetadataResolver, b: MetadataResolver): number {
@@ -16,20 +17,30 @@ export const adapter: EntityAdapter<MetadataResolver> = createEntityAdapter<Meta
 });
 
 export const initialState: CollectionState = adapter.getInitialState({
-    selectedResolverId: null
+    selectedResolverId: null,
+    loading: false
 });
 
 export function reducer(state = initialState, action: ResolverCollectionActionsUnion): CollectionState {
     switch (action.type) {
+        case ResolverCollectionActionTypes.LOAD_RESOLVER_REQUEST: {
+            return {
+                ...state,
+                loading: true
+            };
+        }
         case ResolverCollectionActionTypes.LOAD_RESOLVER_SUCCESS: {
             return adapter.addAll(action.payload, {
                 ...state,
+                loading: false,
                 selectedResolverId: state.selectedResolverId
             });
         }
 
         case ResolverCollectionActionTypes.UPDATE_RESOLVER_SUCCESS: {
-            return adapter.updateOne(action.payload, state);
+            const removed = adapter.removeOne(action.payload.id as string, state);
+            const addBack = adapter.upsertOne(action.payload.changes as MetadataResolver, removed);
+            return addBack;
         }
 
         case ResolverCollectionActionTypes.SELECT_SUCCESS: {
@@ -41,7 +52,8 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
 
         case ResolverCollectionActionTypes.LOAD_RESOLVER_ERROR: {
             return adapter.removeAll({
-                ...state
+                ...state,
+                loading: false
             });
         }
 
@@ -71,3 +83,5 @@ export const {
     selectAll: selectAllResolvers,
     selectTotal: selectResolverTotal
 } = adapter.getSelectors();
+
+export const getResolversLoading = (state: CollectionState) => state.loading;

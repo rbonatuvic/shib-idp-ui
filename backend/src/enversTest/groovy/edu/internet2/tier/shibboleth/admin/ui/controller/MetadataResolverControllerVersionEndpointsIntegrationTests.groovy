@@ -1,19 +1,41 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+
+import org.apache.commons.lang3.RandomStringUtils
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.Specification
+import spock.lang.Unroll
+
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 
 /**
  * @author Dmitriy Kopylenko
@@ -28,11 +50,33 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
     @Autowired
     MetadataResolverRepository repository
 
+    @Autowired
+    AttributeUtility attributeUtility
+
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
+
+    ObjectMapper mapper
+    TestObjectGenerator generator
+
+    @Autowired
+    PlatformTransactionManager txMgr
+
+    @Autowired
+    MetadataResolverVersionService metadataResolverVersionService
+
     static BASE_URI = '/api/MetadataResolvers'
 
     static ALL_VERSIONS_URI = "$BASE_URI/%s/Versions"
 
     static SPECIFIC_VERSION_URI = "$BASE_URI/%s/Versions/%s"
+
+    def setup() {
+        generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
+        mapper = new ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.registerModule(new JavaTimeModule())
+    }
 
     def "GET /api/MetadataResolvers/{resourceId}/Versions with non-existent resolver"() {
         when:
@@ -107,6 +151,7 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
     }
 
     def "SHIBUI-1386"() {
+        given:
         MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'testme')
         mr = repository.save(mr)
 
@@ -138,6 +183,7 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
     }
 
     def "SHIBUI-1500"() {
+        given:
         MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'shibui-1500')
         mr = repository.save(mr)
 
@@ -154,6 +200,73 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
         (mrv1.getBody() as MetadataResolver).modifiedDate < (mrv2.getBody() as MetadataResolver).modifiedDate
     }
 
+    def "SHIBUI-1499"() {
+        given:
+        MetadataResolver mr = new FileBackedHttpMetadataResolver(name: 'shibui-1499')
+        mr = repository.save(mr)
+
+        when: 'add a name id filter'
+        def filter = new NameIdFormatFilter(name: 'nameIDFilter').with {
+            it.nameIdFormatFilterTarget = new NameIdFormatFilterTarget().with {
+                it.nameIdFormatFilterTargetType = ENTITY
+                it.value = ['https://testme/sp']
+                it
+            }
+            it
+        }
+        mr.addFilter(filter)
+        mr = repository.save(mr)
+
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+        def mrv2 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[1].id, MetadataResolver)
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "SHIBUI-1501"() {
+        given:
+        def mr = new FileBackedHttpMetadataResolver(name: 'shibui-1501')
+        mr = repository.save(mr)
+
+        when: 'add a filter'
+        EntityAttributesFilter filter = this.generator.entityAttributesFilter()
+        mr.addFilter(filter)
+        def resolver = (repository.save(mr) as MetadataResolver).withTraits AttributeReleaseAndOverrides
+        resolver.entityAttributesFilterIntoTransientRepresentation()
+
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv2 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[1].id, MetadataResolver)
+                .body.withTraits AttributeReleaseAndOverrides
+
+        then:
+        mrv2.metadataFilters.size() == 1
+        mrv2.attributesRelease(0).size() == resolver.attributesRelease(0).size()
+        mrv2.overrides(0).size() == resolver.overrides(0).size()
+        mrv2.attributesRelease(0) == resolver.attributesRelease(0)
+        mrv2.overrides(0) == resolver.overrides(0)
+    }
+
+    @Unroll
+    def "SHIBUI-1509 with #urlConstructionScheme"() {
+        MetadataResolver mr = new DynamicHttpMetadataResolver(name: randomAlphabetic(8)).with {
+            it.metadataRequestURLConstructionScheme = urlConstructionScheme
+            it
+        }
+        mr = repository.save(mr)
+
+        when:
+        def allVersions = getAllMetadataResolverVersions(mr.resourceId, List)
+        def mrv1 = getMetadataResolverForVersion(mr.resourceId, allVersions.body[0].id, MetadataResolver)
+
+        then:
+        noExceptionThrown()
+
+        where:
+        urlConstructionScheme << [new RegexScheme(match: ".*"), new MetadataQueryProtocolScheme(), new TemplateScheme()]
+    }
+
     private getAllMetadataResolverVersions(String resourceId, responseType) {
         this.restTemplate.getForEntity(resourceUriFor(ALL_VERSIONS_URI, resourceId), responseType)
     }
@@ -168,5 +281,15 @@ class MetadataResolverControllerVersionEndpointsIntegrationTests extends Specifi
 
     private static resourceUriFor(String uriTemplate, String resourceId) {
         String.format(uriTemplate, resourceId)
+    }
+}
+
+trait AttributeReleaseAndOverrides {
+    List<String> attributesRelease(int filterIndex) {
+        (this.metadataFilters[filterIndex] as EntityAttributesFilter).attributeRelease
+    }
+
+    Map<String, Object> overrides(int filterIndex) {
+        (this.metadataFilters[filterIndex] as EntityAttributesFilter).relyingPartyOverrides
     }
 }

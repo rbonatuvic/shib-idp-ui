@@ -49,7 +49,7 @@ export class MockTranslateComponent {
 export class MockI18nService {
 
     readonly path = '/messages';
-    readonly base = '/api';
+    readonly base = 'api';
 
     constructor() { }
 

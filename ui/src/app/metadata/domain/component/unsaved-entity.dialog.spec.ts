@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsavedEntityComponent } from './unsaved-entity.dialog';
 import { NgbActiveModalStub } from '../../../../testing/modal.stub';
@@ -11,7 +11,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(UnsavedEntityComponent)
+    @ViewChild(UnsavedEntityComponent, {static: true})
     public componentUnderTest: UnsavedEntityComponent;
 }
 
@@ -21,7 +21,7 @@ describe('Unsaved Provider Dialog Component', () => {
     let instance: TestHostComponent;
     let cmp: UnsavedEntityComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 MockI18nModule
@@ -41,7 +41,7 @@ describe('Unsaved Provider Dialog Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(cmp).toBeTruthy();
     }));
 });

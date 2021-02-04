@@ -20,7 +20,10 @@ import { CustomObjectWidget } from './widget/object/object.component';
 import { CustomRadioComponent } from './widget/radio/radio.component';
 import { InlineObjectListComponent } from './widget/array/inline-obj-list.component';
 import { InlineObjectComponent } from './widget/object/inline-obj.component';
+import { CustomFloatComponent } from './widget/number/float.component';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class CustomWidgetRegistry extends WidgetRegistry {
     constructor() {
         super();
@@ -55,6 +58,7 @@ export class CustomWidgetRegistry extends WidgetRegistry {
 
         this.register('integer', CustomIntegerComponent);
         this.register('number', CustomIntegerComponent);
+        this.register('float', CustomFloatComponent);
 
         this.register('datalist', DatalistComponent);
 

@@ -6,6 +6,7 @@ describe('Entity Attributes filter form', () => {
             expect(Object.keys(EntityAttributesFilter.getValidators())).toEqual([
                 '/',
                 '/name',
+                '/relyingPartyOverrides',
                 '/entityAttributesFilterTarget'
             ]);
         });

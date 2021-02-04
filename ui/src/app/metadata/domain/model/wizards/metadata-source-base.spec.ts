@@ -41,10 +41,59 @@ describe('Metadata Source Base class', () => {
             expect(Object.keys(getValidators([]))).toEqual([
                 '/',
                 '/entityId',
-                '/organization/name',
-                '/organization/displayName',
-                '/organization/url'
+                '/relyingPartyOverrides',
+                '/serviceProviderSsoDescriptor'
             ]);
+        });
+
+        describe('root validator', () => {
+            it('should check for child errors', () => {
+                const validators = getValidators([]);
+                const validator = validators['/'];
+                const getPropertySpy = jasmine.createSpy('getProperty');
+                const relyingPartyOverrides = { foo: 'bar', baz: 'foo' };
+                const value = { relyingPartyOverrides };
+                const error = {
+                    code: 'INVALID_SIGNING',
+                    path: `#/relyingPartyOverrides`,
+                    message: 'message.invalid-signing',
+                    params: [relyingPartyOverrides],
+                    invalidate: false
+                };
+                spyOn(validators, '/relyingPartyOverrides').and.returnValue(error);
+
+                const validated = validator(value, null, { getProperty: getPropertySpy });
+
+                expect(validated).toBeUndefined();
+            });
+        });
+
+        describe('relying party validator', () => {
+            it('should check for child errors', () => {
+                const validators = getValidators([]);
+                const validator = validators['/relyingPartyOverrides'];
+                const relyingPartyOverrides = { signAssertion: false, dontSignResponse: true };
+                const error = {
+                    code: 'INVALID_SIGNING',
+                    path: `#/relyingPartyOverrides`,
+                    message: 'message.invalid-signing',
+                    params: [relyingPartyOverrides],
+                    invalidate: false
+                };
+
+                const validated = validator(relyingPartyOverrides, {path: '/relyingPartyOverrides'});
+
+                expect(validated).toEqual(error);
+            });
+
+            it('should return null if no error detected', () => {
+                const validators = getValidators([]);
+                const validator = validators['/relyingPartyOverrides'];
+
+                expect(validator({ signAssertion: true, dontSignResponse: true }, { path: '/relyingPartyOverrides' })).toEqual(null);
+                expect(validator({ signAssertion: true, dontSignResponse: false }, { path: '/relyingPartyOverrides' })).toEqual(null);
+                expect(validator({ signAssertion: false, dontSignResponse: false }, { path: '/relyingPartyOverrides' })).toEqual(null);
+            });
         });
     });
 });

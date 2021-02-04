@@ -3,7 +3,7 @@ import { FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/
 import { ObjectWidget } from 'ngx-schema-form';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, skipWhile, takeUntil, map } from 'rxjs/operators';
+import { distinctUntilChanged, skipWhile, takeUntil, map, withLatestFrom, filter, switchMap, startWith } from 'rxjs/operators';
 
 import * as fromRoot from '../../../app.reducer';
 import * as fromFilters from '../../../metadata/filter/reducer';
@@ -19,7 +19,7 @@ import { QueryEntityIds, ClearSearch } from '../../../metadata/filter/action/sea
 export class FilterTargetComponent extends ObjectWidget implements OnDestroy, AfterViewInit {
     private ngUnsubscribe: Subject<null> = new Subject<null>();
     ids$: Observable<string[]>;
-    ids: string[];
+    idCount$: Observable<number>;
 
     search: FormControl = new FormControl(
         '',
@@ -40,15 +40,22 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
     ) {
         super();
         this.ids$ = this.store.select(fromFilters.getEntityCollection);
-        this.ids$.subscribe(ids => this.ids = ids);
+
+        this.idCount$ = this.ids$.pipe(map(list => list.length));
 
         this.search
             .valueChanges
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                distinctUntilChanged()
+                distinctUntilChanged(),
+                withLatestFrom(this.ids$),
+                filter(([term, ids]) => term && term.length >= 4 && ids.indexOf(term) < 0),
+                map(([term]) => new QueryEntityIds({
+                    term,
+                    limit: 10
+                }))
             )
-            .subscribe(query => this.searchEntityIds(query));
+            .subscribe(action => this.store.dispatch(action));
 
         this.script
             .valueChanges
@@ -97,15 +104,6 @@ export class FilterTargetComponent extends ObjectWidget implements OnDestroy, Af
         return (control: AbstractControl): { [key: string]: any } | null => {
             return this.targets.indexOf(control.value) > -1 ? { unique: true } : null;
         };
-    }
-
-    searchEntityIds(term: string): void {
-        if (term && term.length >= 4 && this.ids.indexOf(term) < 0) {
-            this.store.dispatch(new QueryEntityIds({
-                term,
-                limit: 10
-            }));
-        }
     }
 
     getButtonConfig(id: string): any {

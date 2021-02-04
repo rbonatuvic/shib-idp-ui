@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { MetadataPageComponent } from './metadata.component';
@@ -13,7 +13,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     `
 })
 class TestHostComponent {
-    @ViewChild(MetadataPageComponent)
+    @ViewChild(MetadataPageComponent, {static: true})
     public componentUnderTest: MetadataPageComponent;
 }
 
@@ -24,7 +24,7 @@ describe('Metadata Root Component', () => {
     let app: MetadataPageComponent;
     let store: Store<fromRoot.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,
@@ -48,7 +48,7 @@ describe('Metadata Root Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should load metadata objects', async(() => {
+    it('should load metadata objects', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

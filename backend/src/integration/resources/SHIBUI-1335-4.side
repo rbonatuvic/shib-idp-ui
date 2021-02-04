@@ -606,35 +606,22 @@
     }, {
       "id": "ae27b108-a2f4-4d4b-b375-b582ccc0ef56",
       "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=td:nth-child(3)",
+      "command": "pause",
+      "target": "5000",
       "targets": [],
-      "value": "10000"
+      "value": ""
     }, {
       "id": "8c52471a-70f5-43aa-b670-6f8d22e18668",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
-        ["css=td:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'DynamicHttpMetadataResolver')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'DynamicHttpMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "DynamicHttpMetadataResolver"
-    }, {
-      "id": "76629f3d-b0a3-40ac-b848-da22b0933c31",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Dynamic Http Metadata Provider",
-      "targets": [
-        ["linkText=Dynamic Http Metadata Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Dynamic Http Metadata Provider')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/provider/f5bb61ac-54fe-427e-8b6b-2fcdd66ba175/configuration/options')]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Dynamic Http Metadata Provider')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "31a8587f-8ac0-4512-98ec-6cd230dfb0b6",
       "comment": "",
@@ -884,29 +871,33 @@
       "id": "772bafa8-7089-4895-a66b-0d3c333c7245",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.td-lg:nth-child(4)",
+      "target": "css=span:nth-child(4)",
       "targets": [],
       "value": "10000"
     }, {
       "id": "e9f4ddf4-db8a-4bda-88cc-66173717986c",
       "comment": "",
       "command": "assertText",
-      "target": "css=.td-lg:nth-child(4)",
+      "target": "css=span:nth-child(4)",
       "targets": [
-        ["css=.td-lg:nth-child(4)", "css:finder"],
-        ["xpath=//td[4]", "xpath:position"],
-        ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
+        ["css=span:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/span[2]", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "EntityAttributes"
     }, {
       "id": "9a99cc7c-55e1-4f62-bf18-e5936e8a98a7",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-success",
+      "target": "linkText=Add Filter",
       "targets": [
-        ["css=.btn-success > translate-i18n", "css:finder"],
-        ["xpath=//div[2]/a/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Add Filter')]", "xpath:innerText"]
+        ["linkText=Add Filter", "linkText"],
+        ["css=#filters > .numbered-header .btn", "css:finder"],
+        ["xpath=//div[@id='filters']/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/provider/e8eb0242-5291-4a51-86d6-43a1ef018981/filter/new')]", "xpath:href"],
+        ["xpath=//div[2]/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'  Add Filter')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1030,10 +1021,11 @@
       "id": "a8ed628c-53f7-4551-9ce8-fef976cc96ce",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(1) .fa-arrow-circle-down",
+      "target": "css=.list-group-item:nth-child(1) .btn:nth-child(2)",
       "targets": [
-        ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
-        ["xpath=//button[2]/i", "xpath:position"]
+        ["css=.list-group-item:nth-child(1) .btn:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/div/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1047,18 +1039,19 @@
       "id": "be805934-2692-4a1c-a28f-afb3cc4eb5f4",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "target": "css=.list-group-item:nth-child(1) span:nth-child(4)",
       "targets": [
-        ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
-        ["xpath=//td[4]", "xpath:position"],
-        ["xpath=//td[contains(.,'NameIDFormat')]", "xpath:innerText"]
+        ["css=.list-group-item:nth-child(1) span:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='filters']/filter-configuration-list/ul/li/filter-configuration-list-item/div/span[2]", "xpath:idRelative"],
+        ["xpath=//filter-configuration-list-item/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "NameIDFormat"
     }, {
       "id": "039aff93-c0de-40fb-a1c9-e22ffbf7e1da",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(1) .fa-arrow-circle-down",
+      "target": "css=.list-group-item:nth-child(1) .btn:nth-child(2)",
       "targets": [
         ["css=tr:nth-child(1) .fa-arrow-circle-down", "css:finder"],
         ["xpath=//button[2]/i", "xpath:position"]
@@ -1075,13 +1068,20 @@
       "id": "8f2da627-e8ad-473a-a71a-bec5dd1f0999",
       "comment": "",
       "command": "assertText",
-      "target": "css=tr:nth-child(1) > .td-lg:nth-child(4)",
+      "target": "css=.list-group-item:nth-child(1) span:nth-child(4)",
       "targets": [
         ["css=tr:nth-child(1) > .td-lg:nth-child(4)", "css:finder"],
         ["xpath=//td[4]", "xpath:position"],
         ["xpath=//td[contains(.,'EntityAttributes')]", "xpath:innerText"]
       ],
       "value": "EntityAttributes"
+    }, {
+      "id": "f81a35eb-de1b-49ac-a9bb-b528393e9f9e",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { MetadataFilter } from '../../domain/model';
+import API_BASE_PATH from '../../../app.constant';
 
 @Injectable()
 export class MetadataFilterService {
 
     readonly endpoint = '/MetadataResolvers';
     readonly order = 'FiltersPositionOrder';
-    readonly base = '/api';
+    readonly base = API_BASE_PATH;
     readonly path = 'Filters';
 
     constructor(

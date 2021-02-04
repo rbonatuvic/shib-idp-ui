@@ -1,5 +1,5 @@
 import { Component, ViewChild, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, combineReducers, Store } from '@ngrx/store';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +22,7 @@ import { WizardActionTypes } from '../../../wizard/action/wizard.action';
     `
 })
 class TestHostComponent {
-    @ViewChild(RestoreEditStepComponent)
+    @ViewChild(RestoreEditStepComponent, {static: true})
     public componentUnderTest: RestoreEditStepComponent;
 }
 
@@ -34,7 +34,7 @@ describe('Restore Version Edit Step Component', () => {
     let store: Store<fromConfiguration.State>;
     let dispatchSpy;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
                 NgbDropdownModule,

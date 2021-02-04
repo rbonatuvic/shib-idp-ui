@@ -11,6 +11,7 @@ import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 
@@ -51,13 +52,29 @@ public class OpenSamlFilesystemMetadataResolver extends FilesystemMetadataResolv
 
     @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
+        //Necessary to make sure backing store is initialized by the super class to avoid NPE during re-filtering
+        try {
+            setBackingStore(createNewBackingStore());
+        }
+        catch(Throwable e) {
+            logger.warn("Error caught and ignored during initialization necessary to init backingStore", e);
+        }
+
         if (this.sourceResolver.getDoInitialization()) {
             super.initMetadataResolver();
-
             delegate.addIndexedDescriptorsFromBackingStore(this.getBackingStore(),
                     this.sourceResolver.getResourceId(),
                     indexWriter);
         }
+    }
+
+    @Nonnull
+    @Override
+    protected BatchEntityBackingStore getBackingStore() {
+        if (super.getBackingStore() == null) {
+            super.setBackingStore(super.createNewBackingStore());
+        }
+        return super.getBackingStore();
     }
 
     /**

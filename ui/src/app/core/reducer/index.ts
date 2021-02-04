@@ -6,12 +6,14 @@ import {
 import * as fromUser from './user.reducer';
 import * as fromVersion from './version.reducer';
 import * as fromConfig from './configuration.reducer';
+import * as fromLocation from './location.reducer';
 import * as fromRoot from '../../app.reducer';
 
 export interface CoreState {
     user: fromUser.UserState;
     version: fromVersion.VersionState;
     config: fromConfig.ConfigState;
+    location: fromLocation.LocationState;
 }
 
 export interface State extends fromRoot.State {
@@ -21,13 +23,15 @@ export interface State extends fromRoot.State {
 export const reducers = {
     user: fromUser.reducer,
     version: fromVersion.reducer,
-    config: fromConfig.reducer
+    config: fromConfig.reducer,
+    location: fromLocation.reducer
 };
 
 export const getCoreFeature = createFeatureSelector<CoreState>('core');
 export const getUserStateFn = (state: CoreState) => state.user;
 export const getVersionStateFn = (state: CoreState) => state.version;
 export const getConfigStateFn = (state: CoreState) => state.config;
+export const getLocationStateFn = (state: CoreState) => state.location;
 
 export const getUserState = createSelector(getCoreFeature, getUserStateFn);
 export const getUser = createSelector(getUserState, fromUser.getUser);
@@ -46,4 +50,9 @@ export const getConfigState = createSelector(getCoreFeature, getConfigStateFn);
 export const getRoles = createSelector(getConfigState, fromConfig.getRoles);
 
 export const getUserRoles = createSelector(getRoles, filterRolesFn);
+export const getCurrentUserRole = createSelector(getUser, u => u ? u.role : null);
+
 export const isCurrentUserAdmin = createSelector(getUser, isUserAdminFn);
+
+export const getLocationState = createSelector(getCoreFeature, getLocationStateFn);
+export const getLocationTitle = createSelector(getLocationState, fromLocation.getTitle);

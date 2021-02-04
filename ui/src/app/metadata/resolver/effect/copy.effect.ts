@@ -16,6 +16,7 @@ import {
 } from '../action/copy.action';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
 import { removeNulls } from '../../../shared/util';
+import { UpdateChangesRequest } from '../action/entity.action';
 
 
 @Injectable()
@@ -43,9 +44,16 @@ export class CopyResolverEffects {
             return of(action);
         }));
 
+    @Effect()
+    changesOnCreation$ = this.actions$.pipe(
+        ofType<CreateResolverCopySuccess>(CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS),
+        map(action => action.payload),
+        map(entity => new UpdateChangesRequest(entity))
+    );
+
     @Effect({ dispatch: false })
     copyOnCreation$ = this.actions$.pipe(
-        ofType<CopySourceActionUnion>(CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS),
+        ofType<CreateResolverCopySuccess>(CopySourceActionTypes.CREATE_RESOLVER_COPY_SUCCESS),
         switchMap(() => this.router.navigate(['metadata', 'resolver', 'new', 'copy', 'confirm']))
     );
 

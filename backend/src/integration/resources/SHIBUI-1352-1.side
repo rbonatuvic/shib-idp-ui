@@ -413,41 +413,42 @@
       ],
       "value": ""
     }, {
-      "id": "4bd514f1-9dbf-431f-b797-c8666c7c0889",
+      "id": "6a002ac9-ba5c-4d57-bb87-05c3a5812469",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr > .text-right",
-      "targets": [
-        ["css=tr > .text-right", "css:finder"],
-        ["xpath=//td[6]", "xpath:position"],
-        ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
-      ],
-      "value": "10000"
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "f0232386-eb88-4f6c-98fa-b9065ed422b7",
       "comment": "",
       "command": "assertText",
-      "target": "linkText=Test Local Dynamic Provider",
+      "target": "css=.d-block > primitive-property:nth-child(1) .text-truncate",
       "targets": [
-        ["linkText=Test Local Dynamic Provider", "linkText"],
-        ["css=td > a", "css:finder"],
-        ["xpath=//a[contains(text(),'Test Local Dynamic Provider')]", "xpath:link"],
-        ["xpath=(//a[contains(@href, '')])[10]", "xpath:href"],
-        ["xpath=//td[2]/a", "xpath:position"],
-        ["xpath=//a[contains(.,'Test Local Dynamic Provider')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(1) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div/span[2]", "xpath:position"]
       ],
       "value": "Test Local Dynamic Provider"
     }, {
       "id": "5e8993ae-47ee-4e65-b667-b291d7c934ec",
       "comment": "",
       "command": "assertText",
-      "target": "css=td:nth-child(3)",
+      "target": "css=.d-block > primitive-property:nth-child(2) .text-truncate",
       "targets": [
-        ["css=td:nth-child(3)", "css:finder"],
-        ["xpath=//td[3]", "xpath:position"],
-        ["xpath=//td[contains(.,'LocalDynamicMetadataResolver')]", "xpath:innerText"]
+        ["css=.d-block > primitive-property:nth-child(2) .text-truncate", "css:finder"],
+        ["xpath=//metadata-configuration[@id='configuration']/div/section/div/div[2]/object-property/primitive-property[2]/div/div/span[2]", "xpath:idRelative"],
+        ["xpath=//primitive-property[2]/div/div/span[2]", "xpath:position"],
+        ["xpath=//span[contains(.,'LocalDynamicMetadataResolver')]", "xpath:innerText"]
       ],
       "value": "LocalDynamicMetadataResolver"
+    }, {
+      "id": "0da0b69c-a807-4961-ad8d-ef5eb1ba667e",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
     }]
   }],
   "suites": [{

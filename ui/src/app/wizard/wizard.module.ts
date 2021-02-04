@@ -6,6 +6,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { WizardComponent } from './component/wizard.component';
 import { reducers } from './reducer';
 import { I18nModule } from '../i18n/i18n.module';
+import { WizardService } from './service/wizard.service';
 
 @NgModule({
     declarations: [
@@ -21,10 +22,10 @@ import { I18nModule } from '../i18n/i18n.module';
     ]
 })
 export class WizardModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<RootWizardModule> {
         return {
             ngModule: RootWizardModule,
-            providers: []
+            providers: [WizardService]
         };
     }
 }

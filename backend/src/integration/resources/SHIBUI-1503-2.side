@@ -1,0 +1,200 @@
+{
+  "id": "5366ee48-b38e-45f0-a996-abe249f84e24",
+  "version": "2.0",
+  "name": "SHIBUI-1503-2",
+  "url": "http://localhost:10101",
+  "tests": [{
+    "id": "3ee270a9-8a5c-4a17-92e7-ab9b013e7aee",
+    "name": "SHIBUI-1503-2",
+    "commands": [{
+      "id": "b0d2001f-0afd-439b-833b-8c945404bb2a",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c0e3c091-9a27-45f1-8525-dc6acb187ee1",
+      "comment": "",
+      "command": "type",
+      "target": "name=username",
+      "targets": [
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "96a54bfc-f203-43be-8d42-5bcdf7cfcdb7",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "624d4f0a-ddb6-4047-a25e-43cbde644fb5",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "812843b9-c71a-4141-b204-3387f0fee39a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.nav-link > translate-i18n:nth-child(1)",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "473db033-9a76-4173-9a70-daa255f99b1d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nav-link > translate-i18n:nth-child(1)",
+      "targets": [
+        ["css=.nav-link > translate-i18n:nth-child(1)", "css:finder"],
+        ["xpath=//li[4]/a/translate-i18n", "xpath:position"],
+        ["xpath=//translate-i18n[contains(.,'Action Required')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a98143b5-647f-4e7e-b920-f6e6875d7372",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-trash",
+      "targets": [
+        ["css=.fa-trash", "css:finder"],
+        ["xpath=//div[2]/button/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d85702e0-5eb2-4dd7-b10f-906352a43b49",
+      "comment": "",
+      "command": "click",
+      "target": "css=.modal-footer > .btn-danger",
+      "targets": [
+        ["css=.modal-footer > .btn-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2d8da370-0a5a-4048-a8bd-f68210a271c5",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.text-center",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "d5a65352-5897-49cf-9046-3afc5397f193",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.text-center",
+      "targets": [
+        ["css=.text-center", "css:finder"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'There are no new user requests at this time.')]", "xpath:innerText"]
+      ],
+      "value": "There are no new user requests at this time."
+    }, {
+      "id": "ede68bbe-2236-457d-93d7-9e7cde5d5176",
+      "comment": "",
+      "command": "click",
+      "target": "css=li:nth-child(3) > .nav-link > translate-i18n",
+      "targets": [
+        ["css=li:nth-child(3) > .nav-link > translate-i18n", "css:finder"],
+        ["xpath=//div[@id='navbar']/ul/li[3]/a/translate-i18n", "xpath:idRelative"],
+        ["xpath=//li[3]/a/translate-i18n", "xpath:position"],
+        ["xpath=//translate-i18n[contains(.,'Logout')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "64b41d03-23dc-46cd-9612-9ad6ce86a169",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=username",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "1edca1a8-1e15-489f-8f18-a80bd53c5360",
+      "comment": "",
+      "command": "type",
+      "target": "name=username",
+      "targets": [
+        ["name=username", "name"],
+        ["css=tr:nth-child(1) input", "css:finder"],
+        ["xpath=//input[@name='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "none"
+    }, {
+      "id": "2897afef-6eef-4205-a0bb-f95cccef7a74",
+      "comment": "",
+      "command": "type",
+      "target": "name=password",
+      "targets": [
+        ["name=password", "name"],
+        ["css=tr:nth-child(2) input", "css:finder"],
+        ["xpath=//input[@name='password']", "xpath:attributes"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "nonepass"
+    }, {
+      "id": "6c4429c8-7d82-4d87-a58d-a587cff891f6",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=td:nth-child(1) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//tr[3]/td/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3eb77106-8fb7-43aa-a72a-27f2960d5393",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=p",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "b826ed10-31a4-487b-ba80-c633ff037839",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=p",
+      "targets": [
+        ["css=p", "css:finder"],
+        ["xpath=//p", "xpath:position"]
+      ],
+      "value": "Your login attempt was not successful, try again.\n\nReason: Bad credentials"
+    }, {
+      "id": "5b421e75-d5db-44ff-ac57-2fd8f91c2478",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "86d753b7-e7f9-48b0-a95e-ac68deea5457",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["3ee270a9-8a5c-4a17-92e7-ab9b013e7aee"]
+  }],
+  "urls": ["http://localhost:10101/"],
+  "plugins": []
+}

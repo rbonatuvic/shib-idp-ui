@@ -3,11 +3,11 @@
         <tr>
             <th></th>
             <th></th>
-            <th translate="label.filter-name">Filter Name</th>
-            <th translate="label.filter-type">Filter Type</th>
-            <th translate="label.filter-enabled">Enabled?</th>
-            <th translate="action.edit">Edit</th>
-            <th translate="action.delete">Delete</th>
+            <th><translate-i18n key="label.filter-name">Filter Name</translate-i18n></th>
+            <th><translate-i18n key="label.filter-type">Filter Type</translate-i18n></th>
+            <th><translate-i18n key="label.filter-enabled">Enabled?</translate-i18n></th>
+            <th><translate-i18n key="action.edit">Edit</translate-i18n></th>
+            <th><translate-i18n key="action.delete">Delete</translate-i18n></th>
         </tr>
     </thead>
     <tbody>
@@ -16,11 +16,11 @@
                 <div class="d-flex justify-content-center">
                     <button class="btn btn-link" (click)="onUpdateOrderUp.emit(filter)" [disabled]="isFirst">
                         <i class="fa fa-arrow-circle-up fa-lg sr-hidden"></i>
-                        <span class="sr-only" translate="action.move-up">Move Up</span>
+                        <span class="sr-only"><translate-i18n key="action.move-up">Move Up</translate-i18n></span>
                     </button>
                     <button class="btn btn-link" (click)="onUpdateOrderDown.emit(filter)" [disabled]="isLast">
                         <i class="fa fa-arrow-circle-down fa-lg sr-hidden"></i>
-                        <span class="sr-only" translate="action.move-up">Move Down</span>
+                        <span class="sr-only"><translate-i18n key="action.move-up">Move Down</translate-i18n></span>
                     </button>
                 </div>
             </td>
@@ -48,13 +48,13 @@
                 <a class="btn btn-link" [class.disabled]="disabled"
                     [routerLink]="['../', 'filter', filter.resourceId, 'edit']">
                     <i class="fa fa-edit fa-lg sr-hidden text-info"></i>
-                    <span class="sr-only" translate="action.edit">Edit</span>
+                    <span class="sr-only"><translate-i18n key="action.edit">Edit</translate-i18n></span>
                 </a>
             </td>
             <td class="td-sm">
                 <button class="btn btn-link" (click)="onRemove.emit(filter.resourceId)">
                     <i class="fa fa-trash fa-lg sr-hidden text-danger"></i>
-                    <span class="sr-only" translate="action.edit">Delete</span>
+                    <span class="sr-only"><translate-i18n key="action.edit">Delete</translate-i18n></span>
                 </button>
             </td>
         </tr>

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 
@@ -8,10 +8,12 @@ import { NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap'
 import { ProviderWizardComponent } from './provider-wizard.component';
 import * as fromRoot from '../reducer';
 import { WizardModule } from '../../../wizard/wizard.module';
-import { WizardSummaryComponent } from '../../domain/component/wizard-summary.component';
 import { SummaryPropertyComponent } from '../../domain/component/summary-property.component';
 import * as fromWizard from '../../../wizard/reducer';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { MetadataConfigurationComponentStub } from '../../../../testing/metadata-configuration.stub';
+import { WizardComponent } from '../../../wizard/component/wizard.component';
+import { EffectsModule } from '@ngrx/effects';
 
 @Component({
     template: `
@@ -19,7 +21,7 @@ import { MockI18nModule } from '../../../../testing/i18n.stub';
     `
 })
 class TestHostComponent {
-    @ViewChild(ProviderWizardComponent)
+    @ViewChild(ProviderWizardComponent, {static: true})
     public componentUnderTest: ProviderWizardComponent;
 }
 
@@ -30,9 +32,10 @@ describe('Provider Wizard Component', () => {
     let app: ProviderWizardComponent;
     let store: Store<fromRoot.State>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [
+                WizardModule.forRoot(),
                 WizardModule,
                 NgbDropdownModule,
                 NgbPopoverModule,
@@ -41,12 +44,13 @@ describe('Provider Wizard Component', () => {
                     provider: combineReducers(fromRoot.reducers),
                     wizard: combineReducers(fromWizard.reducers)
                 }),
+                EffectsModule.forRoot([]),
                 MockI18nModule
             ],
             declarations: [
                 ProviderWizardComponent,
                 SummaryPropertyComponent,
-                WizardSummaryComponent,
+                MetadataConfigurationComponentStub,
                 TestHostComponent
             ]
         }).compileComponents();
@@ -60,7 +64,7 @@ describe('Provider Wizard Component', () => {
         fixture.detectChanges();
     }));
 
-    it('should instantiate the component', async(() => {
+    it('should instantiate the component', waitForAsync(() => {
         expect(app).toBeTruthy();
     }));
 });

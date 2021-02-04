@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.script.ScriptException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ public class MetadataFiltersController {
 
     @ExceptionHandler
     public ResponseEntity<?> notFoundHandler(HttpClientErrorException ex) {
-        if(ex.getStatusCode() == NOT_FOUND) {
+        if (ex.getStatusCode() == NOT_FOUND) {
             return ResponseEntity.notFound().build();
         }
         throw ex;
@@ -78,13 +80,14 @@ public class MetadataFiltersController {
     }
 
     @PostMapping("/Filters")
+    @Transactional
     public ResponseEntity<?> create(@PathVariable String metadataResolverId, @RequestBody MetadataFilter createdFilter) {
         MetadataResolver metadataResolver = findResolverOrThrowHttp404(metadataResolverId);
         metadataResolver.addFilter(createdFilter);
         MetadataResolver persistedMr = repository.save(metadataResolver);
 
         // we reload the filters here after save
-        metadataResolverService.reloadFilters(persistedMr.getResourceId());
+        reloadFiltersAndHandleScriptException(persistedMr.getResourceId());
 
         MetadataFilter persistedFilter = newlyPersistedFilter(persistedMr.getMetadataFilters().stream(), createdFilter.getResourceId());
 
@@ -94,6 +97,7 @@ public class MetadataFiltersController {
     }
 
     @PutMapping("/Filters/{resourceId}")
+    @Transactional
     public ResponseEntity<?> update(@PathVariable String metadataResolverId,
                                     @PathVariable String resourceId,
                                     @RequestBody MetadataFilter updatedFilter) {
@@ -106,7 +110,7 @@ public class MetadataFiltersController {
                 .stream()
                 .filter(it -> it.getResourceId().equals(resourceId))
                 .findFirst();
-        if(!filterTobeUpdatedOptional.isPresent()) {
+        if (!filterTobeUpdatedOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();
@@ -129,8 +133,8 @@ public class MetadataFiltersController {
         metadataResolver.markAsModified();
         repository.save(metadataResolver);
 
-        // TODO: this is wrong
-        metadataResolverService.reloadFilters(metadataResolver.getResourceId());
+        // TODO: do we need to reload filters here?
+        reloadFiltersAndHandleScriptException(metadataResolver.getResourceId());
 
         return ResponseEntity.ok().body(persistedFilter);
     }
@@ -149,7 +153,7 @@ public class MetadataFiltersController {
         //change that we need to make in the entire code base
         List<MetadataFilter> updatedFilters = new ArrayList<>(resolver.getMetadataFilters());
         boolean removed = updatedFilters.removeIf(f -> f.getResourceId().equals(resourceId));
-        if(!removed) {
+        if (!removed) {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
         }
         resolver.setMetadataFilters(updatedFilters);
@@ -164,9 +168,23 @@ public class MetadataFiltersController {
         return ResponseEntity.noContent().build();
     }
 
+    private void reloadFiltersAndHandleScriptException(String resolverResourceId) {
+        try {
+            metadataResolverService.reloadFilters(resolverResourceId);
+        } catch (Throwable ex) {
+            //explicitly mark transaction for rollback when we get ScriptException as we call reloadFilters
+            //after persistence call. Then re-throw the exception
+            //to let RestControllerSupport advice return proper 400 error message
+            if (ex instanceof ScriptException) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                throw ex;
+            }
+        }
+    }
+
     private MetadataResolver findResolverOrThrowHttp404(String resolverResourceId) {
         MetadataResolver resolver = repository.findByResourceId(resolverResourceId);
-        if(resolver == null) {
+        if (resolver == null) {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
         }
         return resolver;
@@ -174,7 +192,7 @@ public class MetadataFiltersController {
 
     private MetadataFilter findFilterOrThrowHttp404(String filterResourceId) {
         MetadataFilter filter = filterRepository.findByResourceId(filterResourceId);
-        if(filter == null) {
+        if (filter == null) {
             throw HTTP_404_CLIENT_ERROR_EXCEPTION.get();
         }
         return filter;
@@ -189,28 +207,25 @@ public class MetadataFiltersController {
     }
 
     /**
-     *
      * Add else if instanceof block here for each concrete filter types we add in the future
      */
     private void updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated, MetadataFilter filterWithUpdatedData) {
         //TODO: Could we maybe use Dozer here before things get out of control? https://dozermapper.github.io
         // Mapper mapper = new net.sf.dozer.Mapper(); // or autowire one
         // mapper.map(fromFilter, toFilter);
-        if(filterWithUpdatedData instanceof EntityAttributesFilter) {
+        if (filterWithUpdatedData instanceof EntityAttributesFilter) {
             EntityAttributesFilter toFilter = EntityAttributesFilter.class.cast(filterToBeUpdated);
             EntityAttributesFilter fromFilter = EntityAttributesFilter.class.cast(filterWithUpdatedData);
             toFilter.setEntityAttributesFilterTarget(fromFilter.getEntityAttributesFilterTarget());
             toFilter.setRelyingPartyOverrides(fromFilter.getRelyingPartyOverrides());
             toFilter.setAttributeRelease(fromFilter.getAttributeRelease());
-        }
-        else if(filterWithUpdatedData instanceof EntityRoleWhiteListFilter) {
+        } else if (filterWithUpdatedData instanceof EntityRoleWhiteListFilter) {
             EntityRoleWhiteListFilter toFilter = EntityRoleWhiteListFilter.class.cast(filterToBeUpdated);
             EntityRoleWhiteListFilter fromFilter = EntityRoleWhiteListFilter.class.cast(filterWithUpdatedData);
             toFilter.setRemoveEmptyEntitiesDescriptors(fromFilter.getRemoveEmptyEntitiesDescriptors());
             toFilter.setRemoveRolelessEntityDescriptors(fromFilter.getRemoveRolelessEntityDescriptors());
             toFilter.setRetainedRoles(fromFilter.getRetainedRoles());
-        }
-        else if (filterWithUpdatedData instanceof SignatureValidationFilter) {
+        } else if (filterWithUpdatedData instanceof SignatureValidationFilter) {
             SignatureValidationFilter toFilter = SignatureValidationFilter.class.cast(filterToBeUpdated);
             SignatureValidationFilter fromFilter = SignatureValidationFilter.class.cast(filterWithUpdatedData);
             toFilter.setRequireSignedRoot(fromFilter.getRequireSignedRoot());
@@ -220,13 +235,11 @@ public class MetadataFiltersController {
             toFilter.setDynamicTrustedNamesStrategyRef(fromFilter.getDynamicTrustedNamesStrategyRef());
             toFilter.setTrustEngineRef(fromFilter.getTrustEngineRef());
             toFilter.setPublicKey(fromFilter.getPublicKey());
-        }
-        else if(filterWithUpdatedData instanceof RequiredValidUntilFilter) {
+        } else if (filterWithUpdatedData instanceof RequiredValidUntilFilter) {
             RequiredValidUntilFilter toFilter = RequiredValidUntilFilter.class.cast(filterToBeUpdated);
             RequiredValidUntilFilter fromFilter = RequiredValidUntilFilter.class.cast(filterWithUpdatedData);
             toFilter.setMaxValidityInterval(fromFilter.getMaxValidityInterval());
-        }
-        else if (filterWithUpdatedData instanceof NameIdFormatFilter) {
+        } else if (filterWithUpdatedData instanceof NameIdFormatFilter) {
             NameIdFormatFilter toFilter = NameIdFormatFilter.class.cast(filterToBeUpdated);
             NameIdFormatFilter fromFilter = NameIdFormatFilter.class.cast(filterWithUpdatedData);
             toFilter.setRemoveExistingFormats(fromFilter.getRemoveExistingFormats());

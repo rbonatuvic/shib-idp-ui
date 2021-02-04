@@ -53,9 +53,6 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
         this.status$ = this.store.select(fromResolver.getInvalidEntityForms);
         this.isSaving$ = this.store.select(fromResolver.getEntityIsSaving);
 
-        let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form));
-        startIndex$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(index => this.store.dispatch(new SetIndex(index)));
-
         this.store
             .select(fromWizard.getCurrentWizardSchema)
             .pipe(filter(s => !!s))

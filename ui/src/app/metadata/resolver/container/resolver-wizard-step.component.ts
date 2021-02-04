@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { withLatestFrom, map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromResolver from '../reducer';
 import * as fromWizard from '../../../wizard/reducer';
 
-import { UpdateStatus, UpdateChanges } from '../action/entity.action';
+import { UpdateStatus, UpdateChangesRequest } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
 import { MetadataResolver } from '../../domain/model';
 
@@ -64,26 +64,39 @@ export class ResolverWizardStepComponent implements OnDestroy {
             map(({ model, definition }) => definition.formatter(model))
         );
 
-        this.validators$ = this.definition$.pipe(
-            withLatestFrom(
-                this.store.select(fromResolver.getAllEntityIds),
-                this.model$
-            ),
-            map(([def, ids, resolver]) => def.getValidators(
-                ids.filter(id => id !== resolver.entityId)
-            ))
+        this.validators$ = combineLatest(
+            this.definition$,
+            this.store.select(fromResolver.getValidEntityIds),
+            this.model$
+        ).pipe(
+            map(([def, ids, resolver]) => {
+                return def.getValidators(
+                    ids
+                );
+            })
         );
 
         this.valueChangeEmitted$.pipe(
-            withLatestFrom(this.definition$),
+            withLatestFrom(
+                this.definition$,
+                this.schema$,
+                this.store.select(fromResolver.getSelectedDraft)
+            ),
             filter(([ changes, definition ]) => (!!definition && !!changes)),
-            map(([ changes, definition ]) => definition.parser(changes.value))
+            map(([ changes, definition, schema, original ]) => {
+                const parsed = definition.parser(changes.value, schema);
+                return { ...original, ...parsed };
+            })
         )
         .subscribe(changes => {
-            this.store.dispatch(new UpdateChanges(changes));
+            this.store.dispatch(new UpdateChangesRequest(changes));
         });
 
-        this.statusChangeEmitted$.pipe(distinctUntilChanged()).subscribe(errors => this.updateStatus(errors));
+        this.statusChangeEmitted$
+            .pipe(distinctUntilChanged())
+            .subscribe(errors => {
+                this.updateStatus(errors);
+            });
 
         this.store.select(fromWizard.getWizardIndex).subscribe(i => this.currentPage = i);
     }

@@ -5,20 +5,21 @@ import {
     EventEmitter,
     OnInit,
     OnDestroy,
+    OnChanges,
     AfterViewInit,
     ViewChild,
     ViewChildren,
     QueryList,
     ElementRef,
-    SimpleChanges,
     forwardRef,
-    ChangeDetectionStrategy,
-    OnChanges,
-    HostListener
+    HostListener,
+    SimpleChanges
 } from '@angular/core';
-import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, Subject, Subscription, interval } from 'rxjs';
 import { takeUntil, combineLatest, map } from 'rxjs/operators';
+
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 import { keyCodes } from '../../shared/keycodes';
 import { AutoCompleteStateEmitter } from './autocomplete.model';
@@ -28,7 +29,6 @@ const POLL_TIMEOUT = 1000;
 const INPUT_FIELD_INDEX = -1;
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'auto-complete',
     templateUrl: './autocomplete.component.html',
     styleUrls: ['./autocomplete.component.scss'],
@@ -40,7 +40,7 @@ const INPUT_FIELD_INDEX = -1;
         }
     ]
 })
-export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor {
+export class AutoCompleteComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
     @Input() defaultValue = '';
     @Input() matches: string[] = [];
     @Input() id: string;
@@ -51,11 +51,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     @Input() processing = false;
     @Input() dropdown = false;
     @Input() placeholder = '';
+    @Input() count = null;
 
     @Output() more: EventEmitter<any> = new EventEmitter<any>();
     @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
 
-    @ViewChild('inputField') inputField: ElementRef;
+    @ViewChild('inputField', { static: true }) inputField: ElementRef;
     @ViewChildren('matchElement', { read: ElementRef }) listItems: QueryList<ElementRef>;
 
     focused: number;
@@ -69,8 +70,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     $pollSubscription: Subscription;
 
     showMoreAvailable: boolean;
-
-    matches$: Observable<string[]>;
     numMatches: number;
 
     input: FormControl = new FormControl();
@@ -84,7 +83,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     propagateChange = (_: any | null) => { };
     propagateTouched = (_: any | null) => { };
 
-    constructor(private navigator: NavigatorService) {}
+    constructor(private navigator: NavigatorService, private live: LiveAnnouncer) {}
 
     ngOnInit(): void {
         this.$pollInput = interval(POLL_TIMEOUT);
@@ -116,7 +115,20 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
 
     ngAfterViewInit(): void {
-        this.listItems.changes.subscribe((changes) => this.setElementReferences(changes));
+        this.listItems.changes.subscribe((changes) => this.setElementReferences(changes) );
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.matches && this.matches && this.state.currentState.menuOpen) {
+            this.announceResults();
+        }
+    }
+
+    announceResults(): void {
+        const count = this.matches.length;
+        this.live.announce(count === 0 ?
+            `${this.noneFoundText}` :
+            `${count} result${count === 1 ? '' : 's'} available`, 'polite', 5000);
     }
 
     writeValue(value: any): void {
@@ -146,6 +158,12 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         this.listItems.map((item, index) => {
             this.elementReferences[index] = item;
         });
+    }
+
+    handleDropdown($event: MouseEvent | KeyboardEvent | Event): void {
+        const open = this.state.currentState.menuOpen;
+        this.state.setState({menuOpen: !open});
+        this.handleOptionFocus(0);
     }
 
     handleViewMore($event: MouseEvent | KeyboardEvent | Event): void {
@@ -207,7 +225,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
 
     handleInputChange(query: string): void {
         query = query || '';
-
         const queryEmpty = query.length === 0;
         const autoselect = this.hasAutoselect;
         const optionsAvailable = this.matches.length > 0;
@@ -242,6 +259,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         });
     }
 
+    @HostListener('keydown', ['$event'])
     handleKeyDown(event: KeyboardEvent): void {
         switch (keyCodes[event.keyCode]) {
             case 'up':
@@ -272,7 +290,6 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
     }
 
     handleDownArrow(event: KeyboardEvent): void {
-        event.preventDefault();
         let isNotAtBottom = this.state.currentState.selected !== this.matches.length - 1;
         if (this.showMoreAvailable) {
             isNotAtBottom = this.state.currentState.selected !== this.matches.length;
@@ -281,6 +298,7 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         if (allowMoveDown) {
             this.handleOptionFocus(this.state.currentState.selected + 1);
         }
+        event.preventDefault();
     }
 
     handleSpace(event: KeyboardEvent): void {
@@ -337,8 +355,8 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
         return !!(agent.match(/(iPod|iPhone|iPad)/g) && agent.match(/AppleWebKit/g));
     }
 
-    getOptionId(index): string {
-        return `${this.id}__option--${index}`;
+    getOptionId(index: string | number): string {
+        return `${this.fieldId}__option--${index}`.replace('/', '');
     }
 
     get hasAutoselect(): boolean {
@@ -356,4 +374,4 @@ export class AutoCompleteComponent implements OnInit, OnDestroy, AfterViewInit, 
             ...this.state.currentState
         };
     }
-} /* istanbul ignore next */
+}

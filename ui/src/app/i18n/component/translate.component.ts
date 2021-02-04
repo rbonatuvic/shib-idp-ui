@@ -1,11 +1,7 @@
 import {
-    AfterViewChecked,
-    ChangeDetectorRef,
     Component,
-    ElementRef,
     Input,
-    OnDestroy,
-    ViewContainerRef
+    OnDestroy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { I18nService } from '../service/i18n.service';
@@ -17,7 +13,12 @@ import { Messages } from '../model/Messages';
 
 @Component({
     selector: 'translate-i18n',
-    template: `<ng-content></ng-content>`
+    template: `
+        <ng-container>
+            <ng-content *ngIf="!translated"></ng-content>
+            <ng-container>{{ translated }}</ng-container>
+        </ng-container>
+    `
 })
 export class TranslateComponent implements OnDestroy {
     private _key: string;
@@ -26,6 +27,7 @@ export class TranslateComponent implements OnDestroy {
     messages: Messages = {};
     sub: Subscription;
     default: string;
+    translated: string;
 
     @Input() set key(key: string) {
         if (key) {
@@ -42,9 +44,7 @@ export class TranslateComponent implements OnDestroy {
 
     constructor(
         private service: I18nService,
-        private store: Store<fromI18n.State>,
-        private element: ElementRef,
-        private _ref: ChangeDetectorRef
+        private store: Store<fromI18n.State>
     ) {
         this.sub = this.store.select(fromI18n.getMessages).subscribe(m => {
             if (m && Object.keys(m).length) {
@@ -55,8 +55,7 @@ export class TranslateComponent implements OnDestroy {
     }
 
     update(): void {
-        const translated = this.service.translate(this._key, this.currentParams, this.messages);
-        this.element.nativeElement.textContent = translated;
+        this.translated = this.service.translate(this._key, this.currentParams, this.messages);
     }
 
     ngOnDestroy() {

@@ -1,12 +1,14 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { ConfigurationState, getComparisonConfigurationCount } from '../reducer';
 import { CompareVersionRequest, ClearVersions, ViewChanged } from '../action/compare.action';
-import { MetadataConfiguration } from '../model/metadata-configuration';
+import { MetadataConfiguration, FilterConfiguration } from '../model/metadata-configuration';
 import * as fromReducer from '../reducer';
+import { CompareFilterVersions, ClearFilterComparison } from '../action/filter.action';
+import { FilterComparison } from '../model/compare';
 
 @Component({
     selector: 'metadata-comparison',
@@ -18,12 +20,15 @@ export class MetadataComparisonComponent implements OnDestroy {
 
     limiter: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-    versions$: Observable<MetadataConfiguration>;
-    numVersions$: Observable<number>;
-    type$: Observable<string>;
+    versions$: Observable<MetadataConfiguration> = this.store.select(fromReducer.getLimitedComparisonConfigurations);
+    numVersions$: Observable<number> = this.store.select(getComparisonConfigurationCount);
+    type$: Observable<string> = this.store.select(fromReducer.getConfigurationModelType);
     loading$: Observable<boolean> = this.store.select(fromReducer.getComparisonLoading);
     limited$: Observable<boolean> = this.store.select(fromReducer.getViewChangedOnly);
     sub: Subscription;
+    filters$: Observable<FilterConfiguration> = this.store.select(fromReducer.getComparisonFilterConfiguration);
+    filterCompare$: Observable<MetadataConfiguration> = this.store.select(fromReducer.getLimitedFilterComparisonConfiguration);
+    isProvider$: Observable<boolean> = this.type$.pipe(map(t => t !== 'resolver'));
 
     constructor(
         private store: Store<ConfigurationState>,
@@ -35,20 +40,23 @@ export class MetadataComparisonComponent implements OnDestroy {
             map(versions => new CompareVersionRequest(versions))
         ).subscribe(this.store);
 
-        this.versions$ = this.store.select(fromReducer.getLimitedComparisonConfigurations);
-        this.numVersions$ = this.store.select(getComparisonConfigurationCount);
-        this.type$ = this.store.select(fromReducer.getConfigurationModelType);
-
-        this.versions$.subscribe(console.log);
-
         this.sub = this.limiter.pipe(
             withLatestFrom(this.limited$),
             map(([compare, limit]) => new ViewChanged(!limit))
         ).subscribe(this.store);
     }
 
+    compareFilters (comparison: FilterComparison) {
+        this.store.dispatch(new CompareFilterVersions(comparison));
+    }
+
+    resetCompareFilters () {
+        this.store.dispatch(new ClearFilterComparison());
+    }
+
     ngOnDestroy(): void {
         this.sub.unsubscribe();
         this.store.dispatch(new ClearVersions());
+        this.resetCompareFilters();
     }
 }
