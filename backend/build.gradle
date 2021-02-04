@@ -11,8 +11,8 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     jcenter()
@@ -152,7 +152,7 @@ dependencies {
     //For easy data mocking capabilities
     compile 'net.andreinc.mockneat:mockneat:0.1.4'
 
-    compile 'org.codehaus.groovy:groovy-all:2.4.15'
+    compile 'org.codehaus.groovy:groovy-all:3.0.7'
 
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
@@ -170,8 +170,8 @@ dependencies {
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.springframework.security:spring-security-test"
-    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-    testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+    testCompile "org.spockframework:spock-core:2.0-groovy-3.0-SNAPSHOT"
+    testCompile "org.spockframework:spock-spring:2.0-groovy-3.0-SNAPSHOT"
     testCompile "org.xmlunit:xmlunit-core:2.5.1"
     testRuntime 'cglib:cglib-nodep:3.2.5'
 
@@ -191,8 +191,8 @@ dependencies {
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test"
     integrationTestCompile "org.springframework.security:spring-security-test"
-    integrationTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-    integrationTestCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+    integrationTestCompile "org.spockframework:spock-core:2.0-groovy-3.0-SNAPSHOT"
+    integrationTestCompile "org.spockframework:spock-spring:2.0-groovy-3.0-SNAPSHOT"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
