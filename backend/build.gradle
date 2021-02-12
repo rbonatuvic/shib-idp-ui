@@ -1,7 +1,7 @@
 plugins {
     id 'groovy'
     id 'war'
-    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'org.springframework.boot' version '2.4.2'
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
     id 'io.franzbecker.gradle-lombok' version '1.13'
     id 'com.palantir.docker' version '0.20.1'
@@ -132,7 +132,7 @@ dependencies {
     }
 
     // spring boot auto-config starters
-    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux', 'starter-thymeleaf', 'starter-mail'].each {
+    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux', 'starter-thymeleaf', 'starter-mail', 'starter-validation'].each {
         compile "org.springframework.boot:spring-boot-${it}"
     }
     // TODO: figure out what this should really be
@@ -191,8 +191,8 @@ dependencies {
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test"
     integrationTestCompile "org.springframework.security:spring-security-test"
-    integrationTestCompile "org.spockframework:spock-core:2.0-groovy-3.0-SNAPSHOT"
-    integrationTestCompile "org.spockframework:spock-spring:2.0-groovy-3.0-SNAPSHOT"
+    integrationTestCompile "org.spockframework:spock-core:1.3-groovy-2.5"
+    integrationTestCompile "org.spockframework:spock-spring:1.3-groovy-2.5"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
