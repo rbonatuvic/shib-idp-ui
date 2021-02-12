@@ -6,7 +6,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import spock.lang.Subject
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -36,7 +36,7 @@ class EntityIdsSearchControllerTests extends Specification {
         def limitValue = "5"
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation(["http://unicon.instructure.com/saml2", "https://idp.unicon.net/idp/shibboleth"])
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedResponseBody = """
             {
                 "entityIds":[
@@ -66,7 +66,7 @@ class EntityIdsSearchControllerTests extends Specification {
         def limitValue = "1"
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation(["http://unicon.instructure.com/saml2"])
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedResponseBody = """
             {
                 "entityIds":[
@@ -104,7 +104,7 @@ class EntityIdsSearchControllerTests extends Specification {
                                                                                           "https://shibbox.lpplus.net/shibboleth",
                                                                                           "https://shibsp.amherst.edu/shibboleth"])
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedResponseBody = """
             {
                 "entityIds":[
@@ -141,7 +141,7 @@ class EntityIdsSearchControllerTests extends Specification {
         def limitValue = "5"
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation([])
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedResponseBody = """
             {
                 "entityIds":[]
@@ -168,7 +168,7 @@ class EntityIdsSearchControllerTests extends Specification {
         def limitValue = NO_LIMIT
         def expectedEntityIdsFromSearchService = new EntityIdsSearchResultRepresentation([])
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedResponseBody = """
             {
                 "entityIds":[]

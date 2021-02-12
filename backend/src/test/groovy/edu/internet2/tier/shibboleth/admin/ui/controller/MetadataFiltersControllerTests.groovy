@@ -31,7 +31,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static org.hamcrest.CoreMatchers.containsString
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8
+import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -106,7 +106,7 @@ class MetadataFiltersControllerTests extends Specification {
         1 * metadataResolverRepository.findByResourceId(_) >> metadataResolver
 
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
 
         when:
         def result = mockMvc.perform(get("$BASE_URI/foo/Filters"))
@@ -127,7 +127,7 @@ class MetadataFiltersControllerTests extends Specification {
 
         def expectedResourceId = expectedFilter.resourceId
         def expectedHttpResponseStatus = status().isOk()
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
 
         when:
         def result = mockMvc.perform(get("$BASE_URI/foo/Filters/$expectedResourceId"))
@@ -163,7 +163,7 @@ class MetadataFiltersControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 post("$BASE_URI/foo/Filters")
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
@@ -208,7 +208,7 @@ class MetadataFiltersControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 put("$BASE_URI/foo/Filters/$filterUUID")
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
@@ -245,7 +245,7 @@ class MetadataFiltersControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 put("$BASE_URI/foo/Filters/$filterUUID")
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:

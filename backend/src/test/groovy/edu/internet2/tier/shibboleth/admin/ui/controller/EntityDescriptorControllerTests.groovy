@@ -102,7 +102,7 @@ class EntityDescriptorControllerTests extends Specification {
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def emptyRecordsFromRepository = [].stream()
         def expectedEmptyListResponseBody = '[]'
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
 
         when:
@@ -153,7 +153,7 @@ class EntityDescriptorControllerTests extends Specification {
             ]    
         """
 
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
 
         when:
@@ -229,7 +229,7 @@ class EntityDescriptorControllerTests extends Specification {
            ]    
         """
 
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
 
         when:
@@ -282,7 +282,7 @@ class EntityDescriptorControllerTests extends Specification {
            ]    
         """
 
-        def expectedResponseContentType = APPLICATION_JSON_UTF8
+        def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
 
         when:
@@ -361,7 +361,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 post('/api/EntityDescriptor')
-                    .contentType(APPLICATION_JSON_UTF8)
+                    .contentType(APPLICATION_JSON)
                     .content(postedJsonBody))
 
         then:
@@ -413,7 +413,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 post('/api/EntityDescriptor')
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
@@ -449,7 +449,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 post('/api/EntityDescriptor')
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
@@ -933,7 +933,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 put("/api/EntityDescriptor/$resourceId")
-                .contentType(APPLICATION_JSON_UTF8)
+                .contentType(APPLICATION_JSON)
                 .content(postedJsonBody))
 
         then:
@@ -966,7 +966,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 put("/api/EntityDescriptor/$resourceId")
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
@@ -992,7 +992,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 put("/api/EntityDescriptor/$resourceId")
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
@@ -1018,7 +1018,7 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         def result = mockMvc.perform(
                 put("/api/EntityDescriptor/$resourceId")
-                        .contentType(APPLICATION_JSON_UTF8)
+                        .contentType(APPLICATION_JSON)
                         .content(postedJsonBody))
 
         then:
