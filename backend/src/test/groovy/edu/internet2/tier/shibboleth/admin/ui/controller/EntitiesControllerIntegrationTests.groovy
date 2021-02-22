@@ -35,14 +35,14 @@ class EntitiesControllerIntegrationTests extends Specification {
     @Autowired
     private WebTestClient webClient
 
-    def setup() {
+    /*def setup() {
         //DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory()
         //factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE)
 
         // yeah, don't ask... this is just shenanigans
         this.webClient = WebTestClient.builder().uriBuilderFactory(factory).build()
         this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
-    }
+    }*/
 
     def "GET /api/entities returns the proper json"() {
         given:
@@ -65,11 +65,7 @@ class EntitiesControllerIntegrationTests extends Specification {
         when:
         def result = this.webClient
                 .get()
-                .uri {
-                    it.path("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
-                    it.build()
-                }
-                //.uri("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
+                .uri("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
                 .exchange() // someday, I'd like to know why IntelliJ "cannot resolve symbol 'exchange'"
 
         then:
