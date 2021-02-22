@@ -66,7 +66,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTes
 @ContextConfiguration(classes = [CoreShibUiConfiguration, InternationalizationConfiguration, SearchConfiguration, TestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class EntityDescriptorEnversVersioningTests extends Specification {
 
     @Autowired
