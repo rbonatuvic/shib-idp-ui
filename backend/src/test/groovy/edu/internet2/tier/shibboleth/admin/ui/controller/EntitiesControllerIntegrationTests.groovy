@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.util.DefaultUriBuilderFactory
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -35,7 +36,11 @@ class EntitiesControllerIntegrationTests extends Specification {
     private WebTestClient webClient
 
     def setup() {
+        //DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory()
+        //factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE)
+
         // yeah, don't ask... this is just shenanigans
+        this.webClient = WebTestClient.builder().uriBuilderFactory(factory).build()
         this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
     }
 
@@ -60,7 +65,11 @@ class EntitiesControllerIntegrationTests extends Specification {
         when:
         def result = this.webClient
                 .get()
-                .uri("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
+                .uri {
+                    it.path("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
+                    it.build()
+                }
+                //.uri("/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1")
                 .exchange() // someday, I'd like to know why IntelliJ "cannot resolve symbol 'exchange'"
 
         then:

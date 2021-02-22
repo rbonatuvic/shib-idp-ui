@@ -398,3 +398,5 @@ rdurable
 
 #Local build with no tests script wrapper
 build-no-tests
+
+beacon/spring/out

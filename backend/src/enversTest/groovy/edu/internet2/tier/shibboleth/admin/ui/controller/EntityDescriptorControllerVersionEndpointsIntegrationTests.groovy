@@ -111,7 +111,7 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         edv2.body.serviceProviderName == 'SP2'
     }
 
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    //@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'SHIBUI-1414'() {
         given:
         def ed = new EntityDescriptor(entityID: 'testme', serviceProviderName: 'testme').with {
@@ -125,7 +125,6 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
             })
             entityDescriptorRepository.save(it)
         }
-
         when:
         def headers = new HttpHeaders().with {
             it.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -133,7 +132,7 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         }
 
         def allVersions = getAllEntityDescriptorVersions(ed.resourceId, List)
-        def edv1 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[0].id, String).body
+        String edv1 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[0].id, String).body
         def tedv2 = getEntityDescriptorForVersion(ed.resourceId, allVersions.body[1].id, EntityDescriptorRepresentation).body
 
         def aedv1 = new JsonSlurper().parseText(edv1).with {
