@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -53,6 +54,11 @@ public class WebSecurityConfig {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedSlash(true);
         return firewall;
+    }
+
+    @Bean
+    public HttpFirewall defaultFirewall() {
+        return new DefaultHttpFirewall();
     }
 
     @Bean
@@ -142,7 +148,8 @@ public class WebSecurityConfig {
             @Override
             public void configure(WebSecurity web) throws Exception {
                 super.configure(web);
-                web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+                //Switch to the default firewall
+                web.httpFirewall(defaultFirewall());
             }
         };
     }
