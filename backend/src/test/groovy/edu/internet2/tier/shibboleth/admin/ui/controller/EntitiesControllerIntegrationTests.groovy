@@ -36,11 +36,8 @@ class EntitiesControllerIntegrationTests extends Specification {
     private WebTestClient webClient
 
     /*def setup() {
-        //DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory()
-        //factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE)
-
         // yeah, don't ask... this is just shenanigans
-        this.webClient = WebTestClient.builder().uriBuilderFactory(factory).build()
+        // The API is changed. Doesn't work anymore. Not sure if we need it here
         this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
     }*/
 

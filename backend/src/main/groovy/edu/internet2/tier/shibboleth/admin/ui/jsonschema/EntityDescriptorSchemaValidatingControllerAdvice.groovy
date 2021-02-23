@@ -21,7 +21,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSche
  *
  * @author Dmitriy Kopylenko
  */
-//@ControllerAdvice
+@ControllerAdvice
 class EntityDescriptorSchemaValidatingControllerAdvice extends RequestBodyAdviceAdapter {
 
     @Autowired

@@ -111,7 +111,7 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
         edv2.body.serviceProviderName == 'SP2'
     }
 
-    //@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'SHIBUI-1414'() {
         given:
         def ed = new EntityDescriptor(entityID: 'testme', serviceProviderName: 'testme').with {
