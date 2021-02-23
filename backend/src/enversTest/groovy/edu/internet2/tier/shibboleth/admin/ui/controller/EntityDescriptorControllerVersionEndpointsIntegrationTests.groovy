@@ -113,7 +113,6 @@ class EntityDescriptorControllerVersionEndpointsIntegrationTests extends Specifi
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    @Ignore
     def 'SHIBUI-1414'() {
         given:
         def ed = new EntityDescriptor(entityID: 'testme', serviceProviderName: 'testme').with {
