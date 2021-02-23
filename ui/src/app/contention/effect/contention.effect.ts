@@ -23,12 +23,12 @@ export class ContentionEffects {
         switchMap(contention => {
             const resolutionAction = of(new ResolveContentionAction({ value: contention.resolutionObject, handlers: contention.handlers }));
             const rejectionAction = of(new CancelContentionAction({ value: contention.rejectionObject, handlers: contention.handlers }));
-            if (contention.ourChanges.length < 1) {
+            /*if (contention.ourChanges.length < 1) {
                 return rejectionAction;
             }
             if (contention.theirChanges.length < 1) {
                 return resolutionAction;
-            }
+            }*/
             return this.modal
                 .open(ContentionDialogComponent, DEFAULT_MODAL_OPTIONS, { contention })
                 .pipe(
