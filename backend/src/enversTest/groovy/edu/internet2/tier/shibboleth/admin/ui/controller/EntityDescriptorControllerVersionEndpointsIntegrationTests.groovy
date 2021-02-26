@@ -18,7 +18,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import spock.lang.Ignore
 import spock.lang.Specification
 
 /**

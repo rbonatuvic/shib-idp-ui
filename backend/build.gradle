@@ -3,7 +3,7 @@ plugins {
     id 'war'
     id 'org.springframework.boot' version '2.4.2'
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-    id 'io.franzbecker.gradle-lombok' version '1.13'
+    id 'io.freefair.lombok' version '5.3.0'
     id 'com.palantir.docker' version '0.20.1'
     id 'com.palantir.docker-run' version '0.20.1'
 }
@@ -109,11 +109,7 @@ springBoot {
     buildInfo()
 }
 
-lombok {
-    version = "1.18.8"
-    //TODO: get new sha256
-    sha256 = ""
-}
+generateLombokConfig.enabled = false
 
 dependencies {
     // opensaml deps
