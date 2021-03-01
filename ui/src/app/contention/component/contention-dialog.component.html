@@ -3,12 +3,16 @@
         <h4 class="modal-title"><translate-i18n key="message.data-version-contention">Data Version Contention</translate-i18n></h4>
     </div>
     <div class="modal-body">
-        <div class="d-flex w-100 justify-content-between">
+        <div class="d-flex w-100 justify-content-start">
             <i class="fa fa-fw fa-exclamation-triangle fa-3x text-warning"></i>
-            <p class="ml-2">
-                <translate-i18n key="message.contention-new-version">A newer version of this metadata source has been saved. Below are a list of changes. You can use your changes or their changes.</translate-i18n></p>
+            <p class="ml-2" *ngIf="theirs.length > 0">
+                <translate-i18n key="message.contention-new-version">A newer version of this metadata source has been saved. Below are a list of changes. You can use your changes or their changes.</translate-i18n>
+            </p>
+            <p class="ml-2" *ngIf="theirs.length < 1">
+                <translate-i18n key="message.contention-error">There was a problem saving due to a mismatched version.</translate-i18n>
+            </p>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="theirs.length > 0">
             <div class="col col-6">
                 <div class="card">
                     <div class="card-header bg-info text-white">

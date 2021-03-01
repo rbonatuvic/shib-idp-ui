@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 
-import {
-    EditorActionTypes
-} from '../action/editor.action';
-import { map, switchMap, catchError, withLatestFrom, debounceTime } from 'rxjs/operators';
+import { map, switchMap, catchError, debounceTime } from 'rxjs/operators';
 import { of } from 'rxjs';
 import {
     LoadSchemaRequest,
@@ -18,6 +15,7 @@ import { ResetChanges } from '../action/entity.action';
 
 import * as fromWizard from '../../../wizard/reducer';
 import { Store } from '@ngrx/store';
+import { CancelContentionAction, ContentionActionTypes } from '../../../contention/action/contention.action';
 
 @Injectable()
 export class EditorEffects {
@@ -43,9 +41,14 @@ export class EditorEffects {
         map(() => new ResetChanges())
     );
 
+    @Effect()
+    $resetChangesOnContentionFail = this.actions$.pipe(
+        ofType<CancelContentionAction>(ContentionActionTypes.CANCEL_CONTENTION),
+        map(() => new ResetChanges())
+    );
+
     constructor(
         private schemaService: SchemaService,
-        private store: Store<fromWizard.WizardState>,
         private actions$: Actions
     ) { }
 }  /* istanbul ignore next */
