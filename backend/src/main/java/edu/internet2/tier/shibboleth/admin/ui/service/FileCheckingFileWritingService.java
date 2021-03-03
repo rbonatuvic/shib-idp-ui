@@ -63,11 +63,11 @@ public class FileCheckingFileWritingService implements FileWritingService {
         return Arrays.equals(fileDigest, contentDigest);
     }
 
-    void writeContent(Path path, String content) throws IOException {
+    protected void writeContent(Path path, String content) throws IOException {
         Files.write(path, content.getBytes());
     }
 
-    void writeContent(WritableResource resource, String content) throws IOException {
+    protected void writeContent(WritableResource resource, String content) throws IOException {
         try (OutputStream os = resource.getOutputStream()) {
             os.write(content.getBytes());
         }

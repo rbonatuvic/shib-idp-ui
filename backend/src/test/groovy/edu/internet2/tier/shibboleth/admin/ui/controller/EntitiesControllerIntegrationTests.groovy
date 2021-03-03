@@ -17,6 +17,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.util.DefaultUriBuilderFactory
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -34,10 +35,11 @@ class EntitiesControllerIntegrationTests extends Specification {
     @Autowired
     private WebTestClient webClient
 
-    def setup() {
+    /*def setup() {
         // yeah, don't ask... this is just shenanigans
+        // The API is changed. Doesn't work anymore. Not sure if we need it here
         this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
-    }
+    }*/
 
     def "GET /api/entities returns the proper json"() {
         given:

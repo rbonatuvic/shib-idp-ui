@@ -29,7 +29,7 @@ import javax.persistence.EntityManager
  * A highly unnecessary test so that I can check to make sure that persistence is correct for the model
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, InternationalizationConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, InternationalizationConfiguration, Config])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)

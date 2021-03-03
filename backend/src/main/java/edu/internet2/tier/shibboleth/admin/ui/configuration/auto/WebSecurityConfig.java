@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -34,7 +34,6 @@ import java.util.Collections;
  * Workaround for slashes in URL from [https://stackoverflow.com/questions/48453980/spring-5-0-3-requestrejectedexception-the-request-was-rejected-because-the-url]
  */
 @Configuration
-@AutoConfigureBefore(SpringBootWebSecurityConfiguration.class)
 @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class WebSecurityConfig {
 
@@ -55,6 +54,11 @@ public class WebSecurityConfig {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedSlash(true);
         return firewall;
+    }
+
+    @Bean
+    public HttpFirewall defaultFirewall() {
+        return new DefaultHttpFirewall();
     }
 
     @Bean
@@ -144,7 +148,8 @@ public class WebSecurityConfig {
             @Override
             public void configure(WebSecurity web) throws Exception {
                 super.configure(web);
-                web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+                //Switch to the default firewall
+                web.httpFirewall(defaultFirewall());
             }
         };
     }

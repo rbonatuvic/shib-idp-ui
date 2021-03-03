@@ -1,4 +1,0 @@
-allprojects {
-    group = 'edu.internet2.tap.beacon'
-    version = '1.0.0-SNAPSHOT'
-}

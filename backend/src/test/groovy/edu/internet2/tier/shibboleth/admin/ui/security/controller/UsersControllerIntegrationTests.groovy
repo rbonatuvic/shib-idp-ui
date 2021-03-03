@@ -83,7 +83,7 @@ class UsersControllerIntegrationTests extends Specification {
         then: 'Request completed with HTTP 200 and returned a list of users'
         result
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson, false))
     }
 
@@ -106,7 +106,7 @@ class UsersControllerIntegrationTests extends Specification {
         then: 'Request completed with HTTP 200 and returned one user'
         result
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson, false))
     }
 
@@ -156,7 +156,7 @@ class UsersControllerIntegrationTests extends Specification {
 
         when:
         def result = mockMvc.perform(post(RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonOutput.toJson(newUser))
                 .accept(MediaType.APPLICATION_JSON))
 
@@ -177,11 +177,11 @@ class UsersControllerIntegrationTests extends Specification {
 
         when:
         mockMvc.perform(post(RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonOutput.toJson(newUser))
                 .accept(MediaType.APPLICATION_JSON))
         def result = mockMvc.perform(post(RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonOutput.toJson(newUser))
                 .accept(MediaType.APPLICATION_JSON))
 
@@ -202,7 +202,7 @@ class UsersControllerIntegrationTests extends Specification {
 
         when:
         def result = mockMvc.perform(post(RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonOutput.toJson(newUser))
                 .accept(MediaType.APPLICATION_JSON))
 
@@ -212,7 +212,7 @@ class UsersControllerIntegrationTests extends Specification {
         when:
         newUser['firstName'] = 'Bob'
         result = mockMvc.perform(patch("$RESOURCE_URI/$newUser.username")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonOutput.toJson(newUser))
                 .accept(MediaType.APPLICATION_JSON))
 
@@ -232,7 +232,7 @@ class UsersControllerIntegrationTests extends Specification {
 
         when:
         def result = mockMvc.perform(patch("$RESOURCE_URI/$newUser.username")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonOutput.toJson(newUser)))
 
         then:

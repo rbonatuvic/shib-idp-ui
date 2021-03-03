@@ -49,7 +49,7 @@ public class BeaconPublishingConfiguration {
         }
 
         //Cron is based on the spec defined here: https://spaces.at.internet2.edu/display/TWGH/TIER+Instrumentation+-+The+TIER+Beacon
-        @Scheduled(cron = "0 ${random.int[0,59]} ${random.int[0,3]} ? * *}")
+        @Scheduled(cron = "0 ${random.int[0,59]} ${random.int[0,3]} ? * *")
         @Async
         void publish() {
             logger.debug("Publishing payload: {} to beacon endpoint: {}",

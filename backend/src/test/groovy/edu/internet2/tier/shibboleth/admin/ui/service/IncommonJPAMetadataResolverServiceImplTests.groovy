@@ -29,9 +29,8 @@ import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 
-@SpringBootTest
 @DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration])
+@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, TestConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class IncommonJPAMetadataResolverServiceImplTests extends Specification {
