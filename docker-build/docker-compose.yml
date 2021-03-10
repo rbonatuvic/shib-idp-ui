@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  builder:
+    image: unicon/shibuibuilder:1.0
+# If you want a container to docker exec into for manual operations, comment out the environment RUN_COMMAND    
+    environment:
+      RUN_COMMAND: 'sh gradlew clean'
+    volumes:
+      - ../:/shib-idp-ui
+
+volumes:
+  shib-idp-ui:
+  
