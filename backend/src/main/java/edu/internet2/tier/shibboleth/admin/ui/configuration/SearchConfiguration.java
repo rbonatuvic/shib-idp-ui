@@ -6,6 +6,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenFilter;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.ngram.NGramTokenFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
@@ -33,9 +34,9 @@ public class SearchConfiguration {
                 final StandardTokenizer src = new StandardTokenizer();
                 src.setMaxTokenLength(255);
                 TokenFilter tokenFilter;
-                tokenFilter = new NGramTokenFilter(src, 3, 10);
+                tokenFilter = new NGramTokenFilter(src, 3, 10, true);
                 tokenFilter = new LowerCaseFilter(tokenFilter);
-                tokenFilter = new StopFilter(tokenFilter, StandardAnalyzer.STOP_WORDS_SET);
+                tokenFilter = new StopFilter(tokenFilter, EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
                 return new TokenStreamComponents(src, tokenFilter);
             }
         };
@@ -50,7 +51,7 @@ public class SearchConfiguration {
                 src.setMaxTokenLength(255);
                 TokenFilter tokenFilter;
                 tokenFilter = new LowerCaseFilter(src);
-                tokenFilter = new StopFilter(tokenFilter, StandardAnalyzer.STOP_WORDS_SET);
+                tokenFilter = new StopFilter(tokenFilter, EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
                 return new TokenStreamComponents(src, tokenFilter);
             }
         };

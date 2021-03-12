@@ -10,7 +10,6 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.env.Environment
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
@@ -23,7 +22,7 @@ import spock.lang.Specification
  * @author Bill Smith (wsmith@unicon.net)
  */
 @SpringBootTest
-@DataJpaTest
+//@DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, EmailConfiguration, TestConfiguration, InternationalizationConfiguration, SearchConfiguration, DevConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")

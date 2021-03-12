@@ -30,14 +30,12 @@ import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
 import org.joda.time.DateTime
 import org.opensaml.core.criterion.EntityIdCriterion
-import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
@@ -50,16 +48,10 @@ import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import javax.xml.transform.OutputKeys
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
-
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-@SpringBootTest
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, MetadataResolverConverterConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, MetadataResolverConverterConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration, Config])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)

@@ -1,9 +1,9 @@
 plugins {
     id 'groovy'
     id 'war'
-    id 'org.springframework.boot' version '2.0.0.RELEASE'
+    id 'org.springframework.boot' version '2.4.2'
     id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-    id 'io.franzbecker.gradle-lombok' version '1.13'
+    id 'io.freefair.lombok' version '5.3.0'
     id 'com.palantir.docker' version '0.20.1'
     id 'com.palantir.docker-run' version '0.20.1'
 }
@@ -11,8 +11,8 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     jcenter()
@@ -55,13 +55,19 @@ sourceSets {
         java {
             srcDirs = []
         }
+        resources {
+            srcDir new File(buildDir, 'generated/ui')
+        }
     }
     integrationTest {
         groovy {
             srcDirs = ['src/integration/groovy']
+            compileClasspath += main.output
+            runtimeClasspath += main.output
         }
         resources {
             srcDir 'src/integration/resources'
+            srcDir new File(buildDir, 'generated/ui')
         }
     }
 
@@ -103,11 +109,7 @@ springBoot {
     buildInfo()
 }
 
-lombok {
-    version = "1.18.4"
-    //TODO: get new sha256
-    sha256 = ""
-}
+generateLombokConfig.enabled = false
 
 dependencies {
     // opensaml deps
@@ -126,7 +128,7 @@ dependencies {
     }
 
     // spring boot auto-config starters
-    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux', 'starter-thymeleaf', 'starter-mail'].each {
+    ['starter-web', 'starter-data-jpa', 'starter-security', 'starter-actuator', 'devtools', 'starter-webflux', 'starter-thymeleaf', 'starter-mail', 'starter-validation'].each {
         compile "org.springframework.boot:spring-boot-${it}"
     }
     // TODO: figure out what this should really be
@@ -146,10 +148,12 @@ dependencies {
     //For easy data mocking capabilities
     compile 'net.andreinc.mockneat:mockneat:0.1.4'
 
-    compile 'org.codehaus.groovy:groovy-all:2.4.15'
+    compile 'org.codehaus.groovy:groovy-all:3.0.7'
 
     //So it works on Java 9 without explicitly requiring to load that module (needed by Hibernate)
     runtimeOnly 'javax.xml.bind:jaxb-api:2.3.0'
+    // runtime libraries for later java versions
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:2.3.0'
 
     compile "com.h2database:h2"
     runtimeOnly "org.postgresql:postgresql"
@@ -162,8 +166,8 @@ dependencies {
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.springframework.security:spring-security-test"
-    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-    testCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+    testCompile "org.spockframework:spock-core:1.3-groovy-2.5"
+    testCompile "org.spockframework:spock-spring:1.3-groovy-2.5"
     testCompile "org.xmlunit:xmlunit-core:2.5.1"
     testRuntime 'cglib:cglib-nodep:3.2.5'
 
@@ -183,8 +187,8 @@ dependencies {
     integrationTestCompile 'jp.vmi:selenese-runner-java:3.20.0'
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test"
     integrationTestCompile "org.springframework.security:spring-security-test"
-    integrationTestCompile "org.spockframework:spock-core:1.1-groovy-2.4"
-    integrationTestCompile "org.spockframework:spock-spring:1.1-groovy-2.4"
+    integrationTestCompile "org.spockframework:spock-core:1.3-groovy-2.5"
+    integrationTestCompile "org.spockframework:spock-spring:1.3-groovy-2.5"
 
     // CSV file support
     compile 'com.opencsv:opencsv:4.4'
@@ -207,31 +211,6 @@ dependencies {
 
     enversTestRuntime configurations.runtime
     enversTestRuntime configurations.testRuntime
-}
-
-sourceSets {
-    main {
-        groovy {
-            srcDirs = ['src/main/groovy', 'src/main/java', generatedSrcDir]
-        }
-        java {
-            srcDirs = []
-        }
-        resources {
-            srcDir new File(buildDir, 'generated/ui')
-        }
-    }
-    integrationTest {
-        groovy {
-            srcDirs = ['src/integration/groovy']
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-        }
-        resources {
-            srcDir 'src/integration/resources'
-            srcDir new File(buildDir, 'generated/ui')
-        }
-    }
 }
 
 task copyUI(type: Copy) {
@@ -339,7 +318,7 @@ compileJava {
 }
 
 jacoco {
-    toolVersion = '0.8.1'
+    toolVersion = '0.8.4'
 }
 
 jacocoTestReport {
