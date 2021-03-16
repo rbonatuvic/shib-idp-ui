@@ -13,6 +13,7 @@ import { MetadataFilter } from '../../domain/model';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { AddFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges, SelectFilterType } from '../action/filter.action';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -49,7 +50,8 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     constructor(
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private route: ActivatedRoute
     ) {
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
 
@@ -118,6 +120,6 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     }
 
     cancel(): void {
-        this.store.dispatch(new CancelCreateFilter());
+        this.store.dispatch(new CancelCreateFilter(this.route.snapshot.params.providerId));
     }
 }

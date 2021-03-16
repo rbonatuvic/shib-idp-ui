@@ -79,13 +79,19 @@ export class LoadFilterError implements Action {
 export class UpdateFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.UPDATE_FILTER_REQUEST;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: {
+        filter: MetadataFilter,
+        providerId: string;
+    }) { }
 }
 
 export class UpdateFilterSuccess implements Action {
     readonly type = FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS;
 
-    constructor(public payload: Update<MetadataFilter>) { }
+    constructor(public payload: {
+        providerId: string,
+        update: Update<MetadataFilter>
+    }) { }
 }
 
 export class UpdateFilterFail implements Action {
@@ -97,7 +103,10 @@ export class UpdateFilterFail implements Action {
 export class UpdateFilterConflict implements Action {
     readonly type = FilterCollectionActionTypes.UPDATE_FILTER_CONFLICT;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: {
+        providerId: string,
+        filter: MetadataFilter
+    }) { }
 }
 
 export class AddFilterRequest implements Action {
@@ -143,13 +152,16 @@ export class ClearFilters implements Action {
 export class SetOrderFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.SET_ORDER_FILTER_REQUEST;
 
-    constructor(public payload: string[]) { }
+    constructor(public payload: {
+        order: string[],
+        providerId: string
+    }) { }
 }
 
 export class SetOrderFilterSuccess implements Action {
     readonly type = FilterCollectionActionTypes.SET_ORDER_FILTER_SUCCESS;
 
-    constructor() { }
+    constructor(public payload: string) { }
 }
 
 export class SetOrderFilterFail implements Action {
@@ -179,13 +191,19 @@ export class GetOrderFilterFail implements Action {
 export class ChangeFilterOrderUp implements Action {
     readonly type = FilterCollectionActionTypes.CHANGE_FILTER_ORDER_UP;
 
-    constructor(public payload: string) { }
+    constructor(public payload: {
+        id: string,
+        providerId: string
+    }) { }
 }
 
 export class ChangeFilterOrderDown implements Action {
     readonly type = FilterCollectionActionTypes.CHANGE_FILTER_ORDER_DOWN;
 
-    constructor(public payload: string) { }
+    constructor(public payload: {
+        id: string,
+        providerId: string
+    }) { }
 }
 
 export type FilterCollectionActionsUnion =

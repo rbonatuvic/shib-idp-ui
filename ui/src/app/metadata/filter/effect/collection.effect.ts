@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { of } from 'rxjs';
 import { switchMap, map, catchError, tap, combineLatest, skipWhile, debounceTime, withLatestFrom } from 'rxjs/operators';
@@ -162,18 +162,25 @@ export class FilterCollectionEffects {
     updateFilter$ = this.actions$.pipe(
         ofType<UpdateFilterRequest>(FilterCollectionActionTypes.UPDATE_FILTER_REQUEST),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        switchMap(([filter, providerId]) => {
+        switchMap((action) => {
+            const { filter, providerId } = action;
             delete filter.modifiedDate;
             delete filter.createdDate;
+
             return this.filterService
                 .update(providerId, filter)
                 .pipe(
-                    map(p => new UpdateFilterSuccess({
-                        id: p.resourceId,
-                        changes: p
+                    map(resp => new UpdateFilterSuccess({
+                        providerId,
+                        update: {
+                            id: resp.resourceId,
+                            changes: resp
+                        }
                     })),
-                    catchError(err => of(err.status === 409 ? new UpdateFilterConflict(filter) : new UpdateFilterFail(err)))
+                    catchError(err => of(err.status === 409 ? new UpdateFilterConflict({
+                        filter,
+                        providerId
+                    }) : new UpdateFilterFail(err)))
                 );
         })
     );
@@ -184,16 +191,18 @@ export class FilterCollectionEffects {
             FilterCollectionActionTypes.SET_ORDER_FILTER_SUCCESS,
             FilterCollectionActionTypes.REMOVE_FILTER_SUCCESS
         ),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        map(([action, providerId]) => new SelectProviderRequest(providerId))
+        map((action) => {
+            const { payload } = action;
+            const { providerId } = payload;
+            return new SelectProviderRequest(providerId);
+        })
     );
 
     @Effect({ dispatch: false })
     updateFilterSuccessRedirect$ = this.actions$.pipe(
         ofType<UpdateFilterSuccess>(FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        tap(([filter, provider]) => this.navigateToParent(provider))
+        tap(({ providerId }) => this.navigateToParent(providerId))
     );
 
     @Effect()
@@ -225,12 +234,11 @@ export class FilterCollectionEffects {
         ofType<SetOrderFilterRequest>(FilterCollectionActionTypes.SET_ORDER_FILTER_REQUEST),
         map(action => action.payload),
         withLatestFrom(
-            this.store.select(fromProvider.getSelectedProviderId),
             this.store.select(fromFilter.getPluginFilterOrder)
         ),
-        switchMap(([order, providerId, pluginOrder]) =>
+        switchMap(([{order, providerId}, pluginOrder]) =>
             this.filterService.setOrder(providerId, [...pluginOrder, ...order]).pipe(
-                map(() => new SetOrderFilterSuccess()),
+                map(() => new SetOrderFilterSuccess(providerId)),
                 catchError(err => of(new SetOrderFilterFail(err)))
             )
         )
@@ -247,11 +255,11 @@ export class FilterCollectionEffects {
         ofType<ChangeFilterOrderUp>(FilterCollectionActionTypes.CHANGE_FILTER_ORDER_UP),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromFilter.getAdditionalFilterOrder)),
-        map(([id, order]) => {
+        map(([{ id, providerId }, order]) => {
             const index = order.indexOf(id);
             if (index > 0) {
                 const newOrder = array_move(order, index, index - 1);
-                return new SetOrderFilterRequest(newOrder);
+                return new SetOrderFilterRequest({ order: newOrder, providerId });
             } else {
                 return new SetOrderFilterFail(new Error(`could not change order: ${id}`));
             }
@@ -263,11 +271,11 @@ export class FilterCollectionEffects {
         ofType<ChangeFilterOrderDown>(FilterCollectionActionTypes.CHANGE_FILTER_ORDER_DOWN),
         map(action => action.payload),
         withLatestFrom(this.store.select(fromFilter.getAdditionalFilterOrder)),
-        map(([id, order]) => {
+        map(([{id, providerId}, order]) => {
             const index = order.indexOf(id);
             if (index < order.length - 1) {
                 const newOrder = array_move(order, index, index + 1);
-                return new SetOrderFilterRequest(newOrder);
+                return new SetOrderFilterRequest({ order: newOrder, providerId });
             } else {
                 return new SetOrderFilterFail(new Error(`could not change order: ${id}`));
             }
@@ -298,6 +306,7 @@ export class FilterCollectionEffects {
     constructor(
         private actions$: Actions,
         private router: Router,
+        private route: ActivatedRoute,
         private filterService: MetadataFilterService,
         private store: Store<fromFilter.State>,
         private i18nService: I18nService

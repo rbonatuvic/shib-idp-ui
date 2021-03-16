@@ -38,13 +38,24 @@
                         </ng-container>
                     </div>
                 </div>
-                <sf-form
-                    [schema]="schema$ | async"
-                    [model]="model$ | async"
-                    [validators]="validators$ | async"
-                    [actions]="actions"
-                    (onChange)="valueChangeSubject.next($event)"
-                    (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-3 d-none d-lg-block">
+                        <editor-nav
+                            [format]="formats.TABS"
+                            [status]="status$ | async">
+                        </editor-nav>
+                    </div>
+                    <div class="col-lg-9">
+                        <sf-form
+                            [schema]="schema$ | async"
+                            [model]="model$ | async"
+                            [validators]="validators$ | async"
+                            [actions]="actions"
+                            (onChange)="valueChangeSubject.next($event)"
+                            (onErrorChange)="statusChangeSubject.next($event)"></sf-form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

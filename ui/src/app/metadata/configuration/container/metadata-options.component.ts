@@ -93,11 +93,17 @@ export class MetadataOptionsComponent implements OnDestroy {
     }
 
     updateOrderUp(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderUp(filter.resourceId));
+        this.store.dispatch(new ChangeFilterOrderUp({
+            id: filter.resourceId,
+            providerId: this.activatedRoute.snapshot.params.providerId
+        }));
     }
 
     updateOrderDown(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderDown(filter.resourceId));
+        this.store.dispatch(new ChangeFilterOrderDown({
+            id: filter.resourceId,
+            providerId: this.activatedRoute.snapshot.params.providerId
+        }));
     }
 
     removeFilter(id: string): void {

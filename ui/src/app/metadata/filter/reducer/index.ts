@@ -3,17 +3,20 @@ import * as fromRoot from '../../../core/reducer';
 import * as fromFilter from './filter.reducer';
 import * as fromSearch from './search.reducer';
 import * as fromCollection from './collection.reducer';
+import * as fromEditor from './editor.reducer';
 import * as utils from '../../domain/domain.util';
 import { MetadataFilter } from '../../domain/model';
 
 export interface FilterState {
     filter: fromFilter.FilterState;
     search: fromSearch.SearchState;
+    editor: fromEditor.EditorState;
     collection: fromCollection.CollectionState;
 }
 
 export const reducers = {
     filter: fromFilter.reducer,
+    editor: fromEditor.reducer,
     search: fromSearch.reducer,
     collection: fromCollection.reducer
 };
@@ -25,6 +28,7 @@ export interface State extends fromRoot.State {
 export const getFiltersFromStateFn = (state: FilterState) => state.filter;
 export const getSearchFromStateFn = (state: FilterState) => state.search;
 export const getCollectionFromStateFn = (state: FilterState) => state.collection;
+export const getEditorStateFn = (state: FilterState) => state.editor;
 
 export const getFilterState = createFeatureSelector<FilterState>('filter');
 
@@ -33,6 +37,8 @@ export const getFilterFromState = createSelector(getFilterState, getFiltersFromS
 export const getSelected = createSelector(getFilterFromState, fromFilter.getSelected);
 export const getFilter = createSelector(getFilterFromState, fromFilter.getFilterChanges);
 export const getPreview = createSelector(getFilterFromState, fromFilter.getPreview);
+export const getEditorState = createSelector(getFilterState, getEditorStateFn);
+
 
 /*
  *   Select pieces of Search Collection
@@ -73,6 +79,15 @@ export const getAdditionalFilters = createSelector(getFilterList, getAdditionalF
 export const getPluginFilterOrder = createSelector(getFilterEntities, getCollectionOrder, pluginOrderFn);
 
 export const getFilterNames = createSelector(getAllFilters, (filters: MetadataFilter[]) => filters.map(f => f.name).filter(f => !!f));
+
+/*
+Editor State
+*/
+
+export const getEditorIsValid = createSelector(getEditorState, fromEditor.isEditorValid);
+
+export const getFormStatus = createSelector(getEditorState, fromEditor.getFormStatus);
+export const getInvalidEditorForms = createSelector(getEditorState, fromEditor.getInvalidForms);
 
 /*
  *   Combine pieces of State

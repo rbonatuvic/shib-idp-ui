@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
-import { skipWhile, map, combineLatest, filter, takeUntil } from 'rxjs/operators';
+import {  map, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromProvider from '../reducer';
-import { ClearWizard, SetIndex, LoadSchemaRequest } from '../../../wizard/action/wizard.action';
+import { SetIndex, LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { ClearEditor } from '../action/editor.action';
 import { MetadataProvider } from '../../domain/model';
 import { ClearProvider } from '../action/entity.action';

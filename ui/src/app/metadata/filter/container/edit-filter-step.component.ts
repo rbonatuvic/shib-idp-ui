@@ -10,16 +10,13 @@ import { SchemaService } from '../../../schema-form/service/schema.service';
 import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
-import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
-import { shareReplay, map, withLatestFrom, filter, switchMap, takeUntil } from 'rxjs/operators';
-import * as fromWizard from '../../../wizard/reducer';
-import { ActivatedRoute } from '@angular/router';
+import { shareReplay, map, withLatestFrom, filter, switchMap, startWith, defaultIfEmpty, takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'edit-filter-page',
-    templateUrl: './edit-filter.component.html'
+    selector: 'edit-filter-step-page',
+    templateUrl: './edit-filter-step.component.html'
 })
-export class EditFilterComponent implements OnDestroy {
+export class EditFilterStepComponent implements OnDestroy {
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -39,33 +36,34 @@ export class EditFilterComponent implements OnDestroy {
     isValid: boolean;
     type$: Observable<string>;
 
-    status$: Observable<any>;
-
     validators$: Observable<{ [key: string]: any }>;
 
     actions: any;
 
     defSub: Subscription;
 
-    formats = NAV_FORMATS;
-
     constructor(
         private store: Store<fromFilter.State>,
-        private schemaService: SchemaService,
-        private route: ActivatedRoute
+        private schemaService: SchemaService
     ) {
-
-        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d))
+        this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
+            takeUntil(this.ngUnsubscribe),
+            filter(t => !!t),
+            map(t => MetadataFilterTypes[t])
+        );
 
         this.defSub = this.definition$.subscribe(d => this.definition = d);
+
+        this.definition$.subscribe(console.log);
 
         this.schema$ = this.definition$.pipe(
             takeUntil(this.ngUnsubscribe),
             filter(d => !!d),
-            switchMap(d => this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe))),
+            switchMap(d => {
+                return this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe));
+            }),
             shareReplay()
         );
-
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
         this.type$ = this.model$.pipe(map(f => f && f.hasOwnProperty('@type') ? f['@type'] : ''));
@@ -75,16 +73,14 @@ export class EditFilterComponent implements OnDestroy {
             this.isValid = valid.value ? valid.value.length === 0 : true;
         });
 
-        this.status$ = this.store.select(fromFilter.getInvalidEditorForms);
-
         this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
             takeUntil(this.ngUnsubscribe),
             withLatestFrom(
                 this.store.select(fromFilter.getSelectedFilter),
                 this.definition$
             ),
-            map(([names, provider, definition]) => definition.getValidators(
-                names.filter(n => n !== provider.name)
+            map(([names, filter, definition]) => definition.getValidators(
+                names.filter(n => n !== filter.name)
             ))
         );
 
@@ -106,14 +102,11 @@ export class EditFilterComponent implements OnDestroy {
     }
 
     save(): void {
-        this.store.dispatch(new UpdateFilterRequest({
-            filter: this.filter,
-            providerId: this.route.snapshot.params.providerId
-        }));
+        this.store.dispatch(new UpdateFilterRequest(this.filter));
     }
 
     cancel(): void {
-        this.store.dispatch(new CancelCreateFilter(this.route.snapshot.params.providerId));
+        this.store.dispatch(new CancelCreateFilter());
     }
 
     preview(id: string): void {

@@ -41,34 +41,6 @@ export const ProviderRoutes: Routes = [
                 component: ProviderSelectComponent,
                 children: [
                     {
-                        path: '',
-                        component: FilterComponent,
-                        children: [
-                            {
-                                path: 'filter/new',
-                                component: NewFilterComponent,
-                                data: { title: `Create New Filter` }
-                            },
-                            {
-                                path: 'filter/:id',
-                                component: SelectFilterComponent,
-                                canActivate: [],
-                                children: [
-                                    {
-                                        path: 'edit',
-                                        component: EditFilterComponent,
-                                        data: { title: `Edit Metadata Filter` }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        path: 'filters',
-                        component: ProviderFilterListComponent,
-                        data: { title: `Metadata Filter List` }
-                    },
-                    {
                         path: 'edit',
                         component: ProviderEditComponent,
                         children: [
@@ -81,6 +53,34 @@ export const ProviderRoutes: Routes = [
                         ],
                         canDeactivate: [
                             CanDeactivateGuard
+                        ]
+                    },
+                    {
+                        path: 'filters',
+                        component: ProviderFilterListComponent,
+                        data: { title: `Metadata Filter List` }
+                    }
+                ]
+            },
+            {
+                path: ':providerId/filter',
+                component: FilterComponent,
+                children: [
+                    {
+                        path: 'new',
+                        component: NewFilterComponent,
+                        data: { title: `Create New Filter` }
+                    },
+                    {
+                        path: ':filterId',
+                        component: SelectFilterComponent,
+                        canActivate: [],
+                        children: [
+                            {
+                                path: 'edit',
+                                component: EditFilterComponent,
+                                data: { title: `Edit Metadata Filter` }
+                            }
                         ]
                     }
                 ]
