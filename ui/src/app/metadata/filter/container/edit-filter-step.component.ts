@@ -3,14 +3,14 @@ import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 
 import * as fromFilter from '../reducer';
-import { MetadataFilterTypes } from '../model';
-import { FormDefinition } from '../../../wizard/model';
+import { FormDefinition, WizardStep } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
 import { SchemaService } from '../../../schema-form/service/schema.service';
-import { UpdateFilterRequest } from '../action/collection.action';
-import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
+import { UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
-import { shareReplay, map, withLatestFrom, filter, switchMap, startWith, defaultIfEmpty, takeUntil } from 'rxjs/operators';
+import { shareReplay, map, withLatestFrom, filter, switchMap, takeUntil } from 'rxjs/operators';
+import * as fromWizard from '../../../wizard/reducer';
+import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
 
 @Component({
     selector: 'edit-filter-step-page',
@@ -29,6 +29,7 @@ export class EditFilterStepComponent implements OnDestroy {
     definition$: Observable<FormDefinition<MetadataFilter>>;
     definition: FormDefinition<MetadataFilter>;
     schema$: Observable<any>;
+    bindings$: Observable<any>;
 
     model$: Observable<MetadataFilter>;
     isSaving$: Observable<boolean>;
@@ -37,6 +38,8 @@ export class EditFilterStepComponent implements OnDestroy {
     type$: Observable<string>;
 
     validators$: Observable<{ [key: string]: any }>;
+    status$: Observable<any>;
+    step$: Observable<WizardStep>;
 
     actions: any;
 
@@ -46,24 +49,23 @@ export class EditFilterStepComponent implements OnDestroy {
         private store: Store<fromFilter.State>,
         private schemaService: SchemaService
     ) {
-        this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
-            takeUntil(this.ngUnsubscribe),
-            filter(t => !!t),
-            map(t => MetadataFilterTypes[t])
-        );
+        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d))
 
         this.defSub = this.definition$.subscribe(d => this.definition = d);
 
-        this.definition$.subscribe(console.log);
+        this.schema$ = this.store.select(fromWizard.getSchema);
+        this.bindings$ = this.definition$.pipe(map(d => d.bindings));
 
-        this.schema$ = this.definition$.pipe(
-            takeUntil(this.ngUnsubscribe),
-            filter(d => !!d),
-            switchMap(d => {
-                return this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe));
-            }),
-            shareReplay()
-        );
+        this.step$ = this.store.select(fromWizard.getCurrent);
+
+        this.step$.subscribe(s => {
+            if (s && s.locked) {
+                this.store.dispatch(new LockEditor());
+            } else {
+                this.store.dispatch(new UnlockEditor());
+            }
+        });
+
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
         this.type$ = this.model$.pipe(map(f => f && f.hasOwnProperty('@type') ? f['@type'] : ''));
@@ -73,14 +75,16 @@ export class EditFilterStepComponent implements OnDestroy {
             this.isValid = valid.value ? valid.value.length === 0 : true;
         });
 
+        this.status$ = this.store.select(fromFilter.getInvalidEditorForms);
+
         this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
             takeUntil(this.ngUnsubscribe),
             withLatestFrom(
                 this.store.select(fromFilter.getSelectedFilter),
                 this.definition$
             ),
-            map(([names, filter, definition]) => definition.getValidators(
-                names.filter(n => n !== filter.name)
+            map(([names, provider, definition]) => definition.getValidators(
+                names.filter(n => n !== provider.name)
             ))
         );
 
@@ -99,14 +103,6 @@ export class EditFilterStepComponent implements OnDestroy {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
         this.defSub.unsubscribe();
-    }
-
-    save(): void {
-        this.store.dispatch(new UpdateFilterRequest(this.filter));
-    }
-
-    cancel(): void {
-        this.store.dispatch(new CancelCreateFilter());
     }
 
     preview(id: string): void {

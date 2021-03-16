@@ -9,6 +9,7 @@ import { ProviderFilterListComponent } from './container/provider-filter-list.co
 import { NewFilterComponent } from '../filter/container/new-filter.component';
 import { SelectFilterComponent } from '../filter/container/select-filter.component';
 import { EditFilterComponent } from '../filter/container/edit-filter.component';
+import { EditFilterStepComponent } from '../filter/container/edit-filter-step.component';
 import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
 import { FilterComponent } from '../filter/container/filter.component';
 import { AdminGuard } from '../../core/service/admin.guard';
@@ -79,7 +80,15 @@ export const ProviderRoutes: Routes = [
                             {
                                 path: 'edit',
                                 component: EditFilterComponent,
-                                data: { title: `Edit Metadata Filter` }
+                                data: { title: `Edit Metadata Filter` },
+                                children: [
+                                    { path: '', redirectTo: 'common', pathMatch: 'prefix' },
+                                    {
+                                        path: ':form',
+                                        component: EditFilterStepComponent,
+                                        data: { title: `Edit Metadata Filter`, subtitle: true }
+                                    }
+                                ]
                             }
                         ]
                     }

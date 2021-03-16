@@ -3,17 +3,16 @@ import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 
 import * as fromFilter from '../reducer';
-import { MetadataFilterTypes } from '../model';
 import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
-import { SchemaService } from '../../../schema-form/service/schema.service';
 import { UpdateFilterRequest } from '../action/collection.action';
-import { CancelCreateFilter, UpdateFilterChanges } from '../action/filter.action';
+import { CancelCreateFilter } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
-import { shareReplay, map, withLatestFrom, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import * as fromWizard from '../../../wizard/reducer';
 import { ActivatedRoute } from '@angular/router';
+import { LoadSchemaRequest, SetIndex } from '../../../wizard/action/wizard.action';
 
 @Component({
     selector: 'edit-filter-page',
@@ -23,12 +22,6 @@ export class EditFilterComponent implements OnDestroy {
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    valueChangeSubject = new Subject<Partial<any>>();
-    private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
-
-    statusChangeSubject = new Subject<{ value: any[] }>();
-    private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
-
     definition$: Observable<FormDefinition<MetadataFilter>>;
     definition: FormDefinition<MetadataFilter>;
     schema$: Observable<any>;
@@ -36,12 +29,11 @@ export class EditFilterComponent implements OnDestroy {
     model$: Observable<MetadataFilter>;
     isSaving$: Observable<boolean>;
     filter: MetadataFilter;
-    isValid: boolean;
+    isValid$: Observable<boolean>;
+    isInvalid$: Observable<boolean>;
     type$: Observable<string>;
 
     status$: Observable<any>;
-
-    validators$: Observable<{ [key: string]: any }>;
 
     actions: any;
 
@@ -51,7 +43,6 @@ export class EditFilterComponent implements OnDestroy {
 
     constructor(
         private store: Store<fromFilter.State>,
-        private schemaService: SchemaService,
         private route: ActivatedRoute
     ) {
 
@@ -59,34 +50,27 @@ export class EditFilterComponent implements OnDestroy {
 
         this.defSub = this.definition$.subscribe(d => this.definition = d);
 
-        this.schema$ = this.definition$.pipe(
-            takeUntil(this.ngUnsubscribe),
-            filter(d => !!d),
-            switchMap(d => this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe))),
-            shareReplay()
-        );
+        this.store
+            .select(fromWizard.getCurrentWizardSchema)
+            .pipe(filter(s => !!s))
+            .subscribe(s => {
+                if (s) {
+                    this.store.dispatch(new LoadSchemaRequest(s));
+                }
+            });
+
+        let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form || 'filters'));
+        startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
+        
 
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
         this.type$ = this.model$.pipe(map(f => f && f.hasOwnProperty('@type') ? f['@type'] : ''));
 
-        this.valueChangeEmitted$.subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
-        this.statusChangeEmitted$.subscribe(valid => {
-            this.isValid = valid.value ? valid.value.length === 0 : true;
-        });
-
         this.status$ = this.store.select(fromFilter.getInvalidEditorForms);
 
-        this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
-            takeUntil(this.ngUnsubscribe),
-            withLatestFrom(
-                this.store.select(fromFilter.getSelectedFilter),
-                this.definition$
-            ),
-            map(([names, provider, definition]) => definition.getValidators(
-                names.filter(n => n !== provider.name)
-            ))
-        );
+        this.isValid$ = this.store.select(fromFilter.getEditorIsValid);
+        this.isInvalid$ = this.isValid$.pipe(map(v => !v));
 
         this.store
             .select(fromFilter.getFilter)

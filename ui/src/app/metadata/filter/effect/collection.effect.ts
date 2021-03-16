@@ -162,13 +162,16 @@ export class FilterCollectionEffects {
     updateFilter$ = this.actions$.pipe(
         ofType<UpdateFilterRequest>(FilterCollectionActionTypes.UPDATE_FILTER_REQUEST),
         map(action => action.payload),
-        switchMap((action) => {
+        withLatestFrom(this.store.select(fromFilter.getSelectedFilter)),
+        switchMap(([action, original]) => {
             const { filter, providerId } = action;
             delete filter.modifiedDate;
             delete filter.createdDate;
 
+            const updates = ({ ...original, ...filter });
+
             return this.filterService
-                .update(providerId, filter)
+                .update(providerId, updates)
                 .pipe(
                     map(resp => new UpdateFilterSuccess({
                         providerId,
@@ -178,7 +181,7 @@ export class FilterCollectionEffects {
                         }
                     })),
                     catchError(err => of(err.status === 409 ? new UpdateFilterConflict({
-                        filter,
+                        filter: updates,
                         providerId
                     }) : new UpdateFilterFail(err)))
                 );
