@@ -707,7 +707,6 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().is(403))
     }
 
-    @Ignore("until we handle the workaround for SHIBUI-1237")
     def "POST /EntityDescriptor handles XML happily"() {
         given:
         def username = 'admin'
@@ -785,7 +784,7 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         result.andExpect(status().isCreated())
-            .andExpect(content().json(expectedJson, true))
+            .andExpect(content().json(expectedJson, false))
     }
 
     def "POST /EntityDescriptor returns error for duplicate entity id"() {
