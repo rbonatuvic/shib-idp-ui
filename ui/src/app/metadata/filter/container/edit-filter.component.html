@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="py-2">
-                        <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="cantSave$ | async">
+                        <button (click)="this.save(providerId)" type="submit" class="btn btn-primary" [disabled]="cantSave$ | async">
                             <i class="fa fa-fw fa-lg" [ngClass]="{
                                                             'fa-save': !(isSaving$ | async),
                                                             'fa-spinner': (isSaving$ | async),
@@ -31,7 +31,7 @@
                             <translate-i18n key="action.save">Save</translate-i18n>
                         </button>
                         &nbsp;
-                        <button (click)="this.cancel($event)" type="button" class="btn btn-secondary" [disabled]="isSaving$ | async">
+                        <button (click)="this.cancel(providerId)" type="button" class="btn btn-secondary" [disabled]="isSaving$ | async">
                             <translate-i18n key="action.cancel">Cancel</translate-i18n>
                         </button>
                     </div>

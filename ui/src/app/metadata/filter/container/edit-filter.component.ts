@@ -41,7 +41,7 @@ export class EditFilterComponent implements OnDestroy {
     defSub: Subscription;
 
     formats = NAV_FORMATS;
-    currentPage
+    providerId: string;
 
     constructor(
         private store: Store<fromFilter.State>,
@@ -51,6 +51,8 @@ export class EditFilterComponent implements OnDestroy {
         this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d))
 
         this.defSub = this.definition$.subscribe(d => this.definition = d);
+
+        this.providerId = this.route.snapshot.params.providerId;
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
@@ -91,16 +93,15 @@ export class EditFilterComponent implements OnDestroy {
         this.defSub.unsubscribe();
     }
 
-    save(): void {
+    save(id: string): void {
         this.store.dispatch(new UpdateFilterRequest({
             filter: this.filter,
-            providerId: this.route.snapshot.params.providerId
+            providerId: id
         }));
     }
 
-    cancel(event: MouseEvent): void {
-        event.preventDefault();
-        this.store.dispatch(new CancelCreateFilter(this.route.snapshot.params.providerId));
+    cancel(id: string): void {
+        this.store.dispatch(new CancelCreateFilter(id));
     }
 
     preview(id: string): void {
