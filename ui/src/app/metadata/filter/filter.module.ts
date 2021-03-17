@@ -24,10 +24,12 @@ import { I18nModule } from '../../i18n/i18n.module';
 import { FilterComponent } from './container/filter.component';
 import { FilterListComponent } from './component/filter-list.component';
 import { EditFilterStepComponent } from './container/edit-filter-step.component';
+import { NewFilterStepComponent } from './container/new-filter-step.component';
 
 @NgModule({
     declarations: [
         NewFilterComponent,
+        NewFilterStepComponent,
         EditFilterComponent,
         EditFilterStepComponent,
         SelectFilterComponent,

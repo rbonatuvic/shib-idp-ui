@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 
@@ -8,9 +8,10 @@ import { MetadataFilter } from '../../domain/model';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { UpdateFilterChanges } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
-import { shareReplay, map, withLatestFrom, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { map, withLatestFrom, filter, takeUntil, distinctUntilChanged, skip } from 'rxjs/operators';
 import * as fromWizard from '../../../wizard/reducer';
 import { LockEditor, UnlockEditor } from '../../../wizard/action/wizard.action';
+import { UpdateStatus } from '../action/editor.action';
 
 @Component({
     selector: 'edit-filter-step-page',
@@ -44,12 +45,13 @@ export class EditFilterStepComponent implements OnDestroy {
     actions: any;
 
     defSub: Subscription;
+    currentPage: string;
 
     constructor(
         private store: Store<fromFilter.State>,
-        private schemaService: SchemaService
+        private ref: ChangeDetectorRef
     ) {
-        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d))
+        this.definition$ = this.store.select(fromWizard.getWizardDefinition).pipe(filter(d => !!d));
 
         this.defSub = this.definition$.subscribe(d => this.definition = d);
 
@@ -70,12 +72,28 @@ export class EditFilterStepComponent implements OnDestroy {
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
         this.type$ = this.model$.pipe(map(f => f && f.hasOwnProperty('@type') ? f['@type'] : ''));
 
-        this.valueChangeEmitted$.subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
-        this.statusChangeEmitted$.subscribe(valid => {
-            this.isValid = valid.value ? valid.value.length === 0 : true;
-        });
+        this.valueChangeEmitted$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
+
+        this.statusChangeEmitted$
+            .pipe(
+                skip(1),
+                takeUntil(this.ngUnsubscribe),
+                withLatestFrom(this.model$),
+                distinctUntilChanged()
+            )
+            .subscribe(([errors, model]) => {
+                this.updateStatus(errors);
+            });
 
         this.status$ = this.store.select(fromFilter.getInvalidEditorForms);
+
+        this.status$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+            this.ref.detach();
+            setTimeout(() => {
+                this.ref.detectChanges();
+                this.ref.reattach();
+            }, 250);
+        })
 
         this.validators$ = this.store.select(fromFilter.getFilterNames).pipe(
             takeUntil(this.ngUnsubscribe),
@@ -90,6 +108,7 @@ export class EditFilterStepComponent implements OnDestroy {
 
         this.store
             .select(fromFilter.getFilter)
+            .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(filter => this.filter = filter);
 
         this.actions = {
@@ -97,6 +116,13 @@ export class EditFilterStepComponent implements OnDestroy {
                 this.preview(parameters.filterId);
             }
         };
+
+        this.store.select(fromWizard.getWizardIndex).pipe(takeUntil(this.ngUnsubscribe)).subscribe(i => this.currentPage = i);
+    }
+
+    updateStatus(errors: any): void {
+        const status = { [this.currentPage]: !(errors.value) ? 'VALID' : 'INVALID' };
+        this.store.dispatch(new UpdateStatus(status));
     }
 
     ngOnDestroy(): void {

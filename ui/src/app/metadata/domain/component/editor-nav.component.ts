@@ -21,6 +21,7 @@ export enum NAV_FORMATS {
 export class EditorNavComponent {
     @Input() format: string;
     @Input() status: string[] = [];
+    @Input() path: string = 'edit';
 
     @Output() onPageSelect: EventEmitter<string> = new EventEmitter();
 

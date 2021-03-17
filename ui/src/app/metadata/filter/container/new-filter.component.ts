@@ -1,20 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Subject, Observable, of } from 'rxjs';
-
-import { takeUntil, shareReplay, withLatestFrom, map, switchMap, filter, startWith, distinctUntilChanged, share } from 'rxjs/operators';
-
+import { Subject, Observable, of, combineLatest } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { takeUntil, withLatestFrom, map, filter, distinctUntilChanged, skip } from 'rxjs/operators';
 
 import * as fromFilter from '../reducer';
-import { MetadataFilterTypes } from '../model';
+import { MetadataFilterEditorTypes, MetadataFilterTypes } from '../model';
 import { FormDefinition } from '../../../wizard/model';
 import { MetadataFilter } from '../../domain/model';
-import { SchemaService } from '../../../schema-form/service/schema.service';
 import { AddFilterRequest } from '../action/collection.action';
-import { CancelCreateFilter, UpdateFilterChanges, SelectFilterType } from '../action/filter.action';
-import { ActivatedRoute } from '@angular/router';
-
+import { CancelCreateFilter, SelectFilterType } from '../action/filter.action';
+import * as fromWizard from '../../../wizard/reducer';
+import { LoadSchemaRequest, SetDefinition, SetIndex } from '../../../wizard/action/wizard.action';
+import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
 
 @Component({
     selector: 'new-filter-page',
@@ -24,20 +23,14 @@ export class NewFilterComponent implements OnDestroy, OnInit {
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    valueChangeSubject = new Subject<Partial<any>>();
-    private valueChangeEmitted$ = this.valueChangeSubject.asObservable();
-
-    statusChangeSubject = new Subject<{ value: any[] }>();
-    private statusChangeEmitted$ = this.statusChangeSubject.asObservable();
-
     definition$: Observable<FormDefinition<MetadataFilter>>;
     schema$: Observable<any>;
 
-    changes$: Observable<MetadataFilter>;
-    model: any;
     isSaving$: Observable<boolean>;
     filter: MetadataFilter;
-    isValid: boolean;
+    isValid$: Observable<boolean>;
+    isInvalid$: Observable<boolean>;
+    cantSave$: Observable<boolean>;
 
     validators$: Observable<{ [key: string]: any }>;
 
@@ -47,17 +40,22 @@ export class NewFilterComponent implements OnDestroy, OnInit {
 
     options$: Observable<FormDefinition<MetadataFilter>[]>;
 
+    formats = NAV_FORMATS;
+
+    status$: Observable<any>;
+
+    type$: Observable<string> = this.store.select(fromFilter.getFilterType);
+
     constructor(
         private store: Store<fromFilter.State>,
-        private schemaService: SchemaService,
         private fb: FormBuilder,
         private route: ActivatedRoute
     ) {
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
+        this.isValid$ = this.store.select(fromFilter.getFilterIsValid);
+        this.isInvalid$ = this.isValid$.pipe(map(v => !v));
 
-        this.changes$ = this.store.select(fromFilter.getFilter);
-
-        this.model = {};
+        this.cantSave$ = this.store.select(fromFilter.cantSaveFilter).pipe(skip(1));
 
         this.definition$ = this.store.select(fromFilter.getFilterType).pipe(
             takeUntil(this.ngUnsubscribe),
@@ -65,21 +63,19 @@ export class NewFilterComponent implements OnDestroy, OnInit {
             map(t => MetadataFilterTypes[t])
         );
 
-        this.schema$ = this.definition$.pipe(
-            takeUntil(this.ngUnsubscribe),
-            filter(d => !!d),
-            switchMap(d => {
-                return this.schemaService.get(d.schema).pipe(takeUntil(this.ngUnsubscribe));
-            }),
-            shareReplay()
-        );
+        this.store
+            .select(fromWizard.getCurrentWizardSchema)
+            .pipe(filter(s => !!s), takeUntil(this.ngUnsubscribe))
+            .subscribe(s => {
+                if (s) {
+                    this.store.dispatch(new LoadSchemaRequest(s));
+                }
+            });
 
-        this.validators$ = this.definition$.pipe(
-            takeUntil(this.ngUnsubscribe),
-            withLatestFrom(this.store.select(fromFilter.getFilterNames)),
-            map(([definition, names]) => definition.getValidators(names))
-        );
+        let startIndex$ = this.route.params.pipe(map(p => p.form || 'filters'), takeUntil(this.ngUnsubscribe));
+        startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
 
+        this.status$ = this.store.select(fromFilter.getInvalidEditorForms);
         this.options$ = of(Object.values(MetadataFilterTypes));
 
         this.form.get('type').valueChanges
@@ -87,19 +83,22 @@ export class NewFilterComponent implements OnDestroy, OnInit {
                 takeUntil(this.ngUnsubscribe),
                 distinctUntilChanged()
             )
-            .subscribe(type => this.store.dispatch(new SelectFilterType(type)));
+            .subscribe(type => {
+                this.store.dispatch(new SelectFilterType(type));
+            });
+
+        this.type$.pipe(
+            takeUntil(this.ngUnsubscribe)
+        ).subscribe((t: string) => {
+            if (t) {
+                this.store.dispatch(new SetDefinition({
+                    ...MetadataFilterEditorTypes.find(def => def.type === t)
+                }));
+            }
+        });
     }
 
     ngOnInit(): void {
-        this.valueChangeEmitted$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(changes => this.store.dispatch(new UpdateFilterChanges(changes.value)));
-        this.statusChangeEmitted$
-            .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(valid => {
-                this.isValid = valid.value ? valid.value.length === 0 : true;
-            });
-
         this.store
             .select(fromFilter.getFilter)
             .pipe(
@@ -116,7 +115,10 @@ export class NewFilterComponent implements OnDestroy, OnInit {
     }
 
     save(): void {
-        this.store.dispatch(new AddFilterRequest(this.filter));
+        this.store.dispatch(new AddFilterRequest({
+            filter: this.filter,
+            providerId: this.route.snapshot.params.providerId
+        }));
     }
 
     cancel(): void {

@@ -37,7 +37,6 @@ export class ProviderSelectComponent implements OnDestroy {
         this.providerSubscription = this.provider$.subscribe(provider => {
             this.setDefinition(provider);
         });
-        console.log('hi there')
     }
 
     setDefinition(provider: MetadataProvider): void {

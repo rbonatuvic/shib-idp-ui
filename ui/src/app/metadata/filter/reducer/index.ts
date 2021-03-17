@@ -85,9 +85,9 @@ Editor State
 */
 
 export const getEditorIsValid = createSelector(getEditorState, fromEditor.isEditorValid);
-
 export const getFormStatus = createSelector(getEditorState, fromEditor.getFormStatus);
 export const getInvalidEditorForms = createSelector(getEditorState, fromEditor.getInvalidForms);
+
 
 /*
  *   Combine pieces of State
@@ -97,8 +97,12 @@ export const mergeFn = (changes, filter) => ({ ...filter, ...changes });
 export const detectFilterType = (changes) => changes.type ? changes.type : changes.hasOwnProperty('@type') ? changes['@type'] : null;
 
 export const getFilterWithChanges = createSelector(getFilter, getSelectedFilter, mergeFn);
-export const getFilterType = createSelector(getFilter, (changes: MetadataFilter) => {
-    const type = changes ? detectFilterType(changes) : null;
-    return type;
+export const getFilterType = createSelector(getFilter, (changes: MetadataFilter) => changes ? detectFilterType(changes) : null);
+
+export const getFilterIsValid = createSelector(getEditorIsValid, getFilterType, getFormStatus, (isValid, type, status) => {
+    return isValid && type !== null && Object.keys(status).length > 0;
 });
 
+export const cantSaveFilter = createSelector(getCollectionSaving, getFilterIsValid, (isSaving, isValid) => {
+    return (isSaving || !isValid);
+});

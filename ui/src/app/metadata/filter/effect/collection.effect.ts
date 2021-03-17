@@ -90,12 +90,14 @@ export class FilterCollectionEffects {
     addFilter$ = this.actions$.pipe(
         ofType<AddFilterRequest>(FilterCollectionActionTypes.ADD_FILTER_REQUEST),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        switchMap(([unsaved, providerId]) => {
+        switchMap(({filter, providerId}) => {
             return this.filterService
-                .save(providerId, unsaved as MetadataFilter)
+                .save(providerId, filter as MetadataFilter)
                 .pipe(
-                    map(saved => new AddFilterSuccess(saved)),
+                    map(saved => new AddFilterSuccess({
+                        filter: saved,
+                        providerId: providerId
+                    })),
                     catchError(error => of(new AddFilterFail(error)))
                 );
         })
@@ -104,16 +106,14 @@ export class FilterCollectionEffects {
     addFilterSuccessRedirect$ = this.actions$.pipe(
         ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        tap(([filter, provider]) => this.navigateToParent(provider))
+        tap(({ providerId }) => this.navigateToParent(providerId))
     );
 
     @Effect()
     addFilterSuccessReloadParent$ = this.actions$.pipe(
         ofType<AddFilterSuccess>(FilterCollectionActionTypes.ADD_FILTER_SUCCESS),
         map(action => action.payload),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        map(([filter, provider]) => new SelectProviderRequest(provider))
+        map(({ providerId }) => new SelectProviderRequest(providerId))
     );
 
     @Effect()

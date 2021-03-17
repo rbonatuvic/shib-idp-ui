@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Observable, Subscription } from 'rxjs';
+import { Subject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import * as fromFilter from '../reducer';
 import { FormDefinition } from '../../../wizard/model';
@@ -9,7 +9,7 @@ import { UpdateFilterRequest } from '../action/collection.action';
 import { CancelCreateFilter } from '../action/filter.action';
 import { PreviewEntity } from '../../domain/action/entity.action';
 import { NAV_FORMATS } from '../../domain/component/editor-nav.component';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, takeUntil, withLatestFrom, skip } from 'rxjs/operators';
 import * as fromWizard from '../../../wizard/reducer';
 import { ActivatedRoute } from '@angular/router';
 import { LoadSchemaRequest, SetIndex } from '../../../wizard/action/wizard.action';
@@ -31,6 +31,7 @@ export class EditFilterComponent implements OnDestroy {
     filter: MetadataFilter;
     isValid$: Observable<boolean>;
     isInvalid$: Observable<boolean>;
+    cantSave$: Observable<boolean>;
     type$: Observable<string>;
 
     status$: Observable<any>;
@@ -40,6 +41,7 @@ export class EditFilterComponent implements OnDestroy {
     defSub: Subscription;
 
     formats = NAV_FORMATS;
+    currentPage
 
     constructor(
         private store: Store<fromFilter.State>,
@@ -52,7 +54,7 @@ export class EditFilterComponent implements OnDestroy {
 
         this.store
             .select(fromWizard.getCurrentWizardSchema)
-            .pipe(filter(s => !!s))
+            .pipe(filter(s => !!s), takeUntil(this.ngUnsubscribe))
             .subscribe(s => {
                 if (s) {
                     this.store.dispatch(new LoadSchemaRequest(s));
@@ -61,7 +63,6 @@ export class EditFilterComponent implements OnDestroy {
 
         let startIndex$ = this.route.firstChild.params.pipe(map(p => p.form || 'filters'));
         startIndex$.subscribe(index => this.store.dispatch(new SetIndex(index)));
-        
 
         this.isSaving$ = this.store.select(fromFilter.getCollectionSaving);
         this.model$ = this.store.select(fromFilter.getSelectedFilter);
@@ -69,8 +70,9 @@ export class EditFilterComponent implements OnDestroy {
 
         this.status$ = this.store.select(fromFilter.getInvalidEditorForms);
 
-        this.isValid$ = this.store.select(fromFilter.getEditorIsValid);
+        this.isValid$ = this.store.select(fromFilter.getFilterIsValid);
         this.isInvalid$ = this.isValid$.pipe(map(v => !v));
+        this.cantSave$ = this.store.select(fromFilter.cantSaveFilter).pipe(skip(1));
 
         this.store
             .select(fromFilter.getFilter)
@@ -96,7 +98,8 @@ export class EditFilterComponent implements OnDestroy {
         }));
     }
 
-    cancel(): void {
+    cancel(event: MouseEvent): void {
+        event.preventDefault();
         this.store.dispatch(new CancelCreateFilter(this.route.snapshot.params.providerId));
     }
 

@@ -14,6 +14,7 @@ import { CanDeactivateGuard } from '../../core/service/can-deactivate.guard';
 import { FilterComponent } from '../filter/container/filter.component';
 import { AdminGuard } from '../../core/service/admin.guard';
 import { MetadataProviderPageComponent } from './provider.component';
+import { NewFilterStepComponent } from '../filter/container/new-filter-step.component';
 
 export const ProviderRoutes: Routes = [
     {
@@ -33,7 +34,7 @@ export const ProviderRoutes: Routes = [
                     {
                         path: 'new',
                         component: ProviderWizardStepComponent,
-                        data: { title: `Create Provider`, subtitle: true }
+                        data: { title: `Create Provider`, subtitle: true },
                     }
                 ]
             },
@@ -70,7 +71,15 @@ export const ProviderRoutes: Routes = [
                     {
                         path: 'new',
                         component: NewFilterComponent,
-                        data: { title: `Create New Filter` }
+                        data: { title: `Create New Filter` },
+                        children: [
+                            { path: '', redirectTo: 'common', pathMatch: 'prefix' },
+                            {
+                                path: ':form',
+                                component: NewFilterStepComponent,
+                                data: { title: `Create Filter`, subtitle: true }
+                            }
+                        ]
                     },
                     {
                         path: ':filterId',

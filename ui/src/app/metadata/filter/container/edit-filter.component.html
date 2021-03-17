@@ -22,20 +22,18 @@
                         </div>
                     </div>
                     <div class="py-2">
-                        <ng-container>
-                            <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="(!isInvalid$ | async) || (isSaving$ | async)">
-                                <i class="fa fa-fw fa-lg" [ngClass]="{
-                                    'fa-save': !(isSaving$ | async),
-                                    'fa-spinner': (isSaving$ | async),
-                                    'fa-pulse': (isSaving$ | async)
-                                }"></i>
-                                <translate-i18n key="action.save">Save</translate-i18n>
-                            </button>
-                            &nbsp;
-                            <button (click)="this.cancel()" type="reset" class="btn btn-secondary" [disabled]="isSaving$ | async">
-                                <translate-i18n key="action.cancel">Cancel</translate-i18n>
-                            </button>
-                        </ng-container>
+                        <button (click)="this.save()" type="submit" class="btn btn-primary" [disabled]="cantSave$ | async">
+                            <i class="fa fa-fw fa-lg" [ngClass]="{
+                                                            'fa-save': !(isSaving$ | async),
+                                                            'fa-spinner': (isSaving$ | async),
+                                                            'fa-pulse': (isSaving$ | async)
+                                                        }"></i>
+                            <translate-i18n key="action.save">Save</translate-i18n>
+                        </button>
+                        &nbsp;
+                        <button (click)="this.cancel($event)" type="button" class="btn btn-secondary" [disabled]="isSaving$ | async">
+                            <translate-i18n key="action.cancel">Cancel</translate-i18n>
+                        </button>
                     </div>
                 </div>
                 <hr />

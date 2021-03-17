@@ -65,6 +65,7 @@ export class FilterEffects {
     @Effect({ dispatch: false })
     cancelChanges$ = this.actions$.pipe(
         ofType<CancelCreateFilter>(FilterActionTypes.CANCEL_CREATE_FILTER),
+        map(action => action.payload),
         tap((providerId) => {
             this.router.navigate(['/', 'metadata', 'provider', providerId, 'configuration']);
         })

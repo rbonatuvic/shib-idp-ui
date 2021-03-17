@@ -112,13 +112,19 @@ export class UpdateFilterConflict implements Action {
 export class AddFilterRequest implements Action {
     readonly type = FilterCollectionActionTypes.ADD_FILTER_REQUEST;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: {
+        filter: MetadataFilter,
+        providerId: string
+    }) { }
 }
 
 export class AddFilterSuccess implements Action {
     readonly type = FilterCollectionActionTypes.ADD_FILTER_SUCCESS;
 
-    constructor(public payload: MetadataFilter) { }
+    constructor(public payload: {
+        filter: MetadataFilter,
+        providerId: string
+    }) { }
 }
 
 export class AddFilterFail implements Action {

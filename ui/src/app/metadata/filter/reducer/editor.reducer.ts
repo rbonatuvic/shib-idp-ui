@@ -2,28 +2,21 @@ import { EditorActionTypes, EditorActionUnion } from '../action/editor.action';
 
 export interface EditorState {
     status: { [key: string]: string };
-    type: string;
 }
 
 export const initialState: EditorState = {
-    status: {},
-    type: null
+    status: {}
 };
 
 export function reducer(state = initialState, action: EditorActionUnion): EditorState {
     switch (action.type) {
-        case EditorActionTypes.SELECT_PROVIDER_TYPE: {
-            return {
-                ...state,
-                type: action.payload
-            };
-        }
         case EditorActionTypes.CLEAR: {
             return {
                 ...initialState
             };
         }
         case EditorActionTypes.UPDATE_STATUS: {
+            //console.log(action)
             return {
                 ...state,
                 status: {
