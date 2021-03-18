@@ -64,6 +64,14 @@ class EntitiesControllerTests extends Specification {
         result.andExpect(status().isNotFound())
     }
 
+    def 'GET /entities/test'() {
+        when:
+        def result = mockMvc.perform(get("/entities/test"))
+
+        then:
+        result.andExpect(status().isNotFound())
+    }
+    
     def 'GET /api/entities/test XML'() {
         when:
         def result = mockMvc.perform(get("/api/entities/test").header('Accept', 'application/xml'))
@@ -72,6 +80,15 @@ class EntitiesControllerTests extends Specification {
         result.andExpect(status().isNotFound())
     }
 
+    def 'GET /entities/test XML'() {
+        when:
+        def result = mockMvc.perform(get("/entities/test").header('Accept', 'application/xml'))
+
+        then:
+        result.andExpect(status().isNotFound())
+    }
+
+    
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
         given:
         def expectedBody = '''
@@ -108,6 +125,42 @@ class EntitiesControllerTests extends Specification {
                 .andExpect(content().json(expectedBody, false))
     }
 
+    def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
+        given:
+        def expectedBody = '''
+            {
+                "id":null,
+                "serviceProviderName":null,
+                "entityId":"http://test.scaldingspoon.org/test1",
+                "organization":null,
+                "contacts":null,
+                "mdui":null,
+                "serviceProviderSsoDescriptor": {
+                    "protocolSupportEnum":"SAML 2",
+                    "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
+                },
+                "logoutEndpoints":null,
+                "securityInfo":null,
+                "assertionConsumerServices":[
+                    {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
+                ],
+                "serviceEnabled":false,
+                "createdDate":null,
+                "modifiedDate":null,
+                "relyingPartyOverrides":{},
+                "attributeRelease":["givenName","employeeNumber"]
+            }
+        '''
+        when:
+        def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
+
+        then:
+        def x = content()
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedBody, false))
+    }
+    
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1 XML'() {
         given:
         def expectedBody = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -131,6 +184,36 @@ class EntitiesControllerTests extends Specification {
 '''
         when:
         def result = mockMvc.perform(get('/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1').header('Accept', 'application/xml'))
+
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType('application/xml;charset=ISO-8859-1'))
+                .andExpect(content().xml(expectedBody))
+    }
+    
+    def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1 XML'() {
+        given:
+        def expectedBody = '''<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
+  <md:Extensions>
+    <mdattr:EntityAttributes xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute">
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://scaldingspoon.org/realm" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>internal</saml:AttributeValue>
+      </saml:Attribute>
+      <saml:Attribute xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Name="http://shibboleth.net/ns/attributes/releaseAllValues" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>givenName</saml:AttributeValue>
+        <saml:AttributeValue>employeeNumber</saml:AttributeValue>
+      </saml:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
+  <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.scaldingspoon.org/test1/acs" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
+'''
+        when:
+        def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1').header('Accept', 'application/xml'))
 
         then:
         result.andExpect(status().isOk())

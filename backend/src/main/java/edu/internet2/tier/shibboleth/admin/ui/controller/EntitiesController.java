@@ -1,16 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,15 +16,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
+import lombok.extern.slf4j.Slf4j;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 @Controller
-@RequestMapping(value = "/api/entities", method = RequestMethod.GET)
+@RequestMapping(value = { "/entities", // per protocol - https://spaces.at.internet2.edu/display/MDQ/Metadata+Query+Protocol
+                          "/api/entities" }, // existing - included to break no existing code
+                method = RequestMethod.GET)
+@Slf4j
 public class EntitiesController {
-    private static final Logger logger = LoggerFactory.getLogger(EntitiesController.class);
-
     @Autowired
     private MetadataResolver metadataResolver;
 
