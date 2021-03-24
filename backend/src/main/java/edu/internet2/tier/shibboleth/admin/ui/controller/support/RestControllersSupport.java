@@ -1,10 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller.support;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaValidationFailedException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -60,6 +63,23 @@ public class RestControllersSupport {
 
     @ExceptionHandler(JsonSchemaValidationFailedException.class)
     public final ResponseEntity<?> handleJsonSchemaValidationFailedException(JsonSchemaValidationFailedException ex) {
-        return ResponseEntity.status(BAD_REQUEST).body(new ErrorResponse("400", String.join("\n", ex.getErrors())));
+        return ResponseEntity.status(BAD_REQUEST).body(new ErrorResponse("400", String.join("\n", flattenErrorsList(ex.getErrors()))));
+    }
+
+    private List<String> flattenErrorsList(List<Object> errors) {
+        List<String> theseErrors = new ArrayList<>();
+        processErrorsList(theseErrors, errors);
+        return theseErrors;
+    }
+
+    private static void processErrorsList(List<String> outputErrorList, Object errors){
+        if(errors instanceof String){
+            outputErrorList.add((String)errors);
+        }
+        else if(errors instanceof List){
+            for(Object error2:(List)errors){
+                processErrorsList(outputErrorList, error2);
+            }
+        }
     }
 }
