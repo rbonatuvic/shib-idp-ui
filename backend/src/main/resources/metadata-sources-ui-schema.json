@@ -446,6 +446,12 @@
                                 "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
                             ],
                             "description": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
                         }
                     ]
                 }

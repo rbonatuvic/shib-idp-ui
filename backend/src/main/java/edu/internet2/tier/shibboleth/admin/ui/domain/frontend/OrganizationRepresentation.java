@@ -1,15 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 public class OrganizationRepresentation implements Serializable {
 
     private static final long serialVersionUID = 802722455433573538L;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String name;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String displayName;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String url;
 
     public String getName() {
