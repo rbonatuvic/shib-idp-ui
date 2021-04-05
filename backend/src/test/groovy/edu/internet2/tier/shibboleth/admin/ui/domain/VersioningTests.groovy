@@ -15,9 +15,12 @@ class VersioningTests extends Specification{
 
     def "test that two loaded entity descriptors gets the same version when load from the same file"() {
         given:
+        def resourceId = "testme"
         def xmlBytes = this.class.getResource('/metadata/SHIBUI-1723-1.xml').bytes
         def ed1 = openSamlObjects.unmarshalFromXml(xmlBytes)
+        ed1.resourceId = resourceId
         def ed2 = openSamlObjects.unmarshalFromXml(xmlBytes)
+        ed2.resourceId = resourceId
 
         expect:
         ed1.hashCode() == ed2.hashCode()
