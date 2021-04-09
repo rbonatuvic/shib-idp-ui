@@ -115,13 +115,11 @@ describe(`Resolver Service`, () => {
     });
 
     describe('remove', () => {
-        let id = 'foo',
-            serviceProviderName = 'Test Provider',
-            createdBy = 'admin';
+        let id = 'foo';
 
         it(`should send an expected PUT request`, waitForAsync(inject([ResolverService, HttpTestingController],
             (service: ResolverService, backend: HttpTestingController) => {
-                service.remove({ id, serviceProviderName, createdBy }).subscribe();
+                service.remove(id).subscribe();
 
                 backend.expectOne((req: HttpRequest<any>) => {
                     return req.url === `api/EntityDescriptor/${id}`

@@ -118,13 +118,13 @@ export class AddResolverFail implements Action {
 export class RemoveResolverRequest implements Action {
     readonly type = ResolverCollectionActionTypes.REMOVE_RESOLVER;
 
-    constructor(public payload: MetadataResolver) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveResolverSuccess implements Action {
     readonly type = ResolverCollectionActionTypes.REMOVE_RESOLVER_SUCCESS;
 
-    constructor(public payload: MetadataResolver) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveResolverFail implements Action {

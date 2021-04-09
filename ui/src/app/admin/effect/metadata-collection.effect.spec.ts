@@ -10,6 +10,8 @@ import { Metadata } from '../../metadata/domain/domain.type';
 import { MetadataResolver } from '../../metadata/domain/model';
 import * as fromI18n from '../../i18n/reducer';
 import { I18nService } from '../../i18n/service/i18n.service';
+import { Router } from '@angular/router';
+import { RouterStub } from '../../../testing/router.stub';
 
 describe('Metadata Collection Effects', () => {
     let effects: MetadataCollectionEffects;
@@ -55,6 +57,7 @@ describe('Metadata Collection Effects', () => {
                 },
                 MetadataCollectionEffects,
                 provideMockActions(() => actions),
+                { provide: Router, useClass: RouterStub }
             ],
         });
 
