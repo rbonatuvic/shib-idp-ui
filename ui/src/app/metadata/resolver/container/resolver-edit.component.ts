@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
-import { skipWhile, map, combineLatest, filter, takeUntil } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromWizard from '../../../wizard/reducer';
 import * as fromResolver from '../reducer';
-import { ClearWizard, SetIndex, LoadSchemaRequest } from '../../../wizard/action/wizard.action';
+import { LoadSchemaRequest } from '../../../wizard/action/wizard.action';
 import { MetadataResolver } from '../../domain/model';
 import { Clear } from '../action/entity.action';
 import { Wizard } from '../../../wizard/model';
@@ -41,7 +41,6 @@ export class ResolverEditComponent implements OnDestroy, CanComponentDeactivate 
     constructor(
         private store: Store<fromResolver.ResolverState>,
         private router: Router,
-        private route: ActivatedRoute,
         private modalService: NgbModal,
         private diffService: DifferentialService
     ) {
