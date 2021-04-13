@@ -3,7 +3,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { ActivatedRoute } from '@angular/router';
-import { map, distinctUntilChanged, skipWhile, filter } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { SelectProviderRequest, ClearProviderSelection } from '../action/collection.action';
 import * as fromProviders from '../reducer';
 import { MetadataProvider } from '../../domain/model';

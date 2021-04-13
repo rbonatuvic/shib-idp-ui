@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { map, switchMap, catchError, withLatestFrom, tap, combineLatest, skipWhile } from 'rxjs/operators';
 
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import * as fromFilter from '../reducer';
 import * as fromProvider from '../../provider/reducer';
@@ -22,7 +22,6 @@ import {
     CancelCreateFilter
 } from '../action/filter.action';
 import { EntityIdService } from '../../domain/service/entity-id.service';
-import { MetadataProviderService } from '../../domain/service/provider.service';
 import { ShowContentionAction } from '../../../contention/action/contention.action';
 import { MetadataFilter } from '../../domain/model';
 import { ContentionService } from '../../../contention/service/contention.service';
@@ -48,14 +47,16 @@ export class FilterEffects {
         ofType<UpdateFilterConflict>(FilterCollectionActionTypes.UPDATE_FILTER_CONFLICT),
         map(action => action.payload),
         withLatestFrom(
-            this.store.select(fromFilter.getSelectedFilter),
-            this.store.select(fromProvider.getSelectedProviderId)
+            this.store.select(fromFilter.getSelectedFilter)
         ),
-        switchMap(([filter, current, providerId]) =>
+        switchMap(([{ providerId, filter }, current]) => 
             this.filterService.find(providerId, filter.resourceId).pipe(
                 map(data => new ShowContentionAction(this.contentionService.getContention(current, filter, data, {
-                    resolve: (obj) => this.store.dispatch(new UpdateFilterRequest(<MetadataFilter>{ ...obj })),
-                    reject: (obj) => this.store.dispatch(new CancelCreateFilter())
+                    resolve: (obj) => this.store.dispatch(new UpdateFilterRequest({
+                        filter: <MetadataFilter>{ ...obj },
+                        providerId
+                    })),
+                    reject: (obj) => this.store.dispatch(new CancelCreateFilter(providerId))
                 })))
             )
         )
@@ -64,9 +65,9 @@ export class FilterEffects {
     @Effect({ dispatch: false })
     cancelChanges$ = this.actions$.pipe(
         ofType<CancelCreateFilter>(FilterActionTypes.CANCEL_CREATE_FILTER),
-        withLatestFrom(this.store.select(fromProvider.getSelectedProviderId).pipe(skipWhile(id => !id))),
-        tap(([filter, provider]) => {
-            this.router.navigate(['/', 'metadata', 'provider', provider, 'filters']);
+        map(action => action.payload),
+        tap((providerId) => {
+            this.router.navigate(['/', 'metadata', 'provider', providerId, 'configuration']);
         })
     );
 
@@ -74,6 +75,7 @@ export class FilterEffects {
         private store: Store<fromRoot.State>,
         private actions$: Actions,
         private router: Router,
+        private route: ActivatedRoute,
         private idService: EntityIdService,
         private filterService: MetadataFilterService,
         private contentionService: ContentionService

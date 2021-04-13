@@ -10,7 +10,9 @@ export enum FilterActionTypes {
     CLEAR_FILTER = '[Filter] Clear Filter',
     LOAD_ENTITY_PREVIEW = '[Filter] Load Preview data',
     LOAD_ENTITY_PREVIEW_SUCCESS = '[Filter] Load Preview data success',
-    LOAD_ENTITY_PREVIEW_ERROR = '[Filter] Load Preview data error'
+    LOAD_ENTITY_PREVIEW_ERROR = '[Filter] Load Preview data error',
+
+    RESET_CHANGES = '[Filter] Reset Changes'
 }
 
 export class SelectId implements Action {
@@ -37,6 +39,8 @@ export class LoadEntityPreviewError implements Action {
 
 export class CancelCreateFilter implements Action {
     readonly type = FilterActionTypes.CANCEL_CREATE_FILTER;
+
+    constructor(public payload: string) { }
 }
 
 export class ClearFilter implements Action {
@@ -55,6 +59,10 @@ export class SelectFilterType implements Action {
     constructor(public payload: string) { }
 }
 
+export class ResetChanges implements Action {
+    readonly type = FilterActionTypes.RESET_CHANGES;
+}
+
 export type FilterActionsUnion =
     | SelectId
     | SelectFilterType
@@ -63,4 +71,5 @@ export type FilterActionsUnion =
     | LoadEntityPreview
     | LoadEntityPreviewSuccess
     | LoadEntityPreviewError
-    | ClearFilter;
+    | ClearFilter
+    | ResetChanges;
