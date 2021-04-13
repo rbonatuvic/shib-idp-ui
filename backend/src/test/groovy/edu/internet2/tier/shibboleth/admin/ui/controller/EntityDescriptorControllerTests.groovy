@@ -117,6 +117,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     }
 
+    //todo  review
     def 'GET /EntityDescriptors with 1 record in repository as admin'() {
         given:
         def username = 'admin'
@@ -137,15 +138,12 @@ class EntityDescriptorControllerTests extends Specification {
 	            "serviceEnabled": true,
 	            "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-	            "organization": null,
+	            "organization": {},
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-	            "attributeRelease": null,
 	            "version": $version,
                 "createdBy": null,
                 "current": false
@@ -168,6 +166,7 @@ class EntityDescriptorControllerTests extends Specification {
 
     }
 
+    //todo  review
     def 'GET /EntityDescriptors with 2 records in repository as admin'() {
         given:
         def username = 'admin'
@@ -193,15 +192,12 @@ class EntityDescriptorControllerTests extends Specification {
 	            "serviceEnabled": true,
 	            "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-	            "organization": null,
+	            "organization": {},
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "version": $versionOne,
                 "createdBy": null,
                 "current": false
@@ -213,15 +209,12 @@ class EntityDescriptorControllerTests extends Specification {
 	            "serviceEnabled": false,
 	            "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-	            "organization": null,
+	            "organization": {},
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "version": $versionTwo,
                 "createdBy": null,
                 "current": false
@@ -244,6 +237,8 @@ class EntityDescriptorControllerTests extends Specification {
 
     }
 
+    
+    //todo  review
     def 'GET /EntityDescriptors with 1 record in repository as user returns only that user\'s records'() {
         given:
         def username = 'someUser'
@@ -266,15 +261,12 @@ class EntityDescriptorControllerTests extends Specification {
                 "serviceEnabled": true,
                 "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-                "organization": null,
+                "organization": {},
                 "contacts": null,
-                "mdui": null,
                 "serviceProviderSsoDescriptor": null,
                 "logoutEndpoints": null,
                 "securityInfo": null,
                 "assertionConsumerServices": null,
-                "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "version": $versionOne,
                 "createdBy": "someUser",
                 "current": false
@@ -296,6 +288,7 @@ class EntityDescriptorControllerTests extends Specification {
                 .andExpect(content().json(expectedOneRecordListResponseBody, true))
     }
 
+    //todo  review
     def 'POST /EntityDescriptor and successfully create new record'() {
         given:
         def username = 'admin'
@@ -317,19 +310,15 @@ class EntityDescriptorControllerTests extends Specification {
               {	            
 	            "serviceProviderName": "$expectedSpName",
 	            "entityId": "$expectedEntityId",
-	            "organization": null,
+	            "organization": {},
 	            "serviceEnabled": true,
 	            "createdDate": null,
                 "modifiedDate": null,
-	            "organization": null,
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "current": false
               }                
         """
@@ -339,19 +328,15 @@ class EntityDescriptorControllerTests extends Specification {
 	            "id": "$expectedUUID",
 	            "serviceProviderName": "$expectedSpName",
 	            "entityId": "$expectedEntityId",
-	            "organization": null,
+	            "organization": {},
 	            "serviceEnabled": true,
 	            "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-	            "organization": null,
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "version": $version,
                 "createdBy": null,
                 "current": false
@@ -475,6 +460,8 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().isNotFound())
     }
 
+    
+    //todo  review
     def 'GET /EntityDescriptor/{resourceId} existing'() {
         given:
         def username = 'admin'
@@ -496,19 +483,15 @@ class EntityDescriptorControllerTests extends Specification {
 	            "id": "${providedResourceId}",
 	            "serviceProviderName": "$expectedSpName",
 	            "entityId": "$expectedEntityId",
-	            "organization": null,
+	            "organization": {},
 	            "serviceEnabled": true,
 	            "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-	            "organization": null,
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "version": $version,
                 "createdBy": null,
                 "current": false
@@ -527,6 +510,8 @@ class EntityDescriptorControllerTests extends Specification {
                 .andExpect(content().json(expectedJsonBody, true))
     }
 
+    
+    //todo  review
     def 'GET /EntityDescriptor/{resourceId} existing, owned by non-admin'() {
         given:
         def username = 'someUser'
@@ -549,19 +534,15 @@ class EntityDescriptorControllerTests extends Specification {
 	            "id": "${providedResourceId}",
 	            "serviceProviderName": "$expectedSpName",
 	            "entityId": "$expectedEntityId",
-	            "organization": null,
+	            "organization": {},
 	            "serviceEnabled": true,
 	            "createdDate": "$expectedCreationDate",
                 "modifiedDate": null,
-	            "organization": null,
 	            "contacts": null,
-	            "mdui": null,
 	            "serviceProviderSsoDescriptor": null,
 	            "logoutEndpoints": null,
 	            "securityInfo": null,
 	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
-                "attributeRelease": null,
                 "version": $version,
                 "createdBy": "someUser",
                 "current": false
@@ -707,6 +688,8 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().is(403))
     }
 
+    
+    //todo  review
     def "POST /EntityDescriptor handles XML happily"() {
         given:
         def username = 'admin'
@@ -745,9 +728,8 @@ class EntityDescriptorControllerTests extends Specification {
 	"id": "${expectedEntityDescriptor.resourceId}",
 	"serviceProviderName": null,
 	"entityId": "http://test.scaldingspoon.org/test1",
-	"organization": null,
+	"organization": {},
 	"contacts": null,
-	"mdui": null,
 	"serviceProviderSsoDescriptor": {
 		"protocolSupportEnum": "SAML 2",
 		"nameIdFormats": [
@@ -766,12 +748,12 @@ class EntityDescriptorControllerTests extends Specification {
 	"serviceEnabled": false,
 	"createdDate": null,
 	"modifiedDate": null,
-	"relyingPartyOverrides": {},
 	"attributeRelease": [
 		"givenName",
 		"employeeNumber"
 	],
-    "createdBy": null
+    "createdBy": null,
+    "current": false
 }
 """
 
