@@ -39,14 +39,12 @@
             "title": "label.xml-id",
             "description": "tooltip.xml-id",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "metadataFile": {
             "title": "label.metadata-file",
             "description": "tooltip.metadata-file",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "enabled": {
@@ -75,8 +73,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": false
+            ]
         },
         "reloadableMetadataResolverAttributes": {
             "type": "object",
@@ -100,7 +97,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxRefreshDelay": {
@@ -122,7 +118,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "refreshDelayFactor": {
