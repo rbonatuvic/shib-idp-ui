@@ -367,7 +367,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
-                'xsi:type': 'DynamicHttpMetadataProvider',
+                'xsi:type': 'DynamicHTTPMetadataProvider',
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
                 sortKey: resolver.sortKey,
