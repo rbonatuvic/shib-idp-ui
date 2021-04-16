@@ -10,17 +10,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.CustomAttribute;
+import edu.internet2.tier.shibboleth.admin.ui.domain.CustomAttributeDefinition;
 
 /**
- * Repository to manage {@link CustomAttribute} instances.
+ * Repository to manage {@link CustomAttributeDefinition} instances.
  */
-public interface CustomAttributeRepository extends JpaRepository<CustomAttribute, String> {
+public interface CustomAttributeRepository extends JpaRepository<CustomAttributeDefinition, String> {
    
-    List<CustomAttribute> findAll();
+    List<CustomAttributeDefinition> findAll();
     
-    CustomAttribute findByName(String name);
+    CustomAttributeDefinition findByName(String name);
     
     @SuppressWarnings("unchecked")
-    CustomAttribute save(CustomAttribute attribute);
+    CustomAttributeDefinition save(CustomAttributeDefinition attribute);
 }

@@ -14,10 +14,10 @@ import org.hibernate.envers.Audited;
 
 import lombok.Data;
 
-@Entity(name = "custom_attribute")
+@Entity(name = "custom_attribute_definition")
 @Audited
 @Data
-public class CustomAttribute {
+public class CustomAttributeDefinition {
     @Id
     @Column(nullable = false)
     String name;
@@ -32,9 +32,9 @@ public class CustomAttribute {
     String defaultValue;
     
     @ElementCollection
-    @CollectionTable(name = "custom_attr_values", joinColumns = @JoinColumn(name = "name"))
+    @CollectionTable(name = "custom_attr_list_defs", joinColumns = @JoinColumn(name = "name"))
     @Column(name = "value", nullable = false)
-    Set<String> customAttrValues = new HashSet<>();
+    Set<String> customAttrListDefinitions = new HashSet<>();
     
     // @TODO: logic to ensure defaultValue matches an item from the list of values when SELECTION_LIST is the type ??
 }
