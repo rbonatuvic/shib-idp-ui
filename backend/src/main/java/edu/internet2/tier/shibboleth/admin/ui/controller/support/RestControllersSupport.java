@@ -1,12 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller.support;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaValidationFailedException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
