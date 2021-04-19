@@ -7,8 +7,12 @@
     <metadata-header
         [isEnabled]="isEnabled$ | async"
         [version]="model$ | async"
-        [isCurrent]="true"
-        ></metadata-header>
+        [isCurrent]="true">
+        <button class="btn btn-outline btn-sm btn-danger align-self-start" (click)="deleteResolver(id)">
+            <translate-i18n key="action.delete">Delete</translate-i18n>
+            <i class="fa fa-trash ml-2"></i>
+        </button>
+    </metadata-header>
     <div class="px-3 my-3 d-flex justify-content-between" id="navigation">
         <div>
             <a class="btn btn-link" routerLink="../history">

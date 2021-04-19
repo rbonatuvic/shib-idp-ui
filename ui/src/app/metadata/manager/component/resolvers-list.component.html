@@ -5,7 +5,8 @@
             <th class="w-40"><translate-i18n key="label.entity-id">Entity ID</translate-i18n></th>
             <th class="w-15"><translate-i18n key="label.author">Author</translate-i18n></th>
             <th class="w-15"><translate-i18n key="label.creation-date">Created Date</translate-i18n></th>
-            <th class="text-right w-15"><translate-i18n key="label.enabled">Enabled</translate-i18n></th>
+            <th class="text-center w-15"><translate-i18n key="label.enabled">Enabled</translate-i18n></th>
+            <th class=""></th>
         </thead>
         <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="scroll.emit()">
             <tr *ngFor="let resolver of entities; index as i">
@@ -21,13 +22,8 @@
                 <td [attr.aria-label]="resolver.getCreationDate() ? (resolver.getCreationDate() | customDate) : 'unknown'">
                     {{ resolver.getCreationDate() ? (resolver.getCreationDate() | customDate) : '&mdash;' }}
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                     <span *ngIf="resolver.isDraft()">
-                        <button class="btn btn-outline btn-sm btn-danger" (click)="delete.emit(resolver)">
-                            <span class="sr-only">Delete</span>
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        &nbsp;
                         <span class="badge badge-warning" tabindex="0" aria-label="Warning Badge: Incomplete Form">
                             <translate-i18n key="message.incomplete-form">
                             Incomplete Form
@@ -54,6 +50,15 @@
                             {{ (resolver.enabled ? 'value.enabled' : 'value.disabled') | translate }}
                         </span>
                     </ng-container>
+                </td>
+                <td class="text-right">
+                    <button class="btn btn-outline btn-sm btn-danger" (click)="delete.emit({
+                        entity: resolver,
+                        draft: resolver.isDraft()
+                    })">
+                        <span class="sr-only">Delete</span>
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </td>
             </tr>
         </tbody>

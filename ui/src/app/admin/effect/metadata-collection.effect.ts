@@ -24,6 +24,7 @@ import { Notification, NotificationType } from '../../notification/model/notific
 import { I18nService } from '../../i18n/service/i18n.service';
 import * as fromRoot from '../../app.reducer';
 import * as fromI18n from '../../i18n/reducer';
+import { Router } from '@angular/router';
 
 
 /* istanbul ignore next */
@@ -123,10 +124,20 @@ export class MetadataCollectionEffects {
         )
     );
 
+    @Effect({dispatch: false})
+    redirectOnRemove$ = this.actions$.pipe(
+        ofType<RemoveMetadataSuccess>(MetadataCollectionActionTypes.REMOVE_METADATA_SUCCESS),
+        map(action => action.payload),
+        switchMap(entity =>
+            this.router.navigate(['/'])
+        )
+    );
+
     constructor(
         private descriptorService: ResolverService,
         private actions$: Actions,
         private store: Store<fromRoot.State>,
-        private i18nService: I18nService
+        private i18nService: I18nService,
+        private router: Router
     ) { }
 } /* istanbul ignore next */

@@ -213,7 +213,7 @@ export class ResolverCollectionEffects {
             this.descriptorService
                 .remove(entity)
                 .pipe(
-                    map(p => new RemoveResolverSuccess(p)),
+                    map(p => new RemoveResolverSuccess(entity)),
                     catchError(err => of(new RemoveResolverFail(err)))
                 )
         )

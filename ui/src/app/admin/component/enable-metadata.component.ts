@@ -50,7 +50,7 @@ export class EnableMetadataComponent {
             .result
             .then(
                 success => {
-                    this.store.dispatch(new RemoveMetadataRequest(entity));
+                    this.store.dispatch(new RemoveMetadataRequest(entity.id));
                 },
                 err => {
                     console.log('Cancelled');

@@ -12,6 +12,7 @@ import { DeleteDialogComponent } from '../component/delete-dialog.component';
 import { RemoveDraftRequest } from '../../resolver/action/draft.action';
 import { getAllResolvers } from '../../resolver/reducer';
 import { FileBackedHttpMetadataResolver } from '../../domain/entity';
+import { RemoveResolverRequest } from '../../resolver/action/collection.action';
 
 @Component({
     selector: 'dashboard-resolvers-list',
@@ -86,13 +87,17 @@ export class DashboardResolversListComponent implements OnInit {
         this.router.navigate(['metadata', 'resolver', entity.getId(), 'versions']);
     }
 
-    deleteResolver(entity: MetadataResolver): void {
+    deleteResolver({ entity, draft }: { entity: MetadataResolver, draft: boolean }): void {
         this.modalService
             .open(DeleteDialogComponent)
             .result
             .then(
                 success => {
-                    this.store.dispatch(new RemoveDraftRequest(entity));
+                    if (draft) {
+                        this.store.dispatch(new RemoveDraftRequest(entity));
+                    } else {
+                        this.store.dispatch(new RemoveResolverRequest(entity.id));
+                    }
                 },
                 err => {
                     console.log('Cancelled');
