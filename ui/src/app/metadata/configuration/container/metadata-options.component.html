@@ -3,12 +3,12 @@
     <ng-container *ngSwitchDefault><translate-i18n key="label.provider">Provider</translate-i18n></ng-container>
     Configuration
 </h2>
-<div class="container" id="header">
+<div class="container" id="header" [ngSwitch]="type$ | async">
     <metadata-header
         [isEnabled]="isEnabled$ | async"
         [version]="model$ | async"
         [isCurrent]="true">
-        <button class="btn btn-outline btn-sm btn-danger align-self-start" (click)="deleteResolver(id)">
+        <button class="btn btn-outline btn-sm btn-danger align-self-start" (click)="deleteResolver(id)" *ngSwitchCase="'resolver'">
             <translate-i18n key="action.delete">Delete</translate-i18n>
             <i class="fa fa-trash ml-2"></i>
         </button>
