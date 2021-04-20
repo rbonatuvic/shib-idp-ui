@@ -12,10 +12,12 @@ import javax.persistence.Transient;
 import javax.xml.namespace.QName;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
-@EqualsAndHashCode(callSuper = true, exclude = {"storageAttributeMap"})
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class RequestInitiator extends AbstractElementExtensibleXMLObject implements org.opensaml.saml.ext.saml2mdreqinit.RequestInitiator {
+    @EqualsAndHashCode.Include
     private String binding;
     @Override
     public String getBinding() {
@@ -27,6 +29,7 @@ public class RequestInitiator extends AbstractElementExtensibleXMLObject impleme
         this.binding = binding;
     }
 
+    @EqualsAndHashCode.Include
     private String location;
 
     @Override
@@ -39,6 +42,7 @@ public class RequestInitiator extends AbstractElementExtensibleXMLObject impleme
         this.location = location;
     }
 
+    @EqualsAndHashCode.Include
     private String responseLocation;
 
     @Override
@@ -56,6 +60,11 @@ public class RequestInitiator extends AbstractElementExtensibleXMLObject impleme
 
     @Transient
     private AttributeMap attributeMap = new AttributeMap(this);
+
+    @EqualsAndHashCode.Include
+    private Set<Map.Entry<QName, String>> attributeMapEntrySet() {
+        return this.attributeMap.entrySet();
+    }
 
     @PrePersist
     void prePersist() {

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.ArrayList;
+import java.util.List;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -60,6 +62,23 @@ public class RestControllersSupport {
 
     @ExceptionHandler(JsonSchemaValidationFailedException.class)
     public final ResponseEntity<?> handleJsonSchemaValidationFailedException(JsonSchemaValidationFailedException ex) {
-        return ResponseEntity.status(BAD_REQUEST).body(new ErrorResponse("400", String.join("\n", ex.getErrors())));
+        return ResponseEntity.status(BAD_REQUEST).body(new ErrorResponse("400", String.join("\n", flattenErrorsList(ex.getErrors()))));
+    }
+
+    private List<String> flattenErrorsList(List<Object> errors) {
+        List<String> theseErrors = new ArrayList<>();
+        processErrorsList(theseErrors, errors);
+        return theseErrors;
+    }
+
+    private static void processErrorsList(List<String> outputErrorList, Object errors){
+        if(errors instanceof String){
+            outputErrorList.add((String)errors);
+        }
+        else if(errors instanceof List){
+            for(Object error2:(List)errors){
+                processErrorsList(outputErrorList, error2);
+            }
+        }
     }
 }
