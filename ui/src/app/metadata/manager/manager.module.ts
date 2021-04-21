@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModalModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -39,6 +39,7 @@ import { ResolversListComponent } from './component/resolvers-list.component';
         RouterModule,
         NgbModalModule,
         NgbDropdownModule,
+        NgbPopoverModule,
         HttpClientModule,
         SharedModule,
         I18nModule,
