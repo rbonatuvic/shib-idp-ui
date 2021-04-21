@@ -6,10 +6,14 @@ export const NameIDFilterConfiguration: Wizard<MetadataFilter> = {
     ...NameIDFilter,
     steps: [
         {
-            id: 'target',
+            id: 'common',
             label: 'label.target',
             index: 1,
             fields: [
+                'name',
+                'filterEnabled',
+                '@type',
+                'resourceId',
                 'nameIdFormatFilterTarget'
             ]
         },
@@ -19,10 +23,6 @@ export const NameIDFilterConfiguration: Wizard<MetadataFilter> = {
             index: 1,
             initialValues: [],
             fields: [
-                'name',
-                'filterEnabled',
-                '@type',
-                'resourceId',
                 'removeExistingFormats',
                 'formats'
             ]

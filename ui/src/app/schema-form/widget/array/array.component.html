@@ -38,9 +38,10 @@
                     </ng-container>
                     <ng-container *ngSwitchCase="'object'">
                         <div #acc>
-                            <div class="d-flex justify-content-between" (click)="acc.isHidden = !acc.isHidden">
+                            <div class="d-flex justify-content-between align-items-center" >
                                 <span>
-                                    <i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i>
+                                    <button class="btn btn-text" (click)="acc.isHidden = !acc.isHidden"><i class="fa fa-fw" [ngClass]="{'fa-chevron-right': acc.isHidden, 'fa-chevron-down': !acc.isHidden}"></i></button>
+                                    
                                     &nbsp;
                                     <translate-i18n key="label.new-of-type" [params]="{ type: (itemProperty.schema.title | translate) }"></translate-i18n>
                                     <ng-container *ngIf="itemProperty.schema.properties.makeDefault">

@@ -39,7 +39,7 @@ export function reducer(state = initialState, action: MetadataCollectionActionsU
         }
 
         case MetadataCollectionActionTypes.REMOVE_METADATA_SUCCESS: {
-            return adapter.removeOne(action.payload.id, {
+            return adapter.removeOne(action.payload, {
                 ...state
             });
         }

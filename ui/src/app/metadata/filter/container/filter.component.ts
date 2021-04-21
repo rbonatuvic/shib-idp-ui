@@ -1,12 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { MetadataFilter } from '../../domain/model/metadata-filter';
 import { LoadFilterRequest } from '../action/collection.action';
 import * as fromFilter from '../reducer';
+import * as fromProviders from '../../provider/reducer';
+import { SelectProviderRequest } from '../../provider/action/collection.action';
+import { MetadataProvider } from '../../domain/model';
 
 @Component({
     selector: 'filter-page',
@@ -15,22 +18,22 @@ import * as fromFilter from '../reducer';
     providers: []
 })
 export class FilterComponent implements OnDestroy {
-    actionsSubscription: Subscription;
+    filterSelectSubscription: Subscription;
     filters$: Observable<MetadataFilter[]>;
+    provider$: Observable<MetadataProvider>;
 
     constructor(
         private store: Store<fromFilter.State>,
         private route: ActivatedRoute
     ) {
-        this.actionsSubscription = this.route.parent.params.pipe(
-            distinctUntilChanged(),
-            map(params => {
-                return new LoadFilterRequest(params.providerId);
-            })
-        ).subscribe(store);
+        const params$ = this.route.params.pipe(distinctUntilChanged());
+        
+        this.filterSelectSubscription = params$.pipe(
+            map(params => new LoadFilterRequest(params.providerId))
+        ).subscribe(this.store);
     }
 
     ngOnDestroy() {
-        this.actionsSubscription.unsubscribe();
+        this.filterSelectSubscription.unsubscribe();
     }
 } /* istanbul ignore next */

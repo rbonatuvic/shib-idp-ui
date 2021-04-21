@@ -86,6 +86,10 @@
                     "title": "label.match",
                     "description": "tooltip.match",
                     "type": "string",
+                    "widget": {
+                        "id": "string",
+                        "required": true
+                    },
                     "visibleIf": {
                         "@type": [
                             "Regex"

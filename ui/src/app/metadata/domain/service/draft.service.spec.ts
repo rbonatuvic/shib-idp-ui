@@ -41,7 +41,7 @@ describe(`EntityDraftService`, () => {
         it(`should return a 404 error if not found`, (done: DoneFn) => {
             let id = null;
             service.find(id).subscribe(null, err => {
-                expect(err).toEqual(404);
+                expect(err).toEqual(`404 - null not found in cache.`);
                 done();
             });
         });
@@ -96,10 +96,9 @@ describe(`EntityDraftService`, () => {
 
         it('should return a 404 if not found', () => {
             const resolver = { id: 'bar' } as MetadataResolver;
-            const updates = { id: 'foo', serviceProviderName: 'bar' };
             spyOn(service.storage, 'findByAttr').and.returnValue(null);
             service.update(resolver).subscribe(null, (err) => {
-                expect(err).toBe(404);
+                expect(err).toBe(`404 - ${resolver.id} not found in cache.`);
                 expect(service.storage.findByAttr).toHaveBeenCalled();
             });
         });

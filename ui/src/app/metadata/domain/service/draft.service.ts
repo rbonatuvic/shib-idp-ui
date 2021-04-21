@@ -20,7 +20,7 @@ export class EntityDraftService {
 
     find(id: string, attr: string = 'id'): Observable<MetadataResolver> {
         if (!id) {
-            return throwError(404);
+            return throwError(`404 - ${id} not found in cache.`);
         }
         return this.query().pipe(
             switchMap(
@@ -39,7 +39,9 @@ export class EntityDraftService {
     }
 
     remove(provider: MetadataResolver): Observable<MetadataResolver> {
-        this.storage.removeByAttr(provider.id, 'id');
+        if (!!provider) {
+            this.storage.removeByAttr(provider.id, 'id');
+        }
         return of(provider);
     }
 
@@ -51,7 +53,7 @@ export class EntityDraftService {
             this.storage.add(stored);
             return of(stored);
         } else {
-            return throwError(404);
+            return throwError(`404 - ${provider.id} not found in cache.`);
         }
     }
 } /* istanbul ignore next */

@@ -1,12 +1,16 @@
 <div class="card enabled-status" *ngIf="version">
     <div class="card-body">
-        <h5 class="card-title version-title">
-            <translate-i18n key="label.saved">Saved</translate-i18n>:&nbsp;
-            <span class="save-date">{{ (version.modifiedDate) | date:DATE_FORMAT }}</span>
-            <br />
-            <translate-i18n key="label.by">By</translate-i18n>:&nbsp;
-            <span class="author">{{ version.createdBy }}</span>
-        </h5>
+        <div class="d-flex justify-content-between">
+            <h5 class="card-title version-title">
+                <translate-i18n key="label.saved">Saved</translate-i18n>:&nbsp;
+                <span class="save-date">{{ (version.modifiedDate) | date:DATE_FORMAT }}</span>
+                <br />
+                <translate-i18n key="label.by">By</translate-i18n>:&nbsp;
+                <span class="author">{{ version.createdBy }}</span>
+            </h5>
+            <ng-content></ng-content>
+        </div>
+        
         <p class="card-text">
             <span class="badge badge-primary" *ngIf="isEnabled"><translate-i18n key="value.enabled">Enabled</translate-i18n></span>
             <span class="badge badge-danger" *ngIf="!isEnabled"><translate-i18n key="value.disabled">Disabled</translate-i18n></span>

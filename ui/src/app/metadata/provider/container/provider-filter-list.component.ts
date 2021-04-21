@@ -33,12 +33,16 @@ export class ProviderFilterListComponent implements OnDestroy {
     provider$: Observable<MetadataProvider>;
     isSaving$: Observable<boolean>;
 
+    provider: MetadataProvider;
+
     formats = NAV_FORMATS;
 
     constructor(
         private store: Store<fromProvider.ProviderState>,
         private modalService: NgbModal
     ) {
+
+        console.log('filter list')
         this.filters$ = this.store.select(fromFilter.getAdditionalFilters) as Observable<MetadataFilter[]>;
         this.provider$ = this.store.select(fromProvider.getSelectedProvider).pipe(skipWhile(p => !p));
         this.provider$
@@ -47,6 +51,7 @@ export class ProviderFilterListComponent implements OnDestroy {
             )
             .subscribe(p => {
                 this.store.dispatch(new LoadFilterRequest(p.resourceId));
+                this.provider = p;
             });
 
         this.store.dispatch(new SetIndex('filters'));
@@ -55,15 +60,18 @@ export class ProviderFilterListComponent implements OnDestroy {
     }
 
     toggleEnabled(filter: MetadataFilter): void {
-        this.store.dispatch(new UpdateFilterRequest({ ...filter, filterEnabled: !filter.filterEnabled }));
+        this.store.dispatch(new UpdateFilterRequest({
+            filter: { ...filter, filterEnabled: !filter.filterEnabled },
+            providerId: this.provider.resourceId
+        }));
     }
 
     updateOrderUp(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderUp(filter.resourceId));
+        this.store.dispatch(new ChangeFilterOrderUp({ id: filter.resourceId, providerId: this.provider.resourceId }));
     }
 
     updateOrderDown(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderDown(filter.resourceId));
+        this.store.dispatch(new ChangeFilterOrderDown({ id: filter.resourceId, providerId: this.provider.resourceId }));
     }
 
     remove(id: string): void {

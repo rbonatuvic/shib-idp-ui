@@ -61,14 +61,20 @@ describe('Filter Reducer', () => {
     describe(`${FilterCollectionActionTypes.ADD_FILTER_REQUEST}`, () => {
         it('should set saving to true', () => {
             const filter = new EntityAttributesFilterEntity({ resourceId: 'foo', createdDate: new Date().toLocaleDateString() });
-            const action = new AddFilterRequest(filter);
+            const action = new AddFilterRequest({
+                filter,
+                providerId: 'foo'
+            });
             expect(reducer(snapshot, action).saving).toBe(true);
         });
     });
     describe(`${FilterCollectionActionTypes.UPDATE_FILTER_REQUEST}`, () => {
         it('should set saving to true', () => {
             const filter = new EntityAttributesFilterEntity({ resourceId: 'foo', createdDate: new Date().toLocaleDateString() });
-            const action = new UpdateFilterRequest(filter);
+            const action = new UpdateFilterRequest({
+                filter,
+                providerId: 'foo'
+            });
             expect(reducer(snapshot, action).saving).toBe(true);
         });
     });
@@ -76,7 +82,10 @@ describe('Filter Reducer', () => {
     describe(`${FilterCollectionActionTypes.ADD_FILTER_SUCCESS}`, () => {
         it('should set saving to false', () => {
             const filter = new EntityAttributesFilterEntity({ resourceId: 'foo', createdDate: new Date().toLocaleDateString() });
-            const action = new AddFilterSuccess(filter);
+            const action = new AddFilterSuccess({
+                filter,
+                providerId: 'foo'
+            });
             expect(reducer(snapshot, action).saving).toBe(false);
         });
     });
@@ -124,7 +133,10 @@ describe('Filter Reducer', () => {
                 id: 'foo',
                 changes: new EntityAttributesFilterEntity({ resourceId: 'foo', name: 'bar', createdDate: new Date().toLocaleDateString() }),
             };
-            const action = new UpdateFilterSuccess(update);
+            const action = new UpdateFilterSuccess({
+                update,
+                providerId: 'foo'
+            });
             const result = reducer(snapshot, action);
             expect(fromFilter.adapter.updateOne).toHaveBeenCalled();
         });

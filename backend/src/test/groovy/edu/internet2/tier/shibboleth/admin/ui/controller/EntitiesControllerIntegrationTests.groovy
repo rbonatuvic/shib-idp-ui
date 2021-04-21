@@ -41,6 +41,7 @@ class EntitiesControllerIntegrationTests extends Specification {
         this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
     }*/
 
+    //todo review
     def "GET /api/entities returns the proper json"() {
         given:
         def expectedBody = '''
@@ -54,7 +55,6 @@ class EntitiesControllerIntegrationTests extends Specification {
                     {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
                 ],
                 "serviceEnabled":false,                
-                "relyingPartyOverrides":{},
                 "attributeRelease":["givenName","employeeNumber"]
             }
         '''

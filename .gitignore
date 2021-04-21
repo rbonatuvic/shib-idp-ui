@@ -400,3 +400,9 @@ rdurable
 build-no-tests
 
 beacon/spring/out
+
+# Eclipse junk
+*.classpath
+*.settings
+*.project
+*bin
