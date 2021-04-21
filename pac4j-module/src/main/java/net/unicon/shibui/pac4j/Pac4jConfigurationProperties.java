@@ -21,6 +21,7 @@ public class Pac4jConfigurationProperties {
     private String callbackUrl;
     private boolean wantAssertionsSigned = true;
     private SAML2ProfileMapping saml2ProfileMapping;
+    private boolean enableHeaderAuthentication = true;
 
     public static class SAML2ProfileMapping {
         private String username;
@@ -148,4 +149,7 @@ public class Pac4jConfigurationProperties {
     public void setSaml2ProfileMapping(SAML2ProfileMapping saml2ProfileMapping) {
         this.saml2ProfileMapping = saml2ProfileMapping;
     }
+
+    public boolean getEnableHeaderAuthentication() { return enableHeaderAuthentication; }
+
 }

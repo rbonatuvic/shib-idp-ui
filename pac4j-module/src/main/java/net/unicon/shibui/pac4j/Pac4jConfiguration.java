@@ -3,6 +3,8 @@ package net.unicon.shibui.pac4j;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.credentials.TokenCredentials;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.client.SAML2ClientConfiguration;
@@ -47,4 +49,26 @@ public class Pac4jConfiguration {
         final Config config = new Config(clients);
         return config;
     }
+
+    @Bean
+    public Config headerConfig() {
+        HeaderClient client = new HeaderClient("Authorization", "Basic ", (credentials, ctx) -> {
+            String token = ((TokenCredentials) credentials).getToken();
+            // check the token and create a profile
+            if ("goodToken".equals(token)) {
+                CommonProfile profile = new CommonProfile();
+                profile.setId("myId");
+                // save in the credentials to be passed to the default AuthenticatorProfileCreator
+                credentials.setUserProfile(profile);
+            }
+        }) {
+                @Override
+                protected void clientInit() {
+                }
+            };
+
+        final Config config = new Config(client);
+        return config;
+    }
+
 }

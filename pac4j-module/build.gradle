@@ -26,6 +26,7 @@ dependencies {
     compileOnly project(':backend')
 
     compile "org.pac4j:spring-security-pac4j:4.0.0"
+    compile "org.pac4j:pac4j-http:4.0.0"
     compile "org.pac4j:pac4j-core:3.3.0"
     compile "org.pac4j:pac4j-saml:3.3.0", {
         // opensaml libraries are provided
