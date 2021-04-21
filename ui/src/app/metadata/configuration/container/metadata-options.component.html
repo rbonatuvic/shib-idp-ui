@@ -8,10 +8,16 @@
         [isEnabled]="isEnabled$ | async"
         [version]="model$ | async"
         [isCurrent]="true">
-        <button class="btn btn-outline btn-sm btn-danger align-self-start" (click)="deleteResolver(id)" *ngSwitchCase="'resolver'">
-            <translate-i18n key="action.delete">Delete</translate-i18n>
-            <i class="fa fa-trash ml-2"></i>
-        </button>
+        <div *ngSwitchCase="'resolver'"
+            class="align-self-start"
+            [ngbPopover]="(isEnabled$ | async) ? 'A metadata source must be disabled before it can be deleted.' : null"
+            [openDelay]="300" placement="left" triggers="mouseenter:mouseleave">
+            <button class="btn btn-outline btn-sm btn-danger align-self-start" (click)="deleteResolver(id, enabled)"
+                 [disabled]="(isEnabled$ | async)">
+                <translate-i18n key="action.delete">Delete</translate-i18n>
+                <i class="fa fa-trash ml-2"></i>
+            </button>
+        </div>
     </metadata-header>
     <div class="px-3 my-3 d-flex justify-content-between" id="navigation">
         <div>

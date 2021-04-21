@@ -51,11 +51,13 @@
                         </span>
                     </ng-container>
                 </td>
-                <td class="text-right">
+                <td class="text-right" [ngbPopover]="resolver.enabled ? 'A metadata source must be disabled before it can be deleted.' : null"
+                    [openDelay]="300" triggers="mouseenter:mouseleave" placement="left">
                     <button class="btn btn-outline btn-sm btn-danger" (click)="delete.emit({
                         entity: resolver,
                         draft: resolver.isDraft()
-                    })">
+                    })"
+                    [disabled]="resolver.enabled">
                         <span class="sr-only">Delete</span>
                         <i class="fa fa-trash"></i>
                     </button>

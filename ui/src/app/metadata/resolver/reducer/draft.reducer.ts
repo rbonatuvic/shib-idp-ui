@@ -17,8 +17,9 @@ export const initialState: DraftState = adapter.getInitialState({
 
 export function reducer(state = initialState, action: DraftActionsUnion): DraftState {
     switch (action.type) {
+
         case DraftActionTypes.LOAD_DRAFT_SUCCESS: {
-            return adapter.addMany(action.payload, {
+            return adapter.setAll(action.payload, {
                 ...state,
                 selectedDraftId: state.selectedDraftId,
             });
@@ -29,7 +30,7 @@ export function reducer(state = initialState, action: DraftActionsUnion): DraftS
         }
 
         case DraftActionTypes.REMOVE_DRAFT_SUCCESS: {
-            return adapter.removeOne(action.payload.id, state);
+            return adapter.removeOne(action.payload, state);
         }
 
         case DraftActionTypes.SELECT_SUCCESS: {

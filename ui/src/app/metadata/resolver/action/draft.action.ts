@@ -84,7 +84,7 @@ export class RemoveDraftRequest implements Action {
 export class RemoveDraftSuccess implements Action {
     readonly type = DraftActionTypes.REMOVE_DRAFT_SUCCESS;
 
-    constructor(public payload: MetadataResolver) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveDraftFail implements Action {
