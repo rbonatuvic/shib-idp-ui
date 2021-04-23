@@ -1,0 +1,32 @@
+{
+    "title": "label.metadata-provider",
+    "type": "object",
+    "widget": {
+        "id": "fieldset"
+    },
+    "properties": {
+        "name": {
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "placeholder": "label.select-metadata-type",
+            "type": "string",
+            "widget": {
+                "id": "select",
+                "dataUrl": "api/ui/MetadataResolver/types"
+            }
+        }
+    },
+    "required": [
+        "name",
+        "@type"
+    ]
+}

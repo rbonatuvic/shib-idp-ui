@@ -1,0 +1,29 @@
+plugins {
+    id 'base'
+    id 'com.github.node-gradle.node' version '2.2.4'
+}
+
+node {
+    version = '10.15.3'
+    npmVersion = '6.4.1'
+    download = true
+}
+
+npmInstall.setNpmCommand('ci')
+
+npm_run_build {
+    inputs.dir 'src'
+    inputs.dir 'public'
+    outputs.dir 'build'
+}
+
+npm_run_start {
+    if (project.hasProperty('npm-args')) {
+        args = project.'npm-args'.tokenize()
+    }
+}
+
+clean.doFirst {
+    file('node_modules').deleteDir()
+    file('build').deleteDir()
+}

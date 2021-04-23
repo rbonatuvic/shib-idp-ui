@@ -1,0 +1,42 @@
+.modal-footer {
+    justify-content: space-between;
+}
+
+.modal.modal-xl {
+    max-width: 100% !important;
+    .modal-dialog {
+        width: 1200px;
+        max-width: 98%;
+    }
+}
+
+delete-dialog {
+    .modal-body:before {
+        position: absolute;
+        font-family: 'FontAwesome';
+        top: 0;
+        left: 10px;
+        content: "\f071";
+        color: $red;
+        font-size: 3.5rem;
+    }
+
+    .modal-body {
+        padding-left: 80px;
+        color: $red;
+        font-weight: 700;
+    }
+}
+
+.popover.popover-lg {
+    width: auto;
+    max-width: none;
+}
+
+.popover.popover-info {
+    $color: lighten($brand-info, 60%);
+    background: $color;
+    .arrow::after {
+      border-top-color: $color;
+    }
+}

@@ -1,0 +1,226 @@
+{
+    "title": "EntityAttributes Filter",
+    "type": "object",
+    "widget": {
+        "id": "fieldset"
+    },
+    "properties": {
+        "name": {
+            "title": "label.filter-name",
+            "description": "tooltip.filter-name",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            },
+            "default": "EntityAttributes"
+        },
+        "resourceId": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "version": {
+            "type": "integer",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "filterEnabled": {
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
+            "type": "boolean",
+            "default": false
+        },
+        "entityAttributesFilterTarget": {
+            "title": "label.search-criteria",
+            "description": "tooltip.search-criteria",
+            "type": "object",
+            "widget": {
+                "id": "filter-target"
+            },
+            "properties": {
+                "entityAttributesFilterTargetType": {
+                    "title": "",
+                    "type": "string",
+                    "default": "ENTITY",
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "ENTITY"
+                            ],
+                            "description": "value.entity-id"
+                        },
+                        {
+                            "enum": [
+                                "REGEX"
+                            ],
+                            "description": "value.regex"
+                        },
+                        {
+                            "enum": [
+                                "CONDITION_SCRIPT"
+                            ],
+                            "description": "value.script"
+                        }
+                    ]
+                },
+                "value": {
+                    "type": "array",
+                    "buttons": [
+                        {
+                            "id": "preview",
+                            "label": "action.preview",
+                            "widget": "icon-button"
+                        }
+                    ],
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["value", "entityAttributesFilterTargetType"]
+        },
+        "relyingPartyOverrides": {
+            "type": "object",
+            "properties": {
+                "signAssertion": {
+                    "title": "label.sign-the-assertion",
+                    "description": "tooltip.sign-assertion",
+                    "type": "boolean",
+                    "default": false
+                },
+                "dontSignResponse": {
+                    "title": "label.dont-sign-the-response",
+                    "description": "tooltip.dont-sign-response",
+                    "type": "boolean",
+                    "default": false
+                },
+                "turnOffEncryption": {
+                    "title": "label.turn-off-encryption-of-response",
+                    "description": "tooltip.turn-off-encryption",
+                    "type": "boolean",
+                    "default": false
+                },
+                "useSha": {
+                    "title": "label.use-sha1-signing-algorithm",
+                    "description": "tooltip.usa-sha-algorithm",
+                    "type": "boolean",
+                    "default": false
+                },
+                "ignoreAuthenticationMethod": {
+                    "title": "label.ignore-any-sp-requested-authentication-method",
+                    "description": "tooltip.ignore-auth-method",
+                    "type": "boolean",
+                    "default": false
+                },
+                "forceAuthn": {
+                    "title": "label.force-authn",
+                    "description": "tooltip.force-authn",
+                    "type": "boolean",
+                    "default": false
+                },
+                "omitNotBefore": {
+                    "title": "label.omit-not-before-condition",
+                    "type": "boolean",
+                    "description": "tooltip.omit-not-before-condition",
+                    "default": false
+                },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string"
+                },
+                "nameIdFormats": {
+                    "title": "label.nameid-format-to-send",
+                    "placeholder": "label.nameid-format",
+                    "description": "tooltip.nameid-format",
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "title": "label.nameid-format",
+                        "type": "string",
+                        "widget": {
+                            "id": "datalist",
+                            "data": [
+                                "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                                "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                                "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                                "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                            ]
+                        }
+                    },
+                    "default": null
+                },
+                "authenticationMethods": {
+                    "title": "label.authentication-methods-to-use",
+                    "description": "tooltip.authentication-methods-to-use",
+                    "type": "array",
+                    "placeholder": "label.authentication-method",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string",
+                        "title": "label.authentication-method",
+                        "widget": {
+                            "id": "datalist",
+                            "data": [
+                                "https://refeds.org/profile/mfa",
+                                "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
+                                "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                            ]
+                        }
+                    },
+                    "default": null
+                }
+            }
+        },
+        "attributeRelease": {
+            "type": "array",
+            "description": "Attribute release table - select the attributes you want to release (default unchecked)",
+            "widget": {
+                "id": "checklist",
+                "dataUrl": "/customAttributes"
+            },
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": [
+        "name"
+    ],
+    "fieldsets": [
+        {
+            "type": "group-lg",
+            "fields": [
+                "name",
+                "@type",
+                "resourceId",
+                "version",
+                "entityAttributesFilterTarget"
+            ]
+        },
+        {
+            "type": "group",
+            "fields": [
+                "filterEnabled",
+                "relyingPartyOverrides"
+            ]
+        },
+        {
+            "type": "group",
+            "fields": [
+                "attributeRelease"
+            ]
+        }
+    ]
+}
