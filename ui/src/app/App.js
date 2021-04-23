@@ -13,24 +13,27 @@ import Footer from './core/components/Footer';
 
 import Dashboard from './dashboard/container/Dashboard';
 import Header from './core/components/Header';
+import { UserProvider } from './core/user/UserContext';
 
 function App() {
     return (
         <div className="shibui">
-        <I18nProvider>
-            <Router>
-                <Header />
-                <main className="pad-content">
-                    <Switch>
-                        <Route exact path="/">
-                            <Redirect to="/dashboard" />
-                        </Route>
-                        <Route path="/dashboard" component={Dashboard} />
-                    </Switch>
-                </main>
-                <Footer />
-            </Router>
-        </I18nProvider>
+            <UserProvider>
+                <I18nProvider>
+                    <Router>
+                        <Header />
+                        <main className="pad-content">
+                            <Switch>
+                                <Route exact path="/">
+                                    <Redirect to="/dashboard" />
+                                </Route>
+                                <Route path="/dashboard" component={Dashboard} />
+                            </Switch>
+                        </main>
+                        <Footer />
+                    </Router>
+                </I18nProvider>
+            </UserProvider>
         </div>
     );
 }

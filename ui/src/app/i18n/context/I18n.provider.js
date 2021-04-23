@@ -19,8 +19,8 @@ function I18nProvider ({ children }) {
     React.useEffect(() => { loadMessages() }, []);
 
     async function loadMessages() {
-        const todos = await get(`${path}`);
-        if (response.ok) setMessages(todos);
+        const msgs = await get(`${path}`);
+        if (response.ok) setMessages(msgs);
     }
 
     const [messages, setMessages] = React.useState({});
