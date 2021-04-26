@@ -7,12 +7,18 @@ import Translate from '../../i18n/components/translate';
 
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { MetadataHeader } from './MetadataHeader';
+import { MetadataConfiguration } from './MetadataConfiguration';
+
+
+import { useMetadataConfiguration } from '../hooks/configuration';
 
 export function MetadataOptions () {
 
     const metadata = React.useContext(MetadataObjectContext);
 
     const { type, id } = useParams();
+
+    const configuration = useMetadataConfiguration([metadata]);
 
     return (
         <>
@@ -50,6 +56,7 @@ export function MetadataOptions () {
                     </div>
                 </div>*/}
                 </div>
+                <MetadataConfiguration configuration={ configuration } />
             </div>
         </>
     );

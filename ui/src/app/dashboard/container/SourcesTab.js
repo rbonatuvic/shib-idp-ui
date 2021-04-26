@@ -3,7 +3,7 @@ import useFetch from 'use-http';
 import Translate from '../../i18n/components/translate';
 import API_BASE_PATH from '../../App.constant';
 
-import SourceList from '../../metadata/source/component/SourceList';
+import SourceList from '../../metadata/domain/source/component/SourceList';
 import { useMetadataEntities } from '../../metadata/hooks/api';
 
 export function SourcesTab () {

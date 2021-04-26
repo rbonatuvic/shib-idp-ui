@@ -1,80 +1,94 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, UncontrolledPopover, PopoverBody } from 'reactstrap';
+import { Badge, UncontrolledPopover, PopoverBody, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import FormattedDate from '../../../core/components/FormattedDate';
-import Translate from '../../../i18n/components/translate';
+import FormattedDate from '../../../../core/components/FormattedDate';
+import Translate from '../../../../i18n/components/translate';
 
-export default function ProviderList({ entities, onDelete }) {
+export default function SourceList({ entities, onDelete }) {
+
+    const [modal, setModal] = React.useState(false);
+
+    const toggle = () => setModal(!modal);
+
+    const [deleting, setDeleting] = React.useState(null);
+
+
+
+    const deleteSource = (id) => {
+        onDelete(deleting);
+        setDeleting(null);
+    }
+
     return (
-        <div className="table-responsive mt-3 provider-list!">
+        <div className="table-responsive mt-3 source-list!">
             <table className="table table-striped w-100 table-hover">
                 <thead>
                     <tr>
-                        <th><Translate value="label.order">Order</Translate></th>
-                        <th className="w-25"><Translate value="label.title">Title</Translate></th>
-                        <th className="w-15"><Translate value="label.provider-type">Provider Type</Translate></th>
+                        <th><Translate value="label.title">Title</Translate></th>
+                        <th className="w-40"><Translate value="label.entity-id">Entity ID</Translate></th>
                         <th className="w-15"><Translate value="label.author">Author</Translate></th>
                         <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
-                        <th className="text-right w-15"><Translate value="label.enabled">Enabled</Translate></th>
+                        <th className="text-center w-15"><Translate value="label.enabled">Enabled</Translate></th>
+                        <th className="w-auto"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {entities.map((provider, idx) =>
-                        <tr key={idx}>
+                    {entities.map((source, idx) =>
+                        <tr key={ idx }>
                             <td>
-                                <div className="d-flex align-items-center">
-                                    <div className="provider-index text-center text-primary font-weight-bold">{ idx + 1 }</div>
-                                    <button className="btn btn-link px-1"
-                                        aria-label="Decrease reorder by 1">
-                                            <FontAwesomeIcon className="text-info" icon={faChevronCircleDown} size="lg" />
-                                        <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
-                                    </button>
-                                    <button className="btn btn-link px-1"
-                                        aria-label="Increase reorder by 1">
-                                        <FontAwesomeIcon className="text-info" icon={faChevronCircleUp} size="lg" />
-                                        <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                                { /*
-                                     
-                                    <div *ngIf="!(isSearching$ | async)" className="provider-index text-center text-primary font-weight-bold">{{ i + 1 }}</div>
-                                    <div *ngIf="(isSearching$ | async)" className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
-                                    &nbsp;
-                                    <button className="btn btn-link px-1"
-                                        (click)="updateOrderDown(provider); $event.stopPropagation();"
-                                        [disabled]="isLast || (isSearching$ | async)"
-                                        aria-label="Decrease reorder by 1">
-                                        <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
-                                    </button>
-                                    <button className="btn btn-link  px-1"
-                                        (click)="updateOrderUp(provider); $event.stopPropagation();"
-                                        [disabled]="isFirst || (isSearching$ | async)"
-                                        aria-label="Increase reorder by 1">
-                                        <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                                */ }
+                                <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName }</Link>
                             </td>
                             <td>
-                                <Link to={`/metadata/provider/${provider.resourceId}/configuration/options`}>{provider.name}</Link>
+                                {source.entityId}
                             </td>
-                            <td>{ provider['@type'] }</td>
-                            <td>{ provider.createdBy }</td>
-                            <td><FormattedDate date={provider.createdDate} /></td>
-                            <td className="text-right">
-                                <Badge color={provider.serviceEnabled ? 'success' : 'danger'}>
-                                    <Translate value={provider.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                            <td>
+                                {source.createdBy }
+                            </td>
+                            <td><FormattedDate date={source.createdDate } /></td>
+                            <td className="text-center">
+                                <Badge color={source.serviceEnabled ? 'success' : 'danger' }>
+                                    <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                 </Badge>
                             </td>
+                            <td className="text-right" id={`delete-source-btn-${idx}`}>
+                                <button className="btn btn-outline btn-sm btn-danger"
+                                    type="button"
+                                    disabled={ source.serviceEnabled }
+                                    onClick={() => setDeleting(source.id) }>
+                                    <span className="sr-only">Delete</span>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                                { source.serviceEnabled && 
+                                <UncontrolledPopover trigger="hover" placement="left" target={`delete-source-btn-${idx}`}>
+                                    <PopoverBody>A metadata source must be disabled before it can be deleted.</PopoverBody>
+                                </UncontrolledPopover>
+                                }
+                            </td>
                         </tr>
-                    )}
+                    ) }
                 </tbody>
             </table>
-
+            <Modal isOpen={!!deleting} toggle={() => setDeleting(null)}>
+                <ModalHeader toggle={toggle}><Translate value="message.delete-source-title">Delete Metadata Source?</Translate></ModalHeader>
+                <ModalBody className="d-flex align-content-center">
+                    <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={ faExclamationTriangle } />
+                    <p className="text-danger font-weight-bold mb-0">
+                        <Translate value="message.delete-source-body">You are deleting a metadata source. This cannot be undone. Continue?</Translate>
+                    </p>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={() => deleteSource(deleting)}>
+                        <Translate value="action.delete">Delete</Translate>
+                    </Button>{' '}
+                    <Button color="secondary" onClick={() => setDeleting(null)}>
+                        <Translate value="action.cancel">Cancel</Translate>
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 }
@@ -122,7 +136,7 @@ export default function ProviderList({ entities, onDelete }) {
                         </span>
                     </ng-container>
                 </td>
-                <td className="text-right" [ngbPopover]="resolver.enabled ? 'A metadata provider must be disabled before it can be deleted.' : null"
+                <td className="text-right" [ngbPopover]="resolver.enabled ? 'A metadata source must be disabled before it can be deleted.' : null"
                     [openDelay]="300" triggers="mouseenter:mouseleave" placement="left">
                     <button className="btn btn-outline btn-sm btn-danger" (click)="delete.emit({
                         entity: resolver,

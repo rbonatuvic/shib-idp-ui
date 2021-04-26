@@ -5,7 +5,7 @@ import { MetadataDetail } from './component/MetadataDetail';
 import { MetadataHistory } from './component/MetadataHistory';
 import { MetadataEditor } from './editor/MetadataEditor';
 import { MetadataSelector } from './hoc/MetadataSelector';
-import MetadataSchema from './hoc/MetadataSchema';
+import { MetadataSchema } from './hoc/MetadataSchema';
 
 export function Metadata () {
 

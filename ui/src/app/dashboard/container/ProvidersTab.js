@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useMetadataEntities } from '../../metadata/hooks/api';
 import Translate from '../../i18n/components/translate';
-import ProviderList from '../../metadata/provider/component/ProviderList';
+import ProviderList from '../../metadata/domain/provider/component/ProviderList';
 
 export function ProvidersTab () {
 
