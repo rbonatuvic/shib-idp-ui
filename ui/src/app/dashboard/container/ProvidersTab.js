@@ -1,15 +1,14 @@
 import React from 'react';
-import useFetch from 'use-http';
-import Translate from '../../i18n/components/translate';
-import API_BASE_PATH from '../../App.constant';
 
+import { useMetadataEntities } from '../../metadata/hooks/api';
+import Translate from '../../i18n/components/translate';
 import ProviderList from '../../metadata/provider/component/ProviderList';
 
 export function ProvidersTab () {
 
     const [providers, setProviders] = React.useState([]);
 
-    const { get, response } = useFetch(`${API_BASE_PATH}/MetadataResolvers`, {})
+    const { get, response } = useMetadataEntities('provider');
 
     async function loadProviders() {
         const providers = await get('/')

@@ -14,6 +14,7 @@ import Footer from './core/components/Footer';
 import Dashboard from './dashboard/container/Dashboard';
 import Header from './core/components/Header';
 import { UserProvider } from './core/user/UserContext';
+import { Metadata } from './metadata/Metadata';
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                                     <Redirect to="/dashboard" />
                                 </Route>
                                 <Route path="/dashboard" component={Dashboard} />
+                                <Route path="/metadata/:type/:id" component={Metadata} />
                             </Switch>
                         </main>
                         <Footer />
@@ -40,7 +42,7 @@ function App() {
 
 /*
 <main >
-                    <page-title class="sr-only sr-only-focusable"></page-title>
+                    <page-title className="sr-only sr-only-focusable"></page-title>
                     <router-outlet></router-outlet>
                     <notification-list></notification-list>
                 </main>

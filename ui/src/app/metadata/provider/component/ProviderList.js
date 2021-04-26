@@ -27,34 +27,34 @@ export default function ProviderList({ entities, onDelete }) {
                         <tr key={idx}>
                             <td>
                                 <div className="d-flex align-items-center">
-                                    <div class="provider-index text-center text-primary font-weight-bold">{ idx + 1 }</div>
+                                    <div className="provider-index text-center text-primary font-weight-bold">{ idx + 1 }</div>
                                     <button className="btn btn-link px-1"
                                         aria-label="Decrease reorder by 1">
                                             <FontAwesomeIcon className="text-info" icon={faChevronCircleDown} size="lg" />
-                                        <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
+                                        <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
                                     </button>
                                     <button className="btn btn-link px-1"
                                         aria-label="Increase reorder by 1">
                                         <FontAwesomeIcon className="text-info" icon={faChevronCircleUp} size="lg" />
-                                        <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
+                                        <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
                                     </button>
                                 </div>
                                 { /*
                                      
-                                    <div *ngIf="!(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">{{ i + 1 }}</div>
-                                    <div *ngIf="(isSearching$ | async)" class="provider-index text-center text-primary font-weight-bold">&mdash;</div>
+                                    <div *ngIf="!(isSearching$ | async)" className="provider-index text-center text-primary font-weight-bold">{{ i + 1 }}</div>
+                                    <div *ngIf="(isSearching$ | async)" className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
                                     &nbsp;
-                                    <button class="btn btn-link px-1"
+                                    <button className="btn btn-link px-1"
                                         (click)="updateOrderDown(provider); $event.stopPropagation();"
                                         [disabled]="isLast || (isSearching$ | async)"
                                         aria-label="Decrease reorder by 1">
-                                        <i class="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
+                                        <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
                                     </button>
-                                    <button class="btn btn-link  px-1"
+                                    <button className="btn btn-link  px-1"
                                         (click)="updateOrderUp(provider); $event.stopPropagation();"
                                         [disabled]="isFirst || (isSearching$ | async)"
                                         aria-label="Increase reorder by 1">
-                                        <i class="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
+                                        <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
                                     </button>
                                 </div>
                                 */ }
@@ -95,7 +95,7 @@ export default function ProviderList({ entities, onDelete }) {
                 </td>
                 <td className="text-center">
                     <span *ngIf="resolver.isDraft()">
-                        <span className="badge badge-warning" tabindex="0" aria-label="Warning Badge: Incomplete Form">
+                        <span className="badge badge-warning" tabIndex="0" aria-label="Warning Badge: Incomplete Form">
                             <Translate value="message.incomplete-form">
                             Incomplete Form
                             </Translate>
@@ -112,7 +112,7 @@ export default function ProviderList({ entities, onDelete }) {
                         </button>
                     </ng-container>
                     <ng-container *ngIf="!toggleEnabled.observers.length">
-                        <span tabindex="0"
+                        <span tabIndex="0"
                             [attr.aria-label]="(resolver.enabled ? 'value.enabled' : 'value.disabled') | translate"
                             className="badge"
                             *ngIf="!resolver.isDraft()"

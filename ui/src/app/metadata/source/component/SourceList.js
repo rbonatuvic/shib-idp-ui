@@ -39,7 +39,7 @@ export default function SourceList({ entities, onDelete }) {
                     {entities.map((source, idx) =>
                         <tr key={ idx }>
                             <td>
-                                <Link to={`/metadata/resolver/${source.id}/configuration/options`}>{source.serviceProviderName }</Link>
+                                <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName }</Link>
                             </td>
                             <td>
                                 {source.entityId}
@@ -108,7 +108,7 @@ export default function SourceList({ entities, onDelete }) {
                 </td>
                 <td className="text-center">
                     <span *ngIf="resolver.isDraft()">
-                        <span className="badge badge-warning" tabindex="0" aria-label="Warning Badge: Incomplete Form">
+                        <span className="badge badge-warning" tabIndex="0" aria-label="Warning Badge: Incomplete Form">
                             <Translate value="message.incomplete-form">
                             Incomplete Form
                             </Translate>
@@ -125,7 +125,7 @@ export default function SourceList({ entities, onDelete }) {
                         </button>
                     </ng-container>
                     <ng-container *ngIf="!toggleEnabled.observers.length">
-                        <span tabindex="0"
+                        <span tabIndex="0"
                             [attr.aria-label]="(resolver.enabled ? 'value.enabled' : 'value.disabled') | translate"
                             className="badge"
                             *ngIf="!resolver.isDraft()"

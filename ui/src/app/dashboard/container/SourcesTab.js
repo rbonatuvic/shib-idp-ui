@@ -4,12 +4,13 @@ import Translate from '../../i18n/components/translate';
 import API_BASE_PATH from '../../App.constant';
 
 import SourceList from '../../metadata/source/component/SourceList';
+import { useMetadataEntities } from '../../metadata/hooks/api';
 
 export function SourcesTab () {
 
     const [sources, setSources] = React.useState([]);
 
-    const { get, del, response } = useFetch(`${API_BASE_PATH}/EntityDescriptors`, {})
+    const { get, del, response } = useMetadataEntities('source');
 
     async function loadSources() {
         const sources = await get('/')

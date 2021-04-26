@@ -44,15 +44,13 @@ export function Dashboard () {
                 </NavItem>
             </Nav>
             <Switch>
-                <Route>
-                    <Route exact path={`${path}`}>
-                        <Redirect to={ `${path}/metadata/manager/resolvers` } />
-                    </Route>
-                    <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
-                    <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
-                    <Route path={`${path}/admin/management`} component={AdminTab} />
-                    <Route path={`${path}/admin/actions`} component={ActionsTab} />
+                <Route exact path={`${path}`}>
+                    <Redirect to={`${path}/metadata/manager/resolvers`} />
                 </Route>
+                <Route path={`${path}/metadata/manager/resolvers`} component={SourcesTab} />
+                <Route path={`${path}/metadata/manager/providers`} component={ProvidersTab} />
+                <Route path={`${path}/admin/management`} component={AdminTab} />
+                <Route path={`${path}/admin/actions`} component={ActionsTab} />
             </Switch>
         </div>
     );

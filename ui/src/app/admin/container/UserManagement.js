@@ -99,23 +99,23 @@ export default function UserManagement({ users, roles, onDelete, onSetRole }) {
             <td>{{ user.emailAddress }}</td>
             <td>
                 <label [for]="'role-' + user.username"
-                    class="sr-only"><translate-i18n key="action.user-role">User role</translate-i18n></label>
+                    className="sr-only"><translate-i18n key="action.user-role">User role</translate-i18n></label>
                 <select
                     [id]="'role-' + user.username"
                     [name]="'role-' + user.username"
                     [ngModel]="user.role"
-                    class="form-control"
+                    className="form-control"
                     (change)="setUserRole(user, $event.target.value)"
                     [disabled]="currentUser.username === user.username">
                     <option *ngFor="let role of roles$ | async" [value]="role">{{ role }}</option>
                 </select>
             </td>
             <td>
-                <button class="btn btn-link" (click)="deleteUser(user.username)" *ngIf="!(currentUser.username === user.username)">
-                    <span class="sr-only">
+                <button className="btn btn-link" (click)="deleteUser(user.username)" *ngIf="!(currentUser.username === user.username)">
+                    <span className="sr-only">
                         <translate-i18n key="label.delete-user">Delete User</translate-i18n>
                     </span>
-                    <i class="fa fa-trash fa-lg text-danger"></i>
+                    <i className="fa fa-trash fa-lg text-danger"></i>
                 </button>
             </td>
         </tr>*/
