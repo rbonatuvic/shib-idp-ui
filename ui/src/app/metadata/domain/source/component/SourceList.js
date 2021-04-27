@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Badge, UncontrolledPopover, PopoverBody, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -13,7 +13,7 @@ import { Scroller } from '../../../../dashboard/component/Scroller';
 
 
 
-export default function SourceList({ entities, onDelete }) {
+export default function SourceList({ entities, onDelete, onEnable }) {
 
     const [modal, setModal] = React.useState(false);
 
@@ -57,9 +57,19 @@ export default function SourceList({ entities, onDelete }) {
                                 </td>
                                 <td><FormattedDate date={source.createdDate} /></td>
                                 <td className="text-center">
-                                    <Badge color={source.serviceEnabled ? 'success' : 'danger'}>
-                                        <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                    </Badge>
+                                    {onEnable ?
+                                        <button
+                                            className="btn btn-success btn-sm"
+                                            onClick={() => onEnable(source)}
+                                            aria-label="Enable this service provider">
+                                            <Translate value={ source.enabled ? 'label.disable' : 'label.enable' }>Disable</Translate>
+                                            {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
+                                        </button>
+                                        :
+                                        <Badge color={source.serviceEnabled ? 'success' : 'danger'}>
+                                            <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                        </Badge>
+                                    }
                                 </td>
                                 <td className="text-right" id={`delete-source-btn-${idx}`}>
                                     <button className="btn btn-outline btn-sm btn-danger"

@@ -7,10 +7,13 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import API_BASE_PATH from '../../App.constant';
+import { NotificationContext, createNotificationAction} from '../../notifications/hoc/Notifications';
 
 export default function UserManagement({ users, children, reload }) {
 
     const [roles, setRoles] = React.useState([]);
+
+    const { dispatch } = React.useContext(NotificationContext);
 
     const { get, patch, del, response } = useFetch(`${API_BASE_PATH}`, {});
 
@@ -27,6 +30,9 @@ export default function UserManagement({ users, children, reload }) {
             role
         });
         if (response.ok && reload) {
+            dispatch(createNotificationAction(
+                `User update successful for ${user.username}.`
+            ));
             reload();
         }
     }
@@ -34,6 +40,9 @@ export default function UserManagement({ users, children, reload }) {
     async function deleteUserRequest(id) {
         await del(`/admin/users/${id}`);
         if (response.ok && reload) {
+            dispatch(createNotificationAction(
+                `User deleted.`
+            ));
             reload();
         }
     }

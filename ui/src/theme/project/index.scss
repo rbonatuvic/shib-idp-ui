@@ -9,13 +9,18 @@
 @import './tabs';
 @import './table.scss';
 @import './utility';
+@import './notifications.scss';
+
+html, body {
+    height: 100%;
+}
 
 body {
     background-color: theme-color("light");
     padding-top: 56px;
 }
 
-app-root {
+.app-root {
     min-height: calc(100vh - 56px);
 }
 
