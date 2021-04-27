@@ -71,7 +71,7 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                             {property.differences && <span className="sr-only">Changed:</span> }
                             <span className="p-2" role="term" style={ {width} } ><Translate value={property.name}>{ property.name }</Translate></span>
                             {property.value.map((v, vidx) => 
-                                <>
+                                <React.Fragment key={vidx}>
                                     {(!v || !v.length) && <p style={ {width} } className="text-secondary m-0">-</p> }
                                     {(v && v.length > 0) &&
                                         <ul style={ {width} } className="list-unstyled py-2 m-0">
@@ -89,22 +89,22 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                             )}
                                         </ul>
                                     }
-                                </>
+                                </React.Fragment>
                             )}
                         </div>
                     : property.widget && property.widget.data ?
                         <>
                             {dataList.map((item, itemIdx) => 
-                            <div className={`d-flex justify-content-start border-bottom border-light ${ property.differences && item.differences ? 'bg-diff' : '' }`} tabIndex="0">
-                                {item.differences && <span className="sr-only">Changed:</span> }
-                                <span className="p-2" role="term" style={ {width} }><Translate value={item.label}>{ item.label }</Translate></span>
-                                { property.value.map((v, vIdx) =>
-                                <div className="py-2" style={ {width} }>
-                                    {v && v.indexOf(item.key) > -1 && <span><Translate value="value.true">true</Translate></span> }
-                                    {(!v || !(v.indexOf(item.key) > -1)) && <span><Translate value="value.false">false</Translate></span> }
+                                <div className={`d-flex justify-content-start border-bottom border-light ${ property.differences && item.differences ? 'bg-diff' : '' }`} tabIndex="0" key={itemIdx}>
+                                    {item.differences && <span className="sr-only">Changed:</span> }
+                                    <span className="p-2" role="term" style={ {width} }><Translate value={item.label}>{ item.label }</Translate></span>
+                                    { property.value.map((v, vIdx) =>
+                                    <div className="py-2" style={ {width} }>
+                                        {v && v.indexOf(item.key) > -1 && <span><Translate value="value.true">true</Translate></span> }
+                                        {(!v || !(v.indexOf(item.key) > -1)) && <span><Translate value="value.false">false</Translate></span> }
+                                    </div>
+                                    )}
                                 </div>
-                                )}
-                            </div>
                             )}
                         </>
                     : ''}

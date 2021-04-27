@@ -3,6 +3,10 @@ import React from 'react';
 import { useMetadataEntities } from '../../metadata/hooks/api';
 import Translate from '../../i18n/components/translate';
 import ProviderList from '../../metadata/domain/provider/component/ProviderList';
+import {Search} from '../component/Search';
+import { Ordered } from '../component/Ordered';
+
+const searchProps = ['name', '@type', 'createdBy'];
 
 export function ProvidersTab () {
 
@@ -28,9 +32,19 @@ export function ProvidersTab () {
                     </span>
                 </div>
                 <div className="p-3">
-                    { /* search goes here */}
-                    <ProviderList entities={providers}></ProviderList>
-
+                    <Ordered type="provider" entities={providers}>
+                        {(ordered, first, last, onOrderUp, onOrderDown) =>
+                        <Search entities={ordered} searchable={searchProps}>
+                            {(searched) => <ProviderList
+                                entities={searched}
+                                reorder={providers.length === searched.length}
+                                first={first}
+                                last={last}
+                                onOrderUp={onOrderUp}
+                                onOrderDown={onOrderDown}></ProviderList>}
+                        </Search>
+                        }
+                    </Ordered>
                 </div>
             </div>
         </section>

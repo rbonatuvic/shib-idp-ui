@@ -37,7 +37,7 @@ export function MetadataOptions () {
                             <Translate value="action.version-history">Version History</Translate>
                         </Link>
                         {type === 'provider' &&
-                            <button className="btn btn-link" onClick={"onScrollTo('filters')"}>
+                            <button className="btn btn-link" onClick={() => console.log("onScrollTo('filters')")}>
                                 <FontAwesomeIcon icon={faArrowDown} />&nbsp;
                                 <Translate value="label.filters">Filters</Translate>
                             </button>

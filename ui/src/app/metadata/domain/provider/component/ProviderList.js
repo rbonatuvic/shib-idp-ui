@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, UncontrolledPopover, PopoverBody } from 'reactstrap';
-
+import { Badge, } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
+import { Scroller } from '../../../../dashboard/component/Scroller';
 
-export default function ProviderList({ entities, onDelete }) {
+export default function ProviderList({ entities, reorder = true, first, last, onOrderUp, onOrderDown }) {
     return (
-        <div className="table-responsive mt-3 provider-list!">
+        <Scroller entities={entities}>
+        {(limited) => <div className="table-responsive mt-3 provider-list!">
             <table className="table table-striped w-100 table-hover">
                 <thead>
                     <tr>
@@ -23,25 +24,36 @@ export default function ProviderList({ entities, onDelete }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {entities.map((provider, idx) =>
+                    {limited.map((provider, idx) =>
                         <tr key={idx}>
                             <td>
                                 <div className="d-flex align-items-center">
-                                    <div className="provider-index text-center text-primary font-weight-bold">{ idx + 1 }</div>
-                                    <button className="btn btn-link px-1"
+                                    {reorder ?
+                                        <div className="provider-index text-center text-primary font-weight-bold">{idx + 1}</div>
+                                        :
+                                        <div className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
+                                    }
+                                    &nbsp;
+                                    <button 
+                                        onClick={ () => onOrderDown(provider.resourceId) }
+                                        className="btn btn-link px-1"
+                                        disabled={provider.resourceId === last || !reorder}
                                         aria-label="Decrease reorder by 1">
                                             <FontAwesomeIcon className="text-info" icon={faChevronCircleDown} size="lg" />
                                         <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
                                     </button>
-                                    <button className="btn btn-link px-1"
-                                        aria-label="Increase reorder by 1">
+                                    <button
+                                        onClick={ () => onOrderUp(provider.resourceId) }
+                                        className="btn btn-link px-1"
+                                        aria-label="Increase reorder by 1"
+                                        disabled={provider.resourceId === first || !reorder}>
                                         <FontAwesomeIcon className="text-info" icon={faChevronCircleUp} size="lg" />
                                         <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
                                     </button>
                                 </div>
-                                { /*
+                                
                                      
-                                    <div *ngIf="!(isSearching$ | async)" className="provider-index text-center text-primary font-weight-bold">{{ i + 1 }}</div>
+                                {/*
                                     <div *ngIf="(isSearching$ | async)" className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
                                     &nbsp;
                                     <button className="btn btn-link px-1"
@@ -74,8 +86,9 @@ export default function ProviderList({ entities, onDelete }) {
                     )}
                 </tbody>
             </table>
-
         </div>
+        }
+        </Scroller>
     );
 }
 

@@ -5,8 +5,13 @@ import { Badge, UncontrolledPopover, PopoverBody, Button, Modal, ModalHeader, Mo
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
+
+
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
+import { Scroller } from '../../../../dashboard/component/Scroller';
+
+
 
 export default function SourceList({ entities, onDelete }) {
 
@@ -16,63 +21,68 @@ export default function SourceList({ entities, onDelete }) {
 
     const [deleting, setDeleting] = React.useState(null);
 
-
-
     const deleteSource = (id) => {
         onDelete(deleting);
         setDeleting(null);
     }
 
     return (
-        <div className="table-responsive mt-3 source-list!">
-            <table className="table table-striped w-100 table-hover">
-                <thead>
-                    <tr>
-                        <th><Translate value="label.title">Title</Translate></th>
-                        <th className="w-40"><Translate value="label.entity-id">Entity ID</Translate></th>
-                        <th className="w-15"><Translate value="label.author">Author</Translate></th>
-                        <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
-                        <th className="text-center w-15"><Translate value="label.enabled">Enabled</Translate></th>
-                        <th className="w-auto"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {entities.map((source, idx) =>
-                        <tr key={ idx }>
-                            <td>
-                                <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName }</Link>
-                            </td>
-                            <td>
-                                {source.entityId}
-                            </td>
-                            <td>
-                                {source.createdBy }
-                            </td>
-                            <td><FormattedDate date={source.createdDate } /></td>
-                            <td className="text-center">
-                                <Badge color={source.serviceEnabled ? 'success' : 'danger' }>
-                                    <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                </Badge>
-                            </td>
-                            <td className="text-right" id={`delete-source-btn-${idx}`}>
-                                <button className="btn btn-outline btn-sm btn-danger"
-                                    type="button"
-                                    disabled={ source.serviceEnabled }
-                                    onClick={() => setDeleting(source.id) }>
-                                    <span className="sr-only">Delete</span>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                                { source.serviceEnabled && 
-                                <UncontrolledPopover trigger="hover" placement="left" target={`delete-source-btn-${idx}`}>
-                                    <PopoverBody>A metadata source must be disabled before it can be deleted.</PopoverBody>
-                                </UncontrolledPopover>
-                                }
-                            </td>
+        <>
+        <Scroller entities={entities}>
+        {(limited) =>
+            <div className="table-responsive mt-3 source-list">
+                
+                <table className="table table-striped w-100 table-hover">
+                    <thead>
+                        <tr>
+                            <th><Translate value="label.title">Title</Translate></th>
+                            <th className="w-40"><Translate value="label.entity-id">Entity ID</Translate></th>
+                            <th className="w-15"><Translate value="label.author">Author</Translate></th>
+                            <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
+                            <th className="text-center w-15"><Translate value="label.enabled">Enabled</Translate></th>
+                            <th className="w-auto"></th>
                         </tr>
-                    ) }
-                </tbody>
-            </table>
-            <Modal isOpen={!!deleting} toggle={() => setDeleting(null)}>
+                    </thead>
+                    <tbody>
+                        {limited.map((source, idx) =>
+                            <tr key={idx}>
+                                <td>
+                                    <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName}</Link>
+                                </td>
+                                <td>
+                                    {source.entityId}
+                                </td>
+                                <td>
+                                    {source.createdBy}
+                                </td>
+                                <td><FormattedDate date={source.createdDate} /></td>
+                                <td className="text-center">
+                                    <Badge color={source.serviceEnabled ? 'success' : 'danger'}>
+                                        <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                    </Badge>
+                                </td>
+                                <td className="text-right" id={`delete-source-btn-${idx}`}>
+                                    <button className="btn btn-outline btn-sm btn-danger"
+                                        type="button"
+                                        disabled={source.serviceEnabled}
+                                        onClick={() => setDeleting(source.id)}>
+                                        <span className="sr-only">Delete</span>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                    {source.serviceEnabled &&
+                                        <UncontrolledPopover trigger="hover" placement="left" target={`delete-source-btn-${idx}`}>
+                                            <PopoverBody>A metadata source must be disabled before it can be deleted.</PopoverBody>
+                                        </UncontrolledPopover>
+                                    }
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        }
+        </Scroller>
+        <Modal isOpen={!!deleting} toggle={() => setDeleting(null)}>
                 <ModalHeader toggle={toggle}><Translate value="message.delete-source-title">Delete Metadata Source?</Translate></ModalHeader>
                 <ModalBody className="d-flex align-content-center">
                     <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={ faExclamationTriangle } />
@@ -89,7 +99,7 @@ export default function SourceList({ entities, onDelete }) {
                     </Button>
                 </ModalFooter>
             </Modal>
-        </div>
+        </>
     );
 }
 

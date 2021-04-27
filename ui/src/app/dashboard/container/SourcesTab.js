@@ -5,6 +5,9 @@ import API_BASE_PATH from '../../App.constant';
 
 import SourceList from '../../metadata/domain/source/component/SourceList';
 import { useMetadataEntities } from '../../metadata/hooks/api';
+import { Search } from '../component/Search';
+
+const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
 
 export function SourcesTab () {
 
@@ -37,9 +40,9 @@ export function SourcesTab () {
                     </span>
                 </div>
                 <div className="p-3">
-                    { /* search goes here */ }
-                    <SourceList entities={ sources } onDelete={ deleteSource }></SourceList>
-            
+                    <Search entities={sources} searchable={searchProps}>
+                        {(searched) => <SourceList entities={ searched } onDelete={ deleteSource }></SourceList>}
+                    </Search>
                 </div>
             </div>
         </section>

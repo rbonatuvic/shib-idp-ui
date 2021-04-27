@@ -6,8 +6,10 @@ module.exports = function (app) {
         '/api',
         createProxyMiddleware({
             target: 'http://localhost:8080',
-            secure: false,
-            logLevel: "debug"
+            changeOrigin: true,
+            onProxyRes: function (proxyRes, req, res) {
+                proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+            }
         })
     );
 
@@ -15,8 +17,7 @@ module.exports = function (app) {
         '/actuator',
         createProxyMiddleware({
             target: 'http://localhost:8080',
-            secure: false,
-            logLevel: "debug"
+            changeOrigin: true
         })
     );
 
@@ -24,8 +25,7 @@ module.exports = function (app) {
         '/login',
         createProxyMiddleware({
             target: 'http://localhost:8080',
-            secure: false,
-            logLevel: "debug"
+            changeOrigin: true
         })
     );
 
@@ -33,8 +33,7 @@ module.exports = function (app) {
         '/logout',
         createProxyMiddleware({
             target: 'http://localhost:8080',
-            secure: false,
-            logLevel: "debug"
+            changeOrigin: true
         })
     );
 };
