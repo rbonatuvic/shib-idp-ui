@@ -34,5 +34,10 @@ function useCurrentUser() {
     return context;
 }
 
+function useIsAdmin() {
+    const user = useCurrentUser();
+    return user.role === 'ROLE_ADMIN';
+}
 
-export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser };
+
+export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin };

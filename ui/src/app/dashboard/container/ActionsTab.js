@@ -1,11 +1,10 @@
 import React from 'react';
-import useFetch from 'use-http';
-import UserManagement from '../../admin/container/UserManagement';
-import API_BASE_PATH from '../../App.constant';
+import { SourcesActions } from '../../admin/container/SourcesActions';
+import UserActions from '../../admin/container/UserActions';
 
 import Translate from '../../i18n/components/translate';
 
-export function ActionsTab() {
+export function ActionsTab({ sources, users, reloadSources, reloadUsers }) {
 
     return (
         <>
@@ -19,7 +18,7 @@ export function ActionsTab() {
                         </div>
                     </div>
                     <div className="p-3">
-                        {/*<enable-metadata></enable-metadata>*/}
+                        <SourcesActions sources={sources} reloadSources={reloadSources} />
                     </div>
                 </div>
             </section>
@@ -32,7 +31,7 @@ export function ActionsTab() {
                             </div>
                         </div>
                     </div>
-                    {/*<access-request-component></access-request-component>*/}
+                    <UserActions users={users} reloadUsers={reloadUsers} />
                 </div>
             </section>
         </>

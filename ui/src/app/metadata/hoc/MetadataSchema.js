@@ -23,6 +23,7 @@ export function MetadataSchema({ children }) {
         }
     }
 
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadSchema(definition) }, [definition]);
 
     return (

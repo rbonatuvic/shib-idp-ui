@@ -21,6 +21,7 @@ export function MetadataSelector ({ children }) {
         }
     }
 
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadMetadata(id) }, [id]);
 
     return (

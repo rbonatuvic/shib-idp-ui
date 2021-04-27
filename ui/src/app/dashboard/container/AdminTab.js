@@ -1,6 +1,7 @@
 import React from 'react';
 import useFetch from 'use-http';
 import UserManagement from '../../admin/container/UserManagement';
+import UserMaintenance from '../../admin/component/UserMaintenance';
 import API_BASE_PATH from '../../App.constant';
 
 import Translate from '../../i18n/components/translate';
@@ -9,43 +10,20 @@ export function AdminTab () {
 
     const [users, setUsers] = React.useState([]);
 
-    const { get, patch, del, response } = useFetch(`${API_BASE_PATH}`, {})
+    const { get, response } = useFetch(`${API_BASE_PATH}/admin/users`, {
+        cachePolicy: 'no-cache'
+    }, []);
 
     async function loadUsers() {
-        const users = await get('/admin/users')
+        const users = await get('')
         if (response.ok) {
             setUsers(users);
         }
     }
-    const [roles, setRoles] = React.useState([]);
 
-    async function loadRoles() {
-        const roles = await get('/supportedRoles')
-        if (response.ok) {
-            setRoles(roles);
-        }
-    }
-
-    async function setUserRole (user, role) {
-        const update = await patch(`/admin/users/${user.username}`, {
-            ...user,
-            role
-        });
-        if (response.ok) {
-            loadUsers();
-        }
-    }
-
-    async function deleteUser(id) {
-        const removal = await del(`/admin/users/${id}`);
-        if (response.ok) {
-            loadUsers();
-        }
-    }
-
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         loadUsers();
-        loadRoles();
     }, []);
 
     
@@ -60,7 +38,10 @@ export function AdminTab () {
                     </div>
                 </div>
                 <div className="p-3">
-                    <UserManagement users={users} roles={roles} onDelete={deleteUser} onSetRole={setUserRole} />
+                    <UserManagement users={users} reload={loadUsers}>
+                        {(u, roles, onChangeUserRole, onDeleteUser) =>
+                            <UserMaintenance users={ u } roles={roles} onChangeUserRole={onChangeUserRole} onDeleteUser={onDeleteUser} />}
+                    </UserManagement>
                 </div>
             </div>
         </section>

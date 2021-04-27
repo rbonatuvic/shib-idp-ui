@@ -28,12 +28,12 @@ export function getSchemaPath(type) {
     return `/${schema[type]}`;
 }
 
-export function useMetadataEntities(type = 'source') {
-    return useFetch(`${API_BASE_PATH}${getMetadataListPath(type)}`);
+export function useMetadataEntities(type = 'source', opts = {}) {
+    return useFetch(`${API_BASE_PATH}${getMetadataListPath(type)}`, opts);
 }
 
-export function useMetadataEntity(type = 'source') {
-    return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}`);
+export function useMetadataEntity(type = 'source', opts = {}) {
+    return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}`, opts);
 }
 
 export function useMetadataProviderOrder() {

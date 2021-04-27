@@ -4,7 +4,6 @@ import first from 'lodash/first';
 import last from 'lodash/last';
 import API_BASE_PATH from '../../App.constant';
 import { array_move } from '../../core/utility/array_move';
-import { pick } from 'lodash';
 
 const orderPaths = {
     provider: `/MetadataResolversPositionOrder`
@@ -42,7 +41,7 @@ export function Ordered ({type = 'provider', entities, children}) {
     const [lastId, setLastId] = React.useState(null);
 
     async function changeOrder(resourceIds) {
-        const update = await post(`${orderPaths[type]}`, {
+        await post(`${orderPaths[type]}`, {
             resourceIds
         });
         if (response.ok) {
@@ -64,7 +63,6 @@ export function Ordered ({type = 'provider', entities, children}) {
 
     async function loadOrder () {
         const o = await get(`${orderPaths[type]}`);
-        console.log(o)
         if (response.ok) {
             const ids = o.resourceIds;
             setOrder(ids);
@@ -73,11 +71,10 @@ export function Ordered ({type = 'provider', entities, children}) {
         }
     }
 
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => loadOrder(),[]);
 
     React.useEffect(() => orderEntities(order, entities), [order, entities]);
-
-    React.useEffect(() => console.log(ordered.map(e => pick(e, ['resourceId']))), [ordered]);
 
     return (
         <>

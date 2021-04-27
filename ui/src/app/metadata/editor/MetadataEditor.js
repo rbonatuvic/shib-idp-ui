@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Translate from '../../i18n/components/translate';
-
 import { MetadataObjectContext, MetadataTypeContext } from '../hoc/MetadataSelector';
 
 export function MetadataEditor () {

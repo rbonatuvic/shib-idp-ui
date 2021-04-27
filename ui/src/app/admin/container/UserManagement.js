@@ -1,17 +1,47 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import useFetch from 'use-http';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
-import { useCurrentUser } from '../../core/user/UserContext';
+import API_BASE_PATH from '../../App.constant';
 
-export default function UserManagement({ users, roles, onDelete, onSetRole }) {
+export default function UserManagement({ users, children, reload }) {
 
-    const setUserRole = (user, role) => onSetRole(user, role);
+    const [roles, setRoles] = React.useState([]);
 
-    const currentUser = useCurrentUser();
+    const { get, patch, del, response } = useFetch(`${API_BASE_PATH}`, {});
+
+    async function loadRoles() {
+        const roles = await get('/supportedRoles')
+        if (response.ok) {
+            setRoles(roles);
+        }
+    }
+
+    async function setUserRoleRequest(user, role) {
+        await patch(`/admin/users/${user.username}`, {
+            ...user,
+            role
+        });
+        if (response.ok && reload) {
+            reload();
+        }
+    }
+
+    async function deleteUserRequest(id) {
+        await del(`/admin/users/${id}`);
+        if (response.ok && reload) {
+            reload();
+        }
+    }
+
+    /*eslint-disable react-hooks/exhaustive-deps*/
+    React.useEffect(() => {
+        loadRoles();
+    }, []);
 
     const [modal, setModal] = React.useState(false);
 
@@ -20,57 +50,13 @@ export default function UserManagement({ users, roles, onDelete, onSetRole }) {
     const [deleting, setDeleting] = React.useState(null);
 
     const deleteUser = (id) => {
-        onDelete(deleting);
+        deleteUserRequest(deleting);
         setDeleting(null);
     }
 
     return (
-        <div className="table-responsive mt-3 provider-list">
-            <table className="table table-striped w-100 table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col"><Translate value="label.user-id">UserId</Translate></th>
-                        <th scope="col" ><Translate value="label.name">Name</Translate></th>
-                        <th scope="col"><Translate value="label.email">Email</Translate></th>
-                        <th scope="col" ><Translate value="label.role">Role</Translate></th>
-                        <th scope="col"><Translate value="label.delete">Delete?</Translate></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user, idx) =>
-                        <tr key={idx}>
-                            <th>{ user.username }</th>
-                            <td>{ user.firstName } { user.lastName }</td>
-                            <td>{ user.emailAddress }</td>
-                            <td>
-                                <label htmlFor={`role-${user.username}`} className="sr-only"><Translate value="action.user-role">User role</Translate></label>
-                                <select
-                                    id={`role-${user.username}`}
-                                    name={`role-${user.username}`}
-                                    model="user.role"
-                                    className="form-control"
-                                    onChange={(event) => setUserRole(user, event.target.value) }
-                                    disabled={currentUser.username === user.username}>
-                                        { roles.map((role, ridx) => (
-                                            <option key={role} value={role}>{ role }</option>
-                                        ))}
-                                    
-                                </select>
-                            </td>
-                            <td>
-                                {currentUser.username !== user.username &&
-                                <button className="btn btn-link text-danger" onClick={() => setDeleting(user.username) }>
-                                    <span className="sr-only">
-                                    <Translate value="label.delete-user">Delete User</Translate>
-                                    </span>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
-                                }
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+        <div className="user-management">
+            {children(users, roles, setUserRoleRequest, (id) => setDeleting(id))}
             <Modal isOpen={!!deleting} toggle={() => setDeleting(null)}>
                 <ModalHeader toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></ModalHeader>
                 <ModalBody className="d-flex align-content-center">
@@ -91,31 +77,3 @@ export default function UserManagement({ users, roles, onDelete, onSetRole }) {
         </div>
     );
 }
-
-/*
-<tr *ngFor="let user of users$ | async">
-            <th>{{ user.username }}</th>
-            <td>{{ user.firstName }} {{ user.lastName }}</td>
-            <td>{{ user.emailAddress }}</td>
-            <td>
-                <label [for]="'role-' + user.username"
-                    className="sr-only"><translate-i18n key="action.user-role">User role</translate-i18n></label>
-                <select
-                    [id]="'role-' + user.username"
-                    [name]="'role-' + user.username"
-                    [ngModel]="user.role"
-                    className="form-control"
-                    (change)="setUserRole(user, $event.target.value)"
-                    [disabled]="currentUser.username === user.username">
-                    <option *ngFor="let role of roles$ | async" [value]="role">{{ role }}</option>
-                </select>
-            </td>
-            <td>
-                <button className="btn btn-link" (click)="deleteUser(user.username)" *ngIf="!(currentUser.username === user.username)">
-                    <span className="sr-only">
-                        <translate-i18n key="label.delete-user">Delete User</translate-i18n>
-                    </span>
-                    <i className="fa fa-trash fa-lg text-danger"></i>
-                </button>
-            </td>
-        </tr>*/

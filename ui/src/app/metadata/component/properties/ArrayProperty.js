@@ -2,7 +2,6 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import Translate from '../../../i18n/components/translate';
-import { ArrayValue } from './ArrayValue';
 import { usePropertyWidth } from './hooks';
 import { PropertyValue } from './PropertyValue';
 
@@ -10,7 +9,7 @@ import { PropertyValue } from './PropertyValue';
 
 const isUri = (value) => {
     try {
-        let url = new URL(value);
+        new URL(value);
     } catch (err) {
         return false;
     }
