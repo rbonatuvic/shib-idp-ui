@@ -11,21 +11,18 @@ export function SourcesTab () {
 
     const [sources, setSources] = React.useState([]);
 
-    const { get, del, response } = useMetadataEntities('source');
+    const { get, response } = useMetadataEntities('source', {
+        cachePolicy: 'no-cache'
+    });
 
     async function loadSources() {
-        const sources = await get('/')
+        const sources = await get('/');
         if (response.ok) {
             setSources(sources);
         }
     }
 
-    async function deleteSource(id) {
-        await del(`/${id}`);
-        if (response.ok) {
-            loadSources();
-        }
-    }
+    const updateSources = () => loadSources();
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadSources() }, []);
@@ -40,7 +37,7 @@ export function SourcesTab () {
                 </div>
                 <div className="p-3">
                     <Search entities={sources} searchable={searchProps}>
-                        {(searched) => <SourceList entities={ searched } onDelete={ deleteSource }></SourceList>}
+                        {(searched) => <SourceList entities={ searched } onDelete={ updateSources }></SourceList>}
                     </Search>
                 </div>
             </div>

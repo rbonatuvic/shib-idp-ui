@@ -3,9 +3,9 @@ import FormattedDate from '../../core/components/FormattedDate';
 
 import Translate from '../../i18n/components/translate';
 
-export function MetadataHeader ({ model, current = true, enabled = true }) {
+export function MetadataHeader ({ model, current = true, enabled = true, children, ...props }) {
     return (
-        <div className="card enabled-status">
+        <div className="card enabled-status" {...props}>
             <div className="card-body">
                 <div className="d-flex justify-content-between">
                     <h5 className="card-title version-title">
@@ -17,7 +17,7 @@ export function MetadataHeader ({ model, current = true, enabled = true }) {
                         <Translate value="label.by">By</Translate>:&nbsp;
                         <span className="author">{model.createdBy }</span>
                     </h5>
-                    
+                    {children}
                 </div>
                 
                 <p className="card-text">

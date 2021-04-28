@@ -10,7 +10,7 @@ export function MetadataXmlLoader({ children }) {
 
     const { get, response } = useMetadataEntityXml(type);
 
-    const [xml, setXml] = React.useState([]);
+    const [xml, setXml] = React.useState();
 
     async function loadMetadataXml(id) {
         const data = await get(`/${id}`)
@@ -20,7 +20,11 @@ export function MetadataXmlLoader({ children }) {
     }
 
     /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => { loadMetadataXml(id) }, [id]);
+    React.useEffect(() => {
+        if (type === 'source') {
+            loadMetadataXml(id)
+        }
+    }, [id]);
 
     return (
         <MetadataXmlContext.Provider value={xml}>

@@ -43,9 +43,9 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                 <div className={ property.differences ? 'bg-diff' : '' }>
                     <div className="p-2" role="term"><Translate value={property.name}>{ property.name }</Translate></div>
                     {range.map((i) =>
-                        <div className={`py-2 border-top ${!property.differences ? 'bg-diff' : ''}`}>
+                        <div key={i} className={`py-2 border-top ${property.differences ? 'bg-diff' : ''}`}>
                             {Object.keys(property.items.properties).map((prop, n) =>
-                                <div className="d-flex py-2" tabIndex="0">
+                                <div className="d-flex py-2" tabIndex="0" key={`${i}-${n}`}>
                                     {property.differences && <span className="sr-only">Changed:</span> }
                                     {property.items.properties &&
                                         <div style={{ width }} className="pl-4">
@@ -53,7 +53,15 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                         </div>
                                     }
                                     { property.value.map((version, vIdx) => 
-                                        <PropertyValue columns={columns} value={version} />
+                                        <React.Fragment key={vIdx}>
+                                            {version && version[vIdx] &&
+                                                <PropertyValue name={property.name} columns={columns} value={version[i][prop]} />
+                                            }
+                                            {(!version || !version[vIdx]) && <div style={{ width }}>
+                                                -
+                                            </div>
+                                            }
+                                        </React.Fragment>
                                     )}
                                 </div>
                             )}
@@ -75,7 +83,7 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                     {(v && v.length > 0) &&
                                         <ul style={ {width} } className="list-unstyled py-2 m-0">
                                             {v.map((item, idx) => 
-                                                <li className={`text-truncate border-bottom border-light ${v.length > 1 ? 'py-2' : ''} ${'border-0'}`}>
+                                                <li key={idx} className={`text-truncate border-bottom border-light ${v.length > 1 ? 'py-2' : ''} ${'border-0'}`}>
                                                     {onPreview && isUrl(item) &&
                                                         <>
                                                         <button className="btn btn-link" onClick={() => onPreview(item)}>
@@ -83,7 +91,7 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                                         </button>&nbsp;
                                                         </>
                                                     }
-                                                    { item }
+                                                    <PropertyValue value={item} name={property.name} />
                                                 </li>
                                             )}
                                         </ul>

@@ -18,11 +18,11 @@ export function PropertyValue ({ name, value, columns }) {
                     id={`Popover-${id}`}
                     className="d-block text-truncate"
                     role="definition"
-                    style={{ width }}>
+                    style={columns ? { width } : {}}>
                     {value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}
                 </span>
                 <UncontrolledPopover color="info" trigger="hover" placement="left" target={`Popover-${id}`} delay={500}>
-                    <PopoverBody>{value}</PopoverBody>
+                    <PopoverBody>{value.toString()}</PopoverBody>
                 </UncontrolledPopover>
             </>
         : '-'}
