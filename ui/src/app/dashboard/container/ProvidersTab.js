@@ -39,7 +39,7 @@ export function ProvidersTab () {
                         </span>
                     </div>
                     <div className="p-3">
-                        <Ordered type="provider" entities={providers}>
+                        <Ordered entities={providers}>
                             {(ordered, first, last, onOrderUp, onOrderDown) =>
                             <Search entities={ordered} searchable={searchProps}>
                                 {(searched) => <ProviderList

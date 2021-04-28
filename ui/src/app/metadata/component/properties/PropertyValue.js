@@ -12,7 +12,7 @@ export function PropertyValue ({ name, value, columns }) {
 
     return (
         <>
-        { name && value && value !== false ? 
+        { name && value !== null && value !== undefined  ? 
             <>
                 <span
                     id={`Popover-${id}`}

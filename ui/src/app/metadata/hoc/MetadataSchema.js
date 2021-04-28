@@ -2,20 +2,17 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useMetadataSchema } from '../hooks/api';
 import { getDefinition } from '../domain/index';
-import { MetadataObjectContext } from './MetadataSelector';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
 
-export function MetadataSchema({ children }) {
-
-    const metadata = React.useContext(MetadataObjectContext);
+export function MetadataSchema({ entity, children }) {
 
     const { type } = useParams();
 
     const definition = React.useMemo(() => getDefinition(
-        type === 'source' ? type : metadata['@type']
-    ), [type, metadata]);
+        type === 'source' ? type : entity['@type']
+    ), [type, entity]);
 
     const { get, response } = useMetadataSchema();
 

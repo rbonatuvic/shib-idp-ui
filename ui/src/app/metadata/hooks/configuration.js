@@ -7,5 +7,8 @@ export function useMetadataConfiguration(models) {
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
 
-    return getConfigurationSections(models, definition, schema);
+    const processed = definition.schemaPreprocessor ?
+        definition.schemaPreprocessor(schema) : schema;
+
+    return getConfigurationSections(models, definition, processed);
 }

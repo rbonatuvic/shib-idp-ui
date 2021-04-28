@@ -5,10 +5,6 @@ import last from 'lodash/last';
 import API_BASE_PATH from '../../App.constant';
 import { array_move } from '../../core/utility/array_move';
 
-const orderPaths = {
-    provider: `/MetadataResolversPositionOrder`
-};
-
 export const getId = (entity) => {
     return entity.resourceId ? entity.resourceId : entity.id;
 };
@@ -24,7 +20,7 @@ export const mergeOrderFn = (entities, order) => {
     return ordered;
 };
 
-export function Ordered ({type = 'provider', entities, children}) {
+export function Ordered ({path = '/MetadataResolvers', entities, children}) {
 
     const orderEntities = (orderById, list) => {
         setOrdered(mergeOrderFn(list, orderById));
@@ -41,7 +37,7 @@ export function Ordered ({type = 'provider', entities, children}) {
     const [lastId, setLastId] = React.useState(null);
 
     async function changeOrder(resourceIds) {
-        await post(`${orderPaths[type]}`, {
+        await post(path, {
             resourceIds
         });
         if (response.ok) {
@@ -62,7 +58,7 @@ export function Ordered ({type = 'provider', entities, children}) {
     };
 
     async function loadOrder () {
-        const o = await get(`${orderPaths[type]}`);
+        const o = await get(path);
         if (response.ok) {
             const ids = o.resourceIds;
             setOrder(ids);

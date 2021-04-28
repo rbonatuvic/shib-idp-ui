@@ -15,8 +15,9 @@ export function Metadata () {
 
     return (
         <MetadataSelector>
+            {(entity) =>
             <MetadataXmlLoader>
-                <MetadataSchema>
+                <MetadataSchema entity={ entity }>
                     <Switch>
                         <Route path={`${path}/configuration/options`} render={ () =>
                             <MetadataDetail>
@@ -37,6 +38,7 @@ export function Metadata () {
                     </Switch>
                 </MetadataSchema>
             </MetadataXmlLoader>
+            }
         </MetadataSelector>
     );
 }

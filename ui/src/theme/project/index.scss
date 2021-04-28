@@ -7,9 +7,10 @@
 @import './typography';
 @import './list';
 @import './tabs';
-@import './table.scss';
+@import './table';
 @import './utility';
-@import './notifications.scss';
+@import './notifications';
+@import './filters';
 
 html, body {
     height: 100%;

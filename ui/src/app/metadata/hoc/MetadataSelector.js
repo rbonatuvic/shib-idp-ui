@@ -29,7 +29,7 @@ export function MetadataSelector ({ children }) {
         {type &&
             <MetadataTypeContext.Provider value={type}>
                 {metadata && metadata.version &&
-                <MetadataObjectContext.Provider value={metadata}>{children}</MetadataObjectContext.Provider>
+                <MetadataObjectContext.Provider value={metadata}>{children(metadata)}</MetadataObjectContext.Provider>
                 }
             </MetadataTypeContext.Provider>
         }

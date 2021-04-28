@@ -15,6 +15,9 @@ import { MetadataConfiguration } from './MetadataConfiguration';
 import { useMetadataConfiguration } from '../hooks/configuration';
 import { MetadataViewToggle } from './MetadataViewToggle';
 import { DeleteSourceConfirmation } from '../domain/source/component/DeleteSourceConfirmation';
+import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
+import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
+import { MetadataFilterTypes } from '../domain/filter';
 
 export function MetadataOptions () {
 
@@ -87,11 +90,9 @@ export function MetadataOptions () {
                                     </Link>
                                 </div>
                             </div>
-                            {/*<filter-configuration-list
-                                (onUpdateOrderDown)="updateOrderDown($event)"
-                                (onUpdateOrderUp)="updateOrderUp($event)"
-                                (onRemove)="removeFilter($event)"
-                            [filters]="filters$ | async"></filter-configuration-list>*/}
+                            <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes}>
+                                <MetadataFilterConfigurationList provider={metadata} />
+                            </MetadataFilters>
                         </>
                     }
                 </div>
