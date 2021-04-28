@@ -25,6 +25,7 @@ function App() {
         interceptors: {
             request: async ({options, url, path, route}) => {
                 options.headers['X-XSRF-TOKEN'] = get_cookie('XSRF-TOKEN');
+
                 return options;
             }
         }

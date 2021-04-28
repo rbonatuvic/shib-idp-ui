@@ -11,6 +11,7 @@ import { MetadataConfiguration } from './MetadataConfiguration';
 
 
 import { useMetadataConfiguration } from '../hooks/configuration';
+import { MetadataViewToggle } from './MetadataViewToggle';
 
 export function MetadataOptions () {
 
@@ -43,18 +44,7 @@ export function MetadataOptions () {
                             </button>
                         }
                     </div>
-                    {/*<div *ngIf="hasXml$ | async">
-                    <div className="btn-group" role="group" aria-label="Options selected">
-                        <a className="btn" routerLink="../options" routerLinkActive="btn-primary" aria-pressed="true">
-                            <span className="sr-only"><Translate value="action.toggle-view">Toggle view:</Translate></span>
-                            Options
-                        </a>
-                        <a className="btn" routerLink="../xml" routerLinkActive="btn-primary">
-                            <span className="sr-only"><Translate value="action.toggle-view">Toggle view:</Translate></span>
-                            XML
-                        </a>
-                    </div>
-                </div>*/}
+                    <MetadataViewToggle />
                 </div>
                 <MetadataConfiguration configuration={ configuration } />
             </div>

@@ -2,22 +2,27 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useMetadataSchema } from '../hooks/api';
 import { getDefinition } from '../domain/index';
+import { MetadataObjectContext } from './MetadataSelector';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
 
 export function MetadataSchema({ children }) {
 
-    let { type } = useParams();
+    const metadata = React.useContext(MetadataObjectContext);
 
-    const definition = React.useMemo(() => getDefinition(type), [type]);
+    const { type } = useParams();
+
+    const definition = React.useMemo(() => getDefinition(
+        type === 'source' ? type : metadata['@type']
+    ), [type, metadata]);
 
     const { get, response } = useMetadataSchema();
 
     const [schema, setSchema] = React.useState();
 
     async function loadSchema(d) {
-        const source = await get(`/${definition.schema}`)
+        const source = await get(`/${d.schema}`)
         if (response.ok) {
             setSchema(source);
         }

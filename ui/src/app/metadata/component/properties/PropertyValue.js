@@ -10,8 +10,6 @@ export function PropertyValue ({ name, value, columns }) {
 
     const id = useGuid();
 
-    console.log(value)
-
     return (
         <>
         { name && value && value !== false ? 

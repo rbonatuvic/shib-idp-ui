@@ -1,8 +1,10 @@
+import API_BASE_PATH from "../../../App.constant";
+
 export const SourceBase = {
     label: 'Metadata Source',
     type: '@MetadataProvider',
     steps: [],
-    schema: '',
+    schema: `${API_BASE_PATH}/ui/MetadataSources`,
     validatorParams: [/*getAllOtherIds*/],
 
     bindings: {
@@ -119,7 +121,7 @@ export const SourceBase = {
 
 export const SourceEditor = {
     ...SourceBase,
-    schema: `/MetadataSources`,
+    schema: `${API_BASE_PATH}/ui/MetadataSources`,
     steps: [
         {
             index: 1,
