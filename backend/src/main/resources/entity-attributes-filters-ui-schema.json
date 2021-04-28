@@ -95,44 +95,37 @@
                 "signAssertion": {
                     "title": "label.sign-the-assertion",
                     "description": "tooltip.sign-assertion",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 },
                 "dontSignResponse": {
                     "title": "label.dont-sign-the-response",
                     "description": "tooltip.dont-sign-response",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 },
                 "turnOffEncryption": {
                     "title": "label.turn-off-encryption-of-response",
                     "description": "tooltip.turn-off-encryption",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 },
                 "useSha": {
                     "title": "label.use-sha1-signing-algorithm",
                     "description": "tooltip.usa-sha-algorithm",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 },
                 "ignoreAuthenticationMethod": {
                     "title": "label.ignore-any-sp-requested-authentication-method",
                     "description": "tooltip.ignore-auth-method",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 },
                 "forceAuthn": {
                     "title": "label.force-authn",
                     "description": "tooltip.force-authn",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 },
                 "omitNotBefore": {
                     "title": "label.omit-not-before-condition",
                     "type": "boolean",
-                    "description": "tooltip.omit-not-before-condition",
-                    "default": false
+                    "description": "tooltip.omit-not-before-condition"
                 },
                 "responderId": {
                     "title": "label.responder-id",
@@ -157,8 +150,7 @@
                                 "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
                             ]
                         }
-                    },
-                    "default": null
+                    }
                 },
                 "authenticationMethods": {
                     "title": "label.authentication-methods-to-use",
@@ -177,8 +169,7 @@
                                 "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
                             ]
                         }
-                    },
-                    "default": null
+                    }
                 }
             }
         },

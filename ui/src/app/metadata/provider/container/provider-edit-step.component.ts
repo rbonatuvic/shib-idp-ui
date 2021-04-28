@@ -99,12 +99,16 @@ export class ProviderEditStepComponent implements OnDestroy {
 
         this.valueChangeEmitted$.pipe(
             map(changes => changes.value),
-            withLatestFrom(this.definition$, this.store.select(fromProvider.getSelectedProvider)),
+            withLatestFrom(
+                this.definition$,
+                this.store.select(fromProvider.getSelectedProvider)
+            ),
             filter(([ changes, definition, provider ]) => definition && changes && provider),
             map(([ changes, definition, provider ]) => {
+                const staticFilterTypes = Object.keys(changes.metadataFilters);
                 const appliedFilters = changes && changes.metadataFilters ? {
                     ...changes,
-                    metadataFilters: Object.keys(changes.metadataFilters).reduce((filters, filterType) => ({
+                    metadataFilters: staticFilterTypes.reduce((filters, filterType) => ({
                         ...filters,
                         [filterType]: {
                             ...provider.metadataFilters.find(f => f['@type'] === filterType) || {},
@@ -112,7 +116,7 @@ export class ProviderEditStepComponent implements OnDestroy {
                         }
                     }), {})
                 } : changes;
-                const parsed = definition.parser(appliedFilters);
+                const parsed = definition.parser(appliedFilters, provider);
                 return parsed;
             })
         )
