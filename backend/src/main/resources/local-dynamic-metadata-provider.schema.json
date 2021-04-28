@@ -39,14 +39,12 @@
             "title": "label.xml-id",
             "description": "tooltip.xml-id",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "sourceDirectory": {
             "title": "label.source-directory",
             "description": "tooltip.source-directory",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "enabled": {
@@ -91,7 +89,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxCacheDuration": {
@@ -114,7 +111,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxIdleEntityData": {
@@ -137,7 +133,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "removeIdleEntityData": {
@@ -160,8 +155,7 @@
                             ],
                             "description": "value.false"
                         }
-                    ],
-                    "default": true    
+                    ]
                 },
                 "cleanupTaskInterval": {
                     "title": "label.cleanup-task-interval",
@@ -183,7 +177,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 }
             }

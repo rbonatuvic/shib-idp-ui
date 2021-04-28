@@ -116,8 +116,7 @@
         "removeExistingFormats": {
             "type": "boolean",
             "title": "label.remove-existing-formats",
-            "description": "tooltip.remove-existing-formats",
-            "default": false
+            "description": "tooltip.remove-existing-formats"
         },
         "formats": {
             "$ref": "#/definitions/nameIdFormats"
