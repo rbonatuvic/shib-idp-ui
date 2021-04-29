@@ -1,12 +1,35 @@
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleDown, faArrowCircleUp, faChevronUp, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { Translate } from '../../../../i18n/components/translate';
+import { Link } from 'react-router-dom';
+import { getDefinition } from '../../../domain/index';
+import { useMetadataSchema } from '../../../hooks/api';
+import { MetadataConfiguration } from '../../../component/MetadataConfiguration';
+import { useMetadataConfiguration } from '../../../hooks/configuration';
 
 export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, onOrderUp, onOrderDown, editable, onRemove, index }) {
     const [open, setOpen] = React.useState(false);
+
+    const definition = React.useMemo(() => getDefinition(filter['@type'], ), [filter]);
+
+    const { get, response } = useMetadataSchema();
+
+    const [schema, setSchema] = React.useState();
+
+    async function loadSchema(d) {
+        const source = await get(`/${d.schema}`)
+        if (response.ok) {
+            setSchema(source);
+        }
+    }
+
+    /*eslint-disable react-hooks/exhaustive-deps*/
+    React.useEffect(() => { loadSchema(definition) }, [definition]);
+
+    const configuration = useMetadataConfiguration([filter], schema, definition);
     
     return (<>
         <div className="d-flex justify-content-start align-items-center">
@@ -31,37 +54,31 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
                 </span>
             </span>
         </div>
-        
-    </>);
-}
-
-/*
-
-<div *ngIf="open">
-    <hr className="my-2" />
-    <div className="d-flex justify-content-end mb-2" *ngIf="editable">
-        <div className="d-flex justify-content-between">
-            <a className="btn btn-link"
-                [routerLink]="['../../', 'filter', filter.resourceId, 'edit']">
-                <i className="fa fa-edit sr-hidden"></i>&nbsp;
-                <Translate value="action.edit">Edit</Translate>
-            </a>
-            <button className="btn btn-link"
-                (click)="onRemove.emit(filter.resourceId)">
-                <i className="fa fa-trash sr-hidden"></i>&nbsp;
-                <Translate value="action.delete">Delete</Translate>
+        {open &&
+        <div>
+            <hr className="my-2" />
+            {editable &&
+            <div className="d-flex justify-content-end mb-2">
+                <div className="d-flex justify-content-between">
+                    <Link className="btn btn-link"
+                        to={`filter/${filter.resourceId}/edit`}>
+                        <FontAwesomeIcon icon={faEdit} className="sr-hidden" />&nbsp;
+                        <Translate value="action.edit">Edit</Translate>
+                    </Link>
+                    <button className="btn btn-link"
+                        onClick={() => onRemove(filter.resourceId)}>
+                        <FontAwesomeIcon icon={faTrash} className="sr-hidden" />&nbsp;
+                        <Translate value="action.delete">Delete</Translate>
+                    </button>
+                </div>
+            </div>
+            }
+            {configuration && <MetadataConfiguration configuration={ configuration }/> }
+            <button className="btn btn-link btn-sm" onClick={() => setOpen(!open)}>
+                <FontAwesomeIcon icon={faChevronUp} />&nbsp;
+                <Translate value="action.close">Close</Translate>
             </button>
         </div>
-    </div>
-    <metadata-configuration
-        [numbered]="false"
-        [configuration]="configuration"
-        [entity]="filter"
-        [definition]="definition"
-        (preview)="onPreview($event)"></metadata-configuration>
-    <button className="btn btn-link btn-sm" (click)="open = !open">
-        <i className="fa fa-chevron-up sr-hidden"></i>&nbsp;
-        <Translate value="action.close">Close</Translate>
-    </button>
-</div>
-*/
+        }
+    </>);
+}

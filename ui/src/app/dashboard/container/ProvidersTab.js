@@ -17,7 +17,7 @@ export function ProvidersTab () {
     const { get, response } = useMetadataEntities('provider');
 
     async function loadProviders() {
-        const providers = await get('/')
+        const providers = await get('')
         if (response.ok) {
             setProviders(providers);
         }
@@ -39,7 +39,7 @@ export function ProvidersTab () {
                         </span>
                     </div>
                     <div className="p-3">
-                        <Ordered entities={providers}>
+                        <Ordered entities={providers} prop="resourceIds">
                             {(ordered, first, last, onOrderUp, onOrderDown) =>
                             <Search entities={ordered} searchable={searchProps}>
                                 {(searched) => <ProviderList

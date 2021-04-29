@@ -70,7 +70,7 @@ export const NameIDFilterEditor = {
         {
             id: 'options',
             label: 'label.options',
-            index: 1,
+            index: 2,
             initialValues: [],
             fields: [
                 'removeExistingFormats',

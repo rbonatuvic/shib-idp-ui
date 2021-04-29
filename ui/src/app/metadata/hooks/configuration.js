@@ -1,11 +1,10 @@
-import React from 'react';
-
-import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 import { getConfigurationSections } from './schema';
 
-export function useMetadataConfiguration(models) {
-    const definition = React.useContext(MetadataDefinitionContext);
-    const schema = React.useContext(MetadataSchemaContext);
+export function useMetadataConfiguration(models, schema, definition) {
+
+    if (!models || !schema || !definition) {
+        return {};
+    }
 
     const processed = definition.schemaPreprocessor ?
         definition.schemaPreprocessor(schema) : schema;

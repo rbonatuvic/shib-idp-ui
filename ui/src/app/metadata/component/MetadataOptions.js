@@ -1,5 +1,5 @@
 import React from 'react';
-import { faArrowDown, faHistory, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faChevronUp, faCog, faHistory, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import Translate from '../../i18n/components/translate';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { MetadataHeader } from './MetadataHeader';
 import { MetadataConfiguration } from './MetadataConfiguration';
-
+import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 
 import { useMetadataConfiguration } from '../hooks/configuration';
 import { MetadataViewToggle } from './MetadataViewToggle';
@@ -22,11 +22,13 @@ import { MetadataFilterTypes } from '../domain/filter';
 export function MetadataOptions () {
 
     const metadata = React.useContext(MetadataObjectContext);
+    const definition = React.useContext(MetadataDefinitionContext);
+    const schema = React.useContext(MetadataSchemaContext);
     const history = useHistory();
 
     const { type, id } = useParams();
 
-    const configuration = useMetadataConfiguration([metadata]);
+    const configuration = useMetadataConfiguration([metadata], schema, definition);
 
     const onScrollTo = (element, offset = 0) => {
         scroller.scrollTo(element, {
@@ -85,7 +87,7 @@ export function MetadataOptions () {
                                 <div className="actions px-2">
                                     <Link className="btn btn-link edit-link change-view"
                                         to={`/metadata/provider/${id}/filter/new`}>
-                                        <i className="fa fa-gear"></i>&nbsp;
+                                        <FontAwesomeIcon icon={faPlus} />&nbsp;
                                         <Translate value="action.add-filter">Add Filter</Translate>
                                     </Link>
                                 </div>
@@ -97,7 +99,7 @@ export function MetadataOptions () {
                     }
                 </div>
                 <button className="btn btn-link" onClick={ () => onScrollTo('header', -60) }>
-                    <i className="fa fa-chevron-up sr-hidden"></i>&nbsp;
+                    <FontAwesomeIcon icon={faArrowUp} className="sr-hidden" />&nbsp;
                     <Translate value="action.back-to-top">Back to Top</Translate>
                 </button>
             </div>

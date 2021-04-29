@@ -20,7 +20,7 @@ export const mergeOrderFn = (entities, order) => {
     return ordered;
 };
 
-export function Ordered ({path = '/MetadataResolvers', entities, children}) {
+export function Ordered({ path = '/MetadataResolversPositionOrder', entities, children, prop = null}) {
 
     const orderEntities = (orderById, list) => {
         setOrdered(mergeOrderFn(list, orderById));
@@ -37,9 +37,11 @@ export function Ordered ({path = '/MetadataResolvers', entities, children}) {
     const [lastId, setLastId] = React.useState(null);
 
     async function changeOrder(resourceIds) {
-        await post(path, {
-            resourceIds
-        });
+        await post(path, prop ? {
+            [prop]: resourceIds
+        } : [
+            ...resourceIds
+        ]);
         if (response.ok) {
             loadOrder();
         }
@@ -60,7 +62,7 @@ export function Ordered ({path = '/MetadataResolvers', entities, children}) {
     async function loadOrder () {
         const o = await get(path);
         if (response.ok) {
-            const ids = o.resourceIds;
+            const ids = prop ? o.hasOwnProperty(prop) ? o[prop] : o : o;
             setOrder(ids);
             setFirstId(first(ids));
             setLastId(last(ids));
