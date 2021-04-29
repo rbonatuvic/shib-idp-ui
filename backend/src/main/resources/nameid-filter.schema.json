@@ -49,7 +49,7 @@
             },
             "properties": {
                 "nameIdFormatFilterTargetType": {
-                    "title": "",
+                    "title": "label.filter-target-type",
                     "type": "string",
                     "default": "ENTITY",
                     "oneOf": [
@@ -74,6 +74,7 @@
                     ]
                 },
                 "value": {
+                    "title": "label.filter-target-value",
                     "type": "array",
                     "buttons": [
                         {
