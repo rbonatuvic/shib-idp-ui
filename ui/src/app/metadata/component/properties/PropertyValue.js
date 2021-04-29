@@ -25,7 +25,7 @@ export function PropertyValue ({ name, value, columns }) {
                     <PopoverBody>{value.toString()}</PopoverBody>
                 </UncontrolledPopover>
             </>
-        : '-'}
+        : <span className="d-block text-truncate" style={columns ? { width } : {}}>-</span>}
         </>
     );
 }

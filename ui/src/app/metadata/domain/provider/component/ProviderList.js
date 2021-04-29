@@ -26,7 +26,7 @@ export default function ProviderList({ entities, reorder = true, first, last, on
                 <tbody>
                     {limited.map((provider, idx) =>
                         <tr key={idx}>
-                            <td>
+                            <td className="align-middle">
                                 <div className="d-flex align-items-center">
                                     {reorder ?
                                         <div className="provider-index text-center text-primary font-weight-bold">{idx + 1}</div>
@@ -52,13 +52,13 @@ export default function ProviderList({ entities, reorder = true, first, last, on
                                     </button>
                                 </div>
                             </td>
-                            <td>
+                            <td className="align-middle">
                                 <Link to={`/metadata/provider/${provider.resourceId}/configuration/options`}>{provider.name}</Link>
                             </td>
-                            <td>{ provider['@type'] }</td>
-                            <td>{ provider.createdBy }</td>
-                            <td><FormattedDate date={provider.createdDate} /></td>
-                            <td className="text-right">
+                            <td className="align-middle">{ provider['@type'] }</td>
+                            <td className="align-middle">{ provider.createdBy }</td>
+                            <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
+                            <td className="text-right align-middle">
                                 <Badge color={provider.serviceEnabled ? 'success' : 'danger'}>
                                     <Translate value={provider.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                 </Badge>

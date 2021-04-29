@@ -6,10 +6,9 @@ import { MetadataFiltersContext } from './MetadataFilters';
 
 import { MetadataFilterConfigurationListItem } from './MetadataFilterConfigurationListItem';
 
-export function MetadataFilterConfigurationList ({provider}) {
+export function MetadataFilterConfigurationList ({provider, editable = true}) {
     const filters = React.useContext(MetadataFiltersContext);
     const removeFilter = () => {}
-    const editable = true;
 
     return (
         <Ordered path={`/MetadataResolvers/${provider.resourceId}/FiltersPositionOrder` } entities={filters}>

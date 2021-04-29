@@ -5,6 +5,7 @@ import {
     Redirect,
     Route
 } from "react-router-dom";
+import { QueryParamProvider } from 'use-query-params';
 import { Provider as HttpProvider } from 'use-http';
 
 import './App.scss';
@@ -12,7 +13,7 @@ import { I18nProvider } from './i18n/context/I18n.provider';
 import Footer from './core/components/Footer';
 import { get_cookie } from './core/utility/get_cookie';
 
-import Dashboard from './dashboard/container/Dashboard';
+import Dashboard from './dashboard/view/Dashboard';
 import Header from './core/components/Header';
 import { UserProvider } from './core/user/UserContext';
 import { Metadata } from './metadata/Metadata';
@@ -38,18 +39,20 @@ function App() {
                     <UserProvider>
                         <I18nProvider>
                             <Router>
-                                <Header />
-                                <main className="pad-content">
-                                    <Switch>
-                                        <Route exact path="/">
-                                            <Redirect to="/dashboard" />
-                                        </Route>
-                                        <Route path="/dashboard" component={Dashboard} />
-                                        <Route path="/metadata/:type/:id" component={Metadata} />
-                                    </Switch>
-                                    <NotificationList />
-                                </main>
-                                <Footer />
+                                <QueryParamProvider ReactRouterRoute={Route}>
+                                    <Header />
+                                    <main className="pad-content">
+                                        <Switch>
+                                            <Route exact path="/">
+                                                <Redirect to="/dashboard" />
+                                            </Route>
+                                            <Route path="/dashboard" component={Dashboard} />
+                                            <Route path="/metadata/:type/:id" component={Metadata} />
+                                        </Switch>
+                                        <NotificationList />
+                                    </main>
+                                    <Footer />
+                                </QueryParamProvider>
                             </Router>
                         </I18nProvider>
                     </UserProvider>

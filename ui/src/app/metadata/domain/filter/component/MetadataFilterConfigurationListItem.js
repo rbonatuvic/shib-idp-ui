@@ -37,11 +37,11 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
             {editable &&
             <div className="d-flex justify-content-between">
                 <button className="btn btn-link btn-sm" onClick={() => onOrderUp(filter.resourceId)} disabled={isFirst}>
-                    <FontAwesomeIcon icon={faArrowCircleUp} size='lg' />
+                    <FontAwesomeIcon icon={faArrowCircleUp} size='2x' />
                     <span className="sr-only"><Translate value="action.move-up">Move Up</Translate></span>
                 </button>
                 <button className="btn btn-link btn-sm" onClick={() => onOrderDown(filter.resourceId)} disabled={isLast}>
-                    <FontAwesomeIcon icon={faArrowCircleDown} size='lg' />
+                    <FontAwesomeIcon icon={faArrowCircleDown} size='2x' />
                     <span className="sr-only"><Translate value="action.move-up">Move Down</Translate></span>
                 </button>
             </div>
