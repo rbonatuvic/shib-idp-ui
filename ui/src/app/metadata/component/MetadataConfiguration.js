@@ -18,7 +18,7 @@ export function MetadataConfiguration ({ configuration }) {
     return (
         <>
             { configuration && configuration.sections.map((section, sidx) =>
-                <>
+                <React.Fragment key={sidx}>
                     {section?.properties?.length > 0 && 
                     <MetadataSection section={section} key={sidx} index={ sidx } onEdit={editable ? onEdit : null}>
                         <div className="d-flex border-bottom border-light border-2 py-2">
@@ -36,7 +36,7 @@ export function MetadataConfiguration ({ configuration }) {
                         <ObjectProperty property={section} columns={columns}></ObjectProperty>
                     </MetadataSection>
                     }
-                </>
+                </React.Fragment>
             ) }
         </>
     );

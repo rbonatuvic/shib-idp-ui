@@ -18,15 +18,15 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
-        if (!filters) {
+        if (!filterData) {
             loadFilters(providerId);
         } else {
-            setFilterData(filters);
+            setFilterData(filterData);
         }
     }, [providerId]);
 
 
     return (
-        <MetadataFiltersContext.Provider value={filters}>{children}</MetadataFiltersContext.Provider>
+        <MetadataFiltersContext.Provider value={filterData}>{children}</MetadataFiltersContext.Provider>
     );
 }

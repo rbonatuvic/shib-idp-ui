@@ -10,6 +10,9 @@ export const getId = (entity) => {
 };
 
 export const mergeOrderFn = (entities, order) => {
+    if (!entities) {
+        return [];
+    }
     const ordered = [...entities.sort(
         (a, b) => {
             const aIndex = order.indexOf(getId(a));

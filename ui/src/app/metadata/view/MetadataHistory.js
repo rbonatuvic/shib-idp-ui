@@ -74,7 +74,7 @@ export function MetadataHistory () {
                                     </div>
                                 </td>
                                 <td>
-                                    {i === 0 ? <Link to="['../', 'options']">
+                                    {i === 0 ? <Link to={`/metadata/${type}/${id}/configuration/options` }>
                                         <FormattedDate time={true} date={version.date} />&nbsp;(<Translate value="label.current">Current</Translate>)
                                     </Link>
                                     :
