@@ -1,3 +1,5 @@
+import { MetadataFilterTypes } from "../domain/filter";
+
 export function getDefinition(path, definitions) {
     let def = path.split('/').pop();
     return definitions[def];

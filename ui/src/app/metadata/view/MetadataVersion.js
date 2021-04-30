@@ -23,7 +23,6 @@ export function MetadataVersion() {
 
     const [metadata, setMetadata] = React.useState();
 
-    
     const schema = React.useContext(MetadataSchemaContext);
     const definition = React.useContext(MetadataDefinitionContext);
 

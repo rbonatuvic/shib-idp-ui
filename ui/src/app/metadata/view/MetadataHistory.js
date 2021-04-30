@@ -43,6 +43,14 @@ export function MetadataHistory () {
 
     const [selected, setSelected] = React.useState([]);
 
+    const [sorted, setSorted] = React.useState([]);
+
+    React.useEffect(() => {
+        if (data && data.length) {
+            setSorted(sortVersionsByDate(data));
+        }
+    }, [data]);
+
     return (
         <>
             <h2 className="mb-4">

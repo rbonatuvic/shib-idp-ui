@@ -1,4 +1,3 @@
-import { fi } from 'date-fns/locale';
 import React from 'react';
 import { useMetadataEntities } from '../../../hooks/api';
 
