@@ -1,3 +1,4 @@
+import { fi } from 'date-fns/locale';
 import React from 'react';
 import { useMetadataEntities } from '../../../hooks/api';
 
@@ -18,7 +19,7 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
-        if (!filterData) {
+        if (!filters) {
             loadFilters(providerId);
         } else {
             setFilterData(filterData);
