@@ -38,9 +38,10 @@ export function MetadataVersionLoader ({versions, children}) {
         loadVersion(v);
     }
 
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         loadNext(versions[0]);
-    }, []);
+    }, [versions]);
 
     return (<React.Fragment>
         {children(versions.map(v => list[v]).filter(v => !!v))}

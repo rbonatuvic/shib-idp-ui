@@ -7,6 +7,8 @@ import FormattedDate from '../../core/components/FormattedDate';
 
 import Translate from '../../i18n/components/translate';
 import { useMetadataHistory } from '../hooks/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
 const sortVersionsByDate = (versions) => {
     return versions.sort((a, b) => {
@@ -34,8 +36,8 @@ export function MetadataHistory () {
     };
     const restore = () => {};
     const compare = (versions) => {
-        const sorted = sortVersionsByDate(versions);
-        const path = `/metadata/${type}/${id}/configuration/compare?${queryString.stringify({versions: sorted.map(s => s.id)}, {
+        const s = sortVersionsByDate(versions);
+        const path = `/metadata/${type}/${id}/configuration/compare?${queryString.stringify({versions: s.map(s => s.id)}, {
             skipNull: true,
         })}`;
         history.push(path);
@@ -71,7 +73,7 @@ export function MetadataHistory () {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((version, i) =>
+                        {sorted.map((version, i) =>
                             <tr key={i}>
                                 <td>
                                     <div className="custom-control custom-checkbox" onClick={() => toggleVersionSelected(version)}>
@@ -95,7 +97,7 @@ export function MetadataHistory () {
                                 <td>
                                     {i > 0 &&
                                     <button className="btn btn-text btn-link" onClick={ () => restore(version) }>
-                                        <i className="fa fa-undo"></i>&nbsp;
+                                        <FontAwesomeIcon icon={faUndo} />&nbsp;
                                         <Translate value="action.restore">Restore</Translate>
                                     </button>
                                     }

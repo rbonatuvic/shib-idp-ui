@@ -31,6 +31,11 @@ export function MetadataComparison () {
 
     return (
         <>
+        <h2 class="mb-4">
+            Compare&nbsp;
+            <Translate value={type === 'resolver' ? 'label.source' : 'label.provider'}>Source</Translate>
+            &nbsp;Configuration
+        </h2>
         {versions &&
         <MetadataVersionLoader versions={versions}>
             {(v) =>
@@ -61,7 +66,7 @@ export function MetadataComparison () {
                                         </h2>
                                     </div>
                                     <MetadataFilterVersionContext models={v} dates={config.dates}>
-                                        {(c) => <MetadataFilterVersionList configuration={c} columns={ c.dates.length }/>}
+                                        {(c) => <MetadataFilterVersionList configuration={c} columns={ c.dates.length } limited={limited}/>}
                                     </MetadataFilterVersionContext>
                                 </React.Fragment>
                                 }

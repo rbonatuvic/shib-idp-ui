@@ -28,14 +28,16 @@
     position: relative;
     border-color: #CCC !important;
     &::before {
-        $size: 24px;
-        content: "\f06a";
+        $size: 16px;
+        content: "";
+        opacity: 0.75;
+        background: url('../assets/exclamation-circle.svg');
         font-family: 'FontAwesome';
         text-align: center;
         width: $size;
         height: $size;
         position: absolute;
-        left: -$size;
-        top: 0.5rem;
+        left: -$size - 4;
+        top: 0.75rem;
     }
 }

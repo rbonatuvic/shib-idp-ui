@@ -73,12 +73,13 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
                 </div>
             </div>
             }
-            {configuration && <MetadataConfiguration configuration={ configuration }/> }
-            <button className="btn btn-link btn-sm" onClick={() => setOpen(!open)}>
-                <FontAwesomeIcon icon={faChevronUp} />&nbsp;
-                <Translate value="action.close">Close</Translate>
-            </button>
-        </div>
-        }
+            {configuration &&
+                <MetadataConfiguration configuration={ configuration }/> }
+                    <button className="btn btn-link btn-sm" onClick={() => setOpen(!open)}>
+                        <FontAwesomeIcon icon={faChevronUp} />&nbsp;
+                        <Translate value="action.close">Close</Translate>
+                    </button>
+                </div>
+            }
     </>);
 }

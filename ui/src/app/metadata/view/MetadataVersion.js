@@ -37,6 +37,7 @@ export function MetadataVersion() {
         }
     }
 
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         loadVersion(versionId);
     }, [versionId]);
@@ -85,7 +86,7 @@ export function MetadataVersion() {
                                                 <Link className="btn btn-link edit-link change-view"
                                                     to={`/metadata/provider/${id}/filter/new`}>
                                                     <FontAwesomeIcon icon={faPlus} />&nbsp;
-                                        <Translate value="action.add-filter">Add Filter</Translate>
+                                                    <Translate value="action.add-filter">Add Filter</Translate>
                                                 </Link>
                                             </div>
                                         </div>
