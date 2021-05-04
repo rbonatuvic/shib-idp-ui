@@ -2,7 +2,7 @@
     <label [for]="formProperty._canonicalPath" class="d-flex justify-content-between control-label">
         <span>
             {{ schema.title | translate }}&nbsp;
-            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required"></i>
+            <i class="fa fa-asterisk text-danger" aria-hidden="true" *ngIf="required || schema.widget.required"></i>
             <span *ngIf="required" class="sr-only required"><translate-i18n key="message.required">required</translate-i18n></span>
         </span>
         <span *ngIf="schema.description">

@@ -39,13 +39,14 @@ export function reducer(state = initialState, action: FilterActionsUnion): Filte
             };
         }
         case FilterActionTypes.UPDATE_FILTER: {
-            return {
+            const s = {
                 ...state,
                 changes: {
                     ...state.changes,
                     ...action.payload
                 }
             };
+            return s;
         }
         case FilterActionTypes.CLEAR_FILTER:
         case FilterActionTypes.CANCEL_CREATE_FILTER: {

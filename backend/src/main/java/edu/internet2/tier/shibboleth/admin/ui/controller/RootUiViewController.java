@@ -30,8 +30,8 @@ public class RootUiViewController {
     public void indexHtml(HttpServletRequest request, HttpServletResponse response) throws IOException, URISyntaxException {
         //This method is necessary in order for Angular framework to honor dynamic ServletContext
         //under which shib ui application is deployed, both during initial index.html load and subsequest page refreshes
-        String content = new BufferedReader(new InputStreamReader(request.getServletContext()
-                .getResourceAsStream("/WEB-INF/classes/resources/index.html")))
+        String content = new BufferedReader(new InputStreamReader(this.getClass()
+                .getResourceAsStream("/resources/index.html")))
                 .lines()
                 .collect(Collectors.joining("\n"));
 

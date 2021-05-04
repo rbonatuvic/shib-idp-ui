@@ -64,14 +64,12 @@
             "title": "label.xml-id",
             "description": "tooltip.xml-id",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "metadataURL": {
             "title": "label.metadata-url",
             "description": "tooltip.metadata-url",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "initializeFromBackupFile": {
@@ -94,14 +92,12 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": true
+            ]
         },
         "backingFile": {
             "title": "label.backing-file",
             "description": "tooltip.backing-file",
-            "type": "string",
-            "default": ""
+            "type": "string"
         },
         "backupFileInitNextRefreshDelay": {
             "title": "label.backup-file-init-refresh-delay",
@@ -121,7 +117,6 @@
                     "PT24H"
                 ]
             },
-            "default": null,
             "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
         },
         "requireValidMetadata": {
@@ -144,8 +139,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": true
+            ]
         },
         "failFastInitialization": {
             "title": "label.fail-fast-init",
@@ -167,8 +161,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": true
+            ]
         },
         "useDefaultPredicateRegistry": {
             "title": "label.use-default-predicate-reg",
@@ -190,8 +183,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": true
+            ]
         },
         "satisfyAnyPredicates": {
             "$id": "satisfyAnyPredicates",
@@ -214,8 +206,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": false
+            ]
         },
         "httpMetadataResolverAttributes": {
             "$id": "httpMetadataResolverAttributes",
@@ -477,7 +468,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxRefreshDelay": {
@@ -499,7 +489,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "refreshDelayFactor": {
@@ -551,7 +540,6 @@
                                     "PT24H"
                                 ]
                             },
-                            "default": null,
                             "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                         }
                     }
@@ -567,8 +555,7 @@
                         "requireSignedRoot": {
                             "title": "label.require-signed-root",
                             "description": "tooltip.require-signed-root",
-                            "type": "boolean",
-                            "default": true
+                            "type": "boolean"
                         },
                         "certificateFile": {
                             "title": "label.certificate-file",
@@ -636,14 +623,12 @@
                         "removeRolelessEntityDescriptors": {
                             "title": "label.remove-roleless-entity-descriptors",
                             "description": "tooltip.remove-roleless-entity-descriptors",
-                            "type": "boolean",
-                            "default": true
+                            "type": "boolean"
                         },
                         "removeEmptyEntitiesDescriptors": {
                             "title": "label.remove-empty-entities-descriptors",
                             "description": "tooltip.remove-empty-entities-descriptors",
-                            "type": "boolean",
-                            "default": true
+                            "type": "boolean"
                         }
                     }
                 }

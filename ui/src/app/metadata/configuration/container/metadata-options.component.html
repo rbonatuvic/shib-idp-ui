@@ -3,12 +3,22 @@
     <ng-container *ngSwitchDefault><translate-i18n key="label.provider">Provider</translate-i18n></ng-container>
     Configuration
 </h2>
-<div class="container" id="header">
+<div class="container" id="header" [ngSwitch]="type$ | async">
     <metadata-header
         [isEnabled]="isEnabled$ | async"
         [version]="model$ | async"
-        [isCurrent]="true"
-        ></metadata-header>
+        [isCurrent]="true">
+        <div *ngSwitchCase="'resolver'"
+            class="align-self-start"
+            [ngbPopover]="(isEnabled$ | async) ? 'A metadata source must be disabled before it can be deleted.' : null"
+            [openDelay]="300" placement="left" triggers="mouseenter:mouseleave">
+            <button class="btn btn-outline btn-sm btn-danger align-self-start" (click)="deleteResolver(id, enabled)"
+                 [disabled]="(isEnabled$ | async)">
+                <translate-i18n key="action.delete">Delete</translate-i18n>
+                <i class="fa fa-trash ml-2"></i>
+            </button>
+        </div>
+    </metadata-header>
     <div class="px-3 my-3 d-flex justify-content-between" id="navigation">
         <div>
             <a class="btn btn-link" routerLink="../history">
@@ -50,7 +60,6 @@
         <ng-container *ngIf="kind === 'provider'">
             <div class="numbered-header d-flex justify-content-start bg-light align-items-center">
                 <h2 class="title h4 m-0 ml-2 flex-grow-1">
-                    <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
                     <span class="text"><translate-i18n key="label.filters">Filters</translate-i18n></span>
                 </h2>
                 <div class="actions px-2">

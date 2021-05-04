@@ -88,7 +88,6 @@ class EntitiesControllerTests extends Specification {
         result.andExpect(status().isNotFound())
     }
 
-    
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
         given:
         def expectedBody = '''
@@ -96,9 +95,8 @@ class EntitiesControllerTests extends Specification {
                 "id":null,
                 "serviceProviderName":null,
                 "entityId":"http://test.scaldingspoon.org/test1",
-                "organization":null,
+                "organization": {},
                 "contacts":null,
-                "mdui":null,
                 "serviceProviderSsoDescriptor": {
                     "protocolSupportEnum":"SAML 2",
                     "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
@@ -111,8 +109,10 @@ class EntitiesControllerTests extends Specification {
                 "serviceEnabled":false,
                 "createdDate":null,
                 "modifiedDate":null,
-                "relyingPartyOverrides":{},
-                "attributeRelease":["givenName","employeeNumber"]
+                "attributeRelease":["givenName","employeeNumber"],
+                "version":-1891841119,
+                "createdBy":null,
+                "current":false
             }
         '''
         when:

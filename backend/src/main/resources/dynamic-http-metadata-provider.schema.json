@@ -45,7 +45,6 @@
             "title": "label.xml-id",
             "description": "tooltip.xml-id",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "metadataRequestURLConstructionScheme": {
@@ -86,6 +85,10 @@
                     "title": "label.match",
                     "description": "tooltip.match",
                     "type": "string",
+                    "widget": {
+                        "id": "string",
+                        "required": true
+                    },
                     "visibleIf": {
                         "@type": [
                             "Regex"
@@ -114,8 +117,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": true
+            ]
         },
         "failFastInitialization": {
             "title": "label.fail-fast-init",
@@ -137,8 +139,7 @@
                     ],
                     "description": "value.false"
                 }
-            ],
-            "default": true
+            ]
         },
         "dynamicMetadataResolverAttributes": {
             "type": "object",
@@ -175,7 +176,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxCacheDuration": {
@@ -197,7 +197,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxIdleEntityData": {
@@ -219,7 +218,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "removeIdleEntityData": {
@@ -242,8 +240,7 @@
                             ],
                             "description": "value.false"
                         }
-                    ],
-                    "default": true
+                    ]
                 },
                 "cleanupTaskInterval": {
                     "title": "label.cleanup-task-interval",
@@ -264,14 +261,12 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "persistentCacheManagerDirectory": {
                     "title": "label.persistent-cache-manager-directory",
                     "description": "tooltip.persistent-cache-manager-directory",
                     "type": "string",
-                    "default": "",
                     "minLength": 1
                 },
                 "initializeFromPersistentCacheInBackground": {
@@ -294,8 +289,7 @@
                             ],
                             "description": "value.false"
                         }
-                    ],
-                    "default": true
+                    ]
                 },
                 "backgroundInitializationFromCacheDelay": {
                     "title": "label.background-init-from-cache-delay",
@@ -321,7 +315,6 @@
                             true
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 }
             }
@@ -401,16 +394,14 @@
                             ],
                             "description": "False"
                         }
-                    ],
-                    "default": false
+                    ]
                 },
                 "httpClientRef": {
                     "type": "string",
                     "title": "",
                     "description": "",
                     "placeholder": "",
-                    "widget": "hidden",
-                    "default": ""
+                    "widget": "hidden"
                 },
                 "connectionRequestTimeout": {
                     "type": "string",
@@ -431,7 +422,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "connectionTimeout": {
@@ -453,7 +443,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "socketTimeout": {
@@ -475,7 +464,6 @@
                             "PT24H"
                         ]
                     },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "tlsTrustEngineRef": {
@@ -483,44 +471,38 @@
                     "title": "",
                     "description": "",
                     "placeholder": "",
-                    "widget": "hidden",
-                    "default": ""
+                    "widget": "hidden"
                 },
                 "httpClientSecurityParametersRef": {
                     "type": "string",
                     "title": "",
                     "description": "",
                     "placeholder": "",
-                    "widget": "hidden",
-                    "default": ""
+                    "widget": "hidden"
                 },
                 "proxyHost": {
                     "type": "string",
                     "title": "label.proxy-host",
                     "description": "tooltip.proxy-host",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "proxyPort": {
                     "type": "string",
                     "title": "label.proxy-port",
                     "description": "tooltip.proxy-port",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "proxyUser": {
                     "type": "string",
                     "title": "label.proxy-user",
                     "description": "tooltip.proxy-user",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "proxyPassword": {
                     "type": "string",
                     "title": "label.proxy-password",
                     "description": "tooltip.proxy-password",
-                    "placeholder": "",
-                    "default": ""
+                    "placeholder": ""
                 },
                 "httpCaching": {
                     "type": "string",
@@ -562,7 +544,6 @@
                     "title": "label.http-max-cache-entries",
                     "description": "tooltip.http-max-cache-entries",
                     "placeholder": "",
-                    "default": 0,
                     "minimum": 0
                 },
                 "httpMaxCacheEntrySize": {
@@ -570,7 +551,6 @@
                     "title": "label.max-cache-entry-size",
                     "description": "tooltip.max-cache-entry-size",
                     "placeholder": "",
-                    "default": 0,
                     "minimum": 0
                 }
             }
@@ -609,7 +589,6 @@
                                     "PT24H"
                                 ]
                             },
-                            "default": null,
                             "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                         }
                     }
@@ -625,8 +604,7 @@
                         "requireSignedRoot": {
                             "title": "label.require-signed-root",
                             "description": "tooltip.require-signed-root",
-                            "type": "boolean",
-                            "default": true
+                            "type": "boolean"
                         },
                         "certificateFile": {
                             "title": "label.certificate-file",
@@ -694,14 +672,12 @@
                         "removeRolelessEntityDescriptors": {
                             "title": "label.remove-roleless-entity-descriptors",
                             "description": "tooltip.remove-roleless-entity-descriptors",
-                            "type": "boolean",
-                            "default": true
+                            "type": "boolean"
                         },
                         "removeEmptyEntitiesDescriptors": {
                             "title": "label.remove-empty-entities-descriptors",
                             "description": "tooltip.remove-empty-entities-descriptors",
-                            "type": "boolean",
-                            "default": true
+                            "type": "boolean"
                         }
                     }
                 }

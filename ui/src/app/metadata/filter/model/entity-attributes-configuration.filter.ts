@@ -6,10 +6,14 @@ export const EntityAttributesFilterConfiguration: Wizard<MetadataFilter> = {
     ...EntityAttributesFilter,
     steps: [
         {
-            id: 'target',
+            id: 'common',
             label: 'label.target',
             index: 1,
             fields: [
+                'name',
+                '@type',
+                'resourceId',
+                'filterEnabled',
                 'entityAttributesFilterTarget'
             ]
         },
@@ -19,10 +23,6 @@ export const EntityAttributesFilterConfiguration: Wizard<MetadataFilter> = {
             index: 2,
             initialValues: [],
             fields: [
-                'name',
-                '@type',
-                'resourceId',
-                'filterEnabled',
                 'relyingPartyOverrides'
             ]
         },

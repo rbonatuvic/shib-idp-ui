@@ -2,21 +2,31 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import * as fromFilter from '../reducer';
+import * as fromWizard from '../../../wizard/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NavigatorService } from '../../../core/service/navigator.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { EditFilterComponent } from './edit-filter.component';
-import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
+import { SchemaFormModule } from 'ngx-schema-form';
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
 import { MetadataFilterTypes } from '../model';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
+import { ActivatedRoute } from '@angular/router';
 
 describe('Edit Metadata Filter Page', () => {
     let fixture: ComponentFixture<EditFilterComponent>;
     let store: Store<fromFilter.State>;
     let instance: EditFilterComponent;
+
+    let activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
+    activatedRoute.testParamMap = { providerId: 'foo' };
+    let child: ActivatedRouteStub = new ActivatedRouteStub();
+    child.testParamMap = { form: 'common' };
+    activatedRoute.firstChild = child;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -26,11 +36,15 @@ describe('Edit Metadata Filter Page', () => {
                 FormBuilder,
                 NgbPopoverConfig,
                 NavigatorService,
-                SchemaService
+                SchemaService,
+                {
+                    provide: ActivatedRoute, useValue: activatedRoute
+                }
             ],
             imports: [
                 StoreModule.forRoot({
                     'filter': combineReducers(fromFilter.reducers),
+                    'wizard': combineReducers(fromWizard.reducers)
                 }),
                 ReactiveFormsModule,
                 NgbPopoverModule,
@@ -60,7 +74,7 @@ describe('Edit Metadata Filter Page', () => {
     describe('cancel method', () => {
         it('should dispatch a cancel changes action', () => {
             fixture.detectChanges();
-            instance.cancel();
+            instance.cancel('foo');
             expect(store.dispatch).toHaveBeenCalled();
         });
     });
@@ -71,26 +85,6 @@ describe('Edit Metadata Filter Page', () => {
             instance.definition = MetadataFilterTypes.EntityAttributes;
             instance.preview('foo');
             expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
-    describe('status emitter', () => {
-        it('should set the isValid property to true', () => {
-            fixture.detectChanges();
-            instance.statusChangeSubject.next({value: []});
-            expect(instance.isValid).toBe(true);
-        });
-
-        it('should set the isValid property to true if value is undefined', () => {
-            fixture.detectChanges();
-            instance.statusChangeSubject.next({value: null});
-            expect(instance.isValid).toBe(true);
-        });
-
-        it('should set the isValid property to false', () => {
-            fixture.detectChanges();
-            instance.statusChangeSubject.next({ value: [{control: 'foo'}] });
-            expect(instance.isValid).toBe(false);
         });
     });
 });

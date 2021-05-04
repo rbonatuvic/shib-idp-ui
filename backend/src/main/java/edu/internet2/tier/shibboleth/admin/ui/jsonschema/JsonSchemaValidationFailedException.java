@@ -13,9 +13,9 @@ import java.util.List;
 @Getter
 public class JsonSchemaValidationFailedException extends RuntimeException {
 
-    List<String> errors;
+    List errors;
 
     JsonSchemaValidationFailedException(List<?> errors) {
-        this.errors = (List<String>) errors;
+        this.errors = errors;
     }
 }

@@ -1,5 +1,6 @@
 import { Wizard } from '../../../wizard/model';
 import { BaseMetadataProvider } from '../../domain/model/providers';
+import { filterTypeFn } from '../../filter/reducer';
 import { getFilteredProviderNames, getFilteredProviderXmlIds } from '../reducer';
 
 export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
@@ -44,26 +45,39 @@ export const BaseMetadataProviderEditor: Wizard<BaseMetadataProvider> = {
         };
         return validators;
     },
-    parser: (changes: any): BaseMetadataProvider => (changes.metadataFilters ? ({
-        ...changes,
-        metadataFilters: [
-            ...Object.keys(changes.metadataFilters).reduce((collection, filterName) => ([
-                ...collection,
-                {
-                    ...changes.metadataFilters[filterName],
-                    '@type': filterName
-                }
-            ]), [])
-        ]
-    }) : changes),
-    formatter: (changes: BaseMetadataProvider): any => (changes.metadataFilters ? ({
-        ...changes,
-        metadataFilters: {
-            ...(changes.metadataFilters || []).reduce((collection, filter) => ({
-                ...collection,
-                [filter['@type']]: filter
-            }), {})
+    parser: (changes: any, provider: any): BaseMetadataProvider => {
+        if (!changes.metadataFilters) {
+            return changes;
         }
-    }) : changes),
+        const staticFilterTypes = Object.keys(changes.metadataFilters);
+        const filterList = filterTypeFn(provider.metadataFilters);
+        return {
+            ...changes,
+            metadataFilters: [
+                ...staticFilterTypes.reduce((collection, filterName) => ([
+                    ...collection,
+                    {
+                        ...changes.metadataFilters[filterName],
+                        '@type': filterName
+                    }
+                ]), []),
+                ...filterList
+            ]
+        };
+    },
+    formatter: (changes: BaseMetadataProvider): any => {
+        if (!changes.metadataFilters) {
+            return changes;
+        }
+        return {
+            ...changes,
+            metadataFilters: {
+                ...(changes.metadataFilters || []).reduce((collection, filter) => ({
+                    ...collection,
+                    [filter['@type']]: filter
+                }), {})
+            }
+        };
+    },
     steps: []
 };

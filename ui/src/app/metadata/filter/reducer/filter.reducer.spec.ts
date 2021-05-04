@@ -49,7 +49,7 @@ describe('Filter Reducer', () => {
     });
     describe(`${FilterActionTypes.CANCEL_CREATE_FILTER} action`, () => {
         it('should set saving to true', () => {
-            const result = reducer(snapshot, new CancelCreateFilter());
+            const result = reducer(snapshot, new CancelCreateFilter('foo'));
             expect(result).toEqual(fromFilter.initialState);
         });
     });

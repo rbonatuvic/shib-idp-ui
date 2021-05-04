@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
@@ -38,10 +39,12 @@ public class EntityDescriptorRepresentation implements Serializable {
     @NotNull
     private String entityId;
 
-    private OrganizationRepresentation organization;
+    //TODO: review requirement
+    private OrganizationRepresentation organization = new OrganizationRepresentation();
 
     private List<ContactRepresentation> contacts;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private MduiRepresentation mdui;
 
     private ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptor;
@@ -58,8 +61,10 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     private LocalDateTime modifiedDate;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> relyingPartyOverrides;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> attributeRelease;
 
     private int version;

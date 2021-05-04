@@ -215,7 +215,7 @@ dependencies {
 
 task copyUI(type: Copy) {
     from tasks.findByPath(':ui:npm_run_buildProd').outputs
-    into new File(buildDir, 'generated/ui/static')
+    into new File(buildDir, 'generated/ui/resources')
 }
 
 task integrationTest(type: Test) {

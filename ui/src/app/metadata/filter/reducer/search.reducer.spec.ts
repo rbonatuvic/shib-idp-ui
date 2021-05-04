@@ -71,7 +71,10 @@ describe('Filter Reducer', () => {
                 id: 'foo',
                 changes: new EntityAttributesFilterEntity({ resourceId: 'foo', name: 'bar', createdDate: new Date().toLocaleDateString() }),
             };
-            const action = new UpdateFilterSuccess(update);
+            const action = new UpdateFilterSuccess({
+                update,
+                providerId: 'foo'
+            });
             const result = reducer(snapshot, action);
 
             expect(result).toEqual(snapshot);
@@ -83,7 +86,10 @@ describe('Filter Reducer', () => {
             const filter = new EntityAttributesFilterEntity(
                 { resourceId: 'foo', name: 'bar', createdDate: new Date().toLocaleDateString() }
             );
-            const action = new AddFilterSuccess(filter);
+            const action = new AddFilterSuccess({
+                filter,
+                providerId: 'foo'
+            });
             const result = reducer(snapshot, action);
 
             expect(result).toEqual(snapshot);

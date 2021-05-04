@@ -81,8 +81,7 @@
                             ],
                             "description": "value.false"
                         }
-                    ],
-                    "default": false
+                    ]
                 },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
@@ -104,8 +103,7 @@
                             ],
                             "description": "value.false"
                         }
-                    ],
-                    "default": false
+                    ]
                 },
                 "wantAssertionsSigned": {
                     "title": "label.want-assertions-signed",
@@ -127,8 +125,7 @@
                             ],
                             "description": "value.false"
                         }
-                    ],
-                    "default": false
+                    ]
                 },
                 "x509Certificates": {
                     "title": "label.x509-certificates",
@@ -316,8 +313,7 @@
                             ],
                             "description": "value.both"
                         }
-                    ],
-                    "default": "both"
+                    ]
                 },
                 "value": {
                     "title": "label.certificate",
@@ -394,8 +390,7 @@
                 "makeDefault": {
                     "title": "label.mark-as-default",
                     "description": "tooltip.mark-as-default",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 }
             }
         },
@@ -446,6 +441,12 @@
                                 "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
                             ],
                             "description": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
                         }
                     ]
                 }

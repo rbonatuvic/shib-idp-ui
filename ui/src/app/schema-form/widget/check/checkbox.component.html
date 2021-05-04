@@ -1,17 +1,17 @@
 <div class="widget form-group">
     <ng-container *ngIf="schema.type !== 'array'">
         <div class="d-flex justify-content-start">
-            <div class="custom-control custom-checkbox custom-control-inline custom-control-reverse"
+            <div class="form-check control-reverse"
                 [id]="formProperty._canonicalPath + '.parent'">
                 <input [formControl]="control"
-                    class="custom-control-input"
+                    class="form-check-input"
                     [attr.name]="name"
                     [indeterminate]="control.value !== false && control.value !== true ? true :null"
                     type="checkbox"
                     [attr.disabled]="schema.readOnly?true:null"
                     [id]="formProperty._canonicalPath"
                     [disableValidation]="true">
-                <label [attr.for]="formProperty._canonicalPath" class="custom-control-label">
+                <label [attr.for]="formProperty._canonicalPath" class="form-check-label">
                     <translate-i18n [key]="schema.title">{{ schema.title }}</translate-i18n>
                 </label>
             </div>
