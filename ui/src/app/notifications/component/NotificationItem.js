@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
+import Alert from 'react-bootstrap/Alert';
 import { NotificationContext, removeNotificationAction } from '../hoc/Notifications';
 
 export function NotificationItem ({ type, body, timeout, id }) {
@@ -15,7 +15,7 @@ export function NotificationItem ({ type, body, timeout, id }) {
     }, [timeout, id, dispatch]);
 
     return (
-        <Alert color={type} toggle={() => dispatch(removeNotificationAction(id))}>
+        <Alert variant={type} onClose={() => dispatch(removeNotificationAction(id))}>
             {body}
         </Alert>
     )

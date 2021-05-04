@@ -11,8 +11,6 @@ export function MetadataFilterVersionListItem ({ filters, width, selected, index
     const filter = filters.find(f => f.hasOwnProperty('@type'));
     const type = filter['@type'];
 
-    React.useEffect(() => console.log(filters), [filters]);
-
     const definition = React.useMemo(() => getDefinition(type), [type]);
 
     const { get, response } = useMetadataSchema();

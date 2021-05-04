@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, UncontrolledPopover, PopoverBody } from 'reactstrap';
+import Badge from 'react-bootstrap/Badge';
+import Popover from 'react-bootstrap/Popover';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -56,7 +57,7 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                                 {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
                                             </button>
                                             :
-                                            <Badge color={source.serviceEnabled ? 'success' : 'danger'}>
+                                            <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
                                                 <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                             </Badge>
                                         }
@@ -70,9 +71,9 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                             <FontAwesomeIcon icon={faTrash} />
                                         </button>
                                         {source.serviceEnabled &&
-                                            <UncontrolledPopover trigger="hover" placement="left" target={`delete-source-btn-${idx}`}>
-                                                <PopoverBody>A metadata source must be disabled before it can be deleted.</PopoverBody>
-                                            </UncontrolledPopover>
+                                            <Popover trigger="hover" placement="left" target={`delete-source-btn-${idx}`}>
+                                                <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
+                                            </Popover>
                                         }
                                     </td>
                                 </tr>

@@ -53,7 +53,7 @@ export function MetadataFilterVersionList ({ configuration, limited, columns }) 
                                 :
                                 <div className="d-flex justify-content-end my-2">
                                     {comparing ? 
-                                        <button class="btn btn-success" onClick={resetFilterComparison}>
+                                        <button className="btn btn-success" onClick={resetFilterComparison}>
                                             <FontAwesomeIcon icon={faArrowLeft} />&nbsp;
                                             <Translate value="label.filter-versions">Filter Versions</Translate>
                                         </button>

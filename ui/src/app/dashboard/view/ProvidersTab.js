@@ -6,7 +6,7 @@ import ProviderList from '../../metadata/domain/provider/component/ProviderList'
 import {Search} from '../component/Search';
 import { Ordered } from '../component/Ordered';
 import { useIsAdmin } from '../../core/user/UserContext';
-import { Alert } from 'reactstrap';
+import Alert from 'react-bootstrap/Alert';
 
 const searchProps = ['name', '@type', 'createdBy'];
 
@@ -55,7 +55,7 @@ export function ProvidersTab () {
                     </div>
                 </>
                 :
-                <Alert color="danger">Access Denied</Alert>}
+                <Alert variant="danger">Access Denied</Alert>}
             </div>
         </section>
     );

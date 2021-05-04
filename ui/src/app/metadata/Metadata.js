@@ -46,7 +46,7 @@ export function Metadata () {
                                 <MetadataVersion></MetadataVersion>
                             </MetadataDetail>
                         } />
-                        <Route path={`${path}/edit`} component={ MetadataEditor } />
+                        <Route path={`${path}/edit/:section`} component={ MetadataEditor } />
                     </Switch>
                 </MetadataSchema>
             </MetadataXmlLoader>

@@ -40,6 +40,10 @@ export function MetadataOptions () {
 
     const redirectOnDelete = () => history.push('/dashboard');
 
+    const edit = (section) => {
+        history.push(`/metadata/${type}/${id}/edit/${section}`);
+    }
+
     return (
         <DeleteSourceConfirmation>
             {(onDeleteSource) =>
@@ -76,7 +80,7 @@ export function MetadataOptions () {
                     </div>
                     <MetadataViewToggle />
                 </div>
-                <MetadataConfiguration configuration={ configuration } />
+                <MetadataConfiguration configuration={ configuration } onEdit={ (section) => edit(section) } />
                 <div id="filters">
                     {type === 'provider' &&
                         <>

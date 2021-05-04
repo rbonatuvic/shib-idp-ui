@@ -12,7 +12,7 @@ import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHistory } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
-import { CustomInput } from 'reactstrap';
+import Form from 'react-bootstrap/Form';
 import { useTranslation } from '../../i18n/hooks';
 import { MetadataFilterVersionList } from '../domain/filter/component/MetadataFilterVersionList';
 import { MetadataFilterVersionContext } from '../domain/filter/component/MetadataFilterVersionContext';
@@ -31,7 +31,7 @@ export function MetadataComparison () {
 
     return (
         <>
-        <h2 class="mb-4">
+        <h2 className="mb-4">
             Compare&nbsp;
             <Translate value={type === 'resolver' ? 'label.source' : 'label.provider'}>Source</Translate>
             &nbsp;Configuration
@@ -49,7 +49,7 @@ export function MetadataComparison () {
                                             <Translate value="action.version-history">Version History</Translate>
                                         </Link>
                                     </div>
-                                    <CustomInput type="switch"
+                                    <Form.Check type="switch"
                                         id="toggleLimited"
                                         name="toggleLimited"
                                         label={toggleLimited}

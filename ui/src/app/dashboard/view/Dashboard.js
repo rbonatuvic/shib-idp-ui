@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Nav, NavItem } from 'reactstrap';
+import Nav from 'react-bootstrap/Nav';
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
@@ -59,29 +59,29 @@ export function Dashboard () {
         <div className="container-fluid p-3" role="navigation">
             
             <Nav tabs>
-                <NavItem>
+                <Nav.Item>
                     <NavLink className="nav-link" to={`${path}/metadata/manager/resolvers`}>
                         <Translate value="label.metadata-sources">Metadata Sources</Translate>
                     </NavLink>
-                </NavItem>
+                </Nav.Item>
                 {isAdmin &&
                 <>
-                    <NavItem>
+                    <Nav.Item>
                         <NavLink className="nav-link" to={`${path}/metadata/manager/providers`}>
                             <Translate value="label.metadata-providers">Metadata Providers</Translate>
                         </NavLink>
-                    </NavItem>
-                    <NavItem>
+                    </Nav.Item>
+                    <Nav.Item>
                         <NavLink className="nav-link" to={`${path}/admin/management`}>
                             <Translate value="label.admin">Admin</Translate>
                         </NavLink>
-                    </NavItem>
-                    <NavItem>
+                    </Nav.Item>
+                    <Nav.Item>
                         <NavLink className="nav-link d-flex align-items-center" to={`${path}/admin/actions`}>
                             <Translate value="label.action-required">Action Required</Translate>
                             <span className="badge badge-pill badge-danger ml-1">{actions}</span>
                         </NavLink>
-                    </NavItem>
+                    </Nav.Item>
                 </>
                 }
             </Nav>

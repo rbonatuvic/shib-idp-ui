@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import Modal from 'react-bootstrap/Modal';
 import useFetch from 'use-http';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -66,23 +66,23 @@ export default function UserManagement({ users, children, reload }) {
     return (
         <div className="user-management">
             {children(users, roles, setUserRoleRequest, (id) => setDeleting(id))}
-            <Modal isOpen={!!deleting} toggle={() => setDeleting(null)}>
-                <ModalHeader toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></ModalHeader>
-                <ModalBody className="d-flex align-content-center">
+            <Modal.Dialog show={!!deleting} onHide={() => setDeleting(null)}>
+                <Modal.Header toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></Modal.Header>
+                <Modal.Body className="d-flex align-content-center">
                     <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
                         <Translate value="message.delete-user-body">You are requesting to delete a user. If you complete this process the user will be removed. This cannot be undone. Do you wish to continue?</Translate>
                     </p>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger" onClick={() => deleteUser(deleting)}>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-danger" type="button" onClick={() => deleteUser(deleting)}>
                         <Translate value="action.delete">Delete</Translate>
-                    </Button>{' '}
-                    <Button color="secondary" onClick={() => setDeleting(null)}>
+                    </button>{' '}
+                    <button className="btn btn-secondary" type="button" onClick={() => setDeleting(null)}>
                         <Translate value="action.cancel">Cancel</Translate>
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                    </button>
+                </Modal.Footer>
+            </Modal.Dialog>
         </div>
     );
 }

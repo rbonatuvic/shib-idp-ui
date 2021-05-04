@@ -6,21 +6,17 @@ import { usePropertyWidth } from './properties/hooks';
 
 import { ObjectProperty } from './properties/ObjectProperty';
 
-export function MetadataConfiguration ({ configuration }) {
-
-    const onEdit = (value) => console.log(value);
+export function MetadataConfiguration ({ configuration, onEdit }) {
 
     const columns = configuration.dates?.length || 1;
     const width = usePropertyWidth(columns);
-
-    const editable = configuration.sections?.length <= 1;
 
     return (
         <>
             { configuration && configuration.sections.map((section, sidx) =>
                 <React.Fragment key={sidx}>
                     {section?.properties?.length > 0 && 
-                    <MetadataSection section={section} key={sidx} index={ sidx } onEdit={editable ? onEdit : null}>
+                    <MetadataSection section={section} key={sidx} index={ sidx } onEdit={onEdit}>
                         <div className="d-flex border-bottom border-light border-2 py-2">
                             <strong style={ {width} }><Translate value="label.option">Option</Translate></strong>
                             {configuration.dates.map((d, didx) => 

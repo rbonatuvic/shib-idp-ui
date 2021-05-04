@@ -1,7 +1,11 @@
 import React from 'react';
 import pick from 'lodash/pick';
 
-import { Form, Label, Input, Button, InputGroup, InputGroupAddon, FormGroup} from 'reactstrap';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
+
 import { includes, some, values } from 'lodash';
 
 export function Search ({ entities, searchable, children }) {
@@ -29,17 +33,17 @@ export function Search ({ entities, searchable, children }) {
     return (
         <>
             <Form className="w-50">
-                <FormGroup>
-                    <Label for="search" className="sr-only">Search</Label>
+                <Form.Group>
+                    <Form.Label for="search" className="sr-only">Search</Form.Label>
                     <InputGroup>
-                        <Input type="email" name="email" id="search"
+                        <Form.Control type="email" name="email" id="search"
                             placeholder="Search Files" onChange={ (event) => search(event.target.value) }
                             value={query} />
-                        <InputGroupAddon addonType="append">
+                        <InputGroup.Append>
                             <Button color="text" className="px-3" onClick={ () => search('') }>Clear</Button>
-                        </InputGroupAddon>
+                        </InputGroup.Append>
                     </InputGroup>
-                </FormGroup>
+                </Form.Group>
             </Form>
             { children(searched) }
         </>

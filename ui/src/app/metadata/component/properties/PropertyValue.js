@@ -1,5 +1,5 @@
 import React from 'react';
-import { UncontrolledPopover, PopoverBody } from 'reactstrap';
+import Popover from 'react-bootstrap/Popover';
 
 import { usePropertyWidth } from './hooks';
 import { useGuid } from '../../../core/hooks/utils';
@@ -21,9 +21,9 @@ export function PropertyValue ({ name, value, columns }) {
                     style={columns ? { width } : {}}>
                     {value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}
                 </span>
-                <UncontrolledPopover color="info" trigger="hover" placement="left" target={`Popover-${id}`} delay={500}>
-                    <PopoverBody>{value.toString()}</PopoverBody>
-                </UncontrolledPopover>
+                <Popover variant="info" trigger="hover" placement="left" target={`Popover-${id}`}>
+                    <Popover.Content>{value.toString()}</Popover.Content>
+                </Popover>
             </>
         : <span className="d-block text-truncate" style={columns ? { width } : {}}>-</span>}
         </>

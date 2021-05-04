@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import Modal from 'react-bootstrap/Modal';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,22 +37,22 @@ export function DeleteSourceConfirmation ({children}) {
     return (
         <>
             {children(onDeleteSource)}
-            <Modal isOpen={!!deleting} toggle={() => setDeleting(null)}>
-                <ModalHeader toggle={() => setDeleting(null)}><Translate value="message.delete-source-title">Delete Metadata Source?</Translate></ModalHeader>
-                <ModalBody className="d-flex align-content-center">
+            <Modal show={!!deleting} onHide={() => setDeleting(null)}>
+                <Modal.Header toggle={() => setDeleting(null)}><Translate value="message.delete-source-title">Delete Metadata Source?</Translate></Modal.Header>
+                <Modal.Body className="d-flex align-content-center">
                     <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
                         <Translate value="message.delete-source-body">You are deleting a metadata source. This cannot be undone. Continue?</Translate>
                     </p>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger" onClick={() => onConfirm(deleting)}>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button className="btn btn-danger" onClick={() => onConfirm(deleting)}>
                         <Translate value="action.delete">Delete</Translate>
-                    </Button>{' '}
-                    <Button color="secondary" onClick={() => setDeleting(null)}>
+                    </button>{' '}
+                    <button className="btn btn-secondary" onClick={() => setDeleting(null)}>
                         <Translate value="action.cancel">Cancel</Translate>
-                    </Button>
-                </ModalFooter>
+                    </button>
+                </Modal.Footer>
             </Modal>
         </>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, } from 'reactstrap';
+import Badge from 'react-bootstrap/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -59,7 +59,7 @@ export default function ProviderList({ entities, reorder = true, first, last, on
                             <td className="align-middle">{ provider.createdBy }</td>
                             <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
                             <td className="text-right align-middle">
-                                <Badge color={provider.serviceEnabled ? 'success' : 'danger'}>
+                                <Badge variant={provider.serviceEnabled ? 'success' : 'danger'}>
                                     <Translate value={provider.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                 </Badge>
                             </td>

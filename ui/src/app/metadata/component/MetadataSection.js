@@ -1,9 +1,13 @@
+import React from 'react';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+
 import Translate from '../../i18n/components/translate';
 
 export function MetadataSection ({ section, index = -1, onEdit, children }) {
+
+
+
     return (
         <>
             <section className="mb-4 config-section-list-item">
