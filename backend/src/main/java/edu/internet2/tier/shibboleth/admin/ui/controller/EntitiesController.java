@@ -10,6 +10,7 @@ import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,8 @@ public class EntitiesController {
             return ResponseEntity.notFound().build();
         }
         EntityDescriptorRepresentation entityDescriptorRepresentation = entityDescriptorService.createRepresentationFromDescriptor(entityDescriptor);
-        return ResponseEntity.ok(entityDescriptorRepresentation);
+        ResponseEntity result =  ResponseEntity.ok(entityDescriptorRepresentation);
+        return result;
     }
 
     @RequestMapping(value = "{entityId:.*}", produces = "application/xml")
