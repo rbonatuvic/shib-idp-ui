@@ -39,6 +39,10 @@ nav.fixed-top {
     border-bottom: 3px solid map-get($theme-colors, primary);
 }
 
+.navbar-light .navbar-nav .nav-link {
+    color: #00355f;
+}
+
 footer {
     background-color: $white;
     padding: 0 20px;

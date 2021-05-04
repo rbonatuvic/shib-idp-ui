@@ -34,13 +34,13 @@ export function Search ({ entities, searchable, children }) {
         <>
             <Form className="w-50">
                 <Form.Group>
-                    <Form.Label for="search" className="sr-only">Search</Form.Label>
+                    <Form.Label htmlFor="search" className="sr-only">Search</Form.Label>
                     <InputGroup>
                         <Form.Control type="email" name="email" id="search"
                             placeholder="Search Files" onChange={ (event) => search(event.target.value) }
                             value={query} />
                         <InputGroup.Append>
-                            <Button color="text" className="px-3" onClick={ () => search('') }>Clear</Button>
+                            <Button variant="text" className="px-3" onClick={ () => search('') }>Clear</Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form.Group>

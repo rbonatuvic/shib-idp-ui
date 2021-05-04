@@ -58,7 +58,7 @@ export function Dashboard () {
     return (
         <div className="container-fluid p-3" role="navigation">
             
-            <Nav tabs>
+            <Nav variant="tabs">
                 <Nav.Item>
                     <NavLink className="nav-link" to={`${path}/metadata/manager/resolvers`}>
                         <Translate value="label.metadata-sources">Metadata Sources</Translate>

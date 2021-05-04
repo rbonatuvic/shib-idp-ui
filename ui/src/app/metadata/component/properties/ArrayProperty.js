@@ -120,37 +120,3 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
         </>
     );
 }
-
-/*
-<ng-container *ngIf="" [ngSwitch]="getItemType(property)">
-    <ng-container *ngSwitchCase="'datalist'">
-        <ng-template [ngTemplateOutlet]="listref"></ng-template>
-    </ng-container>
-    <ng-container *ngSwitchCase="'select'">
-        <ng-template [ngTemplateOutlet]="listref"></ng-template>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-        <div *ngIf="!property.widget || !property.widget.id">
-            <ng-template [ngTemplateOutlet]="listref"></ng-template>
-        </div>
-        <div *ngIf="property.widget && property.widget.data">
-            
-        </div>
-    </ng-container>
-</ng-container>
-<ng-template #listref>
-    [ngbPopover]="popContent"
-                                        triggers="mouseenter:mouseleave"
-                                        popoverClass="popover-lg popover-info"
-
-
-                                        <ng-template #popContent>
-                                        <ul className="list-unstyled">
-                                            <li *ngFor="let item of v;" className="p-2 border-bottom border-light">
-                                                {{ item }}
-                                            </li>
-                                        </ul>
-                                    </ng-template>
-</ng-template>
-
-*/

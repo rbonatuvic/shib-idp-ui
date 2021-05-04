@@ -17,7 +17,7 @@ export function Header () {
     const logoutLabel = useTranslation('action.logout');
 
     return (
-        <Navbar expand="md" fixed="top">
+        <Navbar expand="md" fixed="top" bg="">
             <Navbar.Brand href={brand.logo.link.url} title={brand.logo.link.description}>
                 <img src={brand.logo.small} width="30" height="30" className="d-inline-block align-top" alt={brand.logo.alt} />
                 <span className="d-lg-inline d-none"><Translate value={brand.logo.link.label}></Translate></span>
@@ -33,13 +33,11 @@ export function Header () {
                         <NavDropdown.Divider />
                         <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                     </NavDropdown>
-                    <Nav.Link>
-                        <Link to="/dashboard" className="nav-link" aria-label="Metadata Dashboard">
-                            <i className="fa fa-th fa-fw" aria-hidden="true"></i>
-                            <FontAwesomeIcon icon={faTh} className="mr-2" />
-                            <Translate value="action.dashboard">Dashboard</Translate>
-                        </Link>
-                    </Nav.Link>
+                    <Link to="/dashboard" className="nav-link" aria-label="Metadata Dashboard">
+                        <i className="fa fa-th fa-fw" aria-hidden="true"></i>
+                        <FontAwesomeIcon icon={faTh} className="mr-2" />
+                        <Translate value="action.dashboard">Dashboard</Translate>
+                    </Link>
                     <Nav.Link href="/logout" target="_self" aria-label={logoutLabel}>
                         <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                         <Translate value="action.logout">Logout</Translate>

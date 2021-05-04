@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
 import Popover from 'react-bootstrap/Popover';
+import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -62,20 +64,27 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                             </Badge>
                                         }
                                     </td>
-                                    <td className="text-right" id={`delete-source-btn-${idx}`}>
-                                        <button className="btn btn-outline btn-sm btn-danger"
-                                            type="button"
-                                            disabled={source.serviceEnabled}
-                                            onClick={() => onDeleteSource(source.id, onDelete)}>
-                                            <span className="sr-only">Delete</span>
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        </button>
-                                        {source.serviceEnabled &&
-                                            <Popover trigger="hover" placement="left" target={`delete-source-btn-${idx}`}>
-                                                <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
-                                            </Popover>
-                                        }
+                                    
+                                        
+                                    <td className="text-right">
+                                        <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
+                                            overlay={
+                                                <Popover id={`delete-source-btn-${idx}`}>
+                                                    <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
+                                                </Popover>
+                                            }>
+                                                <span className="d-inline-block">
+                                                    <Button variant="danger" size="sm"
+                                                        type="button"
+                                                        disabled={source.serviceEnabled}
+                                                        onClick={() => onDeleteSource(source.id, onDelete)}>
+                                                        <span className="sr-only">Delete</span>
+                                                        <FontAwesomeIcon icon={faTrash} />
+                                                    </Button>
+                                                </span>
+                                        </OverlayTrigger>
                                     </td>
+                                    
                                 </tr>
                             )}
                         </tbody>

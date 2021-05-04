@@ -1,30 +1,28 @@
 import React from 'react';
 import Popover from 'react-bootstrap/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 import { usePropertyWidth } from './hooks';
-import { useGuid } from '../../../core/hooks/utils';
 
 export function PropertyValue ({ name, value, columns }) {
 
     const width = usePropertyWidth(columns);
 
-    const id = useGuid();
-
     return (
         <>
         { name && value !== null && value !== undefined  ? 
-            <>
+                <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={(
+                    <Popover variant="info">
+                        <Popover.Content>{value.toString()}</Popover.Content>
+                    </Popover>
+                )}>
                 <span
-                    id={`Popover-${id}`}
                     className="d-block text-truncate"
                     role="definition"
                     style={columns ? { width } : {}}>
                     {value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}
                 </span>
-                <Popover variant="info" trigger="hover" placement="left" target={`Popover-${id}`}>
-                    <Popover.Content>{value.toString()}</Popover.Content>
-                </Popover>
-            </>
+            </OverlayTrigger>
         : <span className="d-block text-truncate" style={columns ? { width } : {}}>-</span>}
         </>
     );
