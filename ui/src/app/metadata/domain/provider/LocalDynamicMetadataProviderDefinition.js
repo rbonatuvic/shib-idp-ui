@@ -1,4 +1,7 @@
+import defaultsDeep from 'lodash/defaultsDeep';
+
 import API_BASE_PATH from "../../../App.constant";
+import {DurationOptions} from '../data';
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
 
 export const LocalDynamicMetadataProviderWizard = {
@@ -6,6 +9,14 @@ export const LocalDynamicMetadataProviderWizard = {
     label: 'LocalDynamicMetadataProvider',
     type: 'LocalDynamicMetadataResolver',
     schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
+    uiSchema: {
+        dynamicMetadataResolverAttributes: {
+            minCacheDuration: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions
+            }
+        }
+    },
     steps: [
         {
             id: 'common',
@@ -69,6 +80,11 @@ export const LocalDynamicMetadataProviderWizard = {
 
 export const LocalDynamicMetadataProviderEditor = {
     ...LocalDynamicMetadataProviderWizard,
+    uiSchema: defaultsDeep({
+        '@type': {
+            'ui:disabled': true
+        }
+    }, LocalDynamicMetadataProviderWizard.uiSchema),
     steps: [
         {
             id: 'common',

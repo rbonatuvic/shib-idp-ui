@@ -23,4 +23,7 @@ export const BaseProviderDefinition = {
             }), {})
         }
     }) : changes),
+    uiSchema: {
+        
+    }
 }

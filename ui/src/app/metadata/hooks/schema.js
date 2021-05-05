@@ -1,8 +1,5 @@
 import React from 'react';
 
-import assignInWith from 'lodash/assignInWith';
-import { I18nContext } from '../../i18n/context/I18n.provider';
-
 const fillInRootProperties = (keys, ui) => {
     return keys.reduce((sch, key, idx) => {
         if (!sch.hasOwnProperty(key)) {

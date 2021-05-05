@@ -26,38 +26,7 @@
             "default": false
         },
         "organization": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "title": "label.organization-name",
-                    "description": "tooltip.organization-name",
-                    "type": "string"
-                },
-                "displayName": {
-                    "title": "label.organization-display-name",
-                    "description": "tooltip.organization-display-name",
-                    "type": "string"
-                },
-                "url": {
-                    "title": "label.organization-url",
-                    "description": "tooltip.organization-url",
-                    "type": "string"
-                }
-            },
-            "dependencies": {
-                "name": [
-                    "displayName",
-                    "url"
-                ],
-                "displayName": [
-                    "name",
-                    "url"
-                ],
-                "url": [
-                    "name",
-                    "displayName"
-                ]
-            }
+            "$ref": "#/definitions/Organization"
         },
         "contacts": {
             "title": "label.contact-information",
@@ -68,73 +37,7 @@
             }
         },
         "mdui": {
-            "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
-            "fieldsets": [
-                {
-                    "type": "group",
-                    "fields": [
-                        "displayName",
-                        "informationUrl",
-                        "description"
-                    ]
-                },
-                {
-                    "type": "group",
-                    "fields": [
-                        "privacyStatementUrl",
-                        "logoUrl",
-                        "logoWidth",
-                        "logoHeight"
-                    ]
-                }
-            ],
-            "properties": {
-                "displayName": {
-                    "title": "label.display-name",
-                    "description": "tooltip.mdui-display-name",
-                    "type": "string"
-                },
-                "informationUrl": {
-                    "title": "label.information-url",
-                    "description": "tooltip.mdui-information-url",
-                    "type": "string"
-                },
-                "privacyStatementUrl": {
-                    "title": "label.privacy-statement-url",
-                    "description": "tooltip.mdui-privacy-statement-url",
-                    "type": "string"
-                },
-                "description": {
-                    "title": "label.description",
-                    "description": "tooltip.mdui-description",
-                    "type": "string",
-                    "widget": {
-                        "id": "textarea"
-                    }
-                },
-                "logoUrl": {
-                    "title": "label.logo-url",
-                    "description": "tooltip.mdui-logo-url",
-                    "type": "string"
-                },
-                "logoHeight": {
-                    "title": "label.logo-height",
-                    "description": "tooltip.mdui-logo-height",
-                    "min": 0,
-                    "type": "integer",
-                    "default": 0
-                },
-                "logoWidth": {
-                    "title": "label.logo-width",
-                    "description": "tooltip.mdui-logo-width",
-                    "min": 0,
-                    "type": "integer",
-                    "default": 0
-                }
-            }
+            "$ref": "#/definitions/MDUI"
         },
         "securityInfo": {
             "type": "object",
@@ -162,70 +65,28 @@
                     "title": "label.is-there-a-x509-certificate",
                     "description": "tooltip.is-there-a-x509-certificate",
                     "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
-                    ],
-                    "default": false
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
+                    ]
                 },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
                     "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
-                    ],
-                    "default": false
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
+                    ]
                 },
                 "wantAssertionsSigned": {
                     "title": "label.want-assertions-signed",
                     "description": "tooltip.want-assertions-signed",
                     "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
-                    ],
-                    "default": false
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
+                    ]
                 },
                 "x509Certificates": {
                     "title": "label.x509-certificates",
@@ -246,9 +107,6 @@
         },
         "serviceProviderSsoDescriptor": {
             "type": "object",
-            "widget": {
-                "id": "fieldset"
-            },
             "fieldsets": [
                 {
                     "type": "group",
@@ -286,7 +144,7 @@
                     ]
                 },
                 "nameIdFormats": {
-                    "$ref": "#/definitions/NameIdFormatList"
+                    "$ref": "#/definitions/nameIdFormats"
                 }
             }
         },
@@ -331,45 +189,59 @@
                     "type": "boolean",
                     "default": false
                 },
+                "omitNotBefore": {
+                    "title": "label.omit-not-before-condition",
+                    "description": "tooltip.omit-not-before-condition",
+                    "type": "boolean",
+                    "default": false
+                },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string",
+                    "default": ""
+                },
+                "nameIdFormats": {
+                    "$ref": "#/definitions/nameIdFormats"
+                },
+                "authenticationMethods": {
+                    "$ref": "#/definitions/authenticationMethods"
+                },
                 "forceAuthn": {
                     "title": "label.force-authn",
                     "description": "tooltip.force-authn",
                     "type": "boolean",
                     "default": false
-                },
-                "omitNotBefore": {
-                    "title": "label.omit-not-before-condition",
-                    "type": "boolean",
-                    "description": "tooltip.omit-not-before-condition",
-                    "default": false
-                },
-                "nameIdFormats": {
-                    "$ref": "#/definitions/NameIdFormatList"
-                },
-                "authenticationMethods": {
-                    "$ref": "#/definitions/AuthenticationMethodList"
-                },
-                "responderId": {
-                    "title": "label.responder-id",
-                    "description": "tooltip.responder-id",
-                    "type": "string"
                 }
             }
         },
         "attributeRelease": {
             "type": "array",
+            "title": "label.attribute-release",
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
-            "widget": {
-                "id": "checklist",
-                "dataUrl": "/customAttributes"
-            },
             "items": {
-                "type": "string"
-            }
+                "type": "string",
+                "enum": [
+                    "eduPersonPrincipalName",
+                    "uid",
+                    "mail",
+                    "surname",
+                    "givenName",
+                    "eduPersonAffiliation",
+                    "eduPersonScopedAffiliation",
+                    "eduPersonPrimaryAffiliation",
+                    "eduPersonEntitlement",
+                    "eduPersonAssurance",
+                    "eduPersonUniqueId",
+                    "employeeNumber"
+                ]
+            },
+            "uniqueItems": true
         }
     },
     "definitions": {
         "Contact": {
+            "title": "label.contact",
             "type": "object",
             "required": [
                 "name",
@@ -421,7 +293,7 @@
                     "title": "label.contact-email-address",
                     "description": "tooltip.contact-email",
                     "type": "string",
-                    "pattern": "^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
+                    "pattern": "^(mailto:)?(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$",
                     "minLength": 1,
                     "maxLength": 255
                 }
@@ -431,7 +303,6 @@
             "type": "object",
             "title": "label.certificate",
             "required": [
-                "name",
                 "type",
                 "value"
             ],
@@ -440,7 +311,6 @@
                     "title": "label.certificate-name-display-only",
                     "description": "tooltip.certificate-name",
                     "type": "string",
-                    "minLength": 1,
                     "maxLength": 255
                 },
                 "type": {
@@ -470,8 +340,7 @@
                             ],
                             "description": "value.both"
                         }
-                    ],
-                    "default": "both"
+                    ]
                 },
                 "value": {
                     "title": "label.certificate",
@@ -485,6 +354,10 @@
         "AssertionConsumerService": {
             "type": "object",
             "title": "label.assertion-consumer-service-endpoint",
+            "required": [
+                "locationUrl",
+                "binding"
+            ],
             "properties": {
                 "locationUrl": {
                     "title": "label.assertion-consumer-service-location",
@@ -511,63 +384,42 @@
                         },
                         {
                             "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:PAOS"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:PAOS"
+                        },
+                        {
+                            "enum": [
                                 "urn:oasis:names:tc:SAML:1.0:profiles:browser-post"
                             ],
                             "description": "urn:oasis:names:tc:SAML:1.0:profiles:browser-post"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:1.0:profiles:artifact-01"
                         }
                     ]
                 },
                 "makeDefault": {
                     "title": "label.mark-as-default",
                     "description": "tooltip.mark-as-default",
-                    "type": "boolean",
-                    "default": false
+                    "type": "boolean"
                 }
             }
-        },
-        "NameIdFormatList": {
-            "title": "label.nameid-format-to-send",
-            "placeholder": "label.nameid-format",
-            "description": "tooltip.nameid-format",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 255,
-                "widget": {
-                    "id": "datalist",
-                    "data": [
-                        "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-                        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                        "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                    ]
-                }
-            },
-            "default": null
-        },
-        "AuthenticationMethodList": {
-            "title": "label.authentication-methods-to-use",
-            "description": "tooltip.authentication-methods-to-use",
-            "type": "array",
-            "placeholder": "label.authentication-method",
-            "uniqueItems": true,
-            "items": {
-                "type": "string",
-                "title": "label.authentication-method",
-                "minLength": 1,
-                "maxLength": 255,
-                "widget": {
-                    "id": "datalist",
-                    "data": [
-                        "https://refeds.org/profile/mfa",
-                        "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
-                        "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
-                    ]
-                }
-            },
-            "default": null
         },
         "LogoutEndpoint": {
             "title": "label.new-endpoint",
@@ -610,9 +462,180 @@
                                 "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
                             ],
                             "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:SOAP"
+                        },
+                        {
+                            "enum": [
+                                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                            ],
+                            "description": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
                         }
                     ]
                 }
+            }
+        },
+        "MDUI": {
+            "type": "object",
+            "widget": {
+                "id": "fieldset"
+            },
+            "fieldsets": [
+                {
+                    "type": "group",
+                    "fields": [
+                        "displayName",
+                        "informationUrl",
+                        "description"
+                    ]
+                },
+                {
+                    "type": "group",
+                    "fields": [
+                        "privacyStatementUrl",
+                        "logoUrl",
+                        "logoWidth",
+                        "logoHeight"
+                    ]
+                }
+            ],
+            "properties": {
+                "displayName": {
+                    "title": "label.display-name",
+                    "description": "tooltip.mdui-display-name",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "informationUrl": {
+                    "title": "label.information-url",
+                    "description": "tooltip.mdui-information-url",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "privacyStatementUrl": {
+                    "title": "label.privacy-statement-url",
+                    "description": "tooltip.mdui-privacy-statement-url",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "description": {
+                    "title": "label.description",
+                    "description": "tooltip.mdui-description",
+                    "type": "string",
+                    "widget": {
+                        "id": "textarea"
+                    },
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "logoUrl": {
+                    "title": "label.logo-url",
+                    "description": "tooltip.mdui-logo-url",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "logoHeight": {
+                    "title": "label.logo-height",
+                    "description": "tooltip.mdui-logo-height",
+                    "minimum": 0,
+                    "type": "integer"
+                },
+                "logoWidth": {
+                    "title": "label.logo-width",
+                    "description": "tooltip.mdui-logo-width",
+                    "minimum": 0,
+                    "type": "integer"
+                }
+            }
+        },
+        "Organization": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "label.organization-name",
+                    "description": "tooltip.organization-name",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "displayName": {
+                    "title": "label.organization-display-name",
+                    "description": "tooltip.organization-display-name",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                },
+                "url": {
+                    "title": "label.organization-url",
+                    "description": "tooltip.organization-url",
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                }
+            },
+            "dependencies": {
+                "name": {
+                    "required": [
+                        "displayName",
+                        "url"
+                    ]
+                },
+                "displayName": {
+                    "required": [
+                        "name",
+                        "url"
+                    ]
+                },
+                "url": {
+                    "required": [
+                        "name",
+                        "displayName"
+                    ]
+                }
+            }
+        },
+        "nameIdFormats": {
+            "title": "label.nameid-format-to-send",
+            "description": "tooltip.nameid-format",
+            "type": "array",
+            "uniqueItems": true,
+            "additionalProperties": {
+                "type": "string"
+            },
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                ]
+            }
+        },
+        "authenticationMethods": {
+            "title": "label.authentication-methods-to-use",
+            "description": "tooltip.authentication-methods-to-use",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "https://refeds.org/profile/mfa",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                ]
             }
         }
     }

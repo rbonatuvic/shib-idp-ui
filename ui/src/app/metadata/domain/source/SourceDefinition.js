@@ -1,10 +1,12 @@
-import API_BASE_PATH from "../../../App.constant";
+import defaultsDeep from 'lodash/defaultsDeep';
+import API_BASE_PATH from '../../../App.constant';
 
 export const SourceBase = {
     label: 'Metadata Source',
     type: '@MetadataProvider',
     steps: [],
-    schema: `${API_BASE_PATH}/ui/MetadataSources`,
+    schema: `/assets/schema/source/metadata-source.json`,
+    //${API_BASE_PATH}/ui/MetadataSources
     validatorParams: [/*getAllOtherIds*/],
 
     bindings: {
@@ -117,8 +119,49 @@ export const SourceBase = {
         return validators;
     },
     uiSchema: {
+        attributeRelease: {
+            'ui:widget': 'AttributeReleaseWidget'
+        },
+        relyingPartyOverrides: {
+            nameIdFormats: {
+                items: {
+                    'ui:widget': 'OptionWidget'
+                }
+            },
+            authenticationMethods: {
+                items: {
+                    'ui:widget': 'OptionWidget'
+                }
+            }
+        },
+        securityInfo: {
+            x509CertificateAvailable: {
+                'ui:widget': 'radio'
+            },
+            authenticationRequestsSigned: {
+                'ui:widget': 'radio'
+            },
+            wantAssertionsSigned: {
+                'ui:widget': 'radio'
+            },
+            x509Certificates: {
+                items: {
+                    type: {
+                        'ui:widget': 'radio'
+                    },
+                    value: {
+                        'ui:widget': 'textarea'
+                    }
+                }
+            }
+        },
         mdui: {
-            'ui:widget': 'hidden'
+            logoHeight: {
+                'ui:widget': 'updown'
+            },
+            logoWidth: {
+                'ui:widget': 'updown'
+            }
         }
     }
 }
@@ -126,7 +169,7 @@ export const SourceBase = {
 
 export const SourceEditor = {
     ...SourceBase,
-    schema: `${API_BASE_PATH}/ui/MetadataSources`,
+    uiSchema: defaultsDeep({}, SourceBase.uiSchema),
     steps: [
         {
             index: 1,
