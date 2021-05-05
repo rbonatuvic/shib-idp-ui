@@ -36,8 +36,8 @@ export class ResolverService {
         return this.http.post<MetadataResolver>(`${this.base}${this.endpoint}`, p);
     }
 
-    remove(provider: MetadataResolver): Observable<MetadataResolver> {
-        return this.http.delete<MetadataResolver>(`${this.base}${this.endpoint}/${provider.id}`);
+    remove(id: string): Observable<MetadataResolver> {
+        return this.http.delete<MetadataResolver>(`${this.base}${this.endpoint}/${id}`);
     }
 
     upload(name: string, xml: string): Observable<MetadataResolver> {

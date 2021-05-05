@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { NewFilterComponent } from './new-filter.component';
 import * as fromFilter from '../reducer';
+import * as fromWizard from '../../../wizard/reducer';
 import { ProviderStatusEmitter, ProviderValueEmitter } from '../../domain/service/provider-change-emitter.service';
 import { NgbPopoverModule, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NavigatorService } from '../../../core/service/navigator.service';
@@ -11,11 +12,17 @@ import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-sch
 import { SchemaService } from '../../../schema-form/service/schema.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MockI18nModule } from '../../../../testing/i18n.stub';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
+import { ActivatedRouteStub } from '../../../../testing/activated-route.stub';
 
 describe('New Metadata Filter Page', () => {
     let fixture: ComponentFixture<NewFilterComponent>;
     let store: Store<fromFilter.State>;
     let instance: NewFilterComponent;
+
+    let activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
+    activatedRoute.testParamMap = { providerId: 'foo' };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -26,18 +33,23 @@ describe('New Metadata Filter Page', () => {
                 NgbPopoverConfig,
                 NavigatorService,
                 SchemaService,
-                { provide: WidgetRegistry, useClass: DefaultWidgetRegistry }
+                { provide: WidgetRegistry, useClass: DefaultWidgetRegistry },
+                {
+                    provide: ActivatedRoute, useValue: activatedRoute
+                }
             ],
             imports: [
                 StoreModule.forRoot({
                     'filter': combineReducers(fromFilter.reducers),
+                    'wizard': combineReducers(fromWizard.reducers)
                 }),
                 ReactiveFormsModule,
                 NgbPopoverModule,
                 SharedModule,
                 HttpClientModule,
                 SchemaFormModule.forRoot(),
-                MockI18nModule
+                MockI18nModule,
+                RouterTestingModule
             ],
             declarations: [
                 NewFilterComponent
@@ -62,29 +74,6 @@ describe('New Metadata Filter Page', () => {
             fixture.detectChanges();
             instance.cancel();
             expect(store.dispatch).toHaveBeenCalled();
-        });
-    });
-
-    describe('status emitter', () => {
-        it('should set the isValid property to true', () => {
-            fixture.detectChanges();
-            instance.statusChangeSubject.next({ value: [] });
-            fixture.detectChanges();
-            expect(instance.isValid).toBe(true);
-        });
-
-        it('should set the isValid property to true if value is undefined', () => {
-            fixture.detectChanges();
-            instance.statusChangeSubject.next({ value: null });
-            fixture.detectChanges();
-            expect(instance.isValid).toBe(true);
-        });
-
-        it('should set the isValid property to false', () => {
-            fixture.detectChanges();
-            instance.statusChangeSubject.next({ value: [{ control: 'foo' }] });
-            fixture.detectChanges();
-            expect(instance.isValid).toBe(false);
         });
     });
 });

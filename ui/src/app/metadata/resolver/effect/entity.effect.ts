@@ -12,11 +12,12 @@ import {
     Clear,
     Cancel,
     UpdateChangesRequest,
-    UpdateChangesSuccess
+    UpdateChangesSuccess,
+    UpdateSaving
 } from '../action/entity.action';
 import * as provider from '../action/collection.action';
 
-import { ShowContentionAction } from '../../../contention/action/contention.action';
+import { CancelContentionAction, ContentionActionTypes, ShowContentionAction } from '../../../contention/action/contention.action';
 
 import { ResolverCollectionActionTypes } from '../action/collection.action';
 import { ResolverService } from '../../domain/service/resolver.service';
@@ -67,6 +68,12 @@ export class EntityEffects {
                 })))
             );
         })
+    );
+
+    @Effect()
+    $resetChangesOnContentionFail = this.actions$.pipe(
+        ofType<CancelContentionAction>(ContentionActionTypes.CANCEL_CONTENTION),
+        map(() => new UpdateSaving(false))
     );
 
     constructor(

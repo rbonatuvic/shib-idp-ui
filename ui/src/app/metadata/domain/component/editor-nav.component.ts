@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
-import { skipWhile, combineLatest, map } from 'rxjs/operators';
+import { skipWhile, map } from 'rxjs/operators';
 
 import { WizardStep } from '../../../wizard/model';
 import * as fromWizard from '../../../wizard/reducer';
@@ -21,6 +21,7 @@ export enum NAV_FORMATS {
 export class EditorNavComponent {
     @Input() format: string;
     @Input() status: string[] = [];
+    @Input() path: string = 'edit';
 
     @Output() onPageSelect: EventEmitter<string> = new EventEmitter();
 

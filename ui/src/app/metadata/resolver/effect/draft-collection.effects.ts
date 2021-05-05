@@ -109,15 +109,14 @@ export class DraftCollectionEffects {
             let val = hasEntityId ? provider.entityId : provider.id;
             return this.draftService.find(val, prop).pipe(
                 switchMap(selected => this.draftService.remove(selected)),
-                map(p => new actions.RemoveDraftSuccess(p))
+                map(p => new actions.RemoveDraftSuccess(val))
             );
         })
     );
     @Effect()
     removeDraftSuccessReload$ = this.actions$.pipe(
-        ofType<actions.RemoveDraftRequest>(DraftActionTypes.REMOVE_DRAFT),
-        map(getPayload),
-        map(provider => new actions.LoadDraftRequest())
+        ofType<actions.RemoveDraftSuccess>(DraftActionTypes.REMOVE_DRAFT_SUCCESS),
+        map(action => new actions.LoadDraftRequest())
     );
 
     constructor(

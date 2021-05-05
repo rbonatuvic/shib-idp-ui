@@ -58,7 +58,7 @@ export function reducer(state = initialState, action: ResolverCollectionActionsU
         }
 
         case ResolverCollectionActionTypes.REMOVE_RESOLVER_SUCCESS: {
-            return adapter.removeOne(action.payload.id, {
+            return adapter.removeOne(action.payload, {
                 ...state
             });
         }

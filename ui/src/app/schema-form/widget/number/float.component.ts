@@ -37,13 +37,15 @@ export class CustomFloatComponent extends IntegerWidget implements AfterViewInit
         control.valueChanges.subscribe((newValue) => {
             const native = (<HTMLInputElement>this.element.nativeElement);
             this._displayValue = newValue;
-            if (newValue === '' && native.validity.badInput) {
+            if (newValue === '' && this.required) {
                 this.formProperty.setValue(native.valueAsNumber, false);
                 this.formProperty.extendErrors([{
                     code: 'INVALID_NUMBER',
                     path: `#${this.formProperty.path}`,
                     message: 'Invalid number',
                 }]);
+            } else if (newValue === '' && !this.required) {
+                this.formProperty.setValue(null, false);
             } else {
                 this.formProperty.setValue(newValue, false);
             }

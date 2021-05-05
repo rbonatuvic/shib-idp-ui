@@ -76,6 +76,15 @@ class EntityDescriptorRepositoryTest extends Specification {
         noExceptionThrown()
     }
 
+    def "SHIBUI-1772"() {
+        when:
+        def input = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1772.xml').bytes) as EntityDescriptor
+        entityDescriptorRepository.save(input)
+
+        then:
+        noExceptionThrown()
+    }
+
     @TestConfiguration
     static class Config {
         @Bean

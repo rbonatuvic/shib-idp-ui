@@ -4,7 +4,7 @@ import { EntityAttributesFilterConfiguration } from './entity-attributes-configu
 import { NameIDFilterConfiguration } from './nameid-configuration.filter';
 
 export const MetadataFilterTypes = {
-    EntityAttributes: EntityAttributesFilter,
+    EntityAttributes: EntityAttributesFilterConfiguration,
     NameIDFormat: NameIDFilter
 };
 

@@ -16,7 +16,7 @@ import {
     getConfigurationModelType
 } from '../reducer';
 import { MetadataConfiguration } from '../model/metadata-configuration';
-import { MetadataFilter } from '../../domain/model';
+import { MetadataEntity, MetadataFilter, MetadataResolver } from '../../domain/model';
 import { getAdditionalFilters } from '../../filter/reducer';
 import {
     ClearFilters,
@@ -29,6 +29,10 @@ import {
 import { Metadata } from '../../domain/domain.type';
 import { DeleteFilterComponent } from '../../provider/component/delete-filter.component';
 import { ClearHistory } from '../action/history.action';
+import { DeleteDialogComponent } from '../../manager/component/delete-dialog.component';
+import { RemoveDraftRequest } from '../../resolver/action/draft.action';
+import { RemoveResolverRequest } from '../../resolver/action/collection.action';
+import { RemoveMetadataRequest } from '../../../admin/action/metadata-collection.action';
 
 @Component({
     selector: 'metadata-options-page',
@@ -93,11 +97,17 @@ export class MetadataOptionsComponent implements OnDestroy {
     }
 
     updateOrderUp(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderUp(filter.resourceId));
+        this.store.dispatch(new ChangeFilterOrderUp({
+            id: filter.resourceId,
+            providerId: this.activatedRoute.snapshot.params.providerId
+        }));
     }
 
     updateOrderDown(filter: MetadataFilter): void {
-        this.store.dispatch(new ChangeFilterOrderDown(filter.resourceId));
+        this.store.dispatch(new ChangeFilterOrderDown({
+            id: filter.resourceId,
+            providerId: this.activatedRoute.snapshot.params.providerId
+        }));
     }
 
     removeFilter(id: string): void {
@@ -107,6 +117,20 @@ export class MetadataOptionsComponent implements OnDestroy {
             .then(
                 success => {
                     this.store.dispatch(new RemoveFilterRequest(id));
+                },
+                err => {
+                    console.log('Cancelled');
+                }
+            );
+    }
+
+    deleteResolver(id: string): void {
+        this.modalService
+            .open(DeleteDialogComponent)
+            .result
+            .then(
+                success => {
+                    this.store.dispatch(new RemoveMetadataRequest(id));
                 },
                 err => {
                     console.log('Cancelled');

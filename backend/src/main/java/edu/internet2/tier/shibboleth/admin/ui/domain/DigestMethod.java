@@ -19,11 +19,11 @@ public class DigestMethod extends AbstractElementExtensibleXMLObject implements 
     @Nullable
     @Override
     public String getAlgorithm() {
-        return null;
+        return this.algorithm;
     }
 
     @Override
     public void setAlgorithm(@Nullable String value) {
-
+        this.algorithm = value;
     }
 }

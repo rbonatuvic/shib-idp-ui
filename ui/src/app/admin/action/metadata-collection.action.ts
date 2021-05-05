@@ -62,13 +62,13 @@ export class UpdateMetadataConflict implements Action {
 export class RemoveMetadataRequest implements Action {
     readonly type = MetadataCollectionActionTypes.REMOVE_METADATA;
 
-    constructor(public payload: MetadataResolver) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveMetadataSuccess implements Action {
     readonly type = MetadataCollectionActionTypes.REMOVE_METADATA_SUCCESS;
 
-    constructor(public payload: MetadataResolver) { }
+    constructor(public payload: string) { }
 }
 
 export class RemoveMetadataFail implements Action {

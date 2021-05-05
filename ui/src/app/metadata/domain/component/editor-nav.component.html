@@ -15,7 +15,7 @@
             <a *ngFor="let route of routes$ | async"
                 href=""
                 class="dropdown-item"
-                [routerLink]="['../', 'edit', route.path]"
+                [routerLink]="['../', path, route.path]"
                 [ngClass]="{'active': (currentPage$ | async) === route.path}"
                 [attr.aria-label]="route.label"
                 role="button">
@@ -32,7 +32,7 @@
                 href=""
                 class="nav-link"
                 [ngClass]="{'active': (currentPage$ | async) === route.path}"
-                [routerLink]="['../', 'edit', route.path]"
+                [routerLink]="['../', path, route.path]"
                 role="button"
                 [attr.aria-label]="route.label">
                 <translate-i18n [key]="route.label"></translate-i18n>

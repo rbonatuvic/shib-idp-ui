@@ -52,7 +52,7 @@ export function reducer(state = initialState, action: FilterCollectionActionsUni
         }
 
         case FilterCollectionActionTypes.UPDATE_FILTER_SUCCESS: {
-            return adapter.updateOne(action.payload, {
+            return adapter.updateOne(action.payload.update, {
                 ...state,
                 saving: false
             });

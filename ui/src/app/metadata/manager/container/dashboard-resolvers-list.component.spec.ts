@@ -128,7 +128,7 @@ describe('Dashboard Resolvers List Page', () => {
                     result: Promise.resolve(true)
                 } as NgbModalRef;
             });
-            instance.deleteResolver(resolver);
+            instance.deleteResolver({ entity: resolver, draft: false });
             expect(modal.open).toHaveBeenCalled();
         });
         it('should log an error to the console on failure', () => {
@@ -137,7 +137,7 @@ describe('Dashboard Resolvers List Page', () => {
                     result: Promise.reject(false)
                 } as NgbModalRef;
             });
-            instance.deleteResolver(resolver);
+            instance.deleteResolver({ entity: resolver, draft: false });
             expect(modal.open).toHaveBeenCalled();
         });
     });
