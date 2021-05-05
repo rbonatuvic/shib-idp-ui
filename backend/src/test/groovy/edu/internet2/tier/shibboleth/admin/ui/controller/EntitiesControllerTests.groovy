@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -23,7 +24,7 @@ import spock.lang.Subject
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
@@ -132,9 +133,8 @@ class EntitiesControllerTests extends Specification {
                 "id":null,
                 "serviceProviderName":null,
                 "entityId":"http://test.scaldingspoon.org/test1",
-                "organization":null,
+                "organization": {},
                 "contacts":null,
-                "mdui":null,
                 "serviceProviderSsoDescriptor": {
                     "protocolSupportEnum":"SAML 2",
                     "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
@@ -147,18 +147,26 @@ class EntitiesControllerTests extends Specification {
                 "serviceEnabled":false,
                 "createdDate":null,
                 "modifiedDate":null,
-                "relyingPartyOverrides":{},
-                "attributeRelease":["givenName","employeeNumber"]
+                "attributeRelease":["givenName","employeeNumber"],
+                "version":-1891841119,
+                "createdBy":null,
+                "current":false
             }
         '''
         when:
         def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 
         then:
-        def x = content()
+        // Response headers section 2.5
+        // from the spec https://www.ietf.org/archive/id/draft-young-md-query-14.txt
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(expectedBody, false))
+              .andExpect(header().exists(HttpHeaders.CONTENT_TYPE))     // MUST HAVE
+//              .andExpect(header().exists(HttpHeaders.CONTENT_LENGTH)) // SHOULD HAVE - should end up from etag filter, so skipped for test
+//              .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))  // SHOULD HAVE - should be included by Spring Security
+//              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))  // SHOULD HAVE - should end up from etag filter, so skipped for test
+//              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
+              .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+              .andExpect(content().json(expectedBody, false))
     }
     
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1 XML'() {
