@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { useMetadataSchema } from '../hooks/api';
 import { getDefinition } from '../domain/index';
+import useFetch from 'use-http';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
@@ -14,7 +14,7 @@ export function MetadataSchema({ entity, children }) {
         type === 'source' ? type : entity['@type']
     ), [type, entity]);
 
-    const { get, response } = useMetadataSchema();
+    const { get, response } = useFetch(``, {}, []);
 
     const [schema, setSchema] = React.useState();
 

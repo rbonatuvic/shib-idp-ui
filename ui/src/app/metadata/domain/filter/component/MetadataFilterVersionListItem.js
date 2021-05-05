@@ -3,8 +3,8 @@ import { faCheckSquare, faSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MetadataConfiguration } from '../../../component/MetadataConfiguration';
 import { getDefinition } from '../../../domain/index';
-import { useMetadataSchema } from '../../../hooks/api';
 import { useMetadataConfiguration } from '../../../hooks/configuration';
+import useFetch from 'use-http';
 
 export function MetadataFilterVersionListItem ({ filters, width, selected, index, comparing, limited, onSelect }) {
 
@@ -13,7 +13,7 @@ export function MetadataFilterVersionListItem ({ filters, width, selected, index
 
     const definition = React.useMemo(() => getDefinition(type), [type]);
 
-    const { get, response } = useMetadataSchema();
+    const { get, response } = useFetch(``);
 
     const [schema, setSchema] = React.useState();
 

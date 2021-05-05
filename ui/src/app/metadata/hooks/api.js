@@ -53,10 +53,6 @@ export function useMetadataProviderOrder() {
     return useFetch(`${API_BASE_PATH}/MetadataResolversPositionOrder`);
 }
 
-export function useMetadataSchema() {
-    return useFetch(``);
-}
-
 export function useMetadataHistory(type, id, opts = {}, i) {
 
     return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}/${id}/Versions`, opts, i);

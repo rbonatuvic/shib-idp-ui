@@ -6,16 +6,16 @@ import { faArrowCircleDown, faArrowCircleUp, faChevronUp, faEdit, faTrash } from
 import { Translate } from '../../../../i18n/components/translate';
 import { Link } from 'react-router-dom';
 import { getDefinition } from '../../../domain/index';
-import { useMetadataSchema } from '../../../hooks/api';
 import { MetadataConfiguration } from '../../../component/MetadataConfiguration';
 import { useMetadataConfiguration } from '../../../hooks/configuration';
+import useFetch from 'use-http';
 
 export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, onOrderUp, onOrderDown, editable, onRemove, index }) {
     const [open, setOpen] = React.useState(false);
 
     const definition = React.useMemo(() => getDefinition(filter['@type'], ), [filter]);
 
-    const { get, response } = useMetadataSchema();
+    const { get, response } = useFetch('');
 
     const [schema, setSchema] = React.useState();
 

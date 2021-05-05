@@ -34,10 +34,6 @@ export function MetadataEditor () {
         console.log('cancel!');
     };
 
-    React.useEffect(() => {
-        console.log(current)
-    }, [current]);
-
     return (
         <div className="container-fluid p-3">
             <section className="section" aria-label={`Edit metadata ${type} - ${metadata.serviceProviderName || metadata.name}`} tabIndex="0">
@@ -96,7 +92,7 @@ export function MetadataEditor () {
                             </MetadataEditorNav>
                         </div>
                         <div className="col-lg-6">
-                            <MetadataEditorForm metadata={metadata} schema={schema} />
+                            <MetadataEditorForm metadata={metadata} definition={definition} schema={schema} current={section} />
                         </div>
                     </div>
                 </div>

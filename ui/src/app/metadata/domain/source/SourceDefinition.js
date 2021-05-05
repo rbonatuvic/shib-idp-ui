@@ -115,6 +115,11 @@ export const SourceBase = {
             }
         };
         return validators;
+    },
+    uiSchema: {
+        mdui: {
+            'ui:widget': 'hidden'
+        }
     }
 }
 

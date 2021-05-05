@@ -17,15 +17,13 @@ export function MetadataEditorNav ({ definition, current, base, children, format
 
     React.useEffect(() => {
         setActive(definition ? definition.steps.find(s => s.id === current)?.label : null);
-
-        console.log(definition.steps, current);
     }, [current, definition]);
 
     return (
         <React.Fragment>
             {format === 'dropdown' ?
                 <Dropdown>
-                    <Dropdown.Toggle caret>
+                    <Dropdown.Toggle caret="true">
                         <FontAwesomeIcon icon={faBars} />&nbsp;
                         <Translate value={active} />
                     </Dropdown.Toggle>
