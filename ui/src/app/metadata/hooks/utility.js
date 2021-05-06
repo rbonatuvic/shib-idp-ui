@@ -20,8 +20,7 @@ export function getStepProperty(property, model, definitions) {
             property,
             model,
             definitions
-        ),
-        widget: property.widget instanceof String ? { id: property.widget } : { ...property.widget }
+        )
     };
 }
 
@@ -119,14 +118,15 @@ export const assignValueToProperties = (models, properties, definition) => {
     return properties.map(prop => {
         const differences = getDifferences(models, prop);
 
-        const widget = prop.type === 'array' && prop.widget && prop.widget.data ? ({
-            ...prop.widget,
-            data: prop.widget.data.map(item => ({
-                ...item,
+        const items = prop.type === 'array' && prop.items?.enum ? ({
+            ...prop.items,
+            enum: prop.items.enum.map(item => ({
+                key: item,
+                label: `label.attribute-${item}`,
                 differences: models
                     .map((model) => {
                         const value = model[prop.id];
-                        return value ? value.indexOf(item.key) > -1 : false;
+                        return value ? value.indexOf(item) > -1 : false;
                     })
                     .reduce((current, val) => current !== val ? true : false, false)
             }))
@@ -150,7 +150,10 @@ export const assignValueToProperties = (models, properties, definition) => {
                     value: models.map(model => {
                         return model[prop.id];
                     }),
-                    widget
+                    items: {
+                        ...prop.items,
+                        ...items
+                    }
                 };
         }
     });
@@ -162,12 +165,6 @@ export const getLimitedPropertiesFn = (properties) => {
             .filter(p => p.differences)
             .map(p => {
                 const parsed = { ...p };
-                if (p.widget && p.widget.data) {
-                    parsed.widget = {
-                        ...p.widget,
-                        data: p.widget.data.filter(item => item.differences)
-                    };
-                }
                 if (p.properties) {
                     parsed.properties = getLimitedPropertiesFn(p.properties);
                 }

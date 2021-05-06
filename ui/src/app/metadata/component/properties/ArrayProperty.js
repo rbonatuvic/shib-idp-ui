@@ -1,6 +1,6 @@
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 import Translate from '../../../i18n/components/translate';
 import { usePropertyWidth } from './hooks';
 import { PropertyValue } from './PropertyValue';
@@ -16,30 +16,33 @@ const isUri = (value) => {
     return true;
 }
 
-const getItemType = (property) => {
-    const items = property.items;
-    const def = 'default';
-    return items ? items.widget ? items.widget.id : def : def;
-}
-
 const isUrl = (str) => {
     return isUri(str);
 }
 
-export function ArrayProperty ({ property, columns, index, onPreview }) {
-
-    const keys = property.value.reduce((val, version) => version ? version.length > val ? version.length : val : val, 0);
-    const range = [...Array(keys).keys()];
-
-    const dataList = property.widget?.data;
+export function ArrayProperty ({ property, columns, onPreview }) {
 
     const width = usePropertyWidth(columns);
 
-    const type = getItemType(property);
+    const [keys, setKeys] = React.useState(0);
+    const [range, setRange] = React.useState([]);
+    const [dataList, setDataList] = React.useState([]);
+
+    React.useEffect(() => {
+        setKeys(property.value.reduce((val, version) => version ? version.length > val ? version.length : val : val, 0));
+        setDataList(property.items?.enum);
+
+
+        console.log(property, keys);
+    }, [property]);
+
+    React.useEffect(() => {
+        setRange([...Array(keys).keys()])
+    }, [keys]);
 
     return (
         <>
-            {property.items.type === 'object' &&
+            {property?.items?.type === 'object' &&
                 <div className={ property.differences ? 'bg-diff' : '' }>
                     <div className="p-2" role="term"><Translate value={property.name}>{ property.name }</Translate></div>
                     {range.map((i) =>
@@ -54,10 +57,11 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                     }
                                     { property.value.map((version, vIdx) => 
                                         <React.Fragment key={vIdx}>
-                                            {version && version[vIdx] &&
+                                            {version && version[i] &&
                                                 <PropertyValue name={property.name} columns={columns} value={version[i][prop]} />
                                             }
-                                            {(!version || !version[vIdx]) && <div style={{ width }}>
+                                            {(!version || !version[i]) &&
+                                            <div style={{ width }}>
                                                 -
                                             </div>
                                             }
@@ -70,11 +74,25 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                     )}
                 </div>
             }
-            {property.items.type === 'string' &&
+            {property?.items?.type === 'string' &&
                 <>
-                    { (type  === 'datalist' || type === 'select' || !property.width || !property.widget.id) ?
-                        <div className={`d-flex align-items-start border-bottom border-light ${ property.differences ? 'bg-diff' : '' }`}
-                            tabIndex="0">
+                    { property?.items?.enum?.length ?
+                        <>
+                            {dataList.map((item, itemIdx) => 
+                                <div className={`d-flex justify-content-start border-bottom border-light ${ property.differences ? 'bg-diff' : '' }`} tabIndex="0" key={itemIdx}>
+                                    {item.differences && <span className="sr-only">Changed:</span> }
+                                    <span className="p-2" role="term" style={ {width} }><Translate value={item.label}>{ item.label }</Translate></span>
+                                    { property.value.map((v, vIdx) =>
+                                        <div className="py-2" style={ {width} } key={vIdx}>
+                                            {v && v.indexOf(item.key) > -1 && <span><Translate value="value.true">true</Translate></span> }
+                                            {(!v || !(v.indexOf(item.key) > -1)) && <span><Translate value="value.false">false</Translate></span> }
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </>
+                    :
+                        <div className={`d-flex align-items-start border-bottom border-light ${ property.differences ? 'bg-diff' : '' }`} tabIndex="0">
                             {property.differences && <span className="sr-only">Changed:</span> }
                             <span className="p-2" role="term" style={ {width} } ><Translate value={property.name}>{ property.name }</Translate></span>
                             {property.value.map((v, vidx) => 
@@ -83,7 +101,7 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                     {(v && v.length > 0) &&
                                         <ul style={ {width} } className="list-unstyled py-2 m-0">
                                             {v.map((item, idx) => 
-                                                <li key={idx} className={`text-truncate border-bottom border-light ${v.length > 1 ? 'py-2' : ''} ${'border-0'}`}>
+                                                <li key={idx} className={`text-truncate border-bottom border-light py-2 ${v.length > 1 ? '' : 'border-0'}`}>
                                                     {onPreview && isUrl(item) &&
                                                         <>
                                                         <button className="btn btn-link" onClick={() => onPreview(item)}>
@@ -99,22 +117,7 @@ export function ArrayProperty ({ property, columns, index, onPreview }) {
                                 </React.Fragment>
                             )}
                         </div>
-                    : property.widget && property.widget.data ?
-                        <>
-                            {dataList.map((item, itemIdx) => 
-                                <div className={`d-flex justify-content-start border-bottom border-light ${ property.differences && item.differences ? 'bg-diff' : '' }`} tabIndex="0" key={itemIdx}>
-                                    {item.differences && <span className="sr-only">Changed:</span> }
-                                    <span className="p-2" role="term" style={ {width} }><Translate value={item.label}>{ item.label }</Translate></span>
-                                    { property.value.map((v, vIdx) =>
-                                    <div className="py-2" style={ {width} }>
-                                        {v && v.indexOf(item.key) > -1 && <span><Translate value="value.true">true</Translate></span> }
-                                        {(!v || !(v.indexOf(item.key) > -1)) && <span><Translate value="value.false">false</Translate></span> }
-                                    </div>
-                                    )}
-                                </div>
-                            )}
-                        </>
-                    : ''}
+                    }
                 </>
             }
         </>

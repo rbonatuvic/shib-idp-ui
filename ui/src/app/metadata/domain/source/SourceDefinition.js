@@ -9,6 +9,17 @@ export const SourceBase = {
     //${API_BASE_PATH}/ui/MetadataSources
     validatorParams: [/*getAllOtherIds*/],
 
+    parse: (data) => {
+        const parsed = {...data};
+        if (parsed?.securityInfo?.x509CertificateAvailable) {
+            if (!parsed?.securityInfo?.x509Certificates) {
+                parsed.securityInfo.x509Certificates = [];
+            }
+            parsed.securityInfo.x509Certificates.push({})
+        }
+        return parsed;
+    },
+
     bindings: {
         '/securityInfo/x509CertificateAvailable': [
             {

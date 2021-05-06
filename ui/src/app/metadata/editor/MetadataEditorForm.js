@@ -20,7 +20,7 @@ export function MetadataEditorForm ({ metadata, definition, schema, current }) {
         <>
             <Form formData={data}
                 noHtml5Validate={true}
-                onChange={ ({ formData }) => setData(formData) }
+                onChange={({ formData }) => setData(definition.parse(formData)) }
                 onSubmit={() => onSubmit()}
                 schema={schema}
                 uiSchema={uiSchema}
