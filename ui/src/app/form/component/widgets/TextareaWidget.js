@@ -1,3 +1,5 @@
+import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 import Form from "react-bootstrap/Form";
@@ -39,9 +41,9 @@ const TextareaWidget = ({
             <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <span className="text-danger">*</span> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="ml-2 text-danger" size="sm" /> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} />}
+                {schema.description && <InfoIcon value={schema.description} className="ml-2"/>}
             </Form.Label>
             <InputGroup>
                 <FormControl

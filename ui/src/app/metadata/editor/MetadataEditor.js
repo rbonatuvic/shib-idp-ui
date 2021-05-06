@@ -91,7 +91,7 @@ export function MetadataEditor () {
                                 
                             </MetadataEditorNav>
                         </div>
-                        <div className="col-lg-6">
+                        <div className="col-lg-9">
                             <MetadataEditorForm metadata={metadata} definition={definition} schema={schema} current={section} />
                         </div>
                     </div>

@@ -17,6 +17,7 @@ const RadioWidget = ({
     onChange,
     onBlur,
     onFocus,
+    ...props
 }) => {
     const { enumOptions, enumDisabled } = options;
 
@@ -31,7 +32,6 @@ const RadioWidget = ({
     }) => onFocus(id, value);
 
     const inline = Boolean(options && options.inline);
-
     return (
         <Form.Group className="mb-0">
             <Form.Label className="d-block">
@@ -39,7 +39,7 @@ const RadioWidget = ({
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ? <span className="text-danger">*</span> : null}
                 </span>
-                {schema.description && <InfoIcon value={schema.description} />}
+                {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
             </Form.Label>
             {(enumOptions).map((option, i) => {
                 const itemDisabled =
@@ -51,7 +51,7 @@ const RadioWidget = ({
                     <Form.Check
                         inline={inline}
                         label={<Translate value={option.label} />}
-                        id={option.label}
+                        id={`${schema.title}-${i}-${option.label}`}
                         key={i}
                         name={id}
                         type="radio"

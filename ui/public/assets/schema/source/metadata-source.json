@@ -5,16 +5,16 @@
         "entityId"
     ],
     "properties": {
-        "entityId": {
-            "title": "label.entity-id",
-            "description": "tooltip.entity-id",
+        "serviceProviderName": {
+            "title": "label.service-provider-name",
+            "description": "tooltip.service-provider-name",
             "type": "string",
             "minLength": 1,
             "maxLength": 255
         },
-        "serviceProviderName": {
-            "title": "label.service-provider-name",
-            "description": "tooltip.service-provider-name",
+        "entityId": {
+            "title": "label.entity-id",
+            "description": "tooltip.entity-id",
             "type": "string",
             "minLength": 1,
             "maxLength": 255
@@ -241,7 +241,6 @@
     },
     "definitions": {
         "Contact": {
-            "title": "label.contact",
             "type": "object",
             "required": [
                 "name",
@@ -301,7 +300,6 @@
         },
         "Certificate": {
             "type": "object",
-            "title": "label.certificate",
             "required": [
                 "type",
                 "value"
@@ -315,7 +313,6 @@
                 },
                 "type": {
                     "title": "label.certificate-type",
-                    "description": "tooltip.certificate-type",
                     "type": "string",
                     "widget": {
                         "id": "radio",
@@ -353,7 +350,6 @@
         },
         "AssertionConsumerService": {
             "type": "object",
-            "title": "label.assertion-consumer-service-endpoint",
             "required": [
                 "locationUrl",
                 "binding"
@@ -422,7 +418,6 @@
             }
         },
         "LogoutEndpoint": {
-            "title": "label.new-endpoint",
             "description": "tooltip.new-endpoint",
             "type": "object",
             "fieldsets": [

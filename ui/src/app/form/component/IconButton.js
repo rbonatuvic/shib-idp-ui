@@ -12,9 +12,9 @@ const mappings = {
 };
 
 const IconButton = (props) => {
-    const { icon, className, ...otherProps } = props;
+    const { icon, ...otherProps } = props;
     return (
-        <Button {...otherProps} variant="light" size="sm">
+        <Button {...otherProps} variant={props.variant || 'light'}>
             {mappings[icon]}
         </Button>
     );

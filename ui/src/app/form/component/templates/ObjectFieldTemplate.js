@@ -16,29 +16,44 @@ const ObjectFieldTemplate = ({
     schema,
     hidden
 }) => {
+
+    const displayTitle = (uiSchema["ui:title"] || (title && schema.title));
+
     return (
         <>
             {!hidden &&
             <>
-                {(uiSchema["ui:title"] || (title && schema.title)) && (
+                {displayTitle && (
                     <TitleField
                         id={`${idSchema.$id}-title`}
                         title={title}
                         required={required}
                     />
                 )}
-                {description && (
+                {displayTitle && description && (
                     <DescriptionField
                         id={`${idSchema.$id}-description`}
                         description={description}
                     />
                 )}
                 <Container fluid className="p-0">
-                    {properties.map((element, index) => (
-                        <Row key={index}>
-                            <Col xs={12}> {element.content}</Col>
-                        </Row>
-                    ))}
+                    <>
+                    {uiSchema.layout ?
+                        <Row>{uiSchema.layout.groups.map((group, rIdx) => (
+                            
+                            <Col xs={group.size} key={rIdx}>{properties.filter(p => group.fields.indexOf(p.name) > -1).map((element, eIdx) => (
+                                <React.Fragment key={eIdx}>{element.content}</React.Fragment>
+                            ))}</Col>
+                            
+                        ))}</Row>
+                    :
+                        properties.map((element, index) => (
+                            <Row key={index}>
+                                <Col xs={12}> {element.content}</Col>
+                            </Row>
+                        ))
+                    }
+                    </>
                 </Container>
             </>
             }

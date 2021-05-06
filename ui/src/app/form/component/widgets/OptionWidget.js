@@ -6,10 +6,11 @@ import { InfoIcon } from "../InfoIcon";
 
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faArrowUp, faAsterisk } from "@fortawesome/free-solid-svg-icons";
 
 const ToggleButton = ({ isOpen, onClick }) => (
     <button
+        type="button"
         className="btn btn-outline-secondary toggle-button"
         onClick={onClick}
         onMouseDown={e => {
@@ -53,7 +54,7 @@ const OptionWidget = ({
             <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
-                    {(label || schema.title) && required ? <span className="text-danger">*</span> : null}
+                    {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-2" size="sm" /> : null}
                 </span>
                 {schema.description && <InfoIcon value={schema.description} />}
             </Form.Label>
