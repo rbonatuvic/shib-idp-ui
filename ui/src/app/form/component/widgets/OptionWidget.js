@@ -6,7 +6,8 @@ import { InfoIcon } from "../InfoIcon";
 
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp, faAsterisk } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faArrowUp, faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { useTranslator } from "../../../i18n/hooks";
 
 const ToggleButton = ({ isOpen, onClick }) => (
     <button
@@ -17,7 +18,7 @@ const ToggleButton = ({ isOpen, onClick }) => (
             // Prevent input from losing focus.
             e.preventDefault();
         }}>
-        <FontAwesomeIcon icon={isOpen ? faArrowUp : faArrowDown} />
+        <FontAwesomeIcon icon={isOpen ? faCaretUp : faCaretDown} />
     </button>
 );
 
@@ -45,9 +46,9 @@ const OptionWidget = ({
     const _onFocus = ({ target: { value } }) => onFocus(id, value);
     const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
     
-    const opts = Array.isArray(options) || options.enumOptions ? options : schema.examples ? schema.examples : [];
+    const opts = Array.isArray(options) || options.enumOptions ? options : schema.examples ? schema.examples : uiSchema.options ? uiSchema.options : [];
 
-    console.log(opts);
+    const translator = useTranslator();
 
     return (
         <Form.Group className="mb-0">
@@ -65,7 +66,7 @@ const OptionWidget = ({
                 multiple={false}
                 className={`toggle-typeahead ${rawErrors.length > 0 ? "is-invalid" : ""}`}
                 options={opts}
-                placeholder={uiSchema.placeholder ? uiSchema.placeholder : ''}
+                placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder'] ): ''}
                 disabled={disabled || readonly}
                 onChange={_onChange}
                 onBlur={_onBlur}
@@ -78,28 +79,6 @@ const OptionWidget = ({
                     <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} />
                 )}
             </Typeahead>
-            
-            {/*<Form.Control
-                id={id}
-                placeholder={placeholder}
-                autoFocus={autofocus}
-                required={required}
-                className=
-                list={schema.examples ? `examples_${id}` : undefined}
-                type={inputType}
-                value={value || value === 0 ? value : ""}
-                
-                
-            />*/}
-            {schema.examples ? (
-                <datalist id={`examples_${id}`}>
-                    {(schema.examples)
-                        .concat(schema.default ? ([schema.default]) : [])
-                        .map((example) => {
-                            return <option key={example} value={example} />;
-                        })}
-                </datalist>
-            ) : null}
         </Form.Group>
     );
 };

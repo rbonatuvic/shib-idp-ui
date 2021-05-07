@@ -3,6 +3,7 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Translate from "../../../i18n/components/translate";
 
 const ObjectFieldTemplate = ({
     DescriptionField,
@@ -14,21 +15,27 @@ const ObjectFieldTemplate = ({
     uiSchema,
     idSchema,
     schema,
-    hidden
+    hidden,
+    formContext
 }) => {
 
     const displayTitle = (uiSchema["ui:title"] || (title && schema.title));
+
+    console.log(properties);
 
     return (
         <>
             {!hidden &&
             <>
                 {displayTitle && (
+                    <>
                     <TitleField
                         id={`${idSchema.$id}-title`}
                         title={title}
                         required={required}
                     />
+                    <hr />
+                    </>
                 )}
                 {displayTitle && description && (
                     <DescriptionField
@@ -40,11 +47,16 @@ const ObjectFieldTemplate = ({
                     <>
                     {uiSchema.layout ?
                         <Row>{uiSchema.layout.groups.map((group, rIdx) => (
-                            
-                            <Col xs={group.size} key={rIdx}>{properties.filter(p => group.fields.indexOf(p.name) > -1).map((element, eIdx) => (
-                                <React.Fragment key={eIdx}>{element.content}</React.Fragment>
-                            ))}</Col>
-                            
+                            <React.Fragment key={rIdx}>
+                            {properties.some(p => group.fields.indexOf(p.name) > -1) &&
+                                <Col xs={group.size} key={rIdx} className={`d-empty-none ${group.classNames}`}>
+                                    {group.title && <legend><Translate value={group.title} /></legend>}
+                                    {properties.filter(p => group.fields.indexOf(p.name) > -1).map((element, eIdx) => (
+                                        <React.Fragment key={eIdx}>{element.content}{console.log(element.content)}</React.Fragment>
+                                    ))}
+                                </Col>
+                            }
+                            </React.Fragment>
                         ))}</Row>
                     :
                         properties.map((element, index) => (

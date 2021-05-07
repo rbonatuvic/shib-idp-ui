@@ -5,7 +5,7 @@ import { useTranslation } from '../hooks';
 
 export function Translate ({ value, params = {} }) {
     const translated = useTranslation(value, params);
-    return (<>{translated}</>)
+    return (<>{translated || value}</>)
 }
 
 Translate.propTypes = {

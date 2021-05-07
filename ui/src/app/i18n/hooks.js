@@ -26,6 +26,11 @@ export function useTranslation (value, interpolated = {}) {
     return useInterpolatedTranslation(val, interpolated);
 }
 
+export function useTranslator() {
+    const messages = useContext(I18nContext);
+    return (value, interpolated = {}) => translate(getMessage(value, messages), interpolated);
+}
+
 export function useInterpolatedTranslation(value, interpolated) {
     return translate(value, interpolated);
 }

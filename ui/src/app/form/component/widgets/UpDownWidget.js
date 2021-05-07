@@ -5,6 +5,7 @@ import React from "react";
 import Form from "react-bootstrap/Form";
 
 import Translate from "../../../i18n/components/translate";
+import { useTranslator } from "../../../i18n/hooks";
 import { InfoIcon } from "../InfoIcon";
 
 const UpDownWidget = ({
@@ -18,7 +19,8 @@ const UpDownWidget = ({
     onBlur,
     onFocus,
     autofocus,
-    schema
+    schema,
+    uiSchema
 }) => {
     const _onChange = ({
         target: { value },
@@ -28,6 +30,8 @@ const UpDownWidget = ({
     const _onFocus = ({
         target: { value },
     }) => onFocus(id, value);
+
+    const translator = useTranslator();
 
     return (
         <Form.Group className="mb-0">
@@ -45,7 +49,9 @@ const UpDownWidget = ({
                 type="number"
                 disabled={disabled}
                 readOnly={readonly}
+                placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder']) : ''}
                 value={value || value === 0 ? value : ""}
+                step={schema.multipleOf}
                 onChange={_onChange}
                 onBlur={_onBlur}
                 onFocus={_onFocus}

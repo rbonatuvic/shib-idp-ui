@@ -8,15 +8,8 @@ export const LocalDynamicMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'LocalDynamicMetadataProvider',
     type: 'LocalDynamicMetadataResolver',
-    schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
-    uiSchema: {
-        dynamicMetadataResolverAttributes: {
-            minCacheDuration: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions
-            }
-        }
-    },
+    schema: '/assets/schema/provider/local-dynamic.schema.json',
+    // schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
     steps: [
         {
             id: 'common',
@@ -74,16 +67,74 @@ export const LocalDynamicMetadataProviderWizard = {
                 }
             ]
         }
-    ]
+    ],
+    uiSchema: defaultsDeep({
+        layout: {
+            groups: [
+                {
+                    size: 9,
+                    classNames: 'bg-light border rounded px-4 pt-4 pb-1 mb-4',
+                    fields: [
+                        'name',
+                        '@type',
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'xmlId',
+                        'sourceDirectory'
+                    ]
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'dynamicMetadataResolverAttributes'
+                    ],
+                }
+            ]
+        },
+        dynamicMetadataResolverAttributes: {
+            refreshDelayFactor: {
+                'ui:widget': 'updown',
+                'ui:help': 'message.real-number',
+                'ui:placeholder': 'label.real-number'
+            },
+            removeIdleEntityData: {
+                'ui:widget': 'radio',
+                'ui:options': {
+                    inline: true
+                }
+            },
+            minCacheDuration: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            maxCacheDuration: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            maxIdleEntityData: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            cleanupTaskInterval: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            }
+        }
+    }, BaseProviderDefinition.uiSchema)
 };
 
 
 export const LocalDynamicMetadataProviderEditor = {
     ...LocalDynamicMetadataProviderWizard,
     uiSchema: defaultsDeep({
-        '@type': {
-            'ui:disabled': true
-        }
     }, LocalDynamicMetadataProviderWizard.uiSchema),
     steps: [
         {

@@ -14,6 +14,8 @@ export const getLimitedConfigurationsFn = (configurations, limited) => {
 
 export function useMetadataConfiguration(models, schema, definition, limited = false) {
 
+    console.log(models, schema, definition)
+
     if (!models || !schema || !definition) {
         return {};
     }

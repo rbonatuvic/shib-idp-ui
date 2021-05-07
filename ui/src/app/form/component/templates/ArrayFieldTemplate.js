@@ -136,10 +136,13 @@ const DefaultArrayItem = (props) => {
         paddingRight: 6,
         fontWeight: "bold",
     };
+
+    const uiSchemaOptions = props.uiSchema ? props.uiSchema['ui:options'] || {} : {};
+
     return (
-        <div key={props.key} className={`mt-2`}>
+        <div key={props.key} className={`mt-2 `}>
             <div className="mb-2  d-flex align-items-center">
-                <div className="mr-2 flex-grow-1">{props.children}</div>
+                <div className={`mr-2 flex-grow-1 ${uiSchemaOptions.classNames}`}>{props.children}</div>
                 {props.hasToolbar && (
                     <div className="d-flex flex-row align-items-center">
                         {(props.hasMoveUp || props.hasMoveDown) && (
@@ -232,18 +235,21 @@ const DefaultFixedArrayFieldTemplate = (props) => {
 };
 
 const DefaultNormalArrayFieldTemplate = (props) => {
+
+    const showTitle = props.uiSchema.hasOwnProperty("ui:title") ? props.uiSchema["ui:title"] === false && !props.canAdd ? false : true : true;
+
     return (
         <div>
             <Row className="p-0 m-0">
                 <Col className="p-0 m-0">
                     <div className="d-flex align-items-center">
-                        <ArrayFieldTitle
+                        {showTitle && <ArrayFieldTitle
                             key={`array-field-title-${props.idSchema.$id}`}
                             TitleField={props.TitleField}
                             idSchema={props.idSchema}
                             title={props.uiSchema["ui:title"] || props.title}
                             required={props.required}
-                        />
+                        />}
                         {props.canAdd && (
                             <AddButton
                                 className="array-item-add mx-2"
@@ -267,7 +273,7 @@ const DefaultNormalArrayFieldTemplate = (props) => {
                             props.schema.items.type === 'object' || props.schema.items.$ref ?
                                 ObjectArrayItem({type: props.uiSchema.type, ...p})
                                 :
-                                DefaultArrayItem({...p })
+                                DefaultArrayItem({...p, uiSchema: props.uiSchema.items })
                         )}
                     </Container>
                 </Col>

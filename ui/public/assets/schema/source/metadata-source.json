@@ -44,32 +44,33 @@
             "widget": {
                 "id": "fieldset"
             },
-            "fieldsets": [
-                {
-                    "type": "group",
-                    "fields": [
-                        "x509CertificateAvailable",
-                        "authenticationRequestsSigned",
-                        "wantAssertionsSigned"
-                    ]
-                },
-                {
-                    "type": "group",
-                    "fields": [
-                        "x509Certificates"
+            "dependencies": {
+                "authenticationRequestsSigned": {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "authenticationRequestsSigned": {
+                                    "const": true
+                                },
+                                "x509Certificates": {
+                                    "minItems": 1
+                                }
+                            }
+                        },
+                        {
+                            "properties": {
+                                "authenticationRequestsSigned": {
+                                    "const": false
+                                },
+                                "x509Certificates": {
+                                    "minItems": 0
+                                }
+                            }
+                        }
                     ]
                 }
-            ],
+            },
             "properties": {
-                "x509CertificateAvailable": {
-                    "title": "label.is-there-a-x509-certificate",
-                    "description": "tooltip.is-there-a-x509-certificate",
-                    "type": "boolean",
-                    "enumNames": [
-                        "value.true",
-                        "value.false"
-                    ]
-                },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
@@ -107,24 +108,11 @@
         },
         "serviceProviderSsoDescriptor": {
             "type": "object",
-            "fieldsets": [
-                {
-                    "type": "group",
-                    "fields": [
-                        "protocolSupportEnum",
-                        "nameIdFormats"
-                    ]
-                }
-            ],
-            "required": [
-                "nameIdFormats"
-            ],
             "properties": {
                 "protocolSupportEnum": {
                     "title": "label.protocol-support-enumeration",
                     "description": "tooltip.protocol-support-enumeration",
                     "type": "string",
-                    "placeholder": "label.select-protocol",
                     "widget": {
                         "id": "select"
                     },
@@ -146,6 +134,9 @@
                 "nameIdFormats": {
                     "$ref": "#/definitions/nameIdFormats"
                 }
+            },
+            "dependencies": {
+                "nameIdFormats": ["protocolSupportEnum"]
             }
         },
         "logoutEndpoints": {

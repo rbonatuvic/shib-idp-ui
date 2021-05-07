@@ -8,6 +8,7 @@ import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
+import { useTranslator } from "../../../i18n/hooks";
 
 const { asNumber, guessType } = utils;
 
@@ -64,6 +65,8 @@ const SelectWidget = ({
 
     const emptyValue = multiple ? [] : "";
 
+    const translator = useTranslator();
+
     function getValue(
         event,
         multiple
@@ -117,18 +120,13 @@ const SelectWidget = ({
                     onChange(processValue(schema, newValue));
                 }}>
                 {!multiple && schema.default === undefined && (
-                    <option value="">{placeholder}</option>
+                    <option value="">{translator(placeholder)}</option>
                 )}
-                {(enumOptions).map(({ value, label }, i) => {
-                    const disabled =
-                        Array.isArray(enumDisabled) &&
-                        (enumDisabled).indexOf(value) != -1;
-                    return (
-                        <option key={i} id={label} value={value} disabled={disabled}>
-                            {label}
-                        </option>
-                    );
-                })}
+                {(enumOptions).map(({ value, label }, i) =>
+                <option key={i} id={label} value={value} disabled={Array.isArray(enumDisabled) && (enumDisabled).indexOf(value) !== -1}>
+                    {translator(label)}
+                </option>
+                )}
             </Form.Control>
         </Form.Group>
     );

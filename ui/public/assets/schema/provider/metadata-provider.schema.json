@@ -17,7 +17,6 @@
         "@type": {
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
-            "placeholder": "label.select-metadata-type",
             "type": "string",
             "widget": {
                 "id": "select",

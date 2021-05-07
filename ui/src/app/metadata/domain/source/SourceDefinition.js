@@ -10,65 +10,13 @@ export const SourceBase = {
     validatorParams: [/*getAllOtherIds*/],
 
     parse: (data) => {
-        const parsed = {...data};
-        if (parsed?.securityInfo?.x509CertificateAvailable) {
-            if (!parsed?.securityInfo?.x509Certificates) {
-                parsed.securityInfo.x509Certificates = [];
+        if (data?.securityInfo?.x509CertificateAvailable) {
+            if (!data?.securityInfo?.x509Certificates) {
+                data.securityInfo.x509Certificates = [];
             }
-            parsed.securityInfo.x509Certificates.push({})
+            data.securityInfo.x509Certificates.push({})
         }
-        return parsed;
-    },
-
-    bindings: {
-        '/securityInfo/x509CertificateAvailable': [
-            {
-                'input': (event, property) => {
-                    let available = !property.value,
-                        parent = property.parent,
-                        certs = parent.getProperty('x509Certificates');
-                    if (available && !certs.value.length) {
-                        certs.setValue([
-                            {
-                                name: '',
-                                type: 'both',
-                                value: ''
-                            }
-                        ], true);
-                    }
-
-                    if (!available && certs.value.length > 0) {
-                        certs.setValue([], true);
-                    }
-                }
-            }
-        ],
-        '/assertionConsumerServices/*/makeDefault': [
-            {
-                'input': (event, property) => {
-                    let parent = property.parent.parent;
-                    let props = parent.properties;
-                    props.forEach(prop => {
-                        if (prop !== property) {
-                            prop.setValue({
-                                ...prop.value,
-                                makeDefault: false
-                            }, false);
-                        }
-                    });
-                }
-            }
-        ]
-    },
-
-    parser: (changes, schema) => {
-        if (!schema || !schema.properties) {
-            return changes;
-        }
-        if (schema.properties.hasOwnProperty('organization') && !changes.organization) {
-            changes.organization = {};
-        }
-        return changes;
+        return data;
     },
 
     formatter: (changes, schema) => {
@@ -235,6 +183,9 @@ export const SourceBase = {
             }
         },
         serviceProviderSsoDescriptor: {
+            protocolSupportEnum: {
+                'ui:placeholder': 'label.select-protocol'
+            },
             nameIdFormats: {
                 "ui:options": {
                     orderable: false
@@ -250,16 +201,10 @@ export const SourceBase = {
                     {
                         size: 6,
                         fields: [
-                            'x509CertificateAvailable',
                             'authenticationRequestsSigned',
-                            'wantAssertionsSigned'
-                        ],
-                    },
-                    {
-                        size: 6,
-                        fields: [
+                            'wantAssertionsSigned',
                             'x509Certificates'
-                        ]
+                        ],
                     }
                 ]
             },

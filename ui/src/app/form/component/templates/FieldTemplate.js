@@ -12,6 +12,7 @@ export function FieldTemplate ({
     displayLabel,
     rawErrors = [],
     rawHelp,
+    help,
     rawDescription,
     ...props
 }) {

@@ -32,8 +32,8 @@ export function useUiSchema(definition, schema, current) {
 }
 
 
-export function useMetadataSchema(schema) {
-    return schema;
+export function useMetadataSchema(definition, schema) {
+    return definition.schemaPreprocessor ? definition.schemaPreprocessor(schema) : schema;
 }
 
 export * from './utility';

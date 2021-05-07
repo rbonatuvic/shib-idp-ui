@@ -13,18 +13,22 @@ export function MetadataEditor () {
 
     const { type, id, section } = useParams();
 
-    const [current, setCurrent] = React.useState({});
-
-    React.useEffect(() => {
-        setCurrent({});
-    }, []);
-
-    const metadata = React.useContext(MetadataObjectContext);
+    const base = React.useContext(MetadataObjectContext);
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
 
     const [invalid, setInvalid] = React.useState(false);
     const [saving, setSaving] = React.useState(false);
+
+    const [updates, setUpdates] = React.useState(base);
+
+    const onChange = (updates) => {
+        setUpdates(definition.parser(updates));
+    };
+
+    React.useEffect(() => {
+        setUpdates(base);
+    }, [base]);
 
     const save = () => {
         console.log('save!');
@@ -36,13 +40,13 @@ export function MetadataEditor () {
 
     return (
         <div className="container-fluid p-3">
-            <section className="section" aria-label={`Edit metadata ${type} - ${metadata.serviceProviderName || metadata.name}`} tabIndex="0">
+            <section className="section" aria-label={`Edit metadata ${type} - ${base.serviceProviderName || base.name}`} tabIndex="0">
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
                             <span className="display-6">
                                 <FontAwesomeIcon icon={faCogs} />&nbsp;
-                                Edit metadata {type} - {metadata.serviceProviderName || metadata.name}
+                                Edit metadata {type} - {base.serviceProviderName || base.name}
                             </span>
                         </div>
                     </div>
@@ -92,7 +96,7 @@ export function MetadataEditor () {
                             </MetadataEditorNav>
                         </div>
                         <div className="col-lg-9">
-                            <MetadataEditorForm metadata={metadata} definition={definition} schema={schema} current={section} />
+                            <MetadataEditorForm metadata={definition.formatter(updates)} definition={definition} schema={schema} current={section} />
                         </div>
                     </div>
                 </div>

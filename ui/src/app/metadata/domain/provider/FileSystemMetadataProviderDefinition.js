@@ -1,11 +1,14 @@
+import defaultsDeep from 'lodash/defaultsDeep';
 import API_BASE_PATH from "../../../App.constant";
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
+import { DurationOptions } from '../data';
 
 export const FileSystemMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'FilesystemMetadataProvider',
     type: 'FilesystemMetadataResolver',
-    schema: `${API_BASE_PATH}/ui/MetadataResolver/FilesystemMetadataResolver`,
+    schema: '/assets/schema/provider/file-system.schema.json',
+    // schema: `${API_BASE_PATH}/ui/MetadataResolver/FilesystemMetadataResolver`,
     steps: [
         {
             id: 'common',
@@ -65,7 +68,61 @@ export const FileSystemMetadataProviderWizard = {
                 }
             ]
         }
-    ]
+    ],
+    uiSchema: defaultsDeep({
+        layout: {
+            groups: [
+                {
+                    size: 9,
+                    classNames: 'bg-light border rounded px-4 pt-4 pb-1 mb-4',
+                    fields: [
+                        'name',
+                        '@type',
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'xmlId',
+                        'metadataFile',
+                        'doInitialization',
+                    ]
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'reloadableMetadataResolverAttributes'
+                    ]
+                }
+            ]
+        },
+        doInitialization: {
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        reloadableMetadataResolverAttributes: {
+            minRefreshDelay: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            maxRefreshDelay: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            refreshDelayFactor: {
+                'ui:widget': 'updown',
+                'ui:options': {
+                    help: 'message.real-number'
+                },
+                'ui:placeholder': 'label.real-number'
+            }
+        },
+    }, BaseProviderDefinition.uiSchema)
 };
 
 
@@ -133,5 +190,7 @@ export const FileSystemMetadataProviderEditor = {
                 }
             ]
         }
-    ]
+    ],
+    uiSchema: defaultsDeep({
+    }, FileSystemMetadataProviderWizard.uiSchema)
 };

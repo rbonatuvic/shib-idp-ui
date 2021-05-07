@@ -1,4 +1,7 @@
-import { BaseProviderDefinition } from "./BaseProviderDefinition";
+import defaultsDeep from 'lodash/defaultsDeep';
+import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
+
+import { DurationOptions } from '../data';
 
 export const FileBackedHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
@@ -52,7 +55,111 @@ export const FileBackedHttpMetadataProviderWizard = {
                 'enabled'
             ]
         }
-    ]
+    ],
+    uiSchema: defaultsDeep({
+        layout: {
+            groups: [
+                {
+                    size: 9,
+                    classNames: 'bg-light border rounded px-4 pt-4 pb-1 mb-4',
+                    fields: [
+                        'name',
+                        '@type',
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'xmlId',
+                        'metadataURL',
+                        'initializeFromBackupFile',
+                        'backingFile',
+                        'backupFileInitNextRefreshDelay',
+                        'requireValidMetadata',
+                        'failFastInitialization',
+                        'useDefaultPredicateRegistry',
+                        'satisfyAnyPredicates',
+                    ]
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'reloadableMetadataResolverAttributes'
+                    ],
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'metadataFilters'
+                    ],
+                },
+                {
+                    size: 9,
+                    fields: [
+                        'httpMetadataResolverAttributes'
+                    ]
+                }
+            ]
+        },
+        initializeFromBackupFile: {
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        backupFileInitNextRefreshDelay: {
+            'ui:widget': 'OptionWidget',
+            options: DurationOptions,
+            'ui:placeholder': 'label.duration'
+        },
+        requireValidMetadata: {
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        useDefaultPredicateRegistry: {
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        satisfyAnyPredicates: {
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        failFastInitialization: {
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        reloadableMetadataResolverAttributes: {
+            minRefreshDelay: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            maxRefreshDelay: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            refreshDelayFactor: {
+                'ui:widget': 'updown',
+                'ui:options': {
+                    help: 'message.real-number',
+                    step: 0.001
+                },
+                'ui:placeholder': 'label.real-number'
+            }
+        },
+        metadataFilters: MetadataFilterPluginsSchema,
+        httpMetadataResolverAttributes: HttpMetadataResolverAttributesSchema
+    }, BaseProviderDefinition.uiSchema)
 };
 
 
@@ -110,5 +217,7 @@ export const FileBackedHttpMetadataProviderEditor = {
                 'httpMetadataResolverAttributes'
             ]
         }
-    ]
+    ],
+    uiSchema: defaultsDeep({
+    }, FileBackedHttpMetadataProviderWizard.uiSchema)
 };
