@@ -29,7 +29,7 @@ const CheckboxWidget = (props) => {
         target: { checked },
     }) => onFocus(id, checked);
 
-    const desc = label || schema.description;
+    // const desc = label || schema.description;
     return (
         <Form.Group className={`checkbox ${disabled || readonly ? "disabled" : ""}`}>
             <Form.Check

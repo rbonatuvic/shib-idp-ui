@@ -6,7 +6,7 @@ import { InfoIcon } from "../InfoIcon";
 
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp, faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { useTranslator } from "../../../i18n/hooks";
 
 const ToggleButton = ({ isOpen, onClick }) => (
@@ -44,7 +44,7 @@ const OptionWidget = ({
     const _onChange = (selected) => onChange(selected[0] === '' ? options.emptyValue : selected[0]);
     const _onBlur = ({ target: { value } }) => onBlur(id, value);
     const _onFocus = ({ target: { value } }) => onFocus(id, value);
-    const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
+    // const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
     
     const opts = Array.isArray(options) || options.enumOptions ? options : schema.examples ? schema.examples : uiSchema.options ? uiSchema.options : [];
 

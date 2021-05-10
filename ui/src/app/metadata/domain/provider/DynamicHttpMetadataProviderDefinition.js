@@ -1,7 +1,7 @@
 // import { metadataFilterProcessor } from './utility/providerFilterProcessor';
 
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
-import API_BASE_PATH from '../../../App.constant';
+// import API_BASE_PATH from '../../../App.constant';
 import defaultsDeep from 'lodash/defaultsDeep';
 import { DurationOptions } from '../data';
 

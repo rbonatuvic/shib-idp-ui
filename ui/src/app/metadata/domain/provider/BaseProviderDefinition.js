@@ -7,7 +7,7 @@ export const BaseProviderDefinition = {
         ...changes,
         metadataFilters: [
             ...changes.metadataFilters.filter((filter, filterName) => (
-                Object.keys(filter).length > 1
+                Object.keys(filter).length > 0
             ))
         ]
     }) : changes),

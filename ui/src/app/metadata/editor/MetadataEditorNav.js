@@ -1,15 +1,19 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import Translate from '../../i18n/components/translate';
+import { usePagesWithErrors } from '../hoc/MetadataFormContext';
 
-export function MetadataEditorNav ({ definition, current, base, children, format = 'tabs' }) {
+export function MetadataEditorNav ({ definition, current, base, children, format = 'tabs', onNavigate }) {
 
     const [routes, setRoutes] = React.useState([]);
     const [active, setActive] = React.useState(null);
+
+    const errors = usePagesWithErrors();
+
+    console.log(errors);
 
     React.useEffect(() => {
         setRoutes(definition ? definition.steps.map(step => ({ path: step.id, label: step.label })) : [])
@@ -29,13 +33,14 @@ export function MetadataEditorNav ({ definition, current, base, children, format
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         {routes.map((route, idx) =>
-                            <NavLink
+                            <button
+                                type="button"
                                 className="dropdown-item"
                                 key={route.path}
-                                to={`${route.path}`}
+                                onClick={() => onNavigate(route.path)}
                                 aria-label={route.label}>
                                 <Translate value={route.label}></Translate>
-                            </NavLink>
+                            </button>
                         )}
                         {children &&
                         <React.Fragment>
@@ -49,14 +54,17 @@ export function MetadataEditorNav ({ definition, current, base, children, format
             <React.Fragment>
                 <nav className="nav nav-pills flex-column" role="navigation">
                     {routes.map((route, idx) =>
-                        <NavLink
+                        <button
+                            type="button"
                             key={route.path}
-                            className={`nav-link`}
-                            to={`${route.path}`}
-                            role="button"
+                            className={`btn btn-text nav-link text-left px-3 py-2 mb-1 ${route.path === current ? 'active' : 'text-primary '}`}
+                            onClick={() => onNavigate(route.path)}
                             aria-label={route.label}>
                             <Translate value={route.label}></Translate>
-                        </NavLink>
+                            { errors.indexOf(route.path) > -1 &&
+                                <FontAwesomeIcon className={`ml-2 ${route.path === current ? '' : 'text-danger'}`} icon={ faExclamationTriangle } />
+                            }
+                        </button>
                     )}
                 </nav>
                 <hr />

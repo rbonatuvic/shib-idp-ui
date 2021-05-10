@@ -1,6 +1,6 @@
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React from 'react';
 import Translate from '../../../i18n/components/translate';
 import { usePropertyWidth } from './hooks';
 import { PropertyValue } from './PropertyValue';
@@ -30,10 +30,10 @@ export function ArrayProperty ({ property, columns, onPreview }) {
 
     React.useEffect(() => {
         setKeys(property.value.reduce((val, version) => version ? version.length > val ? version.length : val : val, 0));
+
+        console.log(property);
+
         setDataList(property.items?.enum);
-
-
-        console.log(property, keys);
     }, [property]);
 
     React.useEffect(() => {
@@ -76,7 +76,7 @@ export function ArrayProperty ({ property, columns, onPreview }) {
             }
             {property?.items?.type === 'string' &&
                 <>
-                    { property?.items?.enum?.length ?
+                    { property?.items?.enum?.length && property.uniqueItems ?
                         <>
                             {dataList.map((item, itemIdx) => 
                                 <div className={`d-flex justify-content-start border-bottom border-light ${ property.differences ? 'bg-diff' : '' }`} tabIndex="0" key={itemIdx}>
@@ -97,7 +97,7 @@ export function ArrayProperty ({ property, columns, onPreview }) {
                             <span className="p-2" role="term" style={ {width} } ><Translate value={property.name}>{ property.name }</Translate></span>
                             {property.value.map((v, vidx) => 
                                 <React.Fragment key={vidx}>
-                                    {(!v || !v.length) && <p style={ {width} } className="text-secondary m-0">-</p> }
+                                    {(!v || !v.length) && <p style={ {width} } className="text-secondary m-0 align-self-center">-</p> }
                                     {(v && v.length > 0) &&
                                         <ul style={ {width} } className="list-unstyled py-2 m-0">
                                             {v.map((item, idx) => 

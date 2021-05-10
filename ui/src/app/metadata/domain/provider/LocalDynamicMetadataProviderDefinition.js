@@ -1,6 +1,6 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 
-import API_BASE_PATH from "../../../App.constant";
+// import API_BASE_PATH from "../../../App.constant";
 import {DurationOptions} from '../data';
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
 

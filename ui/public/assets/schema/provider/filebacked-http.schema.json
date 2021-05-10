@@ -333,7 +333,6 @@
             "title": "",
             "description": "",
             "type": "array",
-            "additionalItems": true,
             "items": [
                 {
                     "$id": "RequiredValidUntil",
@@ -376,9 +375,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "enum": [
-                                                true
-                                            ]
+                                            "const": true
                                         }
                                     },
                                     "required": [
@@ -388,9 +385,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "enum": [
-                                                false
-                                            ]
+                                            "const": false
                                         }
                                     }
                                 }

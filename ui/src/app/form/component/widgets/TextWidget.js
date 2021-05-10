@@ -28,7 +28,6 @@ const TextWidget = ({
     const _onBlur = ({ target: { value } }) => onBlur(id, value);
     const _onFocus = ({target: { value }} ) => onFocus(id, value);
     const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
-    console.log(props)
 
     // const classNames = [rawErrors.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (

@@ -21,8 +21,6 @@ const ObjectFieldTemplate = ({
 
     const displayTitle = (uiSchema["ui:title"] || (title && schema.title));
 
-    console.log(properties);
-
     return (
         <>
             {!hidden &&
@@ -52,7 +50,7 @@ const ObjectFieldTemplate = ({
                                 <Col xs={group.size} key={rIdx} className={`d-empty-none ${group.classNames}`}>
                                     {group.title && <legend><Translate value={group.title} /></legend>}
                                     {properties.filter(p => group.fields.indexOf(p.name) > -1).map((element, eIdx) => (
-                                        <React.Fragment key={eIdx}>{element.content}{console.log(element.content)}</React.Fragment>
+                                        <React.Fragment key={eIdx}>{element.content}</React.Fragment>
                                     ))}
                                 </Col>
                             }

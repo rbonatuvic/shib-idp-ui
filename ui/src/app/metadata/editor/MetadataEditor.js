@@ -1,34 +1,31 @@
 import { faCogs, faExclamationTriangle, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Translate from '../../i18n/components/translate';
+import { MetadataFormContext, setFormDataAction, setFormErrorAction } from '../hoc/MetadataFormContext';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 
-import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
 
 export function MetadataEditor () {
 
     const { type, id, section } = useParams();
-
-    const base = React.useContext(MetadataObjectContext);
+    const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
 
-    const [invalid, setInvalid] = React.useState(false);
-    const [saving, setSaving] = React.useState(false);
+    const [invalid] = React.useState(false);
+    const [saving] = React.useState(false);
 
-    const [updates, setUpdates] = React.useState(base);
+    const { state, dispatch } = React.useContext(MetadataFormContext);
+    const { metadata, errors } = state;
 
-    const onChange = (updates) => {
-        setUpdates(definition.parser(updates));
+    const onChange = (changes) => {
+        dispatch(setFormDataAction(changes.formData));
+        dispatch(setFormErrorAction(section, changes.errors));
     };
-
-    React.useEffect(() => {
-        setUpdates(base);
-    }, [base]);
 
     const save = () => {
         console.log('save!');
@@ -38,15 +35,19 @@ export function MetadataEditor () {
         console.log('cancel!');
     };
 
+    const onNavigate = (path) => {
+        history.push(path)
+    };
+
     return (
         <div className="container-fluid p-3">
-            <section className="section" aria-label={`Edit metadata ${type} - ${base.serviceProviderName || base.name}`} tabIndex="0">
+            <section className="section" aria-label={`Edit metadata ${type} - ${metadata.serviceProviderName || metadata.name}`} tabIndex="0">
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
                             <span className="display-6">
                                 <FontAwesomeIcon icon={faCogs} />&nbsp;
-                                Edit metadata {type} - {base.serviceProviderName || base.name}
+                                Edit metadata {type} - {metadata.serviceProviderName || metadata.name}
                             </span>
                         </div>
                     </div>
@@ -55,10 +56,12 @@ export function MetadataEditor () {
                     <div className="row">
                         <div className="col-6 d-lg-none order-1">
                             <MetadataEditorNav
+                                onNavigate={onNavigate}
                                 definition={definition}
                                 current={section}
                                 base={`/metadata/${type}/${id}/edit`}
-                                format='dropdown'>
+                                format='dropdown'
+                                errors={errors}>
                             </MetadataEditorNav>
                         </div>
                         <div className="col-6 col-lg-3 order-2 text-right">
@@ -88,15 +91,23 @@ export function MetadataEditor () {
                     <div className="row">
                         <div className="col-lg-3 d-none d-lg-block">
                             <MetadataEditorNav
+                                onNavigate={onNavigate}
                                 definition={definition}
                                 current={ section }
                                 base={`/metadata/${type}/${id}/edit`}
-                                format='tabs'>
-                                
+                                format='tabs'
+                                errors={errors}>
                             </MetadataEditorNav>
                         </div>
                         <div className="col-lg-9">
-                            <MetadataEditorForm metadata={definition.formatter(updates)} definition={definition} schema={schema} current={section} />
+                            {definition && schema && metadata &&
+                            <MetadataEditorForm
+                                metadata={metadata}
+                                definition={definition}
+                                schema={schema}
+                                current={section}
+                                onChange={onChange} />
+                            }
                         </div>
                     </div>
                 </div>

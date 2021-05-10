@@ -3,13 +3,13 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { MetadataOptions } from './view/MetadataOptions';
 import { MetadataDetail } from './component/MetadataDetail';
 import { MetadataHistory } from './view/MetadataHistory';
-import { MetadataEditor } from './editor/MetadataEditor';
 import { MetadataSelector } from './hoc/MetadataSelector';
 import { MetadataSchema } from './hoc/MetadataSchema';
 import { MetadataXmlLoader } from './hoc/MetadataXmlLoader';
 import { MetadataXml } from './view/MetadataXml';
 import { MetadataComparison } from './view/MetadataComparison';
 import { MetadataVersion } from './view/MetadataVersion';
+import { MetadataEdit } from './view/MetadataEdit';
 
 export function Metadata () {
 
@@ -46,7 +46,9 @@ export function Metadata () {
                                 <MetadataVersion></MetadataVersion>
                             </MetadataDetail>
                         } />
-                        <Route path={`${path}/edit/:section`} component={ MetadataEditor } />
+                        <Route path={`${path}/edit/:section`} render={ () =>
+                            <MetadataEdit />
+                        } />
                     </Switch>
                 </MetadataSchema>
             </MetadataXmlLoader>

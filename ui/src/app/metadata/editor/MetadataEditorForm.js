@@ -16,17 +16,12 @@ export function MetadataEditorForm ({ metadata, definition, schema, current, onC
 
     const onSubmit = () => {};
 
-    const [context, setContext] = React.useState(definition.steps.find(s => s.id === current));
-
-    React.useEffect(() => {
-        setContext(definition.steps.find(s => s.id === current))
-    }, [current, definition]);
 
     return (
         <>
             <Form formData={data}
                 noHtml5Validate={true}
-                onChange={({ formData }) => setData(formData) }
+                onChange={(form) => onChange(form) }
                 onSubmit={() => onSubmit()}
                 schema={schema}
                 uiSchema={uiSchema}
@@ -35,18 +30,9 @@ export function MetadataEditorForm ({ metadata, definition, schema, current, onC
                 ArrayFieldTemplate={templates.ArrayFieldTemplate}
                 fields={ fields }
                 widgets={widgets}
-                liveValidate={true}
-                formContext={context}>
+                liveValidate={true}>
                     <></>
                 </Form>
-            <div className="row">
-                <div className="col-6">
-                    <pre>{JSON.stringify(data, null, 4)}</pre>
-                </div>
-                <div className="col-6">
-                    <pre>{JSON.stringify(schema, null, 4)}</pre>
-                </div>
-            </div>
         </>
     );
 }
