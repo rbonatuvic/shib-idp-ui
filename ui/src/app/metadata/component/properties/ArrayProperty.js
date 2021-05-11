@@ -30,9 +30,6 @@ export function ArrayProperty ({ property, columns, onPreview }) {
 
     React.useEffect(() => {
         setKeys(property.value.reduce((val, version) => version ? version.length > val ? version.length : val : val, 0));
-
-        console.log(property);
-
         setDataList(property.items?.enum);
     }, [property]);
 

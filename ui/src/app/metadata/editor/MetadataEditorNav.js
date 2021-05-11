@@ -11,9 +11,7 @@ export function MetadataEditorNav ({ definition, current, base, children, format
     const [routes, setRoutes] = React.useState([]);
     const [active, setActive] = React.useState(null);
 
-    const errors = usePagesWithErrors();
-
-    console.log(errors);
+    const errors = usePagesWithErrors(definition);
 
     React.useEffect(() => {
         setRoutes(definition ? definition.steps.map(step => ({ path: step.id, label: step.label })) : [])

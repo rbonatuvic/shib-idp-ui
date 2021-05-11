@@ -1,5 +1,7 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 // import API_BASE_PATH from '../../../App.constant';
+import {removeNull} from '../../../core/utility/remove_null';
+
 
 export const SourceBase = {
     label: 'Metadata Source',
@@ -9,19 +11,9 @@ export const SourceBase = {
     //${API_BASE_PATH}/ui/MetadataSources
     validatorParams: [/*getAllOtherIds*/],
 
-    parse: (data) => {
-        if (data?.securityInfo?.x509CertificateAvailable) {
-            if (!data?.securityInfo?.x509Certificates) {
-                data.securityInfo.x509Certificates = [];
-            }
-            data.securityInfo.x509Certificates.push({})
-        }
-        return data;
-    },
+    parser: (data) => removeNull(data, true),
 
-    formatter: (changes, schema) => {
-        return changes;
-    },
+    formatter: (changes, schema) => changes,
 
     getValidators: (entityIdList) => {
         const validators = {

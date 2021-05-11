@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import { MetadataOptions } from './view/MetadataOptions';
 import { MetadataDetail } from './component/MetadataDetail';
 import { MetadataHistory } from './view/MetadataHistory';
@@ -49,6 +49,7 @@ export function Metadata () {
                         <Route path={`${path}/edit/:section`} render={ () =>
                             <MetadataEdit />
                         } />
+                        <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
                     </Switch>
                 </MetadataSchema>
             </MetadataXmlLoader>

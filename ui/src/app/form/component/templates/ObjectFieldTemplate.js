@@ -47,7 +47,7 @@ const ObjectFieldTemplate = ({
                         <Row>{uiSchema.layout.groups.map((group, rIdx) => (
                             <React.Fragment key={rIdx}>
                             {properties.some(p => group.fields.indexOf(p.name) > -1) &&
-                                <Col xs={group.size} key={rIdx} className={`d-empty-none ${group.classNames}`}>
+                                <Col lg={group.size} key={rIdx}  className={`d-empty-none ${group.classNames}`}>
                                     {group.title && <legend><Translate value={group.title} /></legend>}
                                     {properties.filter(p => group.fields.indexOf(p.name) > -1).map((element, eIdx) => (
                                         <React.Fragment key={eIdx}>{element.content}</React.Fragment>

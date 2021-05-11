@@ -1,17 +1,24 @@
+import React from 'react';
 import { faCogs, faExclamationTriangle, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams, Prompt } from 'react-router';
+import Alert from 'react-bootstrap/Alert';
+
 import Translate from '../../i18n/components/translate';
 import { MetadataFormContext, setFormDataAction, setFormErrorAction } from '../hoc/MetadataFormContext';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
+import { useMetadataEntity } from '../hooks/api';
 
 export function MetadataEditor () {
 
     const { type, id, section } = useParams();
+
+    const { put, response } = useMetadataEntity(type, {}, []);
+
+    
     const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
@@ -20,27 +27,45 @@ export function MetadataEditor () {
     const [saving] = React.useState(false);
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
-    const { metadata, errors } = state;
+    const { metadata, errors} = state;
 
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
         dispatch(setFormErrorAction(section, changes.errors));
+        // setBlocking(true);
     };
 
-    const save = () => {
-        console.log('save!');
+    async function save(metadata) {
+        await put(`/${id}`, definition.parser(metadata));
+        if (response.ok) {
+            gotoDetail({ refresh: true });
+        }
     };
 
     const cancel = () => {
-        console.log('cancel!');
+        gotoDetail();
+    };
+
+    const gotoDetail = (state = null) => {
+        setBlocking(false);
+        history.push(`/metadata/${type}/${id}`, state);
     };
 
     const onNavigate = (path) => {
         history.push(path)
     };
 
+    const [blocking, setBlocking] = React.useState(false);
+
+
     return (
         <div className="container-fluid p-3">
+            <Prompt
+                when={blocking}
+                message={location =>
+                    `message.unsaved-editor`
+                }
+            />
             <section className="section" aria-label={`Edit metadata ${type} - ${metadata.serviceProviderName || metadata.name}`} tabIndex="0">
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
@@ -67,7 +92,7 @@ export function MetadataEditor () {
                         <div className="col-6 col-lg-3 order-2 text-right">
                             <button className="btn btn-info"
                                 type="button"
-                                onClick={() => save()}
+                                onClick={() => save(metadata)}
                                 disabled={invalid || saving}
                                 aria-label="Save changes to the metadata source. You will return to the dashboard">
                                     <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={ saving } />&nbsp;
@@ -80,11 +105,12 @@ export function MetadataEditor () {
                                 <Translate value="action.cancel">Cancel</Translate>
                             </button>
                         </div>
-                        <div className="col-xs-12 col-lg-9 order-lg-1 order-3">
-                            {invalid && <div className="alert alert-danger alert-compact mt-3 mt-lg-0">
-                                <FontAwesomeIcon icon={faExclamationTriangle} aria-hidden="true" />
-                                <Translate value="message.editor-invalid">All forms must be valid before changes can be saved!</Translate>
-                            </div>}
+                        <div className="col-xs-12 col-lg-9 order-lg-1 order-3 align-items-start">
+                            {errors.length > 0 &&
+                                <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                                    <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
+                                </Alert>
+                            }
                         </div>
                     </div>
                     <hr />

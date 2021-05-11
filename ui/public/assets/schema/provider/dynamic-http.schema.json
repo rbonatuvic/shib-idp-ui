@@ -433,7 +433,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "enum": [true]
+                                            "const": true
                                         }
                                     },
                                     "required": [
@@ -443,7 +443,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "enum": [false]
+                                            "const": false
                                         }
                                     }
                                 }
@@ -468,20 +468,8 @@
                                     "id": "select"
                                 },
                                 "type": "string",
-                                "oneOf": [
-                                    {
-                                        "enum": [
-                                            "SPSSODescriptor"
-                                        ],
-                                        "description": "value.spdescriptor"
-                                    },
-                                    {
-                                        "enum": [
-                                            "AttributeAuthorityDescriptor"
-                                        ],
-                                        "description": "value.attr-auth-descriptor"
-                                    }
-                                ]
+                                "enum": ["SPSSODescriptor", "AttributeAuthorityDescriptor"],
+                                "enumNames": ["value.spdescriptor", "value.attr-auth-descriptor"]
                             }
                         },
                         "removeRolelessEntityDescriptors": {

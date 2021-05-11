@@ -74,7 +74,7 @@ const ObjectArrayItem = ({type, ...props}) => {
                         <Translate value={'label.new-of-type'} params={{type}} />
                     </Accordion.Toggle>
                     {props.hasToolbar && (
-                        <div className="d-flex flex-row align-items-center">
+                        <div className="d-flex flex-row align-items-start">
                             {(props.hasMoveUp || props.hasMoveDown) && (
                                 <div className="m-0 p-0">
                                     <IconButton
@@ -141,10 +141,10 @@ const DefaultArrayItem = (props) => {
 
     return (
         <div key={props.key} className={`mt-2 `}>
-            <div className="mb-2  d-flex align-items-center">
+            <div className="mb-2  d-flex align-items-start">
                 <div className={`mr-2 flex-grow-1 ${uiSchemaOptions.classNames}`}>{props.children}</div>
                 {props.hasToolbar && (
-                    <div className="d-flex flex-row align-items-center">
+                    <div className="d-flex flex-row align-items-start">
                         {(props.hasMoveUp || props.hasMoveDown) && (
                             <div className="m-0 p-0">
                                 <IconButton
@@ -175,7 +175,7 @@ const DefaultArrayItem = (props) => {
                         )}
 
                         {props.hasRemove && (
-                            <div className="m-0 pb-1">
+                            <div className="m-0 px-1 pt-3">
                                 <IconButton
                                     className="text-danger"
                                     variant='text'

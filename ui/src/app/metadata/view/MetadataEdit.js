@@ -5,7 +5,7 @@ import { MetadataEditor } from '../editor/MetadataEditor';
 export function MetadataEdit() {
     return (
         <MetadataForm>
-        <MetadataEditor />
+            <MetadataEditor />
         </MetadataForm>
     );
 }

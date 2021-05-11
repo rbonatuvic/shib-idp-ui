@@ -1,10 +1,15 @@
 import React from 'react';
+
+import uniq from 'lodash/uniq';
+import intersection from 'lodash/intersection';
+
 import { MetadataDefinitionContext } from './MetadataSchema';
 import { MetadataObjectContext } from './MetadataSelector';
 
+
 const initialState = {
     metadata: {},
-    errors: {}
+    errors: []
 };
 
 const MetadataFormContext = React.createContext();
@@ -15,13 +20,6 @@ export const MetadataFormActions = {
     SET_FORM_ERROR: 'set form error',
     SET_FORM_DATA: 'set form data'
 };
-
-export const updateFormDataAction = (payload) => {
-    return {
-        type: MetadataFormActions.UPDATE_FORM_DATA,
-        payload
-    }
-}
 
 export const setFormDataAction = (payload) => {
     return {
@@ -45,23 +43,12 @@ function reducer(state, action) {
         case MetadataFormActions.SET_FORM_ERROR:
             return {
                 ...state,
-                errors: {
-                    ...state.errors,
-                    [action.payload.page]: action.payload.errors
-                }
+                errors: action.payload.errors
             };
         case MetadataFormActions.SET_FORM_DATA:
             return {
                 ...state,
                 metadata: action.payload
-            };
-        case MetadataFormActions.UPDATE_FORM_DATA:
-            return {
-                ...state,
-                metadata: action.payload.metadata,
-                errors: {
-                    ...action.payload.errors
-                }
             };
         default:
             return state;
@@ -89,15 +76,28 @@ function useFormErrors () {
     const { state } = React.useContext(MetadataFormContext);
     const { errors } = state;
 
-    console.log(errors)
-
     return errors;
 }
 
-function usePagesWithErrors() {
-    const errors = useFormErrors();
+function usePagesWithErrors(definition) {
+    const errorList = useFormErrors();
+    const erroredProperties = uniq(errorList.map((e) => {
+        let name = e.property.split('.').filter((p) => !!p && p !== "")[0];
+        if (name.indexOf('[')) {
+            name = name.split('[')[0];
+        }
+        return name;
+    }));
 
-    return Object.keys(errors).filter(p => errors[p] && Array.isArray(errors[p]) && errors[p].length > 0);
+    const pages = definition.steps.reduce((list, step) => {
+        const intersectionFields = intersection(step.fields, erroredProperties);
+        if (intersectionFields.length > 0) {
+            list = [...list, step.id];
+        }
+        return list;
+    }, []);
+
+    return pages;
 }
 
 function useFormattedMetadata() {

@@ -19,6 +19,9 @@ import { UserProvider } from './core/user/UserContext';
 import { Metadata } from './metadata/Metadata';
 import { Notifications } from './notifications/hoc/Notifications';
 import { NotificationList } from './notifications/component/NotificationList';
+import { UserConfirmation, ConfirmWindow } from './core/components/UserConfirmation';
+
+
 
 function App() {
 
@@ -38,22 +41,27 @@ function App() {
                 <Notifications>
                     <UserProvider>
                         <I18nProvider>
-                            <Router>
-                                <QueryParamProvider ReactRouterRoute={Route}>
-                                    <Header />
-                                    <main className="pad-content">
-                                        <Switch>
-                                            <Route exact path="/">
-                                                <Redirect to="/dashboard" />
-                                            </Route>
-                                            <Route path="/dashboard" component={Dashboard} />
-                                            <Route path="/metadata/:type/:id" component={Metadata} />
-                                        </Switch>
-                                        <NotificationList />
-                                    </main>
-                                    <Footer />
-                                </QueryParamProvider>
-                            </Router>
+                            <UserConfirmation>
+                                {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
+                                    <Router getUserConfirmation={getConfirmation}>
+                                        <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} /> 
+                                        <QueryParamProvider ReactRouterRoute={Route}>
+                                        <Header />
+                                        <main className="pad-content">
+                                            <Switch>
+                                                <Route exact path="/">
+                                                    <Redirect to="/dashboard" />
+                                                </Route>
+                                                <Route path="/dashboard" component={Dashboard} />
+                                                <Route path="/metadata/:type/:id" component={Metadata} />
+                                            </Switch>
+                                            <NotificationList />
+                                        </main>
+                                        <Footer />
+                                        </QueryParamProvider>
+                                    </Router>
+                                }
+                            </UserConfirmation>
                         </I18nProvider>
                     </UserProvider>
                 </Notifications>

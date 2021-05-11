@@ -1,27 +1,32 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 import { useMetadataEntity } from '../hooks/api';
 
 export const MetadataTypeContext = React.createContext();
 export const MetadataObjectContext = React.createContext();
 
-
+/*eslint-disable react-hooks/exhaustive-deps*/
 export function MetadataSelector ({ children }) {
 
     let { type, id } = useParams();
+    const location = useLocation();
+
+    React.useEffect(() => {
+        if (location.state?.refresh) {
+            loadMetadata(id);
+        }
+    }, [location, id])
 
     const { get, response } = useMetadataEntity(type);
 
     const [metadata, setMetadata] = React.useState([]);
 
     async function loadMetadata(id) {
-        const source = await get(`/${id}`)
+        const source = await get(`/${id}`);
         if (response.ok) {
             setMetadata(source);
         }
     }
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadMetadata(id) }, [id]);
 
     return (

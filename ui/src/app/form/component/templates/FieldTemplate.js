@@ -11,35 +11,39 @@ export function FieldTemplate ({
     children,
     displayLabel,
     rawErrors = [],
+    errors = [],
     rawHelp,
     help,
     rawDescription,
     ...props
 }) {
+
     return (
         <>{!props.hidden ?
             <Form.Group>
-                {children}
-                {rawErrors.length > 0 && (
-                    <ListGroup as="ul">
-                        {rawErrors.map((error) => {
-                            return (
-                                <ListGroup.Item as="li" key={error} className="border-0 m-0 p-0">
-                                    <small className="m-0 text-danger">
-                                        {error}
-                                    </small>
-                                </ListGroup.Item>
-                            );
-                        })}
-                    </ListGroup>
-                )}
-                {rawHelp && (
-                    <Form.Text
-                        className={rawErrors.length > 0 ? "text-danger" : "text-muted"}
-                        id={id}>
-                        <Translate value={rawHelp} />
-                    </Form.Text>
-                )}
+                <div>
+                    {children}
+                </div>
+                <div>
+                    {rawErrors.length > 0 && (
+                        <ListGroup as="ul">
+                            {rawErrors.map((error, i) => {
+                                return (
+                                    <ListGroup.Item as="li" key={i} className={`border-0 m-0 p-0 bg-transparent ${i > 0 ? 'sr-only' : ''}`}>
+                                        <small className="m-0 text-danger">
+                                            {error}
+                                        </small>
+                                    </ListGroup.Item>
+                                );
+                            })}
+                        </ListGroup>
+                    )}
+                    {rawHelp && rawErrors.length < 1 && (
+                        <Form.Text className={rawErrors.length > 0 ? "text-danger" : "text-muted"} id={id}>
+                            <Translate value={rawHelp} />
+                        </Form.Text>
+                    )}
+                </div>
             </Form.Group>
             : <></>
         }</>

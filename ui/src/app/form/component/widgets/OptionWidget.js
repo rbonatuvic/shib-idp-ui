@@ -9,11 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { useTranslator } from "../../../i18n/hooks";
 
-const ToggleButton = ({ isOpen, onClick }) => (
+const ToggleButton = ({ isOpen, onClick, disabled }) => (
     <button
         type="button"
         className="btn btn-outline-secondary toggle-button"
         onClick={onClick}
+        disabled={disabled}
         onMouseDown={e => {
             // Prevent input from losing focus.
             e.preventDefault();
@@ -76,7 +77,7 @@ const OptionWidget = ({
                     return <span className={options.indexOf(text) === index ? 'font-weight-bold' : ''}>{option}</span>;
                 }}>
                 {({ isMenuShown, toggleMenu }) => (
-                    <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} />
+                    <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly} />
                 )}
             </Typeahead>
         </Form.Group>
