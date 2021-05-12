@@ -60,3 +60,7 @@ export function useMetadataHistory(type, id, opts = {}, i) {
     // EntityDescriptor/d07d6122-0dd2-433e-baec-b76413b4c842/Versions
     // MetadataResolvers/4161d661-2be7-4110-9e91-539669a691e3/Versions
 }
+
+export function useMetadataSources(opts = {}, onMount) {
+    return useFetch(`${API_BASE_PATH}${getMetadataListPath('source')}`, opts, onMount);
+}

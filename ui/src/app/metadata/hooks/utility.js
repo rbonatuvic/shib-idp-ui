@@ -12,6 +12,7 @@ export function getStepProperty(property, model, definitions) {
     if (!property) { return null; }
     property = property.$ref ? { ...property, ...getDefinition(property.$ref, definitions) } : property;
     return {
+        ...property,
         name: property.title,
         value: model,
         type: property.type,
@@ -84,7 +85,7 @@ export const getConfigurationSections = (models, definition, schema) => {
                             label: step.label,
                             properties: getStepProperties(
                                 getSplitSchema(schema, step),
-                                definition.formatter({}),
+                                definition.display({}),
                                 schema.definitions || {}
                             )
                         });
@@ -93,7 +94,7 @@ export const getConfigurationSections = (models, definition, schema) => {
                 .map((section) => {
                     return {
                         ...section,
-                        properties: assignValueToProperties(models, section.properties, definition)
+                        properties: assignValueToProperties(models, section.properties, definition, schema)
                     };
                 })
                 .map((section) => ({
@@ -114,7 +115,7 @@ const getDifferences = (models, prop) => {
     });
 };
 
-export const assignValueToProperties = (models, properties, definition) => {
+export const assignValueToProperties = (models, properties, definition, schema) => {
     return properties.map(prop => {
         const differences = getDifferences(models, prop);
 
@@ -137,9 +138,10 @@ export const assignValueToProperties = (models, properties, definition) => {
                 return {
                     ...prop,
                     properties: assignValueToProperties(
-                        models.map(model => definition.formatter(model)[prop.id] || {}),
+                        models.map(model => definition.display(model, schema)[prop.id] || {}),
                         prop.properties,
-                        definition
+                        definition,
+                        schema
                     ),
                     differences: getDifferences(models, prop)
                 };

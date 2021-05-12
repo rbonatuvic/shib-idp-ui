@@ -15,6 +15,8 @@ export const SourceBase = {
 
     formatter: (changes, schema) => changes,
 
+    display: (changes) => changes,
+
     getValidators: (entityIdList) => {
         const validators = {
             '/': (value, property, form_current) => {

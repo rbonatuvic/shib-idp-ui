@@ -59,8 +59,8 @@ export default function ProviderList({ entities, reorder = true, first, last, on
                             <td className="align-middle">{ provider.createdBy }</td>
                             <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
                             <td className="text-right align-middle">
-                                <Badge variant={provider.serviceEnabled ? 'success' : 'danger'}>
-                                    <Translate value={provider.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                <Badge variant={provider.enabled ? 'success' : 'danger'}>
+                                    <Translate value={provider.enabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                 </Badge>
                             </td>
                         </tr>

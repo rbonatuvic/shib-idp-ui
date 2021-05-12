@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTh, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslation } from '../../i18n/hooks';
@@ -26,13 +26,22 @@ export function Header () {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto align-items-center" navbar>
-                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                    </NavDropdown>
+                    <Dropdown className="" id="basic-nav-dropdown">
+                        <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
+                            <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
+                            <Translate value={'action.add-new'} />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Link to="/metadata/source/new" className="dropdown-item text-primary">
+                                <FontAwesomeIcon icon={faCube} className="mr-2" />
+                                Metadata Source
+                            </Link>
+                            <Link to="/metadata/provider/new" className="dropdown-item text-primary">
+                                <FontAwesomeIcon icon={faCubes} className="mr-2" />
+                                Metadata Provider
+                            </Link>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <Link to="/dashboard" className="nav-link" aria-label="Metadata Dashboard">
                         <i className="fa fa-th fa-fw" aria-hidden="true"></i>
                         <FontAwesomeIcon icon={faTh} className="mr-2" />

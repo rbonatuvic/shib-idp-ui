@@ -3,7 +3,7 @@ import React from 'react';
 import uniq from 'lodash/uniq';
 import intersection from 'lodash/intersection';
 
-import { MetadataDefinitionContext } from './MetadataSchema';
+import { MetadataDefinitionContext, MetadataSchemaContext } from './MetadataSchema';
 import { MetadataObjectContext } from './MetadataSelector';
 
 
@@ -102,7 +102,8 @@ function usePagesWithErrors(definition) {
 
 function useFormattedMetadata() {
     const definition = React.useContext(MetadataDefinitionContext);
-    return definition.formatter(React.useContext(MetadataObjectContext))
+    const schema = React.useContext(MetadataSchemaContext);
+    return definition.formatter(React.useContext(MetadataObjectContext), schema);
 }
 
 export {

@@ -20,6 +20,7 @@ import { Metadata } from './metadata/Metadata';
 import { Notifications } from './notifications/hoc/Notifications';
 import { NotificationList } from './notifications/component/NotificationList';
 import { UserConfirmation, ConfirmWindow } from './core/components/UserConfirmation';
+import { NewSource } from './metadata/NewSource';
 
 
 
@@ -53,6 +54,7 @@ function App() {
                                                     <Redirect to="/dashboard" />
                                                 </Route>
                                                 <Route path="/dashboard" component={Dashboard} />
+                                                <Route path="/metadata/source/new" component={NewSource} />
                                                 <Route path="/metadata/:type/:id" component={Metadata} />
                                             </Switch>
                                             <NotificationList />

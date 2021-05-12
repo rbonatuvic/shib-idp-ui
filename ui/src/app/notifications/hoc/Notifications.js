@@ -22,7 +22,7 @@ export const NotificationTypes = {
     INFO: 'info'
 };
 
-export const createNotificationAction = (body, type = NotificationTypes.SUCCESS, timeout=20000) => {
+export const createNotificationAction = (body, type = NotificationTypes.SUCCESS, timeout=5000) => {
     return {
         type: NotificationActions.ADD_NOTIFICATION,
         payload: {
@@ -74,9 +74,15 @@ function Notifications ({ children }) {
     );
 }
 
+function useNotificationDispatcher() {
+    const {dispatch} = React.useContext(NotificationContext);
+    return dispatch;
+}
+
 export {
     Notifications,
     NotificationContext,
+    useNotificationDispatcher,
     Provider as NotificationProvider,
     Consumer as NotificationConsumer
 };

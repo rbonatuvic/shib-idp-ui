@@ -16,44 +16,46 @@ export function Metadata () {
     let { path } = useRouteMatch();
 
     return (
-        <MetadataSelector>
-            {(entity) =>
-            <MetadataXmlLoader>
-                <MetadataSchema entity={ entity }>
-                    <Switch>
-                        <Route path={`${path}/configuration/options`} render={ () =>
-                            <MetadataDetail>
-                                <MetadataOptions></MetadataOptions>
-                            </MetadataDetail>
-                        } />
-                        <Route path={`${path}/configuration/xml`} render={() =>
-                            <MetadataDetail>
-                                <MetadataXml></MetadataXml>
-                            </MetadataDetail>
-                        } />
-                        <Route path={`${path}/configuration/history`} render={ () =>
-                            <MetadataDetail>
-                                <MetadataHistory></MetadataHistory>
-                            </MetadataDetail>
-                        } />
-                        <Route path={`${path}/configuration/compare`} render={ () =>
-                            <MetadataDetail>
-                                <MetadataComparison></MetadataComparison>
-                            </MetadataDetail>
-                        } />
-                        <Route path={`${path}/configuration/version/:versionId/options`} render={ () =>
-                            <MetadataDetail>
-                                <MetadataVersion></MetadataVersion>
-                            </MetadataDetail>
-                        } />
-                        <Route path={`${path}/edit/:section`} render={ () =>
-                            <MetadataEdit />
-                        } />
-                        <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
-                    </Switch>
-                </MetadataSchema>
-            </MetadataXmlLoader>
-            }
-        </MetadataSelector>
+        <>
+            <MetadataSelector>
+                {(entity) =>
+                <MetadataXmlLoader>
+                    <MetadataSchema type={entity['@type'] ? entity['@type'] : 'source'}>
+                        <Switch>
+                            <Route path={`${path}/configuration/options`} render={ () =>
+                                <MetadataDetail>
+                                    <MetadataOptions></MetadataOptions>
+                                </MetadataDetail>
+                            } />
+                            <Route path={`${path}/configuration/xml`} render={() =>
+                                <MetadataDetail>
+                                    <MetadataXml></MetadataXml>
+                                </MetadataDetail>
+                            } />
+                            <Route path={`${path}/configuration/history`} render={ () =>
+                                <MetadataDetail>
+                                    <MetadataHistory></MetadataHistory>
+                                </MetadataDetail>
+                            } />
+                            <Route path={`${path}/configuration/compare`} render={ () =>
+                                <MetadataDetail>
+                                    <MetadataComparison></MetadataComparison>
+                                </MetadataDetail>
+                            } />
+                            <Route path={`${path}/configuration/version/:versionId/options`} render={ () =>
+                                <MetadataDetail>
+                                    <MetadataVersion></MetadataVersion>
+                                </MetadataDetail>
+                            } />
+                            <Route path={`${path}/edit/:section`} render={ () =>
+                                <MetadataEdit />
+                            } />
+                            <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
+                        </Switch>
+                    </MetadataSchema>
+                </MetadataXmlLoader>
+                }
+            </MetadataSelector>
+        </>
     );
 }

@@ -106,6 +106,18 @@ select.form-control:disabled {
     border: 1px solid #ced4da;
 }
 
+mark {
+    background: transparent;
+    font-weight: bold;
+    padding: 0;
+}
+
+.dropdown-item.active {
+    &, & > mark {
+        color: white;
+    }
+}
+
 @media only screen and (max-width: 1200px) {
     .form-section:not(:first-child) {
         border-left: 0px;

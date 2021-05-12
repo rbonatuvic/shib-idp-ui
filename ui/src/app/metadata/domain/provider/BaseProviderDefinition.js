@@ -3,28 +3,53 @@ import { DurationOptions } from '../data';
 
 export const BaseProviderDefinition = {
     schemaPreprocessor: metadataFilterProcessor,
-    parser: (changes) => (changes.metadataFilters ? ({
-        ...changes,
-        metadataFilters: [
-            ...changes.metadataFilters.filter((filter, filterName) => (
-                Object.keys(filter).length > 0
-            ))
-        ]
-    }) : changes),
-    formatter: (changes) => (changes.metadataFilters ? ({
-        ...changes,
-        metadataFilters: [
-            {},
-            {},
-            {}
-        ]
-    }) : changes),
+    parser: (changes) => {
+        return (changes.metadataFilters ? ({
+            ...changes,
+            metadataFilters: [
+                ...changes.metadataFilters.filter((filter, filterName) => (
+                    Object.keys(filter).filter(k => k !== '@type').length > 0
+                ))
+            ]
+        }) : changes)
+    },
+    formatter: (changes, schema) => {
+
+        const filterSchema = schema?.properties?.metadataFilters;
+        if (!filterSchema) {
+            return changes;
+        }
+
+        const formatted = (changes.metadataFilters ? ({
+            ...changes,
+            metadataFilters: Object.values(filterSchema.items).map(item => {
+                const filter = changes.metadataFilters.find(f => f['@type'] === item.$id);
+                if (filter) {
+                    return filter;
+                }
+                return {};
+            })
+        }) : changes);
+        return formatted;
+    },
+    display: (changes) => {
+
+        if (!changes.metadataFilters) {
+            return changes;
+        }
+        return {
+            ...changes,
+            metadataFilters: {
+                ...(changes.metadataFilters || []).reduce((collection, filter) => ({
+                    ...collection,
+                    [filter['@type']]: filter
+                }), {})
+            }
+        };
+    },
     uiSchema: {
         name: {
             'ui:help': 'message.must-be-unique'
-        },
-        '@type': {
-            'ui:disabled': true
         }
     }
 }
@@ -129,6 +154,9 @@ export const MetadataFilterPluginsSchema = {
     items: {
         'ui:options': {
             classNames: 'bg-light border rounded px-4 pt-4 pb-1'
+        },
+        '@type': {
+            'ui:widget': 'hidden'
         },
         retainedRoles: {
             'ui:options': {
