@@ -5,9 +5,9 @@ import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Translate from '../../i18n/components/translate';
 
-export function InfoIcon ({ value, ...props }) {
+export function InfoIcon ({ value, placement='left', ...props }) {
     return(
-        <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={(
+        <OverlayTrigger trigger={['hover', 'focus']} placement={placement} overlay={(
             <Popover variant="info">
                 <Popover.Content><Translate value={value} /></Popover.Content>
             </Popover>

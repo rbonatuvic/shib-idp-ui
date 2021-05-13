@@ -6,9 +6,10 @@ import { faArrowCircleRight, faAsterisk, faCheck, faTimes } from '@fortawesome/f
 
 import { Translate } from '../../i18n/components/translate';
 import { EntityTypeahead } from './EntityTypeahead';
+import kebabCase from 'lodash/kebabCase';
 
 const sections = [
-    { i18nKey: 'organizationInfo', property: 'organization' },
+    { i18nKey: 'organizationInformation', property: 'organization' },
     { i18nKey: 'contacts', property: 'contacts' },
     { i18nKey: 'uiMduiInfo', property: 'mdui' },
     { i18nKey: 'spSsoDescriptorInfo', property: 'serviceProviderSsoDescriptor' },
@@ -19,9 +20,9 @@ const sections = [
     { i18nKey: 'attributeRelease', property: 'attributeRelease' }
 ];
 
-export function CopySource({ onNext }) {
+export function CopySource({ copy, onNext }) {
 
-    const [selected, setSelected] = React.useState([]);
+    const [selected, setSelected] = React.useState(copy.properties);
     const onSelect = (item, checked) => {
         let s = [...selected];
         if (checked) {
@@ -42,10 +43,7 @@ export function CopySource({ onNext }) {
         mode: 'onChange',
         reValidateMode: 'onBlur',
         defaultValues: {
-            target: null,
-            serviceProviderName: null,
-            entityId: null,
-            properties: selected
+            ...copy
         },
         resolver: undefined,
         context: undefined,
@@ -157,7 +155,7 @@ export function CopySource({ onNext }) {
                         <tbody>
                             {sections.map((item, i) =>
                                 <tr key={i}>
-                                    <td><label className="mb-0" htmlFor={`property-checkbox-${i}`}><Translate value={item.i18nKey} /></label></td>
+                                    <td><label className="mb-0" htmlFor={`property-checkbox-${i}`}><Translate value={`label.${kebabCase(item.i18nKey)}`} /></label></td>
                                     <td>
                                         <Check
                                             custom

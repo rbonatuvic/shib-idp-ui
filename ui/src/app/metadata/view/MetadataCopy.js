@@ -7,32 +7,48 @@ import { MetadataSchema } from '../hoc/MetadataSchema';
 
 import {CopySource} from '../copy/CopySource';
 import { SaveCopy } from '../copy/SaveCopy';
+import { useMetadataEntity } from '../hooks/api';
+import { useHistory } from 'react-router';
 
 export function MetadataCopy () {
 
+    const { post, response, loading } = useMetadataEntity('source');
+    const history = useHistory();
+
+    const [copy, setCopy] = React.useState({
+        target: null,
+        serviceProviderName: null,
+        entityId: null,
+        properties: []
+    });
+    const [confirm, setConfirm] = React.useState(false);
+
     const next = (data) => {
         setCopy(data);
+        setConfirm(true)
     };
 
-    const [copy, setCopy] = React.useState();
+    const back = (data) => {
+        setConfirm(false);
+    };
+
+    async function save (data) {
+        await post('', data);
+        if (response.ok) {
+            history.push('/');
+        }
+    }
 
     return (
         <React.Fragment>
-            {!copy && 
-            <CopySource onNext={next} />
+            {!confirm && 
+            <CopySource copy={copy} onNext={next} />
             }
-            {copy &&
+            {confirm && copy &&
                 <MetadataSchema type="source">
-                    <SaveCopy copy={copy} />
+                    <SaveCopy copy={copy} onBack={back} onSave={save} saving={loading} />
                 </MetadataSchema>
             }
-            <button type="button"
-                className="btn btn-primary sr-only"
-                disabled={!copy}
-                onClick={() => next()}>
-                <Translate value="action.next">Next</Translate>
-                <FontAwesomeIcon icon={faArrowCircleRight} size="lg" />
-            </button>
         </React.Fragment>
     );
 }
