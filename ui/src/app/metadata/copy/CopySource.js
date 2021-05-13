@@ -188,6 +188,17 @@ export function CopySource({ copy, onNext }) {
                         </tbody>
                     </table>
                 </div>
+                <button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
+                    onClick={() => onNext(getValues())}
+                    disabled={!isValid}
+                    aria-label="Next: Step 2, Organization information"
+                    type="button">
+                    <span className="label">
+                        <Translate value="label.finish-summary-validation">
+                            Finished!
+                                    </Translate>
+                    </span>
+                </button>
             </div>
         </>
     );

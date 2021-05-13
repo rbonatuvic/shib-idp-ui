@@ -1,11 +1,7 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
-
-import { Translate } from '../../i18n/components/translate';
 import { MetadataSchema } from '../hoc/MetadataSchema';
 
-import {CopySource} from '../copy/CopySource';
+import { CopySource } from '../copy/CopySource';
 import { SaveCopy } from '../copy/SaveCopy';
 import { useMetadataEntity } from '../hooks/api';
 import { useHistory } from 'react-router';

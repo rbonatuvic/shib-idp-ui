@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
 
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faAsterisk, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faAsterisk, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { readFileContents } from '../../core/utility/read_file_contents';
@@ -18,26 +18,42 @@ export function MetadataUpload() {
     const history = useHistory();
     const dispatch = useNotificationDispatcher();
 
-    async function save({serviceProviderName, file, url}) {
-        const f = file.length > 0 ? file[0] : null;
-        if (f) {
-            const body = await readFileContents(f);
-            const response = await fetch(`${API_BASE_PATH}${getMetadataPath('source')}?spName=${serviceProviderName}`, {
-                method: 'POST',
-                cache: 'no-cache',
-                headers: {
-                    'Content-Type': 'application/xml',
-                    'X-XSRF-TOKEN': get_cookie('XSRF-TOKEN')
-                },
-                body
-            });
+    const [saving, setSaving] = React.useState(false);
 
-            if (response.ok) {
-                history.push('/dashboard');
-            } else {
-                const message = await response.json();
-                dispatch(createNotificationAction(`${message.errorCode}: Unable to upload file ... ${message.errorMessage}`, 'danger', 5000));
-            }
+    async function save({serviceProviderName, file, url}) {
+
+        setSaving(true);
+
+        const f = file?.length > 0 ? file[0] : null;
+
+        let body = '';
+        let type = '';
+
+        if (f) {
+            body = await readFileContents(f);
+            type = 'application/xml';
+        } else if (url) {
+            body = `metadataUrl=${url}`;
+            type = 'application/x-www-form-urlencoded';
+        }
+
+        const response = await fetch(`${API_BASE_PATH}${getMetadataPath('source')}?spName=${serviceProviderName}`, {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': type,
+                'X-XSRF-TOKEN': get_cookie('XSRF-TOKEN')
+            },
+            body
+        });
+
+        if (response.ok) {
+            setSaving(false);
+            history.push('/dashboard');
+        } else {
+            const message = await response.json();
+            dispatch(createNotificationAction(`${message.errorCode}: Unable to create file ... ${message.errorMessage}`, 'danger', 5000));
+            setSaving(false);
         }
     }
 
@@ -54,12 +70,10 @@ export function MetadataUpload() {
 
     const { errors, isValid } = formState;
 
-    // React.useEffect(() => console.log(formState), [formState]);
+    React.useEffect(() => console.log(isValid), [isValid]);
 
     const watchFile = watch('file');
     const watchUrl = watch('url');
-
-    // console.log(watchFile, errors);
 
     return (
         <div className="row">
@@ -82,7 +96,7 @@ export function MetadataUpload() {
                                     </Translate>
                                 </span>
                                 <span className="direction d-flex flex-column align-items-center">
-                                    <FontAwesomeIcon icon={faSave} className="d-block" size="2x" />
+                                    <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={saving} size="2x" />
                                     <Translate value="action.save">Save</Translate>
                                 </span>
                             </button>
@@ -124,12 +138,19 @@ export function MetadataUpload() {
                         </div>
                         <div className="form-group">
                             <label><Translate value="label.service-resolver-metadata-url" for="url">Service Resolver Metadata URL</Translate></label>
-                            <input id="url" disabled={ watchFile && watchFile.length > 0 } type="text" className="form-control" placeholder="" {...register('url')} />
+                            <input id="url" disabled={ watchFile && watchFile.length > 0 } type="text" className="form-control"{...register('url')} />
                         </div>
                         <div className="alert alert-danger" role="alert">
                             <span><Translate value="message.file-upload-alert">Note: You can only import a file with a single entityID (EntityDescriptor element) in it. Anything more in that file will result in an error.</Translate></span>
                         </div>
                     </fieldset>
+                    <button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
+                        disabled={!isValid}
+                        aria-label="Save metadata resolver">
+                        <span className="label">
+                            <Translate value="action.save">Save</Translate>
+                        </span>
+                    </button>
                 </form>
             </div>
         </div>
