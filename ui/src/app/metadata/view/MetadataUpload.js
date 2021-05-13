@@ -70,8 +70,6 @@ export function MetadataUpload() {
 
     const { errors, isValid } = formState;
 
-    React.useEffect(() => console.log(isValid), [isValid]);
-
     const watchFile = watch('file');
     const watchUrl = watch('url');
 

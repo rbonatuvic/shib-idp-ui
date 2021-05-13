@@ -25,7 +25,9 @@ function I18nProvider ({ children }) {
 
     const [messages, setMessages] = React.useState({});
     return (
-        <Provider value={messages}>{children}</Provider>
+        <>
+            {Object.keys(messages).length > 1 && <Provider value={messages}>{children}</Provider>}
+        </>
     );
 }
 

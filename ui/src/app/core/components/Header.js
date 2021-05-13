@@ -32,11 +32,11 @@ export function Header () {
                             <Translate value={'action.add-new'} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Link to="/metadata/source/new" className="dropdown-item text-primary">
+                            <Link to="/metadata/source/new" className="dropdown-item text-primary py-2">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 Metadata Source
                             </Link>
-                            <Link to="/metadata/provider/new" className="dropdown-item text-primary">
+                            <Link to="/metadata/provider/new" className="dropdown-item text-primary py-2">
                                 <FontAwesomeIcon icon={faCubes} className="mr-2" />
                                 Metadata Provider
                             </Link>
@@ -56,37 +56,5 @@ export function Header () {
         </Navbar>
     );
 }
-
-/*
-<li className="dropdown d-flex align-items-center"
-    ngbDropdown
-    placement="bottom-right"
-    #dropdown="ngbDropdown">
-    <button
-        className="btn btn-outline-primary btn-sm"
-        id="addNewDropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-        ngbDropdownToggle>
-        
-        
-    </button>
-    <div ngbDropdownMenu aria-labelledby="addNewDropdown">
-        <ng-container *ngFor="let action of nav$ | async">
-            <a href=""
-                className="nav-link"
-                (click)="action.action($event); dropdown.close()"
-                [attr.aria-label]="action.label | translate"
-                role="button">
-                <ng-container *ngIf="action.icon">
-                    <i className="fa fa-fw" [ngClass]="action.icon"></i>
-                    &nbsp;
-                </ng-container>
-                {{ action.content | translate }}
-            </a>
-        </ng-container>
-    </div>
-</li>
-*/
 
 export default Header;

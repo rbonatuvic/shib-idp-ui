@@ -10,7 +10,9 @@ import { faCopy, faLink, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 
 export function NewSource() {
 
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
+
+    const [showNav, setShowNav] = React.useState(true);
 
     return (
         <div className="container-fluid p-3">
@@ -23,64 +25,66 @@ export function NewSource() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <h3><Translate value="label.how-are-you-adding-the-metadata-information">How are you adding the metadata information?</Translate></h3>
-                    <br />
-                    <div className="row">
-                        <div className="col col-xl-6 col-lg-9 col-xs-12">
-                            <div className="d-flex justify-content-between">
-                                <div className="resolver-nav-option">
-                                    <NavLink type="button"
-                                        to="upload"
-                                        className="btn btn-lg btn-block btn-secondary d-flex flex-column justify-content-center align-items-center"
-                                        aria-label="Upload local metadata file or use a metadata URL"
-                                        role="button"
-                                        activeClassName='btn-success'>
-                                        <Translate value="label.upload-url">Upload/URL</Translate>
-                                        <FontAwesomeIcon icon={faLink} size="2x" />
-                                    </NavLink>
+                    {showNav && <>
+                        <h3><Translate value="label.how-are-you-adding-the-metadata-information">How are you adding the metadata information?</Translate></h3>
+                        <br />
+                        <div className="row">
+                            <div className="col col-xl-6 col-lg-9 col-xs-12">
+                                <div className="d-flex justify-content-between">
+                                    <div className="resolver-nav-option">
+                                        <NavLink type="button"
+                                            to="upload"
+                                            className="btn btn-lg btn-block btn-secondary d-flex flex-column justify-content-center align-items-center"
+                                            aria-label="Upload local metadata file or use a metadata URL"
+                                            role="button"
+                                            activeClassName='btn-success'>
+                                            <Translate value="label.upload-url">Upload/URL</Translate>
+                                            <FontAwesomeIcon icon={faLink} size="2x" />
+                                        </NavLink>
+                                    </div>
+                                    <div className="">
+                                        <span className="subheading-1">&nbsp;<Translate value="label.or">or</Translate>&nbsp;</span>
+                                    </div>
+                                    <div className="resolver-nav-option">
+                                        <NavLink type="button"
+                                            className="btn btn-lg btn-block btn-secondary d-flex flex-column justify-content-center align-items-center"
+                                            aria-label="Create metadata source using the wizard"
+                                            role="button"
+                                            to="blank"
+                                            activeClassName='btn-info'>
+                                            <Translate value="action.create">Create</Translate>
+                                            <FontAwesomeIcon icon={faPlusSquare} size="2x" />
+                                        </NavLink>
+                                    </div>
+                                    <div className="">
+                                        <span className="subheading-1">&nbsp;<Translate value="label.or">or</Translate>&nbsp;</span>
+                                    </div>
+                                    <div className="resolver-nav-option">
+                                        <NavLink type="button"
+                                            className="btn btn-lg btn-block btn-secondary d-flex flex-column justify-content-center align-items-center"
+                                            aria-label="Copy a metadata source"
+                                            role="button"
+                                            to="copy"
+                                            activeClassName='btn-warning'>
+                                            <Translate value="action.copy">Copy</Translate>
+                                            <FontAwesomeIcon icon={faCopy} size="2x"/>
+                                        </NavLink>
+                                    </div>
                                 </div>
-                                <div className="">
-                                    <span className="subheading-1">&nbsp;<Translate value="label.or">or</Translate>&nbsp;</span>
-                                </div>
-                                <div className="resolver-nav-option">
-                                    <NavLink type="button"
-                                        className="btn btn-lg btn-block btn-secondary d-flex flex-column justify-content-center align-items-center"
-                                        aria-label="Create metadata source using the wizard"
-                                        role="button"
-                                        to="blank"
-                                        activeClassName='btn-info'>
-                                        <Translate value="action.create">Create</Translate>
-                                        <FontAwesomeIcon icon={faPlusSquare} size="2x" />
-                                    </NavLink>
-                                </div>
-                                <div className="">
-                                    <span className="subheading-1">&nbsp;<Translate value="label.or">or</Translate>&nbsp;</span>
-                                </div>
-                                <div className="resolver-nav-option">
-                                    <NavLink type="button"
-                                        className="btn btn-lg btn-block btn-secondary d-flex flex-column justify-content-center align-items-center"
-                                        aria-label="Copy a metadata source"
-                                        role="button"
-                                        to="copy"
-                                        activeClassName='btn-warning'>
-                                        <Translate value="action.copy">Copy</Translate>
-                                        <FontAwesomeIcon icon={faCopy} size="2x"/>
-                                    </NavLink>
-                                </div>
+                                <hr />
                             </div>
-                            <hr />
                         </div>
-                    </div>
-                    <MetadataSchema type={'source'}>
+                    </>}
+                    <MetadataSchema type={'source'} wizard={true}>
                         <Switch>
                             <Route path={`${path}/blank`} render={() =>
-                                <MetadataWizard></MetadataWizard>
+                                <MetadataWizard type="source" onShowNav={(s) => { setShowNav(s) }} />
                             } />
                             <Route path={`${path}/upload`} render={() =>
-                                <MetadataUpload></MetadataUpload>
+                                <MetadataUpload />
                             } />
                             <Route path={`${path}/copy`} render={() =>
-                                <MetadataCopy></MetadataCopy>
+                                <MetadataCopy onShowNav={ (s) => { setShowNav(s) } } />
                             } />
                             <Redirect exact path={`${path}`} to={`${path}/blank`} />
                         </Switch>

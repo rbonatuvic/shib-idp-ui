@@ -29,10 +29,17 @@ const TextWidget = ({
     const _onFocus = ({target: { value }} ) => onFocus(id, value);
     const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
 
+    const [touched, setTouched] = React.useState(false);
+
+    const onCustomBlur = (evt) => {
+        setTouched(true);
+        _onBlur(evt);
+    };
+
     // const classNames = [rawErrors.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (
         <Form.Group className="mb-0">
-            <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
+            <Form.Label className={`${rawErrors.length > 0 && touched ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ?
@@ -47,12 +54,12 @@ const TextWidget = ({
                 required={required}
                 disabled={disabled}
                 readOnly={readonly}
-                className={rawErrors.length > 0 ? "is-invalid" : ""}
+                className={rawErrors.length > 0 && touched ? "is-invalid" : ""}
                 list={schema.examples ? `examples_${id}` : undefined}
                 type={inputType}
                 value={value || value === 0 ? value : ""}
                 onChange={_onChange}
-                onBlur={_onBlur}
+                onBlur={onCustomBlur}
                 onFocus={_onFocus}
             />
             {schema.examples ? (

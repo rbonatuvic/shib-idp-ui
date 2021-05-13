@@ -21,6 +21,7 @@ import { Notifications } from './notifications/hoc/Notifications';
 import { NotificationList } from './notifications/component/NotificationList';
 import { UserConfirmation, ConfirmWindow } from './core/components/UserConfirmation';
 import { NewSource } from './metadata/NewSource';
+import { NewProvider } from './metadata/NewProvider';
 
 
 
@@ -55,6 +56,7 @@ function App() {
                                                 </Route>
                                                 <Route path="/dashboard" component={Dashboard} />
                                                 <Route path="/metadata/source/new" component={NewSource} />
+                                                <Route path="/metadata/provider/new" component={NewProvider} />
                                                 <Route path="/metadata/:type/:id" component={Metadata} />
                                             </Switch>
                                             <NotificationList />
@@ -71,11 +73,4 @@ function App() {
         </div>
     );
 }
-
-/*
-<main >
-                    <page-title className="sr-only sr-only-focusable"></page-title>
-                </main>
-*/
-
 export default App;

@@ -1,13 +1,13 @@
 import React from 'react';
-import { getDefinition } from '../domain/index';
+import { getDefinition, getWizard } from '../domain/index';
 import useFetch from 'use-http';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
 
-export function MetadataSchema({ type, children }) {
+export function MetadataSchema({ type, children, wizard = false }) {
 
-    const definition = React.useMemo(() => getDefinition(type), [type]);
+    const definition = React.useMemo(() => wizard ? getWizard(type) : getDefinition(type), [type, wizard]);
 
     const { get, response } = useFetch(``, {}, []);
 
@@ -32,6 +32,14 @@ export function MetadataSchema({ type, children }) {
             }
         </MetadataDefinitionContext.Provider>
     );
+}
+
+export function useMetadataSchemaContext () {
+    return React.useContext(MetadataSchemaContext);
+}
+
+export function useMetadataDefinitionContext() {
+    return React.useContext(MetadataDefinitionContext);
 }
 
 //getConfigurationSections

@@ -207,9 +207,6 @@ export const getSplitSchema = (schema, step) => {
     if (required && required.length) {
         s.required = required;
     }
-    if (step.fieldsets) {
-        s.fieldsets = step.fieldsets;
-    }
 
     return s;
 };

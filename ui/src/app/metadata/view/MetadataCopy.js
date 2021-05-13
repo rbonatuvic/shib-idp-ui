@@ -6,7 +6,7 @@ import { SaveCopy } from '../copy/SaveCopy';
 import { useMetadataEntity } from '../hooks/api';
 import { useHistory } from 'react-router';
 
-export function MetadataCopy () {
+export function MetadataCopy ({ onShowNav }) {
 
     const { post, response, loading } = useMetadataEntity('source');
     const history = useHistory();
@@ -21,11 +21,13 @@ export function MetadataCopy () {
 
     const next = (data) => {
         setCopy(data);
-        setConfirm(true)
+        setConfirm(true);
+        onShowNav(false);
     };
 
     const back = (data) => {
         setConfirm(false);
+        onShowNav(true);
     };
 
     async function save (data) {

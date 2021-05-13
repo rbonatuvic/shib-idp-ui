@@ -56,7 +56,7 @@ export function CopySource({ copy, onNext }) {
 
     React.useEffect(() => {
         setValue('properties', selected);
-    }, [selected]);
+    }, [selected, setValue]);
 
     return (
         <>

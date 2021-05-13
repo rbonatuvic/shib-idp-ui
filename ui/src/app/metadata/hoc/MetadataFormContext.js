@@ -106,10 +106,39 @@ function useFormattedMetadata() {
     return definition.formatter(React.useContext(MetadataObjectContext), schema);
 }
 
+function useMetadataFormContext () {
+    return React.useContext(MetadataFormContext);
+}
+
+function useMetadataFormDispatcher () {
+    const { dispatch } = useMetadataFormContext();
+    return dispatch;
+}
+
+function useMetadataFormState () {
+    const { state } = useMetadataFormContext();
+    return state;
+}
+
+function useMetadataFormData() {
+    const { metadata } = useMetadataFormState();
+    return metadata;
+}
+
+function useMetadataFormErrors() {
+    const { errors } = useMetadataFormState();
+    return errors;
+}
+
 export {
     usePagesWithErrors,
     useFormErrors,
     useFormattedMetadata,
+    useMetadataFormContext,
+    useMetadataFormDispatcher,
+    useMetadataFormState,
+    useMetadataFormData,
+    useMetadataFormErrors,
     MetadataForm,
     MetadataFormContext,
     Provider as MetadataFormProvider,

@@ -12,7 +12,7 @@ function ErrorListTemplate () {
     return (<></>);
 }
 
-export function MetadataWizardForm ({ metadata, definition, schema, current, onChange }) {
+export function MetadataWizardForm ({ metadata, definition, schema, current, onChange, onBlur = false }) {
 
     const {uiSchema} = useUiSchema(definition, schema, current);
 
@@ -32,6 +32,7 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
                     noHtml5Validate={true}
                     onChange={(form) => onChange(form)}
                     onSubmit={() => onSubmit()}
+                    onBlur={() => onBlur(data)}
                     schema={schema}
                     uiSchema={uiSchema}
                     FieldTemplate={templates.FieldTemplate}
@@ -45,7 +46,6 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
                     <></>
                 </Form>
             </div>
-            
         </>
     );
 }

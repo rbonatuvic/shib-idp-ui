@@ -36,7 +36,7 @@ export function SaveCopy ({ copy, saving, onSave, onBack }) {
     const model = useCopiedModel(copy);
     const configuration = useCopiedConfiguration(model, schema, definition);
 
-    const { register, handleSubmit, getValues } = useForm({
+    const { register, handleSubmit } = useForm({
         mode: 'onChange',
         reValidateMode: 'onBlur',
         defaultValues: {

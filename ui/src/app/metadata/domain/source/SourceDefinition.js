@@ -1,3 +1,4 @@
+import { defaults } from 'lodash';
 import defaultsDeep from 'lodash/defaultsDeep';
 // import API_BASE_PATH from '../../../App.constant';
 import {removeNull} from '../../../core/utility/remove_null';
@@ -274,7 +275,6 @@ export const SourceBase = {
     }
 }
 
-
 export const SourceEditor = {
     ...SourceBase,
     uiSchema: defaultsDeep({}, SourceBase.uiSchema),
@@ -289,23 +289,6 @@ export const SourceEditor = {
                 'serviceEnabled',
                 'organization',
                 'contacts'
-            ],
-            fieldsets: [
-                {
-                    type: 'group',
-                    fields: [
-                        'serviceProviderName',
-                        'entityId',
-                        'serviceEnabled',
-                        'organization'
-                    ]
-                },
-                {
-                    type: 'group',
-                    fields: [
-                        'contacts'
-                    ]
-                }
             ]
         },
         {
@@ -330,14 +313,6 @@ export const SourceEditor = {
             label: 'label.logout-endpoints',
             fields: [
                 'logoutEndpoints'
-            ],
-            fieldsets: [
-                {
-                    type: 'group',
-                    fields: [
-                        'logoutEndpoints'
-                    ]
-                }
             ]
         },
         {
@@ -354,14 +329,6 @@ export const SourceEditor = {
             label: 'label.assertion',
             fields: [
                 'assertionConsumerServices'
-            ],
-            fieldsets: [
-                {
-                    type: 'group',
-                    fields: [
-                        'assertionConsumerServices'
-                    ]
-                }
             ]
         },
         {
@@ -370,14 +337,6 @@ export const SourceEditor = {
             label: 'label.relying-party',
             fields: [
                 'relyingPartyOverrides'
-            ],
-            fieldsets: [
-                {
-                    type: 'group',
-                    fields: [
-                        'relyingPartyOverrides'
-                    ]
-                }
             ]
         },
         {
@@ -386,15 +345,169 @@ export const SourceEditor = {
             label: 'label.attribute-release',
             fields: [
                 'attributeRelease'
-            ],
-            fieldsets: [
-                {
-                    type: 'group',
-                    fields: [
-                        'attributeRelease'
-                    ]
-                }
             ]
         }
     ]
 };
+
+export const SourceWizard = {
+    ...SourceEditor,
+    uiSchema: defaults({
+        layout: {
+            groups: [
+                {
+                    size: 6,
+                    classNames: 'bg-light border rounded px-4 pt-4 pb-3',
+                    fields: [
+                        'serviceProviderName',
+                        'entityId'
+                    ]
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'organization',
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'contacts'
+                    ],
+                },
+                {
+                    size: 12,
+                    fields: [
+                        'mdui'
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'serviceProviderSsoDescriptor'
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'logoutEndpoints'
+                    ],
+                },
+                {
+                    size: 12,
+                    fields: [
+                        'securityInfo'
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'assertionConsumerServices'
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'relyingPartyOverrides'
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'attributeRelease'
+                    ],
+                },
+                {
+                    size: 6,
+                    fields: [
+                        'serviceEnabled'
+                    ]
+                }
+            ]
+        }
+    }, SourceBase.uiSchema),
+    steps: [
+        {
+            index: 1,
+            id: 'common',
+            label: 'label.name-and-entity-id',
+            fields: [
+                'serviceProviderName',
+                'entityId'
+            ]
+        },
+        {
+            index: 2,
+            id: 'org-info',
+            label: 'label.org-info',
+            fields: [
+                'organization',
+                'contacts'
+            ]
+        },
+        {
+            index: 3,
+            id: 'metadata-ui',
+            label: 'label.metadata-ui',
+            fields: [
+                'mdui'
+            ]
+        },
+        {
+            index: 4,
+            id: 'descriptor-info',
+            label: 'label.descriptor-info',
+            fields: [
+                'serviceProviderSsoDescriptor'
+            ]
+        },
+        {
+            index: 5,
+            id: 'logout-endpoints',
+            label: 'label.logout-endpoints',
+            fields: [
+                'logoutEndpoints'
+            ]
+        },
+        {
+            index: 6,
+            id: 'key-info',
+            label: 'label.key-info',
+            fields: [
+                'securityInfo'
+            ]
+        },
+        {
+            index: 7,
+            id: 'assertion',
+            label: 'label.assertion',
+            fields: [
+                'assertionConsumerServices'
+            ]
+        },
+        {
+            index: 8,
+            id: 'relying-party',
+            label: 'label.relying-party',
+            fields: [
+                'relyingPartyOverrides'
+            ]
+        },
+        {
+            index: 9,
+            id: 'attribute',
+            label: 'label.attribute-release',
+            fields: [
+                'attributeRelease'
+            ]
+        },
+        {
+            index: 10,
+            id: 'summary',
+            label: 'label.finished',
+            fields: [
+                'serviceEnabled'
+            ]
+        }
+    ]
+}

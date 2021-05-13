@@ -61,7 +61,7 @@ export const FileBackedHttpMetadataProviderWizard = {
             groups: [
                 {
                     size: 9,
-                    classNames: 'bg-light border rounded px-4 pt-4 pb-1 mb-4',
+                    classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
                         '@type',
