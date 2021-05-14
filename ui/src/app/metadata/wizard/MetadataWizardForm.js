@@ -12,7 +12,7 @@ function ErrorListTemplate () {
     return (<></>);
 }
 
-export function MetadataWizardForm ({ metadata, definition, schema, current, onChange, onBlur = false }) {
+export function MetadataWizardForm ({ metadata, definition, schema, current, onChange, onBlur = false, validator }) {
 
     const {uiSchema} = useUiSchema(definition, schema, current);
 
@@ -42,7 +42,8 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
                     widgets={widgets}
                     liveValidate={true}
                     transformErrors={transformErrors}
-                    ErrorList={ErrorListTemplate}>
+                    ErrorList={ErrorListTemplate}
+                    validate={validator}>
                     <></>
                 </Form>
             </div>

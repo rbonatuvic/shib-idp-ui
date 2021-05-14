@@ -11,6 +11,7 @@ export const LocalDynamicMetadataProviderWizard = {
     schema: '/assets/schema/provider/local-dynamic.schema.json',
     // schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
     steps: [
+        ...BaseProviderDefinition.steps,
         {
             id: 'common',
             label: 'label.common-attributes',
@@ -19,16 +20,6 @@ export const LocalDynamicMetadataProviderWizard = {
             fields: [
                 'xmlId',
                 'sourceDirectory'
-            ],
-            fieldsets: [
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'xmlId',
-                        'sourceDirectory'
-                    ]
-                }
             ]
         },
         {
@@ -38,15 +29,6 @@ export const LocalDynamicMetadataProviderWizard = {
             initialValues: [],
             fields: [
                 'dynamicMetadataResolverAttributes'
-            ],
-            fieldsets: [
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'dynamicMetadataResolverAttributes'
-                    ]
-                }
             ]
         },
         {
@@ -56,15 +38,6 @@ export const LocalDynamicMetadataProviderWizard = {
             initialValues: [],
             fields: [
                 'enabled'
-            ],
-            fieldsets: [
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'enabled'
-                    ]
-                }
             ]
         }
     ],
@@ -72,26 +45,31 @@ export const LocalDynamicMetadataProviderWizard = {
         layout: {
             groups: [
                 {
-                    size: 9,
+                    size: 8,
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
-                        '@type',
-                        'enabled'
+                        '@type'
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'xmlId',
                         'sourceDirectory'
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'dynamicMetadataResolverAttributes'
                     ],
+                },
+                {
+                    size: 8,
+                    fields: [
+                        'enabled'
+                    ]
                 }
             ]
         },

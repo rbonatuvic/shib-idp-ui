@@ -1,5 +1,5 @@
 import { MetadataFilterEditorTypes } from './filter';
-import { MetadataProviderEditorTypes } from './provider';
+import { MetadataProviderEditorTypes, MetadataProviderWizardTypes } from './provider';
 import { SourceEditor, SourceWizard } from "./source/SourceDefinition";
 
 export const editors = {
@@ -13,12 +13,15 @@ export const wizards = {
 export const ProviderEditorTypes = [
     ...MetadataProviderEditorTypes
 ];
+export const ProviderWizardTypes = [
+    ...MetadataProviderWizardTypes
+];
 export const FilterEditorTypes = [
     ...MetadataFilterEditorTypes
 ];
 
 export const getWizard = (type) =>
-    ProviderEditorTypes.find(def => def.type === type) ||
+    ProviderWizardTypes.find(def => def.type === type) ||
     FilterEditorTypes.find(def => def.type === type) ||
     SourceWizard;
 

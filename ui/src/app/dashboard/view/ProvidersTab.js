@@ -14,7 +14,9 @@ export function ProvidersTab () {
 
     const [providers, setProviders] = React.useState([]);
 
-    const { get, response } = useMetadataEntities('provider');
+    const { get, response } = useMetadataEntities('provider', {
+        cachePolicy: 'no-cache'
+    });
 
     async function loadProviders() {
         const providers = await get('')

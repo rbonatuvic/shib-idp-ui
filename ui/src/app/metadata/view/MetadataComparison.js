@@ -16,6 +16,7 @@ import Form from 'react-bootstrap/Form';
 import { useTranslation } from '../../i18n/hooks';
 import { MetadataFilterVersionList } from '../domain/filter/component/MetadataFilterVersionList';
 import { MetadataFilterVersionContext } from '../domain/filter/component/MetadataFilterVersionContext';
+import { useMetadataSchema } from '../hooks/schema';
 
 export function MetadataComparison () {
 
@@ -24,6 +25,8 @@ export function MetadataComparison () {
     const [versions] = useQueryParam('versions', withDefault(ArrayParam, []));
     const schema = React.useContext(MetadataSchemaContext);
     const definition = React.useContext(MetadataDefinitionContext);
+
+    const processed = useMetadataSchema(definition, schema);
 
     const [limited, setLimited] = React.useState(false);
 
@@ -39,7 +42,7 @@ export function MetadataComparison () {
         {versions &&
         <MetadataVersionLoader versions={versions}>
             {(v) =>
-                <Configuration entities={v} schema={schema} definition={definition} limited={limited}>
+                <Configuration entities={v} schema={processed} definition={definition} limited={limited}>
                         {(config) => 
                             <div className={config.dates.length > 2 ? 'container-fluid' : 'container'}>
                                 <div className="px-3 my-3 d-flex justify-content-between align-items-center" id="navigation">

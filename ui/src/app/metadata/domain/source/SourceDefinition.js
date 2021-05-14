@@ -18,59 +18,32 @@ export const SourceBase = {
 
     display: (changes) => changes,
 
-    getValidators: (entityIdList) => {
-        const validators = {
-            '/': (value, property, form_current) => {
-                let errors;
-                // iterate all customer
-                Object.keys(value).forEach((key) => {
-                    const item = value[key];
-                    const validatorKey = `/${key}`;
-                    const validator = validators.hasOwnProperty(validatorKey) ? validators[validatorKey] : null;
-                    const error = validator ? validator(item, form_current.getProperty(key), form_current) : null;
-                    if (error && error.invalidate) {
-                        errors = errors || [];
-                        errors.push(error);
-                    }
-                });
-                return errors;
-            },
-            '/entityId': (value, property, form) => {
-                const err = entityIdList.indexOf(value) > -1 ? {
-                    code: 'INVALID_ID',
-                    path: `#${property.path}`,
-                    message: 'message.id-unique',
-                    params: [value],
-                    invalidate: true
-                } : null;
-                return err;
-            },
-            '/relyingPartyOverrides': (value, property, form) => {
-                if (!value.signAssertion && value.dontSignResponse) {
-                    return {
-                        code: 'INVALID_SIGNING',
-                        path: `#${property.path}`,
-                        message: 'message.invalid-signing',
-                        params: [value],
-                        invalidate: false
-                    };
-                }
-                return null;
-            },
-            '/serviceProviderSsoDescriptor': (value, property, form) => {
-                if (value.nameIdFormats && value.nameIdFormats.length && !value.protocolSupportEnum) {
-                    return {
-                        code: 'PROTOCOL_SUPPORT_ENUM_REQUIRED',
-                        path: `#${property.path}`,
-                        message: 'message.protocol-support-required',
-                        params: [value],
-                        invalidate: true
-                    };
-                }
-                return null;
+    validator: (data = [], current = {id: null}) => {
+
+        const sources = current ? data.filter(s => s.id !== current.id) : data;
+        const entityIds = sources.map(s => s.entityId);
+
+        console.log(sources);
+
+        return (formData, errors) => {
+            console.log(formData)
+            if (entityIds.indexOf(formData.entityId) > -1) {
+                errors.entityId.addError('message.id-unique');
             }
-        };
-        return validators;
+
+            /*if (!formData?.relyingPartyOverrides?.signAssertion && formData?.relyingPartyOverrides?.dontSignResponse) {
+                errors = {
+                    ...errors,
+                    relyingPartyOverrides: {
+                        dontSignResponse: {
+                            __errors: ['message.invalid-signing'],
+                            nonBlocking: true
+                        }
+                    }
+                };
+            }*/
+            return errors;
+        }
     },
     uiSchema: {
         'ui:order': ['serviceProviderName', '*'],

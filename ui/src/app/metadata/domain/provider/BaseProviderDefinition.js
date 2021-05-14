@@ -3,6 +3,22 @@ import { DurationOptions } from '../data';
 
 export const BaseProviderDefinition = {
     schemaPreprocessor: metadataFilterProcessor,
+    validator: (data = [], current = { resourceId: null }) => {
+        const providers = data.filter(p => p.resourceId !== current.resourceId);
+        const names = providers.map(s => s.name);
+        const ids = providers.map(s => s.xmlId);
+
+        return (formData, errors) => {
+            if (names.indexOf(formData.name) > -1) {
+                errors.name.addError('message.name-must-be-unique');
+            }
+
+            if (ids.indexOf(formData.xmlId) > -1) {
+                errors.xmlId.addError('message.id-unique');
+            }
+            return errors;
+        }
+    },
     parser: (changes) => {
         return (changes.metadataFilters ? ({
             ...changes,
@@ -14,9 +30,8 @@ export const BaseProviderDefinition = {
         }) : changes)
     },
     formatter: (changes, schema) => {
-
         const filterSchema = schema?.properties?.metadataFilters;
-        if (!filterSchema) {
+        if (!filterSchema || !changes) {
             return changes;
         }
 
@@ -33,14 +48,13 @@ export const BaseProviderDefinition = {
         return formatted;
     },
     display: (changes) => {
-
         if (!changes.metadataFilters) {
             return changes;
         }
         return {
             ...changes,
             metadataFilters: {
-                ...(changes.metadataFilters || []).reduce((collection, filter) => ({
+                ...changes.metadataFilters.reduce((collection, filter) => ({
                     ...collection,
                     [filter['@type']]: filter
                 }), {})
@@ -51,7 +65,29 @@ export const BaseProviderDefinition = {
         name: {
             'ui:help': 'message.must-be-unique'
         }
-    }
+    },
+    steps: [
+        {
+            id: 'new',
+            label: 'label.select-metadata-provider-type',
+            index: 1,
+            initialValues: [],
+            fields: [
+                'name',
+                '@type'
+            ],
+            fieldsets: [
+                {
+                    type: 'section',
+                    class: ['col-12'],
+                    fields: [
+                        'name',
+                        '@type'
+                    ]
+                }
+            ]
+        }
+    ]
 }
 
 export const HttpMetadataResolverAttributesSchema = {

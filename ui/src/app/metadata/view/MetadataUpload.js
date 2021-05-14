@@ -86,7 +86,7 @@ export function MetadataUpload() {
                         </li>
                         <li className="nav-item">
                             <button className="nav-link next btn d-flex justify-content-between align-items-start"
-                                disabled={!isValid}
+                                disabled={!isValid || saving}
                                 aria-label="Save metadata resolver">
                                 <span className="label">
                                     <Translate value="action.save">

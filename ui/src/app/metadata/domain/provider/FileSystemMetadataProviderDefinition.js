@@ -10,6 +10,7 @@ export const FileSystemMetadataProviderWizard = {
     schema: '/assets/schema/provider/file-system.schema.json',
     // schema: `${API_BASE_PATH}/ui/MetadataResolver/FilesystemMetadataResolver`,
     steps: [
+        ...BaseProviderDefinition.steps,
         {
             id: 'common',
             label: 'label.common-attributes',
@@ -19,17 +20,6 @@ export const FileSystemMetadataProviderWizard = {
                 'xmlId',
                 'metadataFile',
                 'doInitialization'
-            ],
-            fieldsets: [
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'xmlId',
-                        'metadataFile',
-                        'doInitialization'
-                    ]
-                }
             ]
         },
         {
@@ -39,15 +29,6 @@ export const FileSystemMetadataProviderWizard = {
             initialValues: [],
             fields: [
                 'reloadableMetadataResolverAttributes'
-            ],
-            fieldsets: [
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'reloadableMetadataResolverAttributes'
-                    ]
-                }
             ]
         },
         {
@@ -57,15 +38,6 @@ export const FileSystemMetadataProviderWizard = {
             initialValues: [],
             fields: [
                 'enabled'
-            ],
-            fieldsets: [
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'enabled'
-                    ]
-                }
             ]
         }
     ],
@@ -73,16 +45,15 @@ export const FileSystemMetadataProviderWizard = {
         layout: {
             groups: [
                 {
-                    size: 9,
+                    size: 8,
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
-                        '@type',
-                        'enabled'
+                        '@type'
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'xmlId',
                         'metadataFile',
@@ -90,9 +61,15 @@ export const FileSystemMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'reloadableMetadataResolverAttributes'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
+                        'enabled'
                     ]
                 }
             ]

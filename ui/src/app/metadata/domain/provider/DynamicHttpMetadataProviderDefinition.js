@@ -12,6 +12,7 @@ export const DynamicHttpMetadataProviderWizard = {
     schema: '/assets/schema/provider/dynamic-http.schema.json',
     // schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
     steps: [
+        ...BaseProviderDefinition.steps,
         {
             id: 'common',
             label: 'label.common-attributes',
@@ -56,16 +57,15 @@ export const DynamicHttpMetadataProviderWizard = {
         layout: {
             groups: [
                 {
-                    size: 9,
+                    size: 8,
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
-                        '@type',
-                        'enabled'
+                        '@type'
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'xmlId',
                         'requireValidMetadata',
@@ -74,21 +74,27 @@ export const DynamicHttpMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'dynamicMetadataResolverAttributes'
                     ],
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'metadataFilters'
                     ],
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'httpMetadataResolverAttributes'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
+                        'enabled'
                     ]
                 }
             ]
@@ -172,36 +178,7 @@ export const DynamicHttpMetadataProviderEditor = {
                 'enabled',
                 'requireValidMetadata',
                 'failFastInitialization'
-            ],
-            fieldsets: [
-                {
-                    type: 'section',
-                    class: ['mb-3'],
-                    fields: [
-                        'name',
-                        '@type'
-                    ]
-                },
-                {
-                    type: 'group-lg',
-                    class: ['col-12'],
-                    fields: [
-                        'xmlId',
-                        'metadataRequestURLConstructionScheme',
-                        'enabled',
-                        'requireValidMetadata',
-                        'failFastInitialization'
-                    ]
-                }
-            ],
-            override: {
-                '@type': {
-                    type: 'string',
-                    readOnly: true,
-                    widget: 'string',
-                    oneOf: [{ enum: ['DynamicHttpMetadataResolver'], description: 'value.dynamic-http-metadata-provider' }]
-                }
-            }
+            ]
         },
         {
             id: 'dynamic',

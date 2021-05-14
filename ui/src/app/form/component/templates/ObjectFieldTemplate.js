@@ -16,7 +16,7 @@ const ObjectFieldTemplate = ({
     idSchema,
     schema,
     hidden,
-    formContext
+    ...props
 }) => {
 
     const displayTitle = (uiSchema["ui:title"] || (title && schema.title));

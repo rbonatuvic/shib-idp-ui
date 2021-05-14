@@ -1,4 +1,5 @@
 export const metadataFilterProcessor = (schema) => {
+    console.log(schema);
     if (!schema) {
         return null;
     }
@@ -12,7 +13,7 @@ export const metadataFilterProcessor = (schema) => {
             ...schema.properties,
             metadataFilters: {
                 type: 'object',
-                properties: filters.items.reduce((collection, filterType) => ({
+                properties: filters?.items?.reduce((collection, filterType) => ({
                     ...collection,
                     [filterType.$id]: filterType
                 }), {})

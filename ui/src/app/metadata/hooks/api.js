@@ -28,8 +28,8 @@ export function getSchemaPath(type) {
     return `/${schema[type]}`;
 }
 
-export function useMetadataEntities(type = 'source', opts = {}) {
-    return useFetch(`${API_BASE_PATH}${getMetadataListPath(type)}`, opts);
+export function useMetadataEntities(type = 'source', opts = {}, onMount) {
+    return useFetch(`${API_BASE_PATH}${getMetadataListPath(type)}`, opts, onMount);
 }
 
 export function useMetadataEntity(type = 'source', opts = {
@@ -63,4 +63,12 @@ export function useMetadataHistory(type, id, opts = {}, i) {
 
 export function useMetadataSources(opts = {}, onMount) {
     return useFetch(`${API_BASE_PATH}${getMetadataListPath('source')}`, opts, onMount);
+}
+
+export function useMetadataProviders(opts = {}, onMount) {
+    return useFetch(`${API_BASE_PATH}${getMetadataListPath('provider')}`, opts, onMount);
+}
+
+export function useMetadataProviderTypes(opts = {}, onMount = null) {
+    return useFetch(`${API_BASE_PATH}/ui/MetadataResolver/types`, opts, onMount);
 }

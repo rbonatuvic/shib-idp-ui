@@ -84,6 +84,11 @@ function useNextPage() {
     return definition.steps[idx + 1];
 }
 
+function useFirstPage() {
+    const definition = useMetadataDefinitionContext();
+    return definition.steps[0];
+}
+
 function useLastPage () {
     const definition = useMetadataDefinitionContext();
     return definition.steps[definition.steps.length - 1];
@@ -114,6 +119,7 @@ export {
     useCurrentPage,
     useNextPage,
     usePreviousPage,
+    useFirstPage,
     useLastPage,
     useIsFirstPage,
     useIsLastPage,

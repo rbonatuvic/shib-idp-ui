@@ -9,6 +9,7 @@ export const FileBackedHttpMetadataProviderWizard = {
     type: 'FileBackedHttpMetadataResolver',
     schema: '/assets/schema/provider/filebacked-http.schema.json',
     steps: [
+        ...BaseProviderDefinition.steps,
         {
             id: 'common',
             label: 'label.common-attributes',
@@ -60,16 +61,15 @@ export const FileBackedHttpMetadataProviderWizard = {
         layout: {
             groups: [
                 {
-                    size: 9,
+                    size: 8,
                     classNames: 'bg-light border rounded px-4 pt-4 pb-3 mb-4',
                     fields: [
                         'name',
-                        '@type',
-                        'enabled'
+                        '@type'
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'xmlId',
                         'metadataURL',
@@ -83,21 +83,27 @@ export const FileBackedHttpMetadataProviderWizard = {
                     ]
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'reloadableMetadataResolverAttributes'
                     ],
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'metadataFilters'
                     ],
                 },
                 {
-                    size: 9,
+                    size: 8,
                     fields: [
                         'httpMetadataResolverAttributes'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
+                        'enabled'
                     ]
                 }
             ]

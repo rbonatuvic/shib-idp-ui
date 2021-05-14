@@ -342,6 +342,10 @@
                         "id": "fieldset"
                     },
                     "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "RequiredValidUntil"
+                        },
                         "maxValidityInterval": {
                             "title": "label.max-validity-interval",
                             "description": "tooltip.max-validity-interval",
@@ -358,6 +362,10 @@
                         "id": "fieldset"
                     },
                     "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "SignatureValidation"
+                        },
                         "requireSignedRoot": {
                             "title": "label.require-signed-root",
                             "description": "tooltip.require-signed-root",
@@ -401,14 +409,27 @@
                         "id": "fieldset"
                     },
                     "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "EntityRoleWhiteList"
+                        },
                         "retainedRoles": {
                             "title": "label.retained-roles",
                             "description": "tooltip.retained-roles",
                             "type": "array",
                             "items": {
-                                "enum": ["SPSSODescriptor", "AttributeAuthorityDescriptor"],
-                                "enumNames": ["value.spdescriptor", "value.attr-auth-descriptor"],
-                                "type": "string"
+                                "widget": {
+                                    "id": "select"
+                                },
+                                "type": "string",
+                                "enum": [
+                                    "SPSSODescriptor",
+                                    "AttributeAuthorityDescriptor"
+                                ],
+                                "enumNames": [
+                                    "value.spdescriptor",
+                                    "value.attr-auth-descriptor"
+                                ]
                             }
                         },
                         "removeRolelessEntityDescriptors": {

@@ -5,15 +5,15 @@ import { MetadataSourceWizard } from '../wizard/MetadataSourceWizard';
 import { MetadataProviderWizard } from '../wizard/MetadataProviderWizard';
 import { Wizard } from '../wizard/Wizard';
 
-export function MetadataWizard ({type, onShowNav}) {
+export function MetadataWizard ({type, data, onCallback}) {
 
     return (
-        <MetadataForm>
+        <MetadataForm initial={data}>
             <Wizard>
                 {type === 'source' ?
-                    <MetadataSourceWizard onShowNav={onShowNav} />
+                    <MetadataSourceWizard onShowNav={onCallback} />
                     :
-                    <MetadataProviderWizard />
+                    <MetadataProviderWizard onRestart={onCallback} />
                 }
             </Wizard>
         </MetadataForm>

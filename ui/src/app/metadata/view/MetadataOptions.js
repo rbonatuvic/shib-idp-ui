@@ -18,17 +18,19 @@ import { DeleteSourceConfirmation } from '../domain/source/component/DeleteSourc
 import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
 import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
 import { MetadataFilterTypes } from '../domain/filter';
+import { useMetadataSchema } from '../hooks/schema';
 
 export function MetadataOptions () {
 
     const metadata = React.useContext(MetadataObjectContext);
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
+    const processed = useMetadataSchema(definition, schema);
     const history = useHistory();
 
     const { type, id } = useParams();
 
-    const configuration = useMetadataConfiguration([metadata], schema, definition);
+    const configuration = useMetadataConfiguration([metadata], processed, definition);
 
     const onScrollTo = (element, offset = 0) => {
         scroller.scrollTo(element, {

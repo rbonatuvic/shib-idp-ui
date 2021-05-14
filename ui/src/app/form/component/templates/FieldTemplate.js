@@ -31,13 +31,13 @@ export function FieldTemplate ({
                                 return (
                                     <ListGroup.Item as="li" key={i} className={`border-0 m-0 p-0 bg-transparent ${i > 0 ? 'sr-only' : ''}`}>
                                         <small className="m-0 text-danger">
-                                            {error}
+                                            <Translate value={error}>{error}</Translate>
                                         </small>
                                     </ListGroup.Item>
                                 );
                             })}
                         </ListGroup>
-                    )}
+                        )}
                     {rawHelp && rawErrors.length < 1 && (
                         <Form.Text className={rawErrors.length > 0 ? "text-danger" : "text-muted"} id={id}>
                             <Translate value={rawHelp} />

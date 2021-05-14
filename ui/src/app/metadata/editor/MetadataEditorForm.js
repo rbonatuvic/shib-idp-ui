@@ -14,7 +14,7 @@ function ErrorListTemplate () {
     return (<></>);
 }
 
-export function MetadataEditorForm ({ metadata, definition, schema, current, onChange }) {
+export function MetadataEditorForm({ metadata, definition, schema, current, onChange, validator }) {
 
     const [locked, setLocked] = React.useState(true);
 
@@ -61,7 +61,8 @@ export function MetadataEditorForm ({ metadata, definition, schema, current, onC
                     widgets={widgets}
                     liveValidate={true}
                     transformErrors={transformErrors}
-                    ErrorList={ErrorListTemplate}>
+                    ErrorList={ErrorListTemplate}
+                    validate={validator}>
                     <></>
                 </Form>
             </div>

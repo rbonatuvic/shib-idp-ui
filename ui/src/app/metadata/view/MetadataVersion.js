@@ -15,6 +15,7 @@ import { MetadataHeader } from '../component/MetadataHeader';
 import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
 import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
 import { MetadataFilterTypes } from '../domain/filter';
+import { useMetadataSchema } from '../hooks/schema';
 
 
 export function MetadataVersion() {
@@ -25,6 +26,8 @@ export function MetadataVersion() {
 
     const schema = React.useContext(MetadataSchemaContext);
     const definition = React.useContext(MetadataDefinitionContext);
+
+    const processed = useMetadataSchema(definition, schema);
 
     const { get, response } = useMetadataEntity(type, {
         cachePolicy: 'no-cache',
@@ -53,7 +56,7 @@ export function MetadataVersion() {
     return (
         <>
             {metadata &&
-                <Configuration entities={[metadata]} schema={schema} definition={definition}>
+                <Configuration entities={[metadata]} schema={processed} definition={definition}>
                     {(config) =>
                         <>
                         <h2 className="mb-4" id="header">

@@ -56,9 +56,12 @@ function reducer(state, action) {
 }
 
 /*eslint-disable react-hooks/exhaustive-deps*/
-function MetadataForm({ children }) {
+function MetadataForm({ children, initial = {} }) {
 
-    const metadata = useFormattedMetadata();
+    const metadata = {
+        ...useFormattedMetadata(),
+        ...initial
+    };
 
     const [state, dispatch] = React.useReducer(reducer, {
         ...initialState,
@@ -79,9 +82,16 @@ function useFormErrors () {
     return errors;
 }
 
+function useExtraErrors (metadata, validator) {
+    return validator(metadata);
+}
+
 function usePagesWithErrors(definition) {
     const errorList = useFormErrors();
     const erroredProperties = uniq(errorList.map((e) => {
+        if (!e.hasOwnProperty('property')) {
+            return 'common';
+        }
         let name = e.property.split('.').filter((p) => !!p && p !== "")[0];
         if (name.indexOf('[')) {
             name = name.split('[')[0];
@@ -100,7 +110,7 @@ function usePagesWithErrors(definition) {
     return pages;
 }
 
-function useFormattedMetadata() {
+function useFormattedMetadata(initial = {}) {
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
     return definition.formatter(React.useContext(MetadataObjectContext), schema);
@@ -139,6 +149,7 @@ export {
     useMetadataFormState,
     useMetadataFormData,
     useMetadataFormErrors,
+    useExtraErrors,
     MetadataForm,
     MetadataFormContext,
     Provider as MetadataFormProvider,

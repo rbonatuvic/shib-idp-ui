@@ -3,11 +3,10 @@ import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsFirstPage, useIsLastPage, useWizardDispatcher } from './Wizard';
 import { useMetadataDefinitionContext, useMetadataSchemaContext } from '../hoc/MetadataSchema';
-import { useMetadataSchema } from '../hooks/schema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
-import { useMetadataEntity } from '../hooks/api';
+import { useMetadataEntity, useMetadataSources } from '../hooks/api';
 import { useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
 
@@ -16,9 +15,10 @@ export function MetadataSourceWizard ({ onShowNav }) {
     const { post, loading, response } = useMetadataEntity('source');
     const history = useHistory();
 
+    const { data } = useMetadataSources({}, []);
+
     const definition = useMetadataDefinitionContext();
     const schema = useMetadataSchemaContext();
-    const processed = useMetadataSchema(definition, schema);
 
     const formDispatch = useMetadataFormDispatcher();
     const metadata = useMetadataFormData();
@@ -51,7 +51,6 @@ export function MetadataSourceWizard ({ onShowNav }) {
 
     async function save () {
         const body = removeNull(metadata, true);
-        console.log(body);
         await post('', body);
         if (response.ok) {
             history.push('/');
@@ -60,7 +59,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
         }
     }
 
-    // console.log(errors);
+    const validator = definition.validator(data);
 
     return (
         <>
@@ -75,16 +74,17 @@ export function MetadataSourceWizard ({ onShowNav }) {
                     <MetadataWizardForm
                         metadata={metadata}
                         definition={definition}
-                        schema={processed}
+                        schema={schema || {}}
                         current={current}
                         onChange={onChange}
-                        onBlur={onBlur} />
+                        onBlur={onBlur}
+                        validator={validator} />
                 </div>
             </div>
             {isLast &&
             <div className="row">
                 <div className="col-12">
-                    <Configuration entities={[metadata]} schema={processed} definition={definition}>
+                    <Configuration entities={[metadata]} schema={schema || {}} definition={definition}>
                         {(config) => <MetadataConfiguration configuration={config} onEdit={onEditFromSummary} />}
                     </Configuration>
                 </div>

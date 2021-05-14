@@ -18,7 +18,5 @@ export function useMetadataConfiguration(models, schema, definition, limited = f
         return {};
     }
 
-    const processed = definition.schemaPreprocessor ? definition.schemaPreprocessor(schema) : schema;
-
-    return getLimitedConfigurationsFn(getConfigurationSections(models, definition, processed), limited);
+    return getLimitedConfigurationsFn(getConfigurationSections(models, definition, schema), limited);
 }

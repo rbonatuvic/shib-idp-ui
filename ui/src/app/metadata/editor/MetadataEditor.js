@@ -10,24 +10,23 @@ import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/Metadat
 
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
-import { useMetadataEntity } from '../hooks/api';
+import { useMetadataEntities, useMetadataEntity } from '../hooks/api';
+import { MetadataObjectContext } from '../hoc/MetadataSelector';
 
 export function MetadataEditor () {
 
     const { type, id, section } = useParams();
 
-    const { put, response } = useMetadataEntity(type, {}, []);
+    const { put, response, saving } = useMetadataEntity(type, {}, []);
 
-    
+    const { data } = useMetadataEntities(type, {}, []);
     const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
-
-    const [invalid] = React.useState(false);
-    const [saving] = React.useState(false);
+    const current = React.useContext(MetadataObjectContext);
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
-    const { metadata, errors} = state;
+    const { metadata, errors } = state;
 
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
@@ -57,6 +56,9 @@ export function MetadataEditor () {
 
     const [blocking, setBlocking] = React.useState(false);
 
+    const validator = definition.validator(data, current);
+
+    // console.log(errors);
 
     return (
         <div className="container-fluid p-3">
@@ -93,7 +95,7 @@ export function MetadataEditor () {
                             <button className="btn btn-info"
                                 type="button"
                                 onClick={() => save(metadata)}
-                                disabled={invalid || saving}
+                                disabled={errors.length > 0 || saving}
                                 aria-label="Save changes to the metadata source. You will return to the dashboard">
                                     <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={ saving } />&nbsp;
                                 <Translate value="action.save">Save</Translate>
@@ -132,7 +134,8 @@ export function MetadataEditor () {
                                 definition={definition}
                                 schema={schema}
                                 current={section}
-                                onChange={onChange} />
+                                onChange={onChange}
+                                validator={ validator } />
                             }
                         </div>
                     </div>

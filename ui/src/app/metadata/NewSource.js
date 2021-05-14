@@ -78,7 +78,7 @@ export function NewSource() {
                     <MetadataSchema type={'source'} wizard={true}>
                         <Switch>
                             <Route path={`${path}/blank`} render={() =>
-                                <MetadataWizard type="source" onShowNav={(s) => { setShowNav(s) }} />
+                                <MetadataWizard type="source" onCallback={(s) => { setShowNav(s) }} />
                             } />
                             <Route path={`${path}/upload`} render={() =>
                                 <MetadataUpload />

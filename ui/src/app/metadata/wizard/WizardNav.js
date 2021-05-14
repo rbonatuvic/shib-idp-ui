@@ -7,6 +7,7 @@ import {Translate} from '../../i18n/components/translate';
 import {
     useCurrentPage,
     useLastPage,
+    useFirstPage,
     useNextPage,
     usePreviousPage,
     setWizardIndexAction,
@@ -18,17 +19,26 @@ export const ICONS = {
     INDEX: 'INDEX'
 }
 
-export function WizardNav ({ disabled = false, onSave, saving }) {
+export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
 
     const dispatch = useWizardDispatcher();
 
     const current = useCurrentPage();
     const previous = usePreviousPage();
+    const first = useFirstPage();
     const next = useNextPage();
     const last = useLastPage();
 
     const onSetIndex = idx => {
         dispatch(setWizardIndexAction(idx));
+    };
+
+    const onPrevious = (idx) => {
+        if (idx === first.id && onRestart) {
+            onRestart();
+        } else {
+            onSetIndex(idx);
+        }
     };
 
     const currentIcon = (last && current.index === last.index) ? <FontAwesomeIcon icon={faCheck} /> : current.index;
@@ -37,7 +47,7 @@ export function WizardNav ({ disabled = false, onSave, saving }) {
         <nav>
             <ul className="nav nav-wizard">
                 {previous && <li className="nav-item">
-                    <button className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={() => onSetIndex(previous.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
+                    <button className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={() => onPrevious(previous.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
                         type="button">
                         <span className="direction d-flex flex-column align-items-center">
                             <FontAwesomeIcon icon={faArrowCircleLeft} size="2x" />
