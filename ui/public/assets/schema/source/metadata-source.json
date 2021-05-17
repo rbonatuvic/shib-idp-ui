@@ -136,7 +136,9 @@
                 }
             },
             "dependencies": {
-                "nameIdFormats": ["protocolSupportEnum"]
+                "nameIdFormats": [
+                    "protocolSupportEnum"
+                ]
             }
         },
         "logoutEndpoints": {

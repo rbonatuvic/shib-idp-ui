@@ -1,5 +1,5 @@
 import defaultsDeep from 'lodash/defaultsDeep';
-// import API_BASE_PATH from "../../../App.constant";
+import API_BASE_PATH from "../../../App.constant";
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
 import { DurationOptions } from '../data';
 
@@ -7,8 +7,7 @@ export const FileSystemMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'FilesystemMetadataProvider',
     type: 'FilesystemMetadataResolver',
-    schema: '/assets/schema/provider/file-system.schema.json',
-    // schema: `${API_BASE_PATH}/ui/MetadataResolver/FilesystemMetadataResolver`,
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/FilesystemMetadataResolver`,
     steps: [
         ...BaseProviderDefinition.steps,
         {

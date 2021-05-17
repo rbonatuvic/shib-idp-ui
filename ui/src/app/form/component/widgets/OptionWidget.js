@@ -1,6 +1,8 @@
 import React from "react";
 
+import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
+
 import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
 
@@ -51,6 +53,13 @@ const OptionWidget = ({
 
     const translator = useTranslator();
 
+    const [touched, setTouched] = React.useState(false);
+
+    const onCustomBlur = (evt) => {
+        setTouched(true);
+        _onBlur(evt);
+    };
+
     return (
         <Form.Group className="mb-0">
             <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
@@ -70,7 +79,7 @@ const OptionWidget = ({
                 placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder'] ): ''}
                 disabled={disabled || readonly}
                 onChange={_onChange}
-                onBlur={_onBlur}
+                onBlur={onCustomBlur}
                 onFocus={_onFocus}
                 filterBy={(option, props) => true}
                 renderMenuItemChildren={(option, {options, text}, index) => {
@@ -80,6 +89,19 @@ const OptionWidget = ({
                     <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly} />
                 )}
             </Typeahead>
+            {rawErrors.length > 0 && touched && (
+                <ListGroup as="ul">
+                    {rawErrors.map((error, i) => {
+                        return (
+                            <ListGroup.Item as="li" key={i} className={`border-0 m-0 p-0 bg-transparent ${i > 0 ? 'sr-only' : ''}`}>
+                                <small className="m-0 text-danger">
+                                    <Translate value={error}>{error}</Translate>
+                                </small>
+                            </ListGroup.Item>
+                        );
+                    })}
+                </ListGroup>
+            )}
         </Form.Group>
     );
 };

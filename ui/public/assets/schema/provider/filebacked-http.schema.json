@@ -51,14 +51,12 @@
             "title": "label.xml-id",
             "description": "tooltip.xml-id",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "metadataURL": {
             "title": "label.metadata-url",
             "description": "tooltip.metadata-url",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "initializeFromBackupFile": {
@@ -99,59 +97,9 @@
             "type": "boolean"
         },
         "httpMetadataResolverAttributes": {
+            "$id": "httpMetadataResolverAttributes",
             "order": [],
             "type": "object",
-            "fieldsets": [
-                {
-                    "title": "label.http-security-attributes",
-                    "type": "section",
-                    "class": "col-12",
-                    "fields": [
-                        "disregardTLSCertificate"
-                    ]
-                },
-                {
-                    "title": "label.http-connection-attributes",
-                    "type": "section",
-                    "fields": [
-                        "connectionRequestTimeout",
-                        "connectionTimeout",
-                        "socketTimeout"
-                    ]
-                },
-                {
-                    "title": "label.http-proxy-attributes",
-                    "type": "section",
-                    "class": "col-12",
-                    "fields": [
-                        "proxyHost",
-                        "proxyPort",
-                        "proxyUser",
-                        "proxyPassword"
-                    ]
-                },
-                {
-                    "title": "label.http-caching-attributes",
-                    "type": "section",
-                    "class": "col-12",
-                    "fields": [
-                        "httpCaching",
-                        "httpCacheDirectory",
-                        "httpMaxCacheEntries",
-                        "httpMaxCacheEntrySize"
-                    ]
-                },
-                {
-                    "title": "",
-                    "type": "hidden",
-                    "class": "col-12",
-                    "fields": [
-                        "tlsTrustEngineRef",
-                        "httpClientSecurityParametersRef",
-                        "httpClientRef"
-                    ]
-                }
-            ],
             "properties": {
                 "disregardTLSCertificate": {
                     "type": "boolean",
@@ -227,14 +175,12 @@
                 "tlsTrustEngineRef": {
                     "type": "string",
                     "title": "",
-                    "description": "",
-                    "widget": "hidden"
+                    "description": ""
                 },
                 "httpClientSecurityParametersRef": {
                     "type": "string",
                     "title": "",
-                    "description": "",
-                    "widget": "hidden"
+                    "description": ""
                 },
                 "proxyHost": {
                     "type": "string",
@@ -330,6 +276,7 @@
             }
         },
         "metadataFilters": {
+            "$id": "metadataFilters",
             "title": "",
             "description": "",
             "type": "array",

@@ -61,6 +61,8 @@ export function MetadataSourceWizard ({ onShowNav }) {
 
     const validator = definition.validator(data);
 
+    console.log(errors, loading)
+
     return (
         <>
             <div className="row mb-4">

@@ -1,7 +1,5 @@
-// import { metadataFilterProcessor } from './utility/providerFilterProcessor';
-
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
-// import API_BASE_PATH from '../../../App.constant';
+import API_BASE_PATH from '../../../App.constant';
 import defaultsDeep from 'lodash/defaultsDeep';
 import { DurationOptions } from '../data';
 
@@ -9,8 +7,7 @@ export const DynamicHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
-    schema: '/assets/schema/provider/dynamic-http.schema.json',
-    // schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
     steps: [
         ...BaseProviderDefinition.steps,
         {

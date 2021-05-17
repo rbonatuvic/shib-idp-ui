@@ -1,8 +1,10 @@
+import React from "react";
 import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 
+import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
+
 import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
 
@@ -71,6 +73,19 @@ const TextWidget = ({
                         })}
                 </datalist>
             ) : null}
+            {rawErrors.length > 0 && touched && (
+                <ListGroup as="ul">
+                    {rawErrors.map((error, i) => {
+                        return (
+                            <ListGroup.Item as="li" key={i} className={`border-0 m-0 p-0 bg-transparent ${i > 0 ? 'sr-only' : ''}`}>
+                                <small className="m-0 text-danger">
+                                    <Translate value={error}>{error}</Translate>
+                                </small>
+                            </ListGroup.Item>
+                        );
+                    })}
+                </ListGroup>
+            )}
         </Form.Group>
     );
 };

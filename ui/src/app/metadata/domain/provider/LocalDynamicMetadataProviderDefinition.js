@@ -1,6 +1,6 @@
 import defaultsDeep from 'lodash/defaultsDeep';
 
-// import API_BASE_PATH from "../../../App.constant";
+import API_BASE_PATH from "../../../App.constant";
 import {DurationOptions} from '../data';
 import { BaseProviderDefinition } from "./BaseProviderDefinition";
 
@@ -8,8 +8,7 @@ export const LocalDynamicMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'LocalDynamicMetadataProvider',
     type: 'LocalDynamicMetadataResolver',
-    schema: '/assets/schema/provider/local-dynamic.schema.json',
-    // schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/LocalDynamicMetadataResolver`,
     steps: [
         ...BaseProviderDefinition.steps,
         {

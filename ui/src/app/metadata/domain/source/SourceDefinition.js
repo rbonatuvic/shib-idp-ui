@@ -1,6 +1,6 @@
 import { defaults } from 'lodash';
 import defaultsDeep from 'lodash/defaultsDeep';
-// import API_BASE_PATH from '../../../App.constant';
+import API_BASE_PATH from '../../../App.constant';
 import {removeNull} from '../../../core/utility/remove_null';
 
 
@@ -8,8 +8,7 @@ export const SourceBase = {
     label: 'Metadata Source',
     type: '@MetadataProvider',
     steps: [],
-    schema: `/assets/schema/source/metadata-source.json`,
-    //${API_BASE_PATH}/ui/MetadataSources
+    schema: `${API_BASE_PATH}/ui/MetadataSources`,
     validatorParams: [/*getAllOtherIds*/],
 
     parser: (data) => removeNull(data, true),
@@ -23,10 +22,7 @@ export const SourceBase = {
         const sources = current ? data.filter(s => s.id !== current.id) : data;
         const entityIds = sources.map(s => s.entityId);
 
-        console.log(sources);
-
         return (formData, errors) => {
-            console.log(formData)
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
             }

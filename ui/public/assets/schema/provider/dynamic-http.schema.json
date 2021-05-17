@@ -42,7 +42,9 @@
                         {
                             "properties": {
                                 "@type": {
-                                    "enum": ["Regex"]
+                                    "enum": [
+                                        "Regex"
+                                    ]
                                 },
                                 "match": {
                                     "title": "label.match",
@@ -84,7 +86,10 @@
                     "widget": {
                         "id": "select"
                     },
-                    "enum": ["MetadataQueryProtocol", "Regex"]
+                    "enum": [
+                        "MetadataQueryProtocol",
+                        "Regex"
+                    ]
                 },
                 "content": {
                     "title": "label.md-request-value",
@@ -311,14 +316,12 @@
                 "tlsTrustEngineRef": {
                     "type": "string",
                     "title": "",
-                    "description": "",
-                    "widget": "hidden"
+                    "description": ""
                 },
                 "httpClientSecurityParametersRef": {
                     "type": "string",
                     "title": "",
-                    "description": "",
-                    "widget": "hidden"
+                    "description": ""
                 },
                 "proxyHost": {
                     "type": "string",
@@ -388,6 +391,7 @@
             }
         },
         "metadataFilters": {
+            "$id": "metadataFilters",
             "title": "",
             "description": "",
             "type": "array",
@@ -480,8 +484,14 @@
                                     "id": "select"
                                 },
                                 "type": "string",
-                                "enum": ["SPSSODescriptor", "AttributeAuthorityDescriptor"],
-                                "enumNames": ["value.spdescriptor", "value.attr-auth-descriptor"]
+                                "enum": [
+                                    "SPSSODescriptor",
+                                    "AttributeAuthorityDescriptor"
+                                ],
+                                "enumNames": [
+                                    "value.spdescriptor",
+                                    "value.attr-auth-descriptor"
+                                ]
                             }
                         },
                         "removeRolelessEntityDescriptors": {

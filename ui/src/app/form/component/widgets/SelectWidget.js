@@ -1,6 +1,7 @@
 import React from "react";
 
 import Form from "react-bootstrap/Form";
+import ListGroup from "react-bootstrap/ListGroup";
 
 import { utils } from "@rjsf/core";
 
@@ -81,6 +82,8 @@ const SelectWidget = ({
         }
     }
 
+    const [touched, setTouched] = React.useState(false);
+
     return (
         <Form.Group>
             <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
@@ -106,6 +109,7 @@ const SelectWidget = ({
                     ((event) => {
                         const newValue = getValue(event, multiple);
                         onBlur(id, processValue(schema, newValue));
+                        setTouched(true);
                     })
                 }
                 onFocus={
@@ -128,6 +132,19 @@ const SelectWidget = ({
                 </option>
                 )}
             </Form.Control>
+            {rawErrors.length > 0 && touched && (
+                <ListGroup as="ul">
+                    {rawErrors.map((error, i) => {
+                        return (
+                            <ListGroup.Item as="li" key={i} className={`border-0 m-0 p-0 bg-transparent ${i > 0 ? 'sr-only' : ''}`}>
+                                <small className="m-0 text-danger">
+                                    <Translate value={error}>{error}</Translate>
+                                </small>
+                            </ListGroup.Item>
+                        );
+                    })}
+                </ListGroup>
+            )}
         </Form.Group>
     );
 };

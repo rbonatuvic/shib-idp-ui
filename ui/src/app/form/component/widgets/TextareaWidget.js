@@ -1,7 +1,8 @@
+import React from "react";
 import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 
+import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -36,6 +37,13 @@ const TextareaWidget = ({
         target: { value },
     }) => onFocus(id, value);
 
+    const [touched, setTouched] = React.useState(false);
+
+    const onCustomBlur = (evt) => {
+        setTouched(true);
+        _onBlur(evt);
+    };
+
     return (
         <>
             <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
@@ -57,10 +65,23 @@ const TextareaWidget = ({
                     autoFocus={autofocus}
                     rows={options.rows || 5}
                     onChange={_onChange}
-                    onBlur={_onBlur}
+                    onBlur={onCustomBlur}
                     onFocus={_onFocus}
                 />
             </InputGroup>
+            {rawErrors.length > 0 && touched && (
+                <ListGroup as="ul">
+                    {rawErrors.map((error, i) => {
+                        return (
+                            <ListGroup.Item as="li" key={i} className={`border-0 m-0 p-0 bg-transparent ${i > 0 ? 'sr-only' : ''}`}>
+                                <small className="m-0 text-danger">
+                                    <Translate value={error}>{error}</Translate>
+                                </small>
+                            </ListGroup.Item>
+                        );
+                    })}
+                </ListGroup>
+            )}
         </>
     );
 };
