@@ -5,16 +5,16 @@
         "entityId"
     ],
     "properties": {
-        "entityId": {
-            "title": "label.entity-id",
-            "description": "tooltip.entity-id",
+        "serviceProviderName": {
+            "title": "label.service-provider-name",
+            "description": "tooltip.service-provider-name",
             "type": "string",
             "minLength": 1,
             "maxLength": 255
         },
-        "serviceProviderName": {
-            "title": "label.service-provider-name",
-            "description": "tooltip.service-provider-name",
+        "entityId": {
+            "title": "label.entity-id",
+            "description": "tooltip.entity-id",
             "type": "string",
             "minLength": 1,
             "maxLength": 255
@@ -44,87 +44,49 @@
             "widget": {
                 "id": "fieldset"
             },
-            "fieldsets": [
-                {
-                    "type": "group",
-                    "fields": [
-                        "x509CertificateAvailable",
-                        "authenticationRequestsSigned",
-                        "wantAssertionsSigned"
-                    ]
-                },
-                {
-                    "type": "group",
-                    "fields": [
-                        "x509Certificates"
-                    ]
-                }
-            ],
-            "properties": {
-                "x509CertificateAvailable": {
-                    "title": "label.is-there-a-x509-certificate",
-                    "description": "tooltip.is-there-a-x509-certificate",
-                    "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
+            "dependencies": {
+                "authenticationRequestsSigned": {
                     "oneOf": [
                         {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
+                            "properties": {
+                                "authenticationRequestsSigned": {
+                                    "const": true
+                                },
+                                "x509Certificates": {
+                                    "minItems": 1
+                                }
+                            }
                         },
                         {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
+                            "properties": {
+                                "authenticationRequestsSigned": {
+                                    "const": false
+                                },
+                                "x509Certificates": {
+                                    "minItems": 0
+                                }
+                            }
                         }
                     ]
-                },
+                }
+            },
+            "properties": {
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
                     "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
                     ]
                 },
                 "wantAssertionsSigned": {
                     "title": "label.want-assertions-signed",
                     "description": "tooltip.want-assertions-signed",
                     "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
+                    "enumNames": [
+                        "value.true",
+                        "value.false"
                     ]
                 },
                 "x509Certificates": {
@@ -146,24 +108,11 @@
         },
         "serviceProviderSsoDescriptor": {
             "type": "object",
-            "fieldsets": [
-                {
-                    "type": "group",
-                    "fields": [
-                        "protocolSupportEnum",
-                        "nameIdFormats"
-                    ]
-                }
-            ],
-            "required": [
-                "nameIdFormats"
-            ],
             "properties": {
                 "protocolSupportEnum": {
                     "title": "label.protocol-support-enumeration",
                     "description": "tooltip.protocol-support-enumeration",
                     "type": "string",
-                    "placeholder": "label.select-protocol",
                     "widget": {
                         "id": "select"
                     },
@@ -185,6 +134,11 @@
                 "nameIdFormats": {
                     "$ref": "#/definitions/nameIdFormats"
                 }
+            },
+            "dependencies": {
+                "nameIdFormats": [
+                    "protocolSupportEnum"
+                ]
             }
         },
         "logoutEndpoints": {
@@ -203,18 +157,14 @@
             "type": "array",
             "title": "label.attribute-release",
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
-            "widget": {
-                "id": "checklist",
-                "dataUrl": "/customAttributes"
-            },
             "items": {
                 "type": "string"
-            }
+            },
+            "uniqueItems": true
         }
     },
     "definitions": {
         "Contact": {
-            "title": "label.contact",
             "type": "object",
             "required": [
                 "name",
@@ -274,7 +224,6 @@
         },
         "Certificate": {
             "type": "object",
-            "title": "label.certificate",
             "required": [
                 "type",
                 "value"
@@ -288,7 +237,6 @@
                 },
                 "type": {
                     "title": "label.certificate-type",
-                    "description": "tooltip.certificate-type",
                     "type": "string",
                     "widget": {
                         "id": "radio",
@@ -326,7 +274,6 @@
         },
         "AssertionConsumerService": {
             "type": "object",
-            "title": "label.assertion-consumer-service-endpoint",
             "required": [
                 "locationUrl",
                 "binding"
@@ -395,7 +342,6 @@
             }
         },
         "LogoutEndpoint": {
-            "title": "label.new-endpoint",
             "description": "tooltip.new-endpoint",
             "type": "object",
             "fieldsets": [
@@ -518,13 +464,13 @@
                 "logoHeight": {
                     "title": "label.logo-height",
                     "description": "tooltip.mdui-logo-height",
-                    "min": 0,
+                    "minimum": 0,
                     "type": "integer"
                 },
                 "logoWidth": {
                     "title": "label.logo-width",
                     "description": "tooltip.mdui-logo-width",
-                    "min": 0,
+                    "minimum": 0,
                     "type": "integer"
                 }
             }
