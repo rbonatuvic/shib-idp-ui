@@ -37,14 +37,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class EntitiesControllerTests extends Specification {
-    
-    // Controller needs this to spit out the data
     def openSamlObjects = new OpenSamlObjects().with {
         init()
         it
     }
 
-    // resource will load the ED from the aggregate.xml file for testing
     def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
 
     def metadataResolver = new ResourceBackedMetadataResolver(resource).with {
