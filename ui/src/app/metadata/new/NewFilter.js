@@ -1,0 +1,86 @@
+import { faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Prompt, useHistory, useParams } from 'react-router';
+import Translate from '../../i18n/components/translate';
+import { MetadataFilterEditor } from '../editor/MetadataFilterEditor';
+import { MetadataForm } from '../hoc/MetadataFormContext';
+import { MetadataSchema } from '../hoc/MetadataSchema';
+import { useMetadataFilters, useMetadataFilterTypes } from '../hooks/api';
+import { MetadataFilterTypeSelector } from '../wizard/MetadataFilterTypeSelector';
+
+export function NewFilter() {
+
+    const { id, section } = useParams();
+    const history = useHistory();
+    const types = useMetadataFilterTypes();
+
+    const { post, response, loading } = useMetadataFilters(id, {});
+
+    const [blocking, setBlocking] = React.useState(false);
+
+    
+    async function save(metadata) {
+        await post(``, metadata);
+        if (response.ok) {
+            gotoDetail({ refresh: true });
+        }
+    };
+
+    const cancel = () => {
+        gotoDetail();
+    };
+
+    const gotoDetail = (state = null) => {
+        setBlocking(false);
+        history.push(`/metadata/provider/${id}`, state);
+    };
+
+    return (
+        <div className="container-fluid p-3">
+            <Prompt
+                when={blocking}
+                message={location =>
+                    `message.unsaved-editor`
+                }
+            />
+            <section className="section" tabIndex="0">
+                <div className="section-header bg-info p-2 text-white">
+                    <div className="row justify-content-between">
+                        <div className="col-md-12">
+                            <span className="display-6"><Translate value="label.new-filter">Add a new metadata filter</Translate></span>
+                        </div>
+                    </div>
+                </div>
+                <div className="section-body p-4 border border-top-0 border-info">
+                    <MetadataFilterTypeSelector types={types}>
+                        {(type) =>
+                            <MetadataSchema type={type}>
+                                <MetadataForm>
+                                    <MetadataFilterEditor>
+                                        {(filter, isInvalid) =>
+                                            <div className="d-flex">
+                                                <button className="btn btn-info mr-2"
+                                                    type="button"
+                                                    onClick={() => save(filter)}
+                                                    disabled={isInvalid || loading}
+                                                    aria-label="Save changes to the metadata source. You will return to the dashboard">
+                                                    <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
+                                                    <Translate value="action.save">Save</Translate>
+                                                </button>
+                                                <button className="btn btn-secondary"
+                                                    type="button"
+                                                    onClick={() => cancel()} aria-label="Cancel changes, go back to dashboard">
+                                                    <Translate value="action.cancel">Cancel</Translate>
+                                                </button>
+                                            </div>}
+                                    </MetadataFilterEditor>
+                                </MetadataForm>
+                            </MetadataSchema>
+                        }
+                    </MetadataFilterTypeSelector>
+                </div>
+            </section>
+        </div>
+    );
+}

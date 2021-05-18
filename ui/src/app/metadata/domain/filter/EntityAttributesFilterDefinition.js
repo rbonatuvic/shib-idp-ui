@@ -1,75 +1,68 @@
 import API_BASE_PATH from "../../../App.constant";
-
+import {BaseFilterDefinition} from './BaseFilterDefinition';
 import {removeNull} from '../../../core/utility/remove_null';
 import { isValidRegex } from '../../../core/utility/is_valid_regex';
+import defaultsDeep from "lodash/defaultsDeep";
 
-export const EntityAttributesFilterWizard= {
+export const EntityAttributesFilterWizard = {
+    ...BaseFilterDefinition,
     label: 'EntityAttributes',
     type: 'EntityAttributes',
     schema: `${API_BASE_PATH}/ui/EntityAttributesFilters`,
-    //validatorParams: [getFilterNames],
-    getValidators(namesList) {
-        const validators = {
-            '/': (value, property, form_current) => {
-                let errors;
-                // iterate all customer
-                Object.keys(value).forEach((key) => {
-                    const item = value[key];
-                    const validatorKey = `/${key}`;
-                    const validator = validators.hasOwnProperty(validatorKey) ? validators[validatorKey] : null;
-                    const error = validator ? validator(item, { path: `/${key}` }, form_current) : null;
-                    if (error && error.invalidate) {
-                        errors = errors || [];
-                        errors.push(error);
-                    }
-                });
-                return errors;
-            },
-            '/name': (value, property, form) => {
-                const err = namesList.indexOf(value) > -1 ? {
-                    code: 'INVALID_NAME',
-                    path: `#${property.path}`,
-                    message: 'message.name-must-be-unique',
-                    params: [value],
-                    invalidate: true
-                } : null;
-                return err;
-            },
-            '/relyingPartyOverrides': (value, property, form) => {
-                if (!value.signAssertion && value.dontSignResponse) {
-                    return {
-                        code: 'INVALID_SIGNING',
-                        path: `#${property.path}`,
-                        message: 'message.invalid-signing',
-                        params: [value],
-                        invalidate: false
-                    };
+    uiSchema: defaultsDeep({
+        entityAttributesFilterTarget: {
+            'ui:field': 'FilterTargetField',
+            api: ''
+        },
+        attributeRelease: {
+            'ui:widget': 'AttributeReleaseWidget'
+        },
+        relyingPartyOverrides: {
+            nameIdFormats: {
+                "ui:options": {
+                    orderable: false
+                },
+                items: {
+                    'ui:widget': 'OptionWidget'
                 }
-                return null;
             },
-            '/entityAttributesFilterTarget': (value, property, form) => {
-                if (!form || !form.value || !form.value.entityAttributesFilterTarget ||
-                    form.value.entityAttributesFilterTarget.entityAttributesFilterTargetType !== 'REGEX') {
-                    return null;
+            authenticationMethods: {
+                "ui:options": {
+                    orderable: false
+                },
+                items: {
+                    'ui:widget': 'OptionWidget'
                 }
-                return isValidRegex(value.value[0]) ? null : {
-                    code: 'INVALID_REGEX',
-                    path: `#${property.path}`,
-                    message: 'message.invalid-regex-pattern',
-                    params: [value.value[0]],
-                    invalidate: true
-                };
-            },
-        };
-        return validators;
+            }
+        }
+    }, BaseFilterDefinition.uiSchema),
+    validator: (data = [], current = { id: null }) => {
+
+        const filters = current ? data.filter(s => s.id !== current.id) : data;
+        const names = filters.map(s => s.name);
+
+        return (formData, errors) => {
+            if (names.indexOf(formData.name) > -1) {
+                errors.name.addError('message.name-unique');
+            }
+
+            if (formData?.entityAttributesFilterTarget?.entityAttributesFilterTargetType === 'REGEX') {
+                const { entityAttributesFilterTarget: {value} } = formData;
+                const isValid = isValidRegex(value[0]);
+                if (!isValid) {
+                    errors.entityAttributesFilterTarget.value.addError('message.invalid-regex-pattern');
+                }
+            }
+            return errors;
+        }
     },
     parser: (changes) => {
+        console.log(changes);
         return {
             ...changes,
             relyingPartyOverrides: removeNull(changes)
         };
-    },
-    formatter: (changes) => changes
+    }
 };
 
 

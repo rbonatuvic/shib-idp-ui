@@ -1,9 +1,9 @@
 import React from 'react';
-import Translate from '../i18n/components/translate';
-import { MetadataSchema } from './hoc/MetadataSchema';
-import { useMetadataProviderTypes } from './hooks/api';
-import { MetadataWizard } from './view/MetadataWizard';
-import { MetadataSchemaSelector } from './wizard/MetadataSchemaSelector';
+import Translate from '../../i18n/components/translate';
+import { MetadataSchema } from '../hoc/MetadataSchema';
+import { useMetadataProviderTypes } from '../hooks/api';
+import { MetadataWizard } from '../view/MetadataWizard';
+import { MetadataProviderTypeSelector } from '../wizard/MetadataProviderTypeSelector';
 
 export function NewProvider() {
 
@@ -11,7 +11,7 @@ export function NewProvider() {
 
     return (
         <div className="container-fluid p-3">
-            <section className="section" aria-label="Add a new metadata source - how are you adding the metadata information?" tabIndex="0">
+            <section className="section" aria-label="Add a new metadata provider." tabIndex="0">
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
@@ -20,7 +20,7 @@ export function NewProvider() {
                     </div>
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
-                    <MetadataSchemaSelector type={'provider'} types={data}>
+                    <MetadataProviderTypeSelector type={'provider'} types={data}>
                         {(data, onRestart) =>
                         <MetadataSchema type={data.type} wizard={true}>
                             <MetadataWizard type="provider"
@@ -31,7 +31,7 @@ export function NewProvider() {
                                 onCallback={onRestart} />
                         </MetadataSchema>
                         }
-                    </MetadataSchemaSelector>
+                    </MetadataProviderTypeSelector>
                 </div>
             </section>
         </div>

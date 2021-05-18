@@ -2,6 +2,8 @@ import useFetch from 'use-http';
 
 import API_BASE_PATH from '../../App.constant';
 
+import {MetadataFilterTypes} from '../domain/filter';
+
 const lists = {
     source: 'EntityDescriptors',
     provider: 'MetadataResolvers'
@@ -38,6 +40,12 @@ export function useMetadataEntity(type = 'source', opts = {
     return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}`, opts);
 }
 
+export function useMetadataFilters(id, opts = {
+    cachePolicy: 'no-cache'
+}, onMount) {
+    return useFetch(`${API_BASE_PATH}${getMetadataPath('provider')}/${id}/Filters`, opts, onMount);
+}
+
 export function useMetadataEntityXml(type = 'source', opts = {
     interceptors: {
         request: ({options}) => {
@@ -71,4 +79,8 @@ export function useMetadataProviders(opts = {}, onMount) {
 
 export function useMetadataProviderTypes(opts = {}, onMount = null) {
     return useFetch(`${API_BASE_PATH}/ui/MetadataResolver/types`, opts, onMount);
+}
+
+export function useMetadataFilterTypes () {
+    return MetadataFilterTypes;
 }

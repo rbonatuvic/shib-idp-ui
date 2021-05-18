@@ -56,7 +56,7 @@ function reducer(state, action) {
 }
 
 /*eslint-disable react-hooks/exhaustive-deps*/
-function MetadataForm({ children, initial = {} }) {
+function MetadataForm({ children, initial = {}, onChange }) {
 
     const metadata = {
         ...useFormattedMetadata(),

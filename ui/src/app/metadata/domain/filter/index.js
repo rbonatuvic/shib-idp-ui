@@ -1,9 +1,9 @@
-import { EntityAttributesFilterWizard, EntityAttributesFilterEditor } from './EntityAttributesFilterDefinition';
-import { NameIDFilterWizard, NameIDFilterEditor } from './NameIdFilterDefinition';
+import { EntityAttributesFilterEditor } from './EntityAttributesFilterDefinition';
+import { NameIDFilterEditor } from './NameIdFilterDefinition';
 
 export const MetadataFilterWizardTypes = {
-    EntityAttributes: EntityAttributesFilterWizard,
-    NameIDFormat: NameIDFilterWizard
+    EntityAttributes: EntityAttributesFilterEditor,
+    NameIDFormat: NameIDFilterEditor
 };
 
 export const MetadataFilterEditorTypes = [

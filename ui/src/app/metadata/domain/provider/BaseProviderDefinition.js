@@ -198,6 +198,11 @@ export const MetadataFilterPluginsSchema = {
             'ui:options': {
                 orderable: false
             }
+        },
+        maxValidityInterval: {
+            'ui:widget': 'OptionWidget',
+            options: DurationOptions,
+            'ui:placeholder': 'label.duration'
         }
     }
 };

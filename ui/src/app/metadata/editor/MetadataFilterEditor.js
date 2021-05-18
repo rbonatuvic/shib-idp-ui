@@ -1,0 +1,80 @@
+import React from 'react';
+import { faExclamationTriangle, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useHistory, useParams, Prompt } from 'react-router';
+import Alert from 'react-bootstrap/Alert';
+
+import Translate from '../../i18n/components/translate';
+import { MetadataFormContext, setFormDataAction, setFormErrorAction } from '../hoc/MetadataFormContext';
+import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
+
+import { MetadataEditorForm } from './MetadataEditorForm';
+import { MetadataEditorNav } from './MetadataEditorNav';
+import { useMetadataFilters } from '../hooks/api';
+import { MetadataObjectContext } from '../hoc/MetadataSelector';
+
+export function MetadataFilterEditor({children}) {
+
+    const { id, section } = useParams();
+
+    const { data } = useMetadataFilters(id, {}, []);
+    const history = useHistory();
+    const definition = React.useContext(MetadataDefinitionContext);
+    const schema = React.useContext(MetadataSchemaContext);
+    const current = React.useContext(MetadataObjectContext);
+
+    const { state, dispatch } = React.useContext(MetadataFormContext);
+    const { metadata, errors } = state;
+
+    const onChange = (changes) => {
+        dispatch(setFormDataAction(changes.formData));
+        dispatch(setFormErrorAction(section, changes.errors));
+        // setBlocking(true);
+    };
+
+    const onNavigate = (path) => {
+        history.push(path)
+    };
+
+    const validator = definition.validator(data, current);
+
+    return (
+        <React.Fragment>
+            <div className={`w-100 d-flex  align-items-start ${errors.length > 0 ? 'justify-content-between' : 'justify-content-end'}`}>
+                {errors.length > 0 &&
+                    <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                        <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
+                    </Alert>
+                }
+                {children(metadata, errors.length > 0)}
+            </div>
+            <hr />
+            <div className="row">
+                <div className="col-lg-3 d-none d-lg-block">
+                    <MetadataEditorNav
+                        onNavigate={onNavigate}
+                        definition={definition}
+                        current={section}
+                        base={`/metadata/provider/${id}/edit`}
+                        format='tabs'
+                        errors={errors}>
+                    </MetadataEditorNav>
+                </div>
+                <div className="col-lg-9">
+                    {definition && schema && metadata &&
+                        <MetadataEditorForm
+                            metadata={metadata}
+                            definition={definition}
+                            schema={schema}
+                            current={section}
+                            onChange={onChange}
+                            validator={validator} />
+                    }
+                </div>
+            </div>
+            <div>
+                <pre>{JSON.stringify(metadata, null, 4)}</pre>
+            </div>
+        </React.Fragment>
+    );
+}

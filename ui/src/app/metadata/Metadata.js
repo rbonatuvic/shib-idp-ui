@@ -10,6 +10,7 @@ import { MetadataXml } from './view/MetadataXml';
 import { MetadataComparison } from './view/MetadataComparison';
 import { MetadataVersion } from './view/MetadataVersion';
 import { MetadataEdit } from './view/MetadataEdit';
+import { Filter } from './Filter';
 
 export function Metadata () {
 

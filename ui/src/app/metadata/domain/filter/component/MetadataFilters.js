@@ -5,7 +5,9 @@ export const MetadataFiltersContext = React.createContext();
 
 export function MetadataFilters ({ providerId, types = [], filters, children }) {
 
-    const { get, response } = useMetadataEntities('provider');
+    const { get, response } = useMetadataEntities('provider', {
+        cachePolicy: 'no-cache'
+    });
 
     const [filterData, setFilterData] = React.useState([]);
 

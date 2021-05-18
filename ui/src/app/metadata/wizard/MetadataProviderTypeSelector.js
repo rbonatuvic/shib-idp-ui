@@ -8,7 +8,7 @@ import { InfoIcon } from '../../form/component/InfoIcon';
 import { useTranslator } from '../../i18n/hooks';
 import { useMetadataProviders } from '../hooks/api';
 
-export function MetadataSchemaSelector({ type, types = [], children}) {
+export function MetadataProviderTypeSelector({ type, types = [], children}) {
 
     const translator = useTranslator();
 

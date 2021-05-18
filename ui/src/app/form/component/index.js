@@ -13,11 +13,13 @@ import ObjectFieldTemplate from './templates/ObjectFieldTemplate';
 
 import TitleField from './fields/TitleField';
 import DescriptionField from './fields/DescriptionField';
+import FilterTargetField from './fields/FilterTargetField';
 
 export const fields = {
     // SchemaField: CustomSchemaField
     TitleField,
-    DescriptionField
+    DescriptionField,
+    FilterTargetField
 };
 
 export const templates = {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink, Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-import Translate from '../i18n/components/translate';
-import { MetadataSchema } from './hoc/MetadataSchema';
-import { MetadataWizard } from './view/MetadataWizard';
-import { MetadataCopy } from './view/MetadataCopy';
-import { MetadataUpload } from './view/MetadataUpload';
+import Translate from '../../i18n/components/translate';
+import { MetadataSchema } from '../hoc/MetadataSchema';
+import { MetadataWizard } from '../view/MetadataWizard';
+import { MetadataCopy } from '../view/MetadataCopy';
+import { MetadataUpload } from '../view/MetadataUpload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faLink, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 

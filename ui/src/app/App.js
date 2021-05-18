@@ -20,9 +20,9 @@ import { Metadata } from './metadata/Metadata';
 import { Notifications } from './notifications/hoc/Notifications';
 import { NotificationList } from './notifications/component/NotificationList';
 import { UserConfirmation, ConfirmWindow } from './core/components/UserConfirmation';
-import { NewSource } from './metadata/NewSource';
-import { NewProvider } from './metadata/NewProvider';
-
+import { NewSource } from './metadata/new/NewSource';
+import { NewProvider } from './metadata/new/NewProvider';
+import { Filter } from './metadata/Filter';
 
 
 function App() {
@@ -57,6 +57,7 @@ function App() {
                                                 <Route path="/dashboard" component={Dashboard} />
                                                 <Route path="/metadata/source/new" component={NewSource} />
                                                 <Route path="/metadata/provider/new" component={NewProvider} />
+                                                <Route path={`/metadata/provider/:id/filter`} component={Filter} />
                                                 <Route path="/metadata/:type/:id" component={Metadata} />
                                             </Switch>
                                             <NotificationList />

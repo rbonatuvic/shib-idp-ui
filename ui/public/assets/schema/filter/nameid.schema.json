@@ -1,25 +1,5 @@
 {
     "type": "object",
-    "fieldsets": [
-        {
-            "type": "group-lg",
-            "fields": [
-                "name",
-                "nameIdFormatFilterTarget",
-                "filterEnabled",
-                "@type",
-                "resourceId",
-                "version",
-                "removeExistingFormats"
-            ]
-        },
-        {
-            "type": "group",
-            "fields": [
-                "formats"
-            ]
-        }
-    ],
     "required": [
         "name"
     ],
@@ -43,37 +23,24 @@
             "title": "label.search-criteria",
             "description": "tooltip.search-criteria",
             "type": "object",
-            "widget": {
-                "id": "filter-target",
-                "target": "nameIdFormatFilterTargetType"
-            },
             "properties": {
                 "nameIdFormatFilterTargetType": {
                     "title": "",
                     "type": "string",
                     "default": "ENTITY",
-                    "oneOf": [
-                        {
-                            "enum": [
-                                "ENTITY"
-                            ],
-                            "description": "value.entity-id"
-                        },
-                        {
-                            "enum": [
-                                "REGEX"
-                            ],
-                            "description": "value.regex"
-                        },
-                        {
-                            "enum": [
-                                "CONDITION_SCRIPT"
-                            ],
-                            "description": "value.script"
-                        }
+                    "enum": [
+                        "ENTITY",
+                        "REGEX",
+                        "CONDITION_SCRIPT"
+                    ],
+                    "enumNames": [
+                        "value.entity-id",
+                        "value.regex",
+                        "value.script"
                     ]
                 },
                 "value": {
+                    "title": "label.filter-target-value",
                     "type": "array",
                     "buttons": [
                         {
