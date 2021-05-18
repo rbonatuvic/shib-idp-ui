@@ -27,6 +27,10 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
                           "/api/entities" }, // existing - included to break no existing code
                 method = RequestMethod.GET)
 @Slf4j
+/**
+* EntitiesController is here to meet the requirements for this project being an MDQ. Despite similar logic to the 
+* EntitiesDescriptorController, the required endpoints that make this project an MDQ server are served by this controller.
+*/
 public class EntitiesController {
     @Autowired
     private EntityDescriptorService entityDescriptorService;
