@@ -139,9 +139,9 @@ class EntitiesControllerTests extends Specification {
         result.andExpect(status().isOk())
               .andExpect(header().exists(HttpHeaders.CONTENT_TYPE))     // MUST HAVE
 //              .andExpect(header().exists(HttpHeaders.CONTENT_LENGTH)) // SHOULD HAVE - should end up from etag filter, so skipped for test
-//              .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))  // SHOULD HAVE - should be included by Spring Security
-//              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))  // SHOULD HAVE - should end up from etag filter, so skipped for test
+//              .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))  // SHOULD HAVE - should be included by Spring Security               
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
+              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(content().json(expectedBody, false))
     }
@@ -184,8 +184,8 @@ class EntitiesControllerTests extends Specification {
               .andExpect(header().exists(HttpHeaders.CONTENT_TYPE))     // MUST HAVE
 //              .andExpect(header().exists(HttpHeaders.CONTENT_LENGTH)) // SHOULD HAVE - should end up from etag filter, so skipped for test
 //              .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))  // SHOULD HAVE - should be included by Spring Security
-//              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))  // SHOULD HAVE - should end up from etag filter, so skipped for test
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
+              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(content().json(expectedBody, false))
     }

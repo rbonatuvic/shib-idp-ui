@@ -2,12 +2,20 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.client.utils.DateUtils;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +57,15 @@ public class EntitiesController {
             return ResponseEntity.notFound().build();
         }
         EntityDescriptorRepresentation entityDescriptorRepresentation = entityDescriptorService.createRepresentationFromDescriptor(entityDescriptor);
-        return ResponseEntity.ok(entityDescriptorRepresentation);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Last-Modified", formatModifiedDate(entityDescriptorRepresentation));
+        return new ResponseEntity<>(entityDescriptorRepresentation, headers, HttpStatus.OK);
+    }
+
+    private String formatModifiedDate(EntityDescriptorRepresentation entityDescriptorRepresentation) {
+        Instant instant = entityDescriptorRepresentation.getModifiedDateAsDate().toInstant(ZoneOffset.UTC);
+        Date date = Date.from(instant);     
+        return DateUtils.formatDate(date, DateUtils.PATTERN_RFC1123);
     }
 
     @RequestMapping(value = "/{entityId:.*}", produces = "application/xml")
@@ -60,7 +76,10 @@ public class EntitiesController {
             return ResponseEntity.notFound().build();
         }
         final String xml = this.openSamlObjects.marshalToXmlString(entityDescriptor);
-        return ResponseEntity.ok(xml);
+        EntityDescriptorRepresentation entityDescriptorRepresentation = entityDescriptorService.createRepresentationFromDescriptor(entityDescriptor);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Last-Modified", formatModifiedDate(entityDescriptorRepresentation));
+        return new ResponseEntity<>(xml, headers, HttpStatus.OK);
     }
 
     private EntityDescriptor getEntityDescriptor(final String entityId) throws ResolverException, UnsupportedEncodingException {
