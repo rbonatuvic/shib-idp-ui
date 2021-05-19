@@ -38,13 +38,6 @@
                 "value": {
                     "title": "label.filter-target-value",
                     "type": "array",
-                    "buttons": [
-                        {
-                            "id": "preview",
-                            "label": "action.preview",
-                            "widget": "icon-button"
-                        }
-                    ],
                     "minItems": 1,
                     "uniqueItems": true,
                     "items": {
