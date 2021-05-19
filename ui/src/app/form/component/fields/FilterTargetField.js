@@ -1,9 +1,8 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Translate from '../../../i18n/components/translate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAsterisk, faCaretDown, faCaretUp, faCheck, faPlus, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAsterisk, faCaretDown, faCaretUp, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useTranslator } from '../../../i18n/hooks';
 import { InfoIcon } from '../InfoIcon';
 import ContentEditable from 'react-contenteditable';

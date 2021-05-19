@@ -22,7 +22,7 @@ export const NameIDFilterWizard = {
         const names = filters.map(s => s.entityId);
 
         return (formData, errors) => {
-            if (filters.indexOf(formData.name) > -1) {
+            if (names.indexOf(formData.name) > -1) {
                 errors.name.addError('message.name-unique');
             }
 

@@ -9,7 +9,7 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
 
     const translator = useTranslator();
 
-    const { register, handleSubmit, getValues, watch } = useForm({
+    const { register, handleSubmit, watch } = useForm({
         mode: 'onChange',
         reValidateMode: 'onChange',
         defaultValues: {

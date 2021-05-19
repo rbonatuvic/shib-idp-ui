@@ -1,7 +1,7 @@
 import React from 'react';
-import { faExclamationTriangle, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory, useParams, Prompt } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 
 import Translate from '../../i18n/components/translate';

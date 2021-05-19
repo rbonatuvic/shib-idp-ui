@@ -1,5 +1,3 @@
-import { removeNull } from "../../../core/utility/remove_null";
-
 export const BaseFilterDefinition = {
     parser: (changes) => changes,
     formatter: (changes) => changes,
