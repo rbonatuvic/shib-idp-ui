@@ -72,9 +72,6 @@ export function MetadataFilterEditor({children}) {
                     }
                 </div>
             </div>
-            <div>
-                <pre>{JSON.stringify(metadata, null, 4)}</pre>
-            </div>
         </React.Fragment>
     );
 }
