@@ -5,11 +5,16 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import net.shibboleth.ext.spring.resource.ResourceHelper
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet
+
+import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
+import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -22,6 +27,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import spock.lang.Subject
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -47,12 +53,19 @@ class EntitiesControllerTests extends Specification {
 
     @Autowired
     UserService userService
-
+    
+    // This stub will spit out the results from the resolver instead of actually finding them in the DB
+    @SpringBean
+    EntityDescriptorRepository edr =  Stub(EntityDescriptorRepository) {
+        findByEntityID("http://test.scaldingspoon.org/test1") >> metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion("http://test.scaldingspoon.org/test1")))
+        findByEntityID("test") >> metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion("test")))
+    }
+        
     @Subject
     def controller = new EntitiesController(
             openSamlObjects: openSamlObjects,
             entityDescriptorService: new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), userService),
-            metadataResolver: metadataResolver
+            entityDescriptorRepository: edr
     )
 
     def mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
@@ -116,14 +129,21 @@ class EntitiesControllerTests extends Specification {
                 "current":false
             }
         '''
+        
         when:
-        def result = mockMvc.perform(get('/api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
+        def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 
         then:
-        def x = content()
+        // Response headers section 2.5
+        // from the spec https://www.ietf.org/archive/id/draft-young-md-query-14.txt
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(expectedBody, false))
+              .andExpect(header().exists(HttpHeaders.CONTENT_TYPE))     // MUST HAVE
+//              .andExpect(header().exists(HttpHeaders.CONTENT_LENGTH)) // SHOULD HAVE - should end up from etag filter, so skipped for test
+//              .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))  // SHOULD HAVE - should be included by Spring Security               
+//              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
+              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
+              .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+              .andExpect(content().json(expectedBody, false))
     }
 
     def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
@@ -153,6 +173,7 @@ class EntitiesControllerTests extends Specification {
                 "current":false
             }
         '''
+        
         when:
         def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 
@@ -163,8 +184,8 @@ class EntitiesControllerTests extends Specification {
               .andExpect(header().exists(HttpHeaders.CONTENT_TYPE))     // MUST HAVE
 //              .andExpect(header().exists(HttpHeaders.CONTENT_LENGTH)) // SHOULD HAVE - should end up from etag filter, so skipped for test
 //              .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))  // SHOULD HAVE - should be included by Spring Security
-//              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))  // SHOULD HAVE - should end up from etag filter, so skipped for test
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
+              .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(content().json(expectedBody, false))
     }
