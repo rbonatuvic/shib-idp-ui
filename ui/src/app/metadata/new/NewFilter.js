@@ -59,7 +59,7 @@ export function NewFilter() {
                                 <MetadataForm>
                                     <MetadataFilterEditor>
                                         {(filter, isInvalid) =>
-                                            <div className="d-flex">
+                                            <div className="d-flex justify-content-end">
                                                 <button className="btn btn-info mr-2"
                                                     type="button"
                                                     onClick={() => save(filter)}

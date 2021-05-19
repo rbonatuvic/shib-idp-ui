@@ -61,7 +61,7 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
             <div className="d-flex justify-content-end mb-2">
                 <div className="d-flex justify-content-between">
                     <Link className="btn btn-link"
-                        to={`filter/${filter.resourceId}/edit`}>
+                        to={`../filter/${filter.resourceId}/edit/common`}>
                         <FontAwesomeIcon icon={faEdit} className="sr-hidden" />&nbsp;
                         <Translate value="action.edit">Edit</Translate>
                     </Link>

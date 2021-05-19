@@ -13,7 +13,7 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
         mode: 'onChange',
         reValidateMode: 'onChange',
         defaultValues: {
-            type: null
+            type: 'NameIDFormat'
         },
         resolver: undefined,
         context: undefined,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import { NewFilter } from './new/NewFilter';
+import { EditFilter } from './view/EditFilter';
 
 export function Filter() {
 
@@ -10,6 +11,9 @@ export function Filter() {
         <Switch>
             <Route path={`${path}/new/:section`} render={() =>
                 <NewFilter />
+            } />
+            <Route path={`${path}/:filterId/edit/:section`} render={() =>
+                <EditFilter />
             } />
             <Redirect exact path={`${path}/new`} to={`${path}/new/common`} />
         </Switch>

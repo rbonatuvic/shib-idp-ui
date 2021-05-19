@@ -36,10 +36,12 @@ export const EntityAttributesFilterWizard = {
             }
         }
     }, BaseFilterDefinition.uiSchema),
-    validator: (data = [], current = { id: null }) => {
+    validator: (data = [], current = { resourceId: null }) => {
 
-        const filters = current ? data.filter(s => s.id !== current.id) : data;
+        const filters = current ? data.filter(s => s.resourceId !== current.resourceId) : data;
         const names = filters.map(s => s.name);
+
+        console.log(current)
 
         return (formData, errors) => {
             if (names.indexOf(formData.name) > -1) {

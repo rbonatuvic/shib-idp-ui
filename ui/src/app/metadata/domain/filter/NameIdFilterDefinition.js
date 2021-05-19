@@ -16,9 +16,11 @@ export const NameIDFilterWizard = {
     type: 'NameIDFormat',
     schema: `${API_BASE_PATH}/ui/NameIdFormatFilter`,
     steps: [],
-    validator: (data = [], current = { id: null }) => {
+    validator: (data = [], current = { resourceId: null }) => {
 
-        const filters = current ? data.filter(s => s.id !== current.id) : data;
+        
+
+        const filters = current ? data.filter(s => s.resourceId !== current.resourceId) : data;
         const names = filters.map(s => s.entityId);
 
         return (formData, errors) => {

@@ -10,6 +10,7 @@ import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import useFetch from 'use-http';
 import queryString from 'query-string';
 import API_BASE_PATH from '../../../App.constant';
+import isNil from 'lodash/isNil';
 
 const ToggleButton = ({ isOpen, onClick, disabled }) => (
     <button
@@ -35,10 +36,10 @@ const FilterTargetField = ({
     readonly,
     rawErrors,
     onChange,
-    errorSchema
+    errorSchema,
+    formData,
+    ...props
 }) => {
-    console.log(errorSchema)
-
     const typeFieldName = `${name}Type`;
 
     const type = schema.properties[typeFieldName];
@@ -47,8 +48,8 @@ const FilterTargetField = ({
         value: type['enum'][e]
     }));
 
-    const [selectedType, setSelectedType] = React.useState(value && value.hasOwnProperty(typeFieldName) ? typeOptions.find(t => value[typeFieldName] === t.value) : typeOptions[0]);
-    const [selectedTarget, setSelectedTarget] = React.useState([]);
+    const [selectedType, setSelectedType] = React.useState(formData && formData.hasOwnProperty(typeFieldName) ? typeOptions.find(t => formData[typeFieldName] === t.value) : typeOptions[0]);
+    const [selectedTarget, setSelectedTarget] = React.useState([...(formData.value && !isNil(formData.value) && !isNil(formData.value[0]) ? formData.value : [])]);
 
     const [term, setSearchTerm] = React.useState('');
     const [ids, setSearchIds] = React.useState([]);

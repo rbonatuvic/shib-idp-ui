@@ -11,7 +11,7 @@ import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/Metadat
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
 import { useMetadataFilters } from '../hooks/api';
-import { MetadataObjectContext } from '../hoc/MetadataSelector';
+import { MetadataFilterContext } from '../hoc/MetadataFilterSelector';
 
 export function MetadataFilterEditor({children}) {
 
@@ -21,7 +21,7 @@ export function MetadataFilterEditor({children}) {
     const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
-    const current = React.useContext(MetadataObjectContext);
+    const current = React.useContext(MetadataFilterContext);
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;
@@ -39,14 +39,28 @@ export function MetadataFilterEditor({children}) {
     const validator = definition.validator(data, current);
 
     return (
-        <React.Fragment>
-            <div className={`w-100 d-flex  align-items-start ${errors.length > 0 ? 'justify-content-between' : 'justify-content-end'}`}>
-                {errors.length > 0 &&
-                    <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
-                        <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
-                    </Alert>
-                }
-                {children(metadata, errors.length > 0)}
+        <div className="">
+            <div className="row">
+                <div className="col-6 d-lg-none order-1">
+                    <MetadataEditorNav
+                        onNavigate={onNavigate}
+                        definition={definition}
+                        current={section}
+                        base={`/metadata/provider/${id}/edit`}
+                        format='dropdown'
+                        errors={errors}>
+                    </MetadataEditorNav>
+                </div>
+                <div className="col-6 col-lg-3 order-2 text-right">
+                    {children(metadata, errors.length > 0)}
+                </div>
+                <div className={`col-xs-12 col-lg-9 order-lg-1 order-3 align-items-start ${errors.length > 0 ? 'justify-content-between' : 'justify-content-end'}`}>
+                    {errors.length > 0 &&
+                        <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                            <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
+                        </Alert>
+                    }
+                </div>
             </div>
             <hr />
             <div className="row">
@@ -72,6 +86,6 @@ export function MetadataFilterEditor({children}) {
                     }
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
