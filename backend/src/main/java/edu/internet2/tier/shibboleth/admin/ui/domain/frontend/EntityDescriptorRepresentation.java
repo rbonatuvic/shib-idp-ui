@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -189,6 +190,7 @@ public class EntityDescriptorRepresentation implements Serializable {
         return modifiedDate != null ? modifiedDate.toString() : null;
     }
     
+    @JsonIgnore
     public LocalDateTime getModifiedDateAsDate() {
         // we shouldn't have an ED without either modified or created date, so this is mostly for testing where data can be odd
         return modifiedDate != null ? modifiedDate : createdDate != null ? createdDate : LocalDateTime.now();
