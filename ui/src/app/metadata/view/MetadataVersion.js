@@ -94,7 +94,7 @@ export function MetadataVersion() {
                                             </div>
                                         </div>
                                         <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes} filters={metadata.metadataFilters}>
-                                            <MetadataFilterConfigurationList provider={metadata} editable={false} />
+                                            {(filters) => <MetadataFilterConfigurationList provider={metadata} filters={filters} editable={false} />}
                                         </MetadataFilters>
                                     </>
                                 }

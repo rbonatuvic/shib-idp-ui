@@ -12,8 +12,12 @@ import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
 import { useMetadataEntities, useMetadataEntity } from '../hooks/api';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
+import { NavLink } from 'react-router-dom';
+import { useTranslator } from '../../i18n/hooks';
 
 export function MetadataEditor () {
+
+    const translator = useTranslator();
 
     const { type, id, section } = useParams();
 
@@ -89,6 +93,12 @@ export function MetadataEditor () {
                                 base={`/metadata/${type}/${id}/edit`}
                                 format='dropdown'
                                 errors={errors}>
+                                <NavLink className="dropdown-item"
+                                    to="../filter/list"
+                                    aria-label={translator('label.filter-list')}
+                                    role="button">
+                                    <Translate value="label.filter-list"></Translate>
+                                </NavLink>
                             </MetadataEditorNav>
                         </div>
                         <div className="col-6 col-lg-3 order-2 text-right">
@@ -125,6 +135,12 @@ export function MetadataEditor () {
                                 base={`/metadata/${type}/${id}/edit`}
                                 format='tabs'
                                 errors={errors}>
+                                <NavLink className="nav-link"
+                                    to="../filter/list"
+                                    aria-label={translator('label.filter-list')}
+                                    role="button">
+                                    <Translate value="label.filter-list"></Translate>
+                                </NavLink>
                             </MetadataEditorNav>
                         </div>
                         <div className="col-lg-9">

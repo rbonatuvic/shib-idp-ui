@@ -1,17 +1,17 @@
-import { faBars, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import Translate from '../../i18n/components/translate';
-import { usePagesWithErrors } from '../hoc/MetadataFormContext';
+// import { usePagesWithErrors } from '../hoc/MetadataFormContext';
 
 export function MetadataEditorNav ({ definition, current, base, children, format = 'tabs', onNavigate }) {
 
     const [routes, setRoutes] = React.useState([]);
     const [active, setActive] = React.useState(null);
 
-    const errors = usePagesWithErrors(definition);
+    // const errors = usePagesWithErrors(definition);
 
     React.useEffect(() => {
         setRoutes(definition ? definition.steps.map(step => ({ path: step.id, label: step.label })) : [])
@@ -59,9 +59,9 @@ export function MetadataEditorNav ({ definition, current, base, children, format
                             onClick={() => onNavigate(route.path)}
                             aria-label={route.label}>
                             <Translate value={route.label}></Translate>
-                            { errors.indexOf(route.path) > -1 &&
+                            { /*errors.indexOf(route.path) > -1 &&
                                 <FontAwesomeIcon className={`ml-2 ${route.path === current ? '' : 'text-danger'}`} icon={ faExclamationTriangle } />
-                            }
+                            */}
                         </button>
                     )}
                 </nav>

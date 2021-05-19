@@ -99,7 +99,7 @@ export function MetadataOptions () {
                                 </div>
                             </div>
                             <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes}>
-                                <MetadataFilterConfigurationList provider={metadata} />
+                                {(filters) => <MetadataFilterConfigurationList provider={metadata} filters={filters} />}
                             </MetadataFilters>
                         </>
                     }

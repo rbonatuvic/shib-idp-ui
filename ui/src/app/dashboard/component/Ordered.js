@@ -67,10 +67,14 @@ export function Ordered({ path = '/MetadataResolversPositionOrder', entities, ch
         if (response.ok) {
             const ids = prop ? o.hasOwnProperty(prop) ? o[prop] : o : o;
             setOrder(ids);
-            setFirstId(first(ids));
-            setLastId(last(ids));
         }
     }
+
+    React.useEffect(() => {
+        const oIds = ordered.map(o => o.resourceId);
+        setFirstId(first(oIds));
+        setLastId(last(oIds));
+    }, [ordered])
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => loadOrder(),[]);

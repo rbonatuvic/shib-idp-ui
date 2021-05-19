@@ -1,23 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Check from 'react-bootstrap/FormCheck';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleDown, faArrowCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleDown, faArrowCircleUp, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { Ordered } from '../../../../dashboard/component/Ordered';
 import { Translate } from '../../../../i18n/components/translate';
-import { MetadataFiltersContext } from './MetadataFilters';
 
-export function MetadataFilterEditorList ({provider}) {
-    const filters = React.useContext(MetadataFiltersContext);
+export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate, loading}) {
 
-    const onToggleEnabled = () => {}
-    const removeFilter = () => {}
-
-    const disabled = false;
+    const disabled = loading;
 
     return (
-        <Ordered path={`/MetadataSources/${provider.resourceId}/FiltersPositionOrder` } entities={filters}>
+        <Ordered path={`/MetadataResolvers/${provider.resourceId}/FiltersPositionOrder` } entities={filters}>
             {(ordered, first, last, onOrderUp, onOrderDown) =>
                 <table className="filter-list table table-striped table-hover">
                     <thead className="">
@@ -33,7 +29,7 @@ export function MetadataFilterEditorList ({provider}) {
                     </thead>
                     <tbody>
                         {ordered.map((filter, i) =>
-                            <tr>
+                            <tr key={i}>
                                 <td className="td-sm">
                                     <div className="d-flex justify-content-center">
                                         <button className="btn btn-link" onClick={() => onOrderUp(filter.resourceId)} disabled={first === filter.resourceId}>
@@ -51,30 +47,24 @@ export function MetadataFilterEditorList ({provider}) {
                                 <td className="td-lg">{filter['@type']}</td>
                                 <td className="td-sm">
                                     <div className="d-flex justify-content-center">
-                                        <div className="custom-control custom-switch">
-                                            <input type="checkbox"
-                                                className="custom-control-input"
-                                                disabled="disabled"
-                                                id="'customSwitch' + i"
-                                                value="filter.filterEnabled"
-                                                checked="filter.filterEnabled"
-                                                onChange={() => onToggleEnabled(filter)} />
-                                            <label className="custom-control-label" htmlFor={`customSwitch-${i}`}>
-                                                <span className="sr-only">Toggle this switch element</span>
-                                            </label>
-                                        </div>
+                                        <Check type="switch"
+                                            id={`customSwitch${i}`}
+                                            label={<span className="sr-only">Toggle this switch element</span>}
+                                            checked={filter.filterEnabled}
+                                            disabled={loading}
+                                            onChange={() => onUpdate({ ...filter, filterEnabled: !filter.filterEnabled })} />
                                         {filter.disabled && <i className="fa fa-spinner fa-pulse fa-lg fa-fw"></i>}
                                     </div>
                                 </td>
                                 <td className="td-sm">
-                                    <Link className={`btn btn-link ${disabled ? 'disabled' : ''}`} to={`filter/${filter.resourceId}/edit`}>
-                                        <i className="fa fa-edit fa-lg sr-hidden text-info"></i>
+                                    <Link className={`btn btn-link ${disabled ? 'disabled' : ''}`} to={`${filter.resourceId}/edit/common`}>
+                                        <FontAwesomeIcon icon={faEdit} size="lg" className="text-info" />
                                         <span className="sr-only"><Translate value="action.edit">Edit</Translate></span>
                                     </Link>
                                 </td>
                                 <td className="td-sm">
-                                    <button className="btn btn-link" onClick={() => removeFilter(filter.resourceId)}>
-                                        <i className="fa fa-trash fa-lg sr-hidden text-danger"></i>
+                                    <button className="btn btn-link" disabled={loading} onClick={() => onDelete(filter.resourceId)}>
+                                        <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger" />
                                         <span className="sr-only"><Translate value="action.edit">Delete</Translate></span>
                                     </button>
                                 </td>

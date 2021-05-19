@@ -132,7 +132,7 @@ const FilterTargetField = ({
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 {typeOptions.map((option) => (
-                                    <Dropdown.Item as="button" onClick={() => selectType(option)} key={option.value}>
+                                    <Dropdown.Item as="button" onClick={() => selectType(option)} key={option.value} type="button">
                                         <Translate value={option.label}>{option.label}</Translate>
                                     </Dropdown.Item>
                                 ))}
@@ -224,6 +224,7 @@ const FilterTargetField = ({
                             {targetType === 'ENTITY' &&
                                 <div className="ml-2">
                                     <button className="btn btn-success"
+                                        type="button"
                                         disabled={!term}
                                         onClick={() => onSelectValue(term)}>
                                         <Translate value="action.add-entity-id">Add Entity ID</Translate>&nbsp;&nbsp;

@@ -1,22 +1,39 @@
 import React from 'react';
-import { useMetadataEntities } from '../../../hooks/api';
+import { useMetadataFilters } from '../../../hooks/api';
 
 export const MetadataFiltersContext = React.createContext();
 
 export function MetadataFilters ({ providerId, types = [], filters, children }) {
 
-    const { get, response } = useMetadataEntities('provider', {
+    const { put, del, get, response, loading } = useMetadataFilters(providerId, {
         cachePolicy: 'no-cache'
     });
 
     const [filterData, setFilterData] = React.useState([]);
 
     async function loadFilters(id) {
-        const list = await get(`/${id}/Filters`);
+        const list = await get(``);
         if (response.ok) {
             setFilterData(list.filter(f => types.length > 1 ? types.indexOf(f['@type']) > -1 : true));
         }
     }
+
+    async function updateFilter(filter) {
+        await put(`/${filter.resourceId}`, filter);
+        if (response.ok) {
+            loadFilters(providerId);
+        }
+    }
+
+    async function deleteFilter(filterId) {
+        await del(`/${filterId}`);
+        if (response.ok) {
+            loadFilters();
+        }
+    }
+
+    const onDelete = (id) => deleteFilter(id);
+    const onUpdate = (f) => updateFilter(f);
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
@@ -29,6 +46,6 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
 
 
     return (
-        <MetadataFiltersContext.Provider value={filterData}>{children}</MetadataFiltersContext.Provider>
+        <MetadataFiltersContext.Provider value={filterData}>{children(filterData, onUpdate, onDelete, loading)}</MetadataFiltersContext.Provider>
     );
 }

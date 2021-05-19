@@ -6,10 +6,14 @@ export const MetadataTypeContext = React.createContext();
 export const MetadataObjectContext = React.createContext();
 
 /*eslint-disable react-hooks/exhaustive-deps*/
-export function MetadataSelector ({ children }) {
+export function MetadataSelector({ children, ...props }) {
 
     let { type, id } = useParams();
     const location = useLocation();
+
+    if (!type) {
+        type = props.type;
+    }
 
     React.useEffect(() => {
         if (location.state?.refresh) {
