@@ -46,7 +46,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
     };
 
     const onBlur = (form) => {
-        console.log(form);
+        // console.log(form);
     }
 
     async function save () {
@@ -60,8 +60,6 @@ export function MetadataSourceWizard ({ onShowNav }) {
     }
 
     const validator = definition.validator(data);
-
-    console.log(errors, loading)
 
     return (
         <>

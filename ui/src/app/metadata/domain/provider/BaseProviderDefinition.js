@@ -20,14 +20,16 @@ export const BaseProviderDefinition = {
         }
     },
     parser: (changes) => {
-        return (changes.metadataFilters ? ({
+        const parsed = (changes.metadataFilters ? ({
             ...changes,
             metadataFilters: [
                 ...changes.metadataFilters.filter((filter, filterName) => (
                     Object.keys(filter).filter(k => k !== '@type').length > 0
                 ))
             ]
-        }) : changes)
+        }) : changes);
+
+        return parsed;
     },
     formatter: (changes, schema) => {
         const filterSchema = schema?.properties?.metadataFilters;

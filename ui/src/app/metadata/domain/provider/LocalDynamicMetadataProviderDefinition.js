@@ -54,6 +54,12 @@ export const LocalDynamicMetadataProviderWizard = {
                 {
                     size: 8,
                     fields: [
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
                         'xmlId',
                         'sourceDirectory'
                     ]
@@ -63,12 +69,6 @@ export const LocalDynamicMetadataProviderWizard = {
                     fields: [
                         'dynamicMetadataResolverAttributes'
                     ],
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
-                    ]
                 }
             ]
         },
@@ -112,6 +112,9 @@ export const LocalDynamicMetadataProviderWizard = {
 export const LocalDynamicMetadataProviderEditor = {
     ...LocalDynamicMetadataProviderWizard,
     uiSchema: defaultsDeep({
+        '@type': {
+            'ui:readonly': true
+        }
     }, LocalDynamicMetadataProviderWizard.uiSchema),
     steps: [
         {

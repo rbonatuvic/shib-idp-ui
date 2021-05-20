@@ -64,6 +64,12 @@ export const DynamicHttpMetadataProviderWizard = {
                 {
                     size: 8,
                     fields: [
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
                         'xmlId',
                         'requireValidMetadata',
                         'failFastInitialization',
@@ -86,12 +92,6 @@ export const DynamicHttpMetadataProviderWizard = {
                     size: 8,
                     fields: [
                         'httpMetadataResolverAttributes'
-                    ]
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
                     ]
                 }
             ]
@@ -151,7 +151,10 @@ export const DynamicHttpMetadataProviderWizard = {
             backgroundInitializationFromCacheDelay: {
                 'ui:widget': 'OptionWidget',
                 options: DurationOptions,
-                'ui:placeholder': 'label.duration'
+                'ui:placeholder': 'label.duration',
+                visibleIf: {
+                    initializeFromPersistentCacheInBackground: true
+                }
             }
         },
         metadataFilters: MetadataFilterPluginsSchema,
@@ -207,5 +210,8 @@ export const DynamicHttpMetadataProviderEditor = {
         }
     ],
     uiSchema: defaultsDeep({
+        '@type': {
+            'ui:readonly': true
+        }
     }, DynamicHttpMetadataProviderWizard.uiSchema)
 };

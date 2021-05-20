@@ -26,7 +26,7 @@ export function MetadataFilterList() {
     const current = React.useContext(MetadataObjectContext);
 
     const onNavigate = (path) => {
-        history.push(path)
+        history.push(`../edit/${path}`);
     };
 
     return (

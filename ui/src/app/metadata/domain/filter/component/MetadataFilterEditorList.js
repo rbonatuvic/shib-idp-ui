@@ -10,8 +10,6 @@ import { Translate } from '../../../../i18n/components/translate';
 
 export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate, loading}) {
 
-    const disabled = loading;
-
     return (
         <Ordered path={`/MetadataResolvers/${provider.resourceId}/FiltersPositionOrder` } entities={filters}>
             {(ordered, first, last, onOrderUp, onOrderDown) =>
@@ -57,7 +55,7 @@ export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate
                                     </div>
                                 </td>
                                 <td className="td-sm">
-                                    <Link className={`btn btn-link ${disabled ? 'disabled' : ''}`} to={`${filter.resourceId}/edit/common`}>
+                                    <Link className={`btn btn-link ${loading ? 'disabled' : ''}`} to={`${filter.resourceId}/edit/common`}>
                                         <FontAwesomeIcon icon={faEdit} size="lg" className="text-info" />
                                         <span className="sr-only"><Translate value="action.edit">Edit</Translate></span>
                                     </Link>

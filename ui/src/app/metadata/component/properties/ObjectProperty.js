@@ -11,9 +11,6 @@ export function ObjectProperty ({ property, columns, onPreview }) {
             case 'array':
                 return <ArrayProperty key={ `p-${idx}` } property={prop} columns={columns} />
             case 'object':
-                if (prop.widget && prop.widget.id && prop.widget.id === 'filter-target') {
-                    console.log(prop);
-                }
                 return <React.Fragment key={`p-${idx}`}>
                     {prop.widget && prop.widget.id && prop.widget.id === 'filter-target' ?
                         <FilterTargetProperty property={prop} columns={columns} onPreview={onPreview} />

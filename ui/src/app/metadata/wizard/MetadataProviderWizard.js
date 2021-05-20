@@ -44,13 +44,13 @@ export function MetadataProviderWizard({onRestart}) {
     };
 
     const onBlur = (form) => {
-        console.log(form);
+        // console.log(form);
     }
 
     const validator = definition.validator(data);
 
     async function save() {
-        const body = removeNull(metadata, true);
+        const body = removeNull(definition.parser(metadata), true);
         await post('', body);
         if (response.ok) {
             history.push('/dashboard/metadata/manager/providers');

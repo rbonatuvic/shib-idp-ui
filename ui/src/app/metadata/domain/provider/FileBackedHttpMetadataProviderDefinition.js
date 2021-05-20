@@ -71,6 +71,12 @@ export const FileBackedHttpMetadataProviderWizard = {
                 {
                     size: 8,
                     fields: [
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
                         'xmlId',
                         'metadataURL',
                         'initializeFromBackupFile',
@@ -98,12 +104,6 @@ export const FileBackedHttpMetadataProviderWizard = {
                     size: 8,
                     fields: [
                         'httpMetadataResolverAttributes'
-                    ]
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
                     ]
                 }
             ]
@@ -225,5 +225,8 @@ export const FileBackedHttpMetadataProviderEditor = {
         }
     ],
     uiSchema: defaultsDeep({
+        '@type': {
+            'ui:readonly': true
+        }
     }, FileBackedHttpMetadataProviderWizard.uiSchema)
 };

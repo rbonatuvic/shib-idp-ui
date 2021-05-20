@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router-dom';
 import { MetadataFilterList } from './editor/MetadataFilterList';
+import MetadataFilterSelector from './hoc/MetadataFilterSelector';
 import MetadataSchema from './hoc/MetadataSchema';
 import MetadataSelector from './hoc/MetadataSelector';
 import { NewFilter } from './new/NewFilter';
@@ -25,7 +26,9 @@ export function Filter() {
                 <NewFilter />
             } />
             <Route path={`${path}/:filterId/edit/:section`} render={() =>
-                <EditFilter />
+                <MetadataFilterSelector>
+                    <EditFilter />
+                </MetadataFilterSelector>
             } />
             <Redirect exact path={`${path}/new`} to={`${path}/new/common`} />
         </Switch>

@@ -44,6 +44,9 @@ const OptionWidget = ({
     uiSchema,
     ...props
 }) => {
+
+    console.log(value, props)
+
     const _onChange = (selected) => onChange(selected[0] === '' ? options.emptyValue : selected[0]);
     const _onBlur = ({ target: { value } }) => onBlur(id, value);
     const _onFocus = ({ target: { value } }) => onFocus(id, value);

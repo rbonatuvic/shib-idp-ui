@@ -10,10 +10,11 @@ import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/Metadat
 
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
-import { useMetadataEntities, useMetadataEntity } from '../hooks/api';
-import { MetadataObjectContext } from '../hoc/MetadataSelector';
+import { getMetadataPath, useMetadataEntities, useMetadataUpdater } from '../hooks/api';
+import { useMetadataObject } from '../hoc/MetadataSelector';
 import { NavLink } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
+import API_BASE_PATH from '../../App.constant';
 
 export function MetadataEditor () {
 
@@ -21,13 +22,15 @@ export function MetadataEditor () {
 
     const { type, id, section } = useParams();
 
-    const { put, response, saving } = useMetadataEntity(type, {}, []);
+    const current = useMetadataObject();
+
+    const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current);
 
     const { data } = useMetadataEntities(type, {}, []);
     const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
-    const current = React.useContext(MetadataObjectContext);
+    
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;
@@ -38,11 +41,14 @@ export function MetadataEditor () {
         // setBlocking(true);
     };
 
-    async function save(metadata) {
-        await put(`/${id}`, definition.parser(metadata));
-        if (response.ok) {
-            gotoDetail({ refresh: true });
-        }
+    function save(metadata) {
+        update(`/${id}`, definition.parser(metadata))
+            .then(() => {
+                gotoDetail({ refresh: true });
+            })
+            .catch(err => {
+                window.location.reload();
+            });
     };
 
     const cancel = () => {
@@ -61,8 +67,6 @@ export function MetadataEditor () {
     const [blocking, setBlocking] = React.useState(false);
 
     const validator = definition.validator(data, current);
-
-    // console.log(errors);
 
     return (
         <div className="container-fluid p-3">
@@ -105,9 +109,9 @@ export function MetadataEditor () {
                             <button className="btn btn-info"
                                 type="button"
                                 onClick={() => save(metadata)}
-                                disabled={errors.length > 0 || saving}
+                                disabled={errors.length > 0 || loading}
                                 aria-label="Save changes to the metadata source. You will return to the dashboard">
-                                    <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={ saving } />&nbsp;
+                                <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading } />&nbsp;
                                 <Translate value="action.save">Save</Translate>
                             </button>
                             &nbsp;

@@ -1,6 +1,7 @@
 import useFetch from 'use-http';
 
 import API_BASE_PATH from '../../App.constant';
+import { useContentionDispatcher, openContentionModalAction } from '../contention/ContentionContext';
 
 import {MetadataFilterTypes} from '../domain/filter';
 
@@ -83,4 +84,35 @@ export function useMetadataProviderTypes(opts = {}, onMount = null) {
 
 export function useMetadataFilterTypes () {
     return MetadataFilterTypes;
+}
+
+export function useMetadataUpdater (path, current) {
+    const { request, put, get, error, response, ...props } = useFetch(path, {
+        cachePolicy: 'no-cache'
+    });
+
+    const dispatch = useContentionDispatcher();
+
+    async function update (p, body) {
+        const req = await put(p, body);
+        if (response.status === 409) {
+            const latest = await get(p);
+            return new Promise((resolve, reject) => {
+                dispatch(openContentionModalAction(current, latest, body, async (resolution) => {
+                    resolve(await update(p, resolution));
+                }, () => {
+                    reject();
+                }));
+            });
+        }
+        return Promise.resolve(req);
+    }
+
+    return {
+        ...props,
+        request,
+        response,
+        update,
+        error
+    }
 }

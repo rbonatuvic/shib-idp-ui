@@ -39,7 +39,6 @@ const AttributeReleaseWidget = ({
         const all = (enumOptions).map(({ value }) => value);
 
         if (checked) {
-            console.log(selectValue(option.value, value, all))
             onChange(selectValue(option.value, value, all));
         } else {
             onChange(deselectValue(option.value, value));

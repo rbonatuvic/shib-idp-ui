@@ -41,8 +41,6 @@ export const EntityAttributesFilterWizard = {
         const filters = current ? data.filter(s => s.resourceId !== current.resourceId) : data;
         const names = filters.map(s => s.name);
 
-        console.log(current)
-
         return (formData, errors) => {
             if (names.indexOf(formData.name) > -1) {
                 errors.name.addError('message.name-unique');
@@ -59,7 +57,6 @@ export const EntityAttributesFilterWizard = {
         }
     },
     parser: (changes) => {
-        console.log(changes);
         return {
             ...changes,
             relyingPartyOverrides: removeNull(changes)

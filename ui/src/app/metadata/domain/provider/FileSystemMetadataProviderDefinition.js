@@ -54,6 +54,12 @@ export const FileSystemMetadataProviderWizard = {
                 {
                     size: 8,
                     fields: [
+                        'enabled'
+                    ]
+                },
+                {
+                    size: 8,
+                    fields: [
                         'xmlId',
                         'metadataFile',
                         'doInitialization',
@@ -63,12 +69,6 @@ export const FileSystemMetadataProviderWizard = {
                     size: 8,
                     fields: [
                         'reloadableMetadataResolverAttributes'
-                    ]
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
                     ]
                 }
             ]
@@ -168,5 +168,8 @@ export const FileSystemMetadataProviderEditor = {
         }
     ],
     uiSchema: defaultsDeep({
+        '@type': {
+            'ui:readonly': true
+        }
     }, FileSystemMetadataProviderWizard.uiSchema)
 };

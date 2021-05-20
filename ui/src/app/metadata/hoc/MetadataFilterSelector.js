@@ -33,10 +33,14 @@ export function MetadataFilterSelector({ children }) {
     return (
         <MetadataFilterContext.Provider value={filter}>
             {filter && filter.version &&
-                <React.Fragment>{children(filter)}</React.Fragment>
+                <React.Fragment>{children}</React.Fragment>
             }
         </MetadataFilterContext.Provider>
     );
+}
+
+export function useMetadataFilterObject () {
+    return React.useContext(MetadataFilterContext);
 }
 
 export default MetadataFilterSelector;
