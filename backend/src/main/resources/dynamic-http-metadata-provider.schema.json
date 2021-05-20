@@ -116,7 +116,7 @@
                         {
                             "properties": {
                                 "initializeFromPersistentCacheInBackground": {
-                                    "const": true
+                                    "enum": [true]
                                 },
                                 "backgroundInitializationFromCacheDelay": {
                                     "title": "label.background-init-from-cache-delay",
@@ -129,7 +129,7 @@
                         {
                             "properties": {
                                 "initializeFromPersistentCacheInBackground": {
-                                    "const": false
+                                    "enum": [false]
                                 }
                             }
                         }
