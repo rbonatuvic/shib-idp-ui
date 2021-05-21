@@ -49,15 +49,14 @@ public class WebSecurityConfig {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+    private HttpFirewall allowUrlEncodedSlashHttpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedSlash(true);
+        firewall.setAllowUrlEncodedDoubleSlash(true);
         return firewall;
     }
 
-    @Bean
-    public HttpFirewall defaultFirewall() {
+    private HttpFirewall defaultFirewall() {
         return new DefaultHttpFirewall();
     }
 
