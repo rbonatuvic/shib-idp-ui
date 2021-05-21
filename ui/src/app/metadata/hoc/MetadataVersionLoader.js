@@ -1,49 +1,38 @@
 import React from 'react';
-import { useParams } from 'react-router';
-import { getMetadataPath } from '../hooks/api';
-import API_BASE_PATH from '../../App.constant';
-import useFetch from 'use-http';
-import { last } from 'lodash';
+import { useParams } from 'react-router-dom';
+import { useMetadataEntity } from '../hooks/api';
 
-export function MetadataVersionLoader ({versions, children}) {
+export const MetadataVersionContext = React.createContext();
 
-    const ref = React.useRef({});
-    const [list, setList] = React.useState({});
+const { Provider } = MetadataVersionContext;
 
-    const { type, id } = useParams();
+export function MetadataVersionLoader({children}) {
 
-    const { get, response } = useFetch(`/${API_BASE_PATH}${getMetadataPath(type)}/${id}/Versions`, {
+    const { type, id, versionId } = useParams();
+
+    const [metadata, setMetadata] = React.useState();
+
+    const { get, response } = useMetadataEntity(type, {
         cachePolicy: 'no-cache',
     }, []);
 
     async function loadVersion(v) {
-        const l = await get(`/${v}`);
+        const l = await get(`/${id}/Versions/${v}`);
         if (response.ok) {
-            addToList(v, l);
-            if (last(versions) !== v) {
-                loadNext(versions[versions.indexOf(v) + 1]);
-            }
+            setMetadata(l);
         }
-    }
-
-    function addToList(version, item) {
-        ref.current = {
-            ...ref.current,
-            [version]: item
-        };
-        setList(ref.current);
-    }
-
-    function loadNext (v) {
-        loadVersion(v);
     }
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
-        loadNext(versions[0]);
-    }, [versions]);
+        loadVersion(versionId);
+    }, [versionId]);
 
-    return (<React.Fragment>
-        {children(versions.map(v => list[v]).filter(v => !!v))}
-    </React.Fragment>);
+    return (
+        <>
+            {metadata &&
+                <Provider value={metadata}>{children(metadata)}</Provider>
+            }
+        </>
+    );
 }

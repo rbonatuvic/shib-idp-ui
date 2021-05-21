@@ -10,40 +10,20 @@ import { faArrowUp, faHistory, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { scroller } from 'react-scroll';
 
 import Translate from '../../i18n/components/translate';
-import { useMetadataEntity } from '../hooks/api';
 import { MetadataHeader } from '../component/MetadataHeader';
 import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
 import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
-
+import { MetadataVersionLoader } from '../hoc/MetadataVersionLoader';
 
 export function MetadataVersion() {
 
-    const { type, id, versionId } = useParams();
-
-    const [metadata, setMetadata] = React.useState();
+    const { type, id } = useParams();
 
     const schema = React.useContext(MetadataSchemaContext);
     const definition = React.useContext(MetadataDefinitionContext);
-
     const processed = useMetadataSchema(definition, schema);
-
-    const { get, response } = useMetadataEntity(type, {
-        cachePolicy: 'no-cache',
-    }, []);
-
-    async function loadVersion(v) {
-        const l = await get(`/${id}/Versions/${v}`);
-        if (response.ok) {
-            setMetadata(l);
-        }
-    }
-
-    /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => {
-        loadVersion(versionId);
-    }, [versionId]);
 
     const onScrollTo = (element, offset = 0) => {
         scroller.scrollTo(element, {
@@ -54,8 +34,8 @@ export function MetadataVersion() {
     };
 
     return (
-        <>
-            {metadata &&
+        <MetadataVersionLoader>
+            {(metadata) =>
                 <Configuration entities={[metadata]} schema={processed} definition={definition}>
                     {(config) =>
                         <>
@@ -108,6 +88,6 @@ export function MetadataVersion() {
                     }
                 </Configuration>
             }
-        </>
+        </MetadataVersionLoader>
     );
 }

@@ -5,7 +5,7 @@ import {
     withDefault
 } from 'use-query-params';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
-import { MetadataVersionLoader } from '../hoc/MetadataVersionLoader';
+import { MetadataVersionsLoader } from '../hoc/MetadataVersionsLoader';
 import { Configuration } from '../hoc/Configuration';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Link, useParams } from 'react-router-dom';
@@ -40,7 +40,7 @@ export function MetadataComparison () {
             &nbsp;Configuration
         </h2>
         {versions &&
-        <MetadataVersionLoader versions={versions}>
+        <MetadataVersionsLoader versions={versions}>
             {(v) =>
                 <Configuration entities={v} schema={processed} definition={definition} limited={limited}>
                         {(config) => 
@@ -77,7 +77,7 @@ export function MetadataComparison () {
                         }
                 </Configuration>
             }
-        </MetadataVersionLoader>
+        </MetadataVersionsLoader>
         }
         </>
     );

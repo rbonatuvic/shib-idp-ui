@@ -4,7 +4,6 @@ import { useMetadataEntity } from '../hooks/api';
 
 export const MetadataTypeContext = React.createContext();
 export const MetadataObjectContext = React.createContext();
-export const MetadataLoaderContext = React.createContext();
 
 /*eslint-disable react-hooks/exhaustive-deps*/
 export function MetadataSelector({ children, ...props }) {
@@ -34,16 +33,12 @@ export function MetadataSelector({ children, ...props }) {
     }
     React.useEffect(() => { loadMetadata(id) }, [id]);
 
-    const update = () => loadMetadata(id);
-
     return (
         <>
         {type &&
             <MetadataTypeContext.Provider value={type}>
                 {metadata && metadata.version &&
-                <MetadataLoaderContext.Provider value={{ load: update }}>
                     <MetadataObjectContext.Provider value={metadata}>{children(metadata)}</MetadataObjectContext.Provider>
-                </MetadataLoaderContext.Provider>
                 }
             </MetadataTypeContext.Provider>
         }
@@ -53,10 +48,6 @@ export function MetadataSelector({ children, ...props }) {
 
 export function useMetadataObject () {
     return React.useContext(MetadataObjectContext);
-}
-
-export function useMetadataLoader () {
-    return React.useContext(MetadataLoaderContext);
 }
 
 export default MetadataSelector;

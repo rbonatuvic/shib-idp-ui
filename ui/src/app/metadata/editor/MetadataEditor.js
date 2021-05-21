@@ -16,13 +16,11 @@ import { NavLink } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
 import API_BASE_PATH from '../../App.constant';
 
-export function MetadataEditor () {
+export function MetadataEditor ({ current }) {
 
     const translator = useTranslator();
 
     const { type, id, section } = useParams();
-
-    const current = useMetadataObject();
 
     const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current);
 
@@ -30,7 +28,6 @@ export function MetadataEditor () {
     const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
-    
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;

@@ -9,7 +9,7 @@ export function MetadataEdit() {
 
     return (
         <MetadataForm initial={base}>
-            <MetadataEditor />
+            <MetadataEditor current={base} />
         </MetadataForm>
     );
 }

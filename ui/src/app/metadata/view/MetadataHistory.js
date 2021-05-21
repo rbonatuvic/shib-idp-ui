@@ -23,7 +23,9 @@ export function MetadataHistory () {
 
     const history = useHistory();
 
-    const { data, loading } = useMetadataHistory(type, id, {}, []);
+    const { data, loading } = useMetadataHistory(type, id, {
+        cachePolicy: 'no-cache'
+    }, []);
 
     const toggleVersionSelected = (version) => {
         let s = [...selected];
@@ -34,7 +36,6 @@ export function MetadataHistory () {
         }
         setSelected(s);
     };
-    const restore = () => {};
     const compare = (versions) => {
         const s = sortVersionsByDate(versions);
         const path = `/metadata/${type}/${id}/configuration/compare?${queryString.stringify({versions: s.map(s => s.id)}, {
@@ -96,10 +97,10 @@ export function MetadataHistory () {
                                 <td>{ version.creator }</td>
                                 <td>
                                     {i > 0 &&
-                                    <button className="btn btn-text btn-link" onClick={ () => restore(version) }>
+                                    <Link className="btn btn-text btn-link" to={`/metadata/${type}/${id}/restore/${version.id}/common`}>
                                         <FontAwesomeIcon icon={faUndo} />&nbsp;
                                         <Translate value="action.restore">Restore</Translate>
-                                    </button>
+                                    </Link>
                                     }
                                 </td>
                             </tr>

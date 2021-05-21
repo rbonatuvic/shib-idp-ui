@@ -10,6 +10,7 @@ import { MetadataXml } from './view/MetadataXml';
 import { MetadataComparison } from './view/MetadataComparison';
 import { MetadataVersion } from './view/MetadataVersion';
 import { MetadataEdit } from './view/MetadataEdit';
+import { MetadataRestore } from './view/MetadataRestore';
 
 export function Metadata () {
 
@@ -49,6 +50,9 @@ export function Metadata () {
                             } />
                             <Route path={`${path}/edit/:section`} render={ () =>
                                 <MetadataEdit />
+                            } />
+                            <Route path={`${path}/restore/:versionId/:section`} render={ () =>
+                                <MetadataRestore />
                             } />
                             <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
                         </Switch>
