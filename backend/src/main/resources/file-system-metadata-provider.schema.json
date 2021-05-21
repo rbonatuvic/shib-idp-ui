@@ -19,21 +19,8 @@
         "@type": {
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
-            "placeholder": "label.select-metadata-type",
             "type": "string",
-            "readOnly": true,
-            "widget": {
-                "id": "select",
-                "disabled": true
-            },
-            "oneOf": [
-                {
-                    "enum": [
-                        "FilesystemMetadataResolver"
-                    ],
-                    "description": "value.file-system-metadata-provider"
-                }
-            ]
+            "const": "FilesystemMetadataResolver"
         },
         "xmlId": {
             "title": "label.xml-id",
@@ -56,24 +43,7 @@
         "doInitialization": {
             "title": "label.do-resolver-initialization",
             "description": "tooltip.do-resolver-initialization",
-            "type": "boolean",
-            "widget": {
-                "id": "boolean-radio"
-            },
-            "oneOf": [
-                {
-                    "enum": [
-                        true
-                    ],
-                    "description": "value.true"
-                },
-                {
-                    "enum": [
-                        false
-                    ],
-                    "description": "value.false"
-                }
-            ]
+            "type": "boolean"
         },
         "reloadableMetadataResolverAttributes": {
             "type": "object",
@@ -82,54 +52,19 @@
                     "title": "label.min-refresh-delay",
                     "description": "tooltip.min-refresh-delay",
                     "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxRefreshDelay": {
                     "title": "label.max-refresh-delay",
                     "description": "tooltip.max-refresh-delay",
                     "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "refreshDelayFactor": {
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
                     "type": "number",
-                    "widget": {
-                        "id": "float",
-                        "help": "message.real-number",
-                        "step": 0.01
-                    },
-                    "placeholder": "label.real-number",
+                    "multipleOf": 0.01,
                     "minimum": 0.001,
                     "maximum": 0.999
                 }
