@@ -92,7 +92,7 @@ public class CustomEntityAttributesDefinitionsController {
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(
-                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/attribute/" + name).build().toUri());
+                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + name).build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
