@@ -35,7 +35,7 @@ public class CustomEntityAttributesDefinitionsController {
         
         if (cad != null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/attribute").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute").build().toUri());
             
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers)
                                  .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), 
@@ -52,7 +52,7 @@ public class CustomEntityAttributesDefinitionsController {
         CustomEntityAttributeDefinition cad = caService.find(definition.getName());      
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/attribute").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute").build().toUri());
             
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                                  .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()), 
@@ -76,7 +76,7 @@ public class CustomEntityAttributesDefinitionsController {
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(
-                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/attribute/" + name).build().toUri());
+                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + name).build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
