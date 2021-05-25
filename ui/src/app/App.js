@@ -17,6 +17,7 @@ import Dashboard from './dashboard/view/Dashboard';
 import Header from './core/components/Header';
 import { UserProvider } from './core/user/UserContext';
 import { Metadata } from './metadata/Metadata';
+import { Attribute } from './metadata/Attribute';
 import { Notifications } from './notifications/hoc/Notifications';
 import { NotificationList } from './notifications/component/NotificationList';
 import { UserConfirmation, ConfirmWindow } from './core/components/UserConfirmation';
@@ -59,6 +60,7 @@ function App() {
                                                     <Route path="/dashboard" component={Dashboard} />
                                                     <Route path="/metadata/source/new" component={NewSource} />
                                                     <Route path="/metadata/provider/new" component={NewProvider} />
+                                                    <Route path="/metadata/attributes" component={Attribute} />
                                                     <Route path={`/metadata/provider/:id/filter`} component={Filter} />
                                                     <Route path="/metadata/:type/:id" component={Metadata} />
                                                 </Switch>

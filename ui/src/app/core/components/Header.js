@@ -26,6 +26,18 @@ export function Header () {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto align-items-center" navbar>
+                    <Dropdown className="mr-2" id="basic-nav-dropdown">
+                        <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
+                            <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
+                            <Translate value={'action.advanced'} />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Link to="/metadata/attributes" className="dropdown-item text-primary py-2">
+                                <FontAwesomeIcon icon={faCube} className="mr-2" />
+                                <Translate value="action.custom-entity-attributes" />
+                            </Link>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <Dropdown className="" id="basic-nav-dropdown">
                         <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
                             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
@@ -34,11 +46,11 @@ export function Header () {
                         <Dropdown.Menu>
                             <Link to="/metadata/source/new" className="dropdown-item text-primary py-2">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
-                                Metadata Source
+                                <Translate value="action.add-new-source" />
                             </Link>
                             <Link to="/metadata/provider/new" className="dropdown-item text-primary py-2">
                                 <FontAwesomeIcon icon={faCubes} className="mr-2" />
-                                Metadata Provider
+                                <Translate value="action.add-new-provider" />
                             </Link>
                         </Dropdown.Menu>
                     </Dropdown>

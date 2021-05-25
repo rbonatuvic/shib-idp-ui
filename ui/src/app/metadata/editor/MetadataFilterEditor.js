@@ -28,7 +28,7 @@ export function MetadataFilterEditor({children}) {
 
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
-        dispatch(setFormErrorAction(section, changes.errors));
+        dispatch(setFormErrorAction(changes.errors));
         // setBlocking(true);
     };
 

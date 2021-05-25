@@ -14,12 +14,14 @@ import ObjectFieldTemplate from './templates/ObjectFieldTemplate';
 import TitleField from './fields/TitleField';
 import DescriptionField from './fields/DescriptionField';
 import FilterTargetField from './fields/FilterTargetField';
+import StringListWithDefaultField from './fields/StringListWithDefaultField';
 
 export const fields = {
     // SchemaField: CustomSchemaField
     TitleField,
     DescriptionField,
-    FilterTargetField
+    FilterTargetField,
+    StringListWithDefaultField
 };
 
 export const templates = {

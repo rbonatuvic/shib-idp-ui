@@ -239,46 +239,44 @@ const DefaultNormalArrayFieldTemplate = (props) => {
     const showTitle = props.uiSchema.hasOwnProperty("ui:title") ? props.uiSchema["ui:title"] === false && !props.canAdd ? false : true : true;
 
     return (
-        <div>
-            <Row className="p-0 m-0">
-                <Col className="p-0 m-0">
-                    <div className="d-flex align-items-center">
-                        {showTitle && <ArrayFieldTitle
-                            key={`array-field-title-${props.idSchema.$id}`}
-                            TitleField={props.TitleField}
+        <Row className="p-0 m-0">
+            <Col className="p-0 m-0">
+                <div className="d-flex align-items-center">
+                    {showTitle && <ArrayFieldTitle
+                        key={`array-field-title-${props.idSchema.$id}`}
+                        TitleField={props.TitleField}
+                        idSchema={props.idSchema}
+                        title={props.uiSchema["ui:title"] || props.title}
+                        required={props.required}
+                    />}
+                    {props.canAdd && (
+                        <AddButton
+                            className="array-item-add mx-2"
+                            onClick={props.onAddClick}
+                            disabled={props.disabled || props.readonly}
+                        />
+                    )}
+                    {(props.uiSchema["ui:description"] || props.schema.description) && (
+                        <ArrayFieldDescription
+                            key={`array-field-description-${props.idSchema.$id}`}
+                            DescriptionField={props.DescriptionField}
                             idSchema={props.idSchema}
-                            title={props.uiSchema["ui:title"] || props.title}
-                            required={props.required}
-                        />}
-                        {props.canAdd && (
-                            <AddButton
-                                className="array-item-add mx-2"
-                                onClick={props.onAddClick}
-                                disabled={props.disabled || props.readonly}
-                            />
-                        )}
-                        {(props.uiSchema["ui:description"] || props.schema.description) && (
-                            <ArrayFieldDescription
-                                key={`array-field-description-${props.idSchema.$id}`}
-                                DescriptionField={props.DescriptionField}
-                                idSchema={props.idSchema}
-                                description={
-                                    props.uiSchema["ui:description"] || props.schema.description
-                                }
-                            />
-                        )}
-                    </div>
-                    <Container fluid key={`array-item-list-${props.idSchema.$id}`} className="p-0 m-0">
-                        {props.items && props.items.map(p => 
-                            props.schema.items.type === 'object' || props.schema.items.$ref ?
-                                ObjectArrayItem({type: props.uiSchema.type, ...p})
-                                :
-                                DefaultArrayItem({...p, uiSchema: props.uiSchema.items })
-                        )}
-                    </Container>
-                </Col>
-            </Row>
-        </div>
+                            description={
+                                props.uiSchema["ui:description"] || props.schema.description
+                            }
+                        />
+                    )}
+                </div>
+                <Container fluid key={`array-item-list-${props.idSchema.$id}`} className="p-0 m-0">
+                    {props.items && props.items.map(p =>
+                        props.schema.items.type === 'object' || props.schema.items.$ref ?
+                            ObjectArrayItem({ type: props.uiSchema.type, ...p })
+                            :
+                            DefaultArrayItem({ ...p, uiSchema: props.uiSchema.items })
+                    )}
+                </Container>
+            </Col>
+        </Row>
     );
 };
 

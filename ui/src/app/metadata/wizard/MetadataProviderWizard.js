@@ -35,7 +35,7 @@ export function MetadataProviderWizard({onRestart}) {
 
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
-        formDispatch(setFormErrorAction(current, changes.errors));
+        formDispatch(setFormErrorAction(changes.errors));
         // console.log('change', changes);
     };
 

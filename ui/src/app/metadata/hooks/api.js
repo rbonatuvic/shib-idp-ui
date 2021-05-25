@@ -116,3 +116,13 @@ export function useMetadataUpdater (path, current) {
         error
     }
 }
+
+export function useMetadataAttributes (opts = {}, onMount) {
+    //
+    return useFetch(`${API_BASE_PATH}/custom/entity/attributes`, opts, onMount);
+}
+
+export function useMetadataAttribute(opts = {}, onMount) {
+    //
+    return useFetch(`${API_BASE_PATH}/custom/entity/attribute`, opts, onMount);
+}

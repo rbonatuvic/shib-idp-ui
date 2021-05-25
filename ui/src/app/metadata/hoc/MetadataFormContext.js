@@ -28,11 +28,10 @@ export const setFormDataAction = (payload) => {
     }
 }
 
-export const setFormErrorAction = (page, errors) => {
+export const setFormErrorAction = (errors) => {
     return {
         type: MetadataFormActions.SET_FORM_ERROR,
         payload: {
-            page,
             errors
         }
     }
@@ -59,8 +58,7 @@ function reducer(state, action) {
 function MetadataForm({ children, initial = {}, onChange }) {
 
     const metadata = {
-        ...useFormattedMetadata(),
-        ...initial
+        ...useFormattedMetadata(initial)
     };
 
     const [state, dispatch] = React.useReducer(reducer, {
@@ -113,7 +111,8 @@ function usePagesWithErrors(definition) {
 function useFormattedMetadata(initial = {}) {
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
-    return definition.formatter(React.useContext(MetadataObjectContext), schema);
+    const obj = React.useContext(MetadataObjectContext);
+    return definition.formatter(initial ? initial : obj, schema);
 }
 
 function useMetadataFormContext () {

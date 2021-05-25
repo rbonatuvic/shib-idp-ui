@@ -11,7 +11,6 @@ import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/Metadat
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
 import { getMetadataPath, useMetadataEntities, useMetadataUpdater } from '../hooks/api';
-import { useMetadataObject } from '../hoc/MetadataSelector';
 import { NavLink } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
 import API_BASE_PATH from '../../App.constant';
@@ -34,7 +33,7 @@ export function MetadataEditor ({ current }) {
 
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
-        dispatch(setFormErrorAction(section, changes.errors));
+        dispatch(setFormErrorAction(changes.errors));
         // setBlocking(true);
     };
 
