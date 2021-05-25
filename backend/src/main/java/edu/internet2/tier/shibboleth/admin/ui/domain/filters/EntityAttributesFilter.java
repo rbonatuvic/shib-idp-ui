@@ -75,4 +75,16 @@ public class EntityAttributesFilter extends MetadataFilter {
         this.attributeRelease = getAttributeReleaseListFromAttributeList(this.attributes);
         this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(this.attributes);
     }
+
+    private EntityAttributesFilter updateConcreteFilterTypeData(EntityAttributesFilter filterToBeUpdated) {
+        filterToBeUpdated.setEntityAttributesFilterTarget(getEntityAttributesFilterTarget());
+        filterToBeUpdated.setRelyingPartyOverrides(getRelyingPartyOverrides());
+        filterToBeUpdated.setAttributeRelease(getAttributeRelease());
+        return filterToBeUpdated;
+    }
+
+    @Override
+    public MetadataFilter updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated) {
+        return updateConcreteFilterTypeData((EntityAttributesFilter) filterToBeUpdated);
+    }
 }

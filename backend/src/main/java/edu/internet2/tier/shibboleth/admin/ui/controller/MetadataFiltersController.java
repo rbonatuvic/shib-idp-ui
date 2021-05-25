@@ -125,7 +125,7 @@ public class MetadataFiltersController {
 
         filterTobeUpdated.setName(updatedFilter.getName());
         filterTobeUpdated.setFilterEnabled(updatedFilter.isFilterEnabled());
-        updateConcreteFilterTypeData(filterTobeUpdated, updatedFilter);
+        updatedFilter.updateConcreteFilterTypeData(filterTobeUpdated);
 
         MetadataFilter persistedFilter = filterRepository.save(filterTobeUpdated);
 
@@ -204,49 +204,6 @@ public class MetadataFiltersController {
                 .collect(toList()).get(0);
 
         return persistedFilter;
-    }
-
-    /**
-     * Add else if instanceof block here for each concrete filter types we add in the future
-     */
-    private void updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated, MetadataFilter filterWithUpdatedData) {
-        //TODO: Could we maybe use Dozer here before things get out of control? https://dozermapper.github.io
-        // Mapper mapper = new net.sf.dozer.Mapper(); // or autowire one
-        // mapper.map(fromFilter, toFilter);
-        if (filterWithUpdatedData instanceof EntityAttributesFilter) {
-            EntityAttributesFilter toFilter = EntityAttributesFilter.class.cast(filterToBeUpdated);
-            EntityAttributesFilter fromFilter = EntityAttributesFilter.class.cast(filterWithUpdatedData);
-            toFilter.setEntityAttributesFilterTarget(fromFilter.getEntityAttributesFilterTarget());
-            toFilter.setRelyingPartyOverrides(fromFilter.getRelyingPartyOverrides());
-            toFilter.setAttributeRelease(fromFilter.getAttributeRelease());
-        } else if (filterWithUpdatedData instanceof EntityRoleWhiteListFilter) {
-            EntityRoleWhiteListFilter toFilter = EntityRoleWhiteListFilter.class.cast(filterToBeUpdated);
-            EntityRoleWhiteListFilter fromFilter = EntityRoleWhiteListFilter.class.cast(filterWithUpdatedData);
-            toFilter.setRemoveEmptyEntitiesDescriptors(fromFilter.getRemoveEmptyEntitiesDescriptors());
-            toFilter.setRemoveRolelessEntityDescriptors(fromFilter.getRemoveRolelessEntityDescriptors());
-            toFilter.setRetainedRoles(fromFilter.getRetainedRoles());
-        } else if (filterWithUpdatedData instanceof SignatureValidationFilter) {
-            SignatureValidationFilter toFilter = SignatureValidationFilter.class.cast(filterToBeUpdated);
-            SignatureValidationFilter fromFilter = SignatureValidationFilter.class.cast(filterWithUpdatedData);
-            toFilter.setRequireSignedRoot(fromFilter.getRequireSignedRoot());
-            toFilter.setCertificateFile(fromFilter.getCertificateFile());
-            toFilter.setDefaultCriteriaRef(fromFilter.getDefaultCriteriaRef());
-            toFilter.setSignaturePrevalidatorRef(fromFilter.getSignaturePrevalidatorRef());
-            toFilter.setDynamicTrustedNamesStrategyRef(fromFilter.getDynamicTrustedNamesStrategyRef());
-            toFilter.setTrustEngineRef(fromFilter.getTrustEngineRef());
-            toFilter.setPublicKey(fromFilter.getPublicKey());
-        } else if (filterWithUpdatedData instanceof RequiredValidUntilFilter) {
-            RequiredValidUntilFilter toFilter = RequiredValidUntilFilter.class.cast(filterToBeUpdated);
-            RequiredValidUntilFilter fromFilter = RequiredValidUntilFilter.class.cast(filterWithUpdatedData);
-            toFilter.setMaxValidityInterval(fromFilter.getMaxValidityInterval());
-        } else if (filterWithUpdatedData instanceof NameIdFormatFilter) {
-            NameIdFormatFilter toFilter = NameIdFormatFilter.class.cast(filterToBeUpdated);
-            NameIdFormatFilter fromFilter = NameIdFormatFilter.class.cast(filterWithUpdatedData);
-            toFilter.setRemoveExistingFormats(fromFilter.getRemoveExistingFormats());
-            toFilter.setFormats(fromFilter.getFormats());
-            toFilter.setNameIdFormatFilterTarget(fromFilter.getNameIdFormatFilterTarget());
-        }
-        //TODO: add other types of concrete filters update here
     }
 
     private static URI getResourceUriFor(MetadataResolver mr, String filterResourceId) {

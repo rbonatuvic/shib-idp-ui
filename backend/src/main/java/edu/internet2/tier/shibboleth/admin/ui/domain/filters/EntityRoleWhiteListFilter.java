@@ -1,10 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.envers.Audited;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -12,8 +9,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OrderColumn;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.hibernate.envers.Audited;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -36,4 +38,16 @@ public class EntityRoleWhiteListFilter extends MetadataFilter {
     @Column(name="RETAINED_ROLE")
     @OrderColumn
     private List<String> retainedRoles = new ArrayList<>();
+    
+    private EntityRoleWhiteListFilter updateConcreteFilterTypeData(EntityRoleWhiteListFilter filterToBeUpdated) {
+        filterToBeUpdated.setRemoveEmptyEntitiesDescriptors(getRemoveEmptyEntitiesDescriptors());
+        filterToBeUpdated.setRemoveRolelessEntityDescriptors(getRemoveRolelessEntityDescriptors());
+        filterToBeUpdated.setRetainedRoles(getRetainedRoles());
+        return filterToBeUpdated;
+    }
+
+    @Override
+    public MetadataFilter updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated) {
+        return updateConcreteFilterTypeData((EntityRoleWhiteListFilter) filterToBeUpdated);
+    }
 }

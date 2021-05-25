@@ -1,12 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import javax.persistence.Entity;
+
+import org.hibernate.envers.Audited;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.envers.Audited;
-
-import javax.persistence.Entity;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
@@ -36,5 +37,21 @@ public class SignatureValidationFilter extends MetadataFilter {
 
     public boolean xmlShouldBeGenerated() {
         return requireSignedRoot;
+    }
+    
+    private SignatureValidationFilter updateConcreteFilterTypeData(SignatureValidationFilter filterToBeUpdated) {
+        filterToBeUpdated.setRequireSignedRoot(getRequireSignedRoot());
+        filterToBeUpdated.setCertificateFile(getCertificateFile());
+        filterToBeUpdated.setDefaultCriteriaRef(getDefaultCriteriaRef());
+        filterToBeUpdated.setSignaturePrevalidatorRef(getSignaturePrevalidatorRef());
+        filterToBeUpdated.setDynamicTrustedNamesStrategyRef(getDynamicTrustedNamesStrategyRef());
+        filterToBeUpdated.setTrustEngineRef(getTrustEngineRef());
+        filterToBeUpdated.setPublicKey(getPublicKey());
+        return filterToBeUpdated;
+    }
+
+    @Override
+    public MetadataFilter updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated) {
+        return updateConcreteFilterTypeData((SignatureValidationFilter) filterToBeUpdated);
     }
 }
