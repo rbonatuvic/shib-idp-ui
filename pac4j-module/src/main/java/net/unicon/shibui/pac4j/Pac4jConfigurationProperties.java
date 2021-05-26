@@ -21,7 +21,8 @@ public class Pac4jConfigurationProperties {
     private String callbackUrl;
     private boolean wantAssertionsSigned = true;
     private SAML2ProfileMapping saml2ProfileMapping;
-    private boolean enableHeaderAuthentication = true;
+    private String typeOfAuth = "SAML2";
+    private String authenticationHeader = "REMOTE_USER";
 
     public static class SAML2ProfileMapping {
         private String username;
@@ -150,6 +151,20 @@ public class Pac4jConfigurationProperties {
         this.saml2ProfileMapping = saml2ProfileMapping;
     }
 
-    public boolean getEnableHeaderAuthentication() { return enableHeaderAuthentication; }
+    public String getTypeOfAuth() {
+        return typeOfAuth;
+    }
 
+    public void setTypeOfAuth(String typeOfAuth) {
+        this.typeOfAuth = typeOfAuth;
+    }
+
+    public String getAuthenticationHeader() {
+        return authenticationHeader;
+    }
+
+    public void setAuthenticationHeader(String authenticationHeader) {
+        this.authenticationHeader = authenticationHeader;
+    }
 }
+

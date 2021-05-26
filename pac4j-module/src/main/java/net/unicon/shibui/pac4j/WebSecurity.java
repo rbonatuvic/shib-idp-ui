@@ -83,10 +83,12 @@ public class WebSecurity {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             final SecurityFilter securityFilter = new SecurityFilter(this.config, "Saml2Client");
+            final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config, "HeaderClient");
 
             final CallbackFilter callbackFilter = new CallbackFilter(this.config);
             http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
                     .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
+                    .addFilterBefore(securityFilterForHeader, BasicAuthenticationFilter.class)  //xxx check on this
                     .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService), SecurityFilter.class);
 
             http.authorizeRequests().anyRequest().fullyAuthenticated();
