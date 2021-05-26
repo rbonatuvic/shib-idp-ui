@@ -41,6 +41,21 @@ export const SourceBase = {
             return errors;
         }
     },
+
+    warnings: (data) => {
+        let warnings = {};
+        if (!data?.relyingPartyOverrides?.signAssertion && data?.relyingPartyOverrides?.dontSignResponse) {
+            warnings = {
+                ...warnings,
+                'relying-party': [
+                    ...(warnings.hasOwnProperty('relying-party') ? warnings['relying-party'] : []),
+                    'message.invalid-signing'
+                ]
+            };
+        }
+        return warnings;
+    },
+
     uiSchema: {
         'ui:order': ['serviceProviderName', '*'],
         layout: {

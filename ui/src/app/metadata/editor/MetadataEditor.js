@@ -64,6 +64,8 @@ export function MetadataEditor ({ current }) {
 
     const validator = definition.validator(data, current);
 
+    const warnings = definition.warnings && definition.warnings(metadata);
+
     return (
         <div className="container-fluid p-3">
             <Prompt
@@ -118,9 +120,22 @@ export function MetadataEditor ({ current }) {
                             </button>
                         </div>
                         <div className="col-xs-12 col-lg-9 order-lg-1 order-3 align-items-start">
+                            {warnings && warnings.hasOwnProperty(section) &&
+                                <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                                    {warnings[section].map((w, widx) =>
+                                        <p className="m-0" key={widx}>
+                                            <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" />
+                                            <Translate value={w} />
+                                        </p>
+                                    )}
+                                </Alert>
+                            }
                             {errors.length > 0 &&
                                 <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
-                                    <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
+                                    <p className="m-0">
+                                        <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" />
+                                        <Translate value="message.editor-invalid" />
+                                    </p>
                                 </Alert>
                             }
                         </div>

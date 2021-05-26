@@ -56,6 +56,19 @@ export const EntityAttributesFilterWizard = {
             return errors;
         }
     },
+    warnings: (data) => {
+        let warnings = {};
+        if (!data?.relyingPartyOverrides?.signAssertion && data?.relyingPartyOverrides?.dontSignResponse) {
+            warnings = {
+                ...warnings,
+                'options': [
+                    ...(warnings.hasOwnProperty('options') ? warnings['options'] : []),
+                    'message.invalid-signing'
+                ]
+            };
+        }
+        return warnings;
+    },
     parser: (changes) => {
         return {
             ...changes,

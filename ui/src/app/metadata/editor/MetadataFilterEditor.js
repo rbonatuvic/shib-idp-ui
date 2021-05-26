@@ -38,6 +38,8 @@ export function MetadataFilterEditor({children}) {
 
     const validator = definition.validator(data, current);
 
+    const warnings = definition.warnings && definition.warnings(metadata);
+
     return (
         <div className="">
             <div className="row">
@@ -56,8 +58,18 @@ export function MetadataFilterEditor({children}) {
                 </div>
                 <div className={`col-xs-12 col-lg-9 order-lg-1 order-3 align-items-start ${errors.length > 0 ? 'justify-content-between' : 'justify-content-end'}`}>
                     {errors.length > 0 &&
-                        <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                        <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0 mb-2">
                             <p className="m-0"><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value="message.editor-invalid" /></p>
+                        </Alert>
+                    }
+                    {errors.length === 0 && warnings && warnings.hasOwnProperty(section) &&
+                        <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                            {warnings[section].map((w, widx) =>
+                                <p className="m-0" key={widx}>
+                                    <FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" />
+                                    <Translate value={w} />
+                                </p>
+                            )}
                         </Alert>
                     }
                 </div>

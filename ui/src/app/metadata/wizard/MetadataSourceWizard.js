@@ -9,6 +9,12 @@ import { Configuration } from '../hoc/Configuration';
 import { useMetadataEntity, useMetadataSources } from '../hooks/api';
 import { useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Translate from '../../i18n/components/translate';
+import Alert from 'react-bootstrap/esm/Alert';
+import Row from 'react-bootstrap/esm/Row';
+import Col from 'react-bootstrap/esm/Col';
 
 export function MetadataSourceWizard ({ onShowNav }) {
 
@@ -60,6 +66,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
     }
 
     const validator = definition.validator(data);
+    const warnings = definition.warnings && definition.warnings(metadata);
 
     return (
         <>
@@ -69,6 +76,18 @@ export function MetadataSourceWizard ({ onShowNav }) {
                 </div>
             </div>
             <hr />
+            {warnings && warnings.hasOwnProperty(current) &&
+                <Row className="mb-4">
+                    <Col xs="12" lg="6" className="align-items-start">
+                        <Alert variant="danger" className="align-self-start alert-compact mt-3 mt-lg-0">
+                            {warnings[current].map((w, widx) =>
+                                <p className="m-0" key={widx}><FontAwesomeIcon icon={faExclamationTriangle} size="lg" className="mr-2" /> <Translate value={w} /></p>
+                            )}
+                        </Alert>
+                    </Col>
+                    <br />
+                </Row>
+            }
             <div className="row">
                 <div className="col-12">
                     <MetadataWizardForm
