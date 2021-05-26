@@ -20,7 +20,7 @@
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
             "type": "string",
-            "const": "LocalDynamicMetadataResolver"
+            "default": "LocalDynamicMetadataResolver"
         },
         "xmlId": {
             "title": "label.xml-id",

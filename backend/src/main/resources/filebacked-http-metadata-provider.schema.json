@@ -39,7 +39,7 @@
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
             "type": "string",
-            "const": "FileBackedHttpMetadataResolver"
+            "default": "FileBackedHttpMetadataResolver"
         },
         "enabled": {
             "title": "label.enable-service",
@@ -330,7 +330,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "const": true
+                                            "enum": [true]
                                         }
                                     },
                                     "required": [
@@ -340,7 +340,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "const": false
+                                            "enum": [false]
                                         }
                                     }
                                 }

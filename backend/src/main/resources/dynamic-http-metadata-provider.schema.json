@@ -16,7 +16,7 @@
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
             "type": "string",
-            "const": "DynamicHttpMetadataResolver"
+            "default": "DynamicHttpMetadataResolver"
         },
         "enabled": {
             "title": "label.enable-provider-upon-saving",
@@ -445,7 +445,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "const": true
+                                            "enum": [true]
                                         }
                                     },
                                     "required": [
@@ -455,7 +455,7 @@
                                 {
                                     "properties": {
                                         "requireSignedRoot": {
-                                            "const": false
+                                            "enum": [false]
                                         }
                                     }
                                 }

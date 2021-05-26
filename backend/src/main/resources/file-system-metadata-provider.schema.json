@@ -20,7 +20,7 @@
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
             "type": "string",
-            "const": "FilesystemMetadataResolver"
+            "default": "FilesystemMetadataResolver"
         },
         "xmlId": {
             "title": "label.xml-id",
