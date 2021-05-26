@@ -32,10 +32,10 @@ export function Header () {
                             <Translate value={'action.advanced'} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Link to="/metadata/attributes" className="dropdown-item text-primary py-2">
+                            <Dropdown.Item as={Link} to="/metadata/attributes" className="text-primary py-2">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.custom-entity-attributes" />
-                            </Link>
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Dropdown className="" id="basic-nav-dropdown">
@@ -44,14 +44,14 @@ export function Header () {
                             <Translate value={'action.add-new'} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Link to="/metadata/source/new" className="dropdown-item text-primary py-2">
+                            <Dropdown.Item as={Link} to="/metadata/source/new" className="text-primary py-2">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.add-new-source" />
-                            </Link>
-                            <Link to="/metadata/provider/new" className="dropdown-item text-primary py-2">
+                            </Dropdown.Item>
+                            <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2">
                                 <FontAwesomeIcon icon={faCubes} className="mr-2" />
                                 <Translate value="action.add-new-provider" />
-                            </Link>
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     <Link to="/dashboard" className="nav-link" aria-label="Metadata Dashboard">

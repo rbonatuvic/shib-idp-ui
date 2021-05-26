@@ -17,6 +17,12 @@ npm_run_build {
     outputs.dir 'build'
 }
 
+npm_run_buildProd {
+    inputs.dir 'src'
+    inputs.dir 'public'
+    outputs.dir 'build'
+}
+
 npm_run_start {
     if (project.hasProperty('npm-args')) {
         args = project.'npm-args'.tokenize()

@@ -63,6 +63,9 @@ function App() {
                                                     <Route path="/metadata/attributes" component={Attribute} />
                                                     <Route path={`/metadata/provider/:id/filter`} component={Filter} />
                                                     <Route path="/metadata/:type/:id" component={Metadata} />
+                                                    <Route path="*">
+                                                        <Redirect to="/dashboard" />
+                                                    </Route>
                                                 </Switch>
                                                 <NotificationList />
                                             </main>

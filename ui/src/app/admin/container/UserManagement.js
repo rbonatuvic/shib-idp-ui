@@ -61,12 +61,14 @@ export default function UserManagement({ users, children, reload }) {
     const deleteUser = (id) => {
         deleteUserRequest(deleting);
         setDeleting(null);
-    }
+    };
+
+    console.log(deleting)
 
     return (
         <div className="user-management">
             {children(users, roles, setUserRoleRequest, (id) => setDeleting(id))}
-            <Modal.Dialog show={!!deleting} onHide={() => setDeleting(null)}>
+            <Modal show={!!deleting} onHide={() => setDeleting(null)}>
                 <Modal.Header toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">
                     <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
@@ -82,7 +84,7 @@ export default function UserManagement({ users, children, reload }) {
                         <Translate value="action.cancel">Cancel</Translate>
                     </button>
                 </Modal.Footer>
-            </Modal.Dialog>
+            </Modal>
         </div>
     );
 }
