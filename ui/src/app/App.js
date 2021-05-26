@@ -30,11 +30,19 @@ import { Contention } from './metadata/contention/ContentionContext';
 function App() {
 
     const httpOptions = {
+        redirect: 'manual',
         interceptors: {
             request: async ({options, url, path, route}) => {
                 options.headers['X-XSRF-TOKEN'] = get_cookie('XSRF-TOKEN');
 
                 return options;
+            },
+            response: async ({response}) => {
+                if (response.type === "opaqueredirect") {
+                    window.location.reload();
+                } else {
+                    return response;
+                }
             }
         }
     };
