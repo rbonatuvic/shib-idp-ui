@@ -4,7 +4,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 import { usePropertyWidth } from './hooks';
 
-export function PropertyValue ({ name, value, columns }) {
+export function PropertyValue ({ name, value, columns, className }) {
 
     const width = usePropertyWidth(columns);
 
@@ -17,13 +17,13 @@ export function PropertyValue ({ name, value, columns }) {
                     </Popover>
                 )}>
                 <span
-                    className="d-block text-truncate"
+                    className={`d-block text-truncate ${className}`}
                     role="definition"
                     style={columns ? { width } : {}}>
                     {value !== undefined ? value.toString() : (value === false) ? value.toString() : '-'}
                 </span>
             </OverlayTrigger>
-        : <span className="d-block text-truncate" style={columns ? { width } : {}}>-</span>}
+        : <span className={`d-block text-truncate ${className}`} style={columns ? { width } : {}}>-</span>}
         </>
     );
 }

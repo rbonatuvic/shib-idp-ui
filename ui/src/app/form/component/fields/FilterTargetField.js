@@ -2,7 +2,7 @@ import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Translate from '../../../i18n/components/translate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAsterisk, faCaretDown, faCaretUp, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAsterisk, faCaretDown, faCaretUp, faEye, faEyeSlash, faPlus, faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useTranslator } from '../../../i18n/hooks';
 import { InfoIcon } from '../InfoIcon';
 import ContentEditable from 'react-contenteditable';
@@ -11,6 +11,8 @@ import useFetch from 'use-http';
 import queryString from 'query-string';
 import API_BASE_PATH from '../../../App.constant';
 import isNil from 'lodash/isNil';
+
+import { FilterTargetPreview } from '../../../metadata/hoc/FilterTargetPreview';
 
 const ToggleButton = ({ isOpen, onClick, disabled }) => (
     <button
@@ -242,19 +244,25 @@ const FilterTargetField = ({
                         <ul className="list-group list-group-sm list-group-scroll">
                         {selectedTarget.map(id => 
                             <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
-                                { id }
-                                <span>
-                                    {/*getButtonConfig(id).map(button => (
-
-                                        <sf-form-element-action
-                                        [button] = "button"
-                                        [formProperty] = "formProperty" >
-                                        </sf-form-element-action>
-                                    ))*/}
-                                    <button className="btn btn-link text-right" onClick={() => removeId(id)}>
-                                        <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger" />
-                                    </button>
-                                </span>
+                                <FilterTargetPreview entityId={id}>
+                                    {(preview, loading, xml) => (
+                                        <React.Fragment>
+                                            {id}
+                                            <span>
+                                                {preview &&
+                                                    <button disabled={loading || !xml} type="button" className="btn btn-link text-right" onClick={() => preview(id)}>
+                                                        <FontAwesomeIcon icon={loading ? faSpinner : xml ? faEye : faEyeSlash} pulse={loading} size="lg" className="text-success sr-hidden" />
+                                                        <span className="sr-only"><Translate value="action.preview">Preview</Translate></span>
+                                                    </button>
+                                                }
+                                                <button type="button" className="btn btn-link text-right" onClick={() => removeId(id)}>
+                                                    <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger sr-hidden" />
+                                                    <span className="sr-only"><Translate value="action.remove">Remove</Translate></span>
+                                                </button>
+                                            </span>
+                                        </React.Fragment>
+                                    )}
+                                </FilterTargetPreview>
                             </li>
                         )}
                         </ul>

@@ -15,7 +15,7 @@ export function MetadataXml () {
     const entity = React.useContext(MetadataObjectContext);
     const { type } = useParams();
 
-    const download = () => downloadAsXml(entity, xml);
+    const download = () => downloadAsXml(entity.name ? entity.name : entity.serviceProviderName, xml);
 
     return (
         <>

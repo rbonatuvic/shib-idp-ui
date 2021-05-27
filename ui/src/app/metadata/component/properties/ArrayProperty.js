@@ -4,7 +4,7 @@ import React from 'react';
 import Translate from '../../../i18n/components/translate';
 import { usePropertyWidth } from './hooks';
 import { PropertyValue } from './PropertyValue';
-
+import { FilterTargetPreview } from '../../hoc/FilterTargetPreview';
 
 
 const isUri = (value) => {
@@ -20,7 +20,7 @@ const isUrl = (str) => {
     return isUri(str);
 }
 
-export function ArrayProperty ({ property, columns, onPreview }) {
+export function ArrayProperty ({ property, columns, preview }) {
 
     const width = usePropertyWidth(columns);
 
@@ -98,15 +98,20 @@ export function ArrayProperty ({ property, columns, onPreview }) {
                                     {(v && v.length > 0) &&
                                         <ul style={ {width} } className="list-unstyled py-2 m-0">
                                             {v.map((item, idx) => 
-                                                <li key={idx} className={`text-truncate border-bottom border-light py-2 ${v.length > 1 ? '' : 'border-0'}`}>
-                                                    {onPreview && isUrl(item) &&
-                                                        <>
-                                                        <button className="btn btn-link" onClick={() => onPreview(item)}>
-                                                            <FontAwesomeIcon icon={faEye} size="lg" className="text-success" />
-                                                        </button>&nbsp;
-                                                        </>
+                                                <li key={idx} className={`d-flex align-items-center justify-content-between w-100 text-truncate border-bottom border-light py-2 ${v.length > 1 ? '' : 'border-0'}`}>
+                                                    <PropertyValue value={item} name={property.name} className="mr-auto" />
+                                                    {preview && item &&
+                                                        <React.Fragment>
+                                                            <FilterTargetPreview entityId={item}>
+                                                                {(onPreview, loading, data) => (
+                                                                    <button className="btn btn-link" onClick={() => onPreview(item)}>
+                                                                        <FontAwesomeIcon icon={faEye} size="lg" className="text-success" />
+                                                                    </button>
+                                                                )}
+                                                            </FilterTargetPreview>
+                                                            &nbsp;
+                                                        </React.Fragment>
                                                     }
-                                                    <PropertyValue value={item} name={property.name} />
                                                 </li>
                                             )}
                                         </ul>
