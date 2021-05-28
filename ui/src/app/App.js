@@ -37,13 +37,13 @@ function App() {
 
                 return options;
             },
-            response: async ({response}) => {
+            /*response: async ({response}) => {
                 if (response.type === "opaqueredirect") {
-                    window.location.reload();
+                    // window.location.reload();
                 } else {
                     return response;
                 }
-            }
+            }*/
         }
     };
 
