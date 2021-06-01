@@ -11,6 +11,8 @@ import { useMetadataEntity, useMetadataProviders } from '../hooks/api';
 import { useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
 
+import { useNotificationDispatcher, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
+
 export function MetadataProviderWizard({onRestart}) {
 
     const { data } = useMetadataProviders({}, []);
@@ -30,6 +32,8 @@ export function MetadataProviderWizard({onRestart}) {
     const isLast = useIsLastPage();
 
     const wizardDispatch = useWizardDispatcher();
+
+    const notificationDispatch = useNotificationDispatcher();
 
     const current = useCurrentIndex();
 
@@ -55,7 +59,11 @@ export function MetadataProviderWizard({onRestart}) {
         if (response.ok) {
             history.push('/dashboard/metadata/manager/providers');
         } else {
-            console.log(response.body);
+            const { errorCode, errorMessage, cause } = response.data;
+            notificationDispatch(createNotificationAction(
+                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
+                NotificationTypes.ERROR
+            ));
         }
     }
 
