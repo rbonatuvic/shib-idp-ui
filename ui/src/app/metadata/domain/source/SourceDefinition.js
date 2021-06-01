@@ -188,10 +188,7 @@ export const SourceBase = {
                 ]
             },
             x509CertificateAvailable: {
-                'ui:widget': 'radio',
-                'ui:options': {
-                    inline: true
-                }
+                'ui:widget': 'hidden'
             },
             authenticationRequestsSigned: {
                 'ui:widget': 'radio',

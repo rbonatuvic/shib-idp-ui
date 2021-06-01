@@ -71,6 +71,10 @@
                 }
             },
             "properties": {
+                "x509CertificateAvailable": {
+                    "type": "boolean",
+                    "default": true
+                },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
