@@ -27,7 +27,6 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 
 @Configuration
-@ComponentScan("edu.internet2.tier.shibboleth.admin.ui.service")
 class TestConfiguration {
     @Autowired
     IndexWriterService indexWriterService
