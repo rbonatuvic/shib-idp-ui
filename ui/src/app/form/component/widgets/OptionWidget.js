@@ -45,8 +45,6 @@ const OptionWidget = ({
     ...props
 }) => {
 
-    console.log(value, props)
-
     const _onChange = (selected) => onChange(selected[0] === '' ? options.emptyValue : selected[0]);
     const _onBlur = ({ target: { value } }) => onBlur(id, value);
     const _onFocus = ({ target: { value } }) => onFocus(id, value);
@@ -65,7 +63,7 @@ const OptionWidget = ({
 
     return (
         <Form.Group className="mb-0">
-            <Form.Label className={`${rawErrors.length > 0 ? "text-danger" : ""}`}>
+            <Form.Label className={`${(touched && rawErrors.length > 0) ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-2" size="sm" /> : null}
