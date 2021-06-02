@@ -1,5 +1,6 @@
 import { metadataFilterProcessor } from './utility/providerFilterProcessor';
 import { DurationOptions } from '../data';
+import { MetadataFilterTypes } from '../filter';
 
 export const BaseProviderDefinition = {
     schemaPreprocessor: metadataFilterProcessor,
@@ -19,13 +20,15 @@ export const BaseProviderDefinition = {
             return errors;
         }
     },
-    parser: (changes) => {
+    parser: (changes, base) => {
+
         const parsed = (changes.metadataFilters ? ({
             ...changes,
             metadataFilters: [
                 ...changes.metadataFilters.filter((filter, filterName) => (
                     Object.keys(filter).filter(k => k !== '@type').length > 0
-                ))
+                )),
+                ...base.metadataFilters.filter(f => MetadataFilterTypes.indexOf(f['@type']) > -1)
             ]
         }) : changes);
 

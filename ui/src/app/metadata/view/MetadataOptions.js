@@ -99,7 +99,11 @@ export function MetadataOptions () {
                                 </div>
                             </div>
                             <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes}>
-                                {(filters) => <MetadataFilterConfigurationList provider={metadata} filters={filters} />}
+                                {(filters, onUpdate, onDelete, loading) =>
+                                    <MetadataFilterConfigurationList
+                                        provider={metadata}
+                                        filters={filters}
+                                        onDelete={onDelete} />}
                             </MetadataFilters>
                         </>
                     }

@@ -24,6 +24,14 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
 
     const type = watch('type');
 
+    const [base, setBase] = React.useState({});
+
+    React.useEffect(() => {
+        setBase({
+            '@type': type
+        })
+    }, [type])
+
     return (
         <div className="container-fluid">
             <div className="row">
@@ -48,7 +56,7 @@ export function MetadataFilterTypeSelector({ types = [], children, actions}) {
             </div>
             <hr />
             {type && 
-                children(type)
+                children(type, base)
             }
         </div>
     );

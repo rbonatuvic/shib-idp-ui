@@ -31,9 +31,7 @@ export const setFormDataAction = (payload) => {
 export const setFormErrorAction = (errors) => {
     return {
         type: MetadataFormActions.SET_FORM_ERROR,
-        payload: {
-            errors
-        }
+        payload: errors
     }
 }
 
@@ -42,7 +40,7 @@ function reducer(state, action) {
         case MetadataFormActions.SET_FORM_ERROR:
             return {
                 ...state,
-                errors: action.payload.errors
+                errors: action.payload
             };
         case MetadataFormActions.SET_FORM_DATA:
             return {
@@ -55,16 +53,19 @@ function reducer(state, action) {
 }
 
 /*eslint-disable react-hooks/exhaustive-deps*/
-function MetadataForm({ children, initial = {}, onChange }) {
+function MetadataForm({ children, initial = {} }) {
 
-    const metadata = {
-        ...useFormattedMetadata(initial)
-    };
+    const [state, dispatch] = React.useReducer(
+        reducer,
+        initialState
+    );
 
-    const [state, dispatch] = React.useReducer(reducer, {
-        ...initialState,
-        metadata
-    });
+    const base = useFormattedMetadata(initial);
+
+    React.useEffect(() => {
+        dispatch(setFormDataAction(base))
+        dispatch(setFormErrorAction(initialState.errors))
+    }, [initial])
 
     const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
 

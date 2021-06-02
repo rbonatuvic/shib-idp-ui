@@ -6,20 +6,6 @@ import { usePropertyWidth } from './hooks';
 import { PropertyValue } from './PropertyValue';
 import { FilterTargetPreview } from '../../hoc/FilterTargetPreview';
 
-
-const isUri = (value) => {
-    try {
-        new URL(value);
-    } catch (err) {
-        return false;
-    }
-    return true;
-}
-
-const isUrl = (str) => {
-    return isUri(str);
-}
-
 export function ArrayProperty ({ property, columns, preview }) {
 
     const width = usePropertyWidth(columns);

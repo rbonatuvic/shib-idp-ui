@@ -1,5 +1,6 @@
 import React from 'react';
 import { useMetadataFilters } from '../../../hooks/api';
+import { DeleteConfirmation } from '../../../component/DeleteConfirmation';
 
 export const MetadataFiltersContext = React.createContext();
 
@@ -46,6 +47,12 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
 
 
     return (
-        <MetadataFiltersContext.Provider value={filterData}>{children(filterData, onUpdate, onDelete, loading)}</MetadataFiltersContext.Provider>
+        <DeleteConfirmation title={`message.delete-filter-title`} body={`message.delete-filter-body`}>
+            {(block) =>
+                <MetadataFiltersContext.Provider value={filterData}>
+                    {children(filterData, onUpdate, (id) => block(() => onDelete(id)), loading)}
+                </MetadataFiltersContext.Provider>
+            }
+        </DeleteConfirmation>
     );
 }

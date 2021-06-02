@@ -54,9 +54,9 @@ export function NewFilter() {
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
                     <MetadataFilterTypeSelector types={types}>
-                        {(type) =>
+                        {(type, base) =>
                             <MetadataSchema type={type}>
-                                <MetadataForm>
+                                <MetadataForm initial={base}>
                                     <MetadataFilterEditor>
                                         {(filter, isInvalid) =>
                                             <div className="d-flex justify-content-end">

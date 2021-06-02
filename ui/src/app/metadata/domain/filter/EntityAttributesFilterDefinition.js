@@ -74,7 +74,11 @@ export const EntityAttributesFilterWizard = {
             ...changes,
             relyingPartyOverrides: removeNull(changes)
         };
-    }
+    },
+    formatter: (changes) => ({
+        ...changes,
+        '@type': EntityAttributesFilterWizard.type
+    })
 };
 
 

@@ -14,6 +14,7 @@ import { getMetadataPath, useMetadataEntities, useMetadataUpdater } from '../hoo
 import { NavLink } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
 import API_BASE_PATH from '../../App.constant';
+import { MetadataObjectContext } from '../hoc/MetadataSelector';
 
 export function MetadataEditor ({ current }) {
 
@@ -27,6 +28,7 @@ export function MetadataEditor ({ current }) {
     const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
+    const base = React.useContext(MetadataObjectContext);
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;
@@ -38,7 +40,7 @@ export function MetadataEditor ({ current }) {
     };
 
     function save(metadata) {
-        update(`/${id}`, definition.parser(metadata))
+        update(`/${id}`, definition.parser(metadata, base))
             .then(() => {
                 gotoDetail({ refresh: true });
             })

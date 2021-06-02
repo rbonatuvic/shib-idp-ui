@@ -18,8 +18,6 @@ export const NameIDFilterWizard = {
     steps: [],
     validator: (data = [], current = { resourceId: null }) => {
 
-        
-
         const filters = current ? data.filter(s => s.resourceId !== current.resourceId) : data;
         const names = filters.map(s => s.entityId);
 
@@ -37,7 +35,11 @@ export const NameIDFilterWizard = {
             }
             return errors;
         }
-    }
+    },
+    formatter: (changes) => ({
+        ...changes,
+        '@type': NameIDFilterWizard.type
+    })
 };
 
 export const NameIDFilterEditor = {

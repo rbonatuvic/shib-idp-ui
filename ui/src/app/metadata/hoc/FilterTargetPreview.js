@@ -33,8 +33,6 @@ export function FilterTargetPreview ({ entityId, children }) {
         responseType: 'text'
     }, [entityId]);
 
-    console.log(data);
-
     return (
         <React.Fragment>
             {children(preview, loading, data)}
