@@ -21,7 +21,10 @@ export function MetadataSchema({ type, children, wizard = false }) {
     }
 
     /*eslint-disable react-hooks/exhaustive-deps*/
-    React.useEffect(() => { loadSchema(definition) }, [definition]);
+    React.useEffect(() => {
+        setSchema(null);
+        loadSchema(definition);
+    }, [definition]);
 
     return (
         <MetadataDefinitionContext.Provider value={definition}>

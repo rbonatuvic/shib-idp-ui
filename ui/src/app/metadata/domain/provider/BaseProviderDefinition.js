@@ -22,13 +22,15 @@ export const BaseProviderDefinition = {
     },
     parser: (changes, base) => {
 
+        const baseFilters = base ? base.metadataFilters.filter(f => MetadataFilterTypes.indexOf(f['@type']) > -1) : []
+
         const parsed = (changes.metadataFilters ? ({
             ...changes,
             metadataFilters: [
                 ...changes.metadataFilters.filter((filter, filterName) => (
                     Object.keys(filter).filter(k => k !== '@type').length > 0
                 )),
-                ...base.metadataFilters.filter(f => MetadataFilterTypes.indexOf(f['@type']) > -1)
+                ...baseFilters
             ]
         }) : changes);
 

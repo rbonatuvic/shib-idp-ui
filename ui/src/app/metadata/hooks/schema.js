@@ -16,7 +16,6 @@ export function useUiSchema(definition, schema, current, locked = true) {
     const step = React.useMemo(() => definition ? definition.steps.find(step => step.id === current) : {fields: []}, [definition, current]);
 
     const filled = React.useMemo(() => fillInRootProperties(schemaKeys, ui), [schemaKeys, ui]);
-
     const mapped = React.useMemo(() => {
         return Object.keys(filled).reduce((sch, key) => {
             const obj = { ...filled[key] };
@@ -34,6 +33,8 @@ export function useUiSchema(definition, schema, current, locked = true) {
             'ui:disabled': locked && step.locked ? true : false
         };
     }, [mapped, step.locked, locked])
+
+    console.log(isLocked);
 
     return {uiSchema: isLocked, step};
 }

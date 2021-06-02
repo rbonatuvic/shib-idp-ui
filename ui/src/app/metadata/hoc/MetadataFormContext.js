@@ -55,22 +55,22 @@ function reducer(state, action) {
 /*eslint-disable react-hooks/exhaustive-deps*/
 function MetadataForm({ children, initial = {} }) {
 
-    const [state, dispatch] = React.useReducer(
-        reducer,
-        initialState
-    );
+    const metadata = {
+        ...useFormattedMetadata(initial)
+    };
 
-    const base = useFormattedMetadata(initial);
+    const [state, dispatch] = React.useReducer(reducer, {
+        ...initialState,
+        metadata
+    });
 
-    React.useEffect(() => {
-        dispatch(setFormDataAction(base))
-        dispatch(setFormErrorAction(initialState.errors))
-    }, [initial])
 
     const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
     return (
-        <Provider value={contextValue}>{children}</Provider>
+        <React.Fragment>
+            <Provider value={contextValue}>{children}</Provider>
+        </React.Fragment>
     );
 }
 

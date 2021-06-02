@@ -6,7 +6,6 @@ import { MetadataProviderWizard } from '../wizard/MetadataProviderWizard';
 import { Wizard } from '../wizard/Wizard';
 
 export function MetadataWizard ({type, data, onCallback}) {
-
     return (
         <MetadataForm initial={data}>
             <Wizard>
