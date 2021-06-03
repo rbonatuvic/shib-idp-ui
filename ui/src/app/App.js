@@ -25,9 +25,13 @@ import { NewSource } from './metadata/new/NewSource';
 import { NewProvider } from './metadata/new/NewProvider';
 import { Filter } from './metadata/Filter';
 import { Contention } from './metadata/contention/ContentionContext';
+import { SessionModal } from './core/user/SessionModal';
+import Button from 'react-bootstrap/esm/Button';
 
 
 function App() {
+
+    const [showTimeout, setShowTimeout] = React.useState();
 
     const httpOptions = {
         redirect: 'manual',
@@ -37,13 +41,13 @@ function App() {
 
                 return options;
             },
-            /*response: async ({response}) => {
+            response: async ({response}) => {
                 if (response.type === "opaqueredirect") {
-                    // window.location.reload();
-                } else {
-                    return response;
+                    setShowTimeout(true);
                 }
-            }*/
+
+                return response;
+            }
         }
     };
 
@@ -53,6 +57,9 @@ function App() {
                 <Notifications>
                     <UserProvider>
                         <I18nProvider>
+                            <SessionModal show={showTimeout}>
+                                <Button variant="primary" onClick={() => window.location.reload()}>Log in</Button>
+                            </SessionModal>
                             <Contention>
                                 <UserConfirmation>
                                     {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
