@@ -15,7 +15,7 @@ import { useNotificationDispatcher, createNotificationAction, NotificationTypes 
 
 export function MetadataProviderWizard({onRestart}) {
 
-    const { data } = useMetadataProviders({}, []);
+    const { data } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
 
     const { post, loading, response } = useMetadataEntity('provider');
     const history = useHistory();

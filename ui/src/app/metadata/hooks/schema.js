@@ -32,9 +32,7 @@ export function useUiSchema(definition, schema, current, locked = true) {
             ...mapped,
             'ui:disabled': locked && step.locked ? true : false
         };
-    }, [mapped, step.locked, locked])
-
-    console.log(isLocked);
+    }, [mapped, step.locked, locked]);
 
     return {uiSchema: isLocked, step};
 }

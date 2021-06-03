@@ -21,7 +21,9 @@ export function MetadataSourceWizard ({ onShowNav }) {
     const { post, loading, response } = useMetadataEntity('source');
     const history = useHistory();
 
-    const { data } = useMetadataSources({}, []);
+    const { data } = useMetadataSources({
+        cachePolicy: 'no-cache'
+    }, []);
 
     const definition = useMetadataDefinitionContext();
     const schema = useMetadataSchemaContext();

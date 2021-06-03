@@ -10,6 +10,7 @@ export const BaseProviderDefinition = {
         const ids = providers.map(s => s.xmlId);
 
         return (formData, errors) => {
+
             if (names.indexOf(formData.name) > -1) {
                 errors.name.addError('message.name-must-be-unique');
             }
@@ -17,6 +18,7 @@ export const BaseProviderDefinition = {
             if (ids.indexOf(formData.xmlId) > -1) {
                 errors.xmlId.addError('message.id-unique');
             }
+
             return errors;
         }
     },
