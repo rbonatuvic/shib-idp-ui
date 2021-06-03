@@ -9,16 +9,21 @@ import lombok.ToString;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromAttributeReleaseList;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeListFromRelyingPartyOverridesRepresentation;
@@ -32,6 +37,7 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 @ToString
 @Audited
 public class EntityAttributesFilter extends MetadataFilter {
+    private static final long serialVersionUID = 1L;
 
     public EntityAttributesFilter() {
         type = "EntityAttributes";
@@ -47,7 +53,16 @@ public class EntityAttributesFilter extends MetadataFilter {
 
     @Transient
     private List<String> attributeRelease = new ArrayList<>();
+    
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "entityAttributesFilter", orphanRemoval = true)
+    private Set<CustomEntityAttributeFilterValue> customEntityAttributes = new HashSet<>();
 
+    public void setCustomEntityAttributes (Set<CustomEntityAttributeFilterValue> newValues) {
+        customEntityAttributes.clear();
+        customEntityAttributes.addAll(newValues);
+    }
+    
     public void setAttributeRelease(List<String> attributeRelease) {
         this.attributeRelease = attributeRelease;
         this.rebuildAttributes();
@@ -74,5 +89,18 @@ public class EntityAttributesFilter extends MetadataFilter {
         this.attributes.removeIf(Objects::isNull);
         this.attributeRelease = getAttributeReleaseListFromAttributeList(this.attributes);
         this.relyingPartyOverrides = getRelyingPartyOverridesRepresentationFromAttributeList(this.attributes);
+    }
+
+    private EntityAttributesFilter updateConcreteFilterTypeData(EntityAttributesFilter filterToBeUpdated) {
+        filterToBeUpdated.setEntityAttributesFilterTarget(getEntityAttributesFilterTarget());
+        filterToBeUpdated.setRelyingPartyOverrides(getRelyingPartyOverrides());
+        filterToBeUpdated.setAttributeRelease(getAttributeRelease());
+        filterToBeUpdated.setCustomEntityAttributes(customEntityAttributes);
+        return filterToBeUpdated;
+    }
+
+    @Override
+    public MetadataFilter updateConcreteFilterTypeData(MetadataFilter filterToBeUpdated) {
+        return updateConcreteFilterTypeData((EntityAttributesFilter) filterToBeUpdated);
     }
 }
