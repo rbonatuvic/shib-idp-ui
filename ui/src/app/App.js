@@ -43,7 +43,7 @@ function App() {
             },
             response: async ({response}) => {
                 if (response.type === "opaqueredirect") {
-                    setShowTimeout(true);
+                    //setShowTimeout(true);
                 }
 
                 return response;
