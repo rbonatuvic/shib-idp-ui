@@ -1,41 +1,27 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import java.util.Set;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
+import lombok.ToString;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
 @Setter
 @Getter
-public class RelyingPartyOverrideProperty {
-    private String name;
+@ToString
+public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProperty {
+    private String attributeFriendlyName;
+    private String attributeName;
+    private String defaultValue;
+    private Set<String> defaultValues;
     private String displayName;
     private String displayType;
-    private String defaultValue;
     private String helpText;
-    private List<String> defaultValues;
+    private String invert;
+    private String name;
     private String persistType;
     private String persistValue;
-    private String attributeName;
-    private String attributeFriendlyName;
-    private String invert;
-
-    @Override
-    public String toString() {
-        return "RelyingPartyOverrideProperty{"
-                + "\nname='" + name + '\''
-                + ", \ndisplayName='" + displayName + '\''
-                + ", \ndisplayType='" + displayType + '\''
-                + ", \ndefaultValue='" + defaultValue + '\''
-                + ", \nhelpText='" + helpText + '\''
-                + ", \npersistType='" + persistType + '\''
-                + ", \npersistValue='" + persistValue + '\''
-                + ", \ndefaultValues=" + defaultValues
-                + ", \nattributeName='" + attributeName + '\''
-                + ", \nattributeFriendlyName='" + attributeFriendlyName + '\''
-                + "\n}";
-    }
 }

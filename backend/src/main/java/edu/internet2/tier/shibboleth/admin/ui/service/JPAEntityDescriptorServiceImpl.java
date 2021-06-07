@@ -25,7 +25,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL;
-import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
@@ -68,6 +68,7 @@ import java.util.stream.Collectors;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getValueFromXMLObject;
+
 
 /**
  * Default implementation of {@link EntityDescriptorService}
@@ -644,7 +645,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 } else {
                     Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
                     if (override.isPresent()) {
-                        RelyingPartyOverrideProperty overrideProperty = (RelyingPartyOverrideProperty)override.get();
+                        IRelyingPartyOverrideProperty overrideProperty = (IRelyingPartyOverrideProperty)override.get();
                         Object attributeValues = null;
                         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                             case STRING:
@@ -677,7 +678,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                         .map(attributeValue -> getValueFromXMLObject(attributeValue))
                                         .collect(Collectors.toList());
                         }
-                        relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
+                        relyingPartyOverrides.put(((IRelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
                     }
                 }
             }

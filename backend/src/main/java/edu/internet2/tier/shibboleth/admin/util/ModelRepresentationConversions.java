@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.util;
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
-import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -90,7 +88,7 @@ public class ModelRepresentationConversions {
 
             Optional override = getOverrideByAttributeName(jpaAttribute.getName());
             if (override.isPresent()) {
-                relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(),
+                relyingPartyOverrides.put(((IRelyingPartyOverrideProperty) override.get()).getName(),
                         getOverrideFromAttribute(jpaAttribute));
             }
         }
@@ -98,16 +96,8 @@ public class ModelRepresentationConversions {
         return relyingPartyOverrides;
     }
 
-    private static Object getDefaultValueFromProperty(RelyingPartyOverrideProperty property) {
-        switch (property.getDisplayType()) {
-            case "boolean":
-                return Boolean.getBoolean(property.getDefaultValue());
-        }
-        return null;
-    }
-
     public static Object getOverrideFromAttribute(Attribute attribute) {
-        RelyingPartyOverrideProperty relyingPartyOverrideProperty = customPropertiesConfiguration.getOverrides().stream()
+        IRelyingPartyOverrideProperty relyingPartyOverrideProperty = customPropertiesConfiguration.getOverrides().stream()
                 .filter(it -> it.getAttributeFriendlyName().equals(attribute.getFriendlyName())).findFirst().get();
 
         List<XMLObject> attributeValues = attribute.getAttributeValues();
@@ -161,13 +151,13 @@ public class ModelRepresentationConversions {
 
     public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromRelyingPartyOverridesRepresentation
             (Map<String, Object> relyingPartyOverridesRepresentation) {
-        List<RelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
+        List<IRelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
         List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute> list = new ArrayList<>();
 
         if (relyingPartyOverridesRepresentation != null) {
             for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
                 String key = (String) entry.getKey();
-                RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
+                IRelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
                 Attribute attribute = getAttributeFromObjectAndRelyingPartyOverrideProperty(entry.getValue(), overrideProperty);
                 if (attribute != null) {
                     list.add(attribute);
@@ -178,7 +168,7 @@ public class ModelRepresentationConversions {
         return (List<org.opensaml.saml.saml2.core.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) list;
     }
 
-    public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, RelyingPartyOverrideProperty overrideProperty) {
+    public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, IRelyingPartyOverrideProperty overrideProperty) {
         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
             case BOOLEAN:
                 if ((o instanceof Boolean && ((Boolean) o)) ||
