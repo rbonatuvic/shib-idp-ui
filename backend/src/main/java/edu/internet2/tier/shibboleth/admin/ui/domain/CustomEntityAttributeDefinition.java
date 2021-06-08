@@ -74,7 +74,8 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
 
     @Override
     public void setPersistType(String persistType) {
-        // WHAT TO DO? This is "attributeType", but need to match up to AttributeTypes in ModelRepresentationConversions??
+        // This is "attributeType", but this is only here to comply with the interface, we don't intend for this to be
+        // used, we want to match up against the actual ENUM types of CustomAttributeType
     }
 
     @Override
