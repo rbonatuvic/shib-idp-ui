@@ -110,15 +110,20 @@ public class ModelRepresentationConversions {
                     return Boolean.valueOf(relyingPartyOverrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) attributeValues.get(0)).getStoredValue());
                 }
             case INTEGER:
+            case LONG:
                 return ((XSInteger) attributeValues.get(0)).getValue();
             case STRING:
+            case DOUBLE:
+            case DURATION:
+            case SPRING_BEAN_ID:
                 if (attributeValues.get(0) instanceof XSAny) {
                     return ((XSAny) attributeValues.get(0)).getTextContent();
                 } else {
                     return ((XSString) attributeValues.get(0)).getValue();
                 }
-            case LIST:
             case SET:
+            case LIST:
+            case SELECTION_LIST:
                 return attributeValues.stream().map(it -> ((XSString) it).getValue()).collect(Collectors.toList());
             default:
                 throw new UnsupportedOperationException("An unsupported persist type was specified (" + relyingPartyOverrideProperty.getPersistType() + ")!");
@@ -193,19 +198,20 @@ public class ModelRepresentationConversions {
                 }
                 return null;
             case INTEGER:
+            case LONG:
                 return ATTRIBUTE_UTILITY.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
                         Integer.valueOf((String) o));
             case STRING:
+            case DOUBLE:
+            case DURATION:
+            case SPRING_BEAN_ID:
                 return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
                         (String) o);
             case SET:
-                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                        overrideProperty.getAttributeFriendlyName(),
-                        (List<String>) o);
-
             case LIST:
+            case SELECTION_LIST:
                 return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
                         (List<String>) o);
@@ -215,11 +221,19 @@ public class ModelRepresentationConversions {
         }
     }
 
+    // These are the types for which there are org.opensaml.core.xml.schema.XS[TYPE] definitions that we are supporting
+    // The ones with comments are the types supported by the Custom Entity Attribute UI and are mapped accordingly
+    // @see edu.internet2.tier.shibboleth.admin.ui.domain.CustomAttributeType (part of IRelyingPartyOverrideProperty)
     public enum AttributeTypes {
         BOOLEAN,
         INTEGER,
         STRING,
         SET,
-        LIST
+        LIST,  
+        DOUBLE, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING
+        DURATION, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING
+        LONG, // no org.opensaml.core.xml.schema.XSTYPE - will treat as INTEGER for generating XML
+        SELECTION_LIST, // another name for LIST
+        SPRING_BEAN_ID // treat as STRING
     }
 }
