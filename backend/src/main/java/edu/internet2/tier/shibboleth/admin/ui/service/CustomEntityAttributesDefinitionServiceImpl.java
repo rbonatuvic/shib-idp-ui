@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,7 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.CustomEntityAttributeFilterValue;
@@ -17,20 +19,31 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFi
 @Primary
 public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {
     @Autowired
-    private CustomEntityAttributeDefinitionRepository repository;
-    
-    @Autowired
     CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;
     
     @Autowired
     EntityManager entityManager;
+    
+    private List<ICustomEntityAttributesDefinitionListener> listeners = new ArrayList<>();
 
+    @Autowired
+    private CustomEntityAttributeDefinitionRepository repository;
+    
     @Override
-    public CustomEntityAttributeDefinition createOrUpdateDefinition(CustomEntityAttributeDefinition definition) {
-        return repository.save(definition);
+    public void addCustomEntityAttributesDefinitionListener(ICustomEntityAttributesDefinitionListener listener) {
+        listeners.add(listener);        
     }
     
     @Override
+    @Transactional
+    public CustomEntityAttributeDefinition createOrUpdateDefinition(CustomEntityAttributeDefinition definition) {
+        CustomEntityAttributeDefinition result = repository.save(definition);
+        notifyListeners();
+        return result;
+    }
+
+    @Override
+    @Transactional
     public void deleteDefinition(CustomEntityAttributeDefinition definition) {
         // must remove any CustomEntityAttributeFilterValues first to avoid integrity constraint issues
         List<CustomEntityAttributeFilterValue> customEntityValues = customEntityAttributeFilterValueRepository.findAllByCustomEntityAttributeDefinition(definition);
@@ -41,6 +54,7 @@ public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntity
         });
         CustomEntityAttributeDefinition entityToRemove = repository.findByName(definition.getName());
         repository.delete(entityToRemove);
+        notifyListeners();
     }
 
     @Override
@@ -53,4 +67,7 @@ public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntity
         return repository.findAll();
     }
 
+    private void notifyListeners() {
+        listeners.forEach(l -> l.customEntityAttributesDefinitionChangeOccurred());
+    }
 }

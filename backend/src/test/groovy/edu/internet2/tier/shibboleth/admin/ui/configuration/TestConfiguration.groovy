@@ -32,6 +32,9 @@ import org.springframework.data.domain.AuditorAware
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 
+/**
+ * NOT A TEST - this is configuration FOR tests
+ */
 @Configuration
 class TestConfiguration {
     @Autowired
