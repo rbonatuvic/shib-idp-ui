@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
@@ -13,6 +14,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDe
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFilterValueRepository;
 
 @Service
+@Primary
 public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;

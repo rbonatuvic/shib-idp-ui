@@ -2,11 +2,17 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository
+import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFilterValueRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
+import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException
+
+import javax.persistence.EntityManager
+
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.StringField
@@ -35,11 +41,30 @@ class TestConfiguration {
     final MetadataResolverRepository metadataResolverRepository
     final Logger logger = LoggerFactory.getLogger(TestConfiguration.class);
 
+    @Autowired
+    private CustomEntityAttributeDefinitionRepository repository;
+    
+    @Autowired
+    CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;
+        
+    @Autowired
+    EntityManager entityManager
+    
     TestConfiguration(final OpenSamlObjects openSamlObjects, final MetadataResolverRepository metadataResolverRepository) {
         this.openSamlObjects =openSamlObjects
         this.metadataResolverRepository = metadataResolverRepository
     }
 
+    @Bean
+    CustomEntityAttributesDefinitionServiceImpl ceadService() {
+        new CustomEntityAttributesDefinitionServiceImpl().with {
+           it.entityManager = entityManager
+           it.repository = repository
+           it.customEntityAttributeFilterValueRepository = customEntityAttributeFilterValueRepository
+           return it
+        }
+    }
+    
     @Bean
     JavaMailSender javaMailSender() {
         return new JavaMailSenderImpl().with {
