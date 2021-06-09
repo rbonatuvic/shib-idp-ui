@@ -32,6 +32,10 @@ const RadioWidget = ({
     }) => onFocus(id, value);
 
     const inline = Boolean(options && options.inline);
+
+
+    console.log(enumOptions, id);
+
     return (
         <Form.Group className="mb-0">
             <Form.Label className="d-block">
@@ -51,7 +55,7 @@ const RadioWidget = ({
                     <Form.Check
                         inline={inline}
                         label={<Translate value={option.label} />}
-                        id={`${schema.title}-${i}-${option.label}`}
+                        id={`${id}-${option.label}`}
                         key={i}
                         name={id}
                         type="radio"
