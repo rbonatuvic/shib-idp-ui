@@ -63,8 +63,6 @@ export default function UserManagement({ users, children, reload }) {
         setDeleting(null);
     };
 
-    console.log(deleting)
-
     return (
         <div className="user-management">
             {children(users, roles, setUserRoleRequest, (id) => setDeleting(id))}
