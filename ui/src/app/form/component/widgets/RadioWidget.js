@@ -33,9 +33,6 @@ const RadioWidget = ({
 
     const inline = Boolean(options && options.inline);
 
-
-    console.log(enumOptions, id);
-
     return (
         <Form.Group className="mb-0">
             <Form.Label className="d-block">

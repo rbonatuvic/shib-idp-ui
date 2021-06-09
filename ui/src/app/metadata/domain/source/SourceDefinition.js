@@ -1,8 +1,8 @@
-import { defaults } from 'lodash';
+import { defaults, merge, toNumber, uniq } from 'lodash';
 import defaultsDeep from 'lodash/defaultsDeep';
 import API_BASE_PATH from '../../../App.constant';
 import {removeNull} from '../../../core/utility/remove_null';
-
+import { updatedDiff, detailedDiff } from 'deep-object-diff';
 
 export const SourceBase = {
     label: 'Metadata Source',
@@ -26,18 +26,6 @@ export const SourceBase = {
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
             }
-
-            /*if (!formData?.relyingPartyOverrides?.signAssertion && formData?.relyingPartyOverrides?.dontSignResponse) {
-                errors = {
-                    ...errors,
-                    relyingPartyOverrides: {
-                        dontSignResponse: {
-                            __errors: ['message.invalid-signing'],
-                            nonBlocking: true
-                        }
-                    }
-                };
-            }*/
             return errors;
         }
     },
@@ -54,6 +42,27 @@ export const SourceBase = {
             };
         }
         return warnings;
+    },
+
+    bindings: (original, formData) => {
+
+        let d = { ...formData };
+
+        if (formData.assertionConsumerServices && formData.assertionConsumerServices.length) {
+            const { updated, added } = detailedDiff(original.assertionConsumerServices, formData.assertionConsumerServices);
+            const merged = merge(updated, added);
+            const changingDefault = Object.keys(merged).some(k => merged[k].hasOwnProperty('makeDefault'));
+            if (changingDefault) {
+                const settingToTrue = Object.keys(merged).some(k => merged[k].makeDefault === true);
+                if (settingToTrue) {
+                    d.assertionConsumerServices = d.assertionConsumerServices.map((s, i) => ({
+                        ...s,
+                        makeDefault: i === toNumber(Object.keys(merged)[0])
+                    }));
+                }
+            }
+        }
+        return d;
     },
 
     uiSchema: {

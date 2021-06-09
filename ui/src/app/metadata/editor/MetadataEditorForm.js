@@ -8,6 +8,8 @@ import { templates } from '../../form/component';
 import { useUiSchema } from '../hooks/schema';
 import Alert from 'react-bootstrap/Alert';
 
+import { updatedDiff } from 'deep-object-diff';
+
 const invisErrors = ['const', 'oneOf']
 
 function ErrorListTemplate () {
@@ -29,6 +31,11 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
     const transformErrors = (errors) => {
         return errors.filter(e => invisErrors.indexOf(e.name) === -1);
     }
+
+    const onFormChange = (form) => {
+        onChange(definition.bindings ? { ...form, formData: definition.bindings(data, form.formData) }: form);
+    };
+
     return (
         <>
             {step.locked && <div className="">
@@ -49,8 +56,8 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
             </div>}
             <div className="container-fluid">
                 <Form formData={data}
-                    noHtml5Validate={true}
-                    onChange={(form) => onChange(form)}
+                    noHtml5Validate={false}
+                    onChange={(form) => onFormChange(form)}
                     onSubmit={() => onSubmit()}
                     schema={schema}
                     uiSchema={uiSchema}
