@@ -26,12 +26,12 @@ import { NewProvider } from './metadata/new/NewProvider';
 import { Filter } from './metadata/Filter';
 import { Contention } from './metadata/contention/ContentionContext';
 import { SessionModal } from './core/user/SessionModal';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 
 
 function App() {
 
-    const [showTimeout, setShowTimeout] = React.useState();
+    const [showTimeout] = React.useState();
 
     const httpOptions = {
         redirect: 'manual',

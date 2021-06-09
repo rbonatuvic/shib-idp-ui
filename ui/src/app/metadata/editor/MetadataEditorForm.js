@@ -6,7 +6,7 @@ import FormCheck from 'react-bootstrap/FormCheck';
 import { fields, widgets } from '../../form/component';
 import { templates } from '../../form/component';
 import { useUiSchema } from '../hooks/schema';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 
 const invisErrors = ['const', 'oneOf']
 

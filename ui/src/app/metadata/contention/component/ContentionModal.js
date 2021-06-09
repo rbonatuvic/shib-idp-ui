@@ -7,7 +7,7 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../../i18n/components/translate';
 import { useTranslator } from '../../../i18n/hooks';
 import { ChangeItem } from './ChangeItem';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 
 export function ContentionModal ({ theirs = [], ours = [], onUseTheirs, onUseOurs, ...props }) {
 

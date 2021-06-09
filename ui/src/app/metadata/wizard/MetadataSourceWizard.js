@@ -12,9 +12,9 @@ import { removeNull } from '../../core/utility/remove_null';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
-import Alert from 'react-bootstrap/esm/Alert';
-import Row from 'react-bootstrap/esm/Row';
-import Col from 'react-bootstrap/esm/Col';
+import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export function MetadataSourceWizard ({ onShowNav }) {
 
