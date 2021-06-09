@@ -1,6 +1,6 @@
-import { defaults } from 'lodash';
-import { merge } from 'lodash/merge';
-import { toNumber} from 'lodash/toNumber';
+import defaults from 'lodash/defaults';
+import merge from 'lodash/merge';
+import toNumber  from 'lodash/toNumber';
 import defaultsDeep from 'lodash/defaultsDeep';
 import API_BASE_PATH from '../../../App.constant';
 import {removeNull} from '../../../core/utility/remove_null';
