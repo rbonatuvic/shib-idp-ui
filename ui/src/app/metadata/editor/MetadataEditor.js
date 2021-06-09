@@ -15,6 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { useTranslator } from '../../i18n/hooks';
 import API_BASE_PATH from '../../App.constant';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
+import { FilterableProviders } from '../domain/provider';
 
 export function MetadataEditor ({ current }) {
 
@@ -68,6 +69,8 @@ export function MetadataEditor ({ current }) {
 
     const warnings = definition.warnings && definition.warnings(metadata);
 
+    const canFilter = FilterableProviders.indexOf(definition.type) > -1;
+
     return (
         <div className="container-fluid p-3">
             <Prompt
@@ -97,12 +100,12 @@ export function MetadataEditor ({ current }) {
                                 base={`/metadata/${type}/${id}/edit`}
                                 format='dropdown'
                                 errors={errors}>
-                                <NavLink className="dropdown-item"
+                                {canFilter && <NavLink className="dropdown-item"
                                     to="../filter/list"
                                     aria-label={translator('label.filter-list')}
                                     role="button">
                                     <Translate value="label.filter-list"></Translate>
-                                </NavLink>
+                                </NavLink>}
                             </MetadataEditorNav>
                         </div>
                         <div className="col-6 col-lg-3 order-2 text-right">
@@ -152,12 +155,12 @@ export function MetadataEditor ({ current }) {
                                 base={`/metadata/${type}/${id}/edit`}
                                 format='tabs'
                                 errors={errors}>
-                                <NavLink className="nav-link"
+                                {canFilter && <NavLink className="nav-link"
                                     to="../filter/list"
                                     aria-label={translator('label.filter-list')}
                                     role="button">
                                     <Translate value="label.filter-list"></Translate>
-                                </NavLink>
+                                </NavLink> }
                             </MetadataEditorNav>
                         </div>
                         <div className="col-lg-9">

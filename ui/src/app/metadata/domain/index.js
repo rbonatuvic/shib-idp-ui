@@ -1,6 +1,9 @@
 import { CustomAttributeDefinition } from './attribute/CustomAttributeDefinition';
 import { MetadataFilterEditorTypes } from './filter';
 import { MetadataProviderEditorTypes, MetadataProviderWizardTypes } from './provider';
+import { DynamicHttpMetadataProviderEditor } from './provider/DynamicHttpMetadataProviderDefinition';
+import { FileBackedHttpMetadataProviderEditor } from './provider/FileBackedHttpMetadataProviderDefinition';
+import { LocalDynamicMetadataProviderEditor } from './provider/LocalDynamicMetadataProviderDefinition';
 import { SourceEditor, SourceWizard } from "./source/SourceDefinition";
 
 export const editors = {
@@ -23,7 +26,13 @@ export const FilterEditorTypes = [
 
 export const AttributeEditorTypes = [
     CustomAttributeDefinition
-]
+];
+
+export const FilterableProviders = [
+    FileBackedHttpMetadataProviderEditor.type,
+    DynamicHttpMetadataProviderEditor.type,
+    LocalDynamicMetadataProviderEditor.type
+];
 
 export const getWizard = (type) =>
     ProviderWizardTypes.find(def => def.type === type) ||
