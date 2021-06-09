@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
@@ -45,7 +45,14 @@ const OptionWidget = ({
     ...props
 }) => {
 
-    const _onChange = (selected) => onChange(selected[0] === '' ? options.emptyValue : selected[0]);
+    const typeahead = useRef();
+
+    const _onChange = (selected) => {
+        const sel = selected[0];
+        const val = typeof sel === 'object' && sel.label ? sel.label : sel;
+        setInputValue(val);
+        onChange(val);
+    };
     const _onBlur = ({ target: { value } }) => onBlur(id, value);
     const _onFocus = ({ target: { value } }) => onFocus(id, value);
     // const inputType = (type || schema.type) === 'string' ? 'text' : `${type || schema.type}`;
@@ -59,6 +66,24 @@ const OptionWidget = ({
     const onCustomBlur = (evt) => {
         setTouched(true);
         _onBlur(evt);
+        _onChange([inputValue]);
+    };
+
+    const onKeydown = (evt) => {
+        if (evt.keyCode === 13) {
+            if (typeahead.current.state.showMenu && !typeahead.current.state.activeItem) {
+                typeahead.current.toggleMenu();
+            }
+            _onChange([inputValue]);
+        }
+    };
+
+    const defaultInputValue = typeof value === 'object' && value && value.label ? value.label : value;
+
+    const [ inputValue, setInputValue ] = React.useState( defaultInputValue );
+
+    const onInputChange = (val) => {
+        setInputValue(val);
     };
 
     return (
@@ -72,20 +97,25 @@ const OptionWidget = ({
             </Form.Label>
             <Typeahead
                 id={`option-selector-${id}`}
-                defaultInputValue={value || value === 0 ? value : ""}
+                ref={typeahead}
+                defaultInputValue={ inputValue }
+                onChange={ _onChange }
                 allowNew={true}
                 multiple={false}
                 className={`toggle-typeahead ${rawErrors.length > 0 ? "is-invalid" : ""}`}
                 options={opts}
                 placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder'] ): ''}
                 disabled={disabled || readonly}
-                onChange={_onChange}
                 onBlur={onCustomBlur}
                 onFocus={_onFocus}
+                onInputChange={ onInputChange }
+                onKeyDown={ onKeydown }
                 filterBy={(option, props) => true}
                 renderMenuItemChildren={(option, {options, text}, index) => {
                     return <span className={options.indexOf(text) === index ? 'font-weight-bold' : ''}>{option}</span>;
-                }}>
+                }}
+                newSelectionPrefix={''}
+                >
                 {({ isMenuShown, toggleMenu }) => (
                     <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly} />
                 )}
