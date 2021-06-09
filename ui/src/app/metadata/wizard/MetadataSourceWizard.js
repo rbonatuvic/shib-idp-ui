@@ -7,7 +7,7 @@ import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMe
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
 import { useMetadataEntity, useMetadataSources } from '../hooks/api';
-import { useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -46,7 +46,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
         formDispatch(setFormErrorAction(changes.errors));
-        // console.log('change', changes);
+        setBlocking(true);
     };
 
     const onEditFromSummary = (idx) => {
@@ -67,11 +67,19 @@ export function MetadataSourceWizard ({ onShowNav }) {
         }
     }
 
+    const [blocking, setBlocking] = React.useState(false);
+
     const validator = definition.validator(data);
     const warnings = definition.warnings && definition.warnings(metadata);
 
     return (
         <>
+            <Prompt
+                when={blocking}
+                message={location =>
+                    `message.unsaved-editor`
+                }
+            />
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save} disabled={ errors.length > 0 || loading } saving={loading} />

@@ -8,7 +8,7 @@ import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMe
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
 import { useMetadataEntity, useMetadataProviders } from '../hooks/api';
-import { useHistory } from 'react-router';
+import { Prompt, useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
 
 import { useNotificationDispatcher, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
@@ -40,7 +40,7 @@ export function MetadataProviderWizard({onRestart}) {
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
         formDispatch(setFormErrorAction(changes.errors));
-        // console.log('change', changes);
+        setBlocking(true);
     };
 
     const onEditFromSummary = (idx) => {
@@ -67,8 +67,16 @@ export function MetadataProviderWizard({onRestart}) {
         }
     }
 
+    const [blocking, setBlocking] = React.useState(false);
+
     return (
         <>
+            <Prompt
+                when={blocking}
+                message={location =>
+                    `message.unsaved-editor`
+                }
+            />
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save}

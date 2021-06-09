@@ -37,7 +37,7 @@ export function MetadataEditor ({ current }) {
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
         dispatch(setFormErrorAction(changes.errors));
-        // setBlocking(true);
+        setBlocking(true);
     };
 
     function save(metadata) {
@@ -51,6 +51,7 @@ export function MetadataEditor ({ current }) {
     };
 
     const cancel = () => {
+        setBlocking(false);
         gotoDetail();
     };
 
