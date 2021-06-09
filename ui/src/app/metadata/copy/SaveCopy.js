@@ -59,7 +59,7 @@ export function SaveCopy ({ copy, saving, onSave, onBack }) {
     return (
     <>
             <div className="row">
-                <div className="col col-xs-12 col-xl-6">
+                <div className="col col-xs-12">
                     <ul className="nav nav-wizard m-3">
                         <li className="nav-item">
                             <button type="button" className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={onBack}>
