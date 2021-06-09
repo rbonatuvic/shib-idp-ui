@@ -10,6 +10,14 @@ export const NameIDFilterWizard = {
         nameIdFormatFilterTarget: {
             'ui:field': 'FilterTargetField',
             api: ''
+        },
+        formats: {
+            "ui:options": {
+                orderable: false
+            },
+            items: {
+                'ui:widget': 'OptionWidget'
+            }
         }
     }, BaseFilterDefinition.uiSchema),
     label: 'NameIDFormat',
