@@ -12,7 +12,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
 
     const translator = useTranslator();
 
-    const { data = [] } = useMetadataProviders({}, []);
+    const { data = [] } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
 
     const [showSelector, setShowSelector] = React.useState(true);
 

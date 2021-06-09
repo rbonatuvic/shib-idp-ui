@@ -8,8 +8,6 @@ import { templates } from '../../form/component';
 import { useUiSchema } from '../hooks/schema';
 import Alert from 'react-bootstrap/Alert';
 
-import { updatedDiff } from 'deep-object-diff';
-
 const invisErrors = ['const', 'oneOf']
 
 function ErrorListTemplate () {

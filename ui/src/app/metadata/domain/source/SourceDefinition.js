@@ -1,8 +1,10 @@
-import { defaults, merge, toNumber, uniq } from 'lodash';
+import { defaults } from 'lodash';
+import { merge } from 'lodash/merge';
+import { toNumber} from 'lodash/toNumber';
 import defaultsDeep from 'lodash/defaultsDeep';
 import API_BASE_PATH from '../../../App.constant';
 import {removeNull} from '../../../core/utility/remove_null';
-import { updatedDiff, detailedDiff } from 'deep-object-diff';
+import { detailedDiff } from 'deep-object-diff';
 
 export const SourceBase = {
     label: 'Metadata Source',
