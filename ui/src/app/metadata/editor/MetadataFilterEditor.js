@@ -1,7 +1,7 @@
 import React from 'react';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 
 import Translate from '../../i18n/components/translate';
@@ -13,12 +13,11 @@ import { MetadataEditorNav } from './MetadataEditorNav';
 import { useMetadataFilters } from '../hooks/api';
 import { MetadataFilterContext } from '../hoc/MetadataFilterSelector';
 
-export function MetadataFilterEditor({children}) {
+export function MetadataFilterEditor({children, onNavigate, block}) {
 
     const { id, section } = useParams();
 
     const { data } = useMetadataFilters(id, {}, []);
-    const history = useHistory();
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
     const current = React.useContext(MetadataFilterContext);
@@ -29,11 +28,7 @@ export function MetadataFilterEditor({children}) {
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
         dispatch(setFormErrorAction(changes.errors));
-        // setBlocking(true);
-    };
-
-    const onNavigate = (path) => {
-        history.push(path)
+        block();
     };
 
     const validator = definition.validator(data, current);

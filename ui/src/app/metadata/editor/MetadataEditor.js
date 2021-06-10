@@ -52,7 +52,7 @@ export function MetadataEditor ({ current }) {
 
     const cancel = () => {
         setBlocking(false);
-        gotoDetail();
+        setTimeout(() => gotoDetail());
     };
 
     const gotoDetail = (state = null) => {
@@ -61,7 +61,13 @@ export function MetadataEditor ({ current }) {
     };
 
     const onNavigate = (path) => {
-        history.push(path)
+        const resetBlock = blocking;
+        setBlocking(false);
+        setTimeout(() => {
+            history.push(path);
+            setBlocking(resetBlock);
+        });
+        // setBlocking(resetBlock);
     };
 
     const [blocking, setBlocking] = React.useState(false);

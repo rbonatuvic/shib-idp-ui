@@ -63,8 +63,6 @@ export function MetadataSourceWizard ({ onShowNav }) {
         if (response.ok) {
             setBlocking(false);
             history.push('/');
-        } else {
-            console.log(response.body);
         }
     }
 

@@ -20,7 +20,17 @@ export function EditFilter() {
 
     const [blocking, setBlocking] = React.useState(false);
 
+    const onNavigate = (path) => {
+        const resetBlock = blocking;
+        setBlocking(false);
+        setTimeout(() => {
+            history.push(path);
+            setBlocking(resetBlock);
+        });
+    };
+
     function save(metadata) {
+        setBlocking(false);
         update(``, metadata).then(() => {
             gotoDetail({ refresh: true });
         }).catch(() => {
@@ -29,7 +39,8 @@ export function EditFilter() {
     };
 
     const cancel = () => {
-        gotoDetail();
+        setBlocking(false);
+        setTimeout(() => gotoDetail());
     };
 
     const gotoDetail = (state = null) => {
@@ -60,7 +71,7 @@ export function EditFilter() {
                                         </div>
                                     </div>
                                     <hr />
-                                    <MetadataFilterEditor>
+                                <MetadataFilterEditor onNavigate={onNavigate } block={ () => setBlocking(true) }>
                                         {(filter, isInvalid) =>
                                             <div className="d-flex justify-content-end">
                                                 <button className="btn btn-info mr-2"
