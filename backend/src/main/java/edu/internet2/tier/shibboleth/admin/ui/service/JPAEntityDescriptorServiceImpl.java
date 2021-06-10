@@ -169,6 +169,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 }
                 assertionConsumerService.setBinding(acsRepresentation.getBinding());
                 assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
+                assertionConsumerService.setIndex(acsRepresentation.getIndex());
             }
         } else {
             ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
