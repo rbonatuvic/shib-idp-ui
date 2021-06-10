@@ -61,6 +61,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
         const body = removeNull(metadata, true);
         await post('', body);
         if (response.ok) {
+            setBlocking(false);
             history.push('/');
         } else {
             console.log(response.body);

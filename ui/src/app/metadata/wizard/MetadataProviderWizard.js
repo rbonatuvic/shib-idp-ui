@@ -57,6 +57,7 @@ export function MetadataProviderWizard({onRestart}) {
         const body = removeNull(definition.parser(metadata), true);
         await post('', body);
         if (response.ok) {
+            setBlocking(false);
             history.push('/dashboard/metadata/manager/providers');
         } else {
             const { errorCode, errorMessage, cause } = response.data;

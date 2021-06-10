@@ -9,12 +9,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
-import { useTranslation } from '../../i18n/hooks';
+import { useTranslator } from '../../i18n/hooks';
 
 import { brand } from '../../app.brand';
+import { useIsAdmin } from '../user/UserContext';
 
 export function Header () {
-    const logoutLabel = useTranslation('action.logout');
+
+    const translator = useTranslator();
+
+    const isAdmin = useIsAdmin();
 
     return (
         <Navbar expand="md" fixed="top" bg="">
@@ -26,6 +30,7 @@ export function Header () {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto align-items-center" navbar>
+                    {isAdmin &&
                     <Dropdown className="mr-2" id="basic-nav-dropdown">
                         <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
                             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
@@ -38,6 +43,7 @@ export function Header () {
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
+                    }
                     <Dropdown className="" id="basic-nav-dropdown">
                         <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
                             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
@@ -48,10 +54,10 @@ export function Header () {
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.add-new-source" />
                             </Dropdown.Item>
-                            <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2">
+                            {isAdmin && <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2">
                                 <FontAwesomeIcon icon={faCubes} className="mr-2" />
                                 <Translate value="action.add-new-provider" />
-                            </Dropdown.Item>
+                            </Dropdown.Item> }
                         </Dropdown.Menu>
                     </Dropdown>
                     <Link to="/dashboard" className="nav-link" aria-label="Metadata Dashboard">
@@ -59,7 +65,7 @@ export function Header () {
                         <FontAwesomeIcon icon={faTh} className="mr-2" />
                         <Translate value="action.dashboard">Dashboard</Translate>
                     </Link>
-                    <Nav.Link href="/logout" target="_self" aria-label={logoutLabel}>
+                    <Nav.Link href="/logout" target="_self" aria-label={translator('action.logout')}>
                         <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                         <Translate value="action.logout">Logout</Translate>
                     </Nav.Link>
