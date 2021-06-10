@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -40,9 +41,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=true react-scripts build",
-    "buildProd": "react-scripts build",
+    "buildProd": "react-scripts build && npm run copy",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:static": "sass src/static.scss ./build/unsecured/static.css",
+    "copy:static": "node ./build",
+    "copy": "npm run copy:static && npm run build:static"
   },
   "eslintConfig": {
     "extends": [
