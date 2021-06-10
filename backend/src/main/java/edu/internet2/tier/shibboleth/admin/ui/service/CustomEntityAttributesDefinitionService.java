@@ -6,8 +6,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefini
 
 public interface CustomEntityAttributesDefinitionService {
 
-    void addCustomEntityAttributesDefinitionListener(ICustomEntityAttributesDefinitionListener listener);
-
     CustomEntityAttributeDefinition createOrUpdateDefinition(CustomEntityAttributeDefinition definition);
 
     void deleteDefinition(CustomEntityAttributeDefinition definition);

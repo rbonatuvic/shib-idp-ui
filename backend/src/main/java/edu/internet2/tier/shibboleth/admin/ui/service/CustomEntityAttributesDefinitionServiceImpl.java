@@ -1,12 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,25 +13,22 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefini
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.CustomEntityAttributeFilterValue;
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFilterValueRepository;
+import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
 
 @Service
-public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {
+public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {    
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+    
     @Autowired
     CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;
     
     @Autowired
     EntityManager entityManager;
     
-    private List<ICustomEntityAttributesDefinitionListener> listeners = new ArrayList<>();
-
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;
-    
-    @Override
-    public void addCustomEntityAttributesDefinitionListener(ICustomEntityAttributesDefinitionListener listener) {
-        listeners.add(listener);        
-    }
-    
+       
     @Override
     @Transactional
     public CustomEntityAttributeDefinition createOrUpdateDefinition(CustomEntityAttributeDefinition definition) {
@@ -67,6 +63,6 @@ public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntity
     }
 
     private void notifyListeners() {
-        listeners.forEach(l -> l.customEntityAttributesDefinitionChangeOccurred());
+        applicationEventPublisher.publishEvent(new CustomEntityAttributeDefinitionChangeEvent(this));
     }
 }

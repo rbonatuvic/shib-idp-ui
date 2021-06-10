@@ -3,10 +3,11 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
-import edu.internet2.tier.shibboleth.admin.ui.service.ICustomEntityAttributesDefinitionListener;
+import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import javax.annotation.PostConstruct;
 
 @Configuration
 @ConfigurationProperties(prefix = "custom")
-public class CustomPropertiesConfiguration implements ICustomEntityAttributesDefinitionListener {
+public class CustomPropertiesConfiguration implements ApplicationListener<CustomEntityAttributeDefinitionChangeEvent> {
     private List<? extends Map<String, String>> attributes = new ArrayList<>();
     
     private CustomEntityAttributesDefinitionService ceadService;
@@ -41,15 +42,6 @@ public class CustomPropertiesConfiguration implements ICustomEntityAttributesDef
         }
     }
 
-    /**
-     * We don't know what change occurred, so the easiest thing to do is just rebuild our map of overrides.
-     * (especially since the small occurrence of this and number of items makes doing this ok perf-wise).
-     */
-    @Override
-    public void customEntityAttributesDefinitionChangeOccurred() {
-        buildRelyingPartyOverrides();
-    }
-
     public List<? extends Map<String, String>> getAttributes() {
         return attributes;
     }   
@@ -58,15 +50,21 @@ public class CustomPropertiesConfiguration implements ICustomEntityAttributesDef
         return new ArrayList<>(overrides.values());        
     }
 
+    /**
+     * We don't know what change occurred, so the easiest thing to do is just rebuild our map of overrides.
+     * (especially since the small occurrence of this and number of items makes doing this ok perf-wise).
+     */
+    @Override
+    public void onApplicationEvent(CustomEntityAttributeDefinitionChangeEvent arg0) {
+        buildRelyingPartyOverrides();        
+    }
+    
     @PostConstruct
     public void postConstruct() {
-        // Register with service to get the updates when changes are made to the DB definitions
-        ceadService.addCustomEntityAttributesDefinitionListener(this);
-        
         // Make sure we have the right data
         buildRelyingPartyOverrides();
     }
-    
+
     public void setAttributes(List<? extends Map<String, String>> attributes) {
         this.attributes = attributes;
     }
