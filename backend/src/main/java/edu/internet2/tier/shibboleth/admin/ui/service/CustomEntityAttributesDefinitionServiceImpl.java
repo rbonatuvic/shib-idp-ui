@@ -16,7 +16,6 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDe
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFilterValueRepository;
 
 @Service
-@Primary
 public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {
     @Autowired
     CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;

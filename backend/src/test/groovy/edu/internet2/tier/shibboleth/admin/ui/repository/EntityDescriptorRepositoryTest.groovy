@@ -109,7 +109,7 @@ class EntityDescriptorRepositoryTest extends Specification {
         }
         
         @Bean
-        CustomEntityAttributesDefinitionServiceImpl ceadService() {
+        CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {
             new CustomEntityAttributesDefinitionServiceImpl().with {
                it.entityManager = entityManager
                it.repository = repository

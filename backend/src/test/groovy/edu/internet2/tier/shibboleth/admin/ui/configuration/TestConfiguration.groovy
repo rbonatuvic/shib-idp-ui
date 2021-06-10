@@ -59,7 +59,7 @@ class TestConfiguration {
     }
 
     @Bean
-    CustomEntityAttributesDefinitionServiceImpl ceadService() {
+    CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {
         new CustomEntityAttributesDefinitionServiceImpl().with {
            it.entityManager = entityManager
            it.repository = repository
