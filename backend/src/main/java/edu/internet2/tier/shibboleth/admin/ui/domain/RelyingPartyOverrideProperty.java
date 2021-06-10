@@ -24,4 +24,9 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
     private String name;
     private String persistType;
     private String persistValue;
+    
+    @Override
+    public Boolean getFromConfigFile() {
+        return Boolean.TRUE;
+    }
 }

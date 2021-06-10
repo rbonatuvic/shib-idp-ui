@@ -57,6 +57,11 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     }
 
     @Override
+    public Boolean getFromConfigFile() {
+        return Boolean.FALSE;
+    }
+    
+    @Override
     public String getPersistType() {
         return attributeType.toString();
     }

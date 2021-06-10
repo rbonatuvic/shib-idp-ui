@@ -1,7 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
 
 @Controller
@@ -26,6 +24,9 @@ import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefi
 public class CustomEntityAttributesDefinitionsController {
     @Autowired
     private CustomEntityAttributesDefinitionService caService;
+    
+    @Autowired
+    private CustomPropertiesConfiguration customPropertiesConfiguration;
 
     @PostMapping("/attribute")
     @Transactional
@@ -63,10 +64,14 @@ public class CustomEntityAttributesDefinitionsController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * @return List of IRelyingPartyOverrideProperty objects. This will include all of the CustomEntityAttributeDefinition
+     * and the RelyingPartyOverrideProperties from any configuration file that was read in at startup.
+     */
     @GetMapping("/attributes")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(caService.getAllDefinitions());
+        return ResponseEntity.ok(customPropertiesConfiguration.getOverrides());
     }
     
     @GetMapping("/attribute/{name}")

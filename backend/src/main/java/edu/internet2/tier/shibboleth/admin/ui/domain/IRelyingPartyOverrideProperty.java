@@ -19,6 +19,8 @@ public interface IRelyingPartyOverrideProperty {
 
     public String getDisplayType();
 
+    public Boolean getFromConfigFile();
+    
     public String getHelpText();
 
     public String getInvert();
