@@ -1,6 +1,8 @@
+import React from 'react';
 import { faEdit, faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+
+import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 import { Translate } from '../../i18n/components/translate';
@@ -67,12 +69,12 @@ export function MetadataAttributeList ({entities, onDelete}) {
                                                             <Translate value="action.edit">Edit</Translate>
                                                         </span>
                                                     </Link>
-                                                    <button className="btn btn-link text-danger" onClick={() => block(() => remove(attr.name))}>
+                                                    <Button variant="link" className="text-danger" onClick={() => block(() => remove(attr.name))}>
                                                         <FontAwesomeIcon icon={faTrash} size="lg" />
                                                         <span className="sr-only">
                                                             <Translate value="action.delete">Delete</Translate>
                                                         </span>
-                                                    </button>
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         )}

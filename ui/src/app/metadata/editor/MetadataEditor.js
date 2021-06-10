@@ -2,6 +2,7 @@ import React from 'react';
 import { faCogs, faExclamationTriangle, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory, useParams, Prompt } from 'react-router';
+import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 import Translate from '../../i18n/components/translate';
@@ -116,20 +117,21 @@ export function MetadataEditor ({ current }) {
                             </MetadataEditorNav>
                         </div>
                         <div className="col-6 col-lg-3 order-2 text-right">
-                            <button className="btn btn-info"
+                            <Button
+                                variant="info"
                                 type="button"
                                 onClick={() => save(metadata)}
                                 disabled={errors.length > 0 || loading}
                                 aria-label="Save changes to the metadata source. You will return to the dashboard">
                                 <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading } />&nbsp;
                                 <Translate value="action.save">Save</Translate>
-                            </button>
+                            </Button>
                             &nbsp;
-                            <button className="btn btn-secondary"
+                            <Button variant="secondary"
                                 type="button"
                                 onClick={() => cancel()} aria-label="Cancel changes, go back to dashboard">
                                 <Translate value="action.cancel">Cancel</Translate>
-                            </button>
+                            </Button>
                         </div>
                         <div className="col-xs-12 col-lg-9 order-lg-1 order-3 align-items-start">
                             {warnings && warnings.hasOwnProperty(section) &&

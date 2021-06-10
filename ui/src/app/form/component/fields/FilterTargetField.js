@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Translate from '../../../i18n/components/translate';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAsterisk, faCaretDown, faCaretUp, faEye, faEyeSlash, faPlus, faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useTranslator } from '../../../i18n/hooks';
@@ -15,9 +16,10 @@ import isNil from 'lodash/isNil';
 import { FilterTargetPreview } from '../../../metadata/hoc/FilterTargetPreview';
 
 const ToggleButton = ({ isOpen, onClick, disabled }) => (
-    <button
+    <Button
         type="button"
-        className="btn btn-outline-secondary toggle-button"
+        variant="outline-secondary"
+        className="toggle-button"
         onClick={onClick}
         disabled={disabled}
         onMouseDown={e => {
@@ -25,7 +27,7 @@ const ToggleButton = ({ isOpen, onClick, disabled }) => (
             e.preventDefault();
         }}>
         <FontAwesomeIcon icon={isOpen ? faCaretUp : faCaretDown} />
-    </button>
+    </Button>
 );
 
 const FilterTargetField = ({
@@ -225,13 +227,13 @@ const FilterTargetField = ({
                             </div>
                             {targetType === 'ENTITY' &&
                                 <div className="ml-2">
-                                    <button className="btn btn-success"
+                                    <Button variant="success"
                                         type="button"
                                         disabled={!term}
                                         onClick={() => onSelectValue(term)}>
                                         <Translate value="action.add-entity-id">Add Entity ID</Translate>&nbsp;&nbsp;
                                         <FontAwesomeIcon icon={faPlus} />
-                                    </button>
+                                    </Button>
                                 </div>
                             }
                         </div>
@@ -250,15 +252,19 @@ const FilterTargetField = ({
                                             {id}
                                             <span>
                                                 {preview &&
-                                                    <button disabled={loading || !xml} type="button" className="btn btn-link text-right" onClick={() => preview(id)}>
+                                                    <Button disabled={loading || !xml} type="button" 
+                                                    variant="link"
+                                                    className="text-right" onClick={() => preview(id)}>
                                                         <FontAwesomeIcon icon={loading ? faSpinner : xml ? faEye : faEyeSlash} pulse={loading} size="lg" className="text-success sr-hidden" />
                                                         <span className="sr-only"><Translate value="action.preview">Preview</Translate></span>
-                                                    </button>
+                                                    </Button>
                                                 }
-                                                <button type="button" className="btn btn-link text-right" onClick={() => removeId(id)}>
+                                                <Button type="button" 
+                                                variant="link"
+                                                className="text-right" onClick={() => removeId(id)}>
                                                     <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger sr-hidden" />
                                                     <span className="sr-only"><Translate value="action.remove">Remove</Translate></span>
-                                                </button>
+                                                </Button>
                                             </span>
                                         </React.Fragment>
                                     )}

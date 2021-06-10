@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Button from 'react-bootstrap/Button';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
 import { Configuration } from '../hoc/Configuration';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
@@ -79,10 +79,10 @@ export function MetadataVersion() {
                                     </>
                                 }
                             </div>
-                            <button className="btn btn-link" onClick={() => onScrollTo('header', -60)}>
+                            <Button variant="link" onClick={() => onScrollTo('header', -60)}>
                                 <FontAwesomeIcon icon={faArrowUp} className="sr-hidden" />&nbsp;
                                 <Translate value="action.back-to-top">Back to Top</Translate>
-                            </button>
+                            </Button>
                         </div>
                         </>
                     }

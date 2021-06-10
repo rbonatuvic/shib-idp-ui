@@ -40,7 +40,7 @@ export function Search ({ entities, searchable, children }) {
                             placeholder="Search Files" onChange={ (event) => search(event.target.value) }
                             value={query} />
                         <InputGroup.Append>
-                            <Button variant="text" className="px-3" onClick={ () => search('') }>Clear</Button>
+                            <Button variant="outline-primary" className="px-3" onClick={ () => search('') }>Clear</Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form.Group>

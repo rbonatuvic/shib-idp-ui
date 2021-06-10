@@ -2,7 +2,7 @@ import React from 'react';
 import { faArrowDown, faArrowUp, faHistory, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useHistory, useParams } from 'react-router-dom';
-
+import Button from 'react-bootstrap/Button';
 import { scroller } from 'react-scroll';
 
 import Translate from '../../i18n/components/translate';
@@ -59,12 +59,12 @@ export function MetadataOptions () {
                     enabled={type === 'source' ? metadata.serviceEnabled : metadata.enabled}
                     model={metadata}>
                     {type === 'source' && onDeleteSource &&
-                        <button className="btn btn-outline btn-sm btn-danger align-self-start"
+                        <Button className="btn btn-outline btn-sm btn-danger align-self-start"
                             disabled={metadata.serviceEnabled}
                             onClick={() => onDeleteSource(metadata.id, redirectOnDelete)}>
                             <Translate value="action.delete" />
                             <FontAwesomeIcon icon={faTrash} className="ml-2" />
-                        </button>
+                        </Button>
                     }
                 </MetadataHeader>
                 <div className="px-3 my-3 d-flex justify-content-between" id="navigation">
@@ -74,10 +74,10 @@ export function MetadataOptions () {
                             <Translate value="action.version-history">Version History</Translate>
                         </Link>
                         {type === 'provider' &&
-                            <button className="btn btn-link" onClick={() => onScrollTo('filters')}>
+                            <Button variant="link" onClick={() => onScrollTo('filters')}>
                                 <FontAwesomeIcon icon={faArrowDown} />&nbsp;
                                 <Translate value="label.filters">Filters</Translate>
-                            </button>
+                            </Button>
                         }
                     </div>
                     <MetadataViewToggle />
@@ -108,10 +108,10 @@ export function MetadataOptions () {
                         </>
                     }
                 </div>
-                <button className="btn btn-link" onClick={ () => onScrollTo('header', -60) }>
+                <Button variant="link" onClick={ () => onScrollTo('header', -60) }>
                     <FontAwesomeIcon icon={faArrowUp} className="sr-hidden" />&nbsp;
                     <Translate value="action.back-to-top">Back to Top</Translate>
-                </button>
+                </Button>
             </div>
             </>}
         </DeleteSourceConfirmation>

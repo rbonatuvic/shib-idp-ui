@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Check from 'react-bootstrap/FormCheck';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleRight, faAsterisk, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -70,7 +71,7 @@ export function CopySource({ copy, onNext }) {
                             </h3>
                         </li>
                         <li className="nav-item">
-                            <button className="nav-link next btn d-flex justify-content-between align-items-start"
+                            <Button className="nav-link next btn d-flex justify-content-between align-items-start"
                                 onClick={() => onNext(getValues())}
                                 disabled={!isValid}
                                 aria-label="Next: Step 2, Organization information"
@@ -84,7 +85,7 @@ export function CopySource({ copy, onNext }) {
                                     <FontAwesomeIcon icon={faArrowCircleRight} size="2x" />
                                     <Translate value="action.next">Next</Translate>
                                 </span>
-                            </button>
+                            </Button>
                         </li>
                     </ul>
                 </div>
@@ -170,25 +171,25 @@ export function CopySource({ copy, onNext }) {
                             <tr>
                                 <td><Translate value="label.check-all-attributes">Check All Attributes</Translate></td>
                                 <td>
-                                    <button className="btn btn-text text-success btn-sm" onClick={() => onSelectAll()}>
+                                    <Button variant="text" className="text-success btn-sm" onClick={() => onSelectAll()}>
                                         <FontAwesomeIcon icon={faCheck} />
                                         <span className="sr-only"><Translate value="label.check-all-attributes">Check All Attributes</Translate></span>
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                             <tr>
                                 <td><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></td>
                                 <td>
-                                    <button className="btn btn-text text-danger btn-sm" onClick={() => onUnselectAll()}>
+                                    <Button variant="text" className="text-danger btn-sm" onClick={() => onUnselectAll()}>
                                         <FontAwesomeIcon icon={faTimes} />
                                         <span className="sr-only"><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></span>
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
+                <Button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
                     onClick={() => onNext(getValues())}
                     disabled={!isValid}
                     aria-label="Next: Step 2, Organization information"
@@ -198,7 +199,7 @@ export function CopySource({ copy, onNext }) {
                             Finished!
                                     </Translate>
                     </span>
-                </button>
+                </Button>
             </div>
         </>
     );

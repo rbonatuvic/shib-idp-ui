@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
 
 import Translate from "../../../i18n/components/translate";
 import { InfoIcon } from "../InfoIcon";
@@ -12,9 +13,10 @@ import { faAsterisk, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-
 import { useTranslator } from "../../../i18n/hooks";
 
 const ToggleButton = ({ isOpen, onClick, disabled }) => (
-    <button
+    <Button
         type="button"
-        className="btn btn-outline-secondary toggle-button"
+        variant="outline-secondary"
+        className="toggle-button"
         onClick={onClick}
         disabled={disabled}
         onMouseDown={e => {
@@ -22,7 +24,7 @@ const ToggleButton = ({ isOpen, onClick, disabled }) => (
             e.preventDefault();
         }}>
         <FontAwesomeIcon icon={isOpen ? faCaretUp : faCaretDown} />
-    </button>
+    </Button>
 );
 
 const OptionWidget = ({

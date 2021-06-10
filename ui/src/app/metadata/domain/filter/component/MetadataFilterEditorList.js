@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Check from 'react-bootstrap/FormCheck';
+import Button from 'react-bootstrap/Button';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleDown, faArrowCircleUp, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -30,14 +31,14 @@ export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate
                             <tr key={i}>
                                 <td className="td-sm">
                                     <div className="d-flex justify-content-center">
-                                        <button className="btn btn-link" onClick={() => onOrderUp(filter.resourceId)} disabled={first === filter.resourceId}>
+                                        <Button variant="link" onClick={() => onOrderUp(filter.resourceId)} disabled={first === filter.resourceId}>
                                             <FontAwesomeIcon icon={faArrowCircleUp} size='lg' />
                                             <span className="sr-only"><Translate value="action.move-up">Move Up</Translate></span>
-                                        </button>
-                                        <button className="btn btn-link" onClick={() => onOrderDown(filter.resourceId)} disabled={last === filter.resourceId}>
+                                        </Button>
+                                        <Button variant="link" onClick={() => onOrderDown(filter.resourceId)} disabled={last === filter.resourceId}>
                                             <FontAwesomeIcon icon={faArrowCircleDown} size='lg' />
                                             <span className="sr-only"><Translate value="action.move-up">Move Down</Translate></span>
-                                        </button>
+                                        </Button>
                                     </div>
                                 </td>
                                 <td className="td-xs">{i + 1}</td>
@@ -61,10 +62,10 @@ export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate
                                     </Link>
                                 </td>
                                 <td className="td-sm">
-                                    <button className="btn btn-link" disabled={loading} onClick={() => onDelete(filter.resourceId)}>
+                                    <Button variant="link" disabled={loading} onClick={() => onDelete(filter.resourceId)}>
                                         <FontAwesomeIcon icon={faTrash} size="lg" className="text-danger" />
                                         <span className="sr-only"><Translate value="action.edit">Delete</Translate></span>
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                         )}

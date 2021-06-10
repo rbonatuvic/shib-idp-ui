@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -34,22 +35,24 @@ export default function ProviderList({ entities, reorder = true, first, last, on
                                         <div className="provider-index text-center text-primary font-weight-bold">&mdash;</div>
                                     }
                                     &nbsp;
-                                    <button 
+                                    <Button 
                                         onClick={ () => onOrderDown(provider.resourceId) }
-                                        className="btn btn-link px-1"
+                                        variant="link"
+                                        className=" px-1"
                                         disabled={provider.resourceId === last || !reorder}
                                         aria-label="Decrease reorder by 1">
                                             <FontAwesomeIcon className="text-info" icon={faChevronCircleDown} size="lg" />
                                         <i className="fa text-info fa-lg fa-chevron-circle-down" aria-hidden="true"></i>
-                                    </button>
-                                    <button
+                                    </Button>
+                                    <Button
                                         onClick={ () => onOrderUp(provider.resourceId) }
-                                        className="btn btn-link px-1"
+                                        variant="link"
+                                        className="px-1"
                                         aria-label="Increase reorder by 1"
                                         disabled={provider.resourceId === first || !reorder}>
                                         <FontAwesomeIcon className="text-info" icon={faChevronCircleUp} size="lg" />
                                         <i className="fa text-info fa-lg fa-chevron-circle-up" aria-hidden="true"></i>
-                                    </button>
+                                    </Button>
                                 </div>
                             </td>
                             <td className="align-middle">

@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import { useForm } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
-
+import Button from 'react-bootstrap/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faAsterisk, faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
@@ -85,7 +85,7 @@ export function MetadataUpload() {
                             </h3>
                         </li>
                         <li className="nav-item">
-                            <button className="nav-link next btn d-flex justify-content-between align-items-start"
+                            <Button className="nav-link next btn d-flex justify-content-between align-items-start"
                                 disabled={!isValid || saving}
                                 aria-label="Save metadata resolver">
                                 <span className="label">
@@ -97,7 +97,7 @@ export function MetadataUpload() {
                                     <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={saving} size="2x" />
                                     <Translate value="action.save">Save</Translate>
                                 </span>
-                            </button>
+                            </Button>
                         </li>
                     </ul>
                     <fieldset className="bg-light border rounded p-4">
@@ -142,13 +142,13 @@ export function MetadataUpload() {
                             <span><Translate value="message.file-upload-alert">Note: You can only import a file with a single entityID (EntityDescriptor element) in it. Anything more in that file will result in an error.</Translate></span>
                         </div>
                     </fieldset>
-                    <button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
+                    <Button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
                         disabled={!isValid}
                         aria-label="Save metadata resolver">
                         <span className="label">
                             <Translate value="action.save">Save</Translate>
                         </span>
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

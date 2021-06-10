@@ -1,8 +1,10 @@
+import React from 'react';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
 import { InfoIcon } from '../../form/component/InfoIcon';
 import { useTranslator } from '../../i18n/hooks';
@@ -57,7 +59,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                         </li>
                         <li className="nav-item">
                             {isValid &&
-                            <button className="nav-link next btn d-flex justify-content-between align-items-start" onClick={() => onNext(getValues())} aria-label={() => <Translate value={`label.common-attributes`} />}
+                            <Button className="nav-link next btn d-flex justify-content-between align-items-start" onClick={() => onNext(getValues())} aria-label={() => <Translate value={`label.common-attributes`} />}
                                     type="button">
                                     <span className="label">
                                     2.&nbsp;
@@ -67,7 +69,7 @@ export function MetadataProviderTypeSelector({ type, types = [], children}) {
                                         <FontAwesomeIcon icon={faArrowCircleRight} size="2x" />
                                         <Translate value="action.next">Next</Translate>
                                     </span>
-                                </button>
+                                </Button>
                             }
                         </li>
                     </ul>

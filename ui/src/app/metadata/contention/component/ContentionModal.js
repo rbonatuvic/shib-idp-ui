@@ -3,6 +3,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
 
 import Translate from '../../../i18n/components/translate';
 import { useTranslator } from '../../../i18n/hooks';
@@ -83,23 +84,23 @@ export function ContentionModal ({ theirs = [], ours = [], onUseTheirs, onUseOur
             </Modal.Body>
             {theirs && theirs.length < 1 ?
             <Modal.Footer>
-                <button className="btn btn-secondary"
-                    onClick={() => onUseTheirs()}><Translate value="action.cancel">Cancel</Translate></button>
+                <Button variant="secondary"
+                    onClick={() => onUseTheirs()}><Translate value="action.cancel">Cancel</Translate></Button>
             </Modal.Footer>
             :
             ours && ours.length < 1 ?
                 <Modal.Footer>
-                    <button className="btn btn-secondary"
-                        onClick={() => onUseTheirs()}><Translate value="action.get-latest">Get latest</Translate></button>
+                    <Button variant="secondary"
+                        onClick={() => onUseTheirs()}><Translate value="action.get-latest">Get latest</Translate></Button>
                 </Modal.Footer>
             :
             <Modal.Footer>
-                <button className="btn btn-info" onClick={() => onUseOurs()} disabled={!resolutionObj}>
+                <Button variant="info" onClick={() => onUseOurs()} disabled={!resolutionObj}>
                     <Translate value="action.use-mine">Use My Changes</Translate>
-                </button>
-                <button className="btn btn-danger" onClick={() => onUseTheirs()} disabled={!rejectionObj}>
+                </Button>
+                <Button variant="danger" onClick={() => onUseTheirs()} disabled={!rejectionObj}>
                     <Translate value="action.use-theirs">Use Their Changes</Translate>
-                </button>
+                </Button>
             </Modal.Footer>
             }
         </Modal>

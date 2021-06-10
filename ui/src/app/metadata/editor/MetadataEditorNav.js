@@ -1,7 +1,8 @@
+import React from 'react';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Button from 'react-bootstrap/Button';
 
 import Translate from '../../i18n/components/translate';
 // import { usePagesWithErrors } from '../hoc/MetadataFormContext';
@@ -31,14 +32,14 @@ export function MetadataEditorNav ({ definition, current, children, format = 'ta
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         {routes.map((route, idx) =>
-                            <button
+                            <Button
                                 type="button"
                                 className="dropdown-item"
                                 key={route.path}
                                 onClick={() => onNavigate(route.path)}
                                 aria-label={route.label}>
                                 <Translate value={route.label}></Translate>
-                            </button>
+                            </Button>
                         )}
                         {children &&
                         <React.Fragment>
@@ -52,17 +53,18 @@ export function MetadataEditorNav ({ definition, current, children, format = 'ta
             <React.Fragment>
                 <nav className="nav nav-pills flex-column" role="navigation">
                     {routes.map((route, idx) =>
-                        <button
+                        <Button
+                            variant="text"
                             type="button"
                             key={route.path}
-                            className={`btn btn-text nav-link text-left px-3 py-2 mb-1 ${route.path === current ? 'active' : 'text-primary '}`}
+                            className={`nav-link text-left px-3 py-2 mb-1 ${route.path === current ? 'active' : 'text-primary '}`}
                             onClick={() => onNavigate(route.path)}
                             aria-label={route.label}>
                             <Translate value={route.label}></Translate>
                             { /*errors.indexOf(route.path) > -1 &&
                                 <FontAwesomeIcon className={`ml-2 ${route.path === current ? '' : 'text-danger'}`} icon={ faExclamationTriangle } />
                             */}
-                        </button>
+                        </Button>
                     )}
                 </nav>
                 <hr />

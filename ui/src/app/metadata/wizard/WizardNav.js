@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Button from 'react-bootstrap/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faCheck, faSpinner, faSave, faArrowCircleRight, faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -47,7 +47,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
         <nav>
             <ul className="nav nav-wizard">
                 {previous && <li className="nav-item">
-                    <button className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={() => onPrevious(previous.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
+                    <Button className="nav-link previous btn d-flex justify-content-between align-items-start" onClick={() => onPrevious(previous.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
                         type="button">
                         <span className="direction d-flex flex-column align-items-center">
                             <FontAwesomeIcon icon={faArrowCircleLeft} size="2x" />
@@ -57,7 +57,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
                             {previous.index}.&nbsp;
                             <Translate value={previous.label}>{previous.label}</Translate>
                         </span>
-                    </button>
+                    </Button>
                 </li>
                 }
                 <li className="nav-item">
@@ -70,7 +70,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
                 </li>
                 {next &&
                 <li className="nav-item">
-                    <button className="nav-link next btn d-flex justify-content-between align-items-start" onClick={() => onSetIndex(next.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
+                    <Button className="nav-link next btn d-flex justify-content-between align-items-start" onClick={() => onSetIndex(next.id)} disabled={disabled} aria-label={() => <Translate value={previous.path} />}
                         type="button">
                         <span className="label">
                             {next.index }.&nbsp;
@@ -80,12 +80,12 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
                             <FontAwesomeIcon icon={faArrowCircleRight} size="2x" />
                             <Translate value="action.next">Next</Translate>
                         </span>
-                    </button>
+                    </Button>
                 </li>
                 }
                 {last && (last.id === current.id) && 
                 <li className="nav-item">
-                    <button className="nav-link save btn d-flex justify-content-between align-items-start"
+                    <Button className="nav-link save btn d-flex justify-content-between align-items-start"
                         aria-label="Save"
                         disabled={disabled}
                         onClick={() => onSave()}
@@ -99,7 +99,7 @@ export function WizardNav ({ disabled = false, onSave, saving, onRestart }) {
                             <FontAwesomeIcon icon={saving ? faSpinner : faSave} pulse={saving} size="2x" className="next" />
                             <Translate value="action.save">Save</Translate>
                         </span>
-                    </button>
+                    </Button>
                 </li>
                 }
             </ul>

@@ -1,6 +1,7 @@
+import React from 'react';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import Button from 'react-bootstrap/Button';
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { usePropertyWidth } from '../../../component/properties/hooks';
@@ -53,14 +54,14 @@ export function MetadataFilterVersionList ({ configuration, limited, columns }) 
                                 :
                                 <div className="d-flex justify-content-end my-2">
                                     {comparing ? 
-                                        <button className="btn btn-success" onClick={resetFilterComparison}>
+                                        <Button variant="success" onClick={resetFilterComparison}>
                                             <FontAwesomeIcon icon={faArrowLeft} />&nbsp;
                                             <Translate value="label.filter-versions">Filter Versions</Translate>
-                                        </button>
+                                        </Button>
                                     :
-                                    <button className="btn btn-primary" disabled={!selected} onClick={() => setComparing(selected)}>
+                                    <Button variant="primary" disabled={!selected} onClick={() => setComparing(selected)}>
                                         <Translate value="label.compare-selected">Compare Selected</Translate>
-                                    </button>
+                                    </Button>
                                     }
                                 </div>
                             }

@@ -1,6 +1,8 @@
+import React from 'react';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import Button from 'react-bootstrap/Button';
+
 import Translate from '../../../i18n/components/translate';
 import { usePropertyWidth } from './hooks';
 import { PropertyValue } from './PropertyValue';
@@ -89,10 +91,10 @@ export function ArrayProperty ({ property, columns, preview }) {
                                                     {preview && item &&
                                                         <React.Fragment>
                                                             <FilterTargetPreview entityId={item}>
-                                                                {(onPreview, loading, data) => (
-                                                                    <button className="btn btn-link" onClick={() => onPreview(item)}>
+                                                                {(onPreview) => (
+                                                                    <Button variant="link" onClick={() => onPreview(item)}>
                                                                         <FontAwesomeIcon icon={faEye} size="lg" className="text-success" />
-                                                                    </button>
+                                                                    </Button>
                                                                 )}
                                                             </FilterTargetPreview>
                                                             &nbsp;

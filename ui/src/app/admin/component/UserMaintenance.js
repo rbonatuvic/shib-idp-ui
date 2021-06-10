@@ -2,6 +2,7 @@ import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
 
 import Translate from '../../i18n/components/translate';
 import { useCurrentUser } from '../../core/user/UserContext';
@@ -46,12 +47,12 @@ export default function UserMaintenance({ users, roles, onDeleteUser, onChangeUs
                             </td>
                             <td>
                                 {currentUser.username !== user.username &&
-                                    <button className="btn btn-link text-danger" onClick={() => onDeleteUser(user.username)}>
+                                    <Button className="text-danger" variant="link" onClick={() => onDeleteUser(user.username)}>
                                         <span className="sr-only">
                                             <Translate value="label.delete-user">Delete User</Translate>
                                         </span>
                                         <FontAwesomeIcon icon={faTrash} />
-                                    </button>
+                                    </Button>
                                 }
                             </td>
                         </tr>

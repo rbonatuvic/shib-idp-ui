@@ -4,6 +4,7 @@ import useFetch from 'use-http';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
 
 import Translate from '../../i18n/components/translate';
 import API_BASE_PATH from '../../App.constant';
@@ -75,12 +76,12 @@ export default function UserManagement({ users, children, reload }) {
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-danger" type="button" onClick={() => deleteUser(deleting)}>
+                    <Button variant="danger"type="button" onClick={() => deleteUser(deleting)}>
                         <Translate value="action.delete">Delete</Translate>
-                    </button>{' '}
-                    <button className="btn btn-secondary" type="button" onClick={() => setDeleting(null)}>
+                    </Button>{' '}
+                    <Button variant="secondary" type="button" onClick={() => setDeleting(null)}>
                         <Translate value="action.cancel">Cancel</Translate>
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>

@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Translate from "../../../i18n/components/translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
+import Button from 'react-bootstrap/Button';
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
@@ -105,19 +106,19 @@ const AttributeReleaseWidget = ({
                     <tr>
                         <td><Translate value="label.check-all-attributes">Check All Attributes</Translate></td>
                         <td className="text-right">
-                            <button type="button" className="btn btn-text text-success btn-sm px-2" onClick={() => onCheckAll()} id="attributeRelease.checkAll">
+                            <Button type="button" variant="text" size="sm" className="text-success px-2" onClick={() => onCheckAll()} id="attributeRelease.checkAll">
                                 <FontAwesomeIcon icon={faCheck} size="lg" />
                                 <span className="sr-only"><Translate value="label.check-all-attributes">Check All Attributes</Translate></span>
-                            </button>
+                            </Button>
                         </td>
                     </tr>
                     <tr>
                         <td><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></td>
                         <td className="text-right">
-                            <button type="button" className="btn btn-text text-danger btn-sm px-2" onClick={() => onClearAll()} id="attributeRelease.clearAll">
+                            <Button type="button" variant="text" size="sm" className="text-danger px-2" onClick={() => onClearAll()} id="attributeRelease.clearAll">
                                 <FontAwesomeIcon icon={faTimes} size="lg" />
                                 <span className="sr-only"><Translate value="label.clear-all-attributes">Clear All Attributes</Translate></span>
-                            </button>
+                            </Button>
                         </td>
                     </tr>
                 </tbody>

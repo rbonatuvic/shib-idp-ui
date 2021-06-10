@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -50,12 +51,12 @@ export function DeleteSourceConfirmation ({children}) {
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className="btn btn-danger" onClick={() => onConfirm(deleting)}>
+                    <Button variant="danger" onClick={() => onConfirm(deleting)}>
                         <Translate value="action.delete">Delete</Translate>
-                    </button>{' '}
-                    <button className="btn btn-secondary" onClick={() => setDeleting(null)}>
+                    </Button>{' '}
+                    <Button variant="secondary" onClick={() => setDeleting(null)}>
                         <Translate value="action.cancel">Cancel</Translate>
-                    </button>
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </>

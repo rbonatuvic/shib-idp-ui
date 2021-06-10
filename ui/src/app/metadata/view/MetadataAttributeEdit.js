@@ -1,6 +1,8 @@
+import React from 'react';
 import { faSave, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+
+import Button from 'react-bootstrap/Button';
 import { Prompt, useHistory, useParams } from 'react-router';
 import Translate from '../../i18n/components/translate';
 import { MetadataAttributeEditor } from '../editor/MetadataAttributeEditor';
@@ -75,19 +77,19 @@ export function MetadataAttributeEdit() {
                             <MetadataAttributeEditor definition={definition}>
                                 {(filter, errors) =>
                                     <React.Fragment>
-                                        <button className="btn btn-info mr-2"
+                                        <Button variant="info" className="mr-2"
                                             type="button"
                                             onClick={() => save(filter)}
                                             disabled={errors.length > 0 || loading}
                                             aria-label="Save changes to the metadata source. You will return to the dashboard">
                                             <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                                         <Translate value="action.save">Save</Translate>
-                                        </button>
-                                        <button className="btn btn-secondary"
+                                        </Button>
+                                        <Button variant="secondary"
                                             type="button"
                                             onClick={() => cancel()} aria-label="Cancel changes, go back to dashboard">
                                             <Translate value="action.cancel">Cancel</Translate>
-                                        </button>
+                                        </Button>
                                     </React.Fragment>
                                 }
                             </MetadataAttributeEditor>

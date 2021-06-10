@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
 
 export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) {
@@ -49,13 +50,13 @@ export function AccessRequest({ users, roles, onDeleteUser, onChangeUserRole }) 
                         </div>
                     </div>
                     <div className="col-2 text-right">
-                        <button className="btn btn-danger btn-sm" onClick={() => onDeleteUser(user.username)}>
+                        <Button variant="danger" size="sm" onClick={() => onDeleteUser(user.username)}>
                             <i className="fa fa-trash fa-lg"></i>
                             &nbsp;
-                            <span >
+                            <span>
                                 <Translate value="label.delete-request">Delete Request</Translate>
                             </span>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

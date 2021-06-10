@@ -1,6 +1,7 @@
 import React from 'react';
 import { faCheckSquare, faSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from 'react-bootstrap/Button';
 import { MetadataConfiguration } from '../../../component/MetadataConfiguration';
 import { getDefinition } from '../../../domain/index';
 import { useMetadataConfiguration } from '../../../hooks/configuration';
@@ -47,10 +48,10 @@ export function MetadataFilterVersionListItem ({ filters, width, selected, index
                                             <p className="mb-0 text-muted">{filter['@type']}</p>
                                         </div>
                                         {filter.comparable &&
-                                            <button className="btn btn-link mx-auto" onClick={() => onSelect(filter.resourceId)}>
+                                            <Button variant="link" className="mx-auto" onClick={() => onSelect(filter.resourceId)}>
                                                 <FontAwesomeIcon icon={selected === filter.resourceId ? faCheckSquare : faSquare} size="lg" />
                                                 <span className="sr-only">Compare</span>
-                                            </button>
+                                            </Button>
                                         }
                                     </div>
                                     :

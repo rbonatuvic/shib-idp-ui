@@ -1,7 +1,7 @@
 import React from 'react';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
 
 export function MetadataSection ({ section, index = -1, onEdit, children }) {
@@ -27,10 +27,10 @@ export function MetadataSection ({ section, index = -1, onEdit, children }) {
                         </h2>
                         {onEdit &&
                         <div className="actions px-2">
-                            <button className="btn btn-link edit-link change-view" onClick={()=>onEdit(section.id)}>
+                            <Button variant="link" className="edit-link change-view" onClick={()=>onEdit(section.id)}>
                                 <FontAwesomeIcon icon={faEdit} />&nbsp;
                                 <Translate value="action.edit">Edit</Translate>
-                            </button>
+                            </Button>
                         </div>
                         }
                     </div>

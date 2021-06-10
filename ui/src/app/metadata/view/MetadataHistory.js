@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import queryString from 'query-string';
-
+import Button from 'react-bootstrap/Button';
 import FormattedDate from '../../core/components/FormattedDate';
 
 import Translate from '../../i18n/components/translate';
@@ -107,10 +107,10 @@ export function MetadataHistory () {
                         )}
                     </tbody>
                 </table>
-                <button className="btn btn-primary" onClick={ () => compare(selected) } disabled={!selected.length}>
+                <Button variant="primary" onClick={ () => compare(selected) } disabled={!selected.length}>
                     <Translate value="label.compare-selected">Compare Selected</Translate>
                     {selected.length > 0 && <span>({ selected.length })</span> }
-                </button>
+                </Button>
                 </>
             </div>}
             {loading && <div className="d-flex justify-content-center">

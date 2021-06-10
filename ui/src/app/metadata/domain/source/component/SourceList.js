@@ -8,14 +8,10 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-
-
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { Scroller } from '../../../../dashboard/component/Scroller';
 import { DeleteSourceConfirmation } from './DeleteSourceConfirmation';
-
-
 
 export default function SourceList({ entities, onDelete, onEnable }) {
     return (
@@ -51,13 +47,14 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                     <td><FormattedDate date={source.createdDate} /></td>
                                     <td className="text-center">
                                         {onEnable ?
-                                            <button
-                                                className="btn btn-success btn-sm"
+                                            <Button
+                                                variant="success"
+                                                size="sm"
                                                 onClick={() => onEnable(source)}
                                                 aria-label="Enable this service provider">
                                                 <Translate value={ source.enabled ? 'label.disable' : 'label.enable' }>Disable</Translate>
                                                 {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
-                                            </button>
+                                            </Button>
                                             :
                                             <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
                                                 <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>

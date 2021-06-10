@@ -1,7 +1,8 @@
+import React from 'react';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 
+import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router';
 import Translate from '../../i18n/components/translate';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
@@ -34,10 +35,10 @@ export function MetadataXml () {
                     </figcaption>
                 </figure>
                 
-                <button type="button" className="btn btn-primary" onClick={() => download()}>
+                <Button type="button" variant="primary" onClick={() => download()}>
                     <FontAwesomeIcon icon={faSave} />&nbsp;
                     <Translate value="action.download-file">Download File</Translate>
-                </button>
+                </Button>
             </div>
         </div>
         </>
