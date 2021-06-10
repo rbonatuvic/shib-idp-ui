@@ -58,7 +58,7 @@ export function MetadataOptions () {
                     current={true}
                     enabled={type === 'source' ? metadata.serviceEnabled : metadata.enabled}
                     model={metadata}>
-                    {type === 'source' &&
+                    {type === 'source' && onDeleteSource &&
                         <button className="btn btn-outline btn-sm btn-danger align-self-start"
                             disabled={metadata.serviceEnabled}
                             onClick={() => onDeleteSource(metadata.id, redirectOnDelete)}>

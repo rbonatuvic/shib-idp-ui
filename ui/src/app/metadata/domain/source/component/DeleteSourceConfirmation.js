@@ -9,6 +9,8 @@ import { useMetadataEntity } from '../../../hooks/api';
 import Translate from '../../../../i18n/components/translate';
 import { noop } from 'lodash';
 
+import { useIsAdmin } from '../../../../core/user/UserContext';
+
 export function DeleteSourceConfirmation ({children}) {
 
     const { del, response } = useMetadataEntity('source');
@@ -34,9 +36,11 @@ export function DeleteSourceConfirmation ({children}) {
         }
     }
 
+    const isAdmin = useIsAdmin();
+
     return (
         <>
-            {children(onDeleteSource)}
+            {children(isAdmin ? onDeleteSource : false)}
             <Modal show={!!deleting} onHide={() => setDeleting(null)}>
                 <Modal.Header><Translate value="message.delete-source-title">Delete Metadata Source?</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">

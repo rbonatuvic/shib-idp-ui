@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIsAdmin } from '../../core/user/UserContext';
 
 const fillInRootProperties = (keys, ui) => {
     return keys.reduce((sch, key, idx) => {
@@ -34,7 +35,21 @@ export function useUiSchema(definition, schema, current, locked = true) {
         };
     }, [mapped, step.locked, locked]);
 
-    return {uiSchema: isLocked, step};
+    const isAdmin = useIsAdmin();
+
+    const hideEnableFromNonAdmins = React.useMemo(() => {
+        if (!isAdmin) {
+            return {
+                ...isLocked,
+                serviceEnabled: {
+                    'ui:widget': 'hidden'
+                }
+            };
+        }
+        return isLocked;
+    }, [isAdmin, isLocked]);
+
+    return { uiSchema: hideEnableFromNonAdmins, step};
 }
 
 

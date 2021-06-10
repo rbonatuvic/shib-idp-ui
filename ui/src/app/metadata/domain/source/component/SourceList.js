@@ -33,7 +33,7 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                 <th className="w-15"><Translate value="label.author">Author</Translate></th>
                                 <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
                                 <th className="text-center w-15"><Translate value="label.enabled">Enabled</Translate></th>
-                                <th className="w-auto"></th>
+                                {onDeleteSource && <th className="w-auto"></th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -66,7 +66,7 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                     </td>
                                     
                                         
-                                    <td className="text-right">
+                                    {onDeleteSource && <td className="text-right">
                                         <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
                                             overlay={
                                                 <Popover id={`delete-source-btn-${idx}`}>
@@ -83,8 +83,7 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                                     </Button>
                                                 </span>
                                         </OverlayTrigger>
-                                    </td>
-                                    
+                                    </td>}
                                 </tr>
                             )}
                         </tbody>
