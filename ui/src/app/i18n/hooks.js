@@ -12,14 +12,6 @@ export function getMessage(value, messages) {
     return messages.hasOwnProperty(value) ? messages[value] : (Object.keys(messages).length ? value : '');
 }
 
-export function useCurrentLanguage () {
-
-}
-
-export function useCurrentLocale () {
-
-}
-
 export function useTranslation (value, interpolated = {}) {
     const messages = useContext(I18nContext);
     const val = getMessage(value, messages);

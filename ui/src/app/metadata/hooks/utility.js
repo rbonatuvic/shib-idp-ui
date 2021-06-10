@@ -1,4 +1,4 @@
-function getDefinition(path, definitions) {
+export function getDefinition(path, definitions) {
     let def = path.split('/').pop();
     return definitions[def];
 }

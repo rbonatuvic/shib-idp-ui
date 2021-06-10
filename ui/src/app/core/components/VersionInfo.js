@@ -9,7 +9,7 @@ const formatter = v => v && v.build ? `${v.build.version}-${v.git.commit.id}` : 
 const year = new Date().getFullYear();
 const params = { year };
 
-export default function VersionInfo () {
+export function VersionInfo () {
 
     const { data = {} } = useFetch('/actuator/info', {}, []);
 
@@ -27,3 +27,5 @@ export default function VersionInfo () {
         </p>
     );
 }
+
+export default VersionInfo;

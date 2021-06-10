@@ -31,12 +31,12 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
+    "@testing-library/jest-dom": "^5.13.0",
+    "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.1.10",
+    "http-proxy-middleware": "^1.2.0",
     "react-scripts": "4.0.3",
-    "sass": "1.32.11",
-    "http-proxy-middleware": "^1.2.0"
+    "sass": "1.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,6 +47,12 @@
     "build:static": "sass src/static.scss ./build/unsecured/static.css",
     "copy:static": "node ./build",
     "copy": "npm run copy:static && npm run build:static"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/test/**/*.*"
+    ]
   },
   "eslintConfig": {
     "extends": [

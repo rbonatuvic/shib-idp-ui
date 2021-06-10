@@ -34,6 +34,8 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
         onChange(definition.bindings ? { ...form, formData: definition.bindings(data, form.formData) }: form);
     };
 
+    console.log(uiSchema);
+
     return (
         <>
             {step.locked && <div className="">

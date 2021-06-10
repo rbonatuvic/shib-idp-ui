@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 import Translate from '../../i18n/components/translate';
 import { AdminRoute } from '../../core/components/AdminRoute';
 
-import './Dashboard.scss';
 import { SourcesTab } from './SourcesTab';
 import { ProvidersTab } from './ProvidersTab';
 import { AdminTab } from './AdminTab';
