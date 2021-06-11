@@ -23,7 +23,16 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
     const onSubmit = () => {};
 
     const transformErrors = (errors) => {
-        return errors.filter(e => invisErrors.indexOf(e.name) === -1);
+        let list = [
+            ...errors.filter(e => invisErrors.indexOf(e.name) === -1)
+        ].map(e => {
+            if (e.name === 'pattern' && e.property.includes('email')) {
+                e.message = 'message.valid-email';
+            }
+            return e;
+        });
+
+        return list;
     }
 
     const onFormChange = (form) => {
