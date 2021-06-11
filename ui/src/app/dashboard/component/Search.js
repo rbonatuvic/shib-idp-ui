@@ -30,17 +30,23 @@ export function Search ({ entities, searchable, children }) {
         }
     }, [query, entities, searchable]);
 
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        search(query);
+    }
+
     return (
         <>
-            <Form className="w-50">
+            <Form className="w-50" noValidate onSubmit={(evt) => handleSubmit(evt)}>
                 <Form.Group>
                     <Form.Label htmlFor="search" className="sr-only">Search</Form.Label>
                     <InputGroup>
-                        <Form.Control type="email" name="email" id="search"
-                            placeholder="Search Files" onChange={ (event) => search(event.target.value) }
+                        <Form.Control type="text" name="search" id="search"
+                            placeholder="Search Files"
+                            onChange={ (event) => search(event.target.value) }
                             value={query} />
                         <InputGroup.Append>
-                            <Button variant="outline-primary" className="px-3" onClick={ () => search('') }>Clear</Button>
+                            <Button type="button" variant="outline-primary" className="px-3" onClick={ () => search('') }>Clear</Button>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form.Group>
