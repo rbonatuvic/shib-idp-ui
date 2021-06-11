@@ -23,6 +23,10 @@ export function getMetadataPath(type) {
     return `/${details[type]}`;
 }
 
+export function useNonAdminSources() {
+    return useFetch(`/${getMetadataPath('source')}/disabledNonAdmin`);
+}
+
 export function getMetadataListPath(type) {
     return `/${lists[type]}`;
 }

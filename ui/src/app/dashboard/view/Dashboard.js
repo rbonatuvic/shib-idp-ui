@@ -14,7 +14,7 @@ import { ActionsTab } from './ActionsTab';
 import { useIsAdmin } from '../../core/user/UserContext';
 import useFetch from 'use-http';
 import API_BASE_PATH from '../../App.constant';
-import { getMetadataPath } from '../../metadata/hooks/api';
+import { useNonAdminSources } from '../../metadata/hooks/api';
 
 export function Dashboard () {
 
@@ -30,6 +30,8 @@ export function Dashboard () {
         cachePolicy: 'no-cache'
     });
 
+    const sourceLoader = useNonAdminSources();
+
     async function loadUsers() {
         const users = await get('/admin/users')
         if (response.ok) {
@@ -38,7 +40,7 @@ export function Dashboard () {
     }
 
     async function loadSources() {
-        const s = await get(`/${getMetadataPath('source')}/disabledNonAdmin`);
+        const s = sourceLoader.get();
         if (response.ok) {
             setSources(s);
         }
