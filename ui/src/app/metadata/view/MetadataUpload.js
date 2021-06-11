@@ -22,6 +22,8 @@ export function MetadataUpload() {
 
     async function save({serviceProviderName, file, url}) {
 
+        console.log(serviceProviderName, file);
+
         setSaving(true);
 
         const f = file?.length > 0 ? file[0] : null;
@@ -87,7 +89,8 @@ export function MetadataUpload() {
                         <li className="nav-item">
                             <Button className="nav-link next btn d-flex justify-content-between align-items-start"
                                 disabled={!isValid || saving}
-                                aria-label="Save metadata resolver">
+                                aria-label="Save metadata resolver"
+                                type="submit">
                                 <span className="label">
                                     <Translate value="action.save">
                                     Save
@@ -144,7 +147,8 @@ export function MetadataUpload() {
                     </fieldset>
                     <Button className="nav-link next btn d-flex justify-content-between align-items-start sr-only"
                         disabled={!isValid}
-                        aria-label="Save metadata resolver">
+                        aria-label="Save metadata resolver"
+                        type="submit">
                         <span className="label">
                             <Translate value="action.save">Save</Translate>
                         </span>
