@@ -11,7 +11,6 @@ export const SourceBase = {
     type: '@MetadataProvider',
     steps: [],
     schema: `${API_BASE_PATH}/ui/MetadataSources`,
-    validatorParams: [/*getAllOtherIds*/],
 
     parser: (data) => removeNull(data, true),
 
@@ -28,6 +27,11 @@ export const SourceBase = {
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
             }
+
+            if (formData?.serviceProviderSsoDescriptor?.nameIdFormats?.length > 0 && !formData.serviceProviderSsoDescriptor.protocolSupportEnum) {
+                errors.serviceProviderSsoDescriptor.protocolSupportEnum.addError('message.protocol-support-required')
+            }
+
             return errors;
         }
     },

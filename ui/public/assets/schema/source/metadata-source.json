@@ -142,25 +142,6 @@
                 "nameIdFormats": {
                     "$ref": "#/definitions/nameIdFormats"
                 }
-            },
-            "dependencies": {
-                "nameIdFormats": {
-                    "oneOf": [
-                        {
-                            "nameIdFormats": {
-                                "minLength": 1
-                            },
-                            "required": [
-                                "protocolSupportEnum"
-                            ]
-                        },
-                        {
-                            "nameIdFormats": {
-                                "minLength": 0
-                            }
-                        }
-                    ]
-                }
             }
         },
         "logoutEndpoints": {
