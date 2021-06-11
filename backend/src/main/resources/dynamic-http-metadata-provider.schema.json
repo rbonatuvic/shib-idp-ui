@@ -329,7 +329,7 @@
                     "description": "tooltip.proxy-host"
                 },
                 "proxyPort": {
-                    "type": "integer",
+                    "type": "string",
                     "title": "label.proxy-port",
                     "description": "tooltip.proxy-port"
                 },
