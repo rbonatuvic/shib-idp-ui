@@ -33,8 +33,8 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
     return (
         <>
             {step.locked && <div className="">
-                <div className="row">
-                    <div className="col-9">
+                <div className="row no-gutters">
+                    <div className="col-lg-8">
                         <Alert variant="danger" className="d-flex justify-content-between align-items-center font-weight-bold mb-3">
                             <FormCheck
                                 type="switch"
