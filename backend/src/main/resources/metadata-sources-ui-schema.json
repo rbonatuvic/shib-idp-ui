@@ -22,8 +22,7 @@
         "serviceEnabled": {
             "title": "label.enable-this-service",
             "description": "tooltip.enable-this-service-upon-saving",
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
         },
         "organization": {
             "$ref": "#/definitions/Organization"
@@ -72,8 +71,7 @@
             },
             "properties": {
                 "x509CertificateAvailable": {
-                    "type": "boolean",
-                    "default": true
+                    "type": "boolean"
                 },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",

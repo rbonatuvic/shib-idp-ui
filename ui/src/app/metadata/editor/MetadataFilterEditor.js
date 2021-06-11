@@ -12,6 +12,7 @@ import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
 import { useMetadataFilters } from '../hooks/api';
 import { MetadataFilterContext } from '../hoc/MetadataFilterSelector';
+import { checkChanges } from '../hooks/utility';
 
 export function MetadataFilterEditor({children, onNavigate, block}) {
 
@@ -28,7 +29,7 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
         dispatch(setFormErrorAction(changes.errors));
-        block();
+        block(checkChanges(metadata, changes.formData));
     };
 
     const validator = definition.validator(data, current);

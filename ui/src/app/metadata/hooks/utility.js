@@ -1,3 +1,12 @@
+import { detailedDiff } from "deep-object-diff";
+import { removeNull } from "../../core/utility/remove_null";
+
+export const checkChanges = (original, updates) => {
+    const diff = detailedDiff(original, removeNull(updates, true));
+    const hasChanges = Object.keys(diff).some(d => Object.keys(diff[d]).length > 0);
+    return hasChanges;
+}
+
 export function getDefinition(path, definitions) {
     let def = path.split('/').pop();
     return definitions[def];

@@ -3,7 +3,7 @@ import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsLastPage, useWizardDispatcher } from './Wizard';
 import { useMetadataDefinitionContext, useMetadataSchemaContext } from '../hoc/MetadataSchema';
-import { useMetadataSchema } from '../hooks/schema';
+import { checkChanges, useMetadataSchema } from '../hooks/schema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
@@ -40,7 +40,7 @@ export function MetadataProviderWizard({onRestart}) {
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
         formDispatch(setFormErrorAction(changes.errors));
-        setBlocking(true);
+        setBlocking(checkChanges(metadata, changes.formData));
     };
 
     const onEditFromSummary = (idx) => {

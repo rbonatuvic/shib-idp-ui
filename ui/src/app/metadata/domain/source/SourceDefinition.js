@@ -64,6 +64,15 @@ export const SourceBase = {
                 }
             }
         }
+
+        if (formData?.securityInfo?.x509Certificates) {
+            if (formData.securityInfo.x509Certificates?.length > 0) {
+                d.securityInfo.x509CertificateAvailable = true;
+            } else {
+                d.securityInfo.x509CertificateAvailable = false;
+            }
+        }
+
         return d;
     },
 

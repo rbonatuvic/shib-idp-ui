@@ -18,6 +18,9 @@ import API_BASE_PATH from '../../App.constant';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { FilterableProviders } from '../domain/provider';
 
+import { detailedDiff } from 'deep-object-diff';
+import { removeNull } from '../../core/utility/remove_null';
+
 export function MetadataEditor ({ current }) {
 
     const translator = useTranslator();
@@ -35,10 +38,16 @@ export function MetadataEditor ({ current }) {
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;
 
+    const checkChanges = (original, updates) => {
+        const diff = detailedDiff(original, removeNull(updates, true));
+        const hasChanges = Object.keys(diff).some(d => Object.keys(diff[d]).length > 0);
+        return hasChanges;
+    };
+
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
         dispatch(setFormErrorAction(changes.errors));
-        setBlocking(true);
+        setBlocking(checkChanges(metadata, changes.formData));
     };
 
     function save(metadata) {

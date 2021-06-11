@@ -67,7 +67,7 @@ export function NewFilter() {
                         {(type, base) =>
                             <MetadataSchema type={type}>
                                 <MetadataForm initial={base}>
-                                    <MetadataFilterEditor onNavigate={onNavigate} block={() => setBlocking(true)}>
+                                    <MetadataFilterEditor onNavigate={onNavigate} block={(b) => setBlocking(b)}>
                                         {(filter, isInvalid) =>
                                             <div className="d-flex justify-content-end">
                                                 <Button variant="info" className="mr-2"

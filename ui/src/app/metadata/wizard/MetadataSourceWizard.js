@@ -1,4 +1,10 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsFirstPage, useIsLastPage, useWizardDispatcher } from './Wizard';
@@ -9,12 +15,10 @@ import { Configuration } from '../hoc/Configuration';
 import { useMetadataEntity, useMetadataSources } from '../hooks/api';
 import { Prompt, useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
 import Translate from '../../i18n/components/translate';
-import Alert from 'react-bootstrap/Alert';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { checkChanges } from '../hooks/utility';
+
 
 export function MetadataSourceWizard ({ onShowNav }) {
 
@@ -46,7 +50,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
         formDispatch(setFormErrorAction(changes.errors));
-        setBlocking(true);
+        setBlocking(checkChanges(metadata, changes.formData));
     };
 
     const onEditFromSummary = (idx) => {
