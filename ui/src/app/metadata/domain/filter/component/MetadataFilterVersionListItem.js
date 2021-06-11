@@ -42,7 +42,7 @@ export function MetadataFilterVersionListItem ({ filters, width, selected, index
                             
                             <div style={{ width }} className="border-primary">
                                 {filter ?
-                                    <div className={`p-2 d-flex align-items-center ${((n % 2 === 0) && selected !== filter.resourceId) ? 'bg-lighter' : 'bg-primary-light'}`}>
+                                    <div className={`p-2 d-flex align-items-center ${(selected === filter.resourceId) ? 'bg-primary-light' : ((n % 2 === 0) ? '' : 'bg-lighter')}`}>
                                         <div className="w-50">
                                             <p className="mb-0">{filter.name}</p>
                                             <p className="mb-0 text-muted">{filter['@type']}</p>
