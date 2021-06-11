@@ -50,7 +50,9 @@
                         {
                             "properties": {
                                 "authenticationRequestsSigned": {
-                                    "const": true
+                                    "enum": [
+                                        true
+                                    ]
                                 },
                                 "x509Certificates": {
                                     "minItems": 1
@@ -60,7 +62,9 @@
                         {
                             "properties": {
                                 "authenticationRequestsSigned": {
-                                    "const": false
+                                    "enum": [
+                                        false
+                                    ]
                                 },
                                 "x509Certificates": {
                                     "minItems": 0
@@ -71,6 +75,10 @@
                 }
             },
             "properties": {
+                "x509CertificateAvailable": {
+                    "type": "boolean",
+                    "default": true
+                },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
                     "description": "tooltip.authentication-requests-signed",
@@ -136,9 +144,23 @@
                 }
             },
             "dependencies": {
-                "nameIdFormats": [
-                    "protocolSupportEnum"
-                ]
+                "nameIdFormats": {
+                    "oneOf": [
+                        {
+                            "nameIdFormats": {
+                                "minLength": 1
+                            },
+                            "required": [
+                                "protocolSupportEnum"
+                            ]
+                        },
+                        {
+                            "nameIdFormats": {
+                                "minLength": 0
+                            }
+                        }
+                    ]
+                }
             }
         },
         "logoutEndpoints": {
@@ -595,9 +617,6 @@
             "description": "tooltip.nameid-format",
             "type": "array",
             "uniqueItems": true,
-            "additionalProperties": {
-                "type": "string"
-            },
             "items": {
                 "type": "string",
                 "minLength": 1,
