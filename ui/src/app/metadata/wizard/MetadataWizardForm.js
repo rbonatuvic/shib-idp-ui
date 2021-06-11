@@ -25,12 +25,17 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
     const transformErrors = (errors) => {
         return errors.filter(e => invisErrors.indexOf(e.name) === -1);
     }
+
+    const onFormChange = (form) => {
+        onChange(definition.bindings ? { ...form, formData: definition.bindings(data, form.formData) } : form);
+    };
+
     return (
         <>
             <div className="container-fluid">
                 <Form formData={data}
                     noHtml5Validate={true}
-                    onChange={(form) => onChange(form)}
+                    onChange={(form) => onFormChange(form)}
                     onSubmit={() => onSubmit()}
                     onBlur={() => onBlur(data)}
                     schema={schema}
