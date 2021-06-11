@@ -35,7 +35,6 @@ export function MetadataEditor ({ current }) {
 
     const { state, dispatch } = React.useContext(MetadataFormContext);
     const { metadata, errors } = state;
-
     const onChange = (changes) => {
         dispatch(setFormDataAction(changes.formData));
         dispatch(setFormErrorAction(changes.errors));

@@ -7,16 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Translate from '../../i18n/components/translate';
 
-export function DeleteConfirmation({ children, onConfirm, onCancel, body, title }) {
+export function DeleteConfirmation({ children, body, title }) {
 
     const [deleting, setDeleting] = React.useState(false);
 
     const ref = React.useRef();
 
     const onConfirmClick = () => {
-        if (onConfirm) {
-            onConfirm();
-        }
         if (ref.current && typeof ref.current === 'function') {
             ref.current();
         }
@@ -24,9 +21,6 @@ export function DeleteConfirmation({ children, onConfirm, onCancel, body, title 
     }
 
     const onCancelClick = () => {
-        if (onCancel) {
-            onCancel();
-        }
         setDeleting(false);
     };
 
@@ -47,9 +41,9 @@ export function DeleteConfirmation({ children, onConfirm, onCancel, body, title 
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" onClick={() => onConfirmClick()}>
+                    <Button className="mr-2" variant="danger" onClick={() => onConfirmClick()}>
                         <Translate value="action.delete">Delete</Translate>
-                    </Button>{' '}
+                    </Button>
                     <Button variant="secondary" onClick={() => onCancelClick()}>
                         <Translate value="action.cancel">Cancel</Translate>
                     </Button>

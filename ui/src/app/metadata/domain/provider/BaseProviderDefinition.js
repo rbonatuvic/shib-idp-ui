@@ -174,9 +174,6 @@ export const HttpMetadataResolverAttributesSchema = {
         options: DurationOptions,
         'ui:placeholder': 'label.duration'
     },
-    proxyPort: {
-        'ui:widget': 'updown'
-    },
     httpClientRef: {
         'ui:widget': 'hidden'
     },
