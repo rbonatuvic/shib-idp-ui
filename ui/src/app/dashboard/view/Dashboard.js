@@ -100,10 +100,4 @@ export function Dashboard () {
         </div>
     );
 }
-/*
-<ng-container * ngIf="hasActions$" >
-                            & nbsp;
-            <span className="badge badge-pill badge-danger">{{ actionsRequired$ | async}}</span>
-                        </ng - container >
-                        */
 export default Dashboard;

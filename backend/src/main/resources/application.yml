@@ -68,14 +68,12 @@ custom:
     - name: signAssertion
       displayName: label.sign-the-assertion
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.sign-assertion
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signAssertions
       attributeFriendlyName: signAssertions
     - name: dontSignResponse
       displayName: label.dont-sign-the-response
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.dont-sign-response
       attributeName: http://shibboleth.net/ns/profiles/saml2/sso/browser/signResponses
       attributeFriendlyName: signResponses
@@ -83,7 +81,6 @@ custom:
     - name: turnOffEncryption
       displayName: label.turn-off-encryption-of-response
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.turn-off-encryption
       attributeName: http://shibboleth.net/ns/profiles/encryptAssertions
       attributeFriendlyName: encryptAssertions
@@ -91,7 +88,6 @@ custom:
     - name: useSha
       displayName: label.use-sha1-signing-algorithm
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.usa-sha-algorithm
       persistType: string
       persistValue: shibboleth.SecurityConfiguration.SHA1
@@ -100,7 +96,6 @@ custom:
     - name: ignoreAuthenticationMethod
       displayName: label.ignore-any-sp-requested-authentication-method
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.ignore-auth-method
       persistType: string
       persistValue: 0x1
@@ -109,7 +104,6 @@ custom:
     - name: omitNotBefore
       displayName: label.omit-not-before-condition
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.omit-not-before-condition
       attributeName: http://shibboleth.net/ns/profiles/includeConditionsNotBefore
       attributeFriendlyName: includeConditionsNotBefore
@@ -117,7 +111,6 @@ custom:
     - name: responderId
       displayName: label.responder-id
       displayType: string
-      defaultValue: null
       helpText: tooltip.responder-id
       attributeName: http://shibboleth.net/ns/profiles/responderId
       attributeFriendlyName: responderId
@@ -125,7 +118,7 @@ custom:
       displayName: label.nameid-format-to-send
       displayType: set
       helpText: tooltip.nameid-format
-      defaultValues:
+      examples:
         - urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
         - urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
         - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
@@ -136,7 +129,7 @@ custom:
       displayName: label.authentication-methods-to-use
       displayType: set
       helpText: tooltip.authentication-methods-to-use
-      defaultValues:
+      examples:
         - https://refeds.org/profile/mfa
         - urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
         - urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
@@ -145,7 +138,6 @@ custom:
     - name: forceAuthn
       displayName: label.force-authn
       displayType: boolean
-      defaultValue: false
       helpText: tooltip.force-authn
       attributeName: http://shibboleth.net/ns/profiles/forceAuthn
       attributeFriendlyName: forceAuthn

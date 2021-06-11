@@ -36,12 +36,8 @@ class JsonSchemaBuilderService {
                 property =
                         [title      : it['displayName'],
                          description: it['helpText'],
-                         type       : it['displayType']]
-                if (it['displayType'] == 'boolean') {
-                    property['default'] = Boolean.valueOf(it['defaultValue'])
-                } else {
-                    property['default'] = it['defaultValue']
-                }
+                         type       : it['displayType'],
+                         examples   : it['examples']]
             }
             properties[(String) it['name']] = property
         }
@@ -64,7 +60,7 @@ class JsonSchemaBuilderService {
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
-            items.examples = it['defaultValues']
+            items.examples = it['examples']
 
             definition['items'] = items
             json[(String) it['name']] = definition

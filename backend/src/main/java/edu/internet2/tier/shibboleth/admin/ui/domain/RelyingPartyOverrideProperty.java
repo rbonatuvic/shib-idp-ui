@@ -16,7 +16,7 @@ public class RelyingPartyOverrideProperty {
     private String displayType;
     private String defaultValue;
     private String helpText;
-    private List<String> defaultValues;
+    private List<String> examples;
     private String persistType;
     private String persistValue;
     private String attributeName;
@@ -33,7 +33,7 @@ public class RelyingPartyOverrideProperty {
                 + ", \nhelpText='" + helpText + '\''
                 + ", \npersistType='" + persistType + '\''
                 + ", \npersistValue='" + persistValue + '\''
-                + ", \ndefaultValues=" + defaultValues
+                + ", \nexamples=" + examples
                 + ", \nattributeName='" + attributeName + '\''
                 + ", \nattributeFriendlyName='" + attributeFriendlyName + '\''
                 + "\n}";
