@@ -2,12 +2,28 @@ import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataF
 import API_BASE_PATH from '../../../App.constant';
 import defaultsDeep from 'lodash/defaultsDeep';
 import { DurationOptions } from '../data';
+import { isValidRegex } from '../../../core/utility/is_valid_regex';
 
 export const DynamicHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
     schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
+    validator: (data = [], current = { resourceId: null }) => {
+        const base = BaseProviderDefinition.validator(data, current);
+        return (formData, errors) => {
+            const errorList = base(formData, errors);
+            if (formData?.metadataRequestURLConstructionScheme['@type'] === 'Regex') {
+                const { metadataRequestURLConstructionScheme: { match } } = formData;
+                const isValid = isValidRegex(match);
+                if (!isValid) {
+                    errors.metadataRequestURLConstructionScheme.match.addError('message.invalid-regex-pattern');
+                }
+            }
+
+            return errorList;
+        }
+    },
     steps: [
         ...BaseProviderDefinition.steps,
         {
