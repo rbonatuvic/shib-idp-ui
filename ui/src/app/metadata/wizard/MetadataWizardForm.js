@@ -6,7 +6,7 @@ import { fields, widgets } from '../../form/component';
 import { templates } from '../../form/component';
 import { useUiSchema } from '../hooks/schema';
 
-const invisErrors = ['const', 'oneOf']
+import { transformErrors } from '../domain/transform';
 
 function ErrorListTemplate () {
     return (<></>);
@@ -21,19 +21,6 @@ export function MetadataWizardForm ({ metadata, definition, schema, current, onC
     React.useEffect(() => setData(metadata), [metadata, definition]);
 
     const onSubmit = () => {};
-
-    const transformErrors = (errors) => {
-        let list = [
-            ...errors.filter(e => invisErrors.indexOf(e.name) === -1)
-        ].map(e => {
-            if (e.name === 'pattern' && e.property.includes('email')) {
-                e.message = 'message.valid-email';
-            }
-            return e;
-        });
-
-        return list;
-    }
 
     const onFormChange = (form) => {
         onChange(definition.bindings ? { ...form, formData: definition.bindings(data, form.formData) } : form);

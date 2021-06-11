@@ -8,7 +8,7 @@ import { templates } from '../../form/component';
 import { useUiSchema } from '../hooks/schema';
 import Alert from 'react-bootstrap/Alert';
 
-const invisErrors = ['const', 'oneOf']
+import { transformErrors } from '../domain/transform';
 
 function ErrorListTemplate () {
     return (<></>);
@@ -25,10 +25,6 @@ export function MetadataEditorForm({ metadata, definition, schema, current, onCh
     React.useEffect(() => setData(metadata), [metadata, definition]);
 
     const onSubmit = () => {};
-
-    const transformErrors = (errors) => {
-        return errors.filter(e => invisErrors.indexOf(e.name) === -1);
-    }
 
     const onFormChange = (form) => {
         onChange(definition.bindings ? { ...form, formData: definition.bindings(data, form.formData) }: form);
