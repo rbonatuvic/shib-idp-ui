@@ -1,0 +1,116 @@
+{
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.filter-name",
+            "description": "tooltip.filter-name",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "filterEnabled": {
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
+            "type": "boolean",
+            "default": false
+        },
+        "nameIdFormatFilterTarget": {
+            "title": "label.search-criteria",
+            "description": "tooltip.search-criteria",
+            "type": "object",
+            "properties": {
+                "nameIdFormatFilterTargetType": {
+                    "title": "",
+                    "type": "string",
+                    "default": "ENTITY",
+                    "enum": [
+                        "ENTITY",
+                        "REGEX",
+                        "CONDITION_SCRIPT"
+                    ],
+                    "enumNames": [
+                        "value.entity-id",
+                        "value.regex",
+                        "value.script"
+                    ]
+                },
+                "value": {
+                    "title": "label.filter-target-value",
+                    "type": "array",
+                    "buttons": [
+                        {
+                            "id": "preview",
+                            "label": "action.preview",
+                            "widget": "icon-button"
+                        }
+                    ],
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value",
+                "nameIdFormatFilterTargetType"
+            ]
+        },
+        "@type": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            },
+            "default": "NameIDFormat"
+        },
+        "version": {
+            "type": "integer",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "resourceId": {
+            "type": "string",
+            "widget": {
+                "id": "hidden"
+            }
+        },
+        "removeExistingFormats": {
+            "type": "boolean",
+            "title": "label.remove-existing-formats",
+            "description": "tooltip.remove-existing-formats",
+            "default": false
+        },
+        "formats": {
+            "$ref": "#/definitions/NameIdFormatList"
+        }
+    },
+    "definitions": {
+        "NameIdFormatList": {
+            "title": "label.nameid-format-to-send",
+            "placeholder": "label.nameid-format",
+            "description": "tooltip.nameid-format",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "widget": {
+                    "id": "datalist",
+                    "data": [
+                        "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                        "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                        "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                    ]
+                }
+            }
+        }
+    }
+}

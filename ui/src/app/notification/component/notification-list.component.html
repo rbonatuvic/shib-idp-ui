@@ -1,7 +1,0 @@
-<section class="position-fixed p-4 w-25" *ngIf="(notifications$ | async).length">
-    <ul class="list-unstyled">
-        <li *ngFor="let notification of notifications$ | async">
-            <notification-item [notification]="notification" (clear)="clear($event)"></notification-item>
-        </li>
-    </ul>
-</section>

@@ -1,9 +1,0 @@
-<metadata-editor
-    [schema]="schema$ | async"
-    [model]="model$ | async"
-    [validators]="validators$ | async"
-    [lockable]="lockable$ | async"
-    (change)="onChange($event)"
-    (status)="statusChange$.next($event)"
-    (onLockChange)="lockChange$.next($event)"
-></metadata-editor>

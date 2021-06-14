@@ -13,15 +13,14 @@ npmInstall.setNpmCommand('ci')
 
 npm_run_build {
     inputs.dir 'src'
-    outputs.dir 'dist'
-    if (project.hasProperty('npm-args')) {
-        args = project.'npm-args'.tokenize()
-    }
+    inputs.dir 'public'
+    outputs.dir 'build'
 }
 
 npm_run_buildProd {
     inputs.dir 'src'
-    outputs.dir 'dist'
+    inputs.dir 'public'
+    outputs.dir 'build'
 }
 
 npm_run_start {
@@ -32,5 +31,5 @@ npm_run_start {
 
 clean.doFirst {
     file('node_modules').deleteDir()
-    file('dist').deleteDir()
+    file('build').deleteDir()
 }

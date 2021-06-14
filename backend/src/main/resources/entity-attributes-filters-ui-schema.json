@@ -1,34 +1,20 @@
 {
-    "title": "EntityAttributes Filter",
     "type": "object",
     "properties": {
         "name": {
             "title": "label.filter-name",
             "description": "tooltip.filter-name",
-            "type": "string",
-            "widget": {
-                "id": "string",
-                "help": "message.must-be-unique"
-            }
+            "type": "string"
         },
         "@type": {
             "type": "string",
-            "widget": {
-                "id": "hidden"
-            },
             "default": "EntityAttributes"
         },
         "resourceId": {
-            "type": "string",
-            "widget": {
-                "id": "hidden"
-            }
+            "type": "string"
         },
         "version": {
-            "type": "integer",
-            "widget": {
-                "id": "hidden"
-            }
+            "type": "integer"
         },
         "filterEnabled": {
             "title": "label.enable-filter",
@@ -40,46 +26,25 @@
             "title": "label.search-criteria",
             "description": "tooltip.search-criteria",
             "type": "object",
-            "widget": {
-                "id": "filter-target",
-                "target": "entityAttributesFilterTargetType"
-            },
             "properties": {
                 "entityAttributesFilterTargetType": {
                     "title": "label.filter-target-type",
                     "type": "string",
                     "default": "ENTITY",
-                    "oneOf": [
-                        {
-                            "enum": [
-                                "ENTITY"
-                            ],
-                            "description": "value.entity-id"
-                        },
-                        {
-                            "enum": [
-                                "REGEX"
-                            ],
-                            "description": "value.regex"
-                        },
-                        {
-                            "enum": [
-                                "CONDITION_SCRIPT"
-                            ],
-                            "description": "value.script"
-                        }
+                    "enum": [
+                        "ENTITY",
+                        "REGEX",
+                        "CONDITION_SCRIPT"
+                    ],
+                    "enumNames": [
+                        "value.entity-id",
+                        "value.regex",
+                        "value.script"
                     ]
                 },
                 "value": {
                     "title": "label.filter-target-value",
                     "type": "array",
-                    "buttons": [
-                        {
-                            "id": "preview",
-                            "label": "action.preview",
-                            "widget": "icon-button"
-                        }
-                    ],
                     "minItems": 1,
                     "uniqueItems": true,
                     "items": {
@@ -87,7 +52,10 @@
                     }
                 }
             },
-            "required": ["value", "entityAttributesFilterTargetType"]
+            "required": [
+                "value",
+                "entityAttributesFilterTargetType"
+            ]
         },
         "relyingPartyOverrides": {
             "type": "object",
@@ -134,52 +102,44 @@
                 },
                 "nameIdFormats": {
                     "title": "label.nameid-format-to-send",
-                    "placeholder": "label.nameid-format",
                     "description": "tooltip.nameid-format",
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
-                        "title": "label.nameid-format",
                         "type": "string",
-                        "widget": {
-                            "id": "datalist",
-                            "data": [
-                                "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-                                "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
-                                "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
-                                "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
-                            ]
-                        }
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                            "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                            "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                            "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                            "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                        ]
                     }
                 },
                 "authenticationMethods": {
                     "title": "label.authentication-methods-to-use",
                     "description": "tooltip.authentication-methods-to-use",
                     "type": "array",
-                    "placeholder": "label.authentication-method",
                     "uniqueItems": true,
                     "items": {
                         "type": "string",
-                        "title": "label.authentication-method",
-                        "widget": {
-                            "id": "datalist",
-                            "data": [
-                                "https://refeds.org/profile/mfa",
-                                "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
-                                "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
-                            ]
-                        }
+                        "minLength": 1,
+                        "maxLength": 255,
+                        "examples": [
+                            "https://refeds.org/profile/mfa",
+                            "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
+                            "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                        ]
                     }
                 }
             }
         },
         "attributeRelease": {
+            "title": "label.attribute-release",
             "type": "array",
             "description": "Attribute release table - select the attributes you want to release (default unchecked)",
-            "widget": {
-                "id": "checklist",
-                "dataUrl": "/customAttributes"
-            },
+            "uniqueItems": true,
             "items": {
                 "type": "string"
             }
@@ -187,31 +147,6 @@
     },
     "required": [
         "name"
-    ],
-    "fieldsets": [
-        {
-            "type": "group-lg",
-            "fields": [
-                "name",
-                "@type",
-                "resourceId",
-                "version",
-                "entityAttributesFilterTarget"
-            ]
-        },
-        {
-            "type": "group",
-            "fields": [
-                "filterEnabled",
-                "relyingPartyOverrides"
-            ]
-        },
-        {
-            "type": "group",
-            "fields": [
-                "attributeRelease"
-            ]
-        }
     ],
     "definitions": {
     }
