@@ -2,7 +2,10 @@
     "type": "object",
     "required": [
         "name",
-        "attributeType"
+        "attributeType",
+        "attributeFriendlyName",
+        "attributeName",
+        "displayName"
     ],
     "properties": {
         "name": {
@@ -26,6 +29,27 @@
                 "value.boolean",
                 "value.list"
             ]
+        },
+        "attributeFriendlyName": {
+            "type": "string",
+            "title": "label.entity-attribute-friendly-name",
+            "description": "tooltip.entity-attribute-friendly-name",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "attributeName": {
+            "type": "string",
+            "title": "label.entity-attribute-attr-name",
+            "description": "tooltip.entity-attribute-attr-name",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "displayName": {
+            "type": "string",
+            "title": "label.entity-attribute-display-name",
+            "description": "tooltip.entity-attribute-display-name",
+            "minLength": 1,
+            "maxLength": 255
         },
         "helpText": {
             "title": "label.entity-attribute-help",

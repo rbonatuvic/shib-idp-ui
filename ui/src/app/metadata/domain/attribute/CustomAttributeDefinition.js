@@ -15,6 +15,9 @@ export const CustomAttributeDefinition = {
                     fields: [
                         'name',
                         'attributeType',
+                        'attributeName',
+                        'attributeFriendlyName',
+                        'displayName',
                         'helpText'
                     ]
                 },
