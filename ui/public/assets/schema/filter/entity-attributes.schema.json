@@ -1,0 +1,181 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "title": "label.filter-name",
+            "description": "tooltip.filter-name",
+            "type": "string"
+        },
+        "@type": {
+            "type": "string",
+            "default": "EntityAttributes"
+        },
+        "resourceId": {
+            "type": "string"
+        },
+        "version": {
+            "type": "integer"
+        },
+        "filterEnabled": {
+            "title": "label.enable-filter",
+            "description": "tooltip.enable-filter",
+            "type": "boolean",
+            "default": false
+        },
+        "entityAttributesFilterTarget": {
+            "title": "label.search-criteria",
+            "description": "tooltip.search-criteria",
+            "type": "object",
+            "properties": {
+                "entityAttributesFilterTargetType": {
+                    "title": "label.filter-target-type",
+                    "type": "string",
+                    "default": "ENTITY",
+                    "enum": [
+                        "ENTITY",
+                        "REGEX",
+                        "CONDITION_SCRIPT"
+                    ],
+                    "enumNames": [
+                        "value.entity-id",
+                        "value.regex",
+                        "value.script"
+                    ]
+                },
+                "value": {
+                    "title": "label.filter-target-value",
+                    "type": "array",
+                    "buttons": [
+                        {
+                            "id": "preview",
+                            "label": "action.preview",
+                            "widget": "icon-button"
+                        }
+                    ],
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "value",
+                "entityAttributesFilterTargetType"
+            ]
+        },
+        "relyingPartyOverrides": {
+            "type": "object",
+            "properties": {
+                "signAssertion": {
+                    "title": "label.sign-the-assertion",
+                    "description": "tooltip.sign-assertion",
+                    "type": "boolean"
+                },
+                "dontSignResponse": {
+                    "title": "label.dont-sign-the-response",
+                    "description": "tooltip.dont-sign-response",
+                    "type": "boolean"
+                },
+                "turnOffEncryption": {
+                    "title": "label.turn-off-encryption-of-response",
+                    "description": "tooltip.turn-off-encryption",
+                    "type": "boolean"
+                },
+                "useSha": {
+                    "title": "label.use-sha1-signing-algorithm",
+                    "description": "tooltip.usa-sha-algorithm",
+                    "type": "boolean"
+                },
+                "ignoreAuthenticationMethod": {
+                    "title": "label.ignore-any-sp-requested-authentication-method",
+                    "description": "tooltip.ignore-auth-method",
+                    "type": "boolean"
+                },
+                "omitNotBefore": {
+                    "title": "label.omit-not-before-condition",
+                    "description": "tooltip.omit-not-before-condition",
+                    "type": "boolean"
+                },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string"
+                },
+                "nameIdFormats": {
+                    "$ref": "#/definitions/nameIdFormats"
+                },
+                "authenticationMethods": {
+                    "$ref": "#/definitions/authenticationMethods"
+                },
+                "forceAuthn": {
+                    "title": "label.force-authn",
+                    "description": "tooltip.force-authn",
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "attributeRelease": {
+            "title": "label.attribute-release",
+            "type": "array",
+            "description": "Attribute release table - select the attributes you want to release (default unchecked)",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "enum": [
+                    "eduPersonPrincipalName",
+                    "uid",
+                    "mail",
+                    "surname",
+                    "givenName",
+                    "eduPersonAffiliation",
+                    "eduPersonScopedAffiliation",
+                    "eduPersonPrimaryAffiliation",
+                    "eduPersonEntitlement",
+                    "eduPersonAssurance",
+                    "eduPersonUniqueId",
+                    "employeeNumber"
+                ]
+            }
+        }
+    },
+    "required": [
+        "name"
+    ],
+    "definitions": {
+        "nameIdFormats": {
+            "title": "label.nameid-format-to-send",
+            "description": "tooltip.nameid-format",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+                    "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent",
+                    "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+                ]
+            }
+        },
+        "authenticationMethods": {
+            "title": "label.authentication-methods-to-use",
+            "description": "tooltip.authentication-methods-to-use",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255,
+                "examples": [
+                    "https://refeds.org/profile/mfa",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken",
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                ]
+            }
+        }
+    }
+}

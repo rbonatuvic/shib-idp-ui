@@ -1,0 +1,74 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "@type",
+        "xmlId",
+        "metadataFile"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "type": "string",
+            "const": "FilesystemMetadataResolver"
+        },
+        "xmlId": {
+            "title": "label.xml-id",
+            "description": "tooltip.xml-id",
+            "type": "string",
+            "minLength": 1
+        },
+        "metadataFile": {
+            "title": "label.metadata-file",
+            "description": "tooltip.metadata-file",
+            "type": "string",
+            "minLength": 1
+        },
+        "enabled": {
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
+            "type": "boolean",
+            "default": false
+        },
+        "doInitialization": {
+            "title": "label.do-resolver-initialization",
+            "description": "tooltip.do-resolver-initialization",
+            "type": "boolean"
+        },
+        "reloadableMetadataResolverAttributes": {
+            "type": "object",
+            "properties": {
+                "minRefreshDelay": {
+                    "title": "label.min-refresh-delay",
+                    "description": "tooltip.min-refresh-delay",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "maxRefreshDelay": {
+                    "title": "label.max-refresh-delay",
+                    "description": "tooltip.max-refresh-delay",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "refreshDelayFactor": {
+                    "title": "label.refresh-delay-factor",
+                    "description": "tooltip.refresh-delay-factor",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0.001,
+                    "maximum": 0.999
+                }
+            }
+        }
+    }
+}

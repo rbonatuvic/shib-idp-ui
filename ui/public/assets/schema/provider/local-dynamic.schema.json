@@ -1,0 +1,86 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "@type",
+        "xmlId",
+        "sourceDirectory"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "type": "string",
+            "widget": {
+                "id": "string",
+                "help": "message.must-be-unique"
+            }
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "type": "string",
+            "const": "LocalDynamicMetadataResolver"
+        },
+        "xmlId": {
+            "title": "label.xml-id",
+            "description": "tooltip.xml-id",
+            "type": "string",
+            "minLength": 1
+        },
+        "sourceDirectory": {
+            "title": "label.source-directory",
+            "description": "tooltip.source-directory",
+            "type": "string",
+            "minLength": 1
+        },
+        "enabled": {
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
+            "type": "boolean",
+            "default": false
+        },
+        "dynamicMetadataResolverAttributes": {
+            "type": "object",
+            "properties": {
+                "refreshDelayFactor": {
+                    "title": "label.refresh-delay-factor",
+                    "description": "tooltip.refresh-delay-factor",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0.001,
+                    "maximum": 0.999
+                },
+                "minCacheDuration": {
+                    "title": "label.min-cache-duration",
+                    "description": "tooltip.min-cache-duration",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "maxCacheDuration": {
+                    "title": "label.max-cache-duration",
+                    "description": "tooltip.max-cache-duration",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "maxIdleEntityData": {
+                    "title": "label.max-idle-entity-data",
+                    "description": "tooltip.max-idle-entity-data",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "removeIdleEntityData": {
+                    "title": "label.remove-idle-entity-data",
+                    "description": "tooltip.remove-idle-entity-data",
+                    "type": "boolean"
+                },
+                "cleanupTaskInterval": {
+                    "title": "label.cleanup-task-interval",
+                    "description": "tooltip.cleanup-task-interval",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                }
+            }
+        }
+    }
+}

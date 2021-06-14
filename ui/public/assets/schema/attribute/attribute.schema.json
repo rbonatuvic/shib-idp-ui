@@ -1,0 +1,102 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "attributeType"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.entity-attribute-name",
+            "description": "tooltip.entity-attribute-name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "attributeType": {
+            "title": "label.entity-attribute-type",
+            "description": "tooltip.entity-attribute-type",
+            "type": "string",
+            "enum": [
+                "STRING",
+                "BOOLEAN",
+                "SELECTION_LIST"
+            ],
+            "enumNames": [
+                "value.string",
+                "value.boolean",
+                "value.list"
+            ]
+        },
+        "helpText": {
+            "title": "label.entity-attribute-help",
+            "description": "tooltip.entity-attribute-help",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        }
+    },
+    "dependencies": {
+        "attributeType": {
+            "oneOf": [
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "STRING"
+                            ]
+                        },
+                        "defaultValueString": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "BOOLEAN"
+                            ]
+                        },
+                        "defaultValueBoolean": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "boolean",
+                            "default": true,
+                            "enumNames": ["True", "False"]
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "SELECTION_LIST"
+                            ]
+                        },
+                        "customAttrListDefinitions": {
+                            "title": "label.entity-attribute-list-options",
+                            "description": "tooltip.entity-attribute-list-options",
+                            "type": "array",
+                            "items": {
+                                "title": "label.list-options",
+                                "type": "object",
+                                "properties": {
+                                    "value": {
+                                        "type": "string",
+                                        "placeholder": "Option"
+                                    },
+                                    "default": {
+                                        "type": "boolean",
+                                        "default": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

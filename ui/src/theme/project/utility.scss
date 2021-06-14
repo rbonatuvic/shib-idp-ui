@@ -1,0 +1,43 @@
+.border-2 {
+    border-width: 2px !important;
+}
+
+.bg-lighter {
+    background: #FAFAFA !important;
+}
+
+.bg-primary-light {
+    background: lighten($brand-primary, 75%);
+}
+
+.w-15 {
+    width: 15%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.break-all {
+    word-break: break-all;
+}
+
+
+.bg-diff {
+    background: #FEE8E9;
+    position: relative;
+    border-color: #CCC !important;
+    &::before {
+        $size: 16px;
+        content: "";
+        opacity: 0.75;
+        background: url('../assets/exclamation-circle.svg');
+        font-family: 'FontAwesome';
+        text-align: center;
+        width: $size;
+        height: $size;
+        position: absolute;
+        left: -$size - 4;
+        top: 0.75rem;
+    }
+}

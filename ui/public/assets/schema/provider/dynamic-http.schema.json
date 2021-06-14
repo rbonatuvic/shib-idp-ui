@@ -1,0 +1,513 @@
+{
+    "type": "object",
+    "required": [
+        "name",
+        "@type",
+        "xmlId",
+        "metadataRequestURLConstructionScheme"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.metadata-provider-name-dashboard-display-only",
+            "description": "tooltip.metadata-provider-name-dashboard-display-only",
+            "type": "string"
+        },
+        "@type": {
+            "title": "label.metadata-provider-type",
+            "description": "tooltip.metadata-provider-type",
+            "type": "string",
+            "const": "DynamicHttpMetadataResolver"
+        },
+        "enabled": {
+            "title": "label.enable-provider-upon-saving",
+            "description": "tooltip.enable-provider-upon-saving",
+            "type": "boolean",
+            "default": false
+        },
+        "xmlId": {
+            "title": "label.xml-id",
+            "description": "tooltip.xml-id",
+            "type": "string",
+            "minLength": 1
+        },
+        "metadataRequestURLConstructionScheme": {
+            "type": "object",
+            "required": [
+                "@type",
+                "content"
+            ],
+            "dependencies": {
+                "@type": {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "@type": {
+                                    "enum": [
+                                        "Regex"
+                                    ]
+                                },
+                                "match": {
+                                    "title": "label.match",
+                                    "description": "tooltip.match",
+                                    "type": "string",
+                                    "widget": {
+                                        "id": "string",
+                                        "required": true
+                                    }
+                                }
+                            },
+                            "required": [
+                                "@type",
+                                "content",
+                                "match"
+                            ]
+                        },
+                        {
+                            "properties": {
+                                "@type": {
+                                    "enum": [
+                                        "MetadataQueryProtocol"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "@type",
+                                "content"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "properties": {
+                "@type": {
+                    "title": "label.md-request-type",
+                    "description": "tooltip.md-request-type",
+                    "type": "string",
+                    "widget": {
+                        "id": "select"
+                    },
+                    "enum": [
+                        "MetadataQueryProtocol",
+                        "Regex"
+                    ]
+                },
+                "content": {
+                    "title": "label.md-request-value",
+                    "description": "tooltip.md-request-value",
+                    "type": "string"
+                }
+            }
+        },
+        "requireValidMetadata": {
+            "title": "label.require-valid-metadata",
+            "description": "tooltip.require-valid-metadata",
+            "type": "boolean"
+        },
+        "failFastInitialization": {
+            "title": "label.fail-fast-init",
+            "description": "tooltip.fail-fast-init",
+            "type": "boolean"
+        },
+        "dynamicMetadataResolverAttributes": {
+            "type": "object",
+            "dependencies": {
+                "initializeFromPersistentCacheInBackground": {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "initializeFromPersistentCacheInBackground": {
+                                    "enum": [true]
+                                },
+                                "backgroundInitializationFromCacheDelay": {
+                                    "title": "label.background-init-from-cache-delay",
+                                    "description": "tooltip.background-init-from-cache-delay",
+                                    "type": "string",
+                                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                                }
+                            }
+                        },
+                        {
+                            "properties": {
+                                "initializeFromPersistentCacheInBackground": {
+                                    "enum": [false]
+                                }
+                            }
+                            
+                        }
+                    ]
+                }
+            },
+            "properties": {
+                "refreshDelayFactor": {
+                    "title": "label.refresh-delay-factor",
+                    "description": "tooltip.refresh-delay-factor",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0.001,
+                    "maximum": 0.999
+                },
+                "minCacheDuration": {
+                    "title": "label.min-cache-duration",
+                    "description": "tooltip.min-cache-duration",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "maxCacheDuration": {
+                    "title": "label.max-cache-duration",
+                    "description": "tooltip.max-cache-duration",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "maxIdleEntityData": {
+                    "title": "label.max-idle-entity-data",
+                    "description": "tooltip.max-idle-entity-data",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "removeIdleEntityData": {
+                    "title": "label.remove-idle-entity-data",
+                    "description": "tooltip.remove-idle-entity-data",
+                    "type": "boolean"
+                },
+                "cleanupTaskInterval": {
+                    "title": "label.cleanup-task-interval",
+                    "description": "tooltip.cleanup-task-interval",
+                    "type": "string",
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "persistentCacheManagerDirectory": {
+                    "title": "label.persistent-cache-manager-directory",
+                    "description": "tooltip.persistent-cache-manager-directory",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "initializeFromPersistentCacheInBackground": {
+                    "title": "label.initialize-from-persistent-cache-in-background",
+                    "description": "tooltip.initialize-from-persistent-cache-in-background",
+                    "type": "boolean"
+                }
+            }
+        },
+        "httpMetadataResolverAttributes": {
+            "order": [],
+            "type": "object",
+            "fieldsets": [
+                {
+                    "title": "label.http-security-attributes",
+                    "type": "section",
+                    "class": "col-12",
+                    "fields": [
+                        "disregardTLSCertificate"
+                    ]
+                },
+                {
+                    "title": "label.http-connection-attributes",
+                    "type": "section",
+                    "fields": [
+                        "connectionRequestTimeout",
+                        "connectionTimeout",
+                        "socketTimeout"
+                    ]
+                },
+                {
+                    "title": "label.http-proxy-attributes",
+                    "type": "section",
+                    "class": "col-12",
+                    "fields": [
+                        "proxyHost",
+                        "proxyPort",
+                        "proxyUser",
+                        "proxyPassword"
+                    ]
+                },
+                {
+                    "title": "label.http-caching-attributes",
+                    "type": "section",
+                    "class": "col-12",
+                    "fields": [
+                        "httpCaching",
+                        "httpCacheDirectory",
+                        "httpMaxCacheEntries",
+                        "httpMaxCacheEntrySize"
+                    ]
+                },
+                {
+                    "title": "",
+                    "type": "hidden",
+                    "class": "col-12",
+                    "fields": [
+                        "tlsTrustEngineRef",
+                        "httpClientSecurityParametersRef",
+                        "httpClientRef"
+                    ]
+                }
+            ],
+            "properties": {
+                "disregardTLSCertificate": {
+                    "type": "boolean",
+                    "title": "label.disregard-tls-cert",
+                    "description": "tooltip.disregard-tls-cert"
+                },
+                "httpClientRef": {
+                    "type": "string",
+                    "title": "",
+                    "description": "",
+                    "widget": "hidden"
+                },
+                "connectionRequestTimeout": {
+                    "type": "string",
+                    "title": "label.connection-request-timeout",
+                    "description": "tooltip.connection-request-timeout",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "connectionTimeout": {
+                    "type": "string",
+                    "title": "label.connection-timeout",
+                    "description": "tooltip.connection-timeout",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "socketTimeout": {
+                    "type": "string",
+                    "title": "label.socket-timeout",
+                    "description": "tooltip.socket-timeout",
+                    "widget": {
+                        "id": "datalist",
+                        "data": [
+                            "PT0S",
+                            "PT30S",
+                            "PT1M",
+                            "PT10M",
+                            "PT30M",
+                            "PT1H",
+                            "PT4H",
+                            "PT12H",
+                            "PT24H"
+                        ]
+                    },
+                    "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                },
+                "tlsTrustEngineRef": {
+                    "type": "string",
+                    "title": "",
+                    "description": ""
+                },
+                "httpClientSecurityParametersRef": {
+                    "type": "string",
+                    "title": "",
+                    "description": ""
+                },
+                "proxyHost": {
+                    "type": "string",
+                    "title": "label.proxy-host",
+                    "description": "tooltip.proxy-host"
+                },
+                "proxyPort": {
+                    "type": "string",
+                    "title": "label.proxy-port",
+                    "description": "tooltip.proxy-port"
+                },
+                "proxyUser": {
+                    "type": "string",
+                    "title": "label.proxy-user",
+                    "description": "tooltip.proxy-user"
+                },
+                "proxyPassword": {
+                    "type": "string",
+                    "title": "label.proxy-password",
+                    "description": "tooltip.proxy-password"
+                },
+                "httpCaching": {
+                    "type": "string",
+                    "title": "label.http-caching",
+                    "description": "tooltip.http-caching",
+                    "widget": {
+                        "id": "select"
+                    },
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "none"
+                            ],
+                            "description": "value.none"
+                        },
+                        {
+                            "enum": [
+                                "file"
+                            ],
+                            "description": "value.file"
+                        },
+                        {
+                            "enum": [
+                                "memory"
+                            ],
+                            "description": "value.memory"
+                        }
+                    ]
+                },
+                "httpCacheDirectory": {
+                    "type": "string",
+                    "title": "label.http-caching-directory",
+                    "description": "tooltip.http-caching-directory"
+                },
+                "httpMaxCacheEntries": {
+                    "type": "integer",
+                    "title": "label.http-max-cache-entries",
+                    "description": "tooltip.http-max-cache-entries",
+                    "minimum": 0
+                },
+                "httpMaxCacheEntrySize": {
+                    "type": "integer",
+                    "title": "label.max-cache-entry-size",
+                    "description": "tooltip.max-cache-entry-size",
+                    "minimum": 0
+                }
+            }
+        },
+        "metadataFilters": {
+            "$id": "metadataFilters",
+            "title": "",
+            "description": "",
+            "type": "array",
+            "items": [
+                {
+                    "$id": "RequiredValidUntil",
+                    "title": "label.required-valid-until",
+                    "type": "object",
+                    "widget": {
+                        "id": "fieldset"
+                    },
+                    "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "RequiredValidUntil"
+                        },
+                        "maxValidityInterval": {
+                            "title": "label.max-validity-interval",
+                            "description": "tooltip.max-validity-interval",
+                            "type": "string",
+                            "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                        }
+                    }
+                },
+                {
+                    "$id": "SignatureValidation",
+                    "title": "label.signature-validation-filter",
+                    "type": "object",
+                    "widget": {
+                        "id": "fieldset"
+                    },
+                    "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "SignatureValidation"
+                        },
+                        "requireSignedRoot": {
+                            "title": "label.require-signed-root",
+                            "description": "tooltip.require-signed-root",
+                            "type": "boolean"
+                        },
+                        "certificateFile": {
+                            "title": "label.certificate-file",
+                            "description": "tooltip.certificate-file",
+                            "type": "string"
+                        }
+                    },
+                    "dependencies": {
+                        "requireSignedRoot": {
+                            "oneOf": [
+                                {
+                                    "properties": {
+                                        "requireSignedRoot": {
+                                            "const": true
+                                        }
+                                    },
+                                    "required": [
+                                        "certificateFile"
+                                    ]
+                                },
+                                {
+                                    "properties": {
+                                        "requireSignedRoot": {
+                                            "const": false
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "$id": "EntityRoleWhiteList",
+                    "title": "label.entity-role-whitelist",
+                    "type": "object",
+                    "widget": {
+                        "id": "fieldset"
+                    },
+                    "properties": {
+                        "@type": {
+                            "type": "string",
+                            "default": "EntityRoleWhiteList"
+                        },
+                        "retainedRoles": {
+                            "title": "label.retained-roles",
+                            "description": "tooltip.retained-roles",
+                            "type": "array",
+                            "items": {
+                                "widget": {
+                                    "id": "select"
+                                },
+                                "type": "string",
+                                "enum": [
+                                    "SPSSODescriptor",
+                                    "AttributeAuthorityDescriptor"
+                                ],
+                                "enumNames": [
+                                    "value.spdescriptor",
+                                    "value.attr-auth-descriptor"
+                                ]
+                            }
+                        },
+                        "removeRolelessEntityDescriptors": {
+                            "title": "label.remove-roleless-entity-descriptors",
+                            "description": "tooltip.remove-roleless-entity-descriptors",
+                            "type": "boolean"
+                        },
+                        "removeEmptyEntitiesDescriptors": {
+                            "title": "label.remove-empty-entities-descriptors",
+                            "description": "tooltip.remove-empty-entities-descriptors",
+                            "type": "boolean"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

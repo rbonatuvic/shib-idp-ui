@@ -20,8 +20,8 @@ class JsonSchemaBuilderService {
     }
 
     void addReleaseAttributesToJson(Object json) {
-        json['data'] = customPropertiesConfiguration.getAttributes().collect {
-            [key: it['name'], label: it['displayName']]
+        json['enum'] = customPropertiesConfiguration.getAttributes().collect {
+            it['name']
         }
     }
 
@@ -36,12 +36,8 @@ class JsonSchemaBuilderService {
                 property =
                         [title      : it['displayName'],
                          description: it['helpText'],
-                         type       : it['displayType']]
-                if (it['displayType'] == 'boolean') {
-                    property['default'] = Boolean.valueOf(it['defaultValue'])
-                } else {
-                    property['default'] = it['defaultValue']
-                }
+                         type       : it['displayType'],
+                         examples   : it['examples']]
             }
             properties[(String) it['name']] = property
         }
@@ -64,7 +60,7 @@ class JsonSchemaBuilderService {
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
-            items.widget = [id: 'datalist', data: it['defaultValues']]
+            items.examples = it['examples']
 
             definition['items'] = items
             json[(String) it['name']] = definition
@@ -76,7 +72,7 @@ class JsonSchemaBuilderService {
         if (currentUser != null && currentUser.role != 'ROLE_ADMIN') {
             // user isn't an admin, so hide 'ServiceEnabled'
             Map<String, String> serviceEnabled = (HashMap) json['properties']['serviceEnabled']
-            serviceEnabled['widget'] = 'hidden'
+            serviceEnabled['readOnly'] = true
             serviceEnabled.remove('title')
             serviceEnabled.remove('description')
         }

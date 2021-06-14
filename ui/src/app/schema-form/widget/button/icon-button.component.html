@@ -1,9 +1,0 @@
-<button
-    [id]="formProperty._canonicalPath"
-    class="btn btn-link text-right"
-    [ngSwitch]="button.id"
-    (click)="this.action($event)"
-    *ngIf="this.visible">
-    <i class="fa fa-eye fa-lg text-success" *ngSwitchCase="'preview'"></i>
-    <i class="fa fa-floppy-o fa-lg text-info" *ngSwitchDefault></i>
-</button>
