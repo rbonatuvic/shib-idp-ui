@@ -27,7 +27,7 @@ export const NameIDFilterWizard = {
     validator: (data = [], current = { resourceId: null }) => {
 
         const filters = current ? data.filter(s => s.resourceId !== current.resourceId) : data;
-        const names = filters.map(s => s.entityId);
+        const names = filters.map(s => s.name);
 
         return (formData, errors) => {
             if (names.indexOf(formData.name) > -1) {
