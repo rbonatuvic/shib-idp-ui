@@ -19,12 +19,13 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
     private Set<String> defaultValues;
     private String displayName;
     private String displayType;
+    private Set<String> examples;
     private String helpText;
     private String invert;
     private String name;
     private String persistType;
     private String persistValue;
-
+    
     @Override
     public Boolean getFromConfigFile() {
         return Boolean.TRUE;
@@ -39,6 +40,10 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
         default:
             return CustomAttributeType.valueOf(displayType.toUpperCase());
         }
-
+    }
+    
+    public void setDefaultValues(Set<String> defaults) {
+        defaultValues = defaults;
+        examples = defaults;        
     }
 }

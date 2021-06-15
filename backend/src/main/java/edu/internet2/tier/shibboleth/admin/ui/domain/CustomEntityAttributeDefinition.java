@@ -7,8 +7,11 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -41,6 +44,9 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Column(name = "display_name", nullable = true)
     String displayName;
 
+    @Transient
+    Set<String> examples;
+    
     @Column(name = "help_text", nullable = true)
     String helpText;
     
@@ -78,12 +84,12 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     public String getDisplayType() {
         return attributeType.name().toLowerCase();
     }
-
+    
     @Override
     public Boolean getFromConfigFile() {
         return Boolean.FALSE;
     }
-
+    
     @Override
     public void setDefaultValues(Set<String> defaultValues) {
         // This is here to comply with the interface only and should not be used to change the set of values in this implementation
@@ -92,5 +98,9 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Override
     public void setDisplayType(String displayType) {
         // This is here to comply with the interface only and should not be used to change the value in this implementation 
-    }    
+    }
+    
+    public void updateExamplesList() {
+        examples = customAttrListDefinitions;
+    }
 }

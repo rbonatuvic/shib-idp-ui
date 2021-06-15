@@ -21,21 +21,24 @@ import javax.annotation.PostConstruct;
 @ConfigurationProperties(prefix = "custom")
 public class CustomPropertiesConfiguration implements ApplicationListener<CustomEntityAttributeDefinitionChangeEvent> {
     private List<? extends Map<String, String>> attributes = new ArrayList<>();
-    
+
     private CustomEntityAttributesDefinitionService ceadService;
 
     private HashMap<String, IRelyingPartyOverrideProperty> overrides = new HashMap<>();
-    
+
     private List<RelyingPartyOverrideProperty> overridesFromConfigFile = new ArrayList<>();
-    
+
     private void buildRelyingPartyOverrides() {
         // Start over with a clean map and get the CustomEntityAttributesDefinitions from the DB
         overrides = new HashMap<>();
-        ceadService.getAllDefinitions().forEach(def -> overrides.put(def.getName(), def));
-        
-        // We only want to add to an override from the config file if the incoming override (by name) isn't already in 
+        ceadService.getAllDefinitions().forEach(def -> {
+            def.updateExamplesList(); // totally non-ooo, but @PostLoad wasn't working and JPA/Hibernate is doing some reflection crap
+            overrides.put(def.getName(), def);
+        });
+
+        // We only want to add to an override from the config file if the incoming override (by name) isn't already in
         // the list of overrides (ie DB > file config)
-        for(RelyingPartyOverrideProperty rpop : this.overridesFromConfigFile) {
+        for (RelyingPartyOverrideProperty rpop : this.overridesFromConfigFile) {
             if (!this.overrides.containsKey(rpop.getName())) {
                 this.overrides.put(rpop.getName(), rpop);
             }
@@ -44,10 +47,10 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
 
     public List<? extends Map<String, String>> getAttributes() {
         return attributes;
-    }   
-    
+    }
+
     public List<IRelyingPartyOverrideProperty> getOverrides() {
-        return new ArrayList<>(overrides.values());        
+        return new ArrayList<>(overrides.values());
     }
 
     /**
@@ -56,9 +59,9 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
      */
     @Override
     public void onApplicationEvent(CustomEntityAttributeDefinitionChangeEvent arg0) {
-        buildRelyingPartyOverrides();        
+        buildRelyingPartyOverrides();
     }
-    
+
     @PostConstruct
     public void postConstruct() {
         // Make sure we have the right data

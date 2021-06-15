@@ -36,7 +36,7 @@ class JsonSchemaBuilderService {
                         [title      : it['displayName'],
                          description: it['helpText'],
                          type       : it['displayType'],
-                         examples   : it['defaultValues']]
+                         examples   : it['examples']]
             }
             properties[(String) it['name']] = property
         }
@@ -59,7 +59,7 @@ class JsonSchemaBuilderService {
             def items = [type     : 'string',
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
-            items.examples = it['defaultValues']
+            items.examples = it['examples']
 
             definition['items'] = items
             json[(String) it['name']] = definition
