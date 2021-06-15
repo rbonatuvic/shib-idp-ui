@@ -24,9 +24,21 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
     private String name;
     private String persistType;
     private String persistValue;
-    
+
     @Override
     public Boolean getFromConfigFile() {
         return Boolean.TRUE;
+    }
+
+    @Override
+    public CustomAttributeType getAttributeType() {
+        switch (displayType) {
+        case ("set"):
+        case ("list"):
+            return CustomAttributeType.SELECTION_LIST;
+        default:
+            return CustomAttributeType.valueOf(displayType.toUpperCase());
+        }
+
     }
 }

@@ -10,7 +10,9 @@ public interface IRelyingPartyOverrideProperty {
     public String getAttributeFriendlyName();
 
     public String getAttributeName();
-
+    
+    public CustomAttributeType getAttributeType();
+    
     public String getDefaultValue();
 
     public Set<String> getDefaultValues();

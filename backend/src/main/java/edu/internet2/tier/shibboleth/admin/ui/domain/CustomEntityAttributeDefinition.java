@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
 
 import lombok.Data;
@@ -18,13 +20,9 @@ import lombok.Data;
 @Audited
 @Data
 public class CustomEntityAttributeDefinition implements IRelyingPartyOverrideProperty {
-    @Id
-    @Column(nullable = false)
-    String name;
-    
     @Column(name = "attribute_friendly_name", nullable = true)
     String attributeFriendlyName;
-
+    
     @Column(name = "attribute_name", nullable = true)
     String attributeName;
 
@@ -33,23 +31,31 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
 
     @ElementCollection
     @CollectionTable(name = "custom_entity_attr_list_items", joinColumns = @JoinColumn(name = "name"))
+    @Fetch(FetchMode.JOIN)
     @Column(name = "value", nullable = false)
     Set<String> customAttrListDefinitions = new HashSet<>();
-    
+
     @Column(name = "default_value", nullable = true)
     String defaultValue;
-
+    
     @Column(name = "display_name", nullable = true)
     String displayName;
-    
-    @Column(name = "display_type", nullable = true)
-    String displayType;
 
     @Column(name = "help_text", nullable = true)
     String helpText;
-
+    
     @Column(name = "invert", nullable = true)
     String invert;
+
+    @Id
+    @Column(nullable = false)
+    String name;
+    
+    @Column(name = "persist_type", nullable = true)
+    String persistType;
+    
+    @Column(name = "persist_value", nullable = true)
+    String persistValue;
     
     @Override
     public Set<String> getDefaultValues() {
@@ -57,19 +63,19 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     }
 
     @Override
-    public Boolean getFromConfigFile() {
-        return Boolean.FALSE;
+    public String getDisplayName() {
+        // This is here only to ensure proper functionality works until the full definition is revised with all the fields
+        return displayName == null ? "DEFAULTED to name: " + name : displayName;
     }
     
     @Override
-    public String getPersistType() {
-        return attributeType.toString();
+    public String getDisplayType() {
+        return attributeType.name().toLowerCase();
     }
 
     @Override
-    public String getPersistValue() {
-        // Definitions don't have a persist value, here to comply with the interface only
-        return null;
+    public Boolean getFromConfigFile() {
+        return Boolean.FALSE;
     }
 
     @Override
@@ -78,14 +84,7 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     }
 
     @Override
-    public void setPersistType(String persistType) {
-        // This is "attributeType", but this is only here to comply with the interface, we don't intend for this to be
-        // used, we want to match up against the actual ENUM types of CustomAttributeType
-    }
-
-    @Override
-    public void setPersistValue(String persistValue) {
-        // Definitions don't have a persist value, here to comply with the interface only        
-    }
-    
+    public void setDisplayType(String displayType) {
+        // This is here to comply with the interface only and should not be used to change the value in this implementation 
+    }    
 }

@@ -29,8 +29,7 @@ class JsonSchemaBuilderService {
         def properties = [:]
         customPropertiesConfiguration.getOverrides().each {
             def property
-            if (it['displayType'] == 'list'
-                    || it['displayType'] == 'set') {
+            if (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
                 property = [$ref: '#/definitions/' + it['name']]
             } else {
                 property =
@@ -46,13 +45,13 @@ class JsonSchemaBuilderService {
 
     void addRelyingPartyOverridesCollectionDefinitionsToJson(Object json) {
         customPropertiesConfiguration.getOverrides().stream().filter {
-            it -> it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set')
+            it -> it['displayType'] && (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list')
         }.each {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],
                               type       : 'array',
                               default    : null]
-            if (it['displayType'] == 'set') {
+            if (it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
                 definition['uniqueItems'] = true
             } else if (it['displayType'] == 'list') {
                 definition['uniqueItems'] = false
