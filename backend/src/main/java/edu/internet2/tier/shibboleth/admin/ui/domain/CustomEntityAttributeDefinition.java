@@ -58,6 +58,12 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     String persistValue;
     
     @Override
+    public String getAttributeName() {
+        // This is a bit of a hack because we don't have attribute name in the UI yet...
+        return attributeName == null ? name : attributeName;
+    }
+    
+    @Override
     public Set<String> getDefaultValues() {
         return customAttrListDefinitions;
     }
