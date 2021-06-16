@@ -1,5 +1,5 @@
-import { EntityAttributesFilterEditor } from './EntityAttributesFilterDefinition';
-import { NameIDFilterEditor } from './NameIdFilterDefinition';
+import { EntityAttributesFilterEditor } from './definition/EntityAttributesFilterDefinition';
+import { NameIDFilterEditor } from './definition/NameIdFilterDefinition';
 
 export const MetadataFilterWizardTypes = {
     EntityAttributes: EntityAttributesFilterEditor,

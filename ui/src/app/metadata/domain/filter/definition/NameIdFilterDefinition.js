@@ -1,8 +1,8 @@
 import defaultsDeep from "lodash/defaultsDeep";
-import API_BASE_PATH from "../../../App.constant";
+import API_BASE_PATH from "../../../../App.constant";
 import { BaseFilterDefinition } from "./BaseFilterDefinition";
 
-import { isValidRegex } from '../../../core/utility/is_valid_regex';
+import { isValidRegex } from '../../../../core/utility/is_valid_regex';
 
 export const NameIDFilterWizard = {
     ...BaseFilterDefinition,

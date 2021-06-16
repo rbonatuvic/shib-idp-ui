@@ -1,5 +1,5 @@
 import { DynamicHttpMetadataProviderWizard } from './DynamicHttpMetadataProviderDefinition';
-import schema from '../../../../testing/dynamic-http.schema';
+import schema from '../../../../../testing/dynamic-http.schema';
 const addErrorMockFn = jest.fn();
 
 const providers = [

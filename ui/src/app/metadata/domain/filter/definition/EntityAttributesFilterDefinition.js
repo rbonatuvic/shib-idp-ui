@@ -1,7 +1,7 @@
-import API_BASE_PATH from "../../../App.constant";
+import API_BASE_PATH from "../../../../App.constant";
 import {BaseFilterDefinition} from './BaseFilterDefinition';
-import {removeNull} from '../../../core/utility/remove_null';
-import { isValidRegex } from '../../../core/utility/is_valid_regex';
+import {removeNull} from '../../../../core/utility/remove_null';
+import { isValidRegex } from '../../../../core/utility/is_valid_regex';
 import defaultsDeep from "lodash/defaultsDeep";
 
 export const EntityAttributesFilterWizard = {

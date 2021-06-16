@@ -23,15 +23,6 @@ export function ContentionModal ({ theirs = [], ours = [], onUseTheirs, onUseOur
                 <h4 className="modal-title"><Translate value="message.data-version-contention">Data Version Contention</Translate></h4>
             </Modal.Header>
             <Modal.Body>
-                {/*<div className="row">
-                    <div className="col-6">
-                        <pre>{JSON.stringify(theirs, null, 4)}</pre>
-                    </div>   
-                    <div className="col-6">
-                        <pre>{JSON.stringify(ours, null, 4)}</pre>
-                    </div>
-                </div>*/}
-                
                 <div className="d-flex w-50 justify-content-center mb-4 mx-auto">
                     <FontAwesomeIcon icon={faExclamationTriangle} size="3x" className="text-warning" />
                     {theirs && theirs.length > 0 ?

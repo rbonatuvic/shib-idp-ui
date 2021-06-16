@@ -38,10 +38,10 @@ const keys = [
     '@type'
 ];
 
-const filterKeys = (key => (keys.indexOf(key) === -1));
+export const filterKeys = (key => (keys.indexOf(key) === -1));
 
 
-const getContention = (base, ours, theirs) => {
+export const getContention = (base, ours, theirs) => {
 
     let theirDiff = updatedDiff(base, theirs);
     let ourDiff = updatedDiff(base, removeNull(ours));
@@ -59,7 +59,7 @@ const getContention = (base, ours, theirs) => {
     };
 }
 
-const getChangeItem = (key, collection, compare = []) => {
+export const getChangeItem = (key, collection, compare = []) => {
     return {
         label: key,
         value: collection[key],
@@ -93,7 +93,7 @@ export const resolveContentionAction = () => {
     }
 }
 
-function reducer(state, action) {
+export function reducer(state, action) {
     switch (action.type) {
         case ContentionActions.OPEN_CONTENTION_MODAL:
             return {
@@ -106,7 +106,7 @@ function reducer(state, action) {
                 show: false
             };
         default:
-            throw new Error();
+            return state;
     }
 }
 

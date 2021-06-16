@@ -5,26 +5,22 @@ import { useContentionDispatcher, openContentionModalAction } from '../contentio
 
 import {MetadataFilterTypes} from '../domain/filter';
 
-const lists = {
+export const lists = {
     source: 'EntityDescriptors',
     provider: 'MetadataResolvers'
 };
 
-const details = {
+export const details = {
     source: 'EntityDescriptor',
     provider: 'MetadataResolvers'
 }
 
-const schema = {
+export const schema = {
     source: 'MetadataSources'
 }
 
 export function getMetadataPath(type) {
     return `/${details[type]}`;
-}
-
-export function useNonAdminSources() {
-    return useFetch(`/${getMetadataPath('source')}/disabledNonAdmin`);
 }
 
 export function getMetadataListPath(type) {
@@ -33,6 +29,10 @@ export function getMetadataListPath(type) {
 
 export function getSchemaPath(type) {
     return `/${schema[type]}`;
+}
+
+export function useNonAdminSources() {
+    return useFetch(`/${getMetadataPath('source')}/disabledNonAdmin`);
 }
 
 export function useMetadataEntities(type = 'source', opts = {}, onMount) {
@@ -51,19 +51,23 @@ export function useMetadataFilters(id, opts = {
     return useFetch(`${API_BASE_PATH}${getMetadataPath('provider')}/${id}/Filters`, opts, onMount);
 }
 
+export const xmlRequestInterceptor = ({ options }) => {
+    options.headers['Accept'] = 'application/xml';
+    return options;
+}
+
 export function useMetadataEntityXml(type = 'source', opts = {
     interceptors: {
-        request: ({options}) => {
-            options.headers['Accept'] = 'application/xml';
-            return options;
-        }
+        request: xmlRequestInterceptor
     }
 }) {
     return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}`, opts);
 }
 
 export function useMetadataProviderOrder() {
-    return useFetch(`${API_BASE_PATH}/MetadataResolversPositionOrder`);
+    return useFetch(`${API_BASE_PATH}/MetadataResolversPositionOrder`, {
+        cachePolicy: 'no-cache'
+    });
 }
 
 export function useMetadataHistory(type, id, opts = {}, i) {

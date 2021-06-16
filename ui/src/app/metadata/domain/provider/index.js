@@ -1,7 +1,7 @@
-import { FileBackedHttpMetadataProviderWizard, FileBackedHttpMetadataProviderEditor } from './FileBackedHttpMetadataProviderDefinition';
-import { DynamicHttpMetadataProviderWizard, DynamicHttpMetadataProviderEditor } from './DynamicHttpMetadataProviderDefinition';
-import { LocalDynamicMetadataProviderWizard, LocalDynamicMetadataProviderEditor } from './LocalDynamicMetadataProviderDefinition';
-import { FileSystemMetadataProviderWizard, FileSystemMetadataProviderEditor } from './FileSystemMetadataProviderDefinition';
+import { FileBackedHttpMetadataProviderWizard, FileBackedHttpMetadataProviderEditor } from './definition/FileBackedHttpMetadataProviderDefinition';
+import { DynamicHttpMetadataProviderWizard, DynamicHttpMetadataProviderEditor } from './definition/DynamicHttpMetadataProviderDefinition';
+import { LocalDynamicMetadataProviderWizard, LocalDynamicMetadataProviderEditor } from './definition/LocalDynamicMetadataProviderDefinition';
+import { FileSystemMetadataProviderWizard, FileSystemMetadataProviderEditor } from './definition/FileSystemMetadataProviderDefinition';
 
 export const MetadataProviderWizardTypes = [
     FileBackedHttpMetadataProviderWizard,
