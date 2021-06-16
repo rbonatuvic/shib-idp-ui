@@ -77,7 +77,7 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Override
     public String getDisplayName() {
         // This is here only to ensure proper functionality works until the full definition is revised with all the fields
-        return displayName == null ? "DEFAULTED to name: " + name : displayName;
+        return displayName == null ? name : displayName;
     }
     
     @Override
