@@ -19,6 +19,5 @@ export const MetadataProviderEditorTypes = [
 
 export const FilterableProviders = [
     FileBackedHttpMetadataProviderEditor.type,
-    DynamicHttpMetadataProviderEditor.type,
-    LocalDynamicMetadataProviderEditor.type
+    DynamicHttpMetadataProviderEditor.type
 ];

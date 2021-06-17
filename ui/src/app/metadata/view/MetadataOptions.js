@@ -19,6 +19,7 @@ import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
 import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
+import { FilterableProviders } from '../domain/provider';
 
 export function MetadataOptions () {
 
@@ -45,6 +46,8 @@ export function MetadataOptions () {
     const edit = (section) => {
         history.push(`/metadata/${type}/${id}/edit/${section}`);
     }
+
+    const canFilter = FilterableProviders.indexOf(definition.type) > -1;
 
     return (
         <DeleteSourceConfirmation>
@@ -73,7 +76,7 @@ export function MetadataOptions () {
                             <FontAwesomeIcon icon={ faHistory } />&nbsp;
                             <Translate value="action.version-history">Version History</Translate>
                         </Link>
-                        {type === 'provider' &&
+                        {type === 'provider' && canFilter &&
                             <Button variant="link" onClick={() => onScrollTo('filters')}>
                                 <FontAwesomeIcon icon={faArrowDown} />&nbsp;
                                 <Translate value="label.filters">Filters</Translate>
@@ -83,31 +86,29 @@ export function MetadataOptions () {
                     <MetadataViewToggle />
                 </div>
                 <MetadataConfiguration configuration={ configuration } onEdit={ (section) => edit(section) } />
-                <div id="filters">
-                    {type === 'provider' &&
-                        <>
-                            <div className="numbered-header d-flex justify-content-start bg-light align-items-center">
-                                <h2 className="title h4 m-0 ml-2 flex-grow-1">
-                                    <span className="text"><Translate value="label.filters">Filters</Translate></span>
-                                </h2>
-                                <div className="actions px-2">
-                                    <Link className="btn btn-link edit-link change-view"
-                                        to={`/metadata/provider/${id}/filter/new`}>
-                                        <FontAwesomeIcon icon={faPlus} />&nbsp;
-                                        <Translate value="action.add-filter">Add Filter</Translate>
-                                    </Link>
-                                </div>
+                {type === 'provider' && canFilter &&
+                    <div id="filters">
+                        <div className="numbered-header d-flex justify-content-start bg-light align-items-center">
+                            <h2 className="title h4 m-0 ml-2 flex-grow-1">
+                                <span className="text"><Translate value="label.filters">Filters</Translate></span>
+                            </h2>
+                            <div className="actions px-2">
+                                <Link className="btn btn-link edit-link change-view"
+                                    to={`/metadata/provider/${id}/filter/new`}>
+                                    <FontAwesomeIcon icon={faPlus} />&nbsp;
+                                    <Translate value="action.add-filter">Add Filter</Translate>
+                                </Link>
                             </div>
-                            <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes}>
-                                {(filters, onUpdate, onDelete, loading) =>
-                                    <MetadataFilterConfigurationList
-                                        provider={metadata}
-                                        filters={filters}
-                                        onDelete={onDelete} />}
-                            </MetadataFilters>
-                        </>
-                    }
-                </div>
+                        </div>
+                        <MetadataFilters providerId={metadata.resourceId} types={MetadataFilterTypes}>
+                            {(filters, onUpdate, onDelete, loading) =>
+                                <MetadataFilterConfigurationList
+                                    provider={metadata}
+                                    filters={filters}
+                                    onDelete={onDelete} />}
+                        </MetadataFilters>
+                    </div>
+                }
                 <Button variant="link" onClick={ () => onScrollTo('header', -60) }>
                     <FontAwesomeIcon icon={faArrowUp} className="sr-hidden" />&nbsp;
                     <Translate value="action.back-to-top">Back to Top</Translate>
