@@ -22,12 +22,20 @@
             "enum": [
                 "STRING",
                 "BOOLEAN",
-                "SELECTION_LIST"
+                "SELECTION_LIST",
+                "LONG",
+                "DOUBLE",
+                "DURATION",
+                "SPRING_BEAN_ID"
             ],
             "enumNames": [
                 "value.string",
                 "value.boolean",
-                "value.list"
+                "value.list",
+                "value.long",
+                "value.double",
+                "value.duration",
+                "value.spring-bean-id"
             ]
         },
         "attributeFriendlyName": {
@@ -43,6 +51,30 @@
             "description": "tooltip.entity-attribute-attr-name",
             "minLength": 1,
             "maxLength": 255
+        },
+        "persistFriendlyName": {
+            "type": "string",
+            "title": "label.entity-attribute-friendly-name",
+            "description": "tooltip.entity-attribute-friendly-name",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "persistType": {
+            "type": "string",
+            "title": "label.entity-attribute-attr-name",
+            "description": "tooltip.entity-attribute-attr-name",
+            "minLength": 1,
+            "maxLength": 255,
+            "enum": [
+                "boolean",
+                "string",
+                "number"
+            ],
+            "enumNames": [
+                "boolean",
+                "string",
+                "number"
+            ]
         },
         "displayName": {
             "type": "string",
@@ -69,7 +101,7 @@
                                 "STRING"
                             ]
                         },
-                        "defaultValueString": {
+                        "defaultValue": {
                             "title": "label.entity-attribute-default",
                             "description": "tooltip.entity-attribute-default",
                             "type": "string"
@@ -83,12 +115,73 @@
                                 "BOOLEAN"
                             ]
                         },
-                        "defaultValueBoolean": {
+                        "defaultValue": {
                             "title": "label.entity-attribute-default",
                             "description": "tooltip.entity-attribute-default",
-                            "type": "boolean",
-                            "default": true,
-                            "enumNames": ["True", "False"]
+                            "type": "string",
+                            "default": "true",
+                            "enumNames": [
+                                "True",
+                                "False"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "DURATION"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string",
+                            "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "LONG"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "DOUBLE"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "INTEGER"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string",
+                            "pattern": "^\\d+$"
                         }
                     }
                 },
