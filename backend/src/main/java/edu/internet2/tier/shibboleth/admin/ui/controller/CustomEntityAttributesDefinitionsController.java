@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
 
@@ -24,9 +23,6 @@ import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefi
 public class CustomEntityAttributesDefinitionsController {
     @Autowired
     private CustomEntityAttributesDefinitionService caService;
-    
-    @Autowired
-    private CustomPropertiesConfiguration customPropertiesConfiguration;
 
     @PostMapping("/attribute")
     @Transactional
@@ -71,7 +67,7 @@ public class CustomEntityAttributesDefinitionsController {
     @GetMapping("/attributes")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(customPropertiesConfiguration.getOverrides());
+        return ResponseEntity.ok(caService.getAllDefinitions());
     }
     
     @GetMapping("/attribute/{name}")

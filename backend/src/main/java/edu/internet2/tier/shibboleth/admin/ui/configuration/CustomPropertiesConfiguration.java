@@ -30,19 +30,21 @@ public class CustomPropertiesConfiguration implements ApplicationListener<Custom
 
     private void buildRelyingPartyOverrides() {
         // Start over with a clean map and get the CustomEntityAttributesDefinitions from the DB
-        overrides = new HashMap<>();
+        HashMap<String, IRelyingPartyOverrideProperty> reloaded = new HashMap<>();
         ceadService.getAllDefinitions().forEach(def -> {
             def.updateExamplesList(); // totally non-ooo, but @PostLoad wasn't working and JPA/Hibernate is doing some reflection crap
-            overrides.put(def.getName(), def);
+            reloaded.put(def.getName(), def);
         });
 
         // We only want to add to an override from the config file if the incoming override (by name) isn't already in
         // the list of overrides (ie DB > file config)
         for (RelyingPartyOverrideProperty rpop : this.overridesFromConfigFile) {
-            if (!this.overrides.containsKey(rpop.getName())) {
-                this.overrides.put(rpop.getName(), rpop);
+            if (!reloaded.containsKey(rpop.getName())) {
+                reloaded.put(rpop.getName(), rpop);
             }
         }
+        
+        this.overrides = reloaded;
     }
 
     public List<? extends Map<String, String>> getAttributes() {
