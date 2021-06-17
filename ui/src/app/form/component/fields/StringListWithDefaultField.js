@@ -121,7 +121,7 @@ const StringListWithDefaultField = ({
                     </div>
                     <div>
                         {items && items.map((p, idx) =>
-                            <div className="my-2 d-flex justify-content-between align-items-center form-inline">
+                            <div key={idx} className="my-2 d-flex justify-content-between align-items-center form-inline">
                                 <Form.Control
                                     type="text"
                                     className="flex-grow-1"
