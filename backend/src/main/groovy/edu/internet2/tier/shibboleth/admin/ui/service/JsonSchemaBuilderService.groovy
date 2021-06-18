@@ -33,10 +33,11 @@ class JsonSchemaBuilderService {
                 property = [$ref: '#/definitions/' + it['name']]
             } else {
                 property =
-                        [title      : it['displayName'],
-                         description: it['helpText'],
-                         type       : it['displayType'],
-                         examples   : it['examples']]
+                        [title       : it['displayName'],
+                         description : it['helpText'],
+                         type        : it['displayType'],
+                         defaultValue: it['defaultValue'],
+                         examples    : it['examples']]
             }
             properties[(String) it['name']] = property
         }
@@ -60,8 +61,10 @@ class JsonSchemaBuilderService {
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
             items.examples = it['examples']
+            
 
             definition['items'] = items
+            definition['defaultValue'] = it['defaultValue']
             json[(String) it['name']] = definition
         }
     }
