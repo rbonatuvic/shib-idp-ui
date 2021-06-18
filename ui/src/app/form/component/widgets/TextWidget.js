@@ -38,10 +38,10 @@ const TextWidget = ({
         _onBlur(evt);
     };
 
-    // const classNames = [rawErrors.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
+    // const classNames = [rawErrors?.length > 0 ? "is-invalid" : "", type === 'file' ? 'custom-file-label': ""]
     return (
         <Form.Group className="mb-0">
-            <Form.Label className={`${rawErrors.length > 0 && touched ? "text-danger" : ""}`}>
+            <Form.Label className={`${rawErrors?.length > 0 && touched ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ?
@@ -56,7 +56,7 @@ const TextWidget = ({
                 required={required}
                 disabled={disabled}
                 readOnly={readonly}
-                className={rawErrors.length > 0 && touched ? "is-invalid" : ""}
+                className={rawErrors?.length > 0 && touched ? "is-invalid" : ""}
                 list={schema.examples ? `examples_${id}` : undefined}
                 type={inputType}
                 value={value || value === 0 ? value : ""}
@@ -73,7 +73,7 @@ const TextWidget = ({
                         })}
                 </datalist>
             ) : null}
-            {rawErrors.length > 0 && touched && (
+            {rawErrors?.length > 0 && touched && (
                 <ListGroup as="ul">
                     {rawErrors.map((error, i) => {
                         return (

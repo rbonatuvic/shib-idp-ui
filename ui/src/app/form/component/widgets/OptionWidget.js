@@ -90,7 +90,7 @@ const OptionWidget = ({
 
     return (
         <Form.Group className="mb-0">
-            <Form.Label className={`${(touched && rawErrors.length > 0) ? "text-danger" : ""}`}>
+            <Form.Label className={`${(touched && rawErrors?.length > 0) ? "text-danger" : ""}`}>
                 <span>
                     <Translate value={label || schema.title} />
                     {(label || schema.title) && required ? <FontAwesomeIcon icon={faAsterisk} className="text-danger ml-2" size="sm" /> : null}
@@ -104,7 +104,7 @@ const OptionWidget = ({
                 onChange={ _onChange }
                 allowNew={true}
                 multiple={false}
-                className={`toggle-typeahead ${rawErrors.length > 0 ? "is-invalid" : ""}`}
+                className={`toggle-typeahead ${rawErrors?.length > 0 ? "is-invalid" : ""}`}
                 options={opts}
                 placeholder={uiSchema['ui:placeholder'] ? translator(uiSchema['ui:placeholder'] ): ''}
                 disabled={disabled || readonly}
@@ -122,7 +122,7 @@ const OptionWidget = ({
                     <ToggleButton isOpen={isMenuShown} onClick={e => toggleMenu()} disabled={disabled || readonly} />
                 )}
             </Typeahead>
-            {rawErrors.length > 0 && touched && (
+            {rawErrors?.length > 0 && touched && (
                 <ListGroup as="ul">
                     {rawErrors.map((error, i) => {
                         return (
