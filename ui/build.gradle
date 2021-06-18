@@ -17,6 +17,13 @@ npm_run_build {
     outputs.dir 'build'
 }
 
+task test(type: NpmTask) {
+    environment = ['CI': 'true']
+    args = ['run', 'test']
+}
+ 
+check.dependsOn(test)
+
 npm_run_buildProd {
     inputs.dir 'src'
     inputs.dir 'public'
