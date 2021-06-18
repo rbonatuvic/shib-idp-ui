@@ -36,7 +36,7 @@ class JsonSchemaBuilderService {
                         [title       : it['displayName'],
                          description : it['helpText'],
                          type        : it['displayType'],
-                         deafult     : it['defaultValue'],
+                         default     : it['defaultValue'],
                          examples    : it['examples']]
             }
             properties[(String) it['name']] = property
