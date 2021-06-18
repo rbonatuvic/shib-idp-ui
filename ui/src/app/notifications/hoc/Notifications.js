@@ -41,7 +41,7 @@ export const removeNotificationAction = (id) => {
     }
 }
 
-function reducer(state, action) {
+export function reducer(state, action) {
     switch (action.type) {
         case NotificationActions.ADD_NOTIFICATION:
             return {

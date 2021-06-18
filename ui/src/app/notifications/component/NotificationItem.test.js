@@ -30,21 +30,4 @@ describe('Notifcation Item', () => {
 
         expect(mockOnRemove).toHaveBeenCalled();
     });
-
-    it('should be removed when clicked', () => {
-
-        const mockOnRemove = jest.fn();
-
-        render(<NotificationItem type="danger" body="foo" timeout={5000} onRemove={mockOnRemove} />);
-
-        const el = screen.getByText('Close alert');
-
-        fireEvent(el,
-            new MouseEvent('click', {
-                bubbles: true,
-                cancelable: true,
-            }));
-
-        expect(mockOnRemove).toHaveBeenCalled();
-    });
 })
