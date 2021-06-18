@@ -74,7 +74,7 @@ const FilterTargetField = ({
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
-        if (term && term.length >= 4) {
+        if (term?.length >= 4) {
             searchIds(term);
         }
     }, [term]);
