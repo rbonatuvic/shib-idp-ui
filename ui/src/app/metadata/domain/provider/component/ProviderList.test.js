@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { fc } from 'jest-fast-check';
 
 import { ProviderList } from './ProviderList';
 
