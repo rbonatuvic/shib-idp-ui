@@ -50,8 +50,7 @@ class JsonSchemaBuilderService {
         }.each {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],
-                              type       : 'array',
-                              default    : it['defaultValue']]
+                              type       : 'array']
             if (it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
                 definition['uniqueItems'] = true
             } else if (it['displayType'] == 'list') {
@@ -61,10 +60,10 @@ class JsonSchemaBuilderService {
                          minLength: 1, // TODO: should this be configurable?
                          maxLength: 255] //TODO: or this?
             items.examples = it['examples']
+            items['default'] = it['defaultValue']
             
 
             definition['items'] = items
-            definition['default'] = it['defaultValue']
             json[(String) it['name']] = definition
         }
     }
