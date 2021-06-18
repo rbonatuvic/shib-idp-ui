@@ -36,7 +36,7 @@ class JsonSchemaBuilderService {
                         [title       : it['displayName'],
                          description : it['helpText'],
                          type        : it['displayType'],
-                         defaultValue: it['defaultValue'],
+                         deafult     : it['defaultValue'],
                          examples    : it['examples']]
             }
             properties[(String) it['name']] = property
@@ -51,7 +51,7 @@ class JsonSchemaBuilderService {
             def definition = [title      : it['displayName'],
                               description: it['helpText'],
                               type       : 'array',
-                              default    : null]
+                              default    : it['defaultValue']]
             if (it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
                 definition['uniqueItems'] = true
             } else if (it['displayType'] == 'list') {
@@ -64,7 +64,7 @@ class JsonSchemaBuilderService {
             
 
             definition['items'] = items
-            definition['defaultValue'] = it['defaultValue']
+            definition['default'] = it['defaultValue']
             json[(String) it['name']] = definition
         }
     }
