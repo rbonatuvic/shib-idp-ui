@@ -80,7 +80,7 @@ const OptionWidget = ({
         }
     };
 
-    const defaultInputValue = typeof value === 'object' && value && value.label ? value.label : value;
+    const defaultInputValue = typeof value === 'object' && value && value.label ? value.label : value ? value : '';
 
     const [ inputValue, setInputValue ] = React.useState( defaultInputValue );
 
