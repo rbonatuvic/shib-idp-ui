@@ -407,3 +407,6 @@ beacon/spring/out
 *.settings
 *.project
 *bin
+
+# macOS jenv
+.java-version
