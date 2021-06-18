@@ -3,7 +3,6 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository
-import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFilterValueRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
@@ -46,10 +45,7 @@ class TestConfiguration {
 
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;
-    
-    @Autowired
-    CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;
-        
+            
     @Autowired
     EntityManager entityManager
     
@@ -63,7 +59,6 @@ class TestConfiguration {
         new CustomEntityAttributesDefinitionServiceImpl().with {
            it.entityManager = entityManager
            it.repository = repository
-           it.customEntityAttributeFilterValueRepository = customEntityAttributeFilterValueRepository
            return it
         }
     }

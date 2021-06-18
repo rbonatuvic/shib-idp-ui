@@ -10,18 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.CustomEntityAttributeFilterValue;
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeFilterValueRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.events.CustomEntityAttributeDefinitionChangeEvent;
 
 @Service
 public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntityAttributesDefinitionService {    
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
-    
-    @Autowired
-    CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;
     
     @Autowired
     EntityManager entityManager;
@@ -40,13 +35,6 @@ public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntity
     @Override
     @Transactional
     public void deleteDefinition(CustomEntityAttributeDefinition definition) {
-        // must remove any CustomEntityAttributeFilterValues first to avoid integrity constraint issues
-        List<CustomEntityAttributeFilterValue> customEntityValues = customEntityAttributeFilterValueRepository.findAllByCustomEntityAttributeDefinition(definition);
-        customEntityValues.forEach(value ->  {
-            value.getEntityAttributesFilter().getCustomEntityAttributes().remove(value);
-            entityManager.remove(value);
-            customEntityAttributeFilterValueRepository.delete(value);
-        });
         CustomEntityAttributeDefinition entityToRemove = repository.findByName(definition.getName());
         repository.delete(entityToRemove);
         notifyListeners();

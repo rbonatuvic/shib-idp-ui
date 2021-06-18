@@ -42,9 +42,6 @@ class EntityDescriptorRepositoryTest extends Specification {
     private CustomEntityAttributeDefinitionRepository repository;
     
     @Autowired
-    CustomEntityAttributeFilterValueRepository customEntityAttributeFilterValueRepository;
-    
-    @Autowired
     EntityManager entityManager
 
     @Autowired
@@ -113,7 +110,6 @@ class EntityDescriptorRepositoryTest extends Specification {
             new CustomEntityAttributesDefinitionServiceImpl().with {
                it.entityManager = entityManager
                it.repository = repository
-               it.customEntityAttributeFilterValueRepository = customEntityAttributeFilterValueRepository
                return it
             }
         }

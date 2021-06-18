@@ -86,6 +86,12 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     }
     
     @Override
+    public String getAttributeFriendlyName() {
+        // This is here only to ensure proper functionality works until the full definition is revised with all the fields
+        return attributeFriendlyName == null ? name : attributeFriendlyName;
+    }
+    
+    @Override
     public Boolean getFromConfigFile() {
         return Boolean.FALSE;
     }
