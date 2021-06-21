@@ -24,8 +24,8 @@ export function FieldTemplate ({
                     {children}
                 </div>
                 <div>
-                    {rawHelp && rawErrors.length < 1 && (
-                        <Form.Text className={rawErrors.length > 0 ? "text-danger" : "text-muted"} id={id}>
+                    {rawHelp && rawErrors?.length < 1 && (
+                        <Form.Text className={rawErrors?.length > 0 ? "text-danger" : "text-muted"} id={id}>
                             <Translate value={rawHelp} />
                         </Form.Text>
                     )}
