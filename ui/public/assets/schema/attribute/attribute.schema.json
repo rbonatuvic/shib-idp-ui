@@ -54,15 +54,15 @@
         },
         "persistFriendlyName": {
             "type": "string",
-            "title": "label.entity-attribute-friendly-name",
-            "description": "tooltip.entity-attribute-friendly-name",
+            "title": "label.entity-attribute-persist-friendly-name",
+            "description": "tooltip.entity-attribute-persist-friendly-name",
             "minLength": 1,
             "maxLength": 255
         },
         "persistType": {
             "type": "string",
-            "title": "label.entity-attribute-attr-name",
-            "description": "tooltip.entity-attribute-attr-name",
+            "title": "label.entity-attribute-persist-type",
+            "description": "tooltip.entity-attribute-persist-type",
             "minLength": 1,
             "maxLength": 255,
             "enum": [
