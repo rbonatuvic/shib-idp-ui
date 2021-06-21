@@ -5,6 +5,8 @@
         "attributeType",
         "attributeFriendlyName",
         "attributeName",
+        "persistValue",
+        "persistType",
         "displayName"
     ],
     "properties": {
@@ -52,10 +54,10 @@
             "minLength": 1,
             "maxLength": 255
         },
-        "persistFriendlyName": {
+        "persistValue": {
             "type": "string",
-            "title": "label.entity-attribute-persist-friendly-name",
-            "description": "tooltip.entity-attribute-persist-friendly-name",
+            "title": "label.entity-attribute-persist-value",
+            "description": "tooltip.entity-attribute-persist-value",
             "minLength": 1,
             "maxLength": 255
         },

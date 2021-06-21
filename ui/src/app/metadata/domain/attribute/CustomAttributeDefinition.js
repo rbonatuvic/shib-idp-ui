@@ -18,7 +18,7 @@ export const CustomAttributeDefinition = {
                         'attributeName',
                         'attributeFriendlyName',
                         'displayName',
-                        'persistFriendlyName',
+                        'persistValue',
                         'persistType',
                         'helpText'
                     ]

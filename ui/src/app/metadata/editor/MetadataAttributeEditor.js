@@ -51,6 +51,7 @@ export function MetadataAttributeEditor({ children }) {
                     </Form>
                 </div>
             </div>
+            <pre>{JSON.stringify(errors, null, 4)}</pre>
         </div>
     );
 }
