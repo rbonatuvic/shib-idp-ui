@@ -66,7 +66,7 @@ const UpDownWidget = ({
                 onBlur={onCustomBlur}
                 onFocus={_onFocus}
             />
-            {rawErrors.length > 0 && touched && (
+            {rawErrors?.length > 0 && touched && (
                 <ListGroup as="ul">
                     {rawErrors.map((error, i) => {
                         return (
