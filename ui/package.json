@@ -51,7 +51,9 @@
     "copy": "npm run copy:static && npm run build:static"
   },
   "jest": {
-    "testMatch": ["**/?(*.)+(spec|test).[jt]s?(x)"],
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
       "!src/testing/**/*.*",
