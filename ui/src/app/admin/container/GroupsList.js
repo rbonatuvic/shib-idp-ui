@@ -51,7 +51,7 @@ export function GroupsList({ groups, onDelete }) {
                                                 <tr key={i}>
                                                     <td>{group.name}</td>
                                                     <td className="text-right">
-                                                        <Link to={`../attributes/${group.name}/edit`} className="btn btn-link text-primary">
+                                                        <Link to={`../groups/${group.name}/edit`} className="btn btn-link text-primary">
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />
                                                             <span className="sr-only">
                                                                 <Translate value="action.edit">Edit</Translate>

@@ -4,7 +4,7 @@ import { Prompt, useHistory } from 'react-router';
 import Translate from '../../i18n/components/translate';
 import { useGroups } from '../hooks';
 import { Schema } from '../../form/Schema';
-
+import { FormManager } from '../../form/FormManager';
 import { GroupForm } from '../component/GroupForm';
 
 export function NewGroup() {
@@ -14,8 +14,8 @@ export function NewGroup() {
 
     const [blocking, setBlocking] = React.useState(false);
 
-    async function save(metadata) {
-        await post(``, metadata);
+    async function save(group) {
+        await post(``, group);
         if (response.ok) {
             gotoDetail({ refresh: true });
         }
@@ -29,8 +29,6 @@ export function NewGroup() {
         setBlocking(false);
         history.push(`/groups`, state);
     };
-
-    const [group, setGroup] = React.useState({});
 
     return (
         <div className="container-fluid p-3">
@@ -50,7 +48,17 @@ export function NewGroup() {
                 </div>
                 <div className="section-body p-4 border border-top-0 border-info">
                     <Schema path={`/assets/schema/groups/group.json`}>
-                        {(schema) => <GroupForm group={group} schema={schema} /> }
+                        {(schema) => 
+                        <FormManager initial={{}}>
+                            {(data, errors) =>
+                            <GroupForm
+                                group={data}
+                                errors={errors}
+                                schema={schema}
+                                loading={loading}
+                                onSave={(data) => save(data)}
+                                onCancel={() => cancel()} />}
+                        </FormManager> }
                     </Schema>
                 </div>
             </section>

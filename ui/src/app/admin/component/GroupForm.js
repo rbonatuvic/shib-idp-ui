@@ -8,20 +8,18 @@ import Translate from '../../i18n/components/translate';
 import { useGroupUiSchema } from '../hooks';
 import { fields, widgets } from '../../form/component';
 import { templates } from '../../form/component';
+import { FormContext, setFormDataAction } from '../../form/FormManager';
 
 function ErrorListTemplate() {
     return (<></>);
 }
 
-export function GroupForm ({schema}) {
+export function GroupForm ({group = {}, errors = [], loading = false, schema, onSave, onCancel}) {
 
-    const [errors, setErrors] = React.useState([]);
-    const [loading, setLoading] = React.useState(false);
-    const [metadata, setMetadata] = React.useState({});
-
-    const save = () => { };
-    const cancel = () => { };
-    const onChange = () => { };
+    const { dispatch } = React.useContext(FormContext);
+    const onChange = ({formData}) => {
+        dispatch(setFormDataAction(formData));
+    };
 
     const uiSchema = useGroupUiSchema();
 
@@ -31,7 +29,7 @@ export function GroupForm ({schema}) {
                 <React.Fragment>
                     <Button variant="info" className="mr-2"
                         type="button"
-                        onClick={() => save()}
+                        onClick={() => onSave(group)}
                         disabled={errors.length > 0 || loading}
                         aria-label="Save changes to the metadata source. You will return to the dashboard">
                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
@@ -39,7 +37,7 @@ export function GroupForm ({schema}) {
                     </Button>
                     <Button variant="secondary"
                         type="button"
-                        onClick={() => cancel()} aria-label="Cancel changes, go back to dashboard">
+                        onClick={() => onCancel()} aria-label="Cancel changes, go back to dashboard">
                         <Translate value="action.cancel">Cancel</Translate>
                     </Button>
                 </React.Fragment>
@@ -47,7 +45,7 @@ export function GroupForm ({schema}) {
             <hr />
             <div className="row">
                 <div className="col-12 col-lg-12 order-2">
-                    <Form formData={metadata}
+                    <Form formData={group}
                         noHtml5Validate={true}
                         onChange={(form) => onChange(form)}
                         schema={schema}

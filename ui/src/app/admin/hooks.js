@@ -6,8 +6,12 @@ export function useGroups () {
 }
 
 export function useGroup() {
-    return useFetch(`${API_BASE_PATH}/group`);
+    return useFetch(`/group.json`);
 }
+
+/*export function useGroup() {
+    return useFetch(`${API_BASE_PATH}/group`);
+}*/
 
 export function useGroupUiSchema () {
     return {
