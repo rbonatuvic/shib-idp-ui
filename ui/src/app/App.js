@@ -27,6 +27,7 @@ import { Filter } from './metadata/Filter';
 import { Contention } from './metadata/contention/ContentionContext';
 import { SessionModal } from './core/user/SessionModal';
 import Button from 'react-bootstrap/Button';
+import { Groups } from './admin/Groups';
 
 
 function App() {
@@ -76,8 +77,9 @@ function App() {
                                                     <Route path="/metadata/source/new" component={NewSource} />
                                                     <Route path="/metadata/provider/new" component={NewProvider} />
                                                     <Route path="/metadata/attributes" component={Attribute} />
-                                                    <Route path={`/metadata/provider/:id/filter`} component={Filter} />
+                                                    <Route path="/metadata/provider/:id/filter" component={Filter} />
                                                     <Route path="/metadata/:type/:id" component={Metadata} />
+                                                    <Route path="/groups" component={Groups} />
                                                     <Route path="*">
                                                         <Redirect to="/dashboard" />
                                                     </Route>
