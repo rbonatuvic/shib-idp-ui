@@ -44,13 +44,14 @@
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=true react-scripts build",
     "buildProd": "react-scripts build && npm run copy",
-    "test": "react-scripts test 00==",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build:static": "sass src/static.scss ./build/unsecured/static.css",
     "copy:static": "node ./build",
     "copy": "npm run copy:static && npm run build:static"
   },
   "jest": {
+    "testMatch": ["**/?(*.)+(spec|test).[jt]s?(x)"],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
       "!src/testing/**/*.*",
