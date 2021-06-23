@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @EnableConfigurationProperties
 @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 public class Pac4jConfigurationProperties {
+    final static String DEFAULT_AUTH_HEADER = "REMOTE_USER"; 
+    
     private String keystorePath = "/tmp/samlKeystore.jks";
     private String keystorePassword = "changeit";
     private String privateKeyPassword = "changeit";
@@ -22,7 +24,7 @@ public class Pac4jConfigurationProperties {
     private boolean wantAssertionsSigned = true;
     private SAML2ProfileMapping saml2ProfileMapping;
     private String typeOfAuth = "SAML2";
-    private String authenticationHeader = "REMOTE_USER";
+    private String authenticationHeader = DEFAULT_AUTH_HEADER;
 
     public static class SAML2ProfileMapping {
         private String username;
