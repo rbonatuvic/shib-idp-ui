@@ -41,7 +41,7 @@ const CheckboxWidget = (props) => {
                     </span>
                     {schema.description && <InfoIcon value={schema.description} className="ml-2" />}
                 </span>}
-                checked={typeof value === "undefined" ? false : value}
+                checked={typeof value === "undefined" ? false : typeof value === 'boolean' ? value : value === 'true' ? true : false}
                 required={required}
                 disabled={disabled || readonly}
                 autoFocus={autofocus}

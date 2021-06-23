@@ -93,19 +93,11 @@
                                 "BOOLEAN"
                             ]
                         },
-                        "defaultValue": {
+                        "defaultValueBoolean": {
                             "title": "label.entity-attribute-default",
                             "description": "tooltip.entity-attribute-default",
-                            "type": "string",
-                            "default": "true",
-                            "enum": [
-                                "true",
-                                "false"
-                            ],
-                            "enumNames": [
-                                "True",
-                                "False"
-                            ]
+                            "type": "boolean",
+                            "default": true
                         },
                         "persistValue": {
                             "type": "string",

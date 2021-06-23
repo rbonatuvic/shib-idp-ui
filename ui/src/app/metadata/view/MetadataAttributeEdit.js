@@ -35,7 +35,7 @@ export function MetadataAttributeEdit() {
     }
 
     async function save(metadata) {
-        const resp = await put(``, definition.parser(metadata));
+        const resp = await put(`/${id}`, definition.parser(metadata));
         if (response.ok) {
             gotoDetail({ refresh: true });
         } else {

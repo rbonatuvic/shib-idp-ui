@@ -18,8 +18,6 @@ export const CustomAttributeDefinition = {
                         'attributeName',
                         'attributeFriendlyName',
                         'displayName',
-                        'persistValue',
-                        'persistType',
                         'helpText'
                     ]
                 },
@@ -30,13 +28,19 @@ export const CustomAttributeDefinition = {
                         'defaultValue',
                         'defaultValueBoolean',
                         'defaultValueString',
-                        'customAttrListDefinitions'
+                        'customAttrListDefinitions',
+                        'persistValue',
+                        'persistType',
+                        'invert'
                     ]
                 }
             ]
         },
         defaultValueBoolean: {
             'ui:widget': 'radio'
+        },
+        persistType: {
+            'ui:widget': 'hidden'
         },
         customAttrListDefinitions: {
             'ui:field': 'StringListWithDefaultField',
@@ -100,7 +104,8 @@ export const CustomAttributeDefinition = {
         if (attributeType === 'BOOLEAN') {
             formatted = {
                 ...formatted,
-                defaultValueBoolean: formatted.defaultValue === 'true' ? true : false
+                defaultValueBoolean: formatted.defaultValue === 'true' ? true : false,
+                invert: formatted.invert === 'true' ? true : false
             }
         }
 

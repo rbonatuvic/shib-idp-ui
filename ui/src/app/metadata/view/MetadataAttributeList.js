@@ -63,13 +63,13 @@ export function MetadataAttributeList ({entities, onDelete}) {
                                                 <td>{attr.helpText}</td>
                                                 <td>{attr.defaultValue?.toString()}</td>
                                                 <td className="text-right">
-                                                    <Link to={`../attributes/${attr.name}/edit`} className="btn btn-link text-primary">
+                                                    <Link to={`../attributes/${attr.resourceId}/edit`} className="btn btn-link text-primary">
                                                         <FontAwesomeIcon icon={faEdit} size="lg" />
                                                         <span className="sr-only">
                                                             <Translate value="action.edit">Edit</Translate>
                                                         </span>
                                                     </Link>
-                                                    <Button variant="link" className="text-danger" onClick={() => block(() => remove(attr.name))}>
+                                                    <Button variant="link" className="text-danger" onClick={() => block(() => remove(attr.resourceId))}>
                                                         <FontAwesomeIcon icon={faTrash} size="lg" />
                                                         <span className="sr-only">
                                                             <Translate value="action.delete">Delete</Translate>
