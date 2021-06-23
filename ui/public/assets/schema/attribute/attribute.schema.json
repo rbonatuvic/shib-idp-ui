@@ -54,30 +54,6 @@
             "minLength": 1,
             "maxLength": 255
         },
-        "persistValue": {
-            "type": "string",
-            "title": "label.entity-attribute-persist-value",
-            "description": "tooltip.entity-attribute-persist-value",
-            "minLength": 1,
-            "maxLength": 255
-        },
-        "persistType": {
-            "type": "string",
-            "title": "label.entity-attribute-persist-type",
-            "description": "tooltip.entity-attribute-persist-type",
-            "minLength": 1,
-            "maxLength": 255,
-            "enum": [
-                "boolean",
-                "string",
-                "number"
-            ],
-            "enumNames": [
-                "boolean",
-                "string",
-                "number"
-            ]
-        },
         "displayName": {
             "type": "string",
             "title": "label.entity-attribute-display-name",
@@ -122,10 +98,32 @@
                             "description": "tooltip.entity-attribute-default",
                             "type": "string",
                             "default": "true",
+                            "enum": [
+                                "true",
+                                "false"
+                            ],
                             "enumNames": [
                                 "True",
                                 "False"
                             ]
+                        },
+                        "persistValue": {
+                            "type": "string",
+                            "title": "label.entity-attribute-persist-value",
+                            "description": "tooltip.entity-attribute-persist-value",
+                            "minLength": 1,
+                            "maxLength": 255
+                        },
+                        "persistType": {
+                            "type": "string",
+                            "title": "label.entity-attribute-persist-type",
+                            "description": "tooltip.entity-attribute-persist-type",
+                            "default": "string"
+                        },
+                        "invert": {
+                            "type": "boolean",
+                            "title": "label.entity-attribute-invert",
+                            "description": "tooltip.entity-attribute-invert"
                         }
                     }
                 },
