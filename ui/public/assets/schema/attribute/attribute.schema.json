@@ -5,8 +5,6 @@
         "attributeType",
         "attributeFriendlyName",
         "attributeName",
-        "persistValue",
-        "persistType",
         "displayName"
     ],
     "properties": {
@@ -87,6 +85,23 @@
                     }
                 },
                 {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "SPRING_BEAN_ID"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "persistValue"
+                    ],
                     "properties": {
                         "attributeType": {
                             "enum": [
