@@ -28,7 +28,7 @@ public class CustomEntityAttributesDefinitionsController {
     @Transactional
     public ResponseEntity<?> create(@RequestBody CustomEntityAttributeDefinition definition) {
         // If already defined, we can't create a new one, nor will this call update the definition
-        CustomEntityAttributeDefinition cad = caService.find(definition.getName());
+        CustomEntityAttributeDefinition cad = caService.find(definition.getResourceId());
         
         if (cad != null) {
             HttpHeaders headers = new HttpHeaders();
@@ -36,7 +36,7 @@ public class CustomEntityAttributesDefinitionsController {
             
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers)
                                  .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), 
-                                       String.format("The custom attribute definition with name: [%s] already exists.", definition.getName())));
+                                       String.format("The custom attribute definition already exists - unable to create a new definition")));
         }
         
         CustomEntityAttributeDefinition result = caService.createOrUpdateDefinition(definition);
