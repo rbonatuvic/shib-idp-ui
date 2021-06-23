@@ -46,7 +46,7 @@ public class CustomEntityAttributesDefinitionsController {
     @PutMapping("/attribute")
     @Transactional
     public ResponseEntity<?> update(@RequestBody CustomEntityAttributeDefinition definition) {
-        CustomEntityAttributeDefinition cad = caService.find(definition.getName());      
+        CustomEntityAttributeDefinition cad = caService.find(definition.getResourceId());      
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute").build().toUri());
