@@ -118,7 +118,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side' // adding filters to this resolver type was removed in the react update
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
         'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
-        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug where the IDE thinks there is a missing ')'.
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug in the IDE where it thinks there is a missing ')'.
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
@@ -126,7 +126,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
 //        'SHIBUI-1503: Non-admin can create metadata source'               | '/SHIBUI-1503-1.side' // bug, see SHIBUI-1974
         'SHIBUI-1503: User can be deleted'                                | '/SHIBUI-1503-2.side' // Note that this script can only be run once successfully (per startup of the app) without first having to add the Bad Robot user back in to the system
-        'SHIBUI-1503: User can be enabled'                                | '/SHIBUI-1503-3.side' // Note that this script cannot be executed after 1503-2 without first adding the Bad Robot user back in to the system
+        'SHIBUI-1503: User can be enabled'                                | '/SHIBUI-1503-3.side'
     }
 }
 
