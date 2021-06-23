@@ -70,34 +70,34 @@ public class CustomEntityAttributesDefinitionsController {
         return ResponseEntity.ok(caService.getAllDefinitions());
     }
     
-    @GetMapping("/attribute/{name}")
+    @GetMapping("/attribute/{resourceId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String name) {
-        CustomEntityAttributeDefinition cad = caService.find(name);
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
+        CustomEntityAttributeDefinition cad = caService.find(resourceId);
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(
-                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + name).build().toUri());
+                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + resourceId).build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
-                                  String.format("The custom attribute definition with name: [%s] does not already exist.", name)));
+                                  String.format("The custom attribute definition with resource id: [%s] does not already exist.", resourceId)));
         }
         return ResponseEntity.ok(cad);
     }
     
-    @DeleteMapping("/attribute/{name}")
+    @DeleteMapping("/attribute/{resourceId}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable String name) {
-        CustomEntityAttributeDefinition cad = caService.find(name);
+    public ResponseEntity<?> delete(@PathVariable String resourceId) {
+        CustomEntityAttributeDefinition cad = caService.find(resourceId);
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(
-                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + name).build().toUri());
+                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + resourceId).build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
-                                  String.format("The custom attribute definition with name: [%s] does not already exist.", name)));
+                                  String.format("The custom attribute definition with resource id: [%s] does not already exist.", resourceId)));
         }
         caService.deleteDefinition(cad);
         return ResponseEntity.noContent().build();

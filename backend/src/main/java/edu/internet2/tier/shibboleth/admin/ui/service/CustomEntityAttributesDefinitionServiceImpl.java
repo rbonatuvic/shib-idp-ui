@@ -35,14 +35,14 @@ public class CustomEntityAttributesDefinitionServiceImpl implements CustomEntity
     @Override
     @Transactional
     public void deleteDefinition(CustomEntityAttributeDefinition definition) {
-        CustomEntityAttributeDefinition entityToRemove = repository.findByName(definition.getName());
+        CustomEntityAttributeDefinition entityToRemove = repository.findByResourceId(definition.getResourceId());
         repository.delete(entityToRemove);
         notifyListeners();
     }
 
     @Override
-    public CustomEntityAttributeDefinition find(String name) {
-        return repository.findByName(name);
+    public CustomEntityAttributeDefinition find(String resourceId) {
+        return repository.findByResourceId(resourceId);
     }
 
     @Override

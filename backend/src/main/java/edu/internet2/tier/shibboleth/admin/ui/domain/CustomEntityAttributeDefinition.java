@@ -2,15 +2,14 @@ package edu.internet2.tier.shibboleth.admin.ui.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
@@ -53,7 +52,6 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Column(name = "invert", nullable = true)
     String invert;
 
-    @Id
     @Column(nullable = false)
     String name;
     
@@ -62,6 +60,10 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     
     @Column(name = "persist_value", nullable = true)
     String persistValue;
+
+    @Id
+    @Column(name = "resource_id", nullable = false)
+    String resourceId = UUID.randomUUID().toString();
     
     @Override
     public String getAttributeName() {
