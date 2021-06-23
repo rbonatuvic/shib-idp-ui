@@ -193,13 +193,13 @@ const FilterTargetField = ({
                                         className="codearea form-control"
                                         rows="8"
                                         onChange={({ target: { value } }) => handleTextChange(value)}
-                                        html={ selectedTarget[0] }
+                                        html={ selectedTarget[0] ? selectedTarget[0] : '' }
                                         innerRef={ref}
                                         dangerouslySetInnerHTML={true}>
                                     </ContentEditable>
-                                    <small id="script-help" className="text-danger">
+                                    {!selectedTarget[0] && <small id="script-help" className="text-danger">
                                         <Translate value="message.required-for-scripts">Required for Scripts</Translate>
-                                    </small>
+                                    </small>}
                                 </> }
                                 {targetType === 'REGEX' &&
                                     <>
