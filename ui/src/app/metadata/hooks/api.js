@@ -109,7 +109,11 @@ export function useMetadataUpdater (path, current) {
                 }));
             });
         }
-        return Promise.resolve(req);
+        if (response.ok) {
+            return Promise.resolve(req);
+        } else {
+            return Promise.reject(req);
+        }
     }
 
     return {
