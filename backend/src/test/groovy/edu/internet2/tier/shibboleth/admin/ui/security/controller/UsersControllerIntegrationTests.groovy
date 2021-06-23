@@ -68,6 +68,15 @@ class UsersControllerIntegrationTests extends Specification {
   },
   {
     "modifiedBy" : "anonymousUser",
+    "firstName" : "Bad",
+    "emailAddress" : "badboy2@institution.edu",
+    "role" : "ROLE_NONE",
+    "username" : "none2",
+    "createdBy" : "anonymousUser",
+    "lastName" : "robot2"
+  },
+  {
+    "modifiedBy" : "anonymousUser",
     "firstName" : "Anon",
     "emailAddress" : "anon@institution.edu",
     "role" : "ROLE_ADMIN",
