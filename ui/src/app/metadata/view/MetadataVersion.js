@@ -5,7 +5,7 @@ import { Configuration } from '../hoc/Configuration';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faHistory, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faHistory, faPlus, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { scroller } from 'react-scroll';
 
@@ -35,7 +35,13 @@ export function MetadataVersion() {
 
     return (
         <MetadataVersionLoader>
-            {(metadata) =>
+            {(metadata, loading) =>
+                <>
+                    {loading && <div className="d-flex justify-content-center">
+                        <FontAwesomeIcon icon={faSpinner} pulse size="4x" />
+                        <span className="sr-only">Loading...</span>
+                    </div>}
+                {metadata &&
                 <Configuration entities={[metadata]} schema={processed} definition={definition}>
                     {(config) =>
                         <>
@@ -87,6 +93,7 @@ export function MetadataVersion() {
                         </>
                     }
                 </Configuration>
+                }</>
             }
         </MetadataVersionLoader>
     );
