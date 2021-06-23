@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain;
+package edu.internet2.tier.shibboleth.admin.ui.security.model;
 
 import java.util.UUID;
 

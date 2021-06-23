@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.controller;
+package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.Group;
-import edu.internet2.tier.shibboleth.admin.ui.service.IGroupService;
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 
 @Controller
 @RequestMapping(value = "/api/groups")

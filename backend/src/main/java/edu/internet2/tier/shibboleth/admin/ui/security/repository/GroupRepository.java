@@ -1,10 +1,10 @@
-package edu.internet2.tier.shibboleth.admin.ui.repository;
+package edu.internet2.tier.shibboleth.admin.ui.security.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
 public interface GroupRepository extends JpaRepository<Group, String> {
     List<Group> findAll();

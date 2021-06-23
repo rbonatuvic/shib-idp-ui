@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.repository
+package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
 import javax.persistence.EntityManager
 
@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition
-import edu.internet2.tier.shibboleth.admin.ui.domain.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import spock.lang.Specification
 
 /**
