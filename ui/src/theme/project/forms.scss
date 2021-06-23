@@ -74,16 +74,21 @@ select.form-control:disabled {
     @include component-validation-state("invalid", $form-feedback-invalid-color);
 }
 
+.editor {
+    tab-size: 4ch;
+    max-height: 400px;
+    overflow: auto;
+}
+
 .codearea {
-    white-space: pre-wrap;
-    resize: vertical;
-    font-family: monospace;
+    // white-space: pre-wrap;
+    // resize: vertical;
     min-height: 166px;
     margin-bottom: 0px;
     word-break: break-word;
-    &[contenteditable] {
-        overflow-x: hidden;
-        overflow-y: scroll;
+
+    &.is-invalid > pre, &.is-invalid > textarea {
+        outline-color: transparent;
     }
 }
 
@@ -123,3 +128,4 @@ mark {
         border-left: 0px;
     }
 }
+

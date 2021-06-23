@@ -6,12 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAsterisk, faCaretDown, faCaretUp, faEye, faEyeSlash, faPlus, faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useTranslator } from '../../../i18n/hooks';
 import { InfoIcon } from '../InfoIcon';
-import ContentEditable from 'react-contenteditable';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import useFetch from 'use-http';
 import queryString from 'query-string';
 import API_BASE_PATH from '../../../App.constant';
 import isNil from 'lodash/isNil';
+import Editor from 'react-simple-code-editor';
+// import { highlight, languages } from 'prismjs/components/prism-core';
+// import 'prismjs/components/prism-clike';
+// import 'prismjs/components/prism-javascript';
 
 import { FilterTargetPreview } from '../../../metadata/hoc/FilterTargetPreview';
 
@@ -88,8 +91,6 @@ const FilterTargetField = ({
 
     const displayType = selectedType?.label || '';
     const targetType = selectedType?.value || null;
-
-    const ref = React.useRef(selectedTarget[0]);
 
     var handleTextChange = function (value) {
         setSelectedTarget([value]);
@@ -187,20 +188,22 @@ const FilterTargetField = ({
                                     </>
                                 }
                                 { targetType === 'CONDITION_SCRIPT' &&
-                                    <>
-                                    <ContentEditable
-                                        role="textbox"
-                                        className="codearea form-control"
-                                        rows="8"
-                                        onChange={({ target: { value } }) => handleTextChange(value)}
-                                        html={ selectedTarget[0] ? selectedTarget[0] : '' }
-                                        innerRef={ref}
-                                        dangerouslySetInnerHTML={true}>
-                                    </ContentEditable>
+                                    <div className="editor">
+                                    <Editor
+                                        value={selectedTarget[0]}
+                                        highlight={(code) => code}
+                                        onValueChange={(code) => handleTextChange(code)}
+                                        padding={10}
+                                        className={`codearea border rounded ${!selectedTarget[0] && 'is-invalid border-danger'}`}
+                                        style={{
+                                            fontFamily: 'monospace',
+                                            fontSize: 15,
+                                        }}>
+                                    </Editor>
                                     {!selectedTarget[0] && <small id="script-help" className="text-danger">
                                         <Translate value="message.required-for-scripts">Required for Scripts</Translate>
                                     </small>}
-                                </> }
+                                </div> }
                                 {targetType === 'REGEX' &&
                                     <>
                                         <input id="targetInput"
