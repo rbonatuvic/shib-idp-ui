@@ -37,7 +37,10 @@ export const CustomAttributeDefinition = {
             ]
         },
         defaultValueBoolean: {
-            'ui:widget': 'radio'
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
         },
         persistType: {
             'ui:widget': 'hidden'

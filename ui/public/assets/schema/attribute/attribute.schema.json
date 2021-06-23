@@ -112,7 +112,8 @@
                             "title": "label.entity-attribute-default",
                             "description": "tooltip.entity-attribute-default",
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "enumNames": ["True", "False"]
                         },
                         "persistValue": {
                             "type": "string",
