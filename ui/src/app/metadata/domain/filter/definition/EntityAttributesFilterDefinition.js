@@ -53,6 +53,13 @@ export const EntityAttributesFilterWizard = {
                     errors.entityAttributesFilterTarget.value.addError('message.invalid-regex-pattern');
                 }
             }
+
+            if (formData?.entityAttributesFilterTarget?.entityAttributesFilterTargetType === 'CONDITION_SCRIPT') {
+                const { entityAttributesFilterTarget: { value } } = formData;
+                if (!value[0]) {
+                    errors.entityAttributesFilterTarget.value.addError('message.required-for-scripts');
+                }
+            }
             return errors;
         }
     },

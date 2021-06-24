@@ -41,6 +41,13 @@ export const NameIDFilterWizard = {
                     errors.nameIdFormatFilterTarget.value.addError('message.invalid-regex-pattern');
                 }
             }
+
+            if (formData?.nameIdFormatFilterTarget?.nameIdFormatFilterTargetType === 'CONDITION_SCRIPT') {
+                const { nameIdFormatFilterTarget: { value } } = formData;
+                if (!value[0]) {
+                    errors.nameIdFormatFilterTarget.value.addError('message.required-for-scripts');
+                }
+            }
             return errors;
         }
     },
