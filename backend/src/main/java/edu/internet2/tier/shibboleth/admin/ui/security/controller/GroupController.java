@@ -20,7 +20,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 
 @Controller
-@RequestMapping(value = "/api/groups")
+@RequestMapping(value = "/api/admin/groups")
 public class GroupController {
     @Autowired
     private IGroupService groupService;
@@ -29,11 +29,11 @@ public class GroupController {
     @Transactional
     public ResponseEntity<?> create(@RequestBody Group group) {
         // If already defined, we can't create a new one, nor will this call update the definition
-        Group g = groupService.find(group.getResourceId());
+        Group foundGroup = groupService.find(group.getResourceId());
 
-        if (g != null) {
+        if (foundGroup != null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.METHOD_NOT_ALLOWED.value()),
@@ -41,7 +41,7 @@ public class GroupController {
                                                             group.getResourceId(), group.getName())));
         }
 
-        Group result = groupService.createOrUpdateGroup(g);
+        Group result = groupService.createOrUpdateGroup(group);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
@@ -52,7 +52,7 @@ public class GroupController {
 
         if (g == null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
@@ -60,7 +60,7 @@ public class GroupController {
                                                             group.getResourceId(), group.getName())));
         }
 
-        Group result = groupService.createOrUpdateGroup(g);
+        Group result = groupService.createOrUpdateGroup(group);
         return ResponseEntity.ok(result);
     }
 
@@ -77,7 +77,7 @@ public class GroupController {
 
         if (g == null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
@@ -93,7 +93,7 @@ public class GroupController {
 
         if (g == null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
@@ -104,7 +104,7 @@ public class GroupController {
         }
         catch (Exception e) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format(

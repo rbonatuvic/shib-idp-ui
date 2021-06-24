@@ -21,6 +21,6 @@ public class Group {
     String name;
 
     @Id
-    @Column(name = "resource_id", nullable = false)
+    @Column(name = "resource_id")
     String resourceId = UUID.randomUUID().toString();
 }

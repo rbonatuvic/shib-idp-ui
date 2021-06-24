@@ -20,9 +20,9 @@ import spock.lang.Specification
 @ContextConfiguration(classes=[InternationalizationConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class GroupRepositoryTests extends Specification {
+class GroupsRepositoryTests extends Specification {
     @Autowired
-    GroupRepository repo
+    GroupsRepository repo
     
     @Autowired
     EntityManager entityManager

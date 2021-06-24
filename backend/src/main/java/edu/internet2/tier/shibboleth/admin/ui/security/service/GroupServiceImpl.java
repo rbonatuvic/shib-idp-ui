@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 
 @Service
 public class GroupServiceImpl implements IGroupService {
     @Autowired
-    private GroupRepository repo;
+    private GroupsRepository repo;
     
     @Override
     public Group createOrUpdateGroup(Group group) {

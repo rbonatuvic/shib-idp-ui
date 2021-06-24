@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
-public interface GroupRepository extends JpaRepository<Group, String> {
+public interface GroupsRepository extends JpaRepository<Group, String> {
     List<Group> findAll();
     
     Group findByResourceId(String id);
