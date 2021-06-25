@@ -180,9 +180,7 @@ class GroupsControllerIntegrationTests extends Specification {
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'DELETE performs correctly when group attached to a user'() {
         given:
-        def group = [name: 'A1',
-            description: 'AAA Group',
-            resourceId: 'AAA']
+        def group = [resourceId: 'AAA']
         def newUser = [firstName: 'Foo',
                        lastName: 'Bar',
                        username: 'FooBar',
@@ -211,7 +209,7 @@ class GroupsControllerIntegrationTests extends Specification {
   "username" : "FooBar",
   "createdBy" : admin,
   "lastName" : "Bar",
-  "group" : {"description":"AAA Group","name":"A1","resourceId":"AAA"}
+  "group" : {"resourceId":"AAA"}
 }"""
         then: 'Request completed with HTTP 200 and returned one user'
         userresult.andExpect(status().isOk())
