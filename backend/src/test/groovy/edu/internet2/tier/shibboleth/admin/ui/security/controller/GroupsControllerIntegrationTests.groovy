@@ -33,6 +33,7 @@ class GroupsControllerIntegrationTests extends Specification {
     private MockMvc mockMvc
 
     static RESOURCE_URI = '/api/admin/groups'
+    static USERS_RESOURCE_URI = '/api/admin/users'
     
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
@@ -147,33 +148,81 @@ class GroupsControllerIntegrationTests extends Specification {
         nonexistentGroupRequest.andExpect(status().isNotFound())
     }
     
+//    @Rollback
+//    @WithMockUser(value = "admin", roles = ["ADMIN"])
+//    def 'DELETE ONE existing group'() {
+//        when: 'GET request for a single specific group in a system that has groups'
+//        def result = mockMvc.perform(get("$RESOURCE_URI/BBB"))
+//        
+//        then: 'GET request for a single specific group completed with HTTP 200'
+//        result.andExpect(status().isOk())
+//
+//        when: 'DELETE request is made'
+//        result = mockMvc.perform(delete("$RESOURCE_URI/BBB"))
+//
+//        then: 'DELETE was successful'
+//        result.andExpect(status().isNoContent())
+//
+//        when: 'GET request for a single specific group just deleted'
+//        result = mockMvc.perform(get("$RESOURCE_URI/BBB"))                
+//
+//        then: 'The group not found'
+//        result.andExpect(status().isNotFound())
+//        
+//        when: 'DELETE request for a single specific group that does not exist'
+//        result = mockMvc.perform(delete("$RESOURCE_URI/CCCC"))
+//
+//        then: 'The group not found'
+//        result.andExpect(status().isNotFound())
+//    }
+    
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
-    def 'DELETE ONE existing group'() {
-        when: 'GET request for a single specific group in a system that has groups'
-        def result = mockMvc.perform(get("$RESOURCE_URI/BBB"))
+    def 'DELETE performs correctly when group attached to a user'() {
+        given:
+        def group = [name: 'A1',
+            description: 'AAA Group',
+            resourceId: 'AAA']
+        def newUser = [firstName: 'Foo',
+                       lastName: 'Bar',
+                       username: 'FooBar',
+                       password: 'somepass',
+                       emailAddress: 'foo@institution.edu',
+                       role: 'ROLE_USER',
+                       group: group]
         
-        then: 'GET request for a single specific group completed with HTTP 200'
+        when:
+        def result = mockMvc.perform(post(USERS_RESOURCE_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonOutput.toJson(newUser))
+                .accept(MediaType.APPLICATION_JSON))
+        
+        then:
         result.andExpect(status().isOk())
-
+       
+        when:
+        def userresult = mockMvc.perform(get("$USERS_RESOURCE_URI/$newUser.username"))
+        def expectedJson = """
+{
+  "modifiedBy" : admin,
+  "firstName" : "Foo",
+  "emailAddress" : "foo@institution.edu",
+  "role" : "ROLE_USER",
+  "username" : "FooBar",
+  "createdBy" : admin,
+  "lastName" : "Bar",
+  "group" : {"description":"AAA Group","name":"A1","resourceId":"AAA"}
+}"""
+        then: 'Request completed with HTTP 200 and returned one user'
+        userresult.andExpect(status().isOk())
+                  .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                  .andExpect(content().json(expectedJson, false))
+        
+        
         when: 'DELETE request is made'
-        result = mockMvc.perform(delete("$RESOURCE_URI/BBB"))
+        result = mockMvc.perform(delete("$RESOURCE_URI/$group.resourceId"))
 
-        then: 'DELETE was successful'
-        result.andExpect(status().isNoContent())
-
-        when: 'GET request for a single specific group just deleted'
-        result = mockMvc.perform(get("$RESOURCE_URI/BBB"))                
-
-        then: 'The group not found'
-        result.andExpect(status().isNotFound())
-        
-        when: 'DELETE request for a single specific group that does not exist'
-        result = mockMvc.perform(delete("$RESOURCE_URI/CCCC"))
-
-        then: 'The group not found'
-        result.andExpect(status().isNotFound())
-        
-        //ADD conflict test when the group has users
+        then: 'DELETE was not successful'
+        result.andExpect(status().isConflict())
     }
 }

@@ -99,18 +99,16 @@ public class GroupController {
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
                                             String.format("Unable to find group with resource id: [%s]", resourceId)));
         }
-        try {
-            groupService.deleteDefinition(g);
-        }
-        catch (Exception e) {
+        if (!g.getUsers().isEmpty()) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
 
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format(
-                                            "Unable to delete group with resource id: [%s] - remove all users from group",
+                                            "Unable to delete group with resource id: [%s] - remove all users from group first",
                                             resourceId)));
         }
+        groupService.deleteDefinition(g);
         return ResponseEntity.noContent().build();
     }
 }
