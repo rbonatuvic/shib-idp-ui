@@ -19,34 +19,19 @@
         "@type": {
             "title": "label.metadata-provider-type",
             "description": "tooltip.metadata-provider-type",
-            "placeholder": "label.select-metadata-type",
             "type": "string",
-            "readOnly": true,
-            "widget": {
-                "id": "select",
-                "disabled": true
-            },
-            "oneOf": [
-                {
-                    "enum": [
-                        "LocalDynamicMetadataResolver"
-                    ],
-                    "description": "value.local-dynamic-metadata-provider"
-                }
-            ]
+            "default": "LocalDynamicMetadataResolver"
         },
         "xmlId": {
             "title": "label.xml-id",
             "description": "tooltip.xml-id",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "sourceDirectory": {
             "title": "label.source-directory",
             "description": "tooltip.source-directory",
             "type": "string",
-            "default": "",
             "minLength": 1
         },
         "enabled": {
@@ -62,12 +47,7 @@
                     "title": "label.refresh-delay-factor",
                     "description": "tooltip.refresh-delay-factor",
                     "type": "number",
-                    "widget": {
-                        "id": "float",
-                        "help": "message.real-number",
-                        "step": 0.01
-                    },
-                    "placeholder": "label.real-number",
+                    "multipleOf": 0.01,
                     "minimum": 0.001,
                     "maximum": 0.999
                 },
@@ -75,115 +55,29 @@
                     "title": "label.min-cache-duration",
                     "description": "tooltip.min-cache-duration",
                     "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT8H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxCacheDuration": {
                     "title": "label.max-cache-duration",
                     "description": "tooltip.max-cache-duration",
                     "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT8H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "maxIdleEntityData": {
                     "title": "label.max-idle-entity-data",
                     "description": "tooltip.max-idle-entity-data",
                     "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT8H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 },
                 "removeIdleEntityData": {
                     "title": "label.remove-idle-entity-data",
                     "description": "tooltip.remove-idle-entity-data",
-                    "type": "boolean",
-                    "widget": {
-                        "id": "boolean-radio"
-                    },
-                    "oneOf": [
-                        {
-                            "enum": [
-                                true
-                            ],
-                            "description": "value.true"
-                        },
-                        {
-                            "enum": [
-                                false
-                            ],
-                            "description": "value.false"
-                        }
-                    ],
-                    "default": true    
+                    "type": "boolean"
                 },
                 "cleanupTaskInterval": {
                     "title": "label.cleanup-task-interval",
                     "description": "tooltip.cleanup-task-interval",
                     "type": "string",
-                    "placeholder": "label.duration",
-                    "widget": {
-                        "id": "datalist",
-                        "data": [
-                            "PT0S",
-                            "PT30S",
-                            "PT1M",
-                            "PT10M",
-                            "PT30M",
-                            "PT1H",
-                            "PT4H",
-                            "PT8H",
-                            "PT12H",
-                            "PT24H"
-                        ]
-                    },
-                    "default": null,
                     "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
                 }
             }

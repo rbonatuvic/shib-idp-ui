@@ -1,14 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import groovy.json.JsonOutput
 import net.shibboleth.ext.spring.resource.ResourceHelper
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet
+
 import org.joda.time.DateTime
+import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.ChainingMetadataResolver
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterChain
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
+import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -35,12 +41,28 @@ class EntitiesControllerIntegrationTests extends Specification {
     @Autowired
     private WebTestClient webClient
 
-    /*def setup() {
-        // yeah, don't ask... this is just shenanigans
-        // The API is changed. Doesn't work anymore. Not sure if we need it here
-        this.webClient.webClient.uriBuilderFactory.encodingMode = DefaultUriBuilderFactory.EncodingMode.NONE
-    }*/
+    def openSamlObjects = new OpenSamlObjects().with {
+        init()
+        it
+    }
 
+    def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
+
+    def metadataResolver = new ResourceBackedMetadataResolver(resource).with {
+        it.id = 'test'
+        it.parserPool = openSamlObjects.parserPool
+        initialize()
+        it
+    }
+    
+    // This stub will spit out the results from the resolver instead of actually finding them in the DB
+    @SpringBean
+    EntityDescriptorRepository edr =  Stub(EntityDescriptorRepository) {
+        findByEntityID("http://test.scaldingspoon.org/test1") >> metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion("http://test.scaldingspoon.org/test1")))
+        findByEntityID("test") >> metadataResolver.resolveSingle(new CriteriaSet(new EntityIdCriterion("test")))
+    }
+
+    //todo review
     def "GET /api/entities returns the proper json"() {
         given:
         def expectedBody = '''
@@ -54,7 +76,6 @@ class EntitiesControllerIntegrationTests extends Specification {
                     {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
                 ],
                 "serviceEnabled":false,                
-                "relyingPartyOverrides":{},
                 "attributeRelease":["givenName","employeeNumber"]
             }
         '''

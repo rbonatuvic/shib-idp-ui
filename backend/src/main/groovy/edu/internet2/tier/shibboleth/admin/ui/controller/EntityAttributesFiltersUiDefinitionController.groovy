@@ -41,7 +41,7 @@ class EntityAttributesFiltersUiDefinitionController {
     ResponseEntity<?> getUiDefinitionJsonSchema() {
         try {
             def parsedJson = jacksonObjectMapper.readValue(this.jsonSchemaLocation.url, Map)
-            jsonSchemaBuilderService.addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['widget'])
+            jsonSchemaBuilderService.addReleaseAttributesToJson(parsedJson['properties']['attributeRelease']['items'])
             jsonSchemaBuilderService.addRelyingPartyOverridesToJson(parsedJson['properties']['relyingPartyOverrides'])
             jsonSchemaBuilderService.addRelyingPartyOverridesCollectionDefinitionsToJson(parsedJson["definitions"])
             return ResponseEntity.ok(parsedJson)

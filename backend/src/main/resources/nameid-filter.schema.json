@@ -1,25 +1,5 @@
 {
     "type": "object",
-    "fieldsets": [
-        {
-            "type": "group-lg",
-            "fields": [
-                "name",
-                "nameIdFormatFilterTarget",
-                "filterEnabled",
-                "@type",
-                "resourceId",
-                "version",
-                "removeExistingFormats"
-            ]
-        },
-        {
-            "type": "group",
-            "fields": [
-                "formats"
-            ]
-        }
-    ],
     "required": [
         "name"
     ],
@@ -27,11 +7,7 @@
         "name": {
             "title": "label.filter-name",
             "description": "tooltip.filter-name",
-            "type": "string",
-            "widget": {
-                "id": "string",
-                "help": "message.must-be-unique"
-            }
+            "type": "string"
         },
         "filterEnabled": {
             "title": "label.enable-filter",
@@ -43,45 +19,25 @@
             "title": "label.search-criteria",
             "description": "tooltip.search-criteria",
             "type": "object",
-            "widget": {
-                "id": "filter-target",
-                "target": "nameIdFormatFilterTargetType"
-            },
             "properties": {
                 "nameIdFormatFilterTargetType": {
-                    "title": "",
+                    "title": "label.filter-target-type",
                     "type": "string",
                     "default": "ENTITY",
-                    "oneOf": [
-                        {
-                            "enum": [
-                                "ENTITY"
-                            ],
-                            "description": "value.entity-id"
-                        },
-                        {
-                            "enum": [
-                                "REGEX"
-                            ],
-                            "description": "value.regex"
-                        },
-                        {
-                            "enum": [
-                                "CONDITION_SCRIPT"
-                            ],
-                            "description": "value.script"
-                        }
+                    "enum": [
+                        "ENTITY",
+                        "REGEX",
+                        "CONDITION_SCRIPT"
+                    ],
+                    "enumNames": [
+                        "value.entity-id",
+                        "value.regex",
+                        "value.script"
                     ]
                 },
                 "value": {
+                    "title": "label.filter-target-value",
                     "type": "array",
-                    "buttons": [
-                        {
-                            "id": "preview",
-                            "label": "action.preview",
-                            "widget": "icon-button"
-                        }
-                    ],
                     "minItems": 1,
                     "uniqueItems": true,
                     "items": {
@@ -96,28 +52,18 @@
         },
         "@type": {
             "type": "string",
-            "widget": {
-                "id": "hidden"
-            },
             "default": "NameIDFormat"
         },
         "version": {
-            "type": "integer",
-            "widget": {
-                "id": "hidden"
-            }
+            "type": "integer"
         },
         "resourceId": {
-            "type": "string",
-            "widget": {
-                "id": "hidden"
-            }
+            "type": "string"
         },
         "removeExistingFormats": {
             "type": "boolean",
             "title": "label.remove-existing-formats",
-            "description": "tooltip.remove-existing-formats",
-            "default": false
+            "description": "tooltip.remove-existing-formats"
         },
         "formats": {
             "$ref": "#/definitions/nameIdFormats"

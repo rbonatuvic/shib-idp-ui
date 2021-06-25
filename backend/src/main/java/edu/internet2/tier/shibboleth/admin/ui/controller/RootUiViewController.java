@@ -35,7 +35,7 @@ public class RootUiViewController {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-        content = content.replaceFirst("<base.+>", "<base href=\"" + request.getContextPath() + "/\">");
+        content = content.replaceFirst("<base[^>]+>", "<base href=\"" + request.getContextPath() + "/\">");
         response.setContentType("text/html");
         try (OutputStream writer = response.getOutputStream()) {
             writer.write(content.getBytes());

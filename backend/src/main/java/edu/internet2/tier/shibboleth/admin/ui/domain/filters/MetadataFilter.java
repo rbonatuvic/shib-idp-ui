@@ -38,7 +38,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value=NameIdFormatFilter.class, name="NameIDFormat")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
-public class MetadataFilter extends AbstractAuditable {
+public abstract class MetadataFilter extends AbstractAuditable implements IConcreteMetadataFilterType<MetadataFilter> {
 
     @JsonProperty("@type")
     @Transient

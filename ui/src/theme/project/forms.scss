@@ -1,0 +1,131 @@
+@import '../variables';
+@import '../mixins';
+
+
+/*
+Json schema form
+*/
+
+.formHelp {
+    display: none;
+}
+
+.form-control {
+    &.ng-invalid.ng-touched {
+        @include component-validation-state("valid", $form-feedback-valid-color);
+    }
+    &.ng-valid.ng-touched {
+        @include component-validation-state("valid", $form-feedback-valid-color);
+    }
+}
+
+select.form-control:disabled {
+    color: #54595E;
+}
+
+/* end json schema form */
+
+.form-section {
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+
+    &:not(:first-child) {
+        border-left: 1px solid $hr-border-color;
+    }
+
+    .btn-link {
+        &:focus {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    }
+
+    .form-check-label {
+        &:focus {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    }
+}
+
+.custom-control {
+    &.custom-control-reverse {
+        padding-right: 1.5em;
+        padding-left: 0;
+
+        & > .custom-control-label {
+            position: static;
+            &::after, &::before {
+                right: 0px;
+                left: auto;
+            }
+        }
+    }
+}
+
+.custom-file {
+    & > .custom-file-control {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.component-control {
+    @include component-validation-state("valid", $form-feedback-valid-color);
+    @include component-validation-state("invalid", $form-feedback-invalid-color);
+}
+
+.editor {
+    tab-size: 4ch;
+    max-height: 400px;
+    overflow: auto;
+}
+
+.codearea {
+    // white-space: pre-wrap;
+    // resize: vertical;
+    min-height: 166px;
+    margin-bottom: 0px;
+    word-break: break-word;
+
+    &.is-invalid > pre, &.is-invalid > textarea {
+        outline-color: transparent;
+    }
+}
+
+.toggle-typeahead {
+    padding-right: 34px;
+    input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+.toggle-button {
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    background: white;
+    border: 1px solid #ced4da;
+}
+
+mark {
+    background: transparent;
+    font-weight: bold;
+    padding: 0;
+}
+
+.dropdown-item.active {
+    &, & > mark {
+        color: white;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .form-section:not(:first-child) {
+        border-left: 0px;
+    }
+}
+

@@ -528,8 +528,8 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
                      xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
                      entityID="http://test.example.org/test1">
                      <md:SPSSODescriptor>
-                        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.example.org/SAML/POST"/>
-                        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://test.example.org/SAML/GET" isDefault="true"/>
+                        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://test.example.org/SAML/POST" index="2"/>
+                        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://test.example.org/SAML/GET" index="1" isDefault="true"/>
                      </md:SPSSODescriptor>
 </md:EntityDescriptor>
 '''
@@ -539,12 +539,14 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
                     new AssertionConsumerServiceRepresentation().with {
                         it.binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'
                         it.locationUrl = 'https://test.example.org/SAML/POST'
+                        it.index = 2
                         it
                     },
                     new AssertionConsumerServiceRepresentation().with {
                         it.binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'
                         it.locationUrl = 'https://test.example.org/SAML/GET'
                         it.makeDefault = true
+                        it.index = 1
                         it
                     }
             ]

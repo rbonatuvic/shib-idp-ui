@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.frontend;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
@@ -38,10 +40,12 @@ public class EntityDescriptorRepresentation implements Serializable {
     @NotNull
     private String entityId;
 
-    private OrganizationRepresentation organization;
+    //TODO: review requirement
+    private OrganizationRepresentation organization = new OrganizationRepresentation();
 
     private List<ContactRepresentation> contacts;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private MduiRepresentation mdui;
 
     private ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptor;
@@ -58,8 +62,10 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     private LocalDateTime modifiedDate;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> relyingPartyOverrides;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> attributeRelease;
 
     private int version;
@@ -182,6 +188,12 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     public String getModifiedDate() {
         return modifiedDate != null ? modifiedDate.toString() : null;
+    }
+    
+    @JsonIgnore
+    public LocalDateTime getModifiedDateAsDate() {
+        // we shouldn't have an ED without either modified or created date, so this is mostly for testing where data can be odd
+        return modifiedDate != null ? modifiedDate : createdDate != null ? createdDate : LocalDateTime.now();
     }
 
     public void setModifiedDate(LocalDateTime modifiedDate) {
