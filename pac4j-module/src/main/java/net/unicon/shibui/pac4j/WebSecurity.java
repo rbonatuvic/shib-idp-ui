@@ -57,7 +57,7 @@ public class WebSecurity {
 
             final CallbackFilter callbackFilter = new CallbackFilter(this.config);
             http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
-                                  .addFilterBefore(securityFilterForHeader, BasicAuthenticationFilter.class)  //xxx check on this
+                                  .addFilterBefore(securityFilterForHeader, BasicAuthenticationFilter.class)
                                   .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService), SecurityFilter.class);
 
             http.authorizeRequests().anyRequest().fullyAuthenticated();
