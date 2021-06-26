@@ -68,7 +68,7 @@ public class Pac4jConfiguration {
             saml2Client.setName("Saml2Client");
             saml2Client.addAuthorizationGenerator(saml2ModelAuthorizationGenerator);
             SAML2Authenticator saml2Authenticator = new SAML2Authenticator(saml2Config.getAttributeAsId(), saml2Config.getMappedAttributes());
-//            saml2Authenticator.setProfileDefinition(new CommonProfileDefinition<>(p -> new BetterSAML2Profile(pac4jConfigProps.getSaml2ProfileMapping().getUsername())));
+            saml2Authenticator.setProfileDefinition(new CommonProfileDefinition(p -> new BetterSAML2Profile(pac4jConfigProps.getSaml2ProfileMapping().getUsername())));
             saml2Client.setAuthenticator(saml2Authenticator);
 
             saml2Client.setName(PAC4J_CLIENT_NAME);
