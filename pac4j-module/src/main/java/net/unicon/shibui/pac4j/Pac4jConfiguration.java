@@ -1,77 +1,108 @@
 package net.unicon.shibui.pac4j;
 
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.credentials.TokenCredentials;
 import org.pac4j.core.credentials.authenticator.Authenticator;
 import org.pac4j.core.exception.CredentialsException;
-import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.matching.matcher.PathMatcher;
 import org.pac4j.core.profile.definition.CommonProfileDefinition;
-import org.pac4j.http.client.direct.ParameterClient;
-import org.pac4j.saml.client.SAML2Client;
-import org.pac4j.saml.client.SAML2ClientConfiguration;
-import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
 import org.pac4j.http.client.direct.HeaderClient;
+import org.pac4j.saml.client.SAML2Client;
+import org.pac4j.saml.config.SAML2Configuration;
+import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.google.common.collect.Lists;
+
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+
+/**
+ * Configuration setup here following readme from - https://github.com/pac4j/spring-security-pac4j/tree/5.0.x
+ * NOTE: matchers are now done as part of the config and have been moved over from the WebSecurity.java class of this package
+ * @see http://www.pac4j.org/docs/config.html
+ */
 @Configuration
 @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 public class Pac4jConfiguration {
+    public final static String PAC4J_CLIENT_NAME = "shibUIAuthClient";
+    
+    /**
+     * Custom class that ensures we add the user's roles to the information when doing SAML2 auth
+     */
     @Bean
     public SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator(UserRepository userRepository) {
         return new SAML2ModelAuthorizationGenerator(userRepository);
     }
-
+    
     @Bean
-    public Config config(final Pac4jConfigurationProperties pac4jConfigurationProperties,
-                         final SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator) {
+    public Config config(final Pac4jConfigurationProperties pac4jConfigProps,
+                    final SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator) {
 
-        final Clients clients = new Clients(pac4jConfigurationProperties.getCallbackUrl());
+        final Clients clients = new Clients(pac4jConfigProps.getCallbackUrl());
 
-        if (pac4jConfigurationProperties.getTypeOfAuth().equals("SAML2")) {
-            final SAML2ClientConfiguration saml2ClientConfiguration = new SAML2ClientConfiguration();
-            saml2ClientConfiguration.setKeystorePath(pac4jConfigurationProperties.getKeystorePath());
-            saml2ClientConfiguration.setKeystorePassword(pac4jConfigurationProperties.getKeystorePassword());
-            saml2ClientConfiguration.setPrivateKeyPassword(pac4jConfigurationProperties.getPrivateKeyPassword());
-            saml2ClientConfiguration.setIdentityProviderMetadataPath(pac4jConfigurationProperties.getIdentityProviderMetadataPath());
-            saml2ClientConfiguration.setMaximumAuthenticationLifetime(pac4jConfigurationProperties.getMaximumAuthenticationLifetime());
-            saml2ClientConfiguration.setServiceProviderEntityId(pac4jConfigurationProperties.getServiceProviderEntityId());
-            saml2ClientConfiguration.setServiceProviderMetadataPath(pac4jConfigurationProperties.getServiceProviderMetadataPath());
-            saml2ClientConfiguration.setForceServiceProviderMetadataGeneration(pac4jConfigurationProperties.isForceServiceProviderMetadataGeneration());
-            saml2ClientConfiguration.setWantsAssertionsSigned(pac4jConfigurationProperties.isWantAssertionsSigned());
-            saml2ClientConfiguration.setAttributeAsId(pac4jConfigurationProperties.getSaml2ProfileMapping().getUsername());
+        // Configure the client
+        switch (pac4jConfigProps.getTypeOfAuth()) {
+        case "SAML2": {
+            final SAML2Configuration saml2Config = new SAML2Configuration();
+            saml2Config.setKeystorePath(pac4jConfigProps.getKeystorePath());
+            saml2Config.setKeystorePassword(pac4jConfigProps.getKeystorePassword());
+            saml2Config.setPrivateKeyPassword(pac4jConfigProps.getPrivateKeyPassword());
+            saml2Config.setIdentityProviderMetadataPath(pac4jConfigProps.getIdentityProviderMetadataPath());
+            saml2Config.setMaximumAuthenticationLifetime(pac4jConfigProps.getMaximumAuthenticationLifetime());
+            saml2Config.setServiceProviderEntityId(pac4jConfigProps.getServiceProviderEntityId());
+            saml2Config.setServiceProviderMetadataPath(pac4jConfigProps.getServiceProviderMetadataPath());
+            saml2Config.setForceServiceProviderMetadataGeneration(pac4jConfigProps.isForceServiceProviderMetadataGeneration());
+            saml2Config.setWantsAssertionsSigned(pac4jConfigProps.isWantAssertionsSigned());
+            saml2Config.setAttributeAsId(pac4jConfigProps.getSaml2ProfileMapping().getUsername());
+            //saml2Config.setPostLogoutURL(pac4jConfigProps.getPostLogoutURL()); // consideration needed?
+            //saml2Config.setSpLogoutRequestBindingType(pac4jConfigProps.getSpLogoutRequestBindingType());
 
-            final SAML2Client saml2Client = new SAML2Client(saml2ClientConfiguration);
+            final SAML2Client saml2Client = new SAML2Client(saml2Config);
             saml2Client.setName("Saml2Client");
             saml2Client.addAuthorizationGenerator(saml2ModelAuthorizationGenerator);
-            SAML2Authenticator saml2Authenticator = new SAML2Authenticator(saml2ClientConfiguration.getAttributeAsId(),
-                            saml2ClientConfiguration.getMappedAttributes());
-            saml2Authenticator.setProfileDefinition(new CommonProfileDefinition<>(
-                            p -> new BetterSAML2Profile(pac4jConfigurationProperties.getSaml2ProfileMapping().getUsername())));
+            SAML2Authenticator saml2Authenticator = new SAML2Authenticator(saml2Config.getAttributeAsId(), saml2Config.getMappedAttributes());
+//            saml2Authenticator.setProfileDefinition(new CommonProfileDefinition<>(p -> new BetterSAML2Profile(pac4jConfigProps.getSaml2ProfileMapping().getUsername())));
             saml2Client.setAuthenticator(saml2Authenticator);
 
+            saml2Client.setName(PAC4J_CLIENT_NAME);
             clients.setClients(saml2Client);
-        } else if (pac4jConfigurationProperties.getTypeOfAuth().equals("HEADER")) {
-            HeaderClient headerClient = new HeaderClient(pac4jConfigurationProperties.getAuthenticationHeader(), new Authenticator() {
-                @Override
-                public void validate(Credentials credentials, WebContext context) {
-                    if (credentials instanceof TokenCredentials) {
-                    TokenCredentials creds = (TokenCredentials) credentials;
-                    String remoteUser = creds.getToken();
-                    } else {
-                        throw new CredentialsException("Invalid Credentials object generated by HeaderClient");
-                    }
-                }
-            });
+        }
+        case "HEADER": {
+            HeaderClient headerClient = new HeaderClient(pac4jConfigProps.getAuthenticationHeader(),
+                            new Authenticator() {
+                                @Override
+                                public void validate(Credentials credentials, WebContext context, SessionStore sessionStore) {
+                                    if (credentials instanceof TokenCredentials) {
+                                        TokenCredentials creds = (TokenCredentials) credentials;
+                                        String token = creds.getToken();
+                                        if (StringUtils.isAllBlank(token)) {
+                                            throw new CredentialsException("Supplied token value in header was missing or blank");
+                                        }
+                                    } else {
+                                        throw new CredentialsException("Invalid Credentials object generated by HeaderClient");
+                                    }
+                                    // must set user profile on credentials in order to continue. 
+                                    // credentials.setUserProfile(userProfile);
+                                }
+                            });
+            headerClient.setName(PAC4J_CLIENT_NAME);
             clients.setClients(headerClient);
         }
-
+        }
         final Config config = new Config(clients);
+        
+        // configure the matcher for bypassing auth checks
+        PathMatcher pm = new PathMatcher();
+        pm.setExcludedPaths(Lists.newArrayList("/favicon.ico", "/unsecured/**/*", "/error"));
+        config.addMatcher("exclude-paths-matcher", pm);
+       
         return config;
     }
 }
