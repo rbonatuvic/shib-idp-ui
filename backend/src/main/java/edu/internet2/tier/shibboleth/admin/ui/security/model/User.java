@@ -10,12 +10,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang.StringUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.HashSet;
@@ -30,23 +33,25 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true, exclude = "roles")
+@EqualsAndHashCode(callSuper = true)
 @ToString(exclude = "roles")
 @Table(name = "USERS")
 public class User extends AbstractAuditable {
 
-    @Column(nullable = false, unique = true)
-    private String username;
+    private String emailAddress;
+
+    private String firstName;
+
+    @ManyToOne
+    @JoinColumn(name = "resource_id")
+    @EqualsAndHashCode.Exclude
+    private Group group;
+    
+    private String lastName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String emailAddress;
 
     @Transient
     private String role;
@@ -54,7 +59,11 @@ public class User extends AbstractAuditable {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @EqualsAndHashCode.Exclude
     private Set<Role> roles = new HashSet<>();
+
+    @Column(nullable = false, unique = true)
+    private String username;
 
     public String getRole() {
         if (StringUtils.isBlank(this.role)) {

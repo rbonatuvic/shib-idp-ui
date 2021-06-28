@@ -22,8 +22,6 @@ export function MetadataUpload() {
 
     async function save({serviceProviderName, file, url}) {
 
-        console.log(serviceProviderName, file);
-
         setSaving(true);
 
         const f = file?.length > 0 ? file[0] : null;

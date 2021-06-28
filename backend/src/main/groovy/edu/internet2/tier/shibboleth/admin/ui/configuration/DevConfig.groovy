@@ -12,8 +12,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadat
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
@@ -29,6 +31,7 @@ import javax.annotation.PostConstruct
 @Profile('dev')
 class DevConfig {
     private final UserRepository adminUserRepository
+    private final GroupsRepository groupsRepository
     private final RoleRepository roleRepository
 
     private final MetadataResolverRepository metadataResolverRepository
@@ -37,6 +40,7 @@ class DevConfig {
     private final OpenSamlObjects openSamlObjects
 
     DevConfig(UserRepository adminUserRepository,
+              GroupsRepository groupsRepository,
               MetadataResolverRepository metadataResolverRepository,
               RoleRepository roleRepository,
               EntityDescriptorRepository entityDescriptorRepository,
@@ -47,11 +51,32 @@ class DevConfig {
         this.roleRepository = roleRepository
         this.entityDescriptorRepository = entityDescriptorRepository
         this.openSamlObjects = openSamlObjects
+        this.groupsRepository = groupsRepository
     }
 
     @Transactional
     @PostConstruct
-    void createDevUsers() {
+    void createDevUsersAndGroups() {
+        if (groupsRepository.count() == 0) {
+            def groups = [
+                new Group().with {
+                    it.name = "A1"
+                    it.description = "AAA Group"
+                    it.resourceId = "AAA"
+                    it
+                },
+                new Group().with {
+                    it.name = "B1"
+                    it.description = "BBB Group"
+                    it.resourceId = "BBB"                    
+                    it
+                }]
+            groups.each {
+                groupsRepository.save(it)
+            }            
+        }
+        groupsRepository.flush()
+        
         if (roleRepository.count() == 0) {
             def roles = [new Role().with {
                 name = 'ROLE_ADMIN'
