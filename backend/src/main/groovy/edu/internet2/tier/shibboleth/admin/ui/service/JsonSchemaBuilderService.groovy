@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,7 +36,7 @@ class JsonSchemaBuilderService {
                 property =
                         [title       : it['displayName'],
                          description : it['helpText'],
-                         type        : it['displayType'],
+                         type        : ((IRelyingPartyOverrideProperty)it).getTypeForUI(),
                          default     : it['displayType'] == 'boolean' ? Boolean.getBoolean(it['defaultValue']) : it['defaultValue'],
                          examples    : it['examples']]
             }

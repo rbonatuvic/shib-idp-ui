@@ -32,6 +32,8 @@ public interface IRelyingPartyOverrideProperty {
     public String getPersistType();
 
     public String getPersistValue();
+    
+    public String getTypeForUI();
 
     public void setAttributeFriendlyName(String attributeFriendlyName);
 

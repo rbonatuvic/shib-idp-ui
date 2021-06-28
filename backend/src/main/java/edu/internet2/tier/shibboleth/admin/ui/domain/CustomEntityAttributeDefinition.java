@@ -98,6 +98,18 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
         return Boolean.FALSE;
     }
     
+    public String getTypeForUI() {
+        switch (attributeType) {
+        case BOOLEAN:
+        case INTEGER:
+            return getDisplayType();
+        case SELECTION_LIST:
+            return "list";
+        default: // DOUBLE, DURATION, LONG, SPRING_BEAN_ID, STRING
+            return "string";            
+        }
+    }
+    
     @Override
     public void setDefaultValues(Set<String> defaultValues) {
         // This is here to comply with the interface only and should not be used to change the set of values in this implementation
