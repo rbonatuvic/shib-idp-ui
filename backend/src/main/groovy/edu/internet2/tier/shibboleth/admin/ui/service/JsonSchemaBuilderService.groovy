@@ -1,6 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import org.apache.commons.lang3.StringUtils
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
