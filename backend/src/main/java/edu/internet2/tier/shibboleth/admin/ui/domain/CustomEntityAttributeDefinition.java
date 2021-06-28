@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.envers.Audited;
@@ -118,6 +119,11 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Override
     public void setDisplayType(String displayType) {
         // This is here to comply with the interface only and should not be used to change the value in this implementation 
+    }
+    
+    @Override
+    public void setName(String name) {
+        this.name = StringUtils.strip(name);
     }
     
     public void updateExamplesList() {
