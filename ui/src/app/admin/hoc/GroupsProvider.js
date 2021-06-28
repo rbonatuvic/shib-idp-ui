@@ -3,11 +3,7 @@ import { useGroups } from '../hooks';
 
 export function GroupsProvider({ children }) {
 
-    const [groups, setGroups] = React.useState([
-        {
-            name: 'foo'
-        }
-    ]);
+    const [groups, setGroups] = React.useState([]);
 
 
     const { get, del, response } = useGroups({
@@ -29,7 +25,7 @@ export function GroupsProvider({ children }) {
     }
 
     /*eslint-disable react-hooks/exhaustive-deps*/
-    // React.useEffect(() => { loadGroups() }, []);
+    React.useEffect(() => { loadGroups() }, []);
 
     return (<>{children(groups, removeGroup)}</>);
 }

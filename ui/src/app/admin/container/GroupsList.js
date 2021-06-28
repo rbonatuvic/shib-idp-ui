@@ -6,13 +6,10 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 import { Translate } from '../../i18n/components/translate';
-import { useTranslator } from '../../i18n/hooks';
 
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 
 export function GroupsList({ groups, onDelete }) {
-
-    const translator = useTranslator();
 
     const remove = (id) => {
         onDelete(id);
@@ -51,13 +48,13 @@ export function GroupsList({ groups, onDelete }) {
                                                 <tr key={i}>
                                                     <td>{group.name}</td>
                                                     <td className="text-right">
-                                                        <Link to={`../groups/${group.name}/edit`} className="btn btn-link text-primary">
+                                                        <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary">
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />
                                                             <span className="sr-only">
                                                                 <Translate value="action.edit">Edit</Translate>
                                                             </span>
                                                         </Link>
-                                                        <Button variant="link" className="text-danger" onClick={() => block(() => remove(group.name))}>
+                                                        <Button variant="link" className="text-danger" onClick={() => block(() => remove(group.resourceId))}>
                                                             <FontAwesomeIcon icon={faTrash} size="lg" />
                                                             <span className="sr-only">
                                                                 <Translate value="action.delete">Delete</Translate>

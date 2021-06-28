@@ -16,12 +16,12 @@ export function EditGroup() {
 
     const history = useHistory();
 
-    const { post, response, loading } = useGroups({});
+    const { put, response, loading } = useGroups();
 
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(metadata) {
-        await post(``, metadata);
+        await put(``, metadata);
         if (response.ok) {
             gotoDetail({ refresh: true });
         }
@@ -48,7 +48,7 @@ export function EditGroup() {
                 <div className="section-header bg-info p-2 text-white">
                     <div className="row justify-content-between">
                         <div className="col-md-12">
-                            <span className="display-6"><Translate value="label.new-group">Add a new group</Translate></span>
+                            <span className="display-6"><Translate value="label.edit-group">Edit group</Translate></span>
                         </div>
                     </div>
                 </div>

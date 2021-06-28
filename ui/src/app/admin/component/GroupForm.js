@@ -44,7 +44,7 @@ export function GroupForm ({group = {}, errors = [], loading = false, schema, on
             </div>
             <hr />
             <div className="row">
-                <div className="col-12 col-lg-12 order-2">
+                <div className="col-12 col-lg-6 order-2">
                     <Form formData={group}
                         noHtml5Validate={true}
                         onChange={(form) => onChange(form)}

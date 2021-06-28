@@ -4,11 +4,7 @@ import { useGroup } from '../hooks';
 export function GroupProvider({ id, children }) {
 
     const [group, setGroup] = React.useState();
-
-
-    const { get, response } = useGroup({
-        cachePolicy: 'no-cache'
-    });
+    const { get, response } = useGroup(id);
 
     async function loadGroup() {
         const group = await get(``);
