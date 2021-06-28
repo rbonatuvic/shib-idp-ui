@@ -30,9 +30,10 @@ class JsonSchemaBuilderService {
     void addRelyingPartyOverridesToJson(Object json) {
         def properties = [:]
         customPropertiesConfiguration.getOverrides().each {
+            def propertyName = ((String) it['name']).replaceAll("\\s","")
             def property
             if (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
-                property = [$ref: '#/definitions/' + StringUtils.strip(it['name'])]
+                property = [$ref: '#/definitions/' + propertyName]
             } else {
                 property =
                         [title       : it['displayName'],
@@ -41,7 +42,7 @@ class JsonSchemaBuilderService {
                          default     : it['displayType'] == 'boolean' ? Boolean.getBoolean(it['defaultValue']) : it['defaultValue'],
                          examples    : it['examples']]
             }
-            properties[(String) it['name']] = property
+            properties[propertyName] = property
         }
         json['properties'] = properties
     }
@@ -66,7 +67,7 @@ class JsonSchemaBuilderService {
             
 
             definition['items'] = items
-            json[StringUtils.strip((String) it['name'])] = definition
+            json[((String) it['name']).replaceAll("\\s","")] = definition
         }
     }
 
