@@ -18,6 +18,7 @@ import API_BASE_PATH from '../../App.constant';
 import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { FilterableProviders } from '../domain/provider';
 import { checkChanges } from '../hooks/utility';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function MetadataEditor ({ current }) {
 
@@ -26,6 +27,8 @@ export function MetadataEditor ({ current }) {
     const { type, id, section } = useParams();
 
     const { update, loading } = useMetadataUpdater(`${ API_BASE_PATH }${getMetadataPath(type)}`, current);
+
+    const notificationDispatch = useNotificationDispatcher();
 
     const { data } = useMetadataEntities(type, {}, []);
     const history = useHistory();
@@ -47,7 +50,8 @@ export function MetadataEditor ({ current }) {
                 gotoDetail({ refresh: true });
             })
             .catch(err => {
-                window.location.reload();
+                // window.location.reload();
+                notificationDispatch(createNotificationAction(`${err.errorCode} - ${translator(err.errorMessage)}`, NotificationTypes.ERROR))
             });
     };
 

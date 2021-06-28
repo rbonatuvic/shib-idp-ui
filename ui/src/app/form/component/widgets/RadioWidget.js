@@ -46,7 +46,7 @@ const RadioWidget = ({
                 const itemDisabled =
                     Array.isArray(enumDisabled) &&
                     enumDisabled.indexOf(option.value) !== -1;
-                const checked = option.value.toString() === value.toString();
+                const checked = option?.value?.toString() === value?.toString();
 
                 const radio = (
                     <Form.Check
