@@ -42,6 +42,10 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
         }
     }
     
+    public String getTypeForUI() {
+        return getDisplayType();
+    }
+    
     public void setDefaultValues(Set<String> defaults) {
         defaultValues = defaults;
         examples = defaults;        
