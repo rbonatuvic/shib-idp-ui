@@ -24,7 +24,9 @@ export function getMetadataPath(type) {
 }
 
 export function useNonAdminSources() {
-    return useFetch(`/${getMetadataPath('source')}/disabledNonAdmin`);
+    return useFetch(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`, {
+        cachePolicy: 'no-cache'
+    });
 }
 
 export function getMetadataListPath(type) {
@@ -109,7 +111,11 @@ export function useMetadataUpdater (path, current) {
                 }));
             });
         }
-        return Promise.resolve(req);
+        if (response.ok) {
+            return Promise.resolve(req);
+        } else {
+            return Promise.reject(req);
+        }
     }
 
     return {
