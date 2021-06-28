@@ -24,7 +24,9 @@ export function getMetadataPath(type) {
 }
 
 export function useNonAdminSources() {
-    return useFetch(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`);
+    return useFetch(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`, {
+        cachePolicy: 'no-cache'
+    });
 }
 
 export function getMetadataListPath(type) {
