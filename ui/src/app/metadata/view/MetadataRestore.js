@@ -10,7 +10,8 @@ export function MetadataRestore() {
 
     return (
         <MetadataVersionLoader>
-            {(metadata) =>
+            {(metadata, loading) => <>
+                {metadata &&
                 <MetadataForm initial={{
                     ...metadata,
                     version: latest.version
@@ -20,7 +21,8 @@ export function MetadataRestore() {
                         version: latest.version
                     }} />
                 </MetadataForm>
-            }
+                }
+            </>}
         </MetadataVersionLoader>
     );
 }

@@ -11,8 +11,11 @@ import { MetadataSchema } from '../hoc/MetadataSchema';
 import { getMetadataPath, useMetadataUpdater } from '../hooks/api';
 import { useMetadataFilterObject } from '../hoc/MetadataFilterSelector';
 import API_BASE_PATH from '../../App.constant';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function EditFilter() {
+
+    const dispatch = useNotificationDispatcher();
 
     const { id, filterId } = useParams();
     const filter = useMetadataFilterObject();
@@ -33,10 +36,11 @@ export function EditFilter() {
 
     function save(metadata) {
         setBlocking(false);
-        update(``, metadata).then(() => {
+        update(``, metadata).then((resp) => {
+            dispatch(createNotificationAction('Filter saved'));
             gotoDetail({ refresh: true });
-        }).catch(() => {
-            window.location.reload();
+        }).catch((error) => {
+            dispatch(createNotificationAction(error.cause, NotificationTypes.DANGER));
         });
     };
 

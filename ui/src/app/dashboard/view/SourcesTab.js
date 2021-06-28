@@ -16,7 +16,7 @@ export function SourcesTab () {
     });
 
     async function loadSources() {
-        const sources = await get('/');
+        const sources = await get('');
         if (response.ok) {
             setSources(sources);
         }

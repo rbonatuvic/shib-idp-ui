@@ -9,6 +9,10 @@ export function PrimitiveProperty ({ property, columns }) {
 
     const width = usePropertyWidth(columns);
 
+    const getValue = (v) => {
+        return property.enum && property.enumNames ? property.enumNames[property.enum.indexOf(v)] : v;
+    }
+
     return (
         <div tabIndex="0">
             {property.differences && <span className="sr-only">Changed:</span> }
@@ -21,7 +25,7 @@ export function PrimitiveProperty ({ property, columns }) {
                                 <Translate value={property.name}>{ property.name }</Translate>
                         </span>
                         {property.value.map((v, valIdx) =>
-                            <PropertyValue key={`prop-${valIdx}`} value={v} name={property.name} columns={columns} index={valIdx} />
+                            <PropertyValue key={`prop-${valIdx}`} value={getValue(v)} name={property.name} columns={columns} index={valIdx} />
                         ) }
                     </div>
                     
