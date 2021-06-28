@@ -33,6 +33,11 @@ public interface IRelyingPartyOverrideProperty {
 
     public String getPersistValue();
     
+    /**
+     * When the override actually is used in the UI, the "type" list is fairly limited, so each implementing class
+     * should adjust the real value so the UI gets a value it expects. For actual file configured overrides, this 
+     * means doing nothing, but UI defined attributes have to do some work.
+     */
     public String getTypeForUI();
 
     public void setAttributeFriendlyName(String attributeFriendlyName);
