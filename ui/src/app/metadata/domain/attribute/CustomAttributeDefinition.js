@@ -77,13 +77,6 @@ export const CustomAttributeDefinition = {
             }
         }
 
-        if (attributeType === 'STRING') {
-            parsed = {
-                ...parsed,
-                defaultValue: data.defaultValueString
-            }
-        }
-
         return parsed;
     },
 
@@ -109,13 +102,6 @@ export const CustomAttributeDefinition = {
                 ...formatted,
                 defaultValueBoolean: formatted.defaultValue === 'true' ? true : false,
                 invert: formatted.invert === 'true' ? true : false
-            }
-        }
-
-        if (attributeType === 'STRING') {
-            formatted = {
-                ...formatted,
-                defaultValueString: formatted.defaultValue
             }
         }
 
