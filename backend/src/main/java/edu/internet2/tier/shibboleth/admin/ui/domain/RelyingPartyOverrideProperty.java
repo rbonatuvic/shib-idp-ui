@@ -52,9 +52,4 @@ public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProper
         defaultValues = defaults;
         examples = defaults;        
     }
-    
-    @Override
-    public void setName(String name) {
-        this.name = StringUtils.strip(name);
-    }
 }

@@ -1,10 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import org.springframework.beans.factory.annotation.Autowired
+import org.apache.commons.lang3.StringUtils
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -31,7 +27,7 @@ class JsonSchemaBuilderService {
         customPropertiesConfiguration.getOverrides().each {
             def property
             if (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
-                property = [$ref: '#/definitions/' + it['name']]
+                property = [$ref: '#/definitions/' + StringUtils.strip(it['name'])]
             } else {
                 property =
                         [title       : it['displayName'],
@@ -65,7 +61,7 @@ class JsonSchemaBuilderService {
             
 
             definition['items'] = items
-            json[(String) it['name']] = definition
+            json[StringUtils.strip((String) it['name'])] = definition
         }
     }
 

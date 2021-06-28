@@ -121,11 +121,6 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
         // This is here to comply with the interface only and should not be used to change the value in this implementation 
     }
     
-    @Override
-    public void setName(String name) {
-        this.name = StringUtils.strip(name);
-    }
-    
     public void updateExamplesList() {
         examples = customAttrListDefinitions;
     }
