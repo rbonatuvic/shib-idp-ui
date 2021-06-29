@@ -13,7 +13,8 @@
             "description": "tooltip.entity-attribute-name",
             "type": "string",
             "minLength": 1,
-            "maxLength": 255
+            "maxLength": 255,
+            "pattern": "^[a-zA-Z0-9:]*$"
         },
         "attributeType": {
             "title": "label.entity-attribute-type",
