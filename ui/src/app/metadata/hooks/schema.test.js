@@ -1,7 +1,7 @@
 import React from 'react';
 import { useUiSchema } from './schema';
 
-import { SourceEditor } from '../domain/source/SourceDefinition';
+import { SourceEditor } from '../domain/source/definition/SourceDefinition';
 
 import jsonSchema from '../../../testing/sourceSchema';
 import uiSchemaResult from '../../../testing/uiSchema';
@@ -26,6 +26,20 @@ describe('useUiSchema', () => {
 
         const { uiSchema } = useUiSchema(SourceEditor, jsonSchema, 'common')
         expect(uiSchema).toEqual(uiSchemaResult);
-    })
+    });
+
+    test('should set locked', () => {
+        useIsAdmin.mockResolvedValue(false);
+
+        const { uiSchema } = useUiSchema(SourceEditor, jsonSchema, 'common', true)
+        expect(uiSchema).toBeDefined();
+    });
+
+    test('should change if user is an admin', () => {
+        useIsAdmin.mockResolvedValue(true);
+
+        const { uiSchema } = useUiSchema(SourceEditor, jsonSchema, 'common', true)
+        expect(uiSchema).toBeDefined();
+    });
     
 });

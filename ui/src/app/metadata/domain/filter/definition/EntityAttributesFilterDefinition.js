@@ -1,7 +1,7 @@
-import API_BASE_PATH from "../../../App.constant";
+import API_BASE_PATH from "../../../../App.constant";
 import {BaseFilterDefinition} from './BaseFilterDefinition';
-import {removeNull} from '../../../core/utility/remove_null';
-import { isValidRegex } from '../../../core/utility/is_valid_regex';
+import {removeNull} from '../../../../core/utility/remove_null';
+import { isValidRegex } from '../../../../core/utility/is_valid_regex';
 import defaultsDeep from "lodash/defaultsDeep";
 
 export const EntityAttributesFilterWizard = {
@@ -66,10 +66,10 @@ export const EntityAttributesFilterWizard = {
     warnings: (data) => {
         let warnings = {};
         if (!data?.relyingPartyOverrides?.signAssertion && data?.relyingPartyOverrides?.dontSignResponse) {
+            // ...(warnings.hasOwnProperty('options') ? warnings['options'] : []),
             warnings = {
                 ...warnings,
                 'options': [
-                    ...(warnings.hasOwnProperty('options') ? warnings['options'] : []),
                     'message.invalid-signing'
                 ]
             };
@@ -79,7 +79,7 @@ export const EntityAttributesFilterWizard = {
     parser: (changes) => {
         return {
             ...changes,
-            relyingPartyOverrides: removeNull(changes)
+            relyingPartyOverrides: removeNull(changes.relyingPartyOverrides)
         };
     },
     formatter: (changes) => ({

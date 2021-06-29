@@ -7,3 +7,7 @@ it('should return false for a malformed regular expression', () => {
 it('should return true for a well-formed regular expression', () => {
     expect(isValidRegex(`[a-z0-9][a-z0-9-]{0,31}:`)).toBe(true)
 });
+
+it('should return false if no expression is provided', () => {
+    expect(isValidRegex(null)).toBe(false)
+});

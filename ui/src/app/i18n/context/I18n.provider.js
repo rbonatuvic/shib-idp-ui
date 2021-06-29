@@ -11,22 +11,30 @@ const path = '/messages';
 /*eslint-disable react-hooks/exhaustive-deps*/
 function I18nProvider ({ children }) {
 
+    const [error, setError] = React.useState();
+
     const { get, response } = useFetch(`${API_BASE_PATH}`, {
         cacheLife: 10000,
         cachePolicy: 'cache-first'
     });
 
-    React.useEffect(() => { loadMessages() }, []);
+    React.useEffect(() => {
+        loadMessages()
+    }, []);
 
     async function loadMessages() {
         const msgs = await get(`${path}`);
-        if (response.ok) setMessages(msgs);
+        if (response.ok) {
+            setMessages(msgs);
+        } else {
+            setError('no messages found');
+        }
     }
 
     const [messages, setMessages] = React.useState({});
     return (
         <>
-            {Object.keys(messages).length > 1 && <Provider value={messages}>{children}</Provider>}
+            {Object.keys(messages).length >= 1 ? <Provider value={messages}>{children}</Provider> : error}
         </>
     );
 }
