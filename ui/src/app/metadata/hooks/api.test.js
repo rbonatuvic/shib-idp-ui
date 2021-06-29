@@ -76,7 +76,7 @@ describe('api hooks', () => {
     describe('useNonAdminSources', () => {
         it('should call useFetch', () => {
             const sources = useNonAdminSources();
-            expect(useFetch).toHaveBeenCalledWith(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`)
+            expect(useFetch).toHaveBeenCalledWith(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`, { "cachePolicy": "no-cache" })
         })
     });
 
