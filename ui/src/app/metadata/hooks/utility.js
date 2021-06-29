@@ -170,14 +170,14 @@ export const assignValueToProperties = (models, properties, definition, schema) 
     });
 };
 
-export const getLimitedPropertiesFn = (properties) => {
+export const getLimitedProperties = (properties) => {
     return ([
         ...properties
             .filter(p => p.differences)
             .map(p => {
                 const parsed = { ...p };
                 if (p.properties) {
-                    parsed.properties = getLimitedPropertiesFn(p.properties);
+                    parsed.properties = getLimitedProperties(p.properties);
                 }
                 return parsed;
             })

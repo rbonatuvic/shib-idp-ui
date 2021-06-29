@@ -9,7 +9,7 @@ import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { Scroller } from '../../../../dashboard/component/Scroller';
 
-export default function ProviderList({ entities, reorder = true, first, last, onOrderUp, onOrderDown }) {
+export function ProviderList({ entities, reorder = true, first, last, onOrderUp, onOrderDown }) {
     return (
         <Scroller entities={entities}>
         {(limited) => <div className="table-responsive mt-3 provider-list!">
@@ -75,3 +75,5 @@ export default function ProviderList({ entities, reorder = true, first, last, on
         </Scroller>
     );
 }
+
+export default ProviderList;

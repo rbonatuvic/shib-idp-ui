@@ -8,19 +8,9 @@ export function SourcesActions ({sources, reloadSources}) {
 
     const { dispatch } = React.useContext(NotificationContext);
 
-    const { put, del, response } = useMetadataEntity('source', {
+    const { put, response } = useMetadataEntity('source', {
         cachePolicy: 'no-cache'
     });
-
-    async function deleteSource(id) {
-        await del(`/${id}`);
-        if (response.ok) {
-            dispatch(createNotificationAction(
-                `Metadata Source has been removed.`
-            ));
-            reloadSources();
-        }
-    }
 
     async function enableSource(source) {
         await put(`/${source.id}`, {
@@ -36,6 +26,6 @@ export function SourcesActions ({sources, reloadSources}) {
     }
 
     return (
-        <SourceList entities={sources} onDelete={ deleteSource } onEnable={ enableSource } />
+        <SourceList entities={sources} onDelete={ reloadSources } onEnable={ enableSource } />
     );
 }
