@@ -1,8 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import org.apache.commons.lang3.StringUtils
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,19 +28,18 @@ class JsonSchemaBuilderService {
     void addRelyingPartyOverridesToJson(Object json) {
         def properties = [:]
         customPropertiesConfiguration.getOverrides().each {
-            def propertyName = ((String) it['name']).replaceAll("\\s","")
             def property
             if (it['displayType'] == 'list' || it['displayType'] == 'set' || it['displayType'] == 'selection_list') {
-                property = [$ref: '#/definitions/' + propertyName]
+                property = [$ref: '#/definitions/' + it['name']]
             } else {
                 property =
                         [title       : it['displayName'],
                          description : it['helpText'],
-                         type        : ((IRelyingPartyOverrideProperty)it).getTypeForUI(),
+                         type        : it['displayType'],
                          default     : it['displayType'] == 'boolean' ? Boolean.getBoolean(it['defaultValue']) : it['defaultValue'],
                          examples    : it['examples']]
             }
-            properties[propertyName] = property
+            properties[(String) it['name']] = property
         }
         json['properties'] = properties
     }
@@ -67,7 +64,7 @@ class JsonSchemaBuilderService {
             
 
             definition['items'] = items
-            json[((String) it['name']).replaceAll("\\s","")] = definition
+            json[(String) it['name']] = definition
         }
     }
 

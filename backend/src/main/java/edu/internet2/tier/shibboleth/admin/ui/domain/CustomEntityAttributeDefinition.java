@@ -65,33 +65,15 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Id
     @Column(name = "resource_id", nullable = false)
     String resourceId = UUID.randomUUID().toString();
-    
-    @Override
-    public String getAttributeName() {
-        // This is a bit of a hack because we don't have attribute name in the UI yet...
-        return attributeName == null ? name : attributeName;
-    }
-    
+        
     @Override
     public Set<String> getDefaultValues() {
         return customAttrListDefinitions;
     }
-
-    @Override
-    public String getDisplayName() {
-        // This is here only to ensure proper functionality works until the full definition is revised with all the fields
-        return displayName == null ? name : displayName;
-    }
-    
+   
     @Override
     public String getDisplayType() {
         return attributeType.name().toLowerCase();
-    }
-    
-    @Override
-    public String getAttributeFriendlyName() {
-        // This is here only to ensure proper functionality works until the full definition is revised with all the fields
-        return attributeFriendlyName == null ? name : attributeFriendlyName;
     }
     
     @Override
@@ -119,6 +101,14 @@ public class CustomEntityAttributeDefinition implements IRelyingPartyOverridePro
     @Override
     public void setDisplayType(String displayType) {
         // This is here to comply with the interface only and should not be used to change the value in this implementation 
+    }
+    
+    /**
+     * Ensure there are no whitespace characters in the name
+     */
+    @Override
+    public void setName(String name) {
+        this.name = name.replaceAll("\\s","");
     }
     
     public void updateExamplesList() {
