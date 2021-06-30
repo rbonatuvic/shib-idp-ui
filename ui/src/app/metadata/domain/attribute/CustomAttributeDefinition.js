@@ -61,7 +61,7 @@ export const CustomAttributeDefinition = {
             return data;
         }
         const { attributeType } = data;
-        let { defaultValueBoolean, defaultValueString, ...parsed } = data;
+        let { defaultValueBoolean, ...parsed } = data;
         if (attributeType === 'SELECTION_LIST') {
             parsed = {
                 ...parsed,
@@ -77,13 +77,6 @@ export const CustomAttributeDefinition = {
             }
         }
 
-        if (attributeType === 'STRING') {
-            parsed = {
-                ...parsed,
-                defaultValue: defaultValueString
-            }
-        }
-
         return parsed;
     },
 
@@ -94,30 +87,28 @@ export const CustomAttributeDefinition = {
         let { defaultValue, ...formatted } = changes;
         const { attributeType } = changes;
 
-        if (attributeType === 'SELECTION_LIST') {
-            formatted = {
-                ...formatted,
-                customAttrListDefinitions: formatted.customAttrListDefinitions.map(d => ({
-                    value: d,
-                    default: d === defaultValue
-                }))
-            }
-        }
-
-        if (attributeType === 'BOOLEAN') {
-            formatted = {
-                ...formatted,
-                defaultValueBoolean: formatted.defaultValue === 'true' ? true : false,
-                invert: formatted.invert === 'true' ? true : false
-//                defaultValueBoolean: defaultValue === 'true' ? true : false
-            }
-        }
-
-        if (attributeType === 'STRING') {
-            formatted = {
-                ...formatted,
-                defaultValueString: defaultValue
-            }
+        switch (attributeType) {
+            case 'SELECTION_LIST':
+                formatted = {
+                    ...formatted,
+                    customAttrListDefinitions: formatted.customAttrListDefinitions.map(d => ({
+                        value: d,
+                        default: d === defaultValue
+                    }))
+                }
+                break;
+            case 'BOOLEAN':
+                formatted = {
+                    ...formatted,
+                    defaultValueBoolean: defaultValue === 'true' ? true : false,
+                    invert: formatted.invert === 'true' ? true : false
+                }
+                break;
+            default:
+                formatted = {
+                    ...formatted,
+                    defaultValue
+                }
         }
 
         return formatted;
