@@ -100,7 +100,7 @@ export const CustomAttributeDefinition = {
             case 'BOOLEAN':
                 formatted = {
                     ...formatted,
-                    defaultValueBoolean: formatted.defaultValue === 'true' ? true : false,
+                    defaultValueBoolean: defaultValue === 'true' ? true : false,
                     invert: formatted.invert === 'true' ? true : false
                 }
                 break;
