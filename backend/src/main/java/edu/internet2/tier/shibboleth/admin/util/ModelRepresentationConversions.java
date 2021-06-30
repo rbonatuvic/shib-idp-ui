@@ -232,7 +232,7 @@ public class ModelRepresentationConversions {
         LIST,  
         DOUBLE, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING
         DURATION, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING
-        LONG, // no org.opensaml.core.xml.schema.XSTYPE - will treat as INTEGER for generating XML
+        LONG, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING for generating XML
         SELECTION_LIST, // another name for LIST
         SPRING_BEAN_ID // treat as STRING
     }

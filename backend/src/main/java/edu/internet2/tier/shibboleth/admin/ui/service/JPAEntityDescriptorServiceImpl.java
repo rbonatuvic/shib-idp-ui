@@ -650,6 +650,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                         Object attributeValues = null;
                         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                             case STRING:
+                            case LONG:
                             case DOUBLE:
                             case DURATION:
                             case SPRING_BEAN_ID:
@@ -659,7 +660,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 attributeValues = getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
                                 break;
                             case INTEGER:
-                            case LONG:
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
                                     throw new RuntimeException("Multiple/No values detected where one is expected!");
                                 }
