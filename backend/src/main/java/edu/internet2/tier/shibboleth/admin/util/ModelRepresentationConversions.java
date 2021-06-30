@@ -198,11 +198,11 @@ public class ModelRepresentationConversions {
                 }
                 return null;
             case INTEGER:
-            case LONG:
                 return ATTRIBUTE_UTILITY.createAttributeWithIntegerValue(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
                         Integer.valueOf((String) o));
             case STRING:
+            case LONG:
             case DOUBLE:
             case DURATION:
             case SPRING_BEAN_ID:
