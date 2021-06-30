@@ -109,10 +109,10 @@ public class ModelRepresentationConversions {
                 } else {
                     return Boolean.valueOf(relyingPartyOverrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) attributeValues.get(0)).getStoredValue());
                 }
-            case INTEGER:
-            case LONG:
-                return ((XSInteger) attributeValues.get(0)).getValue();
+            case INTEGER:            
+                return ((XSInteger) attributeValues.get(0)).getValue();                
             case STRING:
+            case LONG:
             case DOUBLE:
             case DURATION:
             case SPRING_BEAN_ID:
