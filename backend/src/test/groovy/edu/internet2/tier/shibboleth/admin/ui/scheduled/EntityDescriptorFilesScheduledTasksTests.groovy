@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
@@ -54,10 +55,14 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
     @Autowired
     UserRepository userRepository
 
+    @Autowired
+    IGroupService groupService
+    
     def setup() {
         randomGenerator = new RandomGenerator()
         tempPath = tempPath + randomGenerator.randomRangeInt(10000, 20000)
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), new UserService(roleRepository, userRepository))
+        service.groupService = groupService
         entityDescriptorFilesScheduledTasks = new EntityDescriptorFilesScheduledTasks(tempPath, entityDescriptorRepository, openSamlObjects, new FileCheckingFileWritingService())
         directory = new File(tempPath)
         directory.mkdir()

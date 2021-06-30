@@ -4,6 +4,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException
@@ -94,5 +96,13 @@ class TestConfiguration {
     @Bean
     AuditorAware<String> defaultAuditorAware() {
         return new DefaultAuditorAware()
+    }
+    
+    @Bean
+    GroupServiceImpl groupService(GroupsRepository repo) {
+        new GroupServiceImpl().with {
+            it.repo = repo
+            return it
+        }
     }
 }

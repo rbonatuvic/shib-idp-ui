@@ -11,11 +11,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-/**
- * @author Bill Smith (wsmith@unicon.net)
- */
 public class UserService {
-
     private RoleRepository roleRepository;
     private UserRepository userRepository;
 
@@ -24,6 +20,37 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public User getCurrentUser() {
+        //TODO: Consider returning an Optional here
+        User user = null;
+        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+            String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (StringUtils.isNotBlank(principal)) {
+                Optional<User> persistedUser = userRepository.findByUsername(principal);
+                if (persistedUser.isPresent()) {
+                    user = persistedUser.get();
+                }
+            }
+        }
+        return user;
+    }
+
+    public UserAccess getCurrentUserAccess() {
+        User user = getCurrentUser();
+        if (user == null) {
+            return UserAccess.NONE;    
+        }
+        if (user.getRole().equals("ROLE_ADMIN")) {
+            return UserAccess.ADMIN;
+        }
+        if (user.getGroup() != null) {
+            return UserAccess.GROUP;
+        }
+        else {
+            return UserAccess.OWNER;
+        }
+    }
+    
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
      *
@@ -45,20 +72,5 @@ public class UserService {
         } else {
             throw new RuntimeException(String.format("User with username [%s] has no role defined and therefor cannot be updated!", user.getUsername()));
         }
-    }
-
-    public User getCurrentUser() {
-        //TODO: Consider returning an Optional here
-        User user = null;
-        if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
-            String principal = SecurityContextHolder.getContext().getAuthentication().getName();
-            if (StringUtils.isNotBlank(principal)) {
-                Optional<User> persistedUser = userRepository.findByUsername(principal);
-                if (persistedUser.isPresent()) {
-                    user = persistedUser.get();
-                }
-            }
-        }
-        return user;
     }
 }

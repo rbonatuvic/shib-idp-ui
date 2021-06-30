@@ -151,15 +151,9 @@ public class EntityDescriptorController {
     public ResponseEntity<?> getAll() {
         User currentUser = userService.getCurrentUser();
         if (currentUser != null) {
-            if (currentUser.getRole().equals("ROLE_ADMIN")) {
-                return ResponseEntity.ok(entityDescriptorRepository.findAllStreamByCustomQuery()
-                        .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
-                        .collect(Collectors.toList()));
-            } else {
-                return ResponseEntity.ok(entityDescriptorRepository.findAllStreamByCreatedBy(currentUser.getUsername())
-                        .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
-                        .collect(Collectors.toList()));
-            }
+            return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
+//                            .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
+//                            .collect(Collectors.toList()));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
                     "You are not authorized to perform the requested operation."));
@@ -246,8 +240,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
-        EntityDescriptorRepresentation edRepresentation =
-                versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
+        EntityDescriptorRepresentation edRepresentation = versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
 
         if (edRepresentation == null) {
             return ResponseEntity.notFound().build();
@@ -309,9 +302,16 @@ public class EntityDescriptorController {
 
     private boolean isAuthorizedFor(String username) {
         User u = userService.getCurrentUser();
-        return (u != null) &&
-                (u.getRole().equals("ROLE_ADMIN")
-                        || (u.getUsername().equals(username)));
+        
+        switch (userService.getCurrentUserAccess()) {
+        case ADMIN:
+            return true;
+        case GROUP:
+        case OWNER:
+            return u.getUsername().equals(username);
+        default:
+            return false;
+        }
     }
 
 }

@@ -10,8 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,4 +36,9 @@ public class Group {
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     Set<User> users;
+    
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    Set<EntityDescriptor> entityDescriptors;
 }

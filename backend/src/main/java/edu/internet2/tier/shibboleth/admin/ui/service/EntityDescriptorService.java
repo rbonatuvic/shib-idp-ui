@@ -31,13 +31,10 @@ public interface EntityDescriptorService {
     EntityDescriptorRepresentation createRepresentationFromDescriptor(final EntityDescriptor entityDescriptor);
 
     /**
-     * Update an instance of entity descriptor with information from the front-end representation
-     *
-     * @param entityDescriptor opensaml model instance to update
-     * @param representation   front end representation to use to update
+     * @return a list of EntityDescriptorRepresentations that a user has the rights to access
      */
-    void updateDescriptorFromRepresentation(final EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
-
+    List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess();
+    
     /**
      * Given a list of attributes, generate an AttributeReleaseList
      *
@@ -53,5 +50,13 @@ public interface EntityDescriptorService {
      * @return a map of String->Object (property name -> property value) based on the given list of attributes
      */
     Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
+
+    /**
+     * Update an instance of entity descriptor with information from the front-end representation
+     *
+     * @param entityDescriptor opensaml model instance to update
+     * @param representation   front end representation to use to update
+     */
+    void updateDescriptorFromRepresentation(final EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
 
 }

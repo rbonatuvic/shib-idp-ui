@@ -11,6 +11,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilF
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.xml.XmlUtil
@@ -146,6 +148,14 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
             }
 
             return resolver
+        }
+        
+        @Bean
+        GroupServiceImpl groupService(GroupsRepository repo) {
+            new GroupServiceImpl().with {
+                it.repo = repo
+                return it
+            }
         }
     }
 }

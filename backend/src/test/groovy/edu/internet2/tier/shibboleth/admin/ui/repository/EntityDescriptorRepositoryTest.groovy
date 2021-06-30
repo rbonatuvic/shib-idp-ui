@@ -5,8 +5,11 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
@@ -22,6 +25,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+
+import java.util.stream.Stream
 
 import javax.persistence.EntityManager
 
@@ -45,6 +50,9 @@ class EntityDescriptorRepositoryTest extends Specification {
 
     @Autowired
     UserRepository userRepository
+    
+    @Autowired
+    GroupsRepository groupRepository
 
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         it.init()
@@ -56,7 +64,6 @@ class EntityDescriptorRepositoryTest extends Specification {
     def "SHIBUI-553.2"() {
         when:
         def input = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-553.2.xml').bytes) as EntityDescriptor
-
         entityDescriptorRepository.save(input)
 
         def item1 = entityDescriptorRepository.findByResourceId(input.resourceId)
@@ -84,6 +91,46 @@ class EntityDescriptorRepositoryTest extends Specification {
         then:
         noExceptionThrown()
     }
+    
+    def "SHIBUI-1849 - extend data model for group ownership"() {
+        given:
+        def group = new Group().with {
+            it.name = "group-name"
+            it.description = "some description"
+            it
+        }
+        groupRepository.save(group)
+        entityManager.flush()
+        entityManager.clear()
+        def gList = groupRepository.findAll()
+        def groupFromDb = gList.get(0).asType(Group)
+        
+        def ed = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-553.2.xml').bytes) as EntityDescriptor
+        ed.with {
+            it.group = groupFromDb
+        }
+        entityDescriptorRepository.save(ed)
+        entityManager.flush()
+        entityManager.clear()
+        
+        when:
+        def edStreamFromDb = entityDescriptorRepository.findAllStreamByGroup_resourceIdOrCreatedBy(null, "whocares");
+        
+        then:
+        ((Stream)edStreamFromDb).count() == 0
+        
+        when:
+        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByGroup_resourceIdOrCreatedBy("random value", "whocares");
+        
+        then:
+        ((Stream)edStreamFromDb2).count() == 0
+        
+        when:
+        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByGroup_resourceIdOrCreatedBy(groupFromDb.resourceId, "whocares");
+        
+        then:
+        ((Stream)edStreamFromDb3).count() == 1
+    }
 
     @TestConfiguration
     static class Config {
@@ -99,6 +146,14 @@ class EntityDescriptorRepositoryTest extends Specification {
         @Bean
         Analyzer analyzer() {
             return new EnglishAnalyzer()
+        }
+        
+        @Bean
+        GroupServiceImpl groupService(GroupsRepository repo) {
+            new GroupServiceImpl().with {
+                it.repo = repo
+                return it
+            }
         }
     }
 }

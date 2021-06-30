@@ -43,7 +43,7 @@ public class User extends AbstractAuditable {
     private String firstName;
 
     @ManyToOne
-    @JoinColumn(name = "resource_id")
+    @JoinColumn(name = "group_resource_id")
     @EqualsAndHashCode.Exclude
     private Group group;
     
