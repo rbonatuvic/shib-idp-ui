@@ -1,4 +1,4 @@
-import { getConfigurationSections, getLimitedPropertiesFn } from './schema';
+import { getConfigurationSections, getLimitedProperties } from './schema';
 
 export const getLimitedConfigurationsFn = (configurations, limited) => {
     return configurations ? ({
@@ -6,7 +6,7 @@ export const getLimitedConfigurationsFn = (configurations, limited) => {
         sections: !limited ? configurations.sections :
             configurations.sections.map(s => ({
                 ...s,
-                properties: getLimitedPropertiesFn(s.properties),
+                properties: getLimitedProperties(s.properties),
             }))
     }) : configurations;
 };

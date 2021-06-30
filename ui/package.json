@@ -34,7 +34,9 @@
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.1.10",
+    "fast-check": "^2.16.0",
     "http-proxy-middleware": "^1.2.0",
+    "jest-fast-check": "^1.0.2",
     "react-scripts": "4.0.3",
     "sass": "1.32.11"
   },
@@ -49,10 +51,76 @@
     "copy": "npm run copy:static && npm run build:static"
   },
   "jest": {
+    "testMatch": [
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
-      "!src/test/**/*.*"
-    ]
+      "!src/testing/**/*.*",
+      "!src/*.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      },
+      "./src/app/i18n/": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/core/": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/domain/filter/definition": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/domain/provider/definition/": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/domain/source/definition/": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/domain/attribute/": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/hooks/": {
+        "branches": 50,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/contention/": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "./src/app/metadata/component/": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
   },
   "eslintConfig": {
     "extends": [

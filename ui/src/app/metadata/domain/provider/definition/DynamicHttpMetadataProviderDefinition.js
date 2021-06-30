@@ -1,13 +1,29 @@
-import defaultsDeep from 'lodash/defaultsDeep';
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
+import API_BASE_PATH from '../../../../App.constant';
+import defaultsDeep from 'lodash/defaultsDeep';
+import { DurationOptions } from '../../data';
+import { isValidRegex } from '../../../../core/utility/is_valid_regex';
 
-import { DurationOptions } from '../data';
-
-export const FileBackedHttpMetadataProviderWizard = {
+export const DynamicHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
-    label: 'FileBackedHttpMetadataProvider',
-    type: 'FileBackedHttpMetadataResolver',
-    schema: '/assets/schema/provider/filebacked-http.schema.json',
+    label: 'DynamicHttpMetadataProvider',
+    type: 'DynamicHttpMetadataResolver',
+    schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
+    validator: (data = [], current = { resourceId: null }) => {
+        const base = BaseProviderDefinition.validator(data, current);
+        return (formData, errors) => {
+            const errorList = base(formData, errors);
+            if (formData?.metadataRequestURLConstructionScheme['@type'] === 'Regex') {
+                const { metadataRequestURLConstructionScheme: { match } } = formData;
+                const isValid = isValidRegex(match);
+                if (!isValid) {
+                    errors.metadataRequestURLConstructionScheme.match.addError('message.invalid-regex-pattern');
+                }
+            }
+
+            return errorList;
+        }
+    },
     steps: [
         ...BaseProviderDefinition.steps,
         {
@@ -17,32 +33,25 @@ export const FileBackedHttpMetadataProviderWizard = {
             initialValues: [],
             fields: [
                 'xmlId',
-                'metadataURL',
-                'initializeFromBackupFile',
-                'backingFile',
-                'backupFileInitNextRefreshDelay',
                 'requireValidMetadata',
                 'failFastInitialization',
-                'useDefaultPredicateRegistry',
-                'satisfyAnyPredicates'
+                'metadataRequestURLConstructionScheme'
             ]
         },
         {
-            id: 'reloading',
-            label: 'label.reloading-attributes',
+            id: 'dynamic',
+            label: 'label.dynamic-attributes',
             index: 3,
             initialValues: [],
             fields: [
-                'reloadableMetadataResolverAttributes'
+                'dynamicMetadataResolverAttributes'
             ]
         },
         {
             id: 'plugins',
             label: 'label.metadata-filter-plugins',
             index: 4,
-            initialValues: [
-                { key: 'metadataFilters', value: [] }
-            ],
+            initialValues: [],
             fields: [
                 'metadataFilters'
             ]
@@ -78,20 +87,15 @@ export const FileBackedHttpMetadataProviderWizard = {
                     size: 8,
                     fields: [
                         'xmlId',
-                        'metadataURL',
-                        'initializeFromBackupFile',
-                        'backingFile',
-                        'backupFileInitNextRefreshDelay',
                         'requireValidMetadata',
                         'failFastInitialization',
-                        'useDefaultPredicateRegistry',
-                        'satisfyAnyPredicates',
+                        'metadataRequestURLConstructionScheme'
                     ]
                 },
                 {
                     size: 8,
                     fields: [
-                        'reloadableMetadataResolverAttributes'
+                        'dynamicMetadataResolverAttributes'
                     ],
                 },
                 {
@@ -108,30 +112,7 @@ export const FileBackedHttpMetadataProviderWizard = {
                 }
             ]
         },
-        initializeFromBackupFile: {
-            'ui:widget': 'radio',
-            'ui:options': {
-                inline: true
-            }
-        },
-        backupFileInitNextRefreshDelay: {
-            'ui:widget': 'OptionWidget',
-            options: DurationOptions,
-            'ui:placeholder': 'label.duration'
-        },
         requireValidMetadata: {
-            'ui:widget': 'radio',
-            'ui:options': {
-                inline: true
-            }
-        },
-        useDefaultPredicateRegistry: {
-            'ui:widget': 'radio',
-            'ui:options': {
-                inline: true
-            }
-        },
-        satisfyAnyPredicates: {
             'ui:widget': 'radio',
             'ui:options': {
                 inline: true
@@ -143,35 +124,62 @@ export const FileBackedHttpMetadataProviderWizard = {
                 inline: true
             }
         },
-        reloadableMetadataResolverAttributes: {
-            minRefreshDelay: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
-                'ui:placeholder': 'label.duration'
-            },
-            maxRefreshDelay: {
-                'ui:widget': 'OptionWidget',
-                options: DurationOptions,
-                'ui:placeholder': 'label.duration'
-            },
+        dynamicMetadataResolverAttributes: {
             refreshDelayFactor: {
                 'ui:widget': 'updown',
                 'ui:options': {
-                    help: 'message.real-number',
-                    step: 0.001
+                    help: 'message.real-number'
                 },
                 'ui:placeholder': 'label.real-number'
+            },
+            removeIdleEntityData: {
+                'ui:widget': 'radio',
+                'ui:options': {
+                    inline: true
+                }
+            },
+            initializeFromPersistentCacheInBackground: {
+                'ui:widget': 'radio',
+                'ui:options': {
+                    inline: true
+                }
+            },
+            minCacheDuration: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            maxCacheDuration: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            maxIdleEntityData: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            cleanupTaskInterval: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration'
+            },
+            backgroundInitializationFromCacheDelay: {
+                'ui:widget': 'OptionWidget',
+                options: DurationOptions,
+                'ui:placeholder': 'label.duration',
+                visibleIf: {
+                    initializeFromPersistentCacheInBackground: true
+                }
             }
         },
         metadataFilters: MetadataFilterPluginsSchema,
         httpMetadataResolverAttributes: HttpMetadataResolverAttributesSchema
-    }, BaseProviderDefinition.uiSchema)
+    }, BaseProviderDefinition.uiSchema),
 };
 
-
-export const FileBackedHttpMetadataProviderEditor = {
-    ...FileBackedHttpMetadataProviderWizard,
-    schema: 'assets/schema/provider/filebacked-http.schema.json',
+export const DynamicHttpMetadataProviderEditor = {
+    ...DynamicHttpMetadataProviderWizard,
     steps: [
         {
             id: 'common',
@@ -181,41 +189,34 @@ export const FileBackedHttpMetadataProviderEditor = {
             fields: [
                 'name',
                 '@type',
-                'enabled',
                 'xmlId',
-                'metadataURL',
-                'initializeFromBackupFile',
-                'backingFile',
-                'backupFileInitNextRefreshDelay',
+                'metadataRequestURLConstructionScheme',
+                'enabled',
                 'requireValidMetadata',
-                'failFastInitialization',
-                'useDefaultPredicateRegistry',
-                'satisfyAnyPredicates'
+                'failFastInitialization'
             ]
         },
         {
-            id: 'reloading',
-            label: 'label.reloading-attributes',
-            index: 2,
+            id: 'dynamic',
+            label: 'label.dynamic-attributes',
+            index: 3,
             initialValues: [],
             fields: [
-                'reloadableMetadataResolverAttributes'
+                'dynamicMetadataResolverAttributes'
             ]
         },
         {
             id: 'plugins',
             label: 'label.metadata-filter-plugins',
-            index: 3,
-            initialValues: [
-                { key: 'metadataFilters', value: [] }
-            ],
+            index: 4,
+            initialValues: [],
             fields: [
                 'metadataFilters'
             ]
         },
         {
             id: 'advanced',
-            label: 'label.advanced-settings',
+            label: 'label.http-settings-advanced',
             index: 4,
             initialValues: [],
             locked: true,
@@ -228,5 +229,5 @@ export const FileBackedHttpMetadataProviderEditor = {
         '@type': {
             'ui:readonly': true
         }
-    }, FileBackedHttpMetadataProviderWizard.uiSchema)
+    }, DynamicHttpMetadataProviderWizard.uiSchema)
 };

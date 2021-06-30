@@ -61,7 +61,7 @@ export const CustomAttributeDefinition = {
             return data;
         }
         const { attributeType } = data;
-        let parsed = { ...data };
+        let { defaultValueBoolean, defaultValueString, ...parsed } = data;
         if (attributeType === 'SELECTION_LIST') {
             parsed = {
                 ...parsed,
@@ -73,7 +73,14 @@ export const CustomAttributeDefinition = {
         if (attributeType === 'BOOLEAN') {
             parsed = {
                 ...parsed,
-                defaultValue: data.defaultValueBoolean
+                defaultValue: defaultValueBoolean
+            }
+        }
+
+        if (attributeType === 'STRING') {
+            parsed = {
+                ...parsed,
+                defaultValue: defaultValueString
             }
         }
 
@@ -84,7 +91,7 @@ export const CustomAttributeDefinition = {
         if (!changes) {
             return changes;
         }
-        let formatted = { ...changes };
+        let { defaultValue, ...formatted } = changes;
         const { attributeType } = changes;
 
         if (attributeType === 'SELECTION_LIST') {
@@ -92,7 +99,7 @@ export const CustomAttributeDefinition = {
                 ...formatted,
                 customAttrListDefinitions: formatted.customAttrListDefinitions.map(d => ({
                     value: d,
-                    default: d === changes.defaultValue
+                    default: d === defaultValue
                 }))
             }
         }
@@ -102,6 +109,14 @@ export const CustomAttributeDefinition = {
                 ...formatted,
                 defaultValueBoolean: formatted.defaultValue === 'true' ? true : false,
                 invert: formatted.invert === 'true' ? true : false
+//                defaultValueBoolean: defaultValue === 'true' ? true : false
+            }
+        }
+
+        if (attributeType === 'STRING') {
+            formatted = {
+                ...formatted,
+                defaultValueString: defaultValue
             }
         }
 

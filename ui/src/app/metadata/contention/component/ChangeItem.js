@@ -79,8 +79,8 @@ export function ChangeItem ({item}) {
                         <thead>
                             <tr>
                                 {display.headings.map((heading, idx) =>
-                                    <th>
-                                        <Translate key={heading}>{heading}</Translate>
+                                    <th key={idx}>
+                                        <Translate value={heading}>{heading}</Translate>
                                     </th>
                                 )}
                             </tr>
@@ -103,12 +103,8 @@ export function ChangeItem ({item}) {
                                 <td>{val}</td>
                             </tr>
                         )}
-                        
                     </tbody>
                 }
-                
-                
-                
             </table>
         :
         type === ValueTypes.object ?
