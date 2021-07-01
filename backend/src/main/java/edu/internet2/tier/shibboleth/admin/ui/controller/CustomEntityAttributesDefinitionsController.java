@@ -1,7 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.CustomEntityAttributeDefinition;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService;
 
 @Controller
@@ -31,7 +28,7 @@ public class CustomEntityAttributesDefinitionsController {
     @Transactional
     public ResponseEntity<?> create(@RequestBody CustomEntityAttributeDefinition definition) {
         // If already defined, we can't create a new one, nor will this call update the definition
-        CustomEntityAttributeDefinition cad = caService.find(definition.getName());
+        CustomEntityAttributeDefinition cad = caService.find(definition.getResourceId());
         
         if (cad != null) {
             HttpHeaders headers = new HttpHeaders();
@@ -39,7 +36,7 @@ public class CustomEntityAttributesDefinitionsController {
             
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers)
                                  .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), 
-                                       String.format("The custom attribute definition with name: [%s] already exists.", definition.getName())));
+                                       String.format("The custom attribute definition already exists - unable to create a new definition")));
         }
         
         CustomEntityAttributeDefinition result = caService.createOrUpdateDefinition(definition);
@@ -49,7 +46,7 @@ public class CustomEntityAttributesDefinitionsController {
     @PutMapping("/attribute")
     @Transactional
     public ResponseEntity<?> update(@RequestBody CustomEntityAttributeDefinition definition) {
-        CustomEntityAttributeDefinition cad = caService.find(definition.getName());      
+        CustomEntityAttributeDefinition cad = caService.find(definition.getResourceId());      
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute").build().toUri());
@@ -63,40 +60,44 @@ public class CustomEntityAttributesDefinitionsController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * @return List of IRelyingPartyOverrideProperty objects. This will include all of the CustomEntityAttributeDefinition
+     * and the RelyingPartyOverrideProperties from any configuration file that was read in at startup.
+     */
     @GetMapping("/attributes")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(caService.getAllDefinitions());
     }
     
-    @GetMapping("/attribute/{name}")
+    @GetMapping("/attribute/{resourceId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String name) {
-        CustomEntityAttributeDefinition cad = caService.find(name);
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
+        CustomEntityAttributeDefinition cad = caService.find(resourceId);
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(
-                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + name).build().toUri());
+                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + resourceId).build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
-                                  String.format("The custom attribute definition with name: [%s] does not already exist.", name)));
+                                  String.format("The custom attribute definition with resource id: [%s] does not already exist.", resourceId)));
         }
         return ResponseEntity.ok(cad);
     }
     
-    @DeleteMapping("/attribute/{name}")
+    @DeleteMapping("/attribute/{resourceId}")
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable String name) {
-        CustomEntityAttributeDefinition cad = caService.find(name);
+    public ResponseEntity<?> delete(@PathVariable String resourceId) {
+        CustomEntityAttributeDefinition cad = caService.find(resourceId);
         if (cad == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(
-                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + name).build().toUri());
+                            ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/custom/entity/attribute/" + resourceId).build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
-                                  String.format("The custom attribute definition with name: [%s] does not already exist.", name)));
+                                  String.format("The custom attribute definition with resource id: [%s] does not already exist.", resourceId)));
         }
         caService.deleteDefinition(cad);
         return ResponseEntity.noContent().build();

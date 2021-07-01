@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.util;
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
-import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -90,7 +88,7 @@ public class ModelRepresentationConversions {
 
             Optional override = getOverrideByAttributeName(jpaAttribute.getName());
             if (override.isPresent()) {
-                relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(),
+                relyingPartyOverrides.put(((IRelyingPartyOverrideProperty) override.get()).getName(),
                         getOverrideFromAttribute(jpaAttribute));
             }
         }
@@ -98,16 +96,8 @@ public class ModelRepresentationConversions {
         return relyingPartyOverrides;
     }
 
-    private static Object getDefaultValueFromProperty(RelyingPartyOverrideProperty property) {
-        switch (property.getDisplayType()) {
-            case "boolean":
-                return Boolean.getBoolean(property.getDefaultValue());
-        }
-        return null;
-    }
-
     public static Object getOverrideFromAttribute(Attribute attribute) {
-        RelyingPartyOverrideProperty relyingPartyOverrideProperty = customPropertiesConfiguration.getOverrides().stream()
+        IRelyingPartyOverrideProperty relyingPartyOverrideProperty = customPropertiesConfiguration.getOverrides().stream()
                 .filter(it -> it.getAttributeFriendlyName().equals(attribute.getFriendlyName())).findFirst().get();
 
         List<XMLObject> attributeValues = attribute.getAttributeValues();
@@ -119,16 +109,21 @@ public class ModelRepresentationConversions {
                 } else {
                     return Boolean.valueOf(relyingPartyOverrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) attributeValues.get(0)).getStoredValue());
                 }
-            case INTEGER:
-                return ((XSInteger) attributeValues.get(0)).getValue();
+            case INTEGER:            
+                return ((XSInteger) attributeValues.get(0)).getValue();                
             case STRING:
+            case LONG:
+            case DOUBLE:
+            case DURATION:
+            case SPRING_BEAN_ID:
                 if (attributeValues.get(0) instanceof XSAny) {
                     return ((XSAny) attributeValues.get(0)).getTextContent();
                 } else {
                     return ((XSString) attributeValues.get(0)).getValue();
                 }
-            case LIST:
             case SET:
+            case LIST:
+            case SELECTION_LIST:
                 return attributeValues.stream().map(it -> ((XSString) it).getValue()).collect(Collectors.toList());
             default:
                 throw new UnsupportedOperationException("An unsupported persist type was specified (" + relyingPartyOverrideProperty.getPersistType() + ")!");
@@ -161,13 +156,13 @@ public class ModelRepresentationConversions {
 
     public static List<org.opensaml.saml.saml2.core.Attribute> getAttributeListFromRelyingPartyOverridesRepresentation
             (Map<String, Object> relyingPartyOverridesRepresentation) {
-        List<RelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
+        List<IRelyingPartyOverrideProperty> overridePropertyList = customPropertiesConfiguration.getOverrides();
         List<edu.internet2.tier.shibboleth.admin.ui.domain.Attribute> list = new ArrayList<>();
 
         if (relyingPartyOverridesRepresentation != null) {
             for (Map.Entry entry : relyingPartyOverridesRepresentation.entrySet()) {
                 String key = (String) entry.getKey();
-                RelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
+                IRelyingPartyOverrideProperty overrideProperty = overridePropertyList.stream().filter(op -> op.getName().equals(key)).findFirst().get();
                 Attribute attribute = getAttributeFromObjectAndRelyingPartyOverrideProperty(entry.getValue(), overrideProperty);
                 if (attribute != null) {
                     list.add(attribute);
@@ -178,7 +173,7 @@ public class ModelRepresentationConversions {
         return (List<org.opensaml.saml.saml2.core.Attribute>) (List<? extends org.opensaml.saml.saml2.core.Attribute>) list;
     }
 
-    public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, RelyingPartyOverrideProperty overrideProperty) {
+    public static Attribute getAttributeFromObjectAndRelyingPartyOverrideProperty(Object o, IRelyingPartyOverrideProperty overrideProperty) {
         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
             case BOOLEAN:
                 if ((o instanceof Boolean && ((Boolean) o)) ||
@@ -207,15 +202,16 @@ public class ModelRepresentationConversions {
                         overrideProperty.getAttributeFriendlyName(),
                         Integer.valueOf((String) o));
             case STRING:
+            case LONG:
+            case DOUBLE:
+            case DURATION:
+            case SPRING_BEAN_ID:
                 return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
                         (String) o);
             case SET:
-                return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
-                        overrideProperty.getAttributeFriendlyName(),
-                        (List<String>) o);
-
             case LIST:
+            case SELECTION_LIST:
                 return ATTRIBUTE_UTILITY.createAttributeWithStringValues(overrideProperty.getAttributeName(),
                         overrideProperty.getAttributeFriendlyName(),
                         (List<String>) o);
@@ -225,11 +221,19 @@ public class ModelRepresentationConversions {
         }
     }
 
+    // These are the types for which there are org.opensaml.core.xml.schema.XS[TYPE] definitions that we are supporting
+    // The ones with comments are the types supported by the Custom Entity Attribute UI and are mapped accordingly
+    // @see edu.internet2.tier.shibboleth.admin.ui.domain.CustomAttributeType (part of IRelyingPartyOverrideProperty)
     public enum AttributeTypes {
         BOOLEAN,
         INTEGER,
         STRING,
         SET,
-        LIST
+        LIST,  
+        DOUBLE, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING
+        DURATION, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING
+        LONG, // no org.opensaml.core.xml.schema.XSTYPE - will treat as STRING for generating XML
+        SELECTION_LIST, // another name for LIST
+        SPRING_BEAN_ID // treat as STRING
     }
 }

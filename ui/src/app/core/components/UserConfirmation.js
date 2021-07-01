@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Translate from '../../i18n/components/translate';
 import { useHistory } from 'react-router-dom';
-
+import { reload } from '../utility/window';
 
 export function UserConfirmation({children}) {
     const [confirm, setConfirm] = React.useState(false);
@@ -27,7 +27,7 @@ export function ConfirmWindow ({message, confirm, setConfirm, confirmCallback}) 
         setConfirm(false);
         confirmCallback(true);
         if (history.location.pathname.includes('provider/new')) {
-            window.location.reload();
+            reload();
         }
     }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { MetadataFormContext, setFormDataAction, setFormErrorAction } from '../hoc/MetadataFormContext';
 import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
+import { transformErrors } from '../domain/transform';
 
 import Form from '@rjsf/bootstrap-4';
 
@@ -44,7 +45,8 @@ export function MetadataAttributeEditor({ children }) {
                         fields={fields}
                         widgets={widgets}
                         liveValidate={true}
-                        ErrorList={ErrorListTemplate}>
+                        ErrorList={ErrorListTemplate}
+                        transformErrors={transformErrors}>
                         <></>
                     </Form>
                 </div>

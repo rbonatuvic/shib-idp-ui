@@ -15,6 +15,8 @@ public interface CustomEntityAttributeDefinitionRepository extends JpaRepository
     
     CustomEntityAttributeDefinition findByName(String name);
     
+    CustomEntityAttributeDefinition findByResourceId(String resourceId);
+    
     @SuppressWarnings("unchecked")
     CustomEntityAttributeDefinition save(CustomEntityAttributeDefinition attribute);
 }
