@@ -8,8 +8,10 @@ export const transformErrors = (errors) => {
         if (e.name === 'pattern') {
             if (e.property.includes('email')) {
                 e.message = 'message.valid-email';
+            } else if (e.property.includes('name')) {
+                e.message = 'message.valid-name';
             } else {
-                e.message = 'message.valid-duration';
+                e.message = 'message.duration';
             }
         }
 

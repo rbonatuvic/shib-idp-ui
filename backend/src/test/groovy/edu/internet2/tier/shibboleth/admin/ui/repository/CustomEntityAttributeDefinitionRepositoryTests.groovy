@@ -142,11 +142,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         
         // delete tests
         when:
-        def delByName = new CustomEntityAttributeDefinition().with {
-            it.name = "ca-name"
-            it
-        }
-        repo.delete(delByName)
+        repo.delete(caFromDb1)
         entityManager.flush()
         entityManager.clear()
         
@@ -159,24 +155,12 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def setItems2 = new HashSet<String>(["val2", "val1"])
         def setItems3 = new HashSet<String>(["val1", "val2", "val3"])
         def setItems4 = new HashSet<String>(["val1", "val2", "val3", "val4"])
-        def ca2 = new CustomEntityAttributeDefinition().with {
-            it.name = "ca-name"
-            it.attributeType = "SELECTION_LIST"
-            it.customAttrListDefinitions = setItems2
-            it
-        }
         def ca3 = new CustomEntityAttributeDefinition().with {
             it.name = "ca-name"
             it.attributeType = "SELECTION_LIST"
             it.customAttrListDefinitions = setItems3
             it
         }        
-        def ca4 = new CustomEntityAttributeDefinition().with {
-            it.name = "ca-name"
-            it.attributeType = "SELECTION_LIST"
-            it.customAttrListDefinitions = setItems4
-            it
-        }
         
         when:
         repo.save(ca3)
@@ -186,31 +170,39 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         then:
         def cas = repo.findAll()
         cas.size() == 1
-        def caFromDb = cas.get(0).asType(CustomEntityAttributeDefinition)
-        caFromDb.equals(ca3) == true
+        def ca3FromDb = cas.get(0).asType(CustomEntityAttributeDefinition)
+        ca3FromDb.equals(ca3) == true
         
         // now update the attribute list items
-        caFromDb.with { 
+        ca3FromDb.with { 
             it.customAttrListDefinitions = setItems4
             it
         }
-        repo.save(caFromDb)
+        repo.save(ca3FromDb)
         entityManager.flush()
         entityManager.clear()
         
         def caFromDb4 = repo.findAll().get(0).asType(CustomEntityAttributeDefinition)
+        def ca4 = new CustomEntityAttributeDefinition().with {
+            it.name = "ca-name"
+            it.attributeType = "SELECTION_LIST"
+            it.customAttrListDefinitions = setItems4
+            it.resourceId = ca3FromDb.resourceId
+            it
+        }
         caFromDb4.equals(ca4) == true
         
         // now remove items
-        caFromDb.with {
+        ca3FromDb.with {
             it.customAttrListDefinitions = setItems2
             it
         }
-        repo.save(caFromDb)
+        repo.save(ca3FromDb)
         entityManager.flush()
         entityManager.clear()
         
         def caFromDb2 = repo.findAll().get(0).asType(CustomEntityAttributeDefinition)
-        caFromDb2.equals(ca2) == true
+        ca3FromDb.resourceId == caFromDb2.resourceId
+        ca3FromDb.customAttrListDefinitions.equals(caFromDb2.customAttrListDefinitions)
     }
 }

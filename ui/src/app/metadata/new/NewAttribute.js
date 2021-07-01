@@ -11,9 +11,12 @@ import { useMetadataAttribute } from '../hooks/api';
 import {CustomAttributeDefinition} from '../domain/attribute/CustomAttributeDefinition';
 import MetadataSchema from '../hoc/MetadataSchema';
 import { MetadataForm } from '../hoc/MetadataFormContext';
+import { createNotificationAction, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function NewAttribute() {
     const history = useHistory();
+
+    const dispatch = useNotificationDispatcher();
 
     const definition = CustomAttributeDefinition;
 
@@ -22,9 +25,11 @@ export function NewAttribute() {
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(metadata) {
-        await post(``, definition.parser(metadata));
+        const resp = await post(``, definition.parser(metadata));
         if (response.ok) {
             gotoDetail({ refresh: true });
+        } else {
+            dispatch(createNotificationAction(`${resp.errorCode}: Unable to create attribute ... ${resp.errorMessage}`, 'danger', 5000));
         }
     };
 

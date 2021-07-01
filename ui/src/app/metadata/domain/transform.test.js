@@ -12,7 +12,7 @@ const errors = [
 it('should transform error messages', () => {
     expect(transformErrors(errors)).toEqual([
         { name: 'pattern', property: '/email', message: 'message.valid-email' },
-        { name: 'pattern', property: 'foo', message: 'message.valid-duration' },
+        { name: 'pattern', property: 'foo', message: 'message.duration' },
         { name: 'type', message: 'bar' },
         { name: 'type', message: 'message.required' }
     ]);
