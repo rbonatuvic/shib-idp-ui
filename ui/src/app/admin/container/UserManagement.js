@@ -38,6 +38,19 @@ export default function UserManagement({ users, children, reload }) {
         }
     }
 
+    async function setUserGroupRequest(user, groupId) {
+        await patch(`/admin/users/${user.username}`, {
+            ...user,
+            groupId
+        });
+        if (response.ok && reload) {
+            dispatch(createNotificationAction(
+                `User update successful for ${user.username}.`
+            ));
+            reload();
+        }
+    }
+
     async function deleteUserRequest(id) {
         await del(`/admin/users/${id}`);
         if (response.ok && reload) {
@@ -66,7 +79,7 @@ export default function UserManagement({ users, children, reload }) {
 
     return (
         <div className="user-management">
-            {children(users, roles, setUserRoleRequest, (id) => setDeleting(id))}
+            {children(users, roles, setUserRoleRequest, setUserGroupRequest, (id) => setDeleting(id))}
             <Modal show={!!deleting} onHide={() => setDeleting(null)}>
                 <Modal.Header toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">

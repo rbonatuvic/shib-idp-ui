@@ -1,13 +1,13 @@
 import React from 'react';
 import { useGroups } from '../hooks';
 
-export function GroupsProvider({ children }) {
+export function GroupsProvider({ children, cache = 'no-cache' }) {
 
     const [groups, setGroups] = React.useState([]);
 
 
-    const { get, del, response } = useGroups({
-        cachePolicy: 'no-cache'
+    const { get, del, response, loading } = useGroups({
+        cachePolicy: cache
     });
 
     async function loadGroups() {
@@ -27,5 +27,5 @@ export function GroupsProvider({ children }) {
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadGroups() }, []);
 
-    return (<>{children(groups, removeGroup)}</>);
+    return (<>{children(groups, removeGroup, loading)}</>);
 }

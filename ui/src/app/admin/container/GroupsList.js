@@ -38,15 +38,19 @@ export function GroupsList({ groups, onDelete }) {
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    <Translate value="label.attribute-name">Group Name</Translate>
+                                                    <Translate value="label.group-name">Group Name</Translate>
+                                                </th>
+                                                <th>
+                                                    <Translate value="label.group-description">Group Description</Translate>
                                                 </th>
                                                 <th><span className="sr-only"><Translate value="label.actions">Actions</Translate></span></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {groups?.length && groups.map((group, i) =>
+                                            {(groups?.length > 0 ) ? groups.map((group, i) =>
                                                 <tr key={i}>
                                                     <td>{group.name}</td>
+                                                    <td>{group.description}</td>
                                                     <td className="text-right">
                                                         <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary">
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />
@@ -62,7 +66,7 @@ export function GroupsList({ groups, onDelete }) {
                                                         </Button>
                                                     </td>
                                                 </tr>
-                                            )}
+                                            ) : ''}
                                         </tbody>
                                     </table>
                                 </div>
