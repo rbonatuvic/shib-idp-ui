@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ public class GroupController {
     @Autowired
     private IGroupService groupService;
 
+    @Secured("ROLE_ADMIN")
     @PostMapping
     @Transactional
     public ResponseEntity<?> create(@RequestBody Group group) {
@@ -45,6 +47,7 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping
     @Transactional
     public ResponseEntity<?> update(@RequestBody Group group) {
@@ -85,7 +88,8 @@ public class GroupController {
         }
         return ResponseEntity.ok(g);
     }
-
+    
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{resourceId}")
     @Transactional
     public ResponseEntity<?> delete(@PathVariable String resourceId) {
