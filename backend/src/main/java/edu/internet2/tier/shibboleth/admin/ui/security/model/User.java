@@ -47,6 +47,10 @@ public class User extends AbstractAuditable {
     @EqualsAndHashCode.Exclude
     private Group group;
     
+    @Transient
+    @EqualsAndHashCode.Exclude
+    private String groupId; // simplifies the ui/api
+    
     private String lastName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

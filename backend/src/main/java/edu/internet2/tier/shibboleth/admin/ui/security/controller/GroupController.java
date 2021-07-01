@@ -52,7 +52,7 @@ public class GroupController {
 
         if (g == null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups/{resourceId}").build().toUri());
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
@@ -99,13 +99,13 @@ public class GroupController {
                             .body(new ErrorResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
                                             String.format("Unable to find group with resource id: [%s]", resourceId)));
         }
-        if (!g.getUsers().isEmpty()) {
+        if (!g.getUsers().isEmpty() || !g.getEntityDescriptors().isEmpty()) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
+            headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups/{resourceId}").build().toUri());
 
             return ResponseEntity.status(HttpStatus.CONFLICT).headers(headers)
                             .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format(
-                                            "Unable to delete group with resource id: [%s] - remove all users from group first",
+                                            "Unable to delete group with resource id: [%s] - remove all users and entities from group first",
                                             resourceId)));
         }
         groupService.deleteDefinition(g);

@@ -1,13 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+import groovy.util.logging.Slf4j;
+
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,23 +34,33 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * Implementation of the REST resource endpoints exposing system users.
- *
- * @author Dmitriy Kopylenko
  */
 @RestController
 @RequestMapping("/api/admin/users")
+@Slf4j
 public class UsersController {
-
-    private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
-
+    @Autowired
+    private GroupsRepository groupRepo;
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
     private UserService userService;
 
     public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.userService = userService;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> deleteOne(@PathVariable String username) {
+        User user = findUserOrThrowHttp404(username);
+        userRepository.delete(user);
+        return ResponseEntity.noContent().build();
+    }
+
+    private User findUserOrThrowHttp404(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -80,15 +93,6 @@ public class UsersController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @Transactional
-    @DeleteMapping("/{username}")
-    public ResponseEntity<?> deleteOne(@PathVariable String username) {
-        User user = findUserOrThrowHttp404(username);
-        userRepository.delete(user);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @Transactional
     @PostMapping
     ResponseEntity<?> saveOne(@RequestBody User user) {
         Optional<User> persistedUser = userRepository.findByUsername(user.getUsername());
@@ -101,8 +105,20 @@ public class UsersController {
         //TODO: modify this such that additional encoders can be used
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userService.updateUserRole(user);
+        findAndSetGroup(user);
+        
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+    }
+
+    private User findAndSetGroup(User user) {
+        // Ensure we have the full group detail from the db
+        if (user.getGroupId() != null || user.getGroup() != null) {
+            String resourceId = user.getGroupId() == null ?  user.getGroup().getResourceId() : user.getGroupId(); 
+            Group groupFromDb = groupRepo.findByResourceId(resourceId);
+            user.setGroup(groupFromDb);
+        }
+        return user;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -126,12 +142,8 @@ public class UsersController {
             persistedUser.setRole(user.getRole());
             userService.updateUserRole(persistedUser);
         }
+        persistedUser.setGroup(findAndSetGroup(user).getGroup());
         User savedUser = userRepository.save(persistedUser);
         return ResponseEntity.ok(savedUser);
-    }
-
-    private User findUserOrThrowHttp404(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username)));
     }
  }
