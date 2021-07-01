@@ -1,41 +1,55 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
+import lombok.ToString;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
 @Setter
 @Getter
-public class RelyingPartyOverrideProperty {
-    private String name;
+@ToString
+public class RelyingPartyOverrideProperty implements IRelyingPartyOverrideProperty {
+    private String attributeFriendlyName;
+    private String attributeName;
+    private String defaultValue;
+    private Set<String> defaultValues;
     private String displayName;
     private String displayType;
-    private String defaultValue;
+    private Set<String> examples;
     private String helpText;
-    private List<String> examples;
+    private String invert;
+    private String name;
     private String persistType;
     private String persistValue;
-    private String attributeName;
-    private String attributeFriendlyName;
-    private String invert;
+    
+    @Override
+    public Boolean getFromConfigFile() {
+        return Boolean.TRUE;
+    }
 
     @Override
-    public String toString() {
-        return "RelyingPartyOverrideProperty{"
-                + "\nname='" + name + '\''
-                + ", \ndisplayName='" + displayName + '\''
-                + ", \ndisplayType='" + displayType + '\''
-                + ", \ndefaultValue='" + defaultValue + '\''
-                + ", \nhelpText='" + helpText + '\''
-                + ", \npersistType='" + persistType + '\''
-                + ", \npersistValue='" + persistValue + '\''
-                + ", \nexamples=" + examples
-                + ", \nattributeName='" + attributeName + '\''
-                + ", \nattributeFriendlyName='" + attributeFriendlyName + '\''
-                + "\n}";
+    public CustomAttributeType getAttributeType() {
+        switch (displayType) {
+        case ("set"):
+        case ("list"):
+            return CustomAttributeType.SELECTION_LIST;
+        default:
+            return CustomAttributeType.valueOf(displayType.toUpperCase());
+        }
+    }
+    
+    public String getTypeForUI() {
+        return getDisplayType();
+    }
+    
+    public void setDefaultValues(Set<String> defaults) {
+        defaultValues = defaults;
+        examples = defaults;        
     }
 }

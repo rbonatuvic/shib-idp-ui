@@ -53,16 +53,7 @@ public class EntityAttributesFilter extends MetadataFilter {
 
     @Transient
     private List<String> attributeRelease = new ArrayList<>();
-    
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "entityAttributesFilter", orphanRemoval = true)
-    private Set<CustomEntityAttributeFilterValue> customEntityAttributes = new HashSet<>();
-
-    public void setCustomEntityAttributes (Set<CustomEntityAttributeFilterValue> newValues) {
-        customEntityAttributes.clear();
-        customEntityAttributes.addAll(newValues);
-    }
-    
+       
     public void setAttributeRelease(List<String> attributeRelease) {
         this.attributeRelease = attributeRelease;
         this.rebuildAttributes();
@@ -95,7 +86,6 @@ public class EntityAttributesFilter extends MetadataFilter {
         filterToBeUpdated.setEntityAttributesFilterTarget(getEntityAttributesFilterTarget());
         filterToBeUpdated.setRelyingPartyOverrides(getRelyingPartyOverrides());
         filterToBeUpdated.setAttributeRelease(getAttributeRelease());
-        filterToBeUpdated.setCustomEntityAttributes(customEntityAttributes);
         return filterToBeUpdated;
     }
 

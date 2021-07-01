@@ -2,13 +2,18 @@ package edu.internet2.tier.shibboleth.admin.ui.configuration
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException
+
+import javax.persistence.EntityManager
+
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.StringField
@@ -28,6 +33,9 @@ import org.springframework.data.domain.AuditorAware
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.JavaMailSenderImpl
 
+/**
+ * NOT A TEST - this is configuration FOR tests
+ */
 @Configuration
 class TestConfiguration {
     @Autowired
@@ -37,11 +45,26 @@ class TestConfiguration {
     final MetadataResolverRepository metadataResolverRepository
     final Logger logger = LoggerFactory.getLogger(TestConfiguration.class);
 
+    @Autowired
+    private CustomEntityAttributeDefinitionRepository repository;
+            
+    @Autowired
+    EntityManager entityManager
+    
     TestConfiguration(final OpenSamlObjects openSamlObjects, final MetadataResolverRepository metadataResolverRepository) {
         this.openSamlObjects =openSamlObjects
         this.metadataResolverRepository = metadataResolverRepository
     }
 
+    @Bean
+    CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {
+        new CustomEntityAttributesDefinitionServiceImpl().with {
+           it.entityManager = entityManager
+           it.repository = repository
+           return it
+        }
+    }
+    
     @Bean
     JavaMailSender javaMailSender() {
         return new JavaMailSenderImpl().with {

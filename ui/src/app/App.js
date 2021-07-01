@@ -35,6 +35,7 @@ function App() {
     const [showTimeout] = React.useState();
 
     const httpOptions = {
+        cachePolicy: 'no-cache',
         redirect: 'manual',
         interceptors: {
             request: async ({options, url, path, route}) => {

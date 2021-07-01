@@ -11,12 +11,15 @@ import { useMetadataAttribute } from '../hooks/api';
 import { CustomAttributeDefinition, CustomAttributeEditor } from '../domain/attribute/CustomAttributeDefinition';
 import MetadataSchema from '../hoc/MetadataSchema';
 import { MetadataForm } from '../hoc/MetadataFormContext';
+import { createNotificationAction, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function MetadataAttributeEdit() {
     const { id } = useParams();
     const history = useHistory();
 
     const definition = CustomAttributeDefinition;
+
+    const dispatch = useNotificationDispatcher();
 
     const { get, put, response, loading } = useMetadataAttribute({
         cachePolicy: 'no-cache'
@@ -32,9 +35,11 @@ export function MetadataAttributeEdit() {
     }
 
     async function save(metadata) {
-        await put(``, definition.parser(metadata));
+        const resp = await put(``, definition.parser(metadata));
         if (response.ok) {
             gotoDetail({ refresh: true });
+        } else {
+            dispatch(createNotificationAction(`${resp.errorCode}: Unable to edit attribute ... ${resp.errorMessage}`, 'danger', 5000));
         }
     };
 

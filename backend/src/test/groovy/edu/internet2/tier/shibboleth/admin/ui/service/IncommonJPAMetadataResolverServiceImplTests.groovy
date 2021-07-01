@@ -32,7 +32,7 @@ import spock.lang.Specification
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 
 @DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, TestConfig])
+@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class IncommonJPAMetadataResolverServiceImplTests extends Specification {
@@ -108,7 +108,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
     //TODO: check that this configuration is sufficient
     @TestConfiguration
-    static class TestConfig {
+    static class LocalConfig {
         @Autowired
         OpenSamlObjects openSamlObjects
 

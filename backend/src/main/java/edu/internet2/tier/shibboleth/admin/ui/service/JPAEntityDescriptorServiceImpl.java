@@ -25,7 +25,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL;
-import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
@@ -71,6 +71,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
+
 
 /**
  * Default implementation of {@link EntityDescriptorService}
@@ -349,10 +350,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                 } else {
                     Optional override = ModelRepresentationConversions.getOverrideByAttributeName(jpaAttribute.getName());
                     if (override.isPresent()) {
-                        RelyingPartyOverrideProperty overrideProperty = (RelyingPartyOverrideProperty)override.get();
+                        IRelyingPartyOverrideProperty overrideProperty = (IRelyingPartyOverrideProperty)override.get();
                         Object attributeValues = null;
                         switch (ModelRepresentationConversions.AttributeTypes.valueOf(overrideProperty.getDisplayType().toUpperCase())) {
                             case STRING:
+                            case LONG:
+                            case DOUBLE:
+                            case DURATION:
+                            case SPRING_BEAN_ID:
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
                                     throw new RuntimeException("Multiple/No values detected where one is expected!");
                                 }
@@ -378,11 +383,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 break;
                             case SET:
                             case LIST:
+                            case SELECTION_LIST:
                                 attributeValues = jpaAttribute.getAttributeValues().stream()
                                         .map(attributeValue -> getValueFromXMLObject(attributeValue))
                                         .collect(Collectors.toList());
                         }
-                        relyingPartyOverrides.put(((RelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
+                        relyingPartyOverrides.put(((IRelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
                     }
                 }
             }

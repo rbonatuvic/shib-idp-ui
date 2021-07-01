@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import org.apache.lucene.analysis.Analyzer
@@ -34,7 +35,7 @@ import javax.persistence.EntityManager
  * A highly unnecessary test so that I can check to make sure that persistence is correct for the model
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, InternationalizationConfiguration, Config])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, InternationalizationConfiguration, LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -42,6 +43,9 @@ class EntityDescriptorRepositoryTest extends Specification {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
 
+    @Autowired
+    private CustomEntityAttributeDefinitionRepository repository;
+    
     @Autowired
     EntityManager entityManager
 
@@ -133,7 +137,7 @@ class EntityDescriptorRepositoryTest extends Specification {
     }
 
     @TestConfiguration
-    static class Config {
+    static class LocalConfig {
         @Bean
         MetadataResolver metadataResolver() {
             new OpenSamlChainingMetadataResolver().with {
@@ -153,6 +157,15 @@ class EntityDescriptorRepositoryTest extends Specification {
             new GroupServiceImpl().with {
                 it.repo = repo
                 return it
+            }
+        }
+        
+        @Bean
+        CustomEntityAttributesDefinitionServiceImpl customEntityAttributesDefinitionServiceImpl() {
+            new CustomEntityAttributesDefinitionServiceImpl().with {
+               it.entityManager = entityManager
+               it.repository = repository
+               return it
             }
         }
     }

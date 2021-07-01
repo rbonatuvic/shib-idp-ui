@@ -25,10 +25,12 @@ describe('formatter', () => {
 
         expect(CustomAttributeDefinition.formatter({
             attributeType: 'BOOLEAN',
-            defaultValue: 'true'
+            defaultValue: 'true',
+            invert: 'true'
         })).toEqual({
             attributeType: 'BOOLEAN',
-            defaultValueBoolean: true
+            defaultValueBoolean: true,
+            invert: true
         });
 
         expect(CustomAttributeDefinition.formatter({
@@ -36,7 +38,7 @@ describe('formatter', () => {
             defaultValue: 'true'
         })).toEqual({
             attributeType: 'STRING',
-            defaultValueString: 'true'
+            defaultValue: 'true'
         });
     });
 });
@@ -72,7 +74,7 @@ describe('parser', () => {
 
         expect(CustomAttributeDefinition.parser({
             attributeType: 'STRING',
-            defaultValueString: 'true'
+            defaultValue: 'true'
         })).toEqual({
             attributeType: 'STRING',
             defaultValue: 'true'
