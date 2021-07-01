@@ -101,8 +101,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         ed.setEntityID(representation.getEntityId());
-        Group g = groupService.find(representation.getGroupId());
-        ed.setGroup(g);
+        ed.setGroup(groupService.find(representation.getGroupId()));
 
         setupSPSSODescriptor(ed, representation);
         ed.setServiceProviderName(representation.getServiceProviderName());

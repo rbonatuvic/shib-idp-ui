@@ -51,6 +51,22 @@ public class UserService {
         }
     }
     
+    public boolean isAuthorizedFor(String objectCreatedBy, String objectGroupResourceId) {
+        User currentUser = getCurrentUser();
+        String groupId = objectGroupResourceId == null ? "" : objectGroupResourceId;
+        
+        switch (getCurrentUserAccess()) {
+        case ADMIN:
+            return true;
+        case GROUP:
+            return objectCreatedBy.equals(currentUser.getUsername()) || groupId.equals(currentUser.getGroupId());
+        case OWNER:
+            return objectCreatedBy.equals(currentUser.getUsername());
+        default:
+            return false;
+        }
+    }
+    
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
      *

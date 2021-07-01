@@ -9,9 +9,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
+import lombok.extern.slf4j.Slf4j;
+
 import org.opensaml.core.xml.io.MarshallingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
@@ -38,36 +38,37 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class EntityDescriptorController {
+    private static URI getResourceUriFor(EntityDescriptor ed) {
+        return ServletUriComponentsBuilder
+                .fromCurrentServletMapping().path("/api/EntityDescriptor")
+                .pathSegment(ed.getResourceId())
+                .build()
+                .toUri();
+    }
 
     @Autowired
     private EntityDescriptorRepository entityDescriptorRepository;
 
     @Autowired
-    private OpenSamlObjects openSamlObjects;
+    private EntityDescriptorService entityDescriptorService;
 
     @Autowired
-    private EntityDescriptorService entityDescriptorService;
+    private OpenSamlObjects openSamlObjects;
+
+    private RestTemplate restTemplate;
 
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
     private UserService userService;
 
-    private RestTemplate restTemplate;
-
     private EntityDescriptorVersionService versionService;
-
-    private static Logger LOGGER = LoggerFactory.getLogger(EntityDescriptorController.class);
 
     public EntityDescriptorController(UserService userService, EntityDescriptorVersionService versionService) {
         this.userService = userService;
         this.versionService = versionService;
-    }
-
-    @PostConstruct
-    public void initRestTemplate() {
-        this.restTemplate = restTemplateBuilder.build();
     }
 
     @PostMapping("/EntityDescriptor")
@@ -93,116 +94,6 @@ public class EntityDescriptorController {
         return ResponseEntity.created(getResourceUriFor(persistedEd)).body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
     }
 
-    @PostMapping(value = "/EntityDescriptor", consumes = "application/xml")
-    @Transactional
-    public ResponseEntity<?> upload(@RequestBody byte[] entityDescriptorXml, @RequestParam String spName) throws Exception {
-        return handleUploadingEntityDescriptorXml(entityDescriptorXml, spName);
-    }
-
-    @PostMapping(value = "/EntityDescriptor", consumes = "application/x-www-form-urlencoded")
-    @Transactional
-    public ResponseEntity<?> upload(@RequestParam String metadataUrl, @RequestParam String spName) throws Exception {
-        try {
-            byte[] xmlContents = this.restTemplate.getForObject(metadataUrl, byte[].class);
-            return handleUploadingEntityDescriptorXml(xmlContents, spName);
-        } catch (Throwable e) {
-            LOGGER.error("Error fetching XML metadata from the provided URL: [{}]. The error is: {}", metadataUrl, e);
-            LOGGER.error(e.getMessage(), e);
-            return ResponseEntity
-                    .badRequest()
-                    .body(String.format("Error fetching XML metadata from the provided URL. Error: %s", e.getMessage()));
-        }
-    }
-
-    @PutMapping("/EntityDescriptor/{resourceId}")
-    @Transactional
-    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
-        User currentUser = userService.getCurrentUser();
-        EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(resourceId);
-        if (existingEd == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(existingEd.getCreatedBy()))) {
-                if (!existingEd.isServiceEnabled()) {
-                    ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
-                    if (entityDescriptorEnablingDeniedResponse != null) {
-                        return entityDescriptorEnablingDeniedResponse;
-                    }
-                }
-
-                // Verify we're the only one attempting to update the EntityDescriptor
-                if (edRepresentation.getVersion() != existingEd.hashCode()) {
-                    return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-                }
-
-                entityDescriptorService.updateDescriptorFromRepresentation(existingEd, edRepresentation);
-                existingEd = entityDescriptorRepository.save(existingEd);
-
-                return ResponseEntity.ok().body(entityDescriptorService.createRepresentationFromDescriptor(existingEd));
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
-                        "You are not authorized to perform the requested operation."));
-            }
-        }
-    }
-
-    @GetMapping("/EntityDescriptors")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> getAll() {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
-//                            .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
-//                            .collect(Collectors.toList()));
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
-                    "You are not authorized to perform the requested operation."));
-        }
-    }
-
-    @GetMapping("/EntityDescriptor/{resourceId}")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
-        User currentUser = userService.getCurrentUser();
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        if (ed == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(ed.getCreatedBy()))) {
-                EntityDescriptorRepresentation edr = entityDescriptorService.createRepresentationFromDescriptor(ed);
-                return ResponseEntity.ok(edr);
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
-                        "You are not authorized to perform the requested operation."));
-            }
-        }
-    }
-
-    @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException {
-        User currentUser = userService.getCurrentUser();
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        if (ed == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            if (currentUser != null && (currentUser.getRole().equals("ROLE_ADMIN") || currentUser.getUsername().equals(ed.getCreatedBy()))) {
-                final String xml = this.openSamlObjects.marshalToXmlString(ed);
-                return ResponseEntity.ok(xml);
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-        }
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
-    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() {
-        return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
-                .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
-                .collect(Collectors.toList());
-    }
-
     @Secured("ROLE_ADMIN")
     @DeleteMapping(value = "/EntityDescriptor/{resourceId}")
     @Transactional
@@ -218,47 +109,15 @@ public class EntityDescriptorController {
         }
     }
 
-    //Versioning endpoints
-
-    @GetMapping("/EntityDescriptor/{resourceId}/Versions")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        if (ed == null) {
-            return ResponseEntity.notFound().build();
+    private ResponseEntity<?> entityDescriptorEnablePermissionsCheck(boolean serviceEnabled) {
+        User user = userService.getCurrentUser();
+        if (user != null) {
+            if (serviceEnabled && !user.getRole().equals("ROLE_ADMIN")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new ErrorResponse(HttpStatus.FORBIDDEN, "You do not have the permissions necessary to enable this service."));
+            }
         }
-        List<Version> versions = versionService.findVersionsForEntityDescriptor(resourceId);
-        if (versions.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        if(isAuthorizedFor(ed.getCreatedBy())) {
-            return ResponseEntity.ok(versions);
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-
-    @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
-        EntityDescriptorRepresentation edRepresentation = versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
-
-        if (edRepresentation == null) {
-            return ResponseEntity.notFound().build();
-        }
-        if(isAuthorizedFor(edRepresentation.getCreatedBy())) {
-            return ResponseEntity.ok(edRepresentation);
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-
-    //Private methods
-
-    private static URI getResourceUriFor(EntityDescriptor ed) {
-        return ServletUriComponentsBuilder
-                .fromCurrentServletMapping().path("/api/EntityDescriptor")
-                .pathSegment(ed.getResourceId())
-                .build()
-                .toUri();
+        return null;
     }
 
     private ResponseEntity<?> existingEntityDescriptorCheck(String entityId) {
@@ -275,15 +134,95 @@ public class EntityDescriptorController {
         return null;
     }
 
-    private ResponseEntity<?> entityDescriptorEnablePermissionsCheck(boolean serviceEnabled) {
-        User user = userService.getCurrentUser();
-        if (user != null) {
-            if (serviceEnabled && !user.getRole().equals("ROLE_ADMIN")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(new ErrorResponse(HttpStatus.FORBIDDEN, "You do not have the permissions necessary to enable this service."));
+    @GetMapping("/EntityDescriptors")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getAll() {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
+                    "You are not authorized to perform the requested operation."));
+        }
+    }
+
+    @GetMapping("/EntityDescriptor/{resourceId}/Versions")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Version> versions = versionService.findVersionsForEntityDescriptor(resourceId);
+        if (versions.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        if(userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup() == null ? null : ed.getGroup().getResourceId())) {
+            return ResponseEntity.ok(versions);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    @Secured("ROLE_ADMIN")
+    @Transactional(readOnly = true)
+    @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
+    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() {
+        return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
+                .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/EntityDescriptor/{resourceId}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+            if (ed == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                if (userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup() == null ? null : ed.getGroup().getResourceId())) {
+                    EntityDescriptorRepresentation edr = entityDescriptorService.createRepresentationFromDescriptor(ed);
+                    return ResponseEntity.ok(edr);
+                }
             }
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                        new ErrorResponse(HttpStatus.FORBIDDEN, "You are not authorized to perform the requested operation."));
+
+    }
+
+    @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+            if (ed == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                if (userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup() == null ? null : ed.getGroup().getResourceId())) {
+                    final String xml = this.openSamlObjects.marshalToXmlString(ed);
+                    return ResponseEntity.ok(xml);
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+    }
+
+    @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
+        EntityDescriptorRepresentation edRepresentation = versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
+
+        if (edRepresentation == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if(userService.isAuthorizedFor(edRepresentation.getCreatedBy(), edRepresentation.getGroupId())) {
+            return ResponseEntity.ok(edRepresentation);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     private ResponseEntity<?> handleUploadingEntityDescriptorXml(byte[] rawXmlBytes, String spName) throws Exception {
@@ -300,17 +239,65 @@ public class EntityDescriptorController {
                 .body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
     }
 
-    private boolean isAuthorizedFor(String username) {
-        User u = userService.getCurrentUser();
-        
-        switch (userService.getCurrentUserAccess()) {
-        case ADMIN:
-            return true;
-        case GROUP:
-        case OWNER:
-            return u.getUsername().equals(username);
-        default:
-            return false;
+    @PostConstruct
+    public void initRestTemplate() {
+        this.restTemplate = restTemplateBuilder.build();
+    }
+
+    @PutMapping("/EntityDescriptor/{resourceId}")
+    @Transactional
+    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(resourceId);
+
+            if (existingEd == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                if (userService.isAuthorizedFor(existingEd.getCreatedBy(),
+                                existingEd.getGroup() == null ? null : existingEd.getGroup().getResourceId())) {
+                    if (!existingEd.isServiceEnabled()) {
+                        ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(
+                                        edRepresentation.isServiceEnabled());
+                        if (entityDescriptorEnablingDeniedResponse != null) {
+                            return entityDescriptorEnablingDeniedResponse;
+                        }
+                    }
+
+                    // Verify we're the only one attempting to update the EntityDescriptor
+                    if (edRepresentation.getVersion() != existingEd.hashCode()) {
+                        return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+                    }
+
+                    entityDescriptorService.updateDescriptorFromRepresentation(existingEd, edRepresentation);
+                    existingEd = entityDescriptorRepository.save(existingEd);
+
+                    return ResponseEntity.ok().body(entityDescriptorService.createRepresentationFromDescriptor(existingEd));
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
+                        "You are not authorized to perform the requested operation."));
+    }
+
+    @PostMapping(value = "/EntityDescriptor", consumes = "application/xml")
+    @Transactional
+    public ResponseEntity<?> upload(@RequestBody byte[] entityDescriptorXml, @RequestParam String spName) throws Exception {
+        return handleUploadingEntityDescriptorXml(entityDescriptorXml, spName);
+    }
+
+    @PostMapping(value = "/EntityDescriptor", consumes = "application/x-www-form-urlencoded")
+    @Transactional
+    public ResponseEntity<?> upload(@RequestParam String metadataUrl, @RequestParam String spName) throws Exception {
+        try {
+            byte[] xmlContents = this.restTemplate.getForObject(metadataUrl, byte[].class);
+            return handleUploadingEntityDescriptorXml(xmlContents, spName);
+        } catch (Throwable e) {
+            log.error("Error fetching XML metadata from the provided URL: [{}]. The error is: {}", metadataUrl, e);
+            log.error(e.getMessage(), e);
+            return ResponseEntity
+                    .badRequest()
+                    .body(String.format("Error fetching XML metadata from the provided URL. Error: %s", e.getMessage()));
         }
     }
 
