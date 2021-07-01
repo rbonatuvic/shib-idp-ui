@@ -33,7 +33,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
@@ -43,9 +42,15 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepres
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+import groovy.util.logging.Slf4j;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -56,7 +61,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +71,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getValueFromXMLObject;
 
 
 /**
@@ -75,15 +78,19 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
  *
  * @since 1.0
  */
+@Slf4j
 public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JPAEntityDescriptorServiceImpl.class);
-
     @Autowired
-    private OpenSamlObjects openSamlObjects;
-
+    private EntityDescriptorRepository entityDescriptorRepository;
+    
     @Autowired
     private EntityService entityService;
+
+    @Autowired
+    private IGroupService groupService;
+    
+    @Autowired
+    private OpenSamlObjects openSamlObjects;
 
     private UserService userService;
 
@@ -93,23 +100,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         this.userService = userService;
     }
 
-    @Override
-    public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
-        if (!(entityDescriptor instanceof EntityDescriptor)) {
-            throw new UnsupportedOperationException("not yet implemented");
-        }
-        buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
-    }
-
-    @Override
-    public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
-        EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
-
-        return buildDescriptorFromRepresentation(ed, representation);
-    }
-
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         ed.setEntityID(representation.getEntityId());
+        ed.setGroup(groupService.find(representation.getGroupId()));
 
         setupSPSSODescriptor(ed, representation);
         ed.setServiceProviderName(representation.getServiceProviderName());
@@ -129,260 +122,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return ed;
     }
 
-    void setupRelyingPartyOverrides(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        if (representation.getRelyingPartyOverrides() != null || (representation.getAttributeRelease() != null && representation.getAttributeRelease().size() > 0)) {
-            // TODO: review if we need more than a naive implementation
-            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
-            getEntityAttributes(ed).getAttributes().addAll(entityService.getAttributeListFromEntityRepresentation(representation));
-        } else {
-            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
-        }
-    }
-
-    void setupLogout(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup logout
-        if (representation.getLogoutEndpoints() != null && !representation.getLogoutEndpoints().isEmpty()) {
-            // TODO: review if we need more than a naive implementation
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
-            for (LogoutEndpointRepresentation logoutEndpointRepresentation : representation.getLogoutEndpoints()) {
-                SingleLogoutService singleLogoutService = openSamlObjects.buildDefaultInstanceOfType(SingleLogoutService.class);
-                singleLogoutService.setBinding(logoutEndpointRepresentation.getBindingType());
-                singleLogoutService.setLocation(logoutEndpointRepresentation.getUrl());
-
-                getSPSSODescriptorFromEntityDescriptor(ed).getSingleLogoutServices().add(singleLogoutService);
-            }
-        } else {
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
-        }
-    }
-
-    void setupACSs(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup ACSs
-        if (representation.getAssertionConsumerServices() != null && representation.getAssertionConsumerServices().size() > 0) {
-            // TODO: review if we need more than a naive implementation
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
-            for (AssertionConsumerServiceRepresentation acsRepresentation : representation.getAssertionConsumerServices()) {
-                AssertionConsumerService assertionConsumerService = openSamlObjects.buildDefaultInstanceOfType(AssertionConsumerService.class);
-                getSPSSODescriptorFromEntityDescriptor(ed).getAssertionConsumerServices().add(assertionConsumerService);
-                if (acsRepresentation.isMakeDefault()) {
-                    assertionConsumerService.setIsDefault(true);
-                }
-                assertionConsumerService.setBinding(acsRepresentation.getBinding());
-                assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
-                assertionConsumerService.setIndex(acsRepresentation.getIndex());
-            }
-        } else {
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
-        }
-    }
-
-    void setupSecurity(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup security
-        if (representation.getSecurityInfo() != null) {
-            SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
-            if (securityInfoRepresentation.isAuthenticationRequestsSigned()) {
-                getSPSSODescriptorFromEntityDescriptor(ed).setAuthnRequestsSigned(true);
-            }
-            if (securityInfoRepresentation.isWantAssertionsSigned()) {
-                getSPSSODescriptorFromEntityDescriptor(ed).setWantAssertionsSigned(true);
-            }
-            // TODO: review if we need more than a naive implementation
-            ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
-            if (securityInfoRepresentation.isX509CertificateAvailable()) {
-                for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
-                    KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
-                    getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
-                }
-            }
-        } else {
-            ed.getOptionalSPSSODescriptor().ifPresent( spssoDescriptor -> {
-                spssoDescriptor.setAuthnRequestsSigned((Boolean) null);
-                spssoDescriptor.setWantAssertionsSigned((Boolean) null);
-                spssoDescriptor.getKeyDescriptors().clear();
-            });
-        }
-    }
-
-    void setupUIInfo(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // set up mdui
-        if (representation.getMdui() != null) {
-            // TODO: check if we need more than a naive implementation
-            removeUIInfo(ed);
-            MduiRepresentation mduiRepresentation = representation.getMdui();
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getDisplayName())) {
-                DisplayName displayName = openSamlObjects.buildDefaultInstanceOfType(DisplayName.class);
-                getUIInfo(ed).addDisplayName(displayName);
-                displayName.setValue(mduiRepresentation.getDisplayName());
-                displayName.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDisplayNames()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getInformationUrl())) {
-                InformationURL informationURL = openSamlObjects.buildDefaultInstanceOfType(InformationURL.class);
-                getUIInfo(ed).addInformationURL(informationURL);
-                informationURL.setValue(mduiRepresentation.getInformationUrl());
-                informationURL.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getInformationURLs()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getPrivacyStatementUrl())) {
-                PrivacyStatementURL privacyStatementURL = openSamlObjects.buildDefaultInstanceOfType(PrivacyStatementURL.class);
-                getUIInfo(ed).addPrivacyStatementURL(privacyStatementURL);
-                privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
-                privacyStatementURL.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getPrivacyStatementURLs()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getDescription())) {
-                Description description = openSamlObjects.buildDefaultInstanceOfType(Description.class);
-                getUIInfo(ed).addDescription(description);
-                description.setValue(mduiRepresentation.getDescription());
-                description.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDescriptions()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
-                Logo logo = openSamlObjects.buildDefaultInstanceOfType(Logo.class);
-                getUIInfo(ed).addLogo(logo);
-                logo.setURL(mduiRepresentation.getLogoUrl());
-                logo.setHeight(mduiRepresentation.getLogoHeight());
-                logo.setWidth(mduiRepresentation.getLogoWidth());
-                logo.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getLogos()));
-            }
-        } else {
-            removeUIInfo(ed);
-        }
-    }
-
-    void setupContacts(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // set up contacts
-        if (representation.getContacts() != null && representation.getContacts().size() > 0) {
-            ed.getContactPersons().clear();
-            for (ContactRepresentation contactRepresentation : representation.getContacts()) {
-                ContactPerson contactPerson = ((ContactPersonBuilder) openSamlObjects.getBuilderFactory().getBuilder(ContactPerson.DEFAULT_ELEMENT_NAME)).buildObject();
-
-                contactPerson.setType(contactRepresentation.getType());
-
-                GivenName givenName = openSamlObjects.buildDefaultInstanceOfType(GivenName.class);
-                givenName.setName(contactRepresentation.getName());
-                contactPerson.setGivenName(givenName);
-
-                EmailAddress emailAddress = openSamlObjects.buildDefaultInstanceOfType(EmailAddress.class);
-                emailAddress.setAddress(contactRepresentation.getEmailAddress());
-                contactPerson.addEmailAddress(emailAddress);
-
-                ed.addContactPerson(contactPerson);
-            }
-        } else {
-            ed.getContactPersons().clear();
-        }
-    }
-
-    void setupOrganization(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // set up organization
-        if (representation.getOrganization() != null && representation.getOrganization().getName() != null && representation.getOrganization().getDisplayName() != null && representation.getOrganization().getUrl() != null) {
-            OrganizationRepresentation organizationRepresentation = representation.getOrganization();
-            Organization organization = openSamlObjects.buildDefaultInstanceOfType(Organization.class);
-
-            OrganizationName organizationName = openSamlObjects.buildDefaultInstanceOfType(OrganizationName.class);
-            organizationName.setXMLLang("en");
-            organizationName.setValue(organizationRepresentation.getName());
-            organization.getOrganizationNames().add(organizationName);
-
-            OrganizationDisplayName organizationDisplayName = openSamlObjects.buildDefaultInstanceOfType(OrganizationDisplayName.class);
-            organizationDisplayName.setXMLLang("en");
-            organizationDisplayName.setValue(organizationRepresentation.getDisplayName());
-            organization.getDisplayNames().add(organizationDisplayName);
-
-            OrganizationURL organizationURL = openSamlObjects.buildDefaultInstanceOfType(OrganizationURL.class);
-            organizationURL.setXMLLang("en");
-            organizationURL.setValue(organizationRepresentation.getUrl());
-            organization.getURLs().add(organizationURL);
-
-            ed.setOrganization(organization);
-        } else {
-            ed.setOrganization(null);
-        }
-    }
-
-    void setupSPSSODescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup SPSSODescriptor
-        if (representation.getServiceProviderSsoDescriptor() != null) {
-            SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
-
-            spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
-            if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
-                spssoDescriptor.setSupportedProtocols(
-                        Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
-                );
-            }
-
-            spssoDescriptor.getNameIDFormats().clear();
-            if (representation.getServiceProviderSsoDescriptor() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats().size() > 0) {
-                for (String nameidFormat : representation.getServiceProviderSsoDescriptor().getNameIdFormats()) {
-                    NameIDFormat nameIDFormat = openSamlObjects.buildDefaultInstanceOfType(NameIDFormat.class);
-
-                    nameIDFormat.setFormat(nameidFormat);
-
-                    spssoDescriptor.getNameIDFormats().add(nameIDFormat);
-                }
-            }
-        } else {
-            ed.setRoleDescriptors(null);
-        }
-    }
-
-    private  SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
-        return getSPSSODescriptorFromEntityDescriptor(entityDescriptor, true);
-    }
-
-    private SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor, boolean create) {
-        if (entityDescriptor.getSPSSODescriptor("") == null && create) {
-            SPSSODescriptor spssoDescriptor = openSamlObjects.buildDefaultInstanceOfType(SPSSODescriptor.class);
-            entityDescriptor.getRoleDescriptors().add(spssoDescriptor);
-        }
-        return entityDescriptor.getSPSSODescriptor("");
-    }
-
-    private Attribute createBaseAttribute(String name, String friendlyName) {
-        Attribute attribute = ((AttributeBuilder) openSamlObjects.getBuilderFactory().getBuilder(Attribute.DEFAULT_ELEMENT_NAME)).buildObject();
-        attribute.setName(name);
-        attribute.setFriendlyName(friendlyName);
-        attribute.setNameFormat("urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
-
-        return attribute;
-    }
-
-    private Attribute createAttributeWithBooleanValue(String name, String friendlyName, Boolean value) {
-        Attribute attribute = createBaseAttribute(name, friendlyName);
-
-        XSBoolean xsBoolean = (XSBoolean) openSamlObjects.getBuilderFactory().getBuilder(XSBoolean.TYPE_NAME).buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSBoolean.TYPE_NAME);
-        xsBoolean.setValue(XSBooleanValue.valueOf(value.toString()));
-
-        attribute.getAttributeValues().add(xsBoolean);
-        return attribute;
+    private Attribute createAttributeWithArbitraryValues(String name, String friendlyName, List<String> values) {
+        return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
     }
 
     private Attribute createAttributeWithArbitraryValues(String name, String friendlyName, String... values) {
@@ -397,8 +138,30 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return attribute;
     }
 
-    private Attribute createAttributeWithArbitraryValues(String name, String friendlyName, List<String> values) {
-        return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
+    private Attribute createAttributeWithBooleanValue(String name, String friendlyName, Boolean value) {
+        Attribute attribute = createBaseAttribute(name, friendlyName);
+
+        XSBoolean xsBoolean = (XSBoolean) openSamlObjects.getBuilderFactory().getBuilder(XSBoolean.TYPE_NAME).buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSBoolean.TYPE_NAME);
+        xsBoolean.setValue(XSBooleanValue.valueOf(value.toString()));
+
+        attribute.getAttributeValues().add(xsBoolean);
+        return attribute;
+    }
+
+    private Attribute createBaseAttribute(String name, String friendlyName) {
+        Attribute attribute = ((AttributeBuilder) openSamlObjects.getBuilderFactory().getBuilder(Attribute.DEFAULT_ELEMENT_NAME)).buildObject();
+        attribute.setName(name);
+        attribute.setFriendlyName(friendlyName);
+        attribute.setNameFormat("urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
+
+        return attribute;
+    }
+
+    @Override
+    public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
+        EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
+
+        return buildDescriptorFromRepresentation(ed, representation);
     }
 
     KeyDescriptor createKeyDescriptor(String name, String type, String value) {
@@ -425,66 +188,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return keyDescriptor;
     }
 
-    private EntityAttributes getEntityAttributes(EntityDescriptor ed) {
-        return getEntityAttributes(ed, true);
-    }
-
-    private Optional<EntityAttributes> getOptionalEntityAttributes(EntityDescriptor ed) {
-        return Optional.ofNullable(getEntityAttributes(ed, false));
-    }
-
-    private EntityAttributes getEntityAttributes(EntityDescriptor ed, boolean create) {
-        Extensions extensions = ed.getExtensions();
-        if (extensions == null && !create) {
-            return null;
-        }
-        if (extensions == null) {
-            extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
-            ed.setExtensions(extensions);
-        }
-
-        EntityAttributes entityAttributes = null;
-        if (extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).size() > 0) {
-            entityAttributes = (EntityAttributes) extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0);
-        } else {
-            if (create) {
-                entityAttributes = ((EntityAttributesBuilder) openSamlObjects.getBuilderFactory().getBuilder(EntityAttributes.DEFAULT_ELEMENT_NAME)).buildObject();
-                extensions.getUnknownXMLObjects().add(entityAttributes);
-            }
-        }
-        return entityAttributes;
-    }
-
-    private UIInfo getUIInfo(EntityDescriptor ed) {
-        Extensions extensions = getSPSSODescriptorFromEntityDescriptor(ed).getExtensions();
-        if (extensions == null) {
-            extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
-            ed.getSPSSODescriptor("").setExtensions(extensions);
-        }
-
-        UIInfo uiInfo;
-        if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
-            uiInfo = (UIInfo) extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0);
-        } else {
-            uiInfo = openSamlObjects.buildDefaultInstanceOfType(UIInfo.class);
-            extensions.getUnknownXMLObjects().add(uiInfo);
-        }
-        return uiInfo;
-    }
-
-    private void removeUIInfo(EntityDescriptor ed) {
-        SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed, false);
-        if (spssoDescriptor != null) {
-            Extensions extensions = spssoDescriptor.getExtensions();
-            if (extensions == null) {
-                return;
-            }
-            if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
-                extensions.getUnknownXMLObjects().remove(extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0));
-            }
-        }
-    }
-
     //TODO: implement
     @Override
     public EntityDescriptorRepresentation createRepresentationFromDescriptor(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor) {
@@ -500,6 +203,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setVersion(ed.hashCode());
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
+        representation.setGroupId(ed.getGroup() != null ? ed.getGroup().getResourceId() : null);
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
@@ -695,18 +399,343 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return representation;
     }
 
-    // TODO: remove
-    private String getValueFromXMLObject(XMLObject xmlObject) {
-        return ModelRepresentationConversions.getValueFromXMLObject(xmlObject);
-    }
+    @Override
+    public List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() {
+        switch (userService.getCurrentUserAccess()) {
+        case ADMIN:
+            return entityDescriptorRepository.findAllStreamByCustomQuery().map(ed -> createRepresentationFromDescriptor(ed))
+                            .collect(Collectors.toList());
+        case GROUP:
+            User user = userService.getCurrentUser();
+            Group group = user.getGroup();
+            return entityDescriptorRepository
+                            .findAllStreamByGroup_resourceIdOrCreatedBy(group == null ? null : group.getResourceId(), user.getUsername())
+                            .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+        case OWNER:
+        default:
+            return entityDescriptorRepository.findAllStreamByCreatedBy(userService.getCurrentUser().getUsername())
+                            .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
 
+        }
+    }
+    
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
     }
 
+    private EntityAttributes getEntityAttributes(EntityDescriptor ed) {
+        return getEntityAttributes(ed, true);
+    }
+
+    private EntityAttributes getEntityAttributes(EntityDescriptor ed, boolean create) {
+        Extensions extensions = ed.getExtensions();
+        if (extensions == null && !create) {
+            return null;
+        }
+        if (extensions == null) {
+            extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
+            ed.setExtensions(extensions);
+        }
+
+        EntityAttributes entityAttributes = null;
+        if (extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).size() > 0) {
+            entityAttributes = (EntityAttributes) extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0);
+        } else {
+            if (create) {
+                entityAttributes = ((EntityAttributesBuilder) openSamlObjects.getBuilderFactory().getBuilder(EntityAttributes.DEFAULT_ELEMENT_NAME)).buildObject();
+                extensions.getUnknownXMLObjects().add(entityAttributes);
+            }
+        }
+        return entityAttributes;
+    }
+
+    private Optional<EntityAttributes> getOptionalEntityAttributes(EntityDescriptor ed) {
+        return Optional.ofNullable(getEntityAttributes(ed, false));
+    }
+
     @Override
     public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
+    }
+
+    private  SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
+        return getSPSSODescriptorFromEntityDescriptor(entityDescriptor, true);
+    }
+
+    private SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor, boolean create) {
+        if (entityDescriptor.getSPSSODescriptor("") == null && create) {
+            SPSSODescriptor spssoDescriptor = openSamlObjects.buildDefaultInstanceOfType(SPSSODescriptor.class);
+            entityDescriptor.getRoleDescriptors().add(spssoDescriptor);
+        }
+        return entityDescriptor.getSPSSODescriptor("");
+    }
+
+    private UIInfo getUIInfo(EntityDescriptor ed) {
+        Extensions extensions = getSPSSODescriptorFromEntityDescriptor(ed).getExtensions();
+        if (extensions == null) {
+            extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
+            ed.getSPSSODescriptor("").setExtensions(extensions);
+        }
+
+        UIInfo uiInfo;
+        if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
+            uiInfo = (UIInfo) extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0);
+        } else {
+            uiInfo = openSamlObjects.buildDefaultInstanceOfType(UIInfo.class);
+            extensions.getUnknownXMLObjects().add(uiInfo);
+        }
+        return uiInfo;
+    }
+
+    // TODO: remove
+    private String getValueFromXMLObject(XMLObject xmlObject) {
+        return ModelRepresentationConversions.getValueFromXMLObject(xmlObject);
+    }
+
+    private void removeUIInfo(EntityDescriptor ed) {
+        SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed, false);
+        if (spssoDescriptor != null) {
+            Extensions extensions = spssoDescriptor.getExtensions();
+            if (extensions == null) {
+                return;
+            }
+            if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
+                extensions.getUnknownXMLObjects().remove(extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0));
+            }
+        }
+    }
+
+    void setupACSs(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // setup ACSs
+        if (representation.getAssertionConsumerServices() != null && representation.getAssertionConsumerServices().size() > 0) {
+            // TODO: review if we need more than a naive implementation
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
+            for (AssertionConsumerServiceRepresentation acsRepresentation : representation.getAssertionConsumerServices()) {
+                AssertionConsumerService assertionConsumerService = openSamlObjects.buildDefaultInstanceOfType(AssertionConsumerService.class);
+                getSPSSODescriptorFromEntityDescriptor(ed).getAssertionConsumerServices().add(assertionConsumerService);
+                if (acsRepresentation.isMakeDefault()) {
+                    assertionConsumerService.setIsDefault(true);
+                }
+                assertionConsumerService.setBinding(acsRepresentation.getBinding());
+                assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
+                assertionConsumerService.setIndex(acsRepresentation.getIndex());
+            }
+        } else {
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
+        }
+    }
+
+    void setupContacts(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // set up contacts
+        if (representation.getContacts() != null && representation.getContacts().size() > 0) {
+            ed.getContactPersons().clear();
+            for (ContactRepresentation contactRepresentation : representation.getContacts()) {
+                ContactPerson contactPerson = ((ContactPersonBuilder) openSamlObjects.getBuilderFactory().getBuilder(ContactPerson.DEFAULT_ELEMENT_NAME)).buildObject();
+
+                contactPerson.setType(contactRepresentation.getType());
+
+                GivenName givenName = openSamlObjects.buildDefaultInstanceOfType(GivenName.class);
+                givenName.setName(contactRepresentation.getName());
+                contactPerson.setGivenName(givenName);
+
+                EmailAddress emailAddress = openSamlObjects.buildDefaultInstanceOfType(EmailAddress.class);
+                emailAddress.setAddress(contactRepresentation.getEmailAddress());
+                contactPerson.addEmailAddress(emailAddress);
+
+                ed.addContactPerson(contactPerson);
+            }
+        } else {
+            ed.getContactPersons().clear();
+        }
+    }
+
+    void setupLogout(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // setup logout
+        if (representation.getLogoutEndpoints() != null && !representation.getLogoutEndpoints().isEmpty()) {
+            // TODO: review if we need more than a naive implementation
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
+            for (LogoutEndpointRepresentation logoutEndpointRepresentation : representation.getLogoutEndpoints()) {
+                SingleLogoutService singleLogoutService = openSamlObjects.buildDefaultInstanceOfType(SingleLogoutService.class);
+                singleLogoutService.setBinding(logoutEndpointRepresentation.getBindingType());
+                singleLogoutService.setLocation(logoutEndpointRepresentation.getUrl());
+
+                getSPSSODescriptorFromEntityDescriptor(ed).getSingleLogoutServices().add(singleLogoutService);
+            }
+        } else {
+            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
+        }
+    }
+
+    void setupOrganization(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // set up organization
+        if (representation.getOrganization() != null && representation.getOrganization().getName() != null && representation.getOrganization().getDisplayName() != null && representation.getOrganization().getUrl() != null) {
+            OrganizationRepresentation organizationRepresentation = representation.getOrganization();
+            Organization organization = openSamlObjects.buildDefaultInstanceOfType(Organization.class);
+
+            OrganizationName organizationName = openSamlObjects.buildDefaultInstanceOfType(OrganizationName.class);
+            organizationName.setXMLLang("en");
+            organizationName.setValue(organizationRepresentation.getName());
+            organization.getOrganizationNames().add(organizationName);
+
+            OrganizationDisplayName organizationDisplayName = openSamlObjects.buildDefaultInstanceOfType(OrganizationDisplayName.class);
+            organizationDisplayName.setXMLLang("en");
+            organizationDisplayName.setValue(organizationRepresentation.getDisplayName());
+            organization.getDisplayNames().add(organizationDisplayName);
+
+            OrganizationURL organizationURL = openSamlObjects.buildDefaultInstanceOfType(OrganizationURL.class);
+            organizationURL.setXMLLang("en");
+            organizationURL.setValue(organizationRepresentation.getUrl());
+            organization.getURLs().add(organizationURL);
+
+            ed.setOrganization(organization);
+        } else {
+            ed.setOrganization(null);
+        }
+    }
+
+    void setupRelyingPartyOverrides(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        if (representation.getRelyingPartyOverrides() != null || (representation.getAttributeRelease() != null && representation.getAttributeRelease().size() > 0)) {
+            // TODO: review if we need more than a naive implementation
+            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
+            getEntityAttributes(ed).getAttributes().addAll(entityService.getAttributeListFromEntityRepresentation(representation));
+        } else {
+            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
+        }
+    }
+
+    void setupSecurity(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // setup security
+        if (representation.getSecurityInfo() != null) {
+            SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
+            if (securityInfoRepresentation.isAuthenticationRequestsSigned()) {
+                getSPSSODescriptorFromEntityDescriptor(ed).setAuthnRequestsSigned(true);
+            }
+            if (securityInfoRepresentation.isWantAssertionsSigned()) {
+                getSPSSODescriptorFromEntityDescriptor(ed).setWantAssertionsSigned(true);
+            }
+            // TODO: review if we need more than a naive implementation
+            ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
+            if (securityInfoRepresentation.isX509CertificateAvailable()) {
+                for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
+                    KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
+                    getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
+                }
+            }
+        } else {
+            ed.getOptionalSPSSODescriptor().ifPresent( spssoDescriptor -> {
+                spssoDescriptor.setAuthnRequestsSigned((Boolean) null);
+                spssoDescriptor.setWantAssertionsSigned((Boolean) null);
+                spssoDescriptor.getKeyDescriptors().clear();
+            });
+        }
+    }
+
+    void setupSPSSODescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // setup SPSSODescriptor
+        if (representation.getServiceProviderSsoDescriptor() != null) {
+            SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
+
+            spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
+            if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
+                spssoDescriptor.setSupportedProtocols(
+                        Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
+                );
+            }
+
+            spssoDescriptor.getNameIDFormats().clear();
+            if (representation.getServiceProviderSsoDescriptor() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats().size() > 0) {
+                for (String nameidFormat : representation.getServiceProviderSsoDescriptor().getNameIdFormats()) {
+                    NameIDFormat nameIDFormat = openSamlObjects.buildDefaultInstanceOfType(NameIDFormat.class);
+
+                    nameIDFormat.setFormat(nameidFormat);
+
+                    spssoDescriptor.getNameIDFormats().add(nameIDFormat);
+                }
+            }
+        } else {
+            ed.setRoleDescriptors(null);
+        }
+    }
+
+    void setupUIInfo(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
+        // set up mdui
+        if (representation.getMdui() != null) {
+            // TODO: check if we need more than a naive implementation
+            removeUIInfo(ed);
+            MduiRepresentation mduiRepresentation = representation.getMdui();
+
+            if (!Strings.isNullOrEmpty(mduiRepresentation.getDisplayName())) {
+                DisplayName displayName = openSamlObjects.buildDefaultInstanceOfType(DisplayName.class);
+                getUIInfo(ed).addDisplayName(displayName);
+                displayName.setValue(mduiRepresentation.getDisplayName());
+                displayName.setXMLLang("en");
+            } else {
+                ed.getOptionalSPSSODescriptor()
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDisplayNames()));
+            }
+
+            if (!Strings.isNullOrEmpty(mduiRepresentation.getInformationUrl())) {
+                InformationURL informationURL = openSamlObjects.buildDefaultInstanceOfType(InformationURL.class);
+                getUIInfo(ed).addInformationURL(informationURL);
+                informationURL.setValue(mduiRepresentation.getInformationUrl());
+                informationURL.setXMLLang("en");
+            } else {
+                ed.getOptionalSPSSODescriptor()
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getInformationURLs()));
+            }
+
+            if (!Strings.isNullOrEmpty(mduiRepresentation.getPrivacyStatementUrl())) {
+                PrivacyStatementURL privacyStatementURL = openSamlObjects.buildDefaultInstanceOfType(PrivacyStatementURL.class);
+                getUIInfo(ed).addPrivacyStatementURL(privacyStatementURL);
+                privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
+                privacyStatementURL.setXMLLang("en");
+            } else {
+                ed.getOptionalSPSSODescriptor()
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getPrivacyStatementURLs()));
+            }
+
+            if (!Strings.isNullOrEmpty(mduiRepresentation.getDescription())) {
+                Description description = openSamlObjects.buildDefaultInstanceOfType(Description.class);
+                getUIInfo(ed).addDescription(description);
+                description.setValue(mduiRepresentation.getDescription());
+                description.setXMLLang("en");
+            } else {
+                ed.getOptionalSPSSODescriptor()
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDescriptions()));
+            }
+
+            if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
+                Logo logo = openSamlObjects.buildDefaultInstanceOfType(Logo.class);
+                getUIInfo(ed).addLogo(logo);
+                logo.setURL(mduiRepresentation.getLogoUrl());
+                logo.setHeight(mduiRepresentation.getLogoHeight());
+                logo.setWidth(mduiRepresentation.getLogoWidth());
+                logo.setXMLLang("en");
+            } else {
+                ed.getOptionalSPSSODescriptor()
+                        .flatMap(SPSSODescriptor::getOptionalExtensions)
+                        .flatMap(Extensions::getOptionalUIInfo)
+                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getLogos()));
+            }
+        } else {
+            removeUIInfo(ed);
+        }
+    }
+
+    @Override
+    public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
+        if (!(entityDescriptor instanceof EntityDescriptor)) {
+            throw new UnsupportedOperationException("not yet implemented");
+        }
+        buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
     }
 }

@@ -124,9 +124,10 @@ class EntitiesControllerTests extends Specification {
                 "createdDate":null,
                 "modifiedDate":null,
                 "attributeRelease":["givenName","employeeNumber"],
-                "version":-1891841119,
+                "version":1445248649,
                 "createdBy":null,
-                "current":false
+                "current":false,
+                "groupId":null
             }
         '''
         
@@ -168,9 +169,10 @@ class EntitiesControllerTests extends Specification {
                 "createdDate":null,
                 "modifiedDate":null,
                 "attributeRelease":["givenName","employeeNumber"],
-                "version":-1891841119,
+                "version":1445248649,
                 "createdBy":null,
-                "current":false
+                "current":false,
+                "groupId":null
             }
         '''
         

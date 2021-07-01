@@ -26,4 +26,6 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
     Stream<EntityDescriptor> findAllDisabledAndNotOwnedByAdmin();
 
     Stream<EntityDescriptor> findAllStreamByCreatedBy(String createdBy);
+
+    Stream<EntityDescriptor> findAllStreamByGroup_resourceIdOrCreatedBy(String resourceId, String username);
 }

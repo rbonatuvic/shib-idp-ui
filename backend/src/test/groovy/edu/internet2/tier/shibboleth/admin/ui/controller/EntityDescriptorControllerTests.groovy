@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
@@ -71,6 +72,8 @@ class EntityDescriptorControllerTests extends Specification {
 
     UserService userService
     EntityDescriptorVersionService versionService = Mock()
+    
+    IGroupService groupService = Mock()
 
     def setup() {
         generator = new TestObjectGenerator()
@@ -79,6 +82,8 @@ class EntityDescriptorControllerTests extends Specification {
 
         userService = new UserService(roleRepository, userRepository)
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), userService)
+        service.entityDescriptorRepository =  entityDescriptorRepository
+        service.groupService = groupService
 
         controller = new EntityDescriptorController(userService, versionService)
         controller.entityDescriptorRepository =  entityDescriptorRepository
@@ -124,6 +129,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null //"groupId": null
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true,
                 createdDate: LocalDateTime.parse(expectedCreationDate))
@@ -146,7 +152,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "assertionConsumerServices": null,
 	            "version": $version,
                 "createdBy": null,
-                "current": false
+                "current": false,
+                "groupId": null
               }
             ]    
         """
@@ -173,6 +180,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null //"groupId": null
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
                 serviceEnabled: true,
@@ -200,7 +208,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "assertionConsumerServices": null,
                 "version": $versionOne,
                 "createdBy": null,
-                "current": false
+                "current": false,
+                "groupId": null
               },
               {
 	            "id": "uuid-2",
@@ -217,7 +226,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "assertionConsumerServices": null,
                 "version": $versionTwo,
                 "createdBy": null,
-                "current": false
+                "current": false,
+                "groupId": null
               }              
            ]    
         """
@@ -245,6 +255,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_USER'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
                 serviceEnabled: true,
@@ -269,7 +280,8 @@ class EntityDescriptorControllerTests extends Specification {
                 "assertionConsumerServices": null,
                 "version": $versionOne,
                 "createdBy": "someUser",
-                "current": false
+                "current": false,
+                "groupId": null
               }              
            ]    
         """
@@ -295,6 +307,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null
         def expectedCreationDate = '2017-10-23T11:11:11'
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
@@ -339,7 +352,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "assertionConsumerServices": null,
                 "version": $version,
                 "createdBy": null,
-                "current": false
+                "current": false,
+                "groupId": null
               }                
         """
 
@@ -468,6 +482,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
         def expectedSpName = 'sp1'
@@ -494,7 +509,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "assertionConsumerServices": null,
                 "version": $version,
                 "createdBy": null,
-                "current": false
+                "current": false,
+                "groupId": null
               }                
         """
 
@@ -518,6 +534,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_USER'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null
         def expectedCreationDate = '2017-10-23T11:11:11'
         def providedResourceId = 'uuid-1'
         def expectedSpName = 'sp1'
@@ -545,7 +562,8 @@ class EntityDescriptorControllerTests extends Specification {
 	            "assertionConsumerServices": null,
                 "version": $version,
                 "createdBy": "someUser",
-                "current": false
+                "current": false,
+                "groupId": null
               }                
         """
 
@@ -899,6 +917,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
+        groupService.find(null) >> null
         def entityDescriptor = generator.buildEntityDescriptor()
         def updatedEntityDescriptor = generator.buildEntityDescriptor()
         updatedEntityDescriptor.resourceId = entityDescriptor.resourceId

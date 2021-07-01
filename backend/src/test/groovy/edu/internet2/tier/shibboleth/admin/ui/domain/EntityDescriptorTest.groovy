@@ -10,6 +10,8 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadat
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlFileBackedHTTPMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -91,6 +93,14 @@ class EntityDescriptorTest extends Specification {
             metadataResolver.resolvers = new ArrayList<>()
             metadataResolver.initialize()
             return metadataResolver
+        }
+        
+        @Bean
+        GroupServiceImpl groupService(GroupsRepository repo) {
+            new GroupServiceImpl().with {
+                it.repo = repo
+                return it
+            }
         }
     }
 }

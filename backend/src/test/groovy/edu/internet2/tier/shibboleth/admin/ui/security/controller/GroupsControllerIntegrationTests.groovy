@@ -24,6 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
+import javax.persistence.EntityManager
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles(["no-auth", "dev"])
@@ -32,6 +34,9 @@ class GroupsControllerIntegrationTests extends Specification {
     @Autowired
     private MockMvc mockMvc
 
+    @Autowired
+    EntityManager entityManager
+    
     static RESOURCE_URI = '/api/admin/groups'
     static USERS_RESOURCE_URI = '/api/admin/users'
     
@@ -147,35 +152,7 @@ class GroupsControllerIntegrationTests extends Specification {
         then: 'The group not found'
         nonexistentGroupRequest.andExpect(status().isNotFound())
     }
-    
-//    @Rollback
-//    @WithMockUser(value = "admin", roles = ["ADMIN"])
-//    def 'DELETE ONE existing group'() {
-//        when: 'GET request for a single specific group in a system that has groups'
-//        def result = mockMvc.perform(get("$RESOURCE_URI/BBB"))
-//        
-//        then: 'GET request for a single specific group completed with HTTP 200'
-//        result.andExpect(status().isOk())
-//
-//        when: 'DELETE request is made'
-//        result = mockMvc.perform(delete("$RESOURCE_URI/BBB"))
-//
-//        then: 'DELETE was successful'
-//        result.andExpect(status().isNoContent())
-//
-//        when: 'GET request for a single specific group just deleted'
-//        result = mockMvc.perform(get("$RESOURCE_URI/BBB"))                
-//
-//        then: 'The group not found'
-//        result.andExpect(status().isNotFound())
-//        
-//        when: 'DELETE request for a single specific group that does not exist'
-//        result = mockMvc.perform(delete("$RESOURCE_URI/CCCC"))
-//
-//        then: 'The group not found'
-//        result.andExpect(status().isNotFound())
-//    }
-    
+      
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'DELETE performs correctly when group attached to a user'() {
@@ -218,6 +195,8 @@ class GroupsControllerIntegrationTests extends Specification {
         
         
         when: 'DELETE request is made'
+        entityManager.flush()
+        entityManager.clear()
         result = mockMvc.perform(delete("$RESOURCE_URI/$group.resourceId"))
 
         then: 'DELETE was not successful'

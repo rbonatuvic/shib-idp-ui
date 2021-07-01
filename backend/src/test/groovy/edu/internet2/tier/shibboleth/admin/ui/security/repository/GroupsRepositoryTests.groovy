@@ -139,5 +139,11 @@ class GroupsRepositoryTests extends Specification {
         
         then:
         repo.findAll().size() == 0
+        
+        when:
+        def nothingThere = repo.findByResourceId(null);
+        
+        then:
+        nothingThere == null
     }
 }

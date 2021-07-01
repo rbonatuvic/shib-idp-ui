@@ -22,6 +22,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSso
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -68,9 +69,13 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
     @Autowired
     UserRepository userRepository
 
+    @Autowired
+    IGroupService groupService
+    
     def setup() {
         service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
                 new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration), new UserService(roleRepository, userRepository))
+        service.groupService = groupService
         mapper = new ObjectMapper()
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
