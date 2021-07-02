@@ -58,6 +58,7 @@ public class User extends AbstractAuditable {
     private String password;
 
     @Transient
+    @EqualsAndHashCode.Exclude
     private String role;
 
     @JsonIgnore
@@ -69,6 +70,13 @@ public class User extends AbstractAuditable {
     @Column(nullable = false, unique = true)
     private String username;
 
+    public String getGroupId() {
+        if (groupId == null && group != null) {
+            groupId = group.getResourceId();
+        }
+        return groupId;
+    }
+    
     public String getRole() {
         if (StringUtils.isBlank(this.role)) {
             Set<Role> roles = this.getRoles();
@@ -78,5 +86,12 @@ public class User extends AbstractAuditable {
             this.role = roles.iterator().next().getName();
         }
         return this.role;
+    }
+    
+    public void setGroup(Group assignedGroup) {
+        this.group = assignedGroup;
+        if (group != null) {
+            groupId = group.getResourceId();
+        }
     }
 }

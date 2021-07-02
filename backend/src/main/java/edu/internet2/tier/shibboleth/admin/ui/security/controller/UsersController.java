@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import groovy.util.logging.Slf4j;
+import jline.internal.Log;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,14 @@ public class UsersController {
     @Transactional(readOnly = true)
     @GetMapping
     public List<User> getAll() {
-        return userRepository.findAll();
+        try {
+            List<User> results = userRepository.findAll(); 
+            return results;
+        }
+        catch (Exception e) {
+            Log.error("Unable to fetch users because: {}", e.getMessage());
+            throw e;
+        }
     }
 
     @Transactional(readOnly = true)
