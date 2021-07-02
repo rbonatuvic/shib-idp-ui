@@ -2,7 +2,7 @@ import React from 'react';
 import Translate from '../../i18n/components/translate';
 
 import SourceList from '../../metadata/domain/source/component/SourceList';
-import { useMetadataEntities } from '../../metadata/hooks/api';
+import { useMetadataEntities, useMetadataEntity } from '../../metadata/hooks/api';
 import { Search } from '../component/Search';
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
@@ -14,6 +14,10 @@ export function SourcesTab () {
     const { get, response } = useMetadataEntities('source', {
         cachePolicy: 'no-cache'
     });
+
+    const updater = useMetadataEntity('source', {
+        cachePolicy: 'no-cache'
+    })
 
     async function loadSources() {
         const sources = await get('');
@@ -27,6 +31,16 @@ export function SourcesTab () {
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadSources() }, []);
 
+    async function changeSourceGroup(source, group) {
+        const sources = await updater.put(`/${source.id}`, {
+            ...source,
+            groupId: group
+        });
+        if (updater.response.ok) {
+            loadSources();
+        }
+    }
+
     return (
         <section className="section">
             <div className="section-body border border-top-0 border-primary">
@@ -37,7 +51,7 @@ export function SourcesTab () {
                 </div>
                 <div className="p-3">
                     <Search entities={sources} searchable={searchProps}>
-                        {(searched) => <SourceList entities={ searched } onDelete={ updateSources }></SourceList>}
+                        {(searched) => <SourceList entities={ searched } onDelete={ updateSources } onChangeGroup={changeSourceGroup}></SourceList>}
                     </Search>
                 </div>
             </div>
