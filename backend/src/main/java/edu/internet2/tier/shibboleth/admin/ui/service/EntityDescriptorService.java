@@ -67,6 +67,8 @@ public interface EntityDescriptorService {
     
     EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException;
 
-    edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException;
+    edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException;
+
+    void delete(String resourceId) throws ForbiddenException, EntityNotFoundException;
 
 }

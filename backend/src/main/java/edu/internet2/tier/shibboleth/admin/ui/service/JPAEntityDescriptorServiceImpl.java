@@ -779,11 +779,24 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException {
+    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
         if (ed == null) {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
+        if (!userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup())) {
+            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+        }     
         return ed;
+    }
+
+    @Override
+    public void delete(String resourceId) throws ForbiddenException, EntityNotFoundException {
+        EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
+        if (ed.isServiceEnabled()) {
+            throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
+        }
+        entityDescriptorRepository.delete(ed);
+        
     }
 }

@@ -4,6 +4,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.envers.EnversVersionServiceSupport;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -22,8 +23,12 @@ public class EnversEntityDescriptorVersionService implements EntityDescriptorVer
     }
 
     @Override
-    public List<Version> findVersionsForEntityDescriptor(String resourceId) {
-        return enversVersionServiceSupport.findVersionsForPersistentEntity(resourceId, EntityDescriptor.class);
+    public List<Version> findVersionsForEntityDescriptor(String resourceId) throws EntityNotFoundException {
+        List<Version> results = enversVersionServiceSupport.findVersionsForPersistentEntity(resourceId, EntityDescriptor.class); 
+        if (results.isEmpty()) {
+            throw new EntityNotFoundException(String.format("No versions found for entity descriptor with resource id [%s].", resourceId));
+        }
+        return results;
     }
 
     @Override

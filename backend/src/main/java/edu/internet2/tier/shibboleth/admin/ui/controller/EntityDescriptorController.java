@@ -12,7 +12,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.opensaml.core.xml.io.MarshallingException;
@@ -89,11 +88,7 @@ public class EntityDescriptorController {
     @DeleteMapping(value = "/EntityDescriptor/{resourceId}")
     @Transactional
     public ResponseEntity<?> deleteOne(@PathVariable String resourceId) throws ForbiddenException, EntityNotFoundException {
-        EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
-        if (ed.isServiceEnabled()) {
-            throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
-        }
-        entityDescriptorRepository.delete(ed);
+        entityDescriptorService.delete(resourceId);
         return ResponseEntity.noContent().build();
     }
 
@@ -113,29 +108,16 @@ public class EntityDescriptorController {
 
     @GetMapping("/EntityDescriptors")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getAll() {
-        try {
-            return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
-        } catch (ForbiddenException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, e.getMessage()));
-        }
+    public ResponseEntity<?> getAll() throws ForbiddenException {
+        return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) {
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        if (ed == null) {
-            return ResponseEntity.notFound().build();
-        }
-        List<Version> versions = versionService.findVersionsForEntityDescriptor(resourceId);
-        if (versions.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        if(userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup() == null ? null : ed.getGroup().getResourceId())) {
-            return ResponseEntity.ok(versions);
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
+        // this verifies that both the ED exists and the user has proper access, so needs to remain
+        EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
+        return ResponseEntity.ok(versionService.findVersionsForEntityDescriptor(ed.getResourceId()));
     }
 
     @Secured("ROLE_ADMIN")
