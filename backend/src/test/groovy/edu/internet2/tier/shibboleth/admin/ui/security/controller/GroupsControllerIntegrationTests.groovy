@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.transaction.annotation.Transactional
 
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -68,13 +71,11 @@ class GroupsControllerIntegrationTests extends Specification {
               .andExpect(content().json(expectedJson, false))
               
         when: 'Try to create with an existing resource id'
-        result = mockMvc.perform(post(RESOURCE_URI)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonOutput.toJson(newGroup))
-            .accept(MediaType.APPLICATION_JSON))
+        def exceptionExpected = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(newGroup))
+                                       .accept(MediaType.APPLICATION_JSON)).andReturn().getResolvedException()
         
         then: 'Expecting method not allowed'
-        result.andExpect(status().isMethodNotAllowed())
+        exceptionExpected instanceof GroupExistsConflictException == true
     }
 
     @Rollback
@@ -107,13 +108,11 @@ class GroupsControllerIntegrationTests extends Specification {
         def newGroup = [name: 'XXXXX',
             description: 'should not work',
             resourceId: 'XXXX']
-        def notFoundresult = mockMvc.perform(put(RESOURCE_URI)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(JsonOutput.toJson(newGroup))
-            .accept(MediaType.APPLICATION_JSON))
-        
+        def exceptionExpected = mockMvc.perform(put(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(newGroup))
+                                    .accept(MediaType.APPLICATION_JSON)).andReturn().getResolvedException()
+
         then: 'Expecting nothing happened because the object was not found'
-        notFoundresult.andExpect(status().isNotFound())
+        exceptionExpected instanceof EntityNotFoundException == true
     }
         
     @WithMockUser(value = "admin", roles = ["ADMIN"])
@@ -147,10 +146,10 @@ class GroupsControllerIntegrationTests extends Specification {
         singleGroupRequest.andExpect(status().isOk())
         
         when: 'GET request for a single non-existent group in a system that has groups'
-        def nonexistentGroupRequest = mockMvc.perform(get("$RESOURCE_URI/CCC"))
+        def exceptionExpected = mockMvc.perform(get("$RESOURCE_URI/CCC")).andReturn().getResolvedException()
         
         then: 'The group not found'
-        nonexistentGroupRequest.andExpect(status().isNotFound())
+        exceptionExpected instanceof EntityNotFoundException == true
     }
       
     @Rollback
@@ -197,9 +196,10 @@ class GroupsControllerIntegrationTests extends Specification {
         when: 'DELETE request is made'
         entityManager.flush()
         entityManager.clear()
-        result = mockMvc.perform(delete("$RESOURCE_URI/$group.resourceId"))
+        
+        def exceptionExpected = mockMvc.perform(delete("$RESOURCE_URI/$group.resourceId")).andReturn().getResolvedException()
 
-        then: 'DELETE was not successful'
-        result.andExpect(status().isConflict())
+        then: 'Expecting method not allowed'
+        exceptionExpected instanceof GroupDeleteException == true
     }
 }
