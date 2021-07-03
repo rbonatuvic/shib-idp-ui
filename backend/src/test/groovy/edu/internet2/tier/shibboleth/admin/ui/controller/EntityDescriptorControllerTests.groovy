@@ -6,6 +6,8 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
@@ -20,8 +22,12 @@ import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+
+import org.springframework.beans.factory.support.RootBeanDefinition
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.support.StaticApplicationContext
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
@@ -29,6 +35,10 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver
+
 import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Subject
@@ -92,8 +102,8 @@ class EntityDescriptorControllerTests extends Specification {
 
         controller.restTemplate = mockRestTemplate
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
-
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        
         securityContext.getAuthentication() >> authentication
         SecurityContextHolder.setContext(securityContext)
 
@@ -410,20 +420,18 @@ class EntityDescriptorControllerTests extends Specification {
         """
 
         when:
-        def result = mockMvc.perform(
-                post('/api/EntityDescriptor')
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        def exception = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody)).andReturn().getResolvedException()
 
         then:
-        0 * entityDescriptorRepository.findByEntityID(_)
-        0 * entityDescriptorRepository.save(_)
-
-        result.andExpect(status().isForbidden())
+        exception instanceof ForbiddenException == true
     }
 
     def 'POST /EntityDescriptor record already exists'() {
         given:
+        def username = 'admin'
+        def role = 'ROLE_ADMIN'
+        authentication.getName() >> username
+        userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
         def expectedEntityId = 'eid1'
         def postedJsonBody = """            
               {
@@ -446,15 +454,16 @@ class EntityDescriptorControllerTests extends Specification {
         """
 
         when:
-        def result = mockMvc.perform(
-                post('/api/EntityDescriptor')
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        //Stub invocation of the repository returning an existing record
+        1 * entityDescriptorRepository.findByEntityID(expectedEntityId) >> new EntityDescriptor(entityID: expectedEntityId)        
 
         then:
-        //Stub invocation of the repository returning an existing record
-        1 * entityDescriptorRepository.findByEntityID(expectedEntityId) >> new EntityDescriptor(entityID: expectedEntityId)
-        result.andExpect(status().isConflict())
+        try {
+            def exceptionExpected = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
+        }
+        catch (Exception e) {
+            e instanceof EntityIdExistsException == true
+        }
     }
 
     def 'GET /EntityDescriptor/{resourceId} non-existent'() {
@@ -964,13 +973,10 @@ class EntityDescriptorControllerTests extends Specification {
         0 * entityDescriptorRepository.save(_) >> updatedEntityDescriptor
 
         when:
-        def result = mockMvc.perform(
-                put("/api/EntityDescriptor/$resourceId")
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        def exception = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody)).andReturn().getResolvedException()
 
         then:
-        result.andExpect(status().isForbidden())
+        exception instanceof ForbiddenException == true
     }
 
     def "PUT /EntityDescriptor denies the request if the PUTing user is not an ADMIN and not the createdBy user"() {
@@ -990,16 +996,13 @@ class EntityDescriptorControllerTests extends Specification {
         1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
 
         when:
-        def result = mockMvc.perform(
-                put("/api/EntityDescriptor/$resourceId")
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        def exception = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody)).andReturn().getResolvedException()
 
         then:
-        result.andExpect(status().is(403))
+        exception instanceof ForbiddenException == true
     }
 
-    def "PUT /EntityDescriptor 409's if the version numbers don't match"() {
+    def "PUT /EntityDescriptor throws a concurrent mod exception if the version numbers don't match"() {
         given:
         def username = 'admin'
         def role = 'ROLE_ADMIN'
@@ -1013,15 +1016,15 @@ class EntityDescriptorControllerTests extends Specification {
 
         def resourceId = entityDescriptor.resourceId
 
-        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
-
         when:
-        def result = mockMvc.perform(
-                put("/api/EntityDescriptor/$resourceId")
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
-
+        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
+                
         then:
-        result.andExpect(status().is(409))
+        try {
+            def exception = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody))
+        }
+        catch (Exception e) {
+          e instanceof ConcurrentModificationException == true
+        }
     }
 }

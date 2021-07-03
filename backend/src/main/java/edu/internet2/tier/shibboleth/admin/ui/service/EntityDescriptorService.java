@@ -2,8 +2,13 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +18,6 @@ import java.util.Map;
  * @since 1.0
  */
 public interface EntityDescriptorService {
-
     /**
      * Map from front-end data representation of entity descriptor to opensaml implementation of entity descriptor model
      *
@@ -33,7 +37,7 @@ public interface EntityDescriptorService {
     /**
      * @return a list of EntityDescriptorRepresentations that a user has the rights to access
      */
-    List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess();
+    List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException;
     
     /**
      * Given a list of attributes, generate an AttributeReleaseList
@@ -58,5 +62,11 @@ public interface EntityDescriptorService {
      * @param representation   front end representation to use to update
      */
     void updateDescriptorFromRepresentation(final EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
+
+    EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityIdExistsException;
+    
+    EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException;
+
+    edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException;
 
 }

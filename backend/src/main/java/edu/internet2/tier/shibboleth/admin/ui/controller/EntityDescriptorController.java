@@ -3,12 +3,16 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.opensaml.core.xml.io.MarshallingException;
@@ -20,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +37,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
+
 import java.net.URI;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,14 +47,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 @Slf4j
 public class EntityDescriptorController {
-    private static URI getResourceUriFor(EntityDescriptor ed) {
+    static URI getResourceUriFor(String resourceId) {
         return ServletUriComponentsBuilder
                 .fromCurrentServletMapping().path("/api/EntityDescriptor")
-                .pathSegment(ed.getResourceId())
+                .pathSegment(resourceId)
                 .build()
                 .toUri();
     }
-
+    
     @Autowired
     private EntityDescriptorRepository entityDescriptorRepository;
 
@@ -73,58 +80,28 @@ public class EntityDescriptorController {
 
     @PostMapping("/EntityDescriptor")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) {
-        final String entityId = edRepresentation.getEntityId();
-
-        ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(edRepresentation.isServiceEnabled());
-        if (entityDescriptorEnablingDeniedResponse != null) {
-            return entityDescriptorEnablingDeniedResponse;
-        }
-
-        ResponseEntity<?> existingEntityDescriptorConflictResponse = existingEntityDescriptorCheck(entityId);
-        if (existingEntityDescriptorConflictResponse != null) {
-            return existingEntityDescriptorConflictResponse;
-        }
-
-        EntityDescriptor ed = (EntityDescriptor) entityDescriptorService.createDescriptorFromRepresentation(edRepresentation);
-
-        EntityDescriptor persistedEd = entityDescriptorRepository.save(ed);
-        edRepresentation.setId(persistedEd.getResourceId());
-        edRepresentation.setCreatedDate(persistedEd.getCreatedDate());
-        return ResponseEntity.created(getResourceUriFor(persistedEd)).body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
+    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityIdExistsException {
+        EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(edRepresentation);            
+        return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping(value = "/EntityDescriptor/{resourceId}")
     @Transactional
-    public ResponseEntity<?> deleteOne(@PathVariable String resourceId) {
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        if (ed == null) {
-            return ResponseEntity.notFound().build();
-        } else if (ed.isServiceEnabled()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, "Deleting an enabled Metadata Source is not allowed. Disable the source and try again."));
-        } else {
-            entityDescriptorRepository.delete(ed);
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteOne(@PathVariable String resourceId) throws ForbiddenException, EntityNotFoundException {
+        EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
+        if (ed.isServiceEnabled()) {
+            throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
         }
-    }
-
-    private ResponseEntity<?> entityDescriptorEnablePermissionsCheck(boolean serviceEnabled) {
-        User user = userService.getCurrentUser();
-        if (user != null) {
-            if (serviceEnabled && !user.getRole().equals("ROLE_ADMIN")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(new ErrorResponse(HttpStatus.FORBIDDEN, "You do not have the permissions necessary to enable this service."));
-            }
-        }
-        return null;
+        entityDescriptorRepository.delete(ed);
+        return ResponseEntity.noContent().build();
     }
 
     private ResponseEntity<?> existingEntityDescriptorCheck(String entityId) {
         final EntityDescriptor ed = entityDescriptorRepository.findByEntityID(entityId);
         if (ed != null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(getResourceUriFor(ed));
+            headers.setLocation(getResourceUriFor(ed.getResourceId()));
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .headers(headers)
@@ -137,12 +114,10 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptors")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
+        try {
             return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
-                    "You are not authorized to perform the requested operation."));
+        } catch (ForbiddenException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, e.getMessage()));
         }
     }
 
@@ -225,6 +200,11 @@ public class EntityDescriptorController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
+    @ExceptionHandler({ ForbiddenException.class })
+    public void handleException() {
+        //
+    }
+    
     private ResponseEntity<?> handleUploadingEntityDescriptorXml(byte[] rawXmlBytes, String spName) throws Exception {
         final EntityDescriptor ed = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(rawXmlBytes));
 
@@ -235,7 +215,7 @@ public class EntityDescriptorController {
 
         ed.setServiceProviderName(spName);
         final EntityDescriptor persistedEd = entityDescriptorRepository.save(ed);
-        return ResponseEntity.created(getResourceUriFor(persistedEd))
+        return ResponseEntity.created(getResourceUriFor(persistedEd.getResourceId()))
                 .body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
     }
 
@@ -246,38 +226,10 @@ public class EntityDescriptorController {
 
     @PutMapping("/EntityDescriptor/{resourceId}")
     @Transactional
-    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(resourceId);
-
-            if (existingEd == null) {
-                return ResponseEntity.notFound().build();
-            } else {
-                if (userService.isAuthorizedFor(existingEd.getCreatedBy(),
-                                existingEd.getGroup() == null ? null : existingEd.getGroup().getResourceId())) {
-                    if (!existingEd.isServiceEnabled()) {
-                        ResponseEntity<?> entityDescriptorEnablingDeniedResponse = entityDescriptorEnablePermissionsCheck(
-                                        edRepresentation.isServiceEnabled());
-                        if (entityDescriptorEnablingDeniedResponse != null) {
-                            return entityDescriptorEnablingDeniedResponse;
-                        }
-                    }
-
-                    // Verify we're the only one attempting to update the EntityDescriptor
-                    if (edRepresentation.getVersion() != existingEd.hashCode()) {
-                        return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-                    }
-
-                    entityDescriptorService.updateDescriptorFromRepresentation(existingEd, edRepresentation);
-                    existingEd = entityDescriptorRepository.save(existingEd);
-
-                    return ResponseEntity.ok().body(entityDescriptorService.createRepresentationFromDescriptor(existingEd));
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN,
-                        "You are not authorized to perform the requested operation."));
+    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) throws ForbiddenException, ConcurrentModificationException, EntityNotFoundException {
+        edRepresentation.setId(resourceId); // This should be the same already, but just to be safe...
+        EntityDescriptorRepresentation result = entityDescriptorService.update(edRepresentation);
+        return ResponseEntity.ok().body(result);
     }
 
     @PostMapping(value = "/EntityDescriptor", consumes = "application/xml")

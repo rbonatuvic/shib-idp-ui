@@ -2,6 +2,8 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 
 import com.google.common.base.Strings;
+
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder;
@@ -41,12 +43,14 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
@@ -57,13 +61,14 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -400,7 +405,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() {
+    public List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
         case ADMIN:
             return entityDescriptorRepository.findAllStreamByCustomQuery().map(ed -> createRepresentationFromDescriptor(ed))
@@ -412,10 +417,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                             .findAllStreamByGroup_resourceIdOrCreatedBy(group == null ? null : group.getResourceId(), user.getUsername())
                             .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
         case OWNER:
-        default:
             return entityDescriptorRepository.findAllStreamByCreatedBy(userService.getCurrentUser().getUsername())
                             .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
-
+        default:
+            throw new ForbiddenException();
         }
     }
     
@@ -737,5 +742,48 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             throw new UnsupportedOperationException("not yet implemented");
         }
         buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
+    }
+
+    @Override
+    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityIdExistsException {
+        if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
+            throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
+        }
+        
+        if (entityDescriptorRepository.findByEntityID(edRep.getEntityId()) != null) {
+            throw new EntityIdExistsException(edRep.getEntityId());
+        }
+        
+        EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
+        return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
+    }
+
+    @Override
+    public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityNotFoundException {
+        EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
+        if (existingEd == null) {
+            throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));          
+        }
+        if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
+            throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
+        }
+        if (!userService.isAuthorizedFor(existingEd.getCreatedBy(), existingEd.getGroup())) {
+            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+        }        
+        // Verify we're the only one attempting to update the EntityDescriptor
+        if (edRep.getVersion() != existingEd.hashCode()) {
+            throw new ConcurrentModificationException(String.format("A concurrent modification has occured on entity descriptor with entity id [%s]. Please refresh and try again", edRep.getId()));            
+        }
+        updateDescriptorFromRepresentation(existingEd, edRep);
+        return createRepresentationFromDescriptor(entityDescriptorRepository.save(existingEd));
+    }
+
+    @Override
+    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
+        }
+        return ed;
     }
 }

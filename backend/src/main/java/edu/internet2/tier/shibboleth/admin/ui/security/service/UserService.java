@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
@@ -50,18 +51,25 @@ public class UserService {
             return UserAccess.OWNER;
         }
     }
+
+    public boolean isAuthorizedFor(String objectCreatedBy, Group objectGroup) {        
+        String groupId = objectGroup == null ? "" : objectGroup.getResourceId();      
+        return isAuthorizedFor(objectCreatedBy, groupId);
+    }
+    
     
     public boolean isAuthorizedFor(String objectCreatedBy, String objectGroupResourceId) {
-        User currentUser = getCurrentUser();
         String groupId = objectGroupResourceId == null ? "" : objectGroupResourceId;
         
-        switch (getCurrentUserAccess()) {
+        switch (getCurrentUserAccess()) { // no user returns NONE
         case ADMIN:
             return true;
         case GROUP:
+            User currentUser = getCurrentUser();
             return objectCreatedBy.equals(currentUser.getUsername()) || groupId.equals(currentUser.getGroupId());
         case OWNER:
-            return objectCreatedBy.equals(currentUser.getUsername());
+            User cu = getCurrentUser();
+            return objectCreatedBy.equals(cu.getUsername());
         default:
             return false;
         }
@@ -88,5 +96,10 @@ public class UserService {
         } else {
             throw new RuntimeException(String.format("User with username [%s] has no role defined and therefor cannot be updated!", user.getUsername()));
         }
+    }
+
+    public boolean currentUserIsAdmin() {
+        User user = getCurrentUser();
+        return user != null && user.getRole().equals("ROLE_ADMIN");
     }
 }
