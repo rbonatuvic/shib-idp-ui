@@ -67,7 +67,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @Setter
     @Getter
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-//    @JsonIgnore
     private Group group;
 
     private String localId;
@@ -131,7 +130,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
         return entityID;
     }
 
-    //getters and setters
     @Override
     public String getID() {
         return this.localId;
