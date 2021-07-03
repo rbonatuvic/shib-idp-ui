@@ -51,13 +51,13 @@ export default function UserMaintenance({ users, roles, onDeleteUser, onChangeUs
                                             </select>
                                         </td>
                                         <td>
-                                            <label htmlFor={`group-${user.username}`} className="sr-only"><Translate value="action.user-role">User role</Translate></label>
+                                            <label htmlFor={`group-${user.username}`} className="sr-only"><Translate value="action.user-group">User group</Translate></label>
                                             <select
                                                 id={`group-${user.username}`}
                                                 name={`group-${user.username}`}
                                                 className="form-control"
                                                 onChange={(event) => onChangeUserGroup(user, event.target.value)}
-                                                value={user.group ? user.group : ''}
+                                                value={user.groupId ? user.groupId : ''}
                                                 disabled={loadingGroups || currentUser.username === user.username}
                                                 disablevalidation="true">
                                                 <option>Select Group</option>

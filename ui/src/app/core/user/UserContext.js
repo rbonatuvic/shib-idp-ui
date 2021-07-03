@@ -39,5 +39,16 @@ function useIsAdmin() {
     return user.role === 'ROLE_ADMIN';
 }
 
+function useIsInGroup(id) {
+    const user = useCurrentUser();
+    return user.group === id;
+}
 
-export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin };
+function useIsAdminOrInGroup() {
+    const isAdmin = useIsAdmin();
+    const isInGroup = useIsInGroup();
+    return isAdmin || isInGroup;
+}
+
+
+export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin, useIsAdminOrInGroup };
