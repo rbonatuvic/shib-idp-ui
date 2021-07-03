@@ -55,9 +55,6 @@ public class EntityDescriptorController {
     }
     
     @Autowired
-    private EntityDescriptorRepository entityDescriptorRepository;
-
-    @Autowired
     private EntityDescriptorService entityDescriptorService;
 
     @Autowired
@@ -68,12 +65,9 @@ public class EntityDescriptorController {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    private UserService userService;
-
     private EntityDescriptorVersionService versionService;
 
-    public EntityDescriptorController(UserService userService, EntityDescriptorVersionService versionService) {
-        this.userService = userService;
+    public EntityDescriptorController(EntityDescriptorVersionService versionService) {
         this.versionService = versionService;
     }
 
@@ -92,20 +86,6 @@ public class EntityDescriptorController {
         return ResponseEntity.noContent().build();
     }
 
-    private ResponseEntity<?> existingEntityDescriptorCheck(String entityId) {
-        final EntityDescriptor ed = entityDescriptorRepository.findByEntityID(entityId);
-        if (ed != null) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(getResourceUriFor(ed.getResourceId()));
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .headers(headers)
-                    .body(new ErrorResponse(String.valueOf(HttpStatus.CONFLICT.value()), String.format("The entity descriptor with entity id [%s] already exists.", entityId)));
-        }
-        //No existing entity descriptor, which is an OK condition indicated by returning a null conflict response
-        return null;
-    }
-
     @GetMapping("/EntityDescriptors")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll() throws ForbiddenException {
@@ -115,7 +95,7 @@ public class EntityDescriptorController {
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
-        // this verifies that both the ED exists and the user has proper access, so needs to remain
+        // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
         return ResponseEntity.ok(versionService.findVersionsForEntityDescriptor(ed.getResourceId()));
     }
@@ -123,82 +103,39 @@ public class EntityDescriptorController {
     @Secured("ROLE_ADMIN")
     @Transactional(readOnly = true)
     @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
-    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() {
-        return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin()
-                .map(ed -> entityDescriptorService.createRepresentationFromDescriptor(ed))
-                .collect(Collectors.toList());
+    public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() throws ForbiddenException {
+        return entityDescriptorService.getAllDisabledAndNotOwnedByAdmin();
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOne(@PathVariable String resourceId) {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-            if (ed == null) {
-                return ResponseEntity.notFound().build();
-            } else {
-                if (userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup() == null ? null : ed.getGroup().getResourceId())) {
-                    EntityDescriptorRepresentation edr = entityDescriptorService.createRepresentationFromDescriptor(ed);
-                    return ResponseEntity.ok(edr);
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                        new ErrorResponse(HttpStatus.FORBIDDEN, "You are not authorized to perform the requested operation."));
-
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
+        return ResponseEntity.ok(entityDescriptorService
+                        .createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser != null) {
-            EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-            if (ed == null) {
-                return ResponseEntity.notFound().build();
-            } else {
-                if (userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup() == null ? null : ed.getGroup().getResourceId())) {
-                    final String xml = this.openSamlObjects.marshalToXmlString(ed);
-                    return ResponseEntity.ok(xml);
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-
+    public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException, EntityNotFoundException, ForbiddenException {
+        EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
+        final String xml = this.openSamlObjects.marshalToXmlString(ed);
+        return ResponseEntity.ok(xml);
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) {
-        EntityDescriptorRepresentation edRepresentation = versionService.findSpecificVersionOfEntityDescriptor(resourceId, versionId);
-
-        if (edRepresentation == null) {
-            return ResponseEntity.notFound().build();
-        }
-        if(userService.isAuthorizedFor(edRepresentation.getCreatedBy(), edRepresentation.getGroupId())) {
-            return ResponseEntity.ok(edRepresentation);
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws EntityNotFoundException, ForbiddenException {
+        // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
+        EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
+        return ResponseEntity.ok(versionService.findSpecificVersionOfEntityDescriptor(ed.getResourceId(), versionId));
     }
-
-    @ExceptionHandler({ ForbiddenException.class })
-    public void handleException() {
-        //
-    }
-    
+  
     private ResponseEntity<?> handleUploadingEntityDescriptorXml(byte[] rawXmlBytes, String spName) throws Exception {
         final EntityDescriptor ed = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(rawXmlBytes));
-
-        ResponseEntity<?> existingEntityDescriptorConflictResponse = existingEntityDescriptorCheck(ed.getEntityID());
-        if (existingEntityDescriptorConflictResponse != null) {
-            return existingEntityDescriptorConflictResponse;
-        }
-
         ed.setServiceProviderName(spName);
-        final EntityDescriptor persistedEd = entityDescriptorRepository.save(ed);
-        return ResponseEntity.created(getResourceUriFor(persistedEd.getResourceId()))
-                .body(entityDescriptorService.createRepresentationFromDescriptor(persistedEd));
+        
+        EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(ed);            
+        return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }
 
     @PostConstruct
@@ -234,5 +171,4 @@ public class EntityDescriptorController {
                     .body(String.format("Error fetching XML metadata from the provided URL. Error: %s", e.getMessage()));
         }
     }
-
 }

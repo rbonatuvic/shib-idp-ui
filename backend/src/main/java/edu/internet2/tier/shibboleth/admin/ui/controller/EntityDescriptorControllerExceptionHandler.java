@@ -17,9 +17,9 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 @ControllerAdvice(assignableTypes = {EntityDescriptorController.class})
 public class EntityDescriptorControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ ForbiddenException.class })
-    public ResponseEntity<?> handleForbiddenAccess(ForbiddenException e, WebRequest request) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, e.getMessage()));
+    @ExceptionHandler({ ConcurrentModificationException.class })
+    public ResponseEntity<?> handleConcurrentModificationException(ConcurrentModificationException e, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT, e.getMessage()));
     }
     
     @ExceptionHandler({ EntityIdExistsException.class })
@@ -37,8 +37,8 @@ public class EntityDescriptorControllerExceptionHandler extends ResponseEntityEx
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
     }
     
-    @ExceptionHandler({ ConcurrentModificationException.class })
-    public ResponseEntity<?> handleConcurrentModificationException(ConcurrentModificationException e, WebRequest request) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT, e.getMessage()));
+    @ExceptionHandler({ ForbiddenException.class })
+    public ResponseEntity<?> handleForbiddenAccess(ForbiddenException e, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, e.getMessage()));
     }
 }

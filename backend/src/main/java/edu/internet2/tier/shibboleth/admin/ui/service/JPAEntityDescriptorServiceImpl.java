@@ -127,45 +127,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return ed;
     }
 
-    private Attribute createAttributeWithArbitraryValues(String name, String friendlyName, List<String> values) {
-        return createAttributeWithArbitraryValues(name, friendlyName, values.toArray(new String[]{}));
-    }
-
-    private Attribute createAttributeWithArbitraryValues(String name, String friendlyName, String... values) {
-        Attribute attribute = createBaseAttribute(name, friendlyName);
-
-        for (String value : values) {
-            XSAny xsAny = (XSAny) openSamlObjects.getBuilderFactory().getBuilder(XSAny.TYPE_NAME).buildObject(AttributeValue.DEFAULT_ELEMENT_NAME);
-            xsAny.setTextContent(value);
-            attribute.getAttributeValues().add(xsAny);
-        }
-
-        return attribute;
-    }
-
-    private Attribute createAttributeWithBooleanValue(String name, String friendlyName, Boolean value) {
-        Attribute attribute = createBaseAttribute(name, friendlyName);
-
-        XSBoolean xsBoolean = (XSBoolean) openSamlObjects.getBuilderFactory().getBuilder(XSBoolean.TYPE_NAME).buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSBoolean.TYPE_NAME);
-        xsBoolean.setValue(XSBooleanValue.valueOf(value.toString()));
-
-        attribute.getAttributeValues().add(xsBoolean);
-        return attribute;
-    }
-
-    private Attribute createBaseAttribute(String name, String friendlyName) {
-        Attribute attribute = ((AttributeBuilder) openSamlObjects.getBuilderFactory().getBuilder(Attribute.DEFAULT_ELEMENT_NAME)).buildObject();
-        attribute.setName(name);
-        attribute.setFriendlyName(friendlyName);
-        attribute.setNameFormat("urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
-
-        return attribute;
-    }
-
     @Override
     public EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation) {
         EntityDescriptor ed = openSamlObjects.buildDefaultInstanceOfType(EntityDescriptor.class);
-
         return buildDescriptorFromRepresentation(ed, representation);
     }
 
@@ -193,7 +157,25 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return keyDescriptor;
     }
 
-    //TODO: implement
+    @Override
+    public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, EntityIdExistsException {
+        return createNew(createRepresentationFromDescriptor(ed));
+    }
+
+    @Override
+    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityIdExistsException {
+        if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
+            throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
+        }
+        
+        if (entityDescriptorRepository.findByEntityID(edRep.getEntityId()) != null) {
+            throw new EntityIdExistsException(edRep.getEntityId());
+        }
+        
+        EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
+        return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
+    }
+    
     @Override
     public EntityDescriptorRepresentation createRepresentationFromDescriptor(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor) {
         EntityDescriptor ed = (EntityDescriptor) entityDescriptor;
@@ -405,6 +387,24 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
+    public void delete(String resourceId) throws ForbiddenException, EntityNotFoundException {
+        EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
+        if (ed.isServiceEnabled()) {
+            throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
+        }
+        entityDescriptorRepository.delete(ed);
+        
+    }
+
+    @Override
+    public Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException {
+        if (!userService.currentUserIsAdmin()) {
+            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+        }   
+        return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin().map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+    }
+
+    @Override
     public List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException {
         switch (userService.getCurrentUserAccess()) {
         case ADMIN:
@@ -423,7 +423,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             throw new ForbiddenException();
         }
     }
-    
+
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
@@ -453,6 +453,18 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             }
         }
         return entityAttributes;
+    }
+
+    @Override
+    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
+        }
+        if (!userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup())) {
+            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+        }     
+        return ed;
     }
 
     private Optional<EntityAttributes> getOptionalEntityAttributes(EntityDescriptor ed) {
@@ -737,28 +749,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
-        if (!(entityDescriptor instanceof EntityDescriptor)) {
-            throw new UnsupportedOperationException("not yet implemented");
-        }
-        buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
-    }
-
-    @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityIdExistsException {
-        if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
-            throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
-        }
-        
-        if (entityDescriptorRepository.findByEntityID(edRep.getEntityId()) != null) {
-            throw new EntityIdExistsException(edRep.getEntityId());
-        }
-        
-        EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
-        return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
-    }
-
-    @Override
     public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityNotFoundException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
         if (existingEd == null) {
@@ -779,24 +769,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException {
-        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
-        if (ed == null) {
-            throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
+    public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
+        if (!(entityDescriptor instanceof EntityDescriptor)) {
+            throw new UnsupportedOperationException("not yet implemented");
         }
-        if (!userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup())) {
-            throw new ForbiddenException("You are not authorized to perform the requested operation.");
-        }     
-        return ed;
-    }
-
-    @Override
-    public void delete(String resourceId) throws ForbiddenException, EntityNotFoundException {
-        EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
-        if (ed.isServiceEnabled()) {
-            throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
-        }
-        entityDescriptorRepository.delete(ed);
-        
+        buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
     }
 }

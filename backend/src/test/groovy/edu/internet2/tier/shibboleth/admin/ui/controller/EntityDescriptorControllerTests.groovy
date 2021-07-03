@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -95,8 +96,7 @@ class EntityDescriptorControllerTests extends Specification {
         service.entityDescriptorRepository =  entityDescriptorRepository
         service.groupService = groupService
 
-        controller = new EntityDescriptorController(userService, versionService)
-        controller.entityDescriptorRepository =  entityDescriptorRepository
+        controller = new EntityDescriptorController(versionService)
         controller.openSamlObjects = openSamlObjects
         controller.entityDescriptorService = service
 
@@ -106,7 +106,6 @@ class EntityDescriptorControllerTests extends Specification {
         
         securityContext.getAuthentication() >> authentication
         SecurityContextHolder.setContext(securityContext)
-
     }
 
     def 'GET /EntityDescriptors with empty repository as admin'() {
@@ -399,31 +398,34 @@ class EntityDescriptorControllerTests extends Specification {
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
 
-        def postedJsonBody = """            
-              {	            
-	            "serviceProviderName": "$expectedSpName",
-	            "entityId": "$expectedEntityId",
-	            "organization": null,
-	            "serviceEnabled": true,
-	            "createdDate": null,
+        when:
+        def postedJsonBody = """
+              {             
+                "serviceProviderName": "$expectedSpName",
+                "entityId": "$expectedEntityId",
+                "organization": null,
+                "serviceEnabled": true,
+                "createdDate": null,
                 "modifiedDate": null,
-	            "organization": null,
-	            "contacts": null,
-	            "mdui": null,
-	            "serviceProviderSsoDescriptor": null,
-	            "logoutEndpoints": null,
-	            "securityInfo": null,
-	            "assertionConsumerServices": null,
-	            "relyingPartyOverrides": null,
+                "organization": null,
+                "contacts": null,
+                "mdui": null,
+                "serviceProviderSsoDescriptor": null,
+                "logoutEndpoints": null,
+                "securityInfo": null,
+                "assertionConsumerServices": null,
+                "relyingPartyOverrides": null,
                 "attributeRelease": null
               }                
         """
-
-        when:
-        def exception = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody)).andReturn().getResolvedException()
-
+        
         then:
-        exception instanceof ForbiddenException == true
+        try {
+            def exceptionExpected = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException == true
+        }
     }
 
     def 'POST /EntityDescriptor record already exists'() {
@@ -475,14 +477,16 @@ class EntityDescriptorControllerTests extends Specification {
         def providedResourceId = 'uuid-1'
 
         when:
-        def result = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId"))
+        1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> null
 
         then:
-        //No EntityDescriptor found
-        1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> null
-        result.andExpect(status().isNotFound())
+        try {
+            def exceptionExpected = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId"))
+        }
+        catch (Exception e) {
+            e instanceof EntityNotFoundException == true
+        }
     }
-
     
     //todo  review
     def 'GET /EntityDescriptor/{resourceId} existing'() {
@@ -605,13 +609,16 @@ class EntityDescriptorControllerTests extends Specification {
                 createdBy: 'someOtherUser')
 
         when:
-        def result = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId"))
-
-        then:
         //EntityDescriptor found
         1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> entityDescriptor
 
-        result.andExpect(status().is(403))
+        then:
+        try {
+            def exceptionExpected = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId"))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException == true
+        }        
     }
 
     def 'GET /EntityDescriptor/{resourceId} existing (xml)'() {
@@ -705,14 +712,16 @@ class EntityDescriptorControllerTests extends Specification {
         entityDescriptor.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
 
         when:
-        def result = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId")
-                .accept(APPLICATION_XML))
-
-        then:
         //EntityDescriptor found
         1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> entityDescriptor
 
-        result.andExpect(status().is(403))
+        then:
+        try {
+            def exceptionExpected = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId").accept(APPLICATION_XML))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException == true
+        }
     }
 
     
@@ -819,21 +828,19 @@ class EntityDescriptorControllerTests extends Specification {
 '''
         def spName = randomGenerator.randomString()
 
-        def expectedEntityDescriptor = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(postedBody.bytes))
-
-        1 * entityDescriptorRepository.findByEntityID(expectedEntityDescriptor.entityID) >> expectedEntityDescriptor
+        def expectedEntityDescriptor = EntityDescriptor.class.cast(openSamlObjects.unmarshalFromXml(postedBody.bytes))        
         0 * entityDescriptorRepository.save(_)
 
         when:
-        def result = mockMvc.perform(post("/api/EntityDescriptor")
-                .contentType(APPLICATION_XML)
-                .content(postedBody)
-                .param("spName", spName))
-
+        1 * entityDescriptorRepository.findByEntityID(expectedEntityDescriptor.entityID) >> expectedEntityDescriptor
 
         then:
-        result.andExpect(status().isConflict())
-                .andExpect(content().string("{\"errorCode\":\"409\",\"errorMessage\":\"The entity descriptor with entity id [http://test.scaldingspoon.org/test1] already exists.\",\"cause\":null}"))
+        try {
+            def exceptionExpected = mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
+        }
+        catch (Exception e) {
+            e instanceof EntityIdExistsException == true
+        }
     }
 
     @Ignore("until we handle the workaround for SHIBUI-1237")
@@ -967,16 +974,19 @@ class EntityDescriptorControllerTests extends Specification {
         updatedEntityDescriptorRepresentation.version = entityDescriptor.hashCode()
         def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
 
-        def resourceId = entityDescriptor.resourceId
-
-        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
+        def resourceId = entityDescriptor.resourceId      
         0 * entityDescriptorRepository.save(_) >> updatedEntityDescriptor
 
         when:
-        def exception = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody)).andReturn().getResolvedException()
+        1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
 
         then:
-        exception instanceof ForbiddenException == true
+        try {
+            def exceptionExpected = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException == true
+        }
     }
 
     def "PUT /EntityDescriptor denies the request if the PUTing user is not an ADMIN and not the createdBy user"() {
@@ -993,13 +1003,17 @@ class EntityDescriptorControllerTests extends Specification {
         def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(updatedEntityDescriptor)
         def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
         def resourceId = entityDescriptor.resourceId
+        
+        when:
         1 * entityDescriptorRepository.findByResourceId(resourceId) >> entityDescriptor
 
-        when:
-        def exception = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody)).andReturn().getResolvedException()
-
         then:
-        exception instanceof ForbiddenException == true
+        try {
+            def exceptionExpected = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody))
+        }
+        catch (Exception e) {
+            e instanceof ForbiddenException == true
+        }
     }
 
     def "PUT /EntityDescriptor throws a concurrent mod exception if the version numbers don't match"() {
