@@ -50,13 +50,14 @@ public class UserService {
         return UserAccess.NONE;
     }
 
-    public boolean isAuthorizedFor(String objectCreatedBy, Group objectGroup) {        
+    public boolean isAuthorizedFor(Group objectGroup) {        
         String groupId = objectGroup == null ? "" : objectGroup.getResourceId();      
-        return isAuthorizedFor(objectCreatedBy, groupId);
+        return isAuthorizedFor(groupId);
     }
     
     
-    public boolean isAuthorizedFor(String objectCreatedBy, String objectGroupResourceId) {
+    public boolean isAuthorizedFor(String objectGroupResourceId) {
+        // Shouldn't be null, but for safety...
         String groupId = objectGroupResourceId == null ? "" : objectGroupResourceId;
         
         switch (getCurrentUserAccess()) { // no user returns NONE

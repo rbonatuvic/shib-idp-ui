@@ -461,7 +461,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
-        if (!userService.isAuthorizedFor(ed.getCreatedBy(), ed.getGroup())) {
+        if (!userService.isAuthorizedFor(ed.getGroup())) {
             throw new ForbiddenException("You are not authorized to perform the requested operation.");
         }     
         return ed;
@@ -757,7 +757,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
-        if (!userService.isAuthorizedFor(existingEd.getCreatedBy(), existingEd.getGroup())) {
+        if (!userService.isAuthorizedFor(existingEd.getGroup())) {
             throw new ForbiddenException("You are not authorized to perform the requested operation.");
         }        
         // Verify we're the only one attempting to update the EntityDescriptor
