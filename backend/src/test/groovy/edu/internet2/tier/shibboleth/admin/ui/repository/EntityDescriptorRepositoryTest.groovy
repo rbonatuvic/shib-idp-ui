@@ -118,19 +118,19 @@ class EntityDescriptorRepositoryTest extends Specification {
         entityManager.clear()
         
         when:
-        def edStreamFromDb = entityDescriptorRepository.findAllStreamByGroup_resourceIdOrCreatedBy(null, "whocares");
+        def edStreamFromDb = entityDescriptorRepository.findAllStreamByGroup_resourceId(null);
         
         then:
         ((Stream)edStreamFromDb).count() == 0
         
         when:
-        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByGroup_resourceIdOrCreatedBy("random value", "whocares");
+        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByGroup_resourceId("random value");
         
         then:
         ((Stream)edStreamFromDb2).count() == 0
         
         when:
-        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByGroup_resourceIdOrCreatedBy(groupFromDb.resourceId, "whocares");
+        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByGroup_resourceId(groupFromDb.resourceId);
         
         then:
         ((Stream)edStreamFromDb3).count() == 1

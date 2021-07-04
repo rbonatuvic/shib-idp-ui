@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
@@ -22,6 +23,10 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "user_groups")
 @Data
 public class Group {
+    @Transient
+    @JsonIgnore
+    public static Group DEFAULT_GROUP;
+    
     @Column(name = "group_description", nullable = true)
     String description;
 
@@ -41,4 +46,7 @@ public class Group {
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     Set<EntityDescriptor> entityDescriptors;
+    
+    @Column(name = "default_group", nullable = false)
+    boolean defaultGroup = false;
 }

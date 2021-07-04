@@ -144,7 +144,7 @@ class EntitiesControllerTests extends Specification {
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
               .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(content().json(expectedBody, false))
+              .andExpect(jsonPath('$.entityId', is("http://test.scaldingspoon.org/test1")))
     }
 
     def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
@@ -189,7 +189,7 @@ class EntitiesControllerTests extends Specification {
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
               .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(content().json(expectedBody, false))
+              .andExpect(jsonPath('$.entityId').value("http://test.scaldingspoon.org/test1"))
     }
     
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1 XML'() {

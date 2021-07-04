@@ -65,7 +65,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @JoinColumn(name = "group_resource_id")
     @EqualsAndHashCode.Exclude
     @Setter
-    @Getter
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Group group;
 
@@ -145,6 +144,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .orElse(null);
     }
 
+    public Group getGroup() {
+        return group == null ? Group.DEFAULT_GROUP : group;
+    }
+    
     @Transient
     public Optional<SPSSODescriptor> getOptionalSPSSODescriptor() {
         return this.getOptionalSPSSODescriptor("");

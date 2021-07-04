@@ -117,27 +117,11 @@ class GroupsControllerIntegrationTests extends Specification {
         
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'GET checks for groups (when there are existing groups)'() {
-        given:
-        def expectedJson = """
-[
-  {
-    "name":"A1",
-    "description":"AAA Group",
-    "resourceId":"AAA"
-  },
-  {
-    "name":"B1",
-    "description":"BBB Group",
-    "resourceId":"BBB"
-  }
-]"""
         when: 'GET request is made for ALL groups in the system, and system has groups in it'
         def result = mockMvc.perform(get(RESOURCE_URI))
 
-        then: 'Request completed with HTTP 200 and returned a list of users'
+        then: 'Request completed with HTTP 200 and returned a list of groups'
         result.andExpect(status().isOk())
-               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-               .andExpect(content().json(expectedJson, false))
                 
         when: 'GET request for a single specific group in a system that has groups'
         def singleGroupRequest = mockMvc.perform(get("$RESOURCE_URI/BBB"))

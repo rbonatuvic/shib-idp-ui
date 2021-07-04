@@ -37,7 +37,6 @@ import java.util.Set;
 @ToString(exclude = "roles")
 @Table(name = "USERS")
 public class User extends AbstractAuditable {
-
     private String emailAddress;
 
     private String firstName;
@@ -70,9 +69,13 @@ public class User extends AbstractAuditable {
     @Column(nullable = false, unique = true)
     private String username;
 
+    public Group getGroup() {
+        return group == null ? Group.DEFAULT_GROUP : group;
+    }
+    
     public String getGroupId() {
-        if (groupId == null && group != null) {
-            groupId = group.getResourceId();
+        if (groupId == null && getGroup() != null) {
+            groupId = getGroup().getResourceId();
         }
         return groupId;
     }

@@ -25,7 +25,7 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
             "where e.createdBy = u.username and e.serviceEnabled = false and r.name in ('ROLE_USER', 'ROLE_NONE')")
     Stream<EntityDescriptor> findAllDisabledAndNotOwnedByAdmin();
 
-    Stream<EntityDescriptor> findAllStreamByCreatedBy(String createdBy);
+//    Stream<EntityDescriptor> findAllStreamByCreatedBy(String createdBy);
 
-    Stream<EntityDescriptor> findAllStreamByGroup_resourceIdOrCreatedBy(String resourceId, String username);
+    Stream<EntityDescriptor> findAllStreamByGroup_resourceId(String resourceId);
 }

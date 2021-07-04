@@ -1,6 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
 import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,4 +63,16 @@ public class GroupServiceImpl implements IGroupService {
         return repo.save(group);
     }
 
+    @PostConstruct
+    @Transactional
+    private void ensureDefaultGroupExists() {
+        Group g = repo.findByDefaultGroupTrue();
+        if (g == null) {
+            g = new Group();
+            g.setDefaultGroup(true);
+            g.setName("DEFAULT-GROUP");
+            g = repo.save(g);
+        }
+        Group.DEFAULT_GROUP = g;
+    }
 }

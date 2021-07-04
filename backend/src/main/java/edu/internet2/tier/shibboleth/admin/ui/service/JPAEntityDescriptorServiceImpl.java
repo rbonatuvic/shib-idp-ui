@@ -190,7 +190,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setVersion(ed.hashCode());
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
-        representation.setGroupId(ed.getGroup() != null ? ed.getGroup().getResourceId() : null);
+        representation.setGroupId(ed.getGroup() != null ? ed.getGroup().getResourceId() : Group.DEFAULT_GROUP.getResourceId());
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
@@ -414,11 +414,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             User user = userService.getCurrentUser();
             Group group = user.getGroup();
             return entityDescriptorRepository
-                            .findAllStreamByGroup_resourceIdOrCreatedBy(group == null ? null : group.getResourceId(), user.getUsername())
+                            .findAllStreamByGroup_resourceId(group.getResourceId())
                             .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
-        case OWNER:
-            return entityDescriptorRepository.findAllStreamByCreatedBy(userService.getCurrentUser().getUsername())
-                            .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
+//        case OWNER:
+//            return entityDescriptorRepository.findAllStreamByCreatedBy(userService.getCurrentUser().getUsername())
+//                            .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
         default:
             throw new ForbiddenException();
         }

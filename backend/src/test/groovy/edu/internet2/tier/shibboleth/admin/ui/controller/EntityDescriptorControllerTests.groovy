@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
@@ -106,6 +107,11 @@ class EntityDescriptorControllerTests extends Specification {
         
         securityContext.getAuthentication() >> authentication
         SecurityContextHolder.setContext(securityContext)
+        Group defGroup = new Group();
+        defGroup.setResourceId("testingGroup");
+        defGroup.setName("For Tests");
+        defGroup.setDefaultGroup(true);
+        Group.DEFAULT_GROUP = defGroup;
     }
 
     def 'GET /EntityDescriptors with empty repository as admin'() {
@@ -138,7 +144,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
-        groupService.find(null) >> null //"groupId": null
+        groupService.find("testingGroup") >> Group.DEFAULT_GROUP
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true,
                 createdDate: LocalDateTime.parse(expectedCreationDate))
@@ -162,7 +168,7 @@ class EntityDescriptorControllerTests extends Specification {
 	            "version": $version,
                 "createdBy": null,
                 "current": false,
-                "groupId": null
+                "groupId": "testingGroup"
               }
             ]    
         """
@@ -189,7 +195,7 @@ class EntityDescriptorControllerTests extends Specification {
         def role = 'ROLE_ADMIN'
         authentication.getName() >> username
         userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
-        groupService.find(null) >> null //"groupId": null
+        groupService.find("testingGroup") >> Group.DEFAULT_GROUP
         def expectedCreationDate = '2017-10-23T11:11:11'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
                 serviceEnabled: true,
@@ -218,7 +224,7 @@ class EntityDescriptorControllerTests extends Specification {
                 "version": $versionOne,
                 "createdBy": null,
                 "current": false,
-                "groupId": null
+                "groupId": testingGroup
               },
               {
 	            "id": "uuid-2",
@@ -236,7 +242,7 @@ class EntityDescriptorControllerTests extends Specification {
                 "version": $versionTwo,
                 "createdBy": null,
                 "current": false,
-                "groupId": null
+                "groupId": testingGroup
               }              
            ]    
         """
@@ -254,61 +260,8 @@ class EntityDescriptorControllerTests extends Specification {
                 .andExpect(content().contentType(expectedResponseContentType))
                 .andExpect(content().json(expectedTwoRecordsListResponseBody, true))
 
-    }
-
-    
-    //todo  review
-    def 'GET /EntityDescriptors with 1 record in repository as user returns only that user\'s records'() {
-        given:
-        def username = 'someUser'
-        def role = 'ROLE_USER'
-        authentication.getName() >> username
-        userRepository.findByUsername(username) >> TestHelpers.generateOptionalUser(username, role)
-        groupService.find(null) >> null
-        def expectedCreationDate = '2017-10-23T11:11:11'
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1',
-                serviceEnabled: true,
-                createdDate: LocalDateTime.parse(expectedCreationDate),
-                createdBy: 'someUser')
-        def versionOne = entityDescriptorOne.hashCode()
-        def oneRecordFromRepository = [entityDescriptorOne].stream()
-        def expectedOneRecordListResponseBody = """
-           [
-              {
-                "id": "uuid-1",
-                "serviceProviderName": "sp1",
-                "entityId": "eid1",
-                "serviceEnabled": true,
-                "createdDate": "$expectedCreationDate",
-                "modifiedDate": null,
-                "organization": {},
-                "contacts": null,
-                "serviceProviderSsoDescriptor": null,
-                "logoutEndpoints": null,
-                "securityInfo": null,
-                "assertionConsumerServices": null,
-                "version": $versionOne,
-                "createdBy": "someUser",
-                "current": false,
-                "groupId": null
-              }              
-           ]    
-        """
-
-        def expectedResponseContentType = APPLICATION_JSON
-        def expectedHttpResponseStatus = status().isOk()
-
-        when:
-        def result = mockMvc.perform(get('/api/EntityDescriptors'))
-
-        then:
-        //One call to the repo expected
-        1 * entityDescriptorRepository.findAllStreamByCreatedBy('someUser') >> oneRecordFromRepository
-        result.andExpect(expectedHttpResponseStatus)
-                .andExpect(content().contentType(expectedResponseContentType))
-                .andExpect(content().json(expectedOneRecordListResponseBody, true))
-    }
-
+    }  
+ 
     //todo  review
     def 'POST /EntityDescriptor and successfully create new record'() {
         given:
@@ -362,7 +315,7 @@ class EntityDescriptorControllerTests extends Specification {
                 "version": $version,
                 "createdBy": null,
                 "current": false,
-                "groupId": null
+                "groupId": "testingGroup"
               }                
         """
 
@@ -523,7 +476,7 @@ class EntityDescriptorControllerTests extends Specification {
                 "version": $version,
                 "createdBy": null,
                 "current": false,
-                "groupId": null
+                "groupId": "testingGroup"
               }                
         """
 
@@ -576,7 +529,7 @@ class EntityDescriptorControllerTests extends Specification {
                 "version": $version,
                 "createdBy": "someUser",
                 "current": false,
-                "groupId": null
+                "groupId": "testingGroup"
               }                
         """
 
@@ -588,8 +541,7 @@ class EntityDescriptorControllerTests extends Specification {
         1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> entityDescriptor
 
 
-        result.andExpect(status().isOk())
-                .andExpect(content().json(expectedJsonBody, true))
+        result.andExpect(status().isOk()).andExpect(content().json(expectedJsonBody, true))
     }
 
     def 'GET /EntityDescriptor/{resourceId} existing, owned by some other user'() {
@@ -674,22 +626,20 @@ class EntityDescriptorControllerTests extends Specification {
         entityDescriptor.setElementLocalName("EntityDescriptor")
         entityDescriptor.setNamespacePrefix("md")
         entityDescriptor.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
+        entityDescriptor.setGroup(Group.DEFAULT_GROUP)
 
         def expectedXML = """<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="$expectedEntityId"/>"""
 
         when:
-        def result = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId")
-                .accept(APPLICATION_XML))
+        def result = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId").accept(APPLICATION_XML))
 
         then:
         //EntityDescriptor found
         1 * entityDescriptorRepository.findByResourceId(providedResourceId) >> entityDescriptor
 
-
-        result.andExpect(status().isOk())
-                .andExpect(content().xml(expectedXML))
+        result.andExpect(status().isOk()).andExpect(content().xml(expectedXML))
    }
 
     def 'GET /EntityDescriptor/{resourceId} existing (xml), other user-owned'() {

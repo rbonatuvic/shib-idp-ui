@@ -47,9 +47,7 @@ public class UserService {
         if (user.getGroup() != null) {
             return UserAccess.GROUP;
         }
-        else {
-            return UserAccess.OWNER;
-        }
+        return UserAccess.NONE;
     }
 
     public boolean isAuthorizedFor(String objectCreatedBy, Group objectGroup) {        
@@ -66,10 +64,7 @@ public class UserService {
             return true;
         case GROUP:
             User currentUser = getCurrentUser();
-            return objectCreatedBy.equals(currentUser.getUsername()) || groupId.equals(currentUser.getGroupId());
-        case OWNER:
-            User cu = getCurrentUser();
-            return objectCreatedBy.equals(cu.getUsername());
+            return groupId.equals(currentUser.getGroupId());
         default:
             return false;
         }
