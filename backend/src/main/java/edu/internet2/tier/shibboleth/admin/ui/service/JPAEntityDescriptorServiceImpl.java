@@ -173,6 +173,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
         
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
+        ed.setGroup(userService.getCurrentUser().getGroup());
         return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
     }
     
