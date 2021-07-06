@@ -1,23 +1,17 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder;
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue;
-import edu.internet2.tier.shibboleth.admin.ui.domain.RelyingPartyOverrideProperty;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSString;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
-import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
-import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
-import org.opensaml.saml.saml2.core.Attribute;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getAttributeFromObjectAndRelyingPartyOverrideProperty;
+import org.opensaml.saml.saml2.core.Attribute;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 
 public class JPAEntityServiceImpl implements EntityService {
 

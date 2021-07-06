@@ -12,9 +12,7 @@ export function MetadataVersionLoader({children}) {
 
     const [metadata, setMetadata] = React.useState();
 
-    const { get, response } = useMetadataEntity(type, {
-        cachePolicy: 'no-cache',
-    }, []);
+    const { get, response, loading } = useMetadataEntity(type, {}, []);
 
     async function loadVersion(v) {
         const l = await get(`/${id}/Versions/${v}`);
@@ -29,10 +27,6 @@ export function MetadataVersionLoader({children}) {
     }, [versionId]);
 
     return (
-        <>
-            {metadata &&
-                <Provider value={metadata}>{children(metadata)}</Provider>
-            }
-        </>
+        <Provider value={metadata}>{children(metadata, loading)}</Provider>
     );
 }

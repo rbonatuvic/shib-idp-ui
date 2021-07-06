@@ -16,7 +16,7 @@ function FooterLink ({ link }) {
     );
 }
 
-export default function Footer () {
+export function Footer () {
     return (
         <footer>
             <div className="row">
@@ -49,3 +49,5 @@ export default function Footer () {
         </footer>
     );
 }
+
+export default Footer;

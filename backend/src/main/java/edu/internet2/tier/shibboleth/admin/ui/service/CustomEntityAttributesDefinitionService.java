@@ -10,7 +10,7 @@ public interface CustomEntityAttributesDefinitionService {
 
     void deleteDefinition(CustomEntityAttributeDefinition definition);
 
-    CustomEntityAttributeDefinition find(String name);
+    CustomEntityAttributeDefinition find(String resourceId);
 
     List<CustomEntityAttributeDefinition> getAllDefinitions();
 

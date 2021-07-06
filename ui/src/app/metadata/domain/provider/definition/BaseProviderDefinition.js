@@ -1,6 +1,6 @@
-import { metadataFilterProcessor } from './utility/providerFilterProcessor';
-import { DurationOptions } from '../data';
-import { MetadataFilterTypes } from '../filter';
+import { metadataFilterProcessor } from '../utility/providerFilterProcessor';
+import { DurationOptions } from '../../data';
+import { MetadataFilterTypes } from '../../filter';
 
 export const BaseProviderDefinition = {
     schemaPreprocessor: metadataFilterProcessor,

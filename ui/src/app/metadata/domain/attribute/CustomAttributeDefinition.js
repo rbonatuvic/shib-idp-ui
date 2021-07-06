@@ -15,6 +15,9 @@ export const CustomAttributeDefinition = {
                     fields: [
                         'name',
                         'attributeType',
+                        'attributeName',
+                        'attributeFriendlyName',
+                        'displayName',
                         'helpText'
                     ]
                 },
@@ -25,13 +28,22 @@ export const CustomAttributeDefinition = {
                         'defaultValue',
                         'defaultValueBoolean',
                         'defaultValueString',
-                        'customAttrListDefinitions'
+                        'customAttrListDefinitions',
+                        'persistValue',
+                        'persistType',
+                        'invert'
                     ]
                 }
             ]
         },
         defaultValueBoolean: {
-            'ui:widget': 'radio'
+            'ui:widget': 'radio',
+            'ui:options': {
+                inline: true
+            }
+        },
+        persistType: {
+            'ui:widget': 'hidden'
         },
         customAttrListDefinitions: {
             'ui:field': 'StringListWithDefaultField',
@@ -49,7 +61,7 @@ export const CustomAttributeDefinition = {
             return data;
         }
         const { attributeType } = data;
-        let parsed = { ...data };
+        let { defaultValueBoolean, ...parsed } = data;
         if (attributeType === 'SELECTION_LIST') {
             parsed = {
                 ...parsed,
@@ -61,14 +73,7 @@ export const CustomAttributeDefinition = {
         if (attributeType === 'BOOLEAN') {
             parsed = {
                 ...parsed,
-                defaultValue: data.defaultValueBoolean
-            }
-        }
-
-        if (attributeType === 'STRING') {
-            parsed = {
-                ...parsed,
-                defaultValue: data.defaultValueString
+                defaultValue: defaultValueBoolean
             }
         }
 
@@ -79,31 +84,31 @@ export const CustomAttributeDefinition = {
         if (!changes) {
             return changes;
         }
-        let formatted = { ...changes };
+        let { defaultValue, ...formatted } = changes;
         const { attributeType } = changes;
 
-        if (attributeType === 'SELECTION_LIST') {
-            formatted = {
-                ...formatted,
-                customAttrListDefinitions: formatted.customAttrListDefinitions.map(d => ({
-                    value: d,
-                    default: d === changes.defaultValue
-                }))
-            }
-        }
-
-        if (attributeType === 'BOOLEAN') {
-            formatted = {
-                ...formatted,
-                defaultValueBoolean: formatted.defaultValue === 'true' ? true : false
-            }
-        }
-
-        if (attributeType === 'STRING') {
-            formatted = {
-                ...formatted,
-                defaultValueString: formatted.defaultValue
-            }
+        switch (attributeType) {
+            case 'SELECTION_LIST':
+                formatted = {
+                    ...formatted,
+                    customAttrListDefinitions: formatted.customAttrListDefinitions.map(d => ({
+                        value: d,
+                        default: d === defaultValue
+                    }))
+                }
+                break;
+            case 'BOOLEAN':
+                formatted = {
+                    ...formatted,
+                    defaultValueBoolean: defaultValue === 'true' ? true : false,
+                    invert: formatted.invert === 'true' ? true : false
+                }
+                break;
+            default:
+                formatted = {
+                    ...formatted,
+                    defaultValue
+                }
         }
 
         return formatted;

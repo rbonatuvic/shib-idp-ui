@@ -118,7 +118,7 @@ custom:
       displayName: label.nameid-format-to-send
       displayType: set
       helpText: tooltip.nameid-format
-      examples:
+      defaultValues:
         - urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
         - urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
         - urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
@@ -129,7 +129,7 @@ custom:
       displayName: label.authentication-methods-to-use
       displayType: set
       helpText: tooltip.authentication-methods-to-use
-      examples:
+      defaultValues:
         - https://refeds.org/profile/mfa
         - urn:oasis:names:tc:SAML:2.0:ac:classes:TimeSyncToken
         - urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport
