@@ -66,6 +66,8 @@ public class GroupServiceImpl implements IGroupService {
     @PostConstruct
     @Transactional
     private void ensureDefaultGroupExists() {
+        // This is something of a migration piece to ensure there is a default group that users and entity descriptors
+        // can be assigned to out of the box.
         Group g = repo.findByDefaultGroupTrue();
         if (g == null) {
             g = new Group();

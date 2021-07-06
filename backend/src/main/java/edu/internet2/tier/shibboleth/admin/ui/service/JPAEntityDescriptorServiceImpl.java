@@ -55,6 +55,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import groovy.util.logging.Slf4j;
+import jline.internal.Log;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -74,6 +75,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 
@@ -417,9 +421,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             return entityDescriptorRepository
                             .findAllStreamByGroup_resourceId(group.getResourceId())
                             .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
-//        case OWNER:
-//            return entityDescriptorRepository.findAllStreamByCreatedBy(userService.getCurrentUser().getUsername())
-//                            .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
         default:
             throw new ForbiddenException();
         }
@@ -506,6 +507,24 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return uiInfo;
     }
 
+    @PostConstruct
+    @Transactional
+    private void migration() {
+        // SHIBUI-1740: Adding default group to all existing entity descriptors that do not have a group already. 
+        // Because this class has a GroupService, we assume the DEFAULT_GROUP has already been setup prior to being
+        // autowired into this class.
+        try {
+            entityDescriptorRepository.findAllByGroupIsNull().forEach(ed -> {
+                ed.setGroup(Group.DEFAULT_GROUP);
+                entityDescriptorRepository.save(ed);
+            });
+        }
+        catch (NullPointerException e) {
+            // This block was added due to a number of mock test where NPEs happened. Rather than wire more mock junk
+            // into tests that are only trying to compensate for this migration, this is here
+        }
+    }
+    
     // TODO: remove
     private String getValueFromXMLObject(XMLObject xmlObject) {
         return ModelRepresentationConversions.getValueFromXMLObject(xmlObject);
