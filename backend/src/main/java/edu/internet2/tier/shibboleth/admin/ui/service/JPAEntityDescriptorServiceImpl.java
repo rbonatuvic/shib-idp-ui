@@ -404,7 +404,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException {
         if (!userService.currentUserIsAdmin()) {
-            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+            throw new ForbiddenException();
         }   
         return entityDescriptorRepository.findAllDisabledAndNotOwnedByAdmin().map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
     }
@@ -464,7 +464,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
         if (!userService.isAuthorizedFor(ed.getGroup())) {
-            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+            throw new ForbiddenException();
         }     
         return ed;
     }
@@ -778,7 +778,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
         if (!userService.isAuthorizedFor(existingEd.getGroup())) {
-            throw new ForbiddenException("You are not authorized to perform the requested operation.");
+            throw new ForbiddenException();
         }        
         // Verify we're the only one attempting to update the EntityDescriptor
         if (edRep.getVersion() != existingEd.hashCode()) {
