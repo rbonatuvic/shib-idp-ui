@@ -23,7 +23,7 @@ public class GroupServiceImpl implements IGroupService {
     @Override
     public Group createGroup(Group group) throws GroupExistsConflictException {
         Group foundGroup = find(group.getResourceId());
-        // If already defined, we can't create a new one, nor do we want this call update the definition
+        // If already defined, we don't want to create a new one, nor do we want this call update the definition
         if (foundGroup != null) {
             throw new GroupExistsConflictException(
                             String.format("Call update (PUT) to modify the group with resource id: [%s] and name: [%s]",

@@ -57,14 +57,13 @@ public class UserService {
     
     
     public boolean isAuthorizedFor(String objectGroupResourceId) {
-        // Shouldn't be null, but for safety...
-        String groupId = objectGroupResourceId == null ? "" : objectGroupResourceId;
-        
         switch (getCurrentUserAccess()) { // no user returns NONE
         case ADMIN:
             return true;
         case GROUP:
             User currentUser = getCurrentUser();
+            // Shouldn't be null, but for safety...
+            String groupId = objectGroupResourceId == null ? "" : objectGroupResourceId;            
             return groupId.equals(currentUser.getGroupId());
         default:
             return false;
