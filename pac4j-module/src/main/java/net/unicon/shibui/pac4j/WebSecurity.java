@@ -5,10 +5,11 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -21,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Optional;
 
@@ -29,7 +31,9 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 @AutoConfigureAfter(EmailConfiguration.class)
 public class WebSecurity {
-
+    @Value("${shibui.logout-url:/dashboard}")
+    private static String logoutUrl;
+    
     @Bean("webSecurityConfig")
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository,
                     RoleRepository roleRepository, Optional<EmailService> emailService,
@@ -67,6 +71,11 @@ public class WebSecurity {
                             .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository,
                                             emailService), SecurityFilter.class);
             http.authorizeRequests().anyRequest().fullyAuthenticated();
+            
+            http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))
+            .and().formLogin().and().httpBasic().and()
+            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl(StringUtils.isAllEmpty(logoutUrl) ? "/dashboard" : logoutUrl);
+            
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
             http.csrf().disable();
             http.headers().frameOptions().disable();
