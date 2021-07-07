@@ -74,28 +74,31 @@ public class AddNewUserFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CommonProfile profile = (CommonProfile) authentication.getPrincipal();
-        if (profile != null) {
-            String username = getAttributeFromProfile(profile, "username");
-            if (username != null) {
-                Optional<User> persistedUser = userRepository.findByUsername(username);
-                User user;
-                if (!persistedUser.isPresent()) {
-                    user = buildAndPersistNewUserFromProfile(profile);
-                    emailService.ifPresent(e -> {
-                        try {
-                            e.sendNewUserMail(username);
-                        } catch (MessagingException e1) {
-                            log.warn(String.format("Unable to send new user email for user [%s]", username), e);
-                        }
-                    });
-                } else {
-                    user = persistedUser.get();
-                }
-                if (user.getRole().equals(ROLE_NONE)) {
-                    ((HttpServletResponse) response).sendRedirect("/unsecured/error.html");
-                } else {
-                    chain.doFilter(request, response); // else, user is in the system already, carry on
+        if (authentication != null) {
+            CommonProfile profile = (CommonProfile) authentication.getPrincipal();
+            if (profile != null) {
+                String username = getAttributeFromProfile(profile, "username");
+                if (username != null) {
+                    Optional<User> persistedUser = userRepository.findByUsername(username);
+                    User user;
+                    if (!persistedUser.isPresent()) {
+                        user = buildAndPersistNewUserFromProfile(profile);
+                        emailService.ifPresent(e -> {
+                            try {
+                                e.sendNewUserMail(username);
+                            }
+                            catch (MessagingException e1) {
+                                log.warn(String.format("Unable to send new user email for user [%s]", username), e);
+                            }
+                        });
+                    } else {
+                        user = persistedUser.get();
+                    }
+                    if (user.getRole().equals(ROLE_NONE)) {
+                        ((HttpServletResponse) response).sendRedirect("/unsecured/error.html");
+                    } else {
+                        chain.doFilter(request, response); // else, user is in the system already, carry on
+                    }
                 }
             }
         }

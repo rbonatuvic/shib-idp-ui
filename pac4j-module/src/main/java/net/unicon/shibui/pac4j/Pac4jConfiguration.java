@@ -103,7 +103,7 @@ public class Pac4jConfiguration {
         
         // configure the matcher for bypassing auth checks
         PathMatcher pm = new PathMatcher();
-        pm.setExcludedPaths(Lists.newArrayList("/favicon.ico", "/unsecured/**/*", "/error"));
+        pm.setExcludedPaths(Lists.newArrayList("/favicon.ico", "/unsecured/**/*", "/error", "/login", "/"));
         config.addMatcher("exclude-paths-matcher", pm);
        
         return config;

@@ -29,10 +29,13 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 @AutoConfigureAfter(EmailConfiguration.class)
 public class WebSecurity {
-    
+
     @Bean("webSecurityConfig")
-    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
-        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository, emailService, pac4jConfigurationProperties);
+    public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository,
+                    RoleRepository roleRepository, Optional<EmailService> emailService,
+                    Pac4jConfigurationProperties pac4jConfigurationProperties) {
+        return new Pac4jWebSecurityConfigurerAdapter(config, userRepository, roleRepository, emailService,
+                        pac4jConfigurationProperties);
     }
 
     @Order(100)
@@ -43,7 +46,8 @@ public class WebSecurity {
         private Optional<EmailService> emailService;
         private Pac4jConfigurationProperties pac4jConfigurationProperties;
 
-        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
+        public Pac4jWebSecurityConfigurerAdapter(final Config config, UserRepository userRepository, RoleRepository roleRepository,
+                        Optional<EmailService> emailService, Pac4jConfigurationProperties pac4jConfigurationProperties) {
             this.config = config;
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
@@ -54,12 +58,14 @@ public class WebSecurity {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config, Pac4jConfiguration.PAC4J_CLIENT_NAME);
-
+            securityFilterForHeader.setMatchers("exclude-paths-matcher");
+            
             final CallbackFilter callbackFilter = new CallbackFilter(this.config);
+            
             http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
-                                  .addFilterBefore(securityFilterForHeader, BasicAuthenticationFilter.class)
-                                  .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService), SecurityFilter.class);
-
+                            .addFilterBefore(securityFilterForHeader, BasicAuthenticationFilter.class)
+                            .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository,
+                                            emailService), SecurityFilter.class);
             http.authorizeRequests().anyRequest().fullyAuthenticated();
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
             http.csrf().disable();
