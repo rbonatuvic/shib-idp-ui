@@ -72,6 +72,7 @@ public class WebSecurity {
 
             StrictHttpFirewall firewall = new StrictHttpFirewall();
             firewall.setAllowUrlEncodedSlash(true);
+            firewall.setAllowUrlEncodedDoubleSlash(true);
             web.httpFirewall(firewall);
         }
     }

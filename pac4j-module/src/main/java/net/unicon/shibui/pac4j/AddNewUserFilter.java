@@ -7,7 +7,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.saml.profile.SAML2Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,22 +29,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Bill Smith (wsmith@unicon.net)
- */
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AddNewUserFilter implements Filter {
-
-    private static final Logger logger = LoggerFactory.getLogger(AddNewUserFilter.class);
-
     private static final String ROLE_NONE = "ROLE_NONE";
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
     private Optional<EmailService> emailService;
-
     private Pac4jConfigurationProperties pac4jConfigurationProperties;
-
+    private RoleRepository roleRepository;
     private Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping;
+    private UserRepository userRepository;
 
     public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService) {
         this.userRepository = userRepository;
@@ -52,11 +49,7 @@ public class AddNewUserFilter implements Filter {
         saml2ProfileMapping = this.pac4jConfigurationProperties.getSaml2ProfileMapping();
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
-    private User buildAndPersistNewUserFromProfile(SAML2Profile profile) {
+    private User buildAndPersistNewUserFromProfile(CommonProfile profile) {
         Role noRole = roleRepository.findByName(ROLE_NONE).orElse(new Role(ROLE_NONE));
         roleRepository.save(noRole);
 
@@ -68,16 +61,20 @@ public class AddNewUserFilter implements Filter {
         user.setLastName(getAttributeFromProfile(profile, "lastName"));
         user.setEmailAddress(getAttributeFromProfile(profile, "email"));
         User persistedUser = userRepository.save(user);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Persisted new user:\n" + user);
+        if (log.isDebugEnabled()) {
+            log.debug("Persisted new user:\n" + user);
         }
         return persistedUser;
     }
 
     @Override
+    public void destroy() {
+    }
+
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SAML2Profile profile = (SAML2Profile) authentication.getPrincipal();
+        CommonProfile profile = (CommonProfile) authentication.getPrincipal();
         if (profile != null) {
             String username = getAttributeFromProfile(profile, "username");
             if (username != null) {
@@ -89,7 +86,7 @@ public class AddNewUserFilter implements Filter {
                         try {
                             e.sendNewUserMail(username);
                         } catch (MessagingException e1) {
-                            logger.warn(String.format("Unable to send new user email for user [%s]", username), e);
+                            log.warn(String.format("Unable to send new user email for user [%s]", username), e);
                         }
                     });
                 } else {
@@ -104,34 +101,37 @@ public class AddNewUserFilter implements Filter {
         }
     }
 
-    @Override
-    public void destroy() {
+    private String getAttributeFromProfile(CommonProfile profile, String stringKey) {
+        if (profile instanceof SAML2Profile) {
+            return getAttributeFromSAML2Profile(profile, stringKey);
+        }
+        return stringKey.equalsIgnoreCase("username") ? profile.getId() : null;
     }
-
-    private String getAttributeFromProfile(SAML2Profile profile, String stringKey) {
-        String attribute = null;
+    
+    @SuppressWarnings("unchecked")
+    private String getAttributeFromSAML2Profile(CommonProfile profile, String stringKey) {
+        String attributeKey = null;
         switch (stringKey) {
             case "username":
-                attribute = saml2ProfileMapping.getUsername();
+                attributeKey = saml2ProfileMapping.getUsername();
                 break;
             case "firstName":
-                attribute = saml2ProfileMapping.getFirstName();
+                attributeKey = saml2ProfileMapping.getFirstName();
                 break;
             case "lastName":
-                attribute = saml2ProfileMapping.getLastName();
+                attributeKey = saml2ProfileMapping.getLastName();
                 break;
             case "email":
-                attribute = saml2ProfileMapping.getEmail();
+                attributeKey = saml2ProfileMapping.getEmail();
                 break;
             default:
                 // do we care? Not yet.
         }
-        List<String> attributeList = (List<String>) profile.getAttribute(attribute);
+        List<String> attributeList = (List<String>) profile.getAttribute(attributeKey);
         return attributeList.size() < 1 ? null : attributeList.get(0);
     }
 
-    private byte[] getJsonResponseBytes(ErrorResponse eErrorResponse) throws IOException {
-        String errorResponseJson = new ObjectMapper().writeValueAsString(eErrorResponse);
-        return errorResponseJson.getBytes();
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 }
