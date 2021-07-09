@@ -26,14 +26,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Optional;
 
+import javax.servlet.Filter;
+
 @Configuration
 @AutoConfigureOrder(-1)
 @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
 @AutoConfigureAfter(EmailConfiguration.class)
-public class WebSecurity {
-    @Value("${shibui.logout-url:/dashboard}")
-    private static String logoutUrl;
-    
+public class WebSecurity {   
     @Bean("webSecurityConfig")
     public WebSecurityConfigurerAdapter webSecurityConfigurerAdapter(final Config config, UserRepository userRepository,
                     RoleRepository roleRepository, Optional<EmailService> emailService,
@@ -61,24 +60,27 @@ public class WebSecurity {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config, Pac4jConfiguration.PAC4J_CLIENT_NAME);
-            securityFilterForHeader.setMatchers("exclude-paths-matcher");
-            
-            final CallbackFilter callbackFilter = new CallbackFilter(this.config);
-            
-            http.antMatcher("/**").addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
-                            .addFilterBefore(securityFilterForHeader, BasicAuthenticationFilter.class)
-                            .addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository,
-                                            emailService), SecurityFilter.class);
+            http.antMatcher("/**");
+            http.addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
+            http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService), SecurityFilter.class);
             http.authorizeRequests().anyRequest().fullyAuthenticated();
-            
-            http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))
-            .and().formLogin().and().httpBasic().and()
-            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl(StringUtils.isAllEmpty(logoutUrl) ? "/dashboard" : logoutUrl);
-            
+            http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"));
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
             http.csrf().disable();
             http.headers().frameOptions().disable();
+        }
+
+        private Filter getFilter(Config config2, String typeOfAuth) {
+            switch (typeOfAuth) {
+            case "SAML2":
+                return new CallbackFilter(this.config);
+            case "HEADER":
+                final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config,
+                                Pac4jConfiguration.PAC4J_CLIENT_NAME);
+                securityFilterForHeader.setMatchers("exclude-paths-matcher");
+                return securityFilterForHeader;
+            }
+            return null; // This will cause a runtime error
         }
 
         @Override

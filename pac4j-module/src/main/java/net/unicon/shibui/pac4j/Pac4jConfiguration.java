@@ -16,6 +16,7 @@ import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.config.SAML2Configuration;
 import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,8 @@ import com.google.common.collect.Lists;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Configuration setup here following readme from - https://github.com/pac4j/spring-security-pac4j/tree/5.0.x
  * NOTE: matchers are now done as part of the config and have been moved over from the WebSecurity.java class of this package
@@ -31,6 +34,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
  */
 @Configuration
 @ConditionalOnProperty(name = "shibui.pac4j-enabled", havingValue = "true")
+@Slf4j
 public class Pac4jConfiguration {
     public final static String PAC4J_CLIENT_NAME = "shibUIAuthClient";
     
@@ -42,15 +46,17 @@ public class Pac4jConfiguration {
         return new SAML2ModelAuthorizationGenerator(userRepository);
     }
     
-    @Bean
+    @Bean(name = "pac4j-config")
     public Config config(final Pac4jConfigurationProperties pac4jConfigProps,
-                    final SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator) {
-
+                         final SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator) {
+        log.info("**** Configuring PAC4J ");
+        final Config config = new Config();
         final Clients clients = new Clients(pac4jConfigProps.getCallbackUrl());
 
         // Configure the client
         switch (pac4jConfigProps.getTypeOfAuth()) {
         case "SAML2": {
+            log.info("**** Configuring PAC4J SAML2");
             final SAML2Configuration saml2Config = new SAML2Configuration();
             saml2Config.setKeystorePath(pac4jConfigProps.getKeystorePath());
             saml2Config.setKeystorePassword(pac4jConfigProps.getKeystorePassword());
@@ -76,6 +82,7 @@ public class Pac4jConfiguration {
             clients.setClients(saml2Client);
         }
         case "HEADER": {
+            log.info("**** Configuring PAC4J Header Client");
             HeaderClient headerClient = new HeaderClient(pac4jConfigProps.getAuthenticationHeader(),
                             new Authenticator() {
                                 @Override
@@ -99,13 +106,13 @@ public class Pac4jConfiguration {
             clients.setClients(headerClient);
         }
         }
-        final Config config = new Config(clients);
         
         // configure the matcher for bypassing auth checks
         PathMatcher pm = new PathMatcher();
         pm.setExcludedPaths(Lists.newArrayList("/favicon.ico", "/unsecured/**/*", "/error", "/login", "/"));
         config.addMatcher("exclude-paths-matcher", pm);
        
+        config.setClients(clients);
         return config;
     }
 }
