@@ -32,7 +32,7 @@ export function SourcesTab () {
     React.useEffect(() => { loadSources() }, []);
 
     async function changeSourceGroup(source, group) {
-        const sources = await updater.put(`/${source.id}`, {
+        await updater.put(`/${source.id}`, {
             ...source,
             groupId: group
         });

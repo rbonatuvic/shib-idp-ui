@@ -7,17 +7,29 @@ import { Schema } from '../../form/Schema';
 import { FormManager } from '../../form/FormManager';
 import { GroupForm } from '../component/GroupForm';
 
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { useTranslator } from '../../i18n/hooks';
+
 export function NewGroup() {
     const history = useHistory();
+    const notifier = useNotificationDispatcher();
+    const translator = useTranslator();
 
     const { post, response, loading } = useGroups({});
 
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(group) {
-        await post(``, group);
+        let toast;
+        const resp = await post(``, group);
         if (response.ok) {
             gotoDetail({ refresh: true });
+            toast = createNotificationAction(`Added group successfully.`, NotificationTypes.SUCCESS);
+        } else {
+            toast = createNotificationAction(`${resp.errorCode} - ${translator(resp.errorMessage)}`, NotificationTypes.ERROR);
+        }
+        if (toast) {
+            notifier(toast);
         }
     };
 

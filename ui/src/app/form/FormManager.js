@@ -57,8 +57,6 @@ function FormManager({ children, initial = {} }) {
         ...initialState,
         data
     });
-
-
     const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
     return (

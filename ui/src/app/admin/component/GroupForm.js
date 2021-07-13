@@ -8,7 +8,7 @@ import Translate from '../../i18n/components/translate';
 import { useGroupUiSchema } from '../hooks';
 import { fields, widgets } from '../../form/component';
 import { templates } from '../../form/component';
-import { FormContext, setFormDataAction } from '../../form/FormManager';
+import { FormContext, setFormDataAction, setFormErrorAction } from '../../form/FormManager';
 
 function ErrorListTemplate() {
     return (<></>);
@@ -17,8 +17,9 @@ function ErrorListTemplate() {
 export function GroupForm ({group = {}, errors = [], loading = false, schema, onSave, onCancel}) {
 
     const { dispatch } = React.useContext(FormContext);
-    const onChange = ({formData}) => {
+    const onChange = ({formData, errors}) => {
         dispatch(setFormDataAction(formData));
+        dispatch(setFormErrorAction(errors));
     };
 
     const uiSchema = useGroupUiSchema();

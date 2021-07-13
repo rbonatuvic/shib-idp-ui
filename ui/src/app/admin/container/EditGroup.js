@@ -9,10 +9,15 @@ import { FormManager } from '../../form/FormManager';
 
 import { GroupForm } from '../component/GroupForm';
 import { GroupProvider } from '../hoc/GroupProvider';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { useTranslator } from '../../i18n/hooks';
 
 export function EditGroup() {
 
     const { id } = useParams();
+
+    const notifier = useNotificationDispatcher();
+    const translator = useTranslator();
 
     const history = useHistory();
 
@@ -21,9 +26,16 @@ export function EditGroup() {
     const [blocking, setBlocking] = React.useState(false);
 
     async function save(metadata) {
-        await put(``, metadata);
+        let toast;
+        const resp = await put(``, metadata);
         if (response.ok) {
             gotoDetail({ refresh: true });
+            toast = createNotificationAction(`Updated group successfully.`, NotificationTypes.SUCCESS);
+        } else {
+            toast = createNotificationAction(`${resp.errorCode} - ${translator(resp.errorMessage)}`, NotificationTypes.ERROR);
+        }
+        if (toast) {
+            notifier(toast);
         }
     };
 

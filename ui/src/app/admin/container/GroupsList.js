@@ -16,7 +16,7 @@ export function GroupsList({ groups, onDelete }) {
     }
 
     return (
-        <DeleteConfirmation title={`message.delete-attribute-title`} body={`message.delete-attribute-body`}>
+        <DeleteConfirmation title={`message.delete-group-title`} body={`message.delete-group-body`}>
             {(block) =>
                 <div className="container-fluid p-3">
                     <section className="section">
@@ -47,10 +47,10 @@ export function GroupsList({ groups, onDelete }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {(groups?.length > 0 ) ? groups.map((group, i) =>
+                                            {( groups?.length > 0 ) ? groups.map((group, i) =>
                                                 <tr key={i}>
                                                     <td>{group.name}</td>
-                                                    <td>{group.description}</td>
+                                                    <td>{group.description || ''}</td>
                                                     <td className="text-right">
                                                         <Link to={`../groups/${group.resourceId}/edit`} className="btn btn-link text-primary">
                                                             <FontAwesomeIcon icon={faEdit} size="lg" />
@@ -66,7 +66,9 @@ export function GroupsList({ groups, onDelete }) {
                                                         </Button>
                                                     </td>
                                                 </tr>
-                                            ) : ''}
+                                            ) : <tr>
+                                                <td colSpan="3">No groups defined.</td>
+                                                </tr>}
                                         </tbody>
                                     </table>
                                 </div>
