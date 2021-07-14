@@ -16,15 +16,20 @@ import org.pac4j.http.client.direct.HeaderClient;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.config.SAML2Configuration;
 import org.pac4j.saml.credentials.authenticator.SAML2Authenticator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.ErrorPageRegistrar;
+import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 import com.google.common.collect.Lists;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,6 +42,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Pac4jConfiguration {
     public final static String PAC4J_CLIENT_NAME = "shibUIAuthClient";
+    
+    @Autowired
+    private UserService userService;
     
     /**
      * Custom class that ensures we add the user's roles to the information when doing SAML2 auth
@@ -52,6 +60,11 @@ public class Pac4jConfiguration {
         log.info("**** Configuring PAC4J ");
         final Config config = new Config();
         final Clients clients = new Clients(pac4jConfigProps.getCallbackUrl());
+        
+        // configure the matcher for bypassing auth checks
+        PathMatcher pm = new PathMatcher();
+        pm.setExcludedPaths(Lists.newArrayList("/favicon.ico", "/unsecured/**/*", "/assets/**/*.png", "/static/**/*"));
+        config.addMatcher("exclude-paths-matcher", pm);
 
         // Configure the client
         switch (pac4jConfigProps.getTypeOfAuth()) {
@@ -99,20 +112,25 @@ public class Pac4jConfiguration {
                                     final CommonProfile profile = new CommonProfile();
                                     String token = ((TokenCredentials)credentials).getToken(); 
                                     profile.setId(token);
+                                    profile.setRoles(userService.getUserRoles(token));
                                     credentials.setUserProfile(profile);
                                 }
                             });
             headerClient.setName(PAC4J_CLIENT_NAME);
             clients.setClients(headerClient);
         }
-        }
-        
-        // configure the matcher for bypassing auth checks
-        PathMatcher pm = new PathMatcher();
-        pm.setExcludedPaths(Lists.newArrayList("/favicon.ico", "/unsecured/**/*", "/error", "/login", "/"));
-        config.addMatcher("exclude-paths-matcher", pm);
-       
+        }       
         config.setClients(clients);
         return config;
+    }
+    
+    @Bean
+    public ErrorPageRegistrar errorPageRegistrar() {
+        return this::registerErrorPages;
+    }
+
+    private void registerErrorPages(ErrorPageRegistry registry) {
+        registry.addErrorPages(new ErrorPage(HttpStatus.UNAUTHORIZED, "/unsecured/error.html"));
+        registry.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/unsecured/error.html"));
     }
 }

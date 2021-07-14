@@ -9,6 +9,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.matching.matcher.Matcher;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.saml.profile.SAML2Profile;
 import org.slf4j.Logger;
@@ -24,6 +27,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -40,12 +44,14 @@ public class AddNewUserFilter implements Filter {
     private RoleRepository roleRepository;
     private Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping;
     private UserRepository userRepository;
+    private Matcher matcher;
 
-    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService) {
+    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, Matcher matcher, Optional<EmailService> emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
         this.pac4jConfigurationProperties = pac4jConfigurationProperties;
+        this.matcher = matcher;
         saml2ProfileMapping = this.pac4jConfigurationProperties.getSaml2ProfileMapping();
     }
 
@@ -73,6 +79,10 @@ public class AddNewUserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        JEEContext context = new JEEContext((HttpServletRequest)request, (HttpServletResponse)response);
+        if (!matcher.matches(context, JEESessionStore.INSTANCE)) {
+            return;
+        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             CommonProfile profile = (CommonProfile) authentication.getPrincipal();

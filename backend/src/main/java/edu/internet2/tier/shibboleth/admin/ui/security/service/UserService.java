@@ -61,4 +61,13 @@ public class UserService {
         }
         return user;
     }
+    
+    public Set<String> getUserRoles(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        HashSet<String> result = new HashSet<>();
+        if (user.isPresent() ) {
+             user.get().getRoles().forEach(role -> result.add(role.getName()));
+        }
+        return result;
+    }
 }

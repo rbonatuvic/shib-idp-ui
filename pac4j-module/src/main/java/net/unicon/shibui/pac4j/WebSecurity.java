@@ -7,6 +7,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
 
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
+import org.pac4j.core.matching.matcher.Matcher;
+import org.pac4j.core.matching.matcher.PathMatcher;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,14 +62,22 @@ public class WebSecurity {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/**");
-            http.addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
-            http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, emailService), SecurityFilter.class);
-            http.authorizeRequests().anyRequest().fullyAuthenticated();
+            http.authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
+            
+            // add filter based on auth type 
+            http.antMatcher("/**").addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
+            
+            // add the new user filter
+            http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, getPathMatcher("exclude-paths-matcher") , emailService), SecurityFilter.class);
+            
             http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"));
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
             http.csrf().disable();
             http.headers().frameOptions().disable();
+        }
+
+        private Matcher getPathMatcher(String name) {
+            return config.getMatchers().get(name);
         }
 
         private Filter getFilter(Config config2, String typeOfAuth) {
@@ -75,8 +85,7 @@ public class WebSecurity {
             case "SAML2":
                 return new CallbackFilter(this.config);
             case "HEADER":
-                final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config,
-                                Pac4jConfiguration.PAC4J_CLIENT_NAME);
+                final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config, Pac4jConfiguration.PAC4J_CLIENT_NAME);
                 securityFilterForHeader.setMatchers("exclude-paths-matcher");
                 return securityFilterForHeader;
             }
@@ -91,6 +100,9 @@ public class WebSecurity {
             firewall.setAllowUrlEncodedSlash(true);
             firewall.setAllowUrlEncodedDoubleSlash(true);
             web.httpFirewall(firewall);
+   
+            // These don't need to be secured
+            web.ignoring().antMatchers("/favicon.ico", "/unsecured/**/*", "/assets/**/*.png", "/static/**/*", "/**/*.css"); 
         }
     }
 
