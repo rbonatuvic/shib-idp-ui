@@ -29,6 +29,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -55,12 +57,18 @@ public class AddNewUserFilter implements Filter {
         saml2ProfileMapping = this.pac4jConfigurationProperties.getSaml2ProfileMapping();
     }
 
+    @Transactional
     private User buildAndPersistNewUserFromProfile(CommonProfile profile) {
-        Role noRole = roleRepository.findByName(ROLE_NONE).orElse(new Role(ROLE_NONE));
-        roleRepository.save(noRole);
+        Optional<Role> noRole = roleRepository.findByName(ROLE_NONE);
+        Role newUserRole;
+        if (noRole.isEmpty()) {
+            newUserRole = new Role(ROLE_NONE);
+            newUserRole = roleRepository.save(newUserRole);
+        }
+        newUserRole = noRole.get();
 
         User user = new User();
-        user.getRoles().add(noRole);
+        user.getRoles().add(newUserRole);
         user.setUsername(getAttributeFromProfile(profile, "username"));
         user.setPassword(BCrypt.hashpw(RandomStringUtils.randomAlphanumeric(20), BCrypt.gensalt()));
         user.setFirstName(getAttributeFromProfile(profile, "firstName"));
