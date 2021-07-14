@@ -5,6 +5,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService
+
+import org.pac4j.core.matching.matcher.PathMatcher
+import org.pac4j.core.profile.CommonProfile
 import org.pac4j.saml.profile.SAML2Profile
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -17,6 +20,7 @@ import spock.lang.Subject
 
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 /**
@@ -30,7 +34,7 @@ class AddNewUserFilterTests extends Specification {
     RoleRepository roleRepository = Mock()
     EmailService emailService = Mock()
 
-    ServletRequest request = Mock()
+    HttpServletRequest request = Mock()
     HttpServletResponse response = Mock()
     FilterChain chain = Mock()
 
@@ -51,7 +55,7 @@ class AddNewUserFilterTests extends Specification {
         securityContext.getAuthentication() >> authentication
         authentication.getPrincipal() >> saml2Profile
 
-        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, Optional.of(emailService))
+        addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, new PathMatcher(), Optional.of(emailService))
         saml2ProfileMapping = pac4jConfigurationProperties.saml2ProfileMapping
     }
 
@@ -70,7 +74,7 @@ class AddNewUserFilterTests extends Specification {
         addNewUserFilter.doFilter(request, response, chain)
 
         then:
-        1 * roleRepository.save(_)
+        0 * roleRepository.save(_)
         1 * userRepository.save(_ as User) >> { User user -> user }
         1 * emailService.sendNewUserMail('newUser')
         1 * response.sendRedirect("/unsecured/error.html")
