@@ -27,12 +27,15 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils
+
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.json.JacksonTester
 import org.springframework.context.annotation.PropertySource
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -43,46 +46,33 @@ import spock.lang.Specification
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
 @SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @PropertySource("classpath:application.yml")
-class JPAEntityDescriptorServiceImplTests extends Specification {
-
+@DirtiesContext
+class JPAEntityDescriptorServiceImplTests extends Specification {   
     @Autowired
-    CustomPropertiesConfiguration customPropertiesConfiguration
+    EntityService entityService;
+    
+    @Autowired
+    JPAEntityDescriptorServiceImpl service
 
     def testObjectGenerator
-
+    
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         init()
         it
     }
-
-    JPAEntityDescriptorServiceImpl service
-
-    JacksonTester<EntityDescriptorRepresentation> jacksonTester
-
-    ObjectMapper mapper
-
-    RandomGenerator generator
-
-    @Autowired
-    RoleRepository roleRepository
-
-    @Autowired
-    UserRepository userRepository
-
-    @Autowired
-    IGroupService groupService
     
-    def setup() {
-        service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
-                new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration), new UserService(roleRepository, userRepository))
-        service.groupService = groupService
+    JacksonTester<EntityDescriptorRepresentation> jacksonTester
+    ObjectMapper mapper
+    RandomGenerator generator
+    
+    def setup() {        
         mapper = new ObjectMapper()
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator()
+        EntityDescriptorConverstionUtils.openSamlObjects = openSamlObjects
+        EntityDescriptorConverstionUtils.entityService = entityService
     }
-
-
 
     def "simple Entity Descriptor"() {
         when:
@@ -720,48 +710,6 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         then:
         def actualVersion = representation.version
         expectedVersion == actualVersion
-    }
-
-    def "SHIBUI-1220 getValueFromXMLObject handles XSAny"() {
-        given:
-        def builder = new XSAnyBuilder()
-        def xsAny = builder.buildObject('namespace', 'localname', 'prefix')
-        def expectedTextContent = 'expectedTextContent'
-        xsAny.setTextContent(expectedTextContent)
-
-        when:
-        def result = service.getValueFromXMLObject(xsAny)
-
-        then:
-        result == expectedTextContent
-    }
-
-    def "SHIBUI-1220 getValueFromXMLObject handles XSString"() {
-        given:
-        def builder = new XSStringBuilder()
-        def xsString = builder.buildObject('namespace', 'localname', 'prefix')
-        def expectedValue = 'expectedValue'
-        xsString.setValue(expectedValue)
-
-        when:
-        def result = service.getValueFromXMLObject(xsString)
-
-        then:
-        result == expectedValue
-    }
-
-    def "SHIBUI-1220 getValueFromXMLObject handles XSBoolean"() {
-        given:
-        def builder = new XSBooleanBuilder()
-        def xsBoolean = builder.buildObject('namespace', 'localname', 'prefix')
-        def expectedValue = 'true'
-        xsBoolean.setStoredValue(expectedValue)
-
-        when:
-        def result = service.getValueFromXMLObject(xsBoolean)
-
-        then:
-        result == expectedValue
     }
 
     def "SHIBUI-1220 getValueFromXMLObject throws RuntimeException for unhandled object type"() {

@@ -1,11 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
 import java.util.List;
-import java.util.UUID;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +15,16 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 
 @Service
-public class GroupServiceImpl implements IGroupService {
+public class GroupServiceImpl implements IGroupService, InitializingBean {
     @Autowired
     private GroupsRepository repo;
+    
+    public GroupServiceImpl() {        
+    }
+    
+    public GroupServiceImpl(GroupsRepository repo) {
+        this.repo = repo;
+    }
     
     @Override
     public Group createGroup(Group group) throws GroupExistsConflictException {
@@ -63,18 +69,19 @@ public class GroupServiceImpl implements IGroupService {
         return repo.save(group);
     }
 
-    @PostConstruct
+    /**
+     * Ensure (mostly for migrations) that we have defined a default admin group
+     */
+    @Override
     @Transactional
-    private void ensureDefaultGroupExists() {
-        // This is something of a migration piece to ensure there is a default group that users and entity descriptors
-        // can be assigned to out of the box.
-        Group g = repo.findByDefaultGroupTrue();
+    public void afterPropertiesSet() {
+        Group g = repo.findByResourceId("admingroup");
         if (g == null) {
             g = new Group();
-            g.setDefaultGroup(true);
-            g.setName("DEFAULT-GROUP");
+            g.setName("ADMIN-GROUP");
+            g.setResourceId("admingroup");
             g = repo.save(g);
         }
-        Group.DEFAULT_GROUP = g;
+        Group.ADMIN_GROUP = g;
     }
 }

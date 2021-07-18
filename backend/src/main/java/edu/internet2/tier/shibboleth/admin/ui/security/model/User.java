@@ -70,12 +70,12 @@ public class User extends AbstractAuditable {
     private String username;
 
     public Group getGroup() {
-        return group == null ? Group.DEFAULT_GROUP : group;
+        return group;
     }
     
     public String getGroupId() {
-        if (groupId == null && getGroup() != null) {
-            groupId = getGroup().getResourceId();
+        if (groupId == null) {
+            groupId = group == null ? null : getGroup().getResourceId();
         }
         return groupId;
     }
@@ -91,10 +91,11 @@ public class User extends AbstractAuditable {
         return this.role;
     }
     
+    /**
+     * If (for some reason) the incoming group is null, the user is defaulted to their own group
+     */
     public void setGroup(Group assignedGroup) {
         this.group = assignedGroup;
-        if (group != null) {
-            groupId = group.getResourceId();
-        }
+        this.groupId = getGroup().getResourceId();
     }
 }

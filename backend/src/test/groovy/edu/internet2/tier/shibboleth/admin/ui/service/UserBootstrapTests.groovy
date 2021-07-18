@@ -34,6 +34,10 @@ class UserBootstrapTests extends Specification {
     @Autowired
     RoleRepository roleRepository
 
+    def setup() {
+        roleRepository.deleteAll();
+    }
+    
     def "simple test"() {
         setup:
         shibUIConfiguration.roles = []

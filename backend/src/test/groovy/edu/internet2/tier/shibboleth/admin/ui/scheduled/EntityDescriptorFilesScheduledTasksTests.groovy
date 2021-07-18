@@ -16,6 +16,8 @@ import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingSer
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -34,38 +36,36 @@ import spock.lang.Specification
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class EntityDescriptorFilesScheduledTasksTests extends Specification {
 
+    @Autowired
+    OpenSamlObjects openSamlObjects
+
+    @Autowired
+    IGroupService groupService
+    
     def tempPath = "/tmp/shibui"
 
     def directory
-
-    @Autowired
-    OpenSamlObjects openSamlObjects
 
     def entityDescriptorRepository = Mock(EntityDescriptorRepository)
 
     def entityDescriptorFilesScheduledTasks
 
-    def service
-
     def randomGenerator
-
-    @Autowired
-    RoleRepository roleRepository
-
-    @Autowired
-    UserRepository userRepository
-
-    @Autowired
-    IGroupService groupService
+    
+    
+    def service
     
     def setup() {
         randomGenerator = new RandomGenerator()
         tempPath = tempPath + randomGenerator.randomRangeInt(10000, 20000)
-        service = new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), new UserService(roleRepository, userRepository))
-        service.groupService = groupService
+        EntityDescriptorConverstionUtils.setOpenSamlObjects(openSamlObjects)
         entityDescriptorFilesScheduledTasks = new EntityDescriptorFilesScheduledTasks(tempPath, entityDescriptorRepository, openSamlObjects, new FileCheckingFileWritingService())
         directory = new File(tempPath)
         directory.mkdir()
+        
+        service = new JPAEntityDescriptorServiceImpl()
+        service.openSamlObjects = openSamlObjects
+        service.groupService = groupService
     }
 
     def "generateEntityDescriptorFiles properly generates a file from an Entity Descriptor"() {
@@ -127,7 +127,7 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
     <md:OrganizationURL xml:lang="en">http://test.example.org</md:OrganizationURL>
   </md:Organization>
 </md:EntityDescriptor>
-                     '''
+                     '''                   
 
         def entityDescriptor = service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'

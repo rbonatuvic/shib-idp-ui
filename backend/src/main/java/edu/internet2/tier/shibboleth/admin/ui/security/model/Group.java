@@ -23,9 +23,18 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "user_groups")
 @Data
 public class Group {
+    public Group() {
+    }
+    
+    public Group(User user) {
+        resourceId=user.getUsername();
+        name=user.getUsername();
+        description="default user-group";
+    }
+
     @Transient
     @JsonIgnore
-    public static Group DEFAULT_GROUP;
+    public static Group ADMIN_GROUP;
     
     @Column(name = "group_description", nullable = true)
     String description;
@@ -46,7 +55,4 @@ public class Group {
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     Set<EntityDescriptor> entityDescriptors;
-    
-    @Column(name = "default_group", nullable = false)
-    boolean defaultGroup = false;
 }

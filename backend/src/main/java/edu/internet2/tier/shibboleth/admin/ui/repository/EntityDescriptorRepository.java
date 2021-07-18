@@ -32,5 +32,6 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
      * SHIBUI-1740 This is here to aid in migration of systems using the SHIBUI prior to group functionality being added
      * @deprecated - this is intended to be removed at some future date and is here only for migration purposes.
      */
+    @Deprecated
     List<EntityDescriptor> findAllByGroupIsNull();
 }

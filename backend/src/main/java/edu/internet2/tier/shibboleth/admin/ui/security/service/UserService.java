@@ -1,26 +1,55 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class UserService {
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+
+@Service
+public class UserService implements InitializingBean {
+    @Autowired
+    private IGroupService groupService;
+    
+    @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Primarily for testing purposes so we can control the injections
+     */
     public UserService(RoleRepository roleRepository, UserRepository userRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
+    
+    public boolean currentUserIsAdmin() {
+        User user = getCurrentUser();
+        return user != null && user.getRole().equals("ROLE_ADMIN");
+    }
 
+    @Override
+    @Transactional
+    public void afterPropertiesSet() {
+        // TODO: Ensure all the db users have a group - migration task
+    }
+    
     public User getCurrentUser() {
         //TODO: Consider returning an Optional here
         User user = null;
@@ -35,6 +64,15 @@ public class UserService {
         }
         return user;
     }
+    
+    public Group getCurrentUserGroup() {
+        switch (getCurrentUserAccess()) {
+        case ADMIN:
+            return Group.ADMIN_GROUP;
+        default:
+            return getCurrentUser().getGroup();
+        }
+    }
 
     public UserAccess getCurrentUserAccess() {
         User user = getCurrentUser();
@@ -44,17 +82,16 @@ public class UserService {
         if (user.getRole().equals("ROLE_ADMIN")) {
             return UserAccess.ADMIN;
         }
-        if (user.getGroup() != null) {
+        if (user.getRole().equals("ROLE_USER")) {
             return UserAccess.GROUP;
         }
         return UserAccess.NONE;
     }
-
-    public boolean isAuthorizedFor(Group objectGroup) {        
-        String groupId = objectGroup == null ? "" : objectGroup.getResourceId();      
-        return isAuthorizedFor(groupId);
-    }
     
+    public boolean isAuthorizedFor(Group objectGroup) {        
+        String objectGroupId = objectGroup == null ? Group.ADMIN_GROUP.getResourceId() : objectGroup.getResourceId();      
+        return isAuthorizedFor(objectGroupId);
+    }
     
     public boolean isAuthorizedFor(String objectGroupResourceId) {
         switch (getCurrentUserAccess()) { // no user returns NONE
@@ -68,6 +105,26 @@ public class UserService {
         default:
             return false;
         }
+    }
+
+    /**
+     * Creating users should always have a group. If the user isn't assigned to a group, create one
+     */
+    public User save(User user) {
+        if (user.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
+            user.setGroup(Group.ADMIN_GROUP);
+        }
+        else if (user.getGroupId() == null) {
+            Group g = new Group(user);
+            try {
+                g = groupService.createGroup(g);
+            }
+            catch (GroupExistsConflictException e) {
+                g = groupService.find(user.getUsername());
+            }
+            user.setGroup(g);
+        }
+        return userRepository.save(user);
     }
     
     /**
@@ -91,10 +148,5 @@ public class UserService {
         } else {
             throw new RuntimeException(String.format("User with username [%s] has no role defined and therefor cannot be updated!", user.getUsername()));
         }
-    }
-
-    public boolean currentUserIsAdmin() {
-        User user = getCurrentUser();
-        return user != null && user.getRole().equals("ROLE_ADMIN");
     }
 }

@@ -110,7 +110,7 @@ public class EntityDescriptorRepresentation implements Serializable {
     }
 
     public String getGroupId() {
-        return groupId == null ? Group.DEFAULT_GROUP.getResourceId() : groupId;
+        return groupId == null ? Group.ADMIN_GROUP.getResourceId() : groupId;
     }
     
     public List<LogoutEndpointRepresentation> getLogoutEndpoints() {

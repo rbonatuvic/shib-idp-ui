@@ -37,6 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class EntitiesControllerTests extends Specification {
+    @Autowired
+    JPAEntityDescriptorServiceImpl serviceImpl
+    
+    @Autowired
+    UserService userService
+    
     def openSamlObjects = new OpenSamlObjects().with {
         init()
         it
@@ -50,9 +56,6 @@ class EntitiesControllerTests extends Specification {
         initialize()
         it
     }
-
-    @Autowired
-    UserService userService
     
     // This stub will spit out the results from the resolver instead of actually finding them in the DB
     @SpringBean
@@ -62,14 +65,18 @@ class EntitiesControllerTests extends Specification {
     }
         
     @Subject
-    def controller = new EntitiesController(
-            openSamlObjects: openSamlObjects,
-            entityDescriptorService: new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), userService),
-            entityDescriptorRepository: edr
-    )
+    def controller 
+    def mockMvc 
 
-    def mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
-
+    def setup() {
+        controller = new EntitiesController()
+        controller.openSamlObjects = openSamlObjects
+        controller.entityDescriptorService = serviceImpl
+        controller.entityDescriptorRepository = edr
+        
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+    }
+    
     def 'GET /api/entities/test'() {
         when:
         def result = mockMvc.perform(get("/api/entities/test"))

@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-
 import com.google.common.base.Strings;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
@@ -9,7 +8,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson;
-import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPersonBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Description;
 import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress;
@@ -62,9 +60,11 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,34 +79,40 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils.*;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.*;
 
-
-/**
- * Default implementation of {@link EntityDescriptorService}
- *
- * @since 1.0
- */
 @Slf4j
-public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
+@Service
+public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, InitializingBean {
     @Autowired
-    private EntityDescriptorRepository entityDescriptorRepository;
+    EntityDescriptorRepository entityDescriptorRepository;
     
     @Autowired
-    private EntityService entityService;
-
-    @Autowired
-    private IGroupService groupService;
+    IGroupService groupService;
     
     @Autowired
     private OpenSamlObjects openSamlObjects;
 
-    private UserService userService;
-
-    public JPAEntityDescriptorServiceImpl(OpenSamlObjects openSamlObjects, EntityService entityService, UserService userService) {
-        this.openSamlObjects = openSamlObjects;
-        this.entityService = entityService;
-        this.userService = userService;
+    @Autowired
+    UserService userService;
+    
+    @Override
+    @Transactional
+    public void afterPropertiesSet() {
+        // SHIBUI-1740: Adding admin group to all existing entity descriptors that do not have a group already. 
+        // Because this class has a GroupService, we assume the ADMIN_GROUP has already been setup prior to being
+        // autowired into this class.
+        try {
+            entityDescriptorRepository.findAllByGroupIsNull().forEach(ed -> {
+                ed.setGroup(Group.ADMIN_GROUP);
+                entityDescriptorRepository.save(ed);
+            });
+        }
+        catch (NullPointerException e) {
+            // This block was added due to a number of mock test where NPEs happened. Rather than wire more mock junk
+            // into tests that are only trying to compensate for this migration, this is here
+        }
     }
 
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
@@ -137,35 +143,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return buildDescriptorFromRepresentation(ed, representation);
     }
 
-    KeyDescriptor createKeyDescriptor(String name, String type, String value) {
-        KeyDescriptor keyDescriptor = openSamlObjects.buildDefaultInstanceOfType(KeyDescriptor.class);
-
-        if (!Strings.isNullOrEmpty(name)) {
-            keyDescriptor.setName(name);
-        }
-
-        if (!"both".equals(type)) {
-            keyDescriptor.setUsageType(type);
-        }
-
-        KeyInfo keyInfo = openSamlObjects.buildDefaultInstanceOfType(KeyInfo.class);
-        keyDescriptor.setKeyInfo(keyInfo);
-
-        X509Data x509Data = openSamlObjects.buildDefaultInstanceOfType(X509Data.class);
-        keyInfo.getXMLObjects().add(x509Data);
-
-        X509Certificate x509Certificate = openSamlObjects.buildDefaultInstanceOfType(X509Certificate.class);
-        x509Data.getXMLObjects().add(x509Certificate);
-        x509Certificate.setValue(value);
-
-        return keyDescriptor;
-    }
-
     @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, EntityIdExistsException {
         return createNew(createRepresentationFromDescriptor(ed));
     }
-
+    
     @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityIdExistsException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
@@ -177,10 +159,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
         
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
-        ed.setGroup(userService.getCurrentUser().getGroup());
+        ed.setGroup(userService.getCurrentUserGroup());
         return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
     }
-    
+
     @Override
     public EntityDescriptorRepresentation createRepresentationFromDescriptor(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor) {
         EntityDescriptor ed = (EntityDescriptor) entityDescriptor;
@@ -195,7 +177,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         representation.setVersion(ed.hashCode());
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
-        representation.setGroupId(ed.getGroup() != null ? ed.getGroup().getResourceId() : Group.DEFAULT_GROUP.getResourceId());
+        representation.setGroupId(ed.getGroup().getResourceId());
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
@@ -353,7 +335,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
                                     throw new RuntimeException("Multiple/No values detected where one is expected!");
                                 }
-                                attributeValues = getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
+                                attributeValues = ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0));
                                 break;
                             case INTEGER:
                                 if (jpaAttribute.getAttributeValues().size() != 1) {
@@ -367,7 +349,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                                 }
                                 if (overrideProperty.getPersistType() != null &&
                                     !overrideProperty.getPersistType().equals(overrideProperty.getDisplayType())) {
-                                    attributeValues = overrideProperty.getPersistValue().equals(getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0)));
+                                    attributeValues = overrideProperty.getPersistValue().equals(ModelRepresentationConversions.getValueFromXMLObject(jpaAttribute.getAttributeValues().get(0)));
                                 } else {
                                     attributeValues = Boolean.valueOf(overrideProperty.getInvert()) ^ Boolean.valueOf(((XSBoolean) jpaAttribute.getAttributeValues()
                                             .get(0)).getStoredValue());
@@ -377,7 +359,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                             case LIST:
                             case SELECTION_LIST:
                                 attributeValues = jpaAttribute.getAttributeValues().stream()
-                                        .map(attributeValue -> getValueFromXMLObject(attributeValue))
+                                        .map(attributeValue -> ModelRepresentationConversions.getValueFromXMLObject(attributeValue))
                                         .collect(Collectors.toList());
                         }
                         relyingPartyOverrides.put(((IRelyingPartyOverrideProperty) override.get()).getName(), attributeValues);
@@ -431,32 +413,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
     }
 
-    private EntityAttributes getEntityAttributes(EntityDescriptor ed) {
-        return getEntityAttributes(ed, true);
-    }
-
-    private EntityAttributes getEntityAttributes(EntityDescriptor ed, boolean create) {
-        Extensions extensions = ed.getExtensions();
-        if (extensions == null && !create) {
-            return null;
-        }
-        if (extensions == null) {
-            extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
-            ed.setExtensions(extensions);
-        }
-
-        EntityAttributes entityAttributes = null;
-        if (extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).size() > 0) {
-            entityAttributes = (EntityAttributes) extensions.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME).get(0);
-        } else {
-            if (create) {
-                entityAttributes = ((EntityAttributesBuilder) openSamlObjects.getBuilderFactory().getBuilder(EntityAttributes.DEFAULT_ELEMENT_NAME)).buildObject();
-                extensions.getUnknownXMLObjects().add(entityAttributes);
-            }
-        }
-        return entityAttributes;
-    }
-
     @Override
     public EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException {
         EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
@@ -468,306 +424,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }     
         return ed;
     }
-
-    private Optional<EntityAttributes> getOptionalEntityAttributes(EntityDescriptor ed) {
-        return Optional.ofNullable(getEntityAttributes(ed, false));
-    }
-
+   
     @Override
     public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
     }
-
-    private  SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor) {
-        return getSPSSODescriptorFromEntityDescriptor(entityDescriptor, true);
-    }
-
-    private SPSSODescriptor getSPSSODescriptorFromEntityDescriptor(EntityDescriptor entityDescriptor, boolean create) {
-        if (entityDescriptor.getSPSSODescriptor("") == null && create) {
-            SPSSODescriptor spssoDescriptor = openSamlObjects.buildDefaultInstanceOfType(SPSSODescriptor.class);
-            entityDescriptor.getRoleDescriptors().add(spssoDescriptor);
-        }
-        return entityDescriptor.getSPSSODescriptor("");
-    }
-
-    private UIInfo getUIInfo(EntityDescriptor ed) {
-        Extensions extensions = getSPSSODescriptorFromEntityDescriptor(ed).getExtensions();
-        if (extensions == null) {
-            extensions = openSamlObjects.buildDefaultInstanceOfType(Extensions.class);
-            ed.getSPSSODescriptor("").setExtensions(extensions);
-        }
-
-        UIInfo uiInfo;
-        if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
-            uiInfo = (UIInfo) extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0);
-        } else {
-            uiInfo = openSamlObjects.buildDefaultInstanceOfType(UIInfo.class);
-            extensions.getUnknownXMLObjects().add(uiInfo);
-        }
-        return uiInfo;
-    }
-
-    @PostConstruct
-    @Transactional
-    private void migration() {
-        // SHIBUI-1740: Adding default group to all existing entity descriptors that do not have a group already. 
-        // Because this class has a GroupService, we assume the DEFAULT_GROUP has already been setup prior to being
-        // autowired into this class.
-        try {
-            entityDescriptorRepository.findAllByGroupIsNull().forEach(ed -> {
-                ed.setGroup(Group.DEFAULT_GROUP);
-                entityDescriptorRepository.save(ed);
-            });
-        }
-        catch (NullPointerException e) {
-            // This block was added due to a number of mock test where NPEs happened. Rather than wire more mock junk
-            // into tests that are only trying to compensate for this migration, this is here
-        }
-    }
-    
-    // TODO: remove
-    private String getValueFromXMLObject(XMLObject xmlObject) {
-        return ModelRepresentationConversions.getValueFromXMLObject(xmlObject);
-    }
-
-    private void removeUIInfo(EntityDescriptor ed) {
-        SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed, false);
-        if (spssoDescriptor != null) {
-            Extensions extensions = spssoDescriptor.getExtensions();
-            if (extensions == null) {
-                return;
-            }
-            if (extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).size() > 0) {
-                extensions.getUnknownXMLObjects().remove(extensions.getUnknownXMLObjects(UIInfo.DEFAULT_ELEMENT_NAME).get(0));
-            }
-        }
-    }
-
-    void setupACSs(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup ACSs
-        if (representation.getAssertionConsumerServices() != null && representation.getAssertionConsumerServices().size() > 0) {
-            // TODO: review if we need more than a naive implementation
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
-            for (AssertionConsumerServiceRepresentation acsRepresentation : representation.getAssertionConsumerServices()) {
-                AssertionConsumerService assertionConsumerService = openSamlObjects.buildDefaultInstanceOfType(AssertionConsumerService.class);
-                getSPSSODescriptorFromEntityDescriptor(ed).getAssertionConsumerServices().add(assertionConsumerService);
-                if (acsRepresentation.isMakeDefault()) {
-                    assertionConsumerService.setIsDefault(true);
-                }
-                assertionConsumerService.setBinding(acsRepresentation.getBinding());
-                assertionConsumerService.setLocation(acsRepresentation.getLocationUrl());
-                assertionConsumerService.setIndex(acsRepresentation.getIndex());
-            }
-        } else {
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getAssertionConsumerServices().clear());
-        }
-    }
-
-    void setupContacts(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // set up contacts
-        if (representation.getContacts() != null && representation.getContacts().size() > 0) {
-            ed.getContactPersons().clear();
-            for (ContactRepresentation contactRepresentation : representation.getContacts()) {
-                ContactPerson contactPerson = ((ContactPersonBuilder) openSamlObjects.getBuilderFactory().getBuilder(ContactPerson.DEFAULT_ELEMENT_NAME)).buildObject();
-
-                contactPerson.setType(contactRepresentation.getType());
-
-                GivenName givenName = openSamlObjects.buildDefaultInstanceOfType(GivenName.class);
-                givenName.setName(contactRepresentation.getName());
-                contactPerson.setGivenName(givenName);
-
-                EmailAddress emailAddress = openSamlObjects.buildDefaultInstanceOfType(EmailAddress.class);
-                emailAddress.setAddress(contactRepresentation.getEmailAddress());
-                contactPerson.addEmailAddress(emailAddress);
-
-                ed.addContactPerson(contactPerson);
-            }
-        } else {
-            ed.getContactPersons().clear();
-        }
-    }
-
-    void setupLogout(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup logout
-        if (representation.getLogoutEndpoints() != null && !representation.getLogoutEndpoints().isEmpty()) {
-            // TODO: review if we need more than a naive implementation
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
-            for (LogoutEndpointRepresentation logoutEndpointRepresentation : representation.getLogoutEndpoints()) {
-                SingleLogoutService singleLogoutService = openSamlObjects.buildDefaultInstanceOfType(SingleLogoutService.class);
-                singleLogoutService.setBinding(logoutEndpointRepresentation.getBindingType());
-                singleLogoutService.setLocation(logoutEndpointRepresentation.getUrl());
-
-                getSPSSODescriptorFromEntityDescriptor(ed).getSingleLogoutServices().add(singleLogoutService);
-            }
-        } else {
-            ed.getOptionalSPSSODescriptor().ifPresent(spssoDescriptor -> spssoDescriptor.getSingleLogoutServices().clear());
-        }
-    }
-
-    void setupOrganization(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // set up organization
-        if (representation.getOrganization() != null && representation.getOrganization().getName() != null && representation.getOrganization().getDisplayName() != null && representation.getOrganization().getUrl() != null) {
-            OrganizationRepresentation organizationRepresentation = representation.getOrganization();
-            Organization organization = openSamlObjects.buildDefaultInstanceOfType(Organization.class);
-
-            OrganizationName organizationName = openSamlObjects.buildDefaultInstanceOfType(OrganizationName.class);
-            organizationName.setXMLLang("en");
-            organizationName.setValue(organizationRepresentation.getName());
-            organization.getOrganizationNames().add(organizationName);
-
-            OrganizationDisplayName organizationDisplayName = openSamlObjects.buildDefaultInstanceOfType(OrganizationDisplayName.class);
-            organizationDisplayName.setXMLLang("en");
-            organizationDisplayName.setValue(organizationRepresentation.getDisplayName());
-            organization.getDisplayNames().add(organizationDisplayName);
-
-            OrganizationURL organizationURL = openSamlObjects.buildDefaultInstanceOfType(OrganizationURL.class);
-            organizationURL.setXMLLang("en");
-            organizationURL.setValue(organizationRepresentation.getUrl());
-            organization.getURLs().add(organizationURL);
-
-            ed.setOrganization(organization);
-        } else {
-            ed.setOrganization(null);
-        }
-    }
-
-    void setupRelyingPartyOverrides(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        if (representation.getRelyingPartyOverrides() != null || (representation.getAttributeRelease() != null && representation.getAttributeRelease().size() > 0)) {
-            // TODO: review if we need more than a naive implementation
-            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
-            getEntityAttributes(ed).getAttributes().addAll(entityService.getAttributeListFromEntityRepresentation(representation));
-        } else {
-            getOptionalEntityAttributes(ed).ifPresent(entityAttributes -> entityAttributes.getAttributes().clear());
-        }
-    }
-
-    void setupSecurity(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup security
-        if (representation.getSecurityInfo() != null) {
-            SecurityInfoRepresentation securityInfoRepresentation = representation.getSecurityInfo();
-            if (securityInfoRepresentation.isAuthenticationRequestsSigned()) {
-                getSPSSODescriptorFromEntityDescriptor(ed).setAuthnRequestsSigned(true);
-            }
-            if (securityInfoRepresentation.isWantAssertionsSigned()) {
-                getSPSSODescriptorFromEntityDescriptor(ed).setWantAssertionsSigned(true);
-            }
-            // TODO: review if we need more than a naive implementation
-            ed.getOptionalSPSSODescriptor().ifPresent( i -> i.getKeyDescriptors().clear());
-            if (securityInfoRepresentation.isX509CertificateAvailable()) {
-                for (SecurityInfoRepresentation.X509CertificateRepresentation x509CertificateRepresentation : securityInfoRepresentation.getX509Certificates()) {
-                    KeyDescriptor keyDescriptor = createKeyDescriptor(x509CertificateRepresentation.getName(), x509CertificateRepresentation.getType(), x509CertificateRepresentation.getValue());
-                    getSPSSODescriptorFromEntityDescriptor(ed).addKeyDescriptor(keyDescriptor);
-                }
-            }
-        } else {
-            ed.getOptionalSPSSODescriptor().ifPresent( spssoDescriptor -> {
-                spssoDescriptor.setAuthnRequestsSigned((Boolean) null);
-                spssoDescriptor.setWantAssertionsSigned((Boolean) null);
-                spssoDescriptor.getKeyDescriptors().clear();
-            });
-        }
-    }
-
-    void setupSPSSODescriptor(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // setup SPSSODescriptor
-        if (representation.getServiceProviderSsoDescriptor() != null) {
-            SPSSODescriptor spssoDescriptor = getSPSSODescriptorFromEntityDescriptor(ed);
-
-            spssoDescriptor.setSupportedProtocols(Collections.EMPTY_LIST);
-            if (!Strings.isNullOrEmpty(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum())) {
-                spssoDescriptor.setSupportedProtocols(
-                        Arrays.stream(representation.getServiceProviderSsoDescriptor().getProtocolSupportEnum().split(",")).map(p -> MDDCConstants.PROTOCOL_BINDINGS.get(p.trim())).collect(Collectors.toList())
-                );
-            }
-
-            spssoDescriptor.getNameIDFormats().clear();
-            if (representation.getServiceProviderSsoDescriptor() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats() != null && representation.getServiceProviderSsoDescriptor().getNameIdFormats().size() > 0) {
-                for (String nameidFormat : representation.getServiceProviderSsoDescriptor().getNameIdFormats()) {
-                    NameIDFormat nameIDFormat = openSamlObjects.buildDefaultInstanceOfType(NameIDFormat.class);
-
-                    nameIDFormat.setFormat(nameidFormat);
-
-                    spssoDescriptor.getNameIDFormats().add(nameIDFormat);
-                }
-            }
-        } else {
-            ed.setRoleDescriptors(null);
-        }
-    }
-
-    void setupUIInfo(EntityDescriptor ed, EntityDescriptorRepresentation representation) {
-        // set up mdui
-        if (representation.getMdui() != null) {
-            // TODO: check if we need more than a naive implementation
-            removeUIInfo(ed);
-            MduiRepresentation mduiRepresentation = representation.getMdui();
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getDisplayName())) {
-                DisplayName displayName = openSamlObjects.buildDefaultInstanceOfType(DisplayName.class);
-                getUIInfo(ed).addDisplayName(displayName);
-                displayName.setValue(mduiRepresentation.getDisplayName());
-                displayName.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDisplayNames()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getInformationUrl())) {
-                InformationURL informationURL = openSamlObjects.buildDefaultInstanceOfType(InformationURL.class);
-                getUIInfo(ed).addInformationURL(informationURL);
-                informationURL.setValue(mduiRepresentation.getInformationUrl());
-                informationURL.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getInformationURLs()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getPrivacyStatementUrl())) {
-                PrivacyStatementURL privacyStatementURL = openSamlObjects.buildDefaultInstanceOfType(PrivacyStatementURL.class);
-                getUIInfo(ed).addPrivacyStatementURL(privacyStatementURL);
-                privacyStatementURL.setValue(mduiRepresentation.getPrivacyStatementUrl());
-                privacyStatementURL.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getPrivacyStatementURLs()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getDescription())) {
-                Description description = openSamlObjects.buildDefaultInstanceOfType(Description.class);
-                getUIInfo(ed).addDescription(description);
-                description.setValue(mduiRepresentation.getDescription());
-                description.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getDescriptions()));
-            }
-
-            if (!Strings.isNullOrEmpty(mduiRepresentation.getLogoUrl())) {
-                Logo logo = openSamlObjects.buildDefaultInstanceOfType(Logo.class);
-                getUIInfo(ed).addLogo(logo);
-                logo.setURL(mduiRepresentation.getLogoUrl());
-                logo.setHeight(mduiRepresentation.getLogoHeight());
-                logo.setWidth(mduiRepresentation.getLogoWidth());
-                logo.setXMLLang("en");
-            } else {
-                ed.getOptionalSPSSODescriptor()
-                        .flatMap(SPSSODescriptor::getOptionalExtensions)
-                        .flatMap(Extensions::getOptionalUIInfo)
-                        .ifPresent(u -> u.getXMLObjects().removeAll(u.getLogos()));
-            }
-        } else {
-            removeUIInfo(ed);
-        }
-    }
-
+      
     @Override
     public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityNotFoundException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());

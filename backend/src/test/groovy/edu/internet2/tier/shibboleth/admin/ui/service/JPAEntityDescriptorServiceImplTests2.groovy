@@ -1,87 +1,88 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.PropertySource
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.transaction.annotation.Transactional
+
 import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSAnyBuilder
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSBooleanBuilder
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSStringBuilder
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
-import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import org.opensaml.saml.ext.saml2mdattr.EntityAttributes
-import org.skyscreamer.jsonassert.JSONAssert
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.json.JacksonTester
-import org.springframework.context.annotation.PropertySource
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.context.ContextConfiguration
-import org.xmlunit.builder.DiffBuilder
-import org.xmlunit.builder.Input
-import org.xmlunit.diff.DefaultNodeMatcher
-import org.xmlunit.diff.ElementSelectors
 import spock.lang.Specification
 
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
 @SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @PropertySource("classpath:application.yml")
+@DirtiesContext
 class JPAEntityDescriptorServiceImplTests2 extends Specification {
-
-    @Autowired
-    JPAEntityDescriptorServiceImpl service
-
-    @Autowired
-    UserRepository userRepository
-
+    
     @Autowired
     IGroupService groupService
 
     @Autowired
+    RoleRepository roleRepository
+    
+    @Autowired
+    JPAEntityDescriptorServiceImpl service
+        
+    @Autowired
+    UserRepository userRepository
+
+    @Autowired
     UserService userService
         
+    @Transactional
     def setup() {       
         Group ga = new Group()
         ga.setResourceId("testingGroup")
         ga.setName("Group A")
-        ga.setDefaultGroup(true)
-        
-        Group.DEFAULT_GROUP = ga
-        
+        ga = groupService.createGroup(ga)
+               
         Group gb = new Group();
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
-        groupService.createGroup(gb)
+        gb = groupService.createGroup(gb)
         
-        User u = new User()
-        u.setUsername("foo")
-        u.setGroup(gb)
-        u.setPassword("pass")
-        userRepository.save(u)
+        userRepository.deleteAll() // ensure we start fresh with users and roles
+        roleRepository.deleteAll()
+        def roles = [new Role().with {
+            name = 'ROLE_ADMIN'
+            it
+        }, new Role().with {
+            name = 'ROLE_USER'
+            it
+        }, new Role().with {
+            name = 'ROLE_NONE'
+            it
+        }]
+        roles.each {
+            roleRepository.save(it)
+        }      
+        
+        Optional<Role> adminRole = roleRepository.findByName("ROLE_ADMIN")
+        User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")
+        userService.save(adminUser)
+        
+        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
+        User user = new User(username: "someUser", roles:[userRole.get()], password: "foo", group: gb)
+        userService.save(user)
     }
 
-    @WithMockUser(value = "foo", roles = ["USER"])
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    @Rollback
     def "When creating Entity Descriptor, ED is assigned to the user's group"() {
         given:
         User current = userService.getCurrentUser()

@@ -13,6 +13,4 @@ public interface GroupsRepository extends JpaRepository<Group, String> {
     
     @SuppressWarnings("unchecked")
     Group save(Group group);
-    
-    Group findByDefaultGroupTrue();
 }

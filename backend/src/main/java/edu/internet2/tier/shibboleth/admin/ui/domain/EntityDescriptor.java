@@ -145,7 +145,7 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     }
 
     public Group getGroup() {
-        return group == null ? Group.DEFAULT_GROUP : group;
+        return group == null ? Group.ADMIN_GROUP : group;
     }
     
     @Transient

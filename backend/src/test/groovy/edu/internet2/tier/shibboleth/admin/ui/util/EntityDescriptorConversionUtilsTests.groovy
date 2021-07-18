@@ -1,4 +1,7 @@
-package edu.internet2.tier.shibboleth.admin.ui.service
+package edu.internet2.tier.shibboleth.admin.ui.util
+
+import org.opensaml.saml.common.xml.SAMLConstants
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
 import edu.internet2.tier.shibboleth.admin.ui.domain.Description
@@ -22,63 +25,31 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import org.opensaml.saml.common.xml.SAMLConstants
-import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
+
+class EntityDescriptorConversionUtilsTests extends Specification {
     @Shared
-    OpenSamlObjects openSAMLObjects = new OpenSamlObjects().with {
-        it.init()
-        it
-    }
-
+    def OpenSamlObjects openSAMLObjects
+    
     @Shared
-    JPAEntityDescriptorServiceImpl entityDescriptorService
+    def EntityDescriptorConverstionUtils utilsUnderTest
 
-    void setup() {
-        entityDescriptorService = new JPAEntityDescriptorServiceImpl(openSAMLObjects, null, null)
+    def setup() {
+        openSAMLObjects = new OpenSamlObjects().with {
+            it.init()
+            it
+        }
+
+        utilsUnderTest = new EntityDescriptorConverstionUtils().with {
+            it.openSamlObjects = openSAMLObjects
+            it
+        }
     }
-
-    def "simple test"() {
-        assert true
-    }
-
-    // this is a stub to build out the DataFields
-    def "pretest"() {
-        given:
-        def dataField = new Data.DataField(
-                method: 'setupLogout',
-                description: 'no change',
-                representation: new EntityDescriptorRepresentation(),
-                starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class),
-                expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class)
-        )
-
-        when:
-        def (expected, starter) = [dataField.expected, dataField.starter]
-        expected.setResourceId(starter.getResourceId())
-        entityDescriptorService."${dataField.method}"(starter, dataField.representation)
-
-        then:
-        assert expected == starter
-    }
-
-    @Unroll
-    def "test #method(#description)"() {
-        setup:
-        expected.setResourceId(starter.getResourceId())
-        entityDescriptorService."$method"(starter, representation)
-
-        expect:
-        assert starter == expected
-
-        where:
-        [method, description, representation, starter, expected] << Data.getData(openSAMLObjects)
-    }
-
+    
     def "test createKeyDescriptor, single type"() {
         given:
         def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" use="signing">
@@ -92,12 +63,12 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
         expected.name = 'testName'
 
         when:
-        def keyDescriptor = entityDescriptorService.createKeyDescriptor('testName', 'signing', 'testValue')
+        def keyDescriptor = EntityDescriptorConverstionUtils.createKeyDescriptor('testName', 'signing', 'testValue')
 
         then:
         assert keyDescriptor == expected
     }
-
+    
     def "test createKeyDescriptor, both type"() {
         given:
         def expectedXml = '''<md:KeyDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
@@ -111,7 +82,7 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
         expected.name = 'testName'
 
         when:
-        def keyDescriptor = entityDescriptorService.createKeyDescriptor('testName', 'both', 'testValue')
+        def keyDescriptor = EntityDescriptorConverstionUtils.createKeyDescriptor('testName', 'both', 'testValue')
         def x = openSAMLObjects.marshalToXmlString(keyDescriptor)
         then:
         assert keyDescriptor == expected
@@ -119,16 +90,28 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
 
     def 'test createKeyDescriptor equality'() {
         when:
-        def key1 = entityDescriptorService.createKeyDescriptor('test', 'signing', 'test')
-        def key2 = entityDescriptorService.createKeyDescriptor('test', 'signing', 'test')
+        def key1 = EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test')
+        def key2 = EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test')
 
         then:
         assert key1.equals(key2)
     }
+    
+    @Unroll
+    def "test #method(#description)"() {
+        setup:
+        expected.setResourceId(starter.getResourceId())
+        EntityDescriptorConverstionUtils."$method"(starter, representation)
+
+        expect:
+        assert starter == expected
+
+        where:
+        [method, description, representation, starter, expected] << Data.getData(openSAMLObjects)
+    }
 
     static class Data {
         static def getData(OpenSamlObjects openSAMLObjects) {
-            JPAEntityDescriptorServiceImpl entityDescriptorService = new JPAEntityDescriptorServiceImpl(openSAMLObjects, null, null)
             def data = []
 
             data << new DataField(
@@ -621,7 +604,7 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test'))
                                     it
                                 }
                         )
@@ -645,7 +628,7 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test'))
                                     it
                                 }
                         )
@@ -654,8 +637,8 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test2', 'encryption', 'test2'))
                                     it
                                 }
                         )
@@ -678,8 +661,8 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test2', 'encryption', 'test2'))
                                     it
                                 }
                         )
@@ -688,7 +671,7 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     expected: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test2', 'encryption', 'test2'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test2', 'encryption', 'test2'))
                                     it
                                 }
                         )
@@ -708,8 +691,8 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'encryption', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'encryption', 'test'))
                                     it
                                 }
                         )
@@ -729,8 +712,8 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                     starter: openSAMLObjects.buildDefaultInstanceOfType(EntityDescriptor.class).with {
                         it.getRoleDescriptors().add(
                                 openSAMLObjects.buildDefaultInstanceOfType(SPSSODescriptor.class).with {
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'signing', 'test'))
-                                    it.addKeyDescriptor(entityDescriptorService.createKeyDescriptor('test', 'encryption', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'signing', 'test'))
+                                    it.addKeyDescriptor(EntityDescriptorConverstionUtils.createKeyDescriptor('test', 'encryption', 'test'))
                                     it
                                 }
                         )
@@ -1108,10 +1091,8 @@ class AuxiliaryJPAEntityDescriptorServiceImplTests extends Specification {
                         it
                     }
             )
-
             return data
         }
-
 
         static class DataField implements Iterable {
             String method
