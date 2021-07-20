@@ -10,3 +10,6 @@ logging:
   level:
     org.pac4j: "TRACE"
     org.opensaml: "INFO"
+server.tomcat:
+  remote-ip-header: x-forwarded-for
+  protocol-header: x-forwarded-proto
