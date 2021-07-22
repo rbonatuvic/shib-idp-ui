@@ -45,7 +45,12 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
     UserService userService
         
     @Transactional
-    def setup() {       
+    def setup() {
+        // ensure we start fresh with only expected users and roles and groups
+        userRepository.deleteAll()
+        roleRepository.deleteAll()
+        groupService.clearAllForTesting()
+        
         Group ga = new Group()
         ga.setResourceId("testingGroup")
         ga.setName("Group A")
@@ -56,8 +61,6 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
         
-        userRepository.deleteAll() // ensure we start fresh with users and roles
-        roleRepository.deleteAll()
         def roles = [new Role().with {
             name = 'ROLE_ADMIN'
             it

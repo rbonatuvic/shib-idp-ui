@@ -1,8 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.util;
 
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils.getEntityAttributes;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils.getOptionalEntityAttributes;
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils.getSPSSODescriptorFromEntityDescriptor;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getEntityAttributes;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getOptionalEntityAttributes;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,7 +52,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import lombok.Setter;
 
 @Service
-public class EntityDescriptorConverstionUtils {
+public class EntityDescriptorConversionUtils {
     @Autowired
     @Setter
     private static OpenSamlObjects openSamlObjects;

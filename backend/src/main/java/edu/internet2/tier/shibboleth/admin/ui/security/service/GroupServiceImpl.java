@@ -1,23 +1,28 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
 import java.util.List;
-
-import javax.transaction.Transactional;
+import java.util.Optional;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.UserGroup;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserGroupRepository;
 
 @Service
 public class GroupServiceImpl implements IGroupService, InitializingBean {
     @Autowired
     private GroupsRepository repo;
+    
+    @Autowired
+    private UserGroupRepository userGroupRepo;
     
     public GroupServiceImpl() {        
     }
@@ -27,6 +32,13 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
     }
     
     @Override
+    public void clearAllForTesting() {
+        repo.deleteAll();
+        afterPropertiesSet();
+    }
+    
+    @Override
+    @Transactional
     public Group createGroup(Group group) throws GroupExistsConflictException {
         Group foundGroup = find(group.getResourceId());
         // If already defined, we don't want to create a new one, nor do we want this call update the definition
@@ -39,9 +51,11 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
     }
 
     @Override
+    @Transactional
     public void deleteDefinition(String resourceId) throws EntityNotFoundException, GroupDeleteException {
         Group g = find(resourceId);
-        if (!g.getUsers().isEmpty() || !g.getEntityDescriptors().isEmpty()) {
+        Optional<List<UserGroup>> userGroups = userGroupRepo.findAllByGroup(g);
+        if (userGroups.isEmpty() || !g.getEntityDescriptors().isEmpty()) {
             throw new GroupDeleteException(String.format(
                             "Unable to delete group with resource id: [%s] - remove all users and entities from group first",
                             resourceId));
@@ -50,6 +64,7 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
     }
 
     @Override
+    @Transactional
     public Group find(String resourceId) {
         return repo.findByResourceId(resourceId);
     }

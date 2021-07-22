@@ -9,7 +9,7 @@ import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
 /**
- * Tests for <code>AdminUserService</code>
+ * Tests for <code>AdminUserService</code> (well, really it tests that the DevConfig worked as much as anything)
  *
  * @author Dmitriy Kopylenko
  */
@@ -19,13 +19,6 @@ class AdminUserServiceTests extends Specification {
 
     @Autowired
     AdminUserService adminUserService
-
-    @Autowired
-    RoleRepository adminRoleRepository
-
-    @Autowired
-    UserRepository adminUserRepository
-
 
     def "Loading existing admin user with admin role"() {
         given: 'Valid user with admin role is available (loaded by Spring Boot Listener in dev profile)'

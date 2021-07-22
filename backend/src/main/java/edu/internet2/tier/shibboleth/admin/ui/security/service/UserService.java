@@ -1,24 +1,23 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserGroupRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 
 @Service
 public class UserService implements InitializingBean {
@@ -30,7 +29,13 @@ public class UserService implements InitializingBean {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    UserGroupRepository userGroupRepository;
 
+    public UserService() {
+    }
+    
     /**
      * Primarily for testing purposes so we can control the injections
      */
@@ -108,22 +113,52 @@ public class UserService implements InitializingBean {
     }
 
     /**
-     * Creating users should always have a group. If the user isn't assigned to a group, create one
+     * Creating users should always have a group. If the user isn't assigned to a group, create one based on their name.
+     * If the user has the ADMIN role, they are always solely assigned to the admin group.
+     * Finally, if the user has multiple groups, that came from an outside auth source, so we want to maintain that list
+     * (note that if they have the admin role, we will override any group list with the single ADMIN GROUP)
      */
+    @Transactional
     public User save(User user) {
-        if (user.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
-            user.setGroup(Group.ADMIN_GROUP);
-        }
-        else if (user.getGroupId() == null) {
-            Group g = new Group(user);
-            try {
-                g = groupService.createGroup(g);
-            }
-            catch (GroupExistsConflictException e) {
-                g = groupService.find(user.getUsername());
+        if (user.getUserGroups().size() < 2) {
+            Group g;
+            if (user.getRole().equalsIgnoreCase("ROLE_ADMIN")) {
+                g = groupService.find(Group.ADMIN_GROUP.getResourceId());
+            } else if (user.getGroupId() == null) { // Find or create the "user's default" group
+                g = new Group(user);
+                try {
+                    g = groupService.createGroup(g);
+                }
+                catch (GroupExistsConflictException e) {
+                    g = groupService.find(user.getUsername());
+                }
+            } else {
+                g = groupService.find(user.getGroupId());
             }
             user.setGroup(g);
+        } else {
+            user.getUserGroups().forEach(ug -> {
+                Group g = groupService.find(ug.getGroup().getResourceId());
+                if (g == null) {
+                    try {
+                        Group newGroup = ug.getGroup();
+                        newGroup.addUser(user);
+                        g = groupService.createGroup(newGroup);
+                    }
+                    catch (GroupExistsConflictException e) {
+                        // we just checked, this shouldn't happen
+                        g = ug.getGroup();
+                    }
+                }
+                ug.setGroup(g);
+            });
         }
+        // Cleanup any group changes before saving new state
+        user.getOldUserGroups().forEach(userGroup -> {
+            userGroupRepository.delete(userGroup);
+        });
+        user.clearOldUserGroups();
+
         return userRepository.save(user);
     }
     

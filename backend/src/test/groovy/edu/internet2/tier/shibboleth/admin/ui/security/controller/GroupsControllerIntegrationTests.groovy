@@ -1,47 +1,102 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
-
-import groovy.json.JsonOutput
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers
-import org.springframework.transaction.annotation.Transactional
-
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException
-import spock.lang.Ignore
-import spock.lang.Specification
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 import javax.persistence.EntityManager
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles(["no-auth", "dev"])
-@Transactional
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import groovy.json.JsonOutput
+import spock.lang.Specification
+
+@DataJpaTest
+@ContextConfiguration(classes=[CoreShibUiConfiguration, TestConfiguration, InternationalizationConfiguration, SearchConfiguration])
+@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
+@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@DirtiesContext
 class GroupsControllerIntegrationTests extends Specification {
     @Autowired
-    private MockMvc mockMvc
+    EntityManager entityManager
 
     @Autowired
-    EntityManager entityManager
+    GroupsRepository groupsRepository
+            
+    @Autowired
+    GroupServiceImpl groupService
+    
+    @Autowired
+    RoleRepository roleRepository
+    
+    @Autowired
+    UserRepository userRepository
+    
+    @Autowired
+    UserService userService
     
     static RESOURCE_URI = '/api/admin/groups'
-    static USERS_RESOURCE_URI = '/api/admin/users'
+
+    def MockMvc mockMvc
+        
+    def setup() {
+        def GroupController groupController = new GroupController().with ({  
+            it.groupService = this.groupService
+            it
+        })
+        mockMvc = MockMvcBuilders.standaloneSetup(groupController).build();
+        
+        if (roleRepository.count() == 0) {
+            def roles = [new Role().with {
+                name = 'ROLE_ADMIN'
+                it
+            }, new Role().with {
+                name = 'ROLE_USER'
+                it
+            }, new Role().with {
+                name = 'ROLE_NONE'
+                it
+            }]
+            roles.each {
+                roleRepository.save(it)
+            }
+        }
+        
+        Optional<Role> adminRole = roleRepository.findByName("ROLE_ADMIN")
+        User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")
+        userService.save(adminUser)
+        
+        Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
+        User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        user = userService.save(user)
+        entityManager.flush()
+    }
+    
     
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
@@ -58,65 +113,90 @@ class GroupsControllerIntegrationTests extends Specification {
     "resourceId":"FooBar"
   }
 """
-        
         when:
-        def result = mockMvc.perform(post(RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonOutput.toJson(newGroup))
-                .accept(MediaType.APPLICATION_JSON))
+        def result = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonOutput.toJson(newGroup)).accept(MediaType.APPLICATION_JSON))
 
         then:
         result.andExpect(status().isCreated())
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
               .andExpect(content().json(expectedJson, false))
-              
-        when: 'Try to create with an existing resource id'
-        def exceptionExpected = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(newGroup))
-                                       .accept(MediaType.APPLICATION_JSON)).andReturn().getResolvedException()
-        
-        then: 'Expecting method not allowed'
-        exceptionExpected instanceof GroupExistsConflictException == true
+           
+
+       //'Try to create with an existing resource id'
+        try {
+            mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
+                                              .content(JsonOutput.toJson(newGroup))
+                                              .accept(MediaType.APPLICATION_JSON))
+            1 == 2
+        } catch (Throwable expected) {
+            expected instanceof GroupExistsConflictException
+        }
     }
 
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'PUT (update) existing group persists properly'() {
         given:
-        def group = [name: 'NOT AAA',
-                        description: 'updated AAA',
-                        resourceId: 'AAA']
-
-        def expectedJson = """
-  {
-    "name":"NOT AAA",
-    "description":"updated AAA",
-    "resourceId":"AAA"
-  }
-"""
+        groupsRepository.deleteByResourceId("AAA")
+        def Group groupAAA = new Group().with({
+            it.name = "AAA"
+            it.description = "AAA"
+            it.resourceId = "AAA"
+            it
+        }) 
+        groupAAA = groupsRepository.save(groupAAA)
+        groupAAA.setDescription("Updated AAA")
+        groupAAA.setName("NOT AAA")
+        
         when:
-        def result = mockMvc.perform(put(RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonOutput.toJson(group))
-                .accept(MediaType.APPLICATION_JSON))
+        def result = mockMvc.perform(put(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
+                            .content(JsonOutput.toJson(groupAAA)).accept(MediaType.APPLICATION_JSON))
 
         then:
         result.andExpect(status().isOk())
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(content().json(expectedJson, false))
+              .andExpect(jsonPath("\$.name").value("NOT AAA"))
+              .andExpect(jsonPath("\$.resourceId").value("AAA"))
+              .andExpect(jsonPath("\$.description").value("Updated AAA"))
               
         when: 'Try to update with a non-existing resource id'
         def newGroup = [name: 'XXXXX',
             description: 'should not work',
             resourceId: 'XXXX']
-        def exceptionExpected = mockMvc.perform(put(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON).content(JsonOutput.toJson(newGroup))
-                                    .accept(MediaType.APPLICATION_JSON)).andReturn().getResolvedException()
-
-        then: 'Expecting nothing happened because the object was not found'
-        exceptionExpected instanceof EntityNotFoundException == true
-    }
         
+        then:
+        try {
+            mockMvc.perform(put(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
+                                             .content(JsonOutput.toJson(newGroup))
+                                             .accept(MediaType.APPLICATION_JSON))
+            1 == 2
+        } catch (Throwable expected) {
+            expected instanceof EntityNotFoundException
+        }
+    }
+
+    @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'GET checks for groups (when there are existing groups)'() {
+        given:
+        groupsRepository.deleteByResourceId("AAA")
+        groupsRepository.deleteByResourceId("BBB")
+        def Group groupAAA = new Group().with({
+            it.name = "AAA"
+            it.description = "AAA"
+            it.resourceId = "AAA"
+            it
+        }) 
+        groupsRepository.save(groupAAA)
+        def Group groupBBB = new Group().with({
+            it.name = "BBB"
+            it.description = "BBB"
+            it.resourceId = "BBB"
+            it
+        }) 
+        groupsRepository.save(groupBBB)
+        
         when: 'GET request is made for ALL groups in the system, and system has groups in it'
         def result = mockMvc.perform(get(RESOURCE_URI))
 
@@ -129,61 +209,47 @@ class GroupsControllerIntegrationTests extends Specification {
         then: 'GET request for a single specific group completed with HTTP 200'
         singleGroupRequest.andExpect(status().isOk())
         
-        when: 'GET request for a single non-existent group in a system that has groups'
-        def exceptionExpected = mockMvc.perform(get("$RESOURCE_URI/CCC")).andReturn().getResolvedException()
-        
-        then: 'The group not found'
-        exceptionExpected instanceof EntityNotFoundException == true
+        // 'GET request for a single non-existent group in a system that has groups'
+        try {
+            mockMvc.perform(get("$RESOURCE_URI/CCC"))
+            1 == 2
+        } catch (Throwable expected) {
+            expected instanceof EntityNotFoundException
+        }        
     }
       
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'DELETE performs correctly when group attached to a user'() {
-        given:
-        def group = [resourceId: 'AAA']
-        def newUser = [firstName: 'Foo',
-                       lastName: 'Bar',
-                       username: 'FooBar',
-                       password: 'somepass',
-                       emailAddress: 'foo@institution.edu',
-                       role: 'ROLE_USER',
-                       group: group]
+        // When the user is created in the setup method above, a new group "someUser" is created to be associated with that user
+        // User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        // userService.save(user)
         
-        when:
-        def result = mockMvc.perform(post(USERS_RESOURCE_URI)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonOutput.toJson(newUser))
-                .accept(MediaType.APPLICATION_JSON))
+        when: 'try to delete group that is attached to a user'
+        def nothingtodo
         
         then:
-        result.andExpect(status().isOk())
-       
+        try {
+            mockMvc.perform(delete("$RESOURCE_URI/someUser"))
+            1 == 2
+        } catch(Throwable expected) {
+            expected instanceof GroupDeleteException
+        }
+        
         when:
-        def userresult = mockMvc.perform(get("$USERS_RESOURCE_URI/$newUser.username"))
-        def expectedJson = """
-{
-  "modifiedBy" : admin,
-  "firstName" : "Foo",
-  "emailAddress" : "foo@institution.edu",
-  "role" : "ROLE_USER",
-  "username" : "FooBar",
-  "createdBy" : admin,
-  "lastName" : "Bar",
-  "group" : {"resourceId":"AAA"}
-}"""
-        then: 'Request completed with HTTP 200 and returned one user'
-        userresult.andExpect(status().isOk())
-                  .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                  .andExpect(content().json(expectedJson, false))
+        def Group groupAAA = new Group().with({
+            it.name = "AAA"
+            it.description = "AAA"
+            it.resourceId = "AAA"
+            it
+        })
+        groupAAA = groupsRepository.save(groupAAA)
         
+        def User user = userRepository.findByUsername("someUser").get()
+        user.setGroup(groupAAA)
+        userService.save(user)
         
-        when: 'DELETE request is made'
-        entityManager.flush()
-        entityManager.clear()
-        
-        def exceptionExpected = mockMvc.perform(delete("$RESOURCE_URI/$group.resourceId")).andReturn().getResolvedException()
-
-        then: 'Expecting method not allowed'
-        exceptionExpected instanceof GroupDeleteException == true
+        then:
+        mockMvc.perform(delete("$RESOURCE_URI/someUser"))
     }
 }

@@ -79,7 +79,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils.*;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.*;
 import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.*;
 
 @Slf4j

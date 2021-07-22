@@ -27,7 +27,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -163,8 +163,8 @@ class EntityDescriptorControllerTests extends Specification {
         userService.save(user)
         entityManager.flush()
         
-        EntityDescriptorConverstionUtils.setOpenSamlObjects(openSamlObjects)
-        EntityDescriptorConverstionUtils.setEntityService(entityService)
+        EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
+        EntityDescriptorConversionUtils.setEntityService(entityService)
     }
        
     @Rollback

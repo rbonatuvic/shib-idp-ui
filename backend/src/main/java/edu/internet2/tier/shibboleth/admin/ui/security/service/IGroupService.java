@@ -9,6 +9,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
 public interface IGroupService {
 
+    void clearAllForTesting();
+
     Group createGroup(Group group) throws GroupExistsConflictException;
 
     void deleteDefinition(String resourceId) throws EntityNotFoundException, GroupDeleteException;

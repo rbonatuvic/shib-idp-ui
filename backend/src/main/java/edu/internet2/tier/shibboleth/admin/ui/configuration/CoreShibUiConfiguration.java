@@ -48,7 +48,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
-import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils;
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 
@@ -211,9 +211,9 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public EntityDescriptorConverstionUtils EntityDescriptorConverstionUtilsInit(EntityService entityService, OpenSamlObjects oso) {
-        EntityDescriptorConverstionUtils.setEntityService(entityService);
-        EntityDescriptorConverstionUtils.setOpenSamlObjects(oso);
-        return new EntityDescriptorConverstionUtils();
+    public EntityDescriptorConversionUtils EntityDescriptorConverstionUtilsInit(EntityService entityService, OpenSamlObjects oso) {
+        EntityDescriptorConversionUtils.setEntityService(entityService);
+        EntityDescriptorConversionUtils.setOpenSamlObjects(oso);
+        return new EntityDescriptorConversionUtils();
     }
 }

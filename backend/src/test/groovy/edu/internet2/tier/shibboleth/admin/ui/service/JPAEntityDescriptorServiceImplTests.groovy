@@ -27,7 +27,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes
 import org.skyscreamer.jsonassert.JSONAssert
@@ -70,8 +70,8 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator()
-        EntityDescriptorConverstionUtils.openSamlObjects = openSamlObjects
-        EntityDescriptorConverstionUtils.entityService = entityService
+        EntityDescriptorConversionUtils.openSamlObjects = openSamlObjects
+        EntityDescriptorConversionUtils.entityService = entityService
     }
 
     def "simple Entity Descriptor"() {

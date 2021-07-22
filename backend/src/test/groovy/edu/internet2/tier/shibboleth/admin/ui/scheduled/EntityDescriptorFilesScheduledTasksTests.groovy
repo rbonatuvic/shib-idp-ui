@@ -16,7 +16,7 @@ import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingSer
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
-import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConverstionUtils
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -58,7 +58,7 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
     def setup() {
         randomGenerator = new RandomGenerator()
         tempPath = tempPath + randomGenerator.randomRangeInt(10000, 20000)
-        EntityDescriptorConverstionUtils.setOpenSamlObjects(openSamlObjects)
+        EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
         entityDescriptorFilesScheduledTasks = new EntityDescriptorFilesScheduledTasks(tempPath, entityDescriptorRepository, openSamlObjects, new FileCheckingFileWritingService())
         directory = new File(tempPath)
         directory.mkdir()
