@@ -100,7 +100,6 @@ export const EntityAttributesFilterEditor= {
                 'name',
                 '@type',
                 'resourceId',
-                'filterEnabled',
                 'entityAttributesFilterTarget'
             ]
         },

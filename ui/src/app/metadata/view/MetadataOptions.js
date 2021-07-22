@@ -1,5 +1,5 @@
 import React from 'react';
-import { faArrowDown, faArrowUp, faHistory, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faHistory, faPlus, faToggleOff, faToggleOn, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -14,14 +14,14 @@ import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/Metadat
 
 import { useMetadataConfiguration } from '../hooks/configuration';
 import { MetadataViewToggle } from '../component/MetadataViewToggle';
-import { DeleteSourceConfirmation } from '../domain/source/component/DeleteSourceConfirmation';
+import { MetadataActions } from '../../admin/container/MetadataActions';
 import { MetadataFilters } from '../domain/filter/component/MetadataFilters';
 import { MetadataFilterConfigurationList } from '../domain/filter/component/MetadataFilterConfigurationList';
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
 
-export function MetadataOptions () {
+export function MetadataOptions ({reload}) {
 
     const metadata = React.useContext(MetadataObjectContext);
     const definition = React.useContext(MetadataDefinitionContext);
@@ -49,9 +49,11 @@ export function MetadataOptions () {
 
     const canFilter = FilterableProviders.indexOf(definition.type) > -1;
 
+    const enabled = type === 'source' ? metadata.serviceEnabled : metadata.enabled;
+
     return (
-        <DeleteSourceConfirmation>
-            {(onDeleteSource) =>
+        <MetadataActions type={type}>
+            {(enable, remove) =>
             <>
             <h2 className="mb-4" id="header">
                 <Translate value={`label.${type}-configuration`}>[{type}] configuration</Translate>
@@ -61,14 +63,41 @@ export function MetadataOptions () {
                     current={true}
                     enabled={type === 'source' ? metadata.serviceEnabled : metadata.enabled}
                     model={metadata}>
-                    {type === 'source' && onDeleteSource &&
-                        <Button className="btn btn-outline btn-sm btn-danger align-self-start"
-                            disabled={metadata.serviceEnabled}
-                            onClick={() => onDeleteSource(metadata.id, redirectOnDelete)}>
-                            <Translate value="action.delete" />
-                            <FontAwesomeIcon icon={faTrash} className="ml-2" />
-                        </Button>
-                    }
+                    <div className="d-flex align-items-start btn-group">
+                        {/*enable &&
+                            <Form.Check
+                                type="switch"
+                                inline="true"
+                                id="custom-switch"
+                                className="mr-2"
+                                size="lg"
+                                label={translator((type === 'source' ? metadata.serviceEnabled : metadata.enabled) ? 'label.disable' : 'label.enable')}
+                                aria-label={translator((type === 'source' ? metadata.serviceEnabled : metadata.enabled) ? 'label.disable' : 'label.enable')}
+                                onChange={({ target: { checked } }) => enable(metadata, checked, reload)}
+                                checked={(type === 'source' ? metadata.serviceEnabled : metadata.enabled)}
+                            >
+                            </Form.Check>
+                        */}
+                        {enable &&
+                                    <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
+                                onClick={() => enable(metadata, !enabled, reload)}>
+                                    <span className=" mr-1">
+                                        <Translate value={enabled ? 'label.disable' : 'label.enable'} />
+                                    </span>
+                                    <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
+                            </Button>
+                        }
+                        {type === 'source' && remove &&
+                            <Button
+                                size="sm"
+                                variant={ 'danger' }
+                                disabled={enabled}
+                                onClick={() => remove(metadata.id, redirectOnDelete)}>
+                                <Translate value="action.delete" />
+                                <FontAwesomeIcon icon={faTrash} className="ml-2" />
+                            </Button>
+                        }
+                    </div>
                 </MetadataHeader>
                 <div className="px-3 my-3 d-flex justify-content-between" id="navigation">
                     <div>
@@ -115,6 +144,6 @@ export function MetadataOptions () {
                 </Button>
             </div>
             </>}
-        </DeleteSourceConfirmation>
+        </MetadataActions>
     );
 }

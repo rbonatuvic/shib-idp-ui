@@ -20,13 +20,13 @@ export function Metadata () {
     return (
         <>
             <MetadataSelector>
-                {(entity) =>
+                {(entity, reload) =>
                 <MetadataXmlLoader>
                     <MetadataSchema type={entity['@type'] ? entity['@type'] : 'source'}>
                         <Switch>
                             <Route path={`${path}/configuration/options`} render={ () =>
                                 <MetadataDetail>
-                                    <MetadataOptions></MetadataOptions>
+                                    <MetadataOptions reload={reload}></MetadataOptions>
                                 </MetadataDetail>
                             } />
                             <Route path={`${path}/configuration/xml`} render={() =>

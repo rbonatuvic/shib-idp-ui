@@ -31,6 +31,9 @@ export function MetadataSelector({ children, ...props }) {
             setMetadata(source);
         }
     }
+
+    const reload = () => loadMetadata(id);
+
     React.useEffect(() => { loadMetadata(id) }, [id]);
 
     return (
@@ -38,7 +41,7 @@ export function MetadataSelector({ children, ...props }) {
         {type &&
             <MetadataTypeContext.Provider value={type}>
                 {metadata && metadata.version &&
-                    <MetadataObjectContext.Provider value={metadata}>{children(metadata)}</MetadataObjectContext.Provider>
+                    <MetadataObjectContext.Provider value={metadata}>{children(metadata, reload)}</MetadataObjectContext.Provider>
                 }
             </MetadataTypeContext.Provider>
         }

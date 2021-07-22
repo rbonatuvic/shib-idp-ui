@@ -8,7 +8,7 @@ export function MetadataHeader ({ model, current = true, enabled = true, childre
         <div className="card enabled-status" {...props}>
             <div className="card-body">
                 <div className="d-flex justify-content-between">
-                    <h5 className="card-title version-title">
+                    <h5 className="card-title version-title flex-grow-1">
                         <Translate value="label.saved">Saved</Translate>:&nbsp;
                         <span className="save-date">
                             <FormattedDate date={model.modifiedDate} time={true} />
