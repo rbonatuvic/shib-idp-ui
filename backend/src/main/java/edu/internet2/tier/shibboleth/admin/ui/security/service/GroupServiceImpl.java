@@ -54,8 +54,8 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
     @Transactional
     public void deleteDefinition(String resourceId) throws EntityNotFoundException, GroupDeleteException {
         Group g = find(resourceId);
-        Optional<List<UserGroup>> userGroups = userGroupRepo.findAllByGroup(g);
-        if (userGroups.isEmpty() || !g.getEntityDescriptors().isEmpty()) {
+        List<UserGroup> userGroups = userGroupRepo.findAllByGroup(g);
+        if (!userGroups.isEmpty() || !g.getEntityDescriptors().isEmpty()) {
             throw new GroupDeleteException(String.format(
                             "Unable to delete group with resource id: [%s] - remove all users and entities from group first",
                             resourceId));

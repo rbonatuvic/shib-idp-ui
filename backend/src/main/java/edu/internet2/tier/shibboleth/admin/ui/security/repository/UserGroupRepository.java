@@ -14,5 +14,5 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, UserGroupK
     
     List<UserGroup> findAllByUser(User user);
 
-    Optional<List<UserGroup>> findAllByGroup(Group group);
+    List<UserGroup> findAllByGroup(Group group);
 }

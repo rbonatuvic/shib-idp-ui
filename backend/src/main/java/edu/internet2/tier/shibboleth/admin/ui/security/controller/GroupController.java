@@ -38,11 +38,11 @@ public class GroupController {
     }
 
     @Secured("ROLE_ADMIN")
-    @PutMapping
+    @DeleteMapping("/{resourceId}")
     @Transactional
-    public ResponseEntity<?> update(@RequestBody Group group) throws EntityNotFoundException {
-        Group result = groupService.updateGroup(group);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> delete(@PathVariable String resourceId) throws EntityNotFoundException, GroupDeleteException {
+        groupService.deleteDefinition(resourceId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -62,10 +62,10 @@ public class GroupController {
     }
     
     @Secured("ROLE_ADMIN")
-    @DeleteMapping("/{resourceId}")
+    @PutMapping
     @Transactional
-    public ResponseEntity<?> delete(@PathVariable String resourceId) throws EntityNotFoundException, GroupDeleteException {
-        groupService.deleteDefinition(resourceId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> update(@RequestBody Group group) throws EntityNotFoundException {
+        Group result = groupService.updateGroup(group);
+        return ResponseEntity.ok(result);
     }
 }
