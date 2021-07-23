@@ -133,7 +133,7 @@ public class User extends AbstractAuditable {
         // 1) If a UG doesn't match the incoming assignment, move it out of the list and into the old for deletion
         // 2) If it DOES match, update the group object so hibernate doesn't have a cow
         userGroups.forEach(ug -> {
-            if (ug.getGroup().getResourceId().equals(groupId)) {
+            if (ug.getGroup().getResourceId().equals(assignedGroup.getResourceId())) {
                 ug.setGroup(assignedGroup);
                 setWithNewGroup.add(ug);
             } else {

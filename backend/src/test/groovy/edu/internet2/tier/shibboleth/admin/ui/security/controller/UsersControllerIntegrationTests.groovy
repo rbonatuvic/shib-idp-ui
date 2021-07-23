@@ -249,6 +249,21 @@ class UsersControllerIntegrationTests extends Specification {
                       
         def List<UserGroup> groups = ugRepo.findAllByUser(user)
         groups.size() == 1
+        
+        when: 'Updating user role to admin puts the user in the admin group'
+        user.setRole("ROLE_ADMIN")
+        user.setGroupId("AAA") // Dont care that this is different, ROLE_ADMIN should take precedence
+        def resultUserNewRole = mockMvc.perform(patch("$RESOURCE_URI/$user.username").contentType(MediaType.APPLICATION_JSON)
+            .content(mapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON))
+        
+        then:
+        resultUserNewRole.andExpect(status().isOk())
+                      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                      .andExpect(jsonPath("\$.groupId").value("admingroup"))
+                      
+        def groupsCheck = ugRepo.findAllByUser(user)
+        groupsCheck.size() == 1
+         
     }
 
     @WithMockUser(value = "admin", roles = ["ADMIN"])
