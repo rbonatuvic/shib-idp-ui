@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import spock.lang.Ignore
 import spock.lang.Specification
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.model.UserGroup
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserGroupRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
@@ -41,9 +43,11 @@ import java.time.format.DateTimeFormatter
 @ActiveProfiles(["no-auth", "dev"])
 @DirtiesContext
 class UsersControllerIntegrationTests extends Specification {
-
     @Autowired
     IGroupService groupService
+    
+    @Autowired 
+    UserGroupRepository ugRepo
     
     @Autowired
     private MockMvc mockMvc
@@ -242,6 +246,9 @@ class UsersControllerIntegrationTests extends Specification {
         resultNewGroup.andExpect(status().isOk())
                       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                       .andExpect(jsonPath("\$.groupId").value("AAA"))
+                      
+        def List<UserGroup> groups = ugRepo.findAllByUser(user)
+        groups.size() == 1
     }
 
     @WithMockUser(value = "admin", roles = ["ADMIN"])

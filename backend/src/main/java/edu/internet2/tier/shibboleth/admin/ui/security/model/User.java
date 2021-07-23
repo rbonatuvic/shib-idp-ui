@@ -117,28 +117,28 @@ public class User extends AbstractAuditable {
      * we didn't intend (thanks JPA!!). 
      */
     public void setGroup(Group assignedGroup) {
-        // if the incoming group is the current group, make no changes to our sets
-        if (assignedGroup.getResourceId().equals(groupId)) {
-            userGroups.forEach(ug -> {
-                if (ug.getGroup().getResourceId().equals(groupId)) {
-                    ug.setGroup(assignedGroup);
-                }
-            });
-            return;
-        }
-
-        // stash the current groups for removal
-        getUserGroups().forEach(g -> {
-            // If the assignedGroup is in the current list, don't bother putting it in the "delete" list
-            if (!g.getGroup().equals(assignedGroup)) {
-                oldUserGroups.add(g);
+        UserGroup theUserGroup = new UserGroup();
+        // Go through the existing UserGroups:
+        // 1) If a UG doesn't match the incoming assignment, move it out of the list and into the old for deletion
+        // 2) If it DOES match, update the group object so hibernate doesn't have a cow
+        userGroups.forEach(ug -> {
+            if (ug.getGroup().getResourceId().equals(groupId)) {
+                theUserGroup.setGroup(assignedGroup);
+                theUserGroup.setUser(this);
+                theUserGroup.setId(ug.getId());
+            } else {
+                oldUserGroups.add(ug);
             }
         });
         userGroups.clear();
 
         // Assign the new group
-        UserGroup ug = new UserGroup(assignedGroup, this);
-        userGroups.add(ug);
+        if (theUserGroup.getUser() == null) {
+            UserGroup ug = new UserGroup(assignedGroup, this);
+            userGroups.add(ug);
+        } else {
+            userGroups.add(theUserGroup);
+        }
 
         // Set reference for the UI
         groupId = assignedGroup.getResourceId();
