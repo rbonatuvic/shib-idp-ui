@@ -44,7 +44,7 @@ public class AddNewUserFilter implements Filter {
     private Optional<EmailService> emailService;
     private Pac4jConfigurationProperties pac4jConfigurationProperties;
     private RoleRepository roleRepository;
-    private Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping;
+    private Pac4jConfigurationProperties.SimpleProfileMapping simpleProfileMapping;
     private UserRepository userRepository;
     private Matcher matcher;
 
@@ -54,7 +54,7 @@ public class AddNewUserFilter implements Filter {
         this.emailService = emailService;
         this.pac4jConfigurationProperties = pac4jConfigurationProperties;
         this.matcher = matcher;
-        saml2ProfileMapping = this.pac4jConfigurationProperties.getSaml2ProfileMapping();
+        simpleProfileMapping = this.pac4jConfigurationProperties.getSimpleProfileMapping();
     }
 
     @Transactional
@@ -69,11 +69,11 @@ public class AddNewUserFilter implements Filter {
 
         User user = new User();
         user.getRoles().add(newUserRole);
-        user.setUsername(getAttributeFromProfile(profile, "username"));
+        user.setUsername(profile.getUsername());
         user.setPassword(BCrypt.hashpw(RandomStringUtils.randomAlphanumeric(20), BCrypt.gensalt()));
-        user.setFirstName(getAttributeFromProfile(profile, "firstName"));
-        user.setLastName(getAttributeFromProfile(profile, "lastName"));
-        user.setEmailAddress(getAttributeFromProfile(profile, "email"));
+        user.setFirstName(profile.getFirstName());
+        user.setLastName(profile.getFamilyName());
+        user.setEmailAddress(profile.getEmail());
         User persistedUser = userRepository.save(user);
         if (log.isDebugEnabled()) {
             log.debug("Persisted new user:\n" + user);
@@ -95,11 +95,11 @@ public class AddNewUserFilter implements Filter {
         if (authentication != null) {
             CommonProfile profile = (CommonProfile) authentication.getPrincipal();
             if (profile != null) {
-                String username = getAttributeFromProfile(profile, "username");
+                String username = profile.getUsername();
                 if (username != null) {
                     Optional<User> persistedUser = userRepository.findByUsername(username);
                     User user;
-                    if (!persistedUser.isPresent()) {
+                    if (persistedUser.isEmpty()) {
                         user = buildAndPersistNewUserFromProfile(profile);
                         emailService.ifPresent(e -> {
                             try {
@@ -120,36 +120,6 @@ public class AddNewUserFilter implements Filter {
                 }
             }
         }
-    }
-
-    private String getAttributeFromProfile(CommonProfile profile, String stringKey) {
-        if (profile instanceof SAML2Profile) {
-            return getAttributeFromSAML2Profile(profile, stringKey);
-        }
-        return stringKey.equalsIgnoreCase("username") ? profile.getId() : null;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private String getAttributeFromSAML2Profile(CommonProfile profile, String stringKey) {
-        String attributeKey = null;
-        switch (stringKey) {
-            case "username":
-                attributeKey = saml2ProfileMapping.getUsername();
-                break;
-            case "firstName":
-                attributeKey = saml2ProfileMapping.getFirstName();
-                break;
-            case "lastName":
-                attributeKey = saml2ProfileMapping.getLastName();
-                break;
-            case "email":
-                attributeKey = saml2ProfileMapping.getEmail();
-                break;
-            default:
-                // do we care? Not yet.
-        }
-        List<String> attributeList = (List<String>) profile.getAttribute(attributeKey);
-        return attributeList.size() < 1 ? null : attributeList.get(0);
     }
 
     @Override

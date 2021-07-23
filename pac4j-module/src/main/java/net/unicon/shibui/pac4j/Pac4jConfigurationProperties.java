@@ -28,7 +28,7 @@ public class Pac4jConfigurationProperties {
     private String keystorePath = "/tmp/samlKeystore.jks";
     private int maximumAuthenticationLifetime = 3600;
     private String privateKeyPassword = "changeit";
-    private SAML2ProfileMapping saml2ProfileMapping;
+    private SimpleProfileMapping simpleProfileMapping;
     private String serviceProviderEntityId = "https://unicon.net/shibui";
     private String serviceProviderMetadataPath = "/tmp/sp-metadata.xml";
     private String typeOfAuth = "SAML2";
@@ -37,7 +37,7 @@ public class Pac4jConfigurationProperties {
     
     @Getter
     @Setter
-    public static class SAML2ProfileMapping {
+    public static class SimpleProfileMapping {
         private String email;
         private String firstName;
         private String lastName;

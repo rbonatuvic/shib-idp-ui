@@ -28,7 +28,8 @@ generateLombokConfig.enabled = false
 dependencies {
     compileOnly project(':backend')
 
-    compile "org.pac4j:spring-security-pac4j:6.0.0" // pac4j is "off" - spring 6.0.0 here uses 5.1 core, thus differences in versions 
+    compile "org.pac4j:spring-security-pac4j:6.0.0" // pac4j is "off" - spring 6.0.0 here uses 5.1 core, thus differences in versions
+    compile "org.pac4j:pac4j-core:5.1.0"
     compile "org.pac4j:pac4j-http:5.1.0"
     compile "org.pac4j:pac4j-saml:5.1.0", {
         // opensaml libraries are provided

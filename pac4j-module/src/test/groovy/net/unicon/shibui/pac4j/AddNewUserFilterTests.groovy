@@ -45,7 +45,7 @@ class AddNewUserFilterTests extends Specification {
     @Autowired
     Pac4jConfigurationProperties pac4jConfigurationProperties
 
-    Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping
+    Pac4jConfigurationProperties.SimpleProfileMapping profileMapping
 
     @Subject
     AddNewUserFilter addNewUserFilter
@@ -56,7 +56,7 @@ class AddNewUserFilterTests extends Specification {
         authentication.getPrincipal() >> saml2Profile
 
         addNewUserFilter = new AddNewUserFilter(pac4jConfigurationProperties, userRepository, roleRepository, new PathMatcher(), Optional.of(emailService))
-        saml2ProfileMapping = pac4jConfigurationProperties.saml2ProfileMapping
+        profileMapping = pac4jConfigurationProperties.simpleProfileMapping
     }
 
     def "new users are redirected"() {
@@ -65,8 +65,9 @@ class AddNewUserFilterTests extends Specification {
          'FirstName': 'New',
          'LastName': 'User',
          'Email': 'newuser@institution.edu'].each { key, value ->
-            saml2Profile.getAttribute(saml2ProfileMapping."get${key}"()) >> [value]
+            saml2Profile.getAttribute(profileMapping."get${key}"()) >> [value]
         }
+        saml2Profile.getUsername() >> "newUser"
         userRepository.findByUsername('newUser') >> Optional.empty()
         roleRepository.findByName('ROLE_NONE') >> Optional.of(new Role('ROLE_NONE'))
 
@@ -82,7 +83,7 @@ class AddNewUserFilterTests extends Specification {
 
     def "existing users are not redirected"() {
         given:
-        saml2Profile.getAttribute(saml2ProfileMapping.getUsername()) >> ['existingUser']
+        saml2Profile.getUsername() >> "existingUser"
         userRepository.findByUsername('existingUser') >> Optional.of(new User().with {
             it.username = 'existingUser'
             it.roles = [new Role('ROLE_USER')]

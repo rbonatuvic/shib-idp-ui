@@ -50,13 +50,13 @@ public class Pac4jConfiguration {
      * Custom class that ensures we add the user's roles to the information when doing SAML2 auth
      */
     @Bean
-    public SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator(UserRepository userRepository) {
-        return new SAML2ModelAuthorizationGenerator(userRepository);
+    public LocalUserProfileAuthorizationGenerator saml2ModelAuthorizationGenerator(UserRepository userRepository) {
+        return new LocalUserProfileAuthorizationGenerator(userRepository);
     }
     
     @Bean(name = "pac4j-config")
     public Config config(final Pac4jConfigurationProperties pac4jConfigProps,
-                         final SAML2ModelAuthorizationGenerator saml2ModelAuthorizationGenerator) {
+                         final LocalUserProfileAuthorizationGenerator saml2ModelAuthorizationGenerator) {
         log.info("**** Configuring PAC4J ");
         final Config config = new Config();
         final Clients clients = new Clients(pac4jConfigProps.getCallbackUrl());
@@ -80,7 +80,7 @@ public class Pac4jConfiguration {
             saml2Config.setServiceProviderMetadataPath(pac4jConfigProps.getServiceProviderMetadataPath());
             saml2Config.setForceServiceProviderMetadataGeneration(pac4jConfigProps.isForceServiceProviderMetadataGeneration());
             saml2Config.setWantsAssertionsSigned(pac4jConfigProps.isWantAssertionsSigned());
-            saml2Config.setAttributeAsId(pac4jConfigProps.getSaml2ProfileMapping().getUsername());
+            saml2Config.setAttributeAsId(pac4jConfigProps.getSimpleProfileMapping().getUsername());
             //saml2Config.setPostLogoutURL(pac4jConfigProps.getPostLogoutURL()); // consideration needed?
             //saml2Config.setSpLogoutRequestBindingType(pac4jConfigProps.getSpLogoutRequestBindingType());
 
@@ -88,7 +88,7 @@ public class Pac4jConfiguration {
             saml2Client.setName("Saml2Client");
             saml2Client.addAuthorizationGenerator(saml2ModelAuthorizationGenerator);
             SAML2Authenticator saml2Authenticator = new SAML2Authenticator(saml2Config.getAttributeAsId(), saml2Config.getMappedAttributes());
-            saml2Authenticator.setProfileDefinition(new CommonProfileDefinition(p -> new BetterSAML2Profile(pac4jConfigProps.getSaml2ProfileMapping().getUsername())));
+            saml2Authenticator.setProfileDefinition(new CommonProfileDefinition(p -> new BetterSAML2Profile(pac4jConfigProps.getSimpleProfileMapping())));
             saml2Client.setAuthenticator(saml2Authenticator);
 
             saml2Client.setName(PAC4J_CLIENT_NAME);
@@ -112,6 +112,7 @@ public class Pac4jConfiguration {
                                     final CommonProfile profile = new CommonProfile();
                                     String token = ((TokenCredentials)credentials).getToken(); 
                                     profile.setId(token);
+                                    profile.addAttribute("username", token);
                                     profile.setRoles(userService.getUserRoles(token));
                                     credentials.setUserProfile(profile);
                                 }
