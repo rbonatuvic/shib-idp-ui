@@ -120,8 +120,8 @@ class UserServiceTests extends Specification {
         def User userInB = userService.save(user)
         
         when:
-        userInB.setGroup(ga)
-        def User result = userService.save(user)
+        userInB.setGroupId("testingGroup") // changing groups will happen by updating the user's groupid
+        def User result = userService.save(userInB)
         def List<UserGroup> usersGroups = userGroupRepository.findAllByUser(result)
         
         then:

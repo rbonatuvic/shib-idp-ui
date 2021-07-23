@@ -148,7 +148,7 @@ public class UserService implements InitializingBean {
             } else {
                 g = groupService.find(user.getGroupId());
             }
-            user.setGroup(g);
+            user.updateUserGroupsWithGroup(g);
         } else {
             user.getUserGroups().forEach(ug -> {
                 Group g = groupService.find(ug.getGroup().getResourceId());

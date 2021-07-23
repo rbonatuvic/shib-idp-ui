@@ -112,41 +112,43 @@ public class User extends AbstractAuditable {
         return userGroups;
     }
     
-    /**
-     * If we change groups, we have to manually manage the set of UserGroups so that we don't have group associations 
-     * we didn't intend (thanks JPA!!). 
-     */
-    public void setGroup(Group assignedGroup) {
-        UserGroup theUserGroup = new UserGroup();
-        // Go through the existing UserGroups:
-        // 1) If a UG doesn't match the incoming assignment, move it out of the list and into the old for deletion
-        // 2) If it DOES match, update the group object so hibernate doesn't have a cow
-        userGroups.forEach(ug -> {
-            if (ug.getGroup().getResourceId().equals(groupId)) {
-                theUserGroup.setGroup(assignedGroup);
-                theUserGroup.setUser(this);
-                theUserGroup.setId(ug.getId());
-            } else {
-                oldUserGroups.add(ug);
-            }
-        });
-        userGroups.clear();
-
-        // Assign the new group
-        if (theUserGroup.getUser() == null) {
-            UserGroup ug = new UserGroup(assignedGroup, this);
-            userGroups.add(ug);
-        } else {
-            userGroups.add(theUserGroup);
-        }
-
-        // Set reference for the UI
-        groupId = assignedGroup.getResourceId();
+    public void setGroup(Group g) {
+        groupId = g.getResourceId();
+        updateUserGroupsWithGroup(g);
     }
     
     public void setGroups(Set<Group> groups) {
         oldUserGroups.addAll(getUserGroups());
         getUserGroups().clear();
         groups.forEach(g -> userGroups.add(new UserGroup(g, this)));
+    }
+    
+    /**
+     * If we change groups, we have to manually manage the set of UserGroups so that we don't have group associations 
+     * we didn't intend (thanks JPA!!). 
+     */
+    public void updateUserGroupsWithGroup(Group assignedGroup) {
+        final Set<UserGroup> setWithNewGroup= new HashSet<>();
+        // Go through the existing UserGroups:
+        // 1) If a UG doesn't match the incoming assignment, move it out of the list and into the old for deletion
+        // 2) If it DOES match, update the group object so hibernate doesn't have a cow
+        userGroups.forEach(ug -> {
+            if (ug.getGroup().getResourceId().equals(groupId)) {
+                ug.setGroup(assignedGroup);
+                setWithNewGroup.add(ug);
+            } else {
+                oldUserGroups.add(ug);
+            }
+        });
+        userGroups = setWithNewGroup;
+
+        // Assign the new group
+        if (userGroups.isEmpty()) {
+            UserGroup ug = new UserGroup(assignedGroup, this);
+            userGroups.add(ug);
+        }
+
+        // Set reference for the UI
+        groupId = assignedGroup.getResourceId();
     }
 }
