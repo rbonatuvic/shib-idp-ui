@@ -48,7 +48,12 @@ public class UserService implements InitializingBean {
     @Override
     @Transactional
     public void afterPropertiesSet() {
-        // TODO: Ensure all the db users have a group - migration task
+        // SHIBUI-1740 migration task
+        userRepository.findAll().forEach(user -> {
+            if (user.getGroupId() == null) {
+                save(user); // this will ensure group is set as the default user group for those users without a group set
+            }
+        });
     }
 
     public boolean currentUserIsAdmin() {
