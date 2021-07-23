@@ -3,6 +3,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleDown, faArrowCircleUp, faChevronUp, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 import { Translate } from '../../../../i18n/components/translate';
 import { Link } from 'react-router-dom';
@@ -11,7 +12,7 @@ import { MetadataConfiguration } from '../../../component/MetadataConfiguration'
 import { useMetadataConfiguration } from '../../../hooks/configuration';
 import useFetch from 'use-http';
 
-export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, onOrderUp, onOrderDown, editable, onRemove, index }) {
+export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, onOrderUp, onOrderDown, onEnable, editable, onRemove, loading, index }) {
     const [open, setOpen] = React.useState(false);
 
     const definition = React.useMemo(() => getDefinition(filter['@type'], ), [filter]);
@@ -49,10 +50,15 @@ export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, 
             }
             <Button variant="link" className="mx-4" onClick={ () => setOpen(!open) }>{ filter.name }</Button>
             <span className="">{ filter['@type'] }</span>
-            <span className="ml-4">
-                <span className="badge badge-primary">
-                    <Translate value={filter.filterEnabled ? 'label.enabled' : 'label.disabled'} />
-                </span>
+            <span className="ml-auto">
+                <Form.Check type="switch"
+                    id={`customSwitch-${filter.resourceId}`}
+                    label={<Translate value={filter.filterEnabled ? 'label.enabled' : 'label.disabled'} />}
+                    checked={filter.filterEnabled}
+                    disabled={loading}
+                    onChange={({ target: { checked } }) => onEnable(filter, checked)} />
+                {filter.disabled && <i className="fa fa-spinner fa-pulse fa-lg fa-fw"></i>}
+                
             </span>
         </div>
         {open &&

@@ -18,13 +18,12 @@ export function Metadata () {
     let { path } = useRouteMatch();
 
     return (
-        <>
-            <MetadataSelector>
-                {(entity, reload) =>
+        <MetadataSelector>
+            {(entity, reload) =>
                 <MetadataXmlLoader>
                     <MetadataSchema type={entity['@type'] ? entity['@type'] : 'source'}>
                         <Switch>
-                            <Route path={`${path}/configuration/options`} render={ () =>
+                            <Route path={`${path}/configuration/options`} render={() =>
                                 <MetadataDetail>
                                     <MetadataOptions reload={reload}></MetadataOptions>
                                 </MetadataDetail>
@@ -34,36 +33,35 @@ export function Metadata () {
                                     <MetadataXml></MetadataXml>
                                 </MetadataDetail>
                             } />
-                            <Route path={`${path}/configuration/history`} render={ () =>
+                            <Route path={`${path}/configuration/history`} render={() =>
                                 <MetadataDetail>
                                     <MetadataHistory></MetadataHistory>
                                 </MetadataDetail>
                             } />
-                            <Route path={`${path}/configuration/compare`} render={ () =>
+                            <Route path={`${path}/configuration/compare`} render={() =>
                                 <MetadataDetail>
                                     <MetadataComparison></MetadataComparison>
                                 </MetadataDetail>
                             } />
-                            <Route path={`${path}/configuration/version/:versionId/options`} render={ () =>
+                            <Route path={`${path}/configuration/version/:versionId/options`} render={() =>
                                 <MetadataDetail>
                                     <MetadataVersion></MetadataVersion>
                                 </MetadataDetail>
                             } />
-                            <Route path={`${path}/edit/:section`} render={ () =>
+                            <Route path={`${path}/edit/:section`} render={() =>
                                 <MetadataEdit />
                             } />
-                            <Route path={`${path}/restore/:versionId/:section`} exact render={ () =>
+                            <Route path={`${path}/restore/:versionId/:section`} exact render={() =>
                                 <MetadataConfirmRestore />
                             } />
-                            <Route path={`${path}/restore/:versionId/:section/edit`} render={ () =>
+                            <Route path={`${path}/restore/:versionId/:section/edit`} render={() =>
                                 <MetadataRestore />
                             } />
                             <Redirect exact path={`${path}`} to={`${path}/configuration/options`} />
                         </Switch>
                     </MetadataSchema>
                 </MetadataXmlLoader>
-                }
-            </MetadataSelector>
-        </>
+            }
+        </MetadataSelector>
     );
 }

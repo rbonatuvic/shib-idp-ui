@@ -23,7 +23,7 @@ export function MetadataSelector({ children, ...props }) {
 
     const { get, response } = useMetadataEntity(type);
 
-    const [metadata, setMetadata] = React.useState([]);
+    const [metadata, setMetadata] = React.useState();
 
     async function loadMetadata(id) {
         const source = await get(`/${id}`);
@@ -34,7 +34,7 @@ export function MetadataSelector({ children, ...props }) {
 
     const reload = () => loadMetadata(id);
 
-    React.useEffect(() => { loadMetadata(id) }, [id]);
+    React.useEffect(reload, [id]);
 
     return (
         <>
