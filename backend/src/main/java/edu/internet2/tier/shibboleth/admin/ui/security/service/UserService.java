@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
@@ -28,10 +29,10 @@ public class UserService implements InitializingBean {
     private RoleRepository roleRepository;
     
     @Autowired
-    private UserRepository userRepository;
+    UserGroupRepository userGroupRepository;
     
     @Autowired
-    UserGroupRepository userGroupRepository;
+    private UserRepository userRepository;
 
     public UserService() {
     }
@@ -44,15 +45,27 @@ public class UserService implements InitializingBean {
         this.userRepository = userRepository;
     }
     
-    public boolean currentUserIsAdmin() {
-        User user = getCurrentUser();
-        return user != null && user.getRole().equals("ROLE_ADMIN");
-    }
-
     @Override
     @Transactional
     public void afterPropertiesSet() {
         // TODO: Ensure all the db users have a group - migration task
+    }
+
+    public boolean currentUserIsAdmin() {
+        User user = getCurrentUser();
+        return user != null && user.getRole().equals("ROLE_ADMIN");
+    }
+    
+    @Transactional
+    public void delete(String username) throws EntityNotFoundException {
+        Optional<User> userToRemove = userRepository.findByUsername(username);
+        if (userToRemove.isEmpty()) throw new EntityNotFoundException("User does not exist");
+        User user = userToRemove.get();
+        // remove all group references from the user
+        user.getUserGroups().forEach(userGroup -> userGroupRepository.delete(userGroup));
+        user.getUserGroups().clear();
+        
+        userRepository.delete(user);
     }
     
     public User getCurrentUser() {
@@ -69,15 +82,6 @@ public class UserService implements InitializingBean {
         }
         return user;
     }
-    
-    public Group getCurrentUserGroup() {
-        switch (getCurrentUserAccess()) {
-        case ADMIN:
-            return Group.ADMIN_GROUP;
-        default:
-            return getCurrentUser().getGroup();
-        }
-    }
 
     public UserAccess getCurrentUserAccess() {
         User user = getCurrentUser();
@@ -93,11 +97,20 @@ public class UserService implements InitializingBean {
         return UserAccess.NONE;
     }
     
+    public Group getCurrentUserGroup() {
+        switch (getCurrentUserAccess()) {
+        case ADMIN:
+            return Group.ADMIN_GROUP;
+        default:
+            return getCurrentUser().getGroup();
+        }
+    }
+    
     public boolean isAuthorizedFor(Group objectGroup) {        
         String objectGroupId = objectGroup == null ? Group.ADMIN_GROUP.getResourceId() : objectGroup.getResourceId();      
         return isAuthorizedFor(objectGroupId);
     }
-    
+
     public boolean isAuthorizedFor(String objectGroupResourceId) {
         switch (getCurrentUserAccess()) { // no user returns NONE
         case ADMIN:
@@ -111,7 +124,7 @@ public class UserService implements InitializingBean {
             return false;
         }
     }
-
+    
     /**
      * Creating users should always have a group. If the user isn't assigned to a group, create one based on their name.
      * If the user has the ADMIN role, they are always solely assigned to the admin group.
@@ -161,7 +174,7 @@ public class UserService implements InitializingBean {
 
         return userRepository.save(user);
     }
-    
+
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
      *

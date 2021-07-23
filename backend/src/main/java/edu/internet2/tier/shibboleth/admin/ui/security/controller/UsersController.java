@@ -1,11 +1,14 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import groovy.util.logging.Slf4j;
 import jline.internal.Log;
@@ -42,6 +45,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class UsersController {
     @Autowired
     private GroupsRepository groupRepo;
+    
+    @Autowired
+    private IGroupService groupService; 
+    
     private UserRepository userRepository;
     private UserService userService;
 
@@ -54,8 +61,12 @@ public class UsersController {
     @Transactional
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteOne(@PathVariable String username) {
-        User user = findUserOrThrowHttp404(username);
-        userRepository.delete(user);
+        try {
+            userService.delete(username);
+        }
+        catch (EntityNotFoundException e) { 
+            throw new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username));
+        }
         return ResponseEntity.noContent().build();
     }
 
@@ -113,20 +124,9 @@ public class UsersController {
         //TODO: modify this such that additional encoders can be used
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         userService.updateUserRole(user);
-        findAndSetGroup(user);
         
-        User savedUser = userRepository.save(user);
+        User savedUser = userService.save(user);
         return ResponseEntity.ok(savedUser);
-    }
-
-    private User findAndSetGroup(User user) {
-        // Ensure we have the full group detail from the db
-        if (user.getGroupId() != null || user.getGroup() != null) {
-            String resourceId = user.getGroupId() == null ?  user.getGroup().getResourceId() : user.getGroupId(); 
-            Group groupFromDb = groupRepo.findByResourceId(resourceId);
-            user.setGroup(groupFromDb);
-        }
-        return user;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -150,8 +150,8 @@ public class UsersController {
             persistedUser.setRole(user.getRole());
             userService.updateUserRole(persistedUser);
         }
-        persistedUser.setGroup(findAndSetGroup(user).getGroup());
-        User savedUser = userRepository.save(persistedUser);
+        persistedUser.setGroupId(user.getGroupId());
+        User savedUser = userService.save(persistedUser);
         return ResponseEntity.ok(savedUser);
     }
  }

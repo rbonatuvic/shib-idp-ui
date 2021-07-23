@@ -67,6 +67,7 @@ public class User extends AbstractAuditable {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
+    @JsonIgnore // do not remove this or all hell will break loose
     private Set<UserGroup> userGroups = new HashSet<>();
     
     @Column(nullable = false, unique = true)
@@ -80,6 +81,7 @@ public class User extends AbstractAuditable {
      * @return the initial implementation, while supporting a user having multiple groups in the db side, acts as if the
      * user can only belong to a single group
      */
+    @JsonIgnore
     public Group getGroup() {
         
         return userGroups.isEmpty() ? null : ((UserGroup)userGroups.toArray()[0]).getGroup();
