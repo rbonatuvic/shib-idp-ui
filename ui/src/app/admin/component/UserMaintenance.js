@@ -3,15 +3,19 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import Translate from '../../i18n/components/translate';
 import { useCurrentUser } from '../../core/user/UserContext';
 
 import { GroupsProvider } from '../hoc/GroupsProvider';
+import { useTranslator } from '../../i18n/hooks';
 
-export default function UserMaintenance({ users, roles, onDeleteUser, onChangeUserRole, onChangeUserGroup }) {
+export default function UserMaintenance({ users, roles, loading, onDeleteUser, onChangeUserRole, onChangeUserGroup }) {
 
     const currentUser = useCurrentUser();
+    const translator = useTranslator();
 
     return (
         <div className="table-responsive mt-3 provider-list">
@@ -43,7 +47,7 @@ export default function UserMaintenance({ users, roles, onDeleteUser, onChangeUs
                                                 className="form-control"
                                                 onChange={(event) => onChangeUserRole(user, event.target.value)}
                                                 value={user.role}
-                                                disabled={currentUser.username === user.username}
+                                                disabled={loading || currentUser.username === user.username}
                                                 disablevalidation="true">
                                                 {roles.map((role, ridx) => (
                                                     <option key={role} value={role}>{role}</option>
@@ -51,20 +55,29 @@ export default function UserMaintenance({ users, roles, onDeleteUser, onChangeUs
                                             </select>
                                         </td>
                                         <td>
-                                            <label htmlFor={`group-${user.username}`} className="sr-only"><Translate value="action.user-group">User group</Translate></label>
-                                            <select
-                                                id={`group-${user.username}`}
-                                                name={`group-${user.username}`}
-                                                className="form-control"
-                                                onChange={(event) => onChangeUserGroup(user, event.target.value)}
-                                                value={user.groupId ? user.groupId : ''}
-                                                disabled={loadingGroups || currentUser.username === user.username}
-                                                disablevalidation="true">
-                                                <option>Select Group</option>
-                                                {groups.map((g, ridx) => (
-                                                    <option key={ridx} value={g.resourceId}>{g.name}</option>
-                                                ))}
-                                            </select>
+                                            <OverlayTrigger
+                                                trigger={user.role === 'ROLE_ADMIN' ? ['hover', 'focus'] : []}
+                                                overlay={
+                                                <Tooltip>{translator(`message.user-role-admin-group`)}</Tooltip>
+                                            }>
+                                                <span className="d-block">
+                                                    <label htmlFor={`group-${user.username}`} className="sr-only"><Translate value="action.user-group">User group</Translate></label>
+                                                    <select
+                                                        id={`group-${user.username}`}
+                                                        name={`group-${user.username}`}
+                                                        className="form-control"
+                                                        onChange={(event) => onChangeUserGroup(user, event.target.value)}
+                                                        value={user.groupId ? user.groupId : ''}
+                                                        disabled={loading || loadingGroups || currentUser.username === user.username || user.role === 'ROLE_ADMIN'}
+                                                        disablevalidation="true">
+                                                        <option>Select Group</option>
+                                                        {groups.map((g, ridx) => (
+                                                            <option key={ridx} value={g.resourceId}>{g.name}</option>
+                                                        ))}
+                                                    </select>
+                                                </span>
+                                            </OverlayTrigger>
+                                            
                                         </td>
                                         <td>
                                             {currentUser.username !== user.username &&
