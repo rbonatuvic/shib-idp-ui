@@ -68,7 +68,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     private String criterionPredicateRegistryRef;
 
-    private Boolean useDefaultPredicateRegistry = true;
+    private Boolean useDefaultPredicateRegistry;
 
     private Boolean satisfyAnyPredicates = false;
 
