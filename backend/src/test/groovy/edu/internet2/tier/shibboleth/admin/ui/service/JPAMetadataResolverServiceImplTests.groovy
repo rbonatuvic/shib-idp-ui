@@ -397,6 +397,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
                 it.content = 'http://mdq-beta.incommon.org/global'
                 it
             }
+            it.enabled = Boolean.TRUE
             it
         }
         metadataResolverRepository.save(resolver)
@@ -411,7 +412,25 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    def 'test namespace protection in nonURL resolver'() {
+    def 'test namespace protection in nonURL resolver with resolver setting enabled=true'() {
+        setup:
+        shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
+        def resolver = new LocalDynamicMetadataResolver().with {
+            it.xmlId = 'LocalDynamic'
+            it.sourceDirectory = '/tmp'
+            it.enabled = Boolean.TRUE
+            it
+        }
+
+        when:
+        metadataResolverRepository.save(resolver)
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/1059-enabled.xml', metadataResolverService.generateConfiguration())
+    }
+    
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    def 'test namespace protection in nonURL resolver with resolver setting enabled not set'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
         def resolver = new LocalDynamicMetadataResolver().with {
@@ -424,7 +443,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         metadataResolverRepository.save(resolver)
 
         then:
-        generatedXmlIsTheSameAsExpectedXml('/conf/1059.xml', metadataResolverService.generateConfiguration())
+        generatedXmlIsTheSameAsExpectedXml('/conf/1059-disabled.xml', metadataResolverService.generateConfiguration())
     }
 
     @Ignore('there is a bug in org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter.applyFilter')
