@@ -60,7 +60,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean enabled;
 
-    private Boolean requireValidMetadata = true;
+    private Boolean requireValidMetadata;
 
     private Boolean failFastInitialization = true;
 

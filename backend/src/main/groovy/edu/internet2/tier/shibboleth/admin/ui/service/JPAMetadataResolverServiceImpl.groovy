@@ -346,7 +346,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'xsi:type': 'FilesystemMetadataProvider',
                 metadataFile: resolver.metadataFile,
 
-                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                requireValidMetadata: resolver.requireValidMetadata,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
                 sortKey: resolver.sortKey,
                 criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
@@ -368,7 +368,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
                 'xsi:type': 'DynamicHTTPMetadataProvider',
-                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                requireValidMetadata: resolver.requireValidMetadata,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
                 sortKey: resolver.sortKey,
                 criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
@@ -449,7 +449,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 metadataURL: resolver.metadataURL,
                 initializeFromBackupFile: resolver.initializeFromBackupFile,
                 backupFileInitNextRefreshDelay: resolver.backupFileInitNextRefreshDelay,
-                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                requireValidMetadata: resolver.requireValidMetadata,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
                 sortKey: resolver.sortKey,
                 criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
@@ -490,7 +490,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
                 id: resolver.xmlId,
                 'xsi:type': 'LocalDynamicMetadataProvider',
-                requireValidMetadata: !resolver.requireValidMetadata ?: null,
+                requireValidMetadata: resolver.requireValidMetadata,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
                 sortKey: resolver.sortKey,
                 criterionPredicateRegistryRef: resolver.criterionPredicateRegistryRef,
