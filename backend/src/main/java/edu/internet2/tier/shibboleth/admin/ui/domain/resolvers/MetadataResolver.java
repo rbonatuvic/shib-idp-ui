@@ -72,7 +72,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean satisfyAnyPredicates;
 
-    private Boolean doInitialization = true;
+    private Boolean doInitialization;
 
     @JsonIgnore
     private Long versionModifiedTimestamp;

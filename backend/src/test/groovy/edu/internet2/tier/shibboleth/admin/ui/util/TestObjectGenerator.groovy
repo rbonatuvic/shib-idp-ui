@@ -529,6 +529,7 @@ class TestObjectGenerator {
             }
             // Changes in MetadataResolver (removing defaults), so adding back those settings here.
             it.enabled = Boolean.TRUE
+            it.doInitialization = Boolean.TRUE
             it
         }
     }
@@ -547,6 +548,7 @@ class TestObjectGenerator {
             }
             // Changes in MetadataResolver (removing defaults), so adding back those settings here.
             it.enabled = Boolean.TRUE
+            it.doInitialization = Boolean.TRUE
             it
         }
     }
@@ -562,6 +564,7 @@ class TestObjectGenerator {
             }
             // Changes in MetadataResolver (removing defaults), so adding back those settings here.
             it.enabled = Boolean.TRUE
+            it.doInitialization = Boolean.TRUE
             it
         }
     }
@@ -581,6 +584,7 @@ class TestObjectGenerator {
             }
             // Changes in MetadataResolver (removing defaults), so adding back those settings here.
             it.enabled = Boolean.TRUE
+            it.doInitialization = Boolean.TRUE
             it
         }
     }
@@ -599,6 +603,7 @@ class TestObjectGenerator {
             }
             // Changes in MetadataResolver (removing defaults), so adding back those settings here.
             it.enabled = Boolean.TRUE
+            it.doInitialization = Boolean.TRUE
             it
         }
     }
