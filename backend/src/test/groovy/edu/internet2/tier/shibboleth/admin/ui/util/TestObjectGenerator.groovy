@@ -527,6 +527,8 @@ class TestObjectGenerator {
                 it.maxRefreshDelay = 'P1D'
                 it
             }
+            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
+            it.enabled = Boolean.TRUE
             it
         }
     }
@@ -543,6 +545,8 @@ class TestObjectGenerator {
                 it.content = 'content'
                 it
             }
+            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
+            it.enabled = Boolean.TRUE
             it
         }
     }
@@ -556,6 +560,8 @@ class TestObjectGenerator {
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
             }
+            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
+            it.enabled = Boolean.TRUE
             it
         }
     }
@@ -573,6 +579,8 @@ class TestObjectGenerator {
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
                 it
             }
+            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
+            it.enabled = Boolean.TRUE
             it
         }
     }
@@ -589,6 +597,8 @@ class TestObjectGenerator {
                 it.refreshDelayFactor = 0.3
                 it
             }
+            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
+            it.enabled = Boolean.TRUE
             it
         }
     }
