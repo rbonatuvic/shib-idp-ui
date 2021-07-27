@@ -447,7 +447,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 'xsi:type': 'FileBackedHTTPMetadataProvider',
                 backingFile: resolver.backingFile,
                 metadataURL: resolver.metadataURL,
-                initializeFromBackupFile: !resolver.initializeFromBackupFile ?: null,
+                initializeFromBackupFile: resolver.initializeFromBackupFile,
                 backupFileInitNextRefreshDelay: resolver.backupFileInitNextRefreshDelay,
                 requireValidMetadata: !resolver.requireValidMetadata ?: null,
                 failFastInitialization: !resolver.failFastInitialization ?: null,
