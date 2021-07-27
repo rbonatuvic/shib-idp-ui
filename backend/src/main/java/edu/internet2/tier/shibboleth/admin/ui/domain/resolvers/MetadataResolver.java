@@ -70,7 +70,7 @@ public class MetadataResolver extends AbstractAuditable {
 
     private Boolean useDefaultPredicateRegistry;
 
-    private Boolean satisfyAnyPredicates = false;
+    private Boolean satisfyAnyPredicates;
 
     private Boolean doInitialization = true;
 
