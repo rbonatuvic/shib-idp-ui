@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
@@ -22,6 +23,9 @@ public class DangerController {
     private EntityDescriptorService entityDescriptorService;
     
     @Autowired
+    private EntityDescriptorRepository edRepo;
+    
+    @Autowired
     private FilterRepository filterRepository;
     
     @Autowired
@@ -33,11 +37,11 @@ public class DangerController {
     @Transactional
     @GetMapping
     public ResponseEntity<?> wipeOut() throws ForbiddenException {
-        entityDescriptorService.getAllRepresentationsBasedOnUserAccess().forEach(edr -> {
+        edRepo.findAll().forEach(ed -> {
             try {
-                edr.setServiceEnabled(false);
-                edr = entityDescriptorService.update(edr);
-                entityDescriptorService.delete(edr.getId());
+                ed.setServiceEnabled(false);
+                edRepo.save(ed);
+                entityDescriptorService.delete(ed.getResourceId());
             }
             catch (Throwable e) {
             }
