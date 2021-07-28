@@ -87,13 +87,13 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptors")
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<?> getAll() throws ForbiddenException {
         return ResponseEntity.ok(entityDescriptorService.getAllRepresentationsBasedOnUserAccess());
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions")
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<?> getAllVersions(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
         // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
@@ -101,21 +101,21 @@ public class EntityDescriptorController {
     }
 
     @Secured("ROLE_ADMIN")
-    @Transactional(readOnly = true)
+    @Transactional
     @GetMapping(value = "/EntityDescriptor/disabledNonAdmin")
     public Iterable<EntityDescriptorRepresentation> getDisabledAndNotOwnedByAdmin() throws ForbiddenException {
         return entityDescriptorService.getAllDisabledAndNotOwnedByAdmin();
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}")
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException, ForbiddenException {
         return ResponseEntity.ok(entityDescriptorService
                         .createRepresentationFromDescriptor(entityDescriptorService.getEntityDescriptorByResourceId(resourceId)));
     }
 
     @GetMapping(value = "/EntityDescriptor/{resourceId}", produces = "application/xml")
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<?> getOneXml(@PathVariable String resourceId) throws MarshallingException, EntityNotFoundException, ForbiddenException {
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
         final String xml = this.openSamlObjects.marshalToXmlString(ed);
@@ -123,7 +123,7 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws EntityNotFoundException, ForbiddenException {
         // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);

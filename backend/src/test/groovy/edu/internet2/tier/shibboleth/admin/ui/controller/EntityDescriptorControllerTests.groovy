@@ -166,7 +166,31 @@ class EntityDescriptorControllerTests extends Specification {
         EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
         EntityDescriptorConversionUtils.setEntityService(entityService)
     }
-       
+
+    @Rollback
+    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    def 'DELETE as admin'() {
+        given:
+        authentication.getName() >> 'admin'
+        groupService.find("admingroup") >> Group.ADMIN_GROUP
+        def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false)
+        entityDescriptorRepository.save(entityDescriptor)
+        
+        when: 'pre-check'
+        entityManager.flush()
+        
+        then:
+        entityDescriptorRepository.findAll().size() == 1
+        
+        when:
+        def result = mockMvc.perform(delete("/api/EntityDescriptor/uuid-1"))
+        
+        then:
+        result.andExpect(status().isNoContent())
+        entityDescriptorRepository.findByResourceId("uuid-1") == null
+        entityDescriptorRepository.findAll().size() == 0
+    }
+           
     @Rollback
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def 'GET /EntityDescriptors with empty repository as admin'() {

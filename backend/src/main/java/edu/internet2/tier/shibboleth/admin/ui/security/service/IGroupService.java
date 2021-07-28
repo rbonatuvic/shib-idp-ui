@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
 import java.util.List;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
@@ -18,6 +19,8 @@ public interface IGroupService {
     Group find(String resourceId);
 
     List<Group> findAll();
+
+    void removeEntityFromGroup(EntityDescriptor ed);
 
     Group updateGroup(Group g) throws EntityNotFoundException;
 

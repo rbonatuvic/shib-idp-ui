@@ -1,37 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import com.google.common.base.Strings;
-
-import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.domain.AssertionConsumerService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBuilder;
-import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeValue;
-import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson;
-import edu.internet2.tier.shibboleth.admin.ui.domain.Description;
-import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributesBuilder;
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
-import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions;
-import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName;
-import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
-import edu.internet2.tier.shibboleth.admin.ui.domain.Logo;
-import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat;
-import edu.internet2.tier.shibboleth.admin.ui.domain.Organization;
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName;
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName;
-import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL;
-import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
-import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor;
-import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService;
 import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny;
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
@@ -52,23 +27,13 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
-import groovy.util.logging.Slf4j;
-import jline.internal.Log;
+import lombok.extern.slf4j.Slf4j;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.xmlsec.signature.KeyInfo;
-import org.opensaml.xmlsec.signature.X509Certificate;
-import org.opensaml.xmlsec.signature.X509Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +41,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.*;
@@ -379,6 +343,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
         if (ed.isServiceEnabled()) {
             throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
         }
+        groupService.removeEntityFromGroup(ed);
+        ed.setGroup(null);
         entityDescriptorRepository.delete(ed);
         
     }

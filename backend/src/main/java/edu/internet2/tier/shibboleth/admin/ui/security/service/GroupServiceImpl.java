@@ -1,13 +1,16 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
@@ -31,12 +34,28 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
         this.repo = repo;
     }
     
+    /**
+     * Ensure (mostly for migrations) that we have defined a default admin group
+     */
+    @Override
+    @Transactional
+    public void afterPropertiesSet() {
+        Group g = repo.findByResourceId("admingroup");
+        if (g == null) {
+            g = new Group();
+            g.setName("ADMIN-GROUP");
+            g.setResourceId("admingroup");
+            g = repo.save(g);
+        }
+        Group.ADMIN_GROUP = g;
+    }
+    
     @Override
     public void clearAllForTesting() {
         repo.deleteAll();
         afterPropertiesSet();
     }
-    
+
     @Override
     @Transactional
     public Group createGroup(Group group) throws GroupExistsConflictException {
@@ -75,6 +94,21 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
     }
 
     @Override
+    @Transactional
+    public void removeEntityFromGroup(final EntityDescriptor ed) {
+        Group g = repo.findByResourceId(ed.getGroup().getResourceId());
+        Set<EntityDescriptor> eds = g.getEntityDescriptors();
+        final HashSet<EntityDescriptor> updatedSet = new HashSet<>();
+        eds.forEach(entityDesc -> {
+            if (!entityDesc.getEntityID().equals(ed.getEntityID())) {
+                updatedSet.add(entityDesc);
+            }
+        });
+        g.setEntityDescriptors(updatedSet);
+        repo.save(g);
+    }
+
+    @Override
     public Group updateGroup(Group group) throws EntityNotFoundException {
         Group g = find(group.getResourceId());
         if (g == null) {
@@ -82,21 +116,5 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
                             group.getResourceId(), group.getName()));
         }
         return repo.save(group);
-    }
-
-    /**
-     * Ensure (mostly for migrations) that we have defined a default admin group
-     */
-    @Override
-    @Transactional
-    public void afterPropertiesSet() {
-        Group g = repo.findByResourceId("admingroup");
-        if (g == null) {
-            g = new Group();
-            g.setName("ADMIN-GROUP");
-            g.setResourceId("admingroup");
-            g = repo.save(g);
-        }
-        Group.ADMIN_GROUP = g;
     }
 }
