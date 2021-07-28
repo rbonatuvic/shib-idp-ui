@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+  reverse-proxy:
+    image: library/traefik:v2.2
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web-secure.address=:443"
+      - "--providers.file.directory=/configuration/"
+      - "--providers.file.watch=true"
+      # - "--log.level=DEBUG"
+    networks:
+      - reverse-proxy
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+      - "8443:8443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./reverse-proxy/:/configuration/
+      - ./reverse-proxy/certs/:/certs/
+  shibui:
+    image: unicon/shibui
+    entrypoint: ["/usr/bin/java", "-Dspring.profiles.active=dev", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "app.war"]
+    labels:
+      - "traefik.http.routers.shibui.rule=Host(`shibui.unicon.local`)"
+      - "traefik.http.services.shibui.loadbalancer.server.port=8080"
+      - "traefik.http.routers.shibui.tls=true"
+      - "traefik.docker.network=docker_reverse-proxy"
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.header.headers.customRequestHeaders.REMOTE_USER=admin"
+      - "traefik.http.routers.shibui.middlewares=header"
+    ports:
+      - 5005:5005
+    networks:
+      - reverse-proxy
+    volumes:
+      - ./conf-header:/conf
+      - ./conf-header/application.yml:/application.yml
+networks:
+  reverse-proxy:

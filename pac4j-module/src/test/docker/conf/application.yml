@@ -31,7 +31,7 @@ shibui:
     forceServiceProviderMetadataGeneration: true
     callbackUrl: "https://localhost:8443/callback"
     maximumAuthenticationLifetime: 3600000
-    saml2ProfileMapping:
+    simpleProfileMapping:
       username: urn:oid:0.9.2342.19200300.100.1.1
       firstName: urn:oid:2.5.4.42
       lastName: urn:oid:2.5.4.4
