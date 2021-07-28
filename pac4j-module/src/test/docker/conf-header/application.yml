@@ -1,0 +1,15 @@
+shibui:
+  user-bootstrap-resource: file:/conf/users.csv
+  roles: ROLE_ADMIN,ROLE_NONE,ROLE_USER,ROLE_PONY
+  pac4j-enabled: true
+  pac4j:
+    type-of-auth: HEADER
+    authentication-header: REMOTE_USER
+
+logging:
+  level:
+    org.pac4j: "TRACE"
+    org.opensaml: "INFO"
+server.tomcat:
+  remote-ip-header: x-forwarded-for
+  protocol-header: x-forwarded-proto

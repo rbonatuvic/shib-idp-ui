@@ -48,10 +48,9 @@ public class UserService implements InitializingBean {
     @Override
     @Transactional
     public void afterPropertiesSet() {
-        // SHIBUI-1740 migration task
         userRepository.findAll().forEach(user -> {
             if (user.getGroupId() == null) {
-                save(user); // this will ensure group is set as the default user group for those users without a group set
+                save(user); // this will ensure group is set as the default user group
             }
         });
     }
@@ -111,11 +110,20 @@ public class UserService implements InitializingBean {
         }
     }
     
+    public Set<String> getUserRoles(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        HashSet<String> result = new HashSet<>();
+        if (user.isPresent() ) {
+             user.get().getRoles().forEach(role -> result.add(role.getName()));
+        }
+        return result;
+    }
+
     public boolean isAuthorizedFor(Group objectGroup) {        
         String objectGroupId = objectGroup == null ? Group.ADMIN_GROUP.getResourceId() : objectGroup.getResourceId();      
         return isAuthorizedFor(objectGroupId);
     }
-
+    
     public boolean isAuthorizedFor(String objectGroupResourceId) {
         switch (getCurrentUserAccess()) { // no user returns NONE
         case ADMIN:
@@ -129,7 +137,7 @@ public class UserService implements InitializingBean {
             return false;
         }
     }
-    
+
     /**
      * Creating users should always have a group. If the user isn't assigned to a group, create one based on their name.
      * If the user has the ADMIN role, they are always solely assigned to the admin group.
@@ -179,7 +187,7 @@ public class UserService implements InitializingBean {
 
         return userRepository.save(user);
     }
-
+    
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
      *
