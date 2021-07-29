@@ -61,7 +61,8 @@ export const xmlRequestInterceptor = ({ options }) => {
 export function useMetadataEntityXml(type = 'source', opts = {
     interceptors: {
         request: xmlRequestInterceptor
-    }
+    },
+    cachePolicy: 'no-cache'
 }) {
     return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}`, opts);
 }
