@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,10 +58,17 @@ public class RolesController {
     }
 
     @Secured("ROLE_ADMIN")
-    @PutMapping
+    @PutMapping(path = {"/", "/{resourceId}" })
     @Transactional
-    public ResponseEntity<?> update(@RequestBody Role role) throws EntityNotFoundException {
-        Role result = rolesService.updateRole(role);
+    public ResponseEntity<?> update(@RequestBody Role incomingRoleDetail, @PathVariable Optional<String> resourceId) throws EntityNotFoundException {
+        Role updateRole;
+        if (resourceId.isPresent()) {
+            updateRole = rolesService.findByResourceId(resourceId.get());
+        } else {
+            updateRole = rolesService.findByResourceId(incomingRoleDetail.getResourceId());
+        }
+        updateRole.setName(incomingRoleDetail.getName());
+        Role result = rolesService.updateRole(updateRole);
         return ResponseEntity.ok(result);
     }
 }
