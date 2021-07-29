@@ -848,7 +848,7 @@
       "id": "93505bd6-8a5e-4ef0-8f50-d2dc9bce71d6",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(8) .array-add-button",
+      "target": "css=.row:nth-child(2) .array-add-button",
       "targets": [
         ["css=.row:nth-child(8) .array-add-button", "css:finder"],
         ["xpath=(//button[@type='button'])[18]", "xpath:attributes"],
@@ -1029,11 +1029,11 @@
       "id": "81373637-8e36-4736-9b2a-7b8d477dc2c1",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-",
+      "target": "id=dropdown-label.filter-target-type",
       "targets": [
-        ["id=dropdown-", "id"],
-        ["css=#dropdown-", "css:finder"],
-        ["xpath=//button[@id='dropdown-']", "xpath:attributes"],
+        ["id=dropdown-label.filter-target-type", "id"],
+        ["css=#dropdown-label\\.filter-target-type", "css:finder"],
+        ["xpath=//button[@id='dropdown-label.filter-target-type']", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[3]/div/div/div/fieldset/div/div/div/div/button", "xpath:idRelative"],
         ["xpath=//fieldset/div/div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Entity ID ')]", "xpath:innerText"]

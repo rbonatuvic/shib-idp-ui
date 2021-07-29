@@ -129,4 +129,3 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1503: User can be enabled'                                | '/SHIBUI-1503-3.side'
     }
 }
-

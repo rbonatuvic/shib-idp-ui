@@ -927,6 +927,13 @@
       ],
       "value": ""
     }, {
+      "id": "d0be2c9b-8162-4315-bcfe-230d914b9748",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "linkText=Test Metadata Provider",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "5dd3952e-d716-4d63-8a08-23be4983da23",
       "comment": "",
       "command": "click",
@@ -940,6 +947,13 @@
         ["xpath=//a[contains(.,'Test Metadata Provider')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "5fd53667-6f71-4305-9b54-2eb00407ad82",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.mb-4:nth-child(6) .edit-link",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "c9341f6f-4d13-4378-bb5c-0079e7535008",
       "comment": "",
@@ -1255,6 +1269,21 @@
         ["css=tr:nth-child(2) .btn", "css:finder"],
         ["xpath=//td[4]/button", "xpath:position"],
         ["xpath=//button[contains(.,'  Restore')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "37826edc-e582-4523-add3-e8d383b23ecd",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Restore",
+      "targets": [
+        ["linkText=Restore", "linkText"],
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//a[contains(text(),'Restore')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/div/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/provider/8be54754-c2f4-4da8-989e-2f50acd53961/restore/1016/common/edit')]", "xpath:href"],
+        ["xpath=//section/div/div/div/div/a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Restore')]", "xpath:innerText"]
       ],
       "value": ""
     }, {

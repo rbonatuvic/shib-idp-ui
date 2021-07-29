@@ -711,10 +711,10 @@
       ],
       "value": ""
     }, {
-      "id": "104367d3-f250-4439-8721-32dcf9f25e0c",
+      "id": "46495c5c-43ff-438a-814e-dbfc0b8da51e",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-success",
+      "target": "css=.array-add-button",
       "targets": [
         ["css=.btn-success", "css:finder"],
         ["xpath=//div/button", "xpath:position"],
@@ -778,7 +778,7 @@
       "id": "23fd8856-32df-48ed-a198-a74e8ca71b10",
       "comment": "",
       "command": "type",
-      "target": "css=div.section-body.p-4.border.border-top-0.border-info > div:nth-child(3) > div > div > form > div > div:nth-child(1) > div > div > div:nth-child(5) > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(5) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[5]/div/div[1]/div/div[2]/div/div/div[1]/div/div/div[2]/div[5]/div/div[1]/div/div[1]/div/div/div[1]/input[1]",
       "targets": [
         ["css=.focus", "css:finder"],
         ["xpath=(//input[@value=''])[9]", "xpath:attributes"],
@@ -789,10 +789,19 @@
     }, {
       "id": "6f0363e3-cd0b-45cc-8210-7cad7c29997e",
       "comment": "",
-      "command": "sendKeys",
-      "target": "css=div.section-body.p-4.border.border-top-0.border-info > div:nth-child(3) > div > div > form > div > div:nth-child(1) > div > div > div:nth-child(5) > div > div:nth-child(1) > div > div:nth-child(2) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(5) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
-      "targets": [],
-      "value": "${KEY_ENTER}"
+      "command": "click",
+      "target": "id=option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4",
+      "targets": [
+        ["id=option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4", "id"],
+        ["linkText=somethingElse", "linkText"],
+        ["css=#option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4", "css:finder"],
+        ["xpath=//a[@id='option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4']/a[5]", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[5]", "xpath:href"],
+        ["xpath=//a[5]", "xpath:position"],
+        ["xpath=//a[contains(.,'somethingElse')]", "xpath:innerText"]
+      ],
+      "value": ""
     }, {
       "id": "4f61120b-7c6b-4f8e-8543-898298451a56",
       "comment": "",
@@ -1378,7 +1387,7 @@
       "id": "ba74d18d-0996-485f-8a9f-01a39428eb0c",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(8) .array-add-button",
+      "target": "css=.row:nth-child(2) .array-add-button",
       "targets": [
         ["css=.row:nth-child(8) .array-add-button", "css:finder"],
         ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
@@ -1433,7 +1442,7 @@
       "id": "ec3afb37-30b4-4d07-93a6-dcf022605532",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(8) .array-add-button",
+      "target": "css=.row:nth-child(2) .array-add-button",
       "targets": [
         ["css=div:nth-child(8) .d-flex > .btn", "css:finder"],
         ["xpath=//div/button", "xpath:position"],
@@ -1486,7 +1495,7 @@
       "id": "8b340d1f-4944-4d10-a4cd-5e79be6804ef",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(8) .array-add-button",
+      "target": "css=.row:nth-child(2) .array-add-button",
       "targets": [
         ["css=div:nth-child(8) .d-flex > .btn", "css:finder"],
         ["xpath=//div/button", "xpath:position"],
@@ -1539,7 +1548,7 @@
       "id": "d6e7a640-a578-415b-9c1b-b2313b62ad46",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(8) .array-add-button",
+      "target": "css=.row:nth-child(2) .array-add-button",
       "targets": [
         ["css=div:nth-child(8) .d-flex > .btn", "css:finder"],
         ["xpath=//div/button", "xpath:position"],
@@ -1592,7 +1601,7 @@
       "id": "4c15be93-75be-4673-b703-07a705300d0f",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(8) .array-add-button",
+      "target": "css=.row:nth-child(2) .array-add-button",
       "targets": [
         ["css=div:nth-child(8) .btn > translate-i18n", "css:finder"],
         ["xpath=//div/button/translate-i18n", "xpath:position"]
@@ -1602,7 +1611,7 @@
       "id": "1a1b509e-1768-4291-820d-26f4b73a9d71",
       "comment": "",
       "command": "click",
-      "target": "css=div.section-body.p-4.border.border-top-0.border-info > div:nth-child(3) > div > div > form > div > div:nth-child(1) > div > div > div:nth-child(9) > div > div:nth-child(1) > div > div:nth-child(8) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(5) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[2]/div/div/div[1]/div/div/div[2]/div[5]/div/div[1]/div/div[1]/div/div/div/input[1]",
       "targets": [
         ["css=.focus", "css:finder"],
         ["xpath=(//input[@value=''])[10]", "xpath:attributes"],
@@ -1614,7 +1623,7 @@
       "id": "433d6e9d-9d03-4042-9ee0-6284570f8a3c",
       "comment": "",
       "command": "type",
-      "target": "css=div.section-body.p-4.border.border-top-0.border-info > div:nth-child(3) > div > div > form > div > div:nth-child(1) > div > div > div:nth-child(9) > div > div:nth-child(1) > div > div:nth-child(8) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(5) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[2]/div/div/div[1]/div/div/div[2]/div[5]/div/div[1]/div/div[1]/div/div/div/input[1]",
       "targets": [
         ["id=field83", "id"],
         ["css=#field83", "css:finder"],
@@ -1626,15 +1635,24 @@
     }, {
       "id": "3a2e2040-7443-4e3a-99b1-363f87580cba",
       "comment": "",
-      "command": "sendKeys",
-      "target": "css=div.section-body.p-4.border.border-top-0.border-info > div:nth-child(3) > div > div > form > div > div:nth-child(1) > div > div > div:nth-child(9) > div > div:nth-child(1) > div > div:nth-child(8) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(5) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
-      "targets": [],
-      "value": "${KEY_ENTER}"
+      "command": "click",
+      "target": "id=option-selector-root_relyingPartyOverrides_nameIdFormats_4-item-4",
+      "targets": [
+        ["id=option-selector-root_relyingPartyOverrides_nameIdFormats_4-item-4", "id"],
+        ["linkText=somethingElse", "linkText"],
+        ["css=#option-selector-root_relyingPartyOverrides_nameIdFormats_4-item-4", "css:finder"],
+        ["xpath=//a[@id='option-selector-root_relyingPartyOverrides_nameIdFormats_4-item-4']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-root_relyingPartyOverrides_nameIdFormats_4']/a[5]", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[5]", "xpath:href"],
+        ["xpath=//a[5]", "xpath:position"],
+        ["xpath=//a[contains(.,'somethingElse')]", "xpath:innerText"]
+      ],
+      "value": ""
     }, {
       "id": "c8bb3bee-3d61-4324-a3aa-38b78232b969",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(9) .array-add-button",
+      "target": "css=.row:nth-child(4) .array-add-button",
       "targets": [
         ["css=.row:nth-child(9) .array-add-button", "css:finder"],
         ["xpath=(//button[@type='button'])[25]", "xpath:attributes"],
@@ -1653,7 +1671,7 @@
       "id": "cbf15c4c-35d9-4f80-ba3d-bfe960048cd1",
       "comment": "",
       "command": "click",
-      "target": "css=div > div:nth-child(9) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > button",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[4]/div/div/div[1]/div/div/div[2]/div/div/div[1]/div/div[1]/div/div/button",
       "targets": [
         ["css=#\\/relyingPartyOverrides\\/authenticationMethods\\/0-container .btn", "css:finder"],
         ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
@@ -1688,7 +1706,7 @@
       "id": "ed769470-9c3f-4c23-bbed-85513dcea800",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(9) .array-add-button",
+      "target": "css=.row:nth-child(4) .array-add-button",
       "targets": [
         ["css=div:nth-child(9) .d-flex > .btn", "css:finder"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/array-component/div/div/button", "xpath:position"]
@@ -1705,7 +1723,7 @@
       "id": "2b063eb8-f2d6-4a59-85bb-b04c467d9874",
       "comment": "",
       "command": "click",
-      "target": "css=div > div:nth-child(9) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(2) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > button",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[4]/div/div/div[1]/div/div/div[2]/div[2]/div/div[1]/div/div[1]/div/div/button",
       "targets": [
         ["css=#\\/relyingPartyOverrides\\/authenticationMethods\\/1-container .btn", "css:finder"],
         ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
@@ -1740,7 +1758,7 @@
       "id": "892ddc96-970b-4dde-9189-0dc9ed197dab",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(9) .array-add-button",
+      "target": "css=.row:nth-child(4) .array-add-button",
       "targets": [
         ["css=div:nth-child(9) .d-flex > .btn", "css:finder"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/array-component/div/div/button", "xpath:position"]
@@ -1757,7 +1775,7 @@
       "id": "64e215d9-6e46-422f-882c-13b6fb102622",
       "comment": "",
       "command": "click",
-      "target": "css=div > div:nth-child(9) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(3) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > button",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[4]/div/div/div[1]/div/div/div[2]/div[3]/div/div[1]/div/div[1]/div/div/button",
       "targets": [
         ["css=#\\/relyingPartyOverrides\\/authenticationMethods\\/2-container .btn", "css:finder"],
         ["xpath=(//button[@type='button'])[9]", "xpath:attributes"],
@@ -1792,7 +1810,7 @@
       "id": "f0dd4b79-eab5-4d4b-af2e-07ca661f8288",
       "comment": "",
       "command": "click",
-      "target": "css=.row:nth-child(9) .array-add-button",
+      "target": "css=.row:nth-child(4) .array-add-button",
       "targets": [
         ["css=div:nth-child(9) .btn > translate-i18n", "css:finder"],
         ["xpath=//div[9]/sf-form-element/div/sf-widget-chooser/array-component/div/div/button/translate-i18n", "xpath:position"]
@@ -1802,7 +1820,7 @@
       "id": "dacd34b0-9e48-4838-b137-bf22dd027ed0",
       "comment": "",
       "command": "click",
-      "target": "css=div > div:nth-child(9) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(4) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[4]/div/div/div[1]/div/div/div[2]/div[4]/div/div[1]/div/div[1]/div/div/div[1]/input[1]",
       "targets": [
         ["css=.focus", "css:finder"],
         ["xpath=(//input[@value=''])[12]", "xpath:attributes"],
@@ -1814,7 +1832,7 @@
       "id": "cc9dd18b-ee87-4aa7-91f2-59f02834759b",
       "comment": "",
       "command": "type",
-      "target": "css=div > div:nth-child(9) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(4) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
+      "target": "xpath=//section/div[2]/div[2]/div/div/form/div/div[1]/div/div/div[9]/div/div[1]/div/div[4]/div/div/div[1]/div/div/div[2]/div[4]/div/div[1]/div/div[1]/div/div/div[1]/input[1]",
       "targets": [
         ["id=field87", "id"],
         ["css=#field87", "css:finder"],
@@ -1826,10 +1844,19 @@
     }, {
       "id": "1f62c43d-e605-4d62-9ce4-51f950788ac4",
       "comment": "",
-      "command": "sendKeys",
-      "target": "css=div > div:nth-child(9) > div > div > div:nth-child(1) > div > div > div.p-0.m-0.container-fluid > div:nth-child(4) > div > div.mr-2.flex-grow-1.undefined > div > div:nth-child(1) > div > div > div:nth-child(1) > input.rbt-input-main.form-control.rbt-input",
-      "targets": [],
-      "value": "${KEY_ENTER}"
+      "command": "click",
+      "target": "id=option-selector-root_relyingPartyOverrides_authenticationMethods_3-item-3",
+      "targets": [
+        ["id=option-selector-root_relyingPartyOverrides_authenticationMethods_3-item-3", "id"],
+        ["linkText=otherThings", "linkText"],
+        ["css=#option-selector-root_relyingPartyOverrides_authenticationMethods_3-item-3", "css:finder"],
+        ["xpath=//a[@id='option-selector-root_relyingPartyOverrides_authenticationMethods_3-item-3']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-root_relyingPartyOverrides_authenticationMethods_3']/a[4]", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[4]", "xpath:href"],
+        ["xpath=//a[4]", "xpath:position"],
+        ["xpath=//a[contains(.,'otherThings')]", "xpath:innerText"]
+      ],
+      "value": ""
     }, {
       "id": "7c85fe59-dc95-4328-a010-33d1a06a5ce5",
       "comment": "",
@@ -1913,11 +1940,12 @@
       "id": "e53030b6-f344-4361-981d-b8303a721c5d",
       "comment": "",
       "command": "assertText",
-      "target": "css=.d-flex:nth-child(8) .d-flex:nth-child(5)",
+      "target": "css=.mb-4:nth-child(4) .d-flex:nth-child(5) > .d-block",
       "targets": [
-        ["css=.d-flex:nth-child(8) .d-flex:nth-child(5)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[8]/div/div[2]/div[2]/div/div[8]/ul/li[5]", "xpath:idRelative"],
-        ["xpath=//div[8]/ul/li[5]", "xpath:position"]
+        ["css=.mb-4:nth-child(4) .d-flex:nth-child(5) > .d-block", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/section[4]/div/div[2]/div[2]/div/div[2]/ul/li[5]/span", "xpath:idRelative"],
+        ["xpath=//li[5]/span", "xpath:position"],
+        ["xpath=//span[contains(.,'somethingElse')]", "xpath:innerText"]
       ],
       "value": "somethingElse"
     }, {
@@ -2209,11 +2237,11 @@
       "id": "951a21c9-4cd3-4989-8dc0-77760ca0dc95",
       "comment": "",
       "command": "assertText",
-      "target": "css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)",
+      "target": "css=.mb-4:nth-child(9) div:nth-child(3) .d-block:nth-child(2)",
       "targets": [
-        ["css=.mb-4:nth-child(9) div:nth-child(7) .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[7]/div/div[2]/div[2]/div/div[7]/div/span[2]", "xpath:position"],
+        ["css=.mb-4:nth-child(9) div:nth-child(3) .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[7]/div/div[2]/div[2]/div/div[3]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//section[7]/div/div[2]/div[2]/div/div[3]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'responder-id-123')]", "xpath:innerText"]
       ],
       "value": "responder-id-123"

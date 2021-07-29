@@ -369,11 +369,11 @@
       "id": "c92e936c-d516-472f-9f28-36de89117e14",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-",
+      "target": "id=dropdown-label.filter-target-type",
       "targets": [
-        ["id=dropdown-", "id"],
-        ["css=#dropdown-", "css:finder"],
-        ["xpath=//button[@id='dropdown-']", "xpath:attributes"],
+        ["id=dropdown-label.filter-target-type", "id"],
+        ["css=#dropdown-label\\.filter-target-type", "css:finder"],
+        ["xpath=//button[@id='dropdown-label.filter-target-type']", "xpath:attributes"],
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[3]/div/div/div/fieldset/div/div/div/div/button", "xpath:idRelative"],
         ["xpath=//fieldset/div/div/div/div/button", "xpath:position"],
         ["xpath=//button[contains(.,'Entity ID ')]", "xpath:innerText"]
@@ -410,25 +410,25 @@
       "id": "786cd3cb-46b2-4361-b449-8f679ff97135",
       "comment": "",
       "command": "waitForElementPresent",
-      "target": "css=.codearea",
+      "target": "css=.npm__react-simple-code-editor__textarea",
       "targets": [
-        ["css=.codearea", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[3]/div/div/div/fieldset/div/div/div[2]/div/div/div", "xpath:idRelative"],
-        ["xpath=//fieldset/div/div/div[2]/div/div/div", "xpath:position"]
+        ["css=.npm__react-simple-code-editor__textarea", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[3]/div/div/div/fieldset/div/div/div[2]/div/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
       ],
       "value": "10000"
     }, {
       "id": "dcf31546-0976-44ae-9ffc-c29a5255d646",
       "comment": "",
-      "command": "editContent",
-      "target": "css=.codearea",
+      "command": "type",
+      "target": "css=.npm__react-simple-code-editor__textarea",
       "targets": [],
       "value": "eval(true);"
     }, {
       "id": "8c7fd197-7b41-4d32-95d3-e5360af438dc",
       "comment": "",
       "command": "click",
-      "target": "css=.codearea",
+      "target": "css=.npm__react-simple-code-editor__textarea",
       "targets": [],
       "value": ""
     }, {
