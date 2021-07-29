@@ -5,17 +5,17 @@ import { useContentionDispatcher, openContentionModalAction } from '../contentio
 
 import {MetadataFilterTypes} from '../domain/filter';
 
-const lists = {
+export const lists = {
     source: 'EntityDescriptors',
     provider: 'MetadataResolvers'
 };
 
-const details = {
+export const details = {
     source: 'EntityDescriptor',
     provider: 'MetadataResolvers'
 }
 
-const schema = {
+export const schema = {
     source: 'MetadataSources'
 }
 
@@ -24,7 +24,9 @@ export function getMetadataPath(type) {
 }
 
 export function useNonAdminSources() {
-    return useFetch(`/${getMetadataPath('source')}/disabledNonAdmin`);
+    return useFetch(`${API_BASE_PATH}${getMetadataPath('source')}/disabledNonAdmin`, {
+        cachePolicy: 'no-cache'
+    });
 }
 
 export function getMetadataListPath(type) {
@@ -51,19 +53,23 @@ export function useMetadataFilters(id, opts = {
     return useFetch(`${API_BASE_PATH}${getMetadataPath('provider')}/${id}/Filters`, opts, onMount);
 }
 
+export const xmlRequestInterceptor = ({ options }) => {
+    options.headers['Accept'] = 'application/xml';
+    return options;
+}
+
 export function useMetadataEntityXml(type = 'source', opts = {
     interceptors: {
-        request: ({options}) => {
-            options.headers['Accept'] = 'application/xml';
-            return options;
-        }
+        request: xmlRequestInterceptor
     }
 }) {
     return useFetch(`${API_BASE_PATH}${getMetadataPath(type)}`, opts);
 }
 
 export function useMetadataProviderOrder() {
-    return useFetch(`${API_BASE_PATH}/MetadataResolversPositionOrder`);
+    return useFetch(`${API_BASE_PATH}/MetadataResolversPositionOrder`, {
+        cachePolicy: 'no-cache'
+    });
 }
 
 export function useMetadataHistory(type, id, opts = {}, i) {
@@ -109,7 +115,11 @@ export function useMetadataUpdater (path, current) {
                 }));
             });
         }
-        return Promise.resolve(req);
+        if (response.ok) {
+            return Promise.resolve(req);
+        } else {
+            return Promise.reject(req);
+        }
     }
 
     return {

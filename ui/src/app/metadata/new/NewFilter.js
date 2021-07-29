@@ -9,12 +9,14 @@ import { MetadataForm } from '../hoc/MetadataFormContext';
 import { MetadataSchema } from '../hoc/MetadataSchema';
 import { useMetadataFilters, useMetadataFilterTypes } from '../hooks/api';
 import { MetadataFilterTypeSelector } from '../wizard/MetadataFilterTypeSelector';
+import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 
 export function NewFilter() {
 
     const { id, section } = useParams();
     const history = useHistory();
     const types = useMetadataFilterTypes();
+    const dispatch = useNotificationDispatcher();
 
     const { post, response, loading } = useMetadataFilters(id, {});
 
@@ -22,9 +24,12 @@ export function NewFilter() {
 
     
     async function save(metadata) {
-        await post(``, metadata);
+        const resp = await post(``, metadata);
         if (response.ok) {
+            dispatch(createNotificationAction('Filter saved'));
             gotoDetail({ refresh: true });
+        } else {
+            dispatch(createNotificationAction(resp.cause, NotificationTypes.DANGER));
         }
     };
 

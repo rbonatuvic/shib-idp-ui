@@ -7,3 +7,7 @@ it('shifts an item in an array by +1 index', () => {
 it('shifts an item in an array by -1 index', () => {
     expect(array_move([1, 2], 1, 0)).toEqual([2, 1]);
 });
+
+it('shifts an item in an array by +1 index if greater than length', () => {
+    expect(array_move([1, 2], 0, 2)).toEqual([2, undefined, 1]);
+});

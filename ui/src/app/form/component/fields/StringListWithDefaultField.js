@@ -95,39 +95,44 @@ const StringListWithDefaultField = ({
         <div>
             <Row className="">
                 <Col className="">
-                    <div className="d-flex align-items-center mb-3">
-                        {<ArrayFieldTitle
-                            key={`array-field-title-${props.idSchema.$id}`}
-                            TitleField={fields.TitleField}
-                            idSchema={props.idSchema}
-                            title={props.uiSchema["ui:title"] || props.title}
-                            required={props.required}
-                        />}
-                        <AddButton
-                            className="array-item-add mx-2"
-                            onClick={onAdd}
-                            disabled={props.disabled || props.readonly}
-                        />
-                        {(props.uiSchema["ui:description"] || schema.description) && (
-                            <ArrayFieldDescription
-                                key={`array-field-description-${props.idSchema.$id}`}
-                                DescriptionField={fields.DescriptionField}
+                    <div className="d-flex align-items-center justify-content-between mb-3">
+                        <div className="d-flex align-items-center mb-3">
+                            {<ArrayFieldTitle
+                                key={`array-field-title-${props.idSchema.$id}`}
+                                TitleField={fields.TitleField}
                                 idSchema={props.idSchema}
-                                description={
-                                    props.uiSchema["ui:description"] || schema.description
-                                }
+                                title={props.uiSchema["ui:title"] || props.title}
+                                required={props.required}
+                            />}
+                            <AddButton
+                                className="array-item-add mx-2"
+                                onClick={onAdd}
+                                disabled={props.disabled || props.readonly}
                             />
-                        )}
+                            {(props.uiSchema["ui:description"] || schema.description) && (
+                                <ArrayFieldDescription
+                                    key={`array-field-description-${props.idSchema.$id}`}
+                                    DescriptionField={fields.DescriptionField}
+                                    idSchema={props.idSchema}
+                                    description={
+                                        props.uiSchema["ui:description"] || schema.description
+                                    }
+                                />
+                            )}
+                        </div>
+                        <div className="mr-3">
+                            Default
+                        </div>
                     </div>
                     <div>
                         {items && items.map((p, idx) =>
-                            <div className="my-2 d-flex justify-content-between align-items-center form-inline">
+                            <div key={idx} className="my-2 d-flex justify-content-between align-items-center form-inline">
                                 <Form.Control
                                     type="text"
                                     className="flex-grow-1"
                                     value={p.value}
                                     onChange={({ target: { value } }) => setValue(p, value)}></Form.Control>
-                                <Form.Control custom name="default" type="radio" className="mx-4"
+                                <Form.Control className="mx-4" custom name="default" type="radio"
                                     checked={ p.default }
                                     onChange={ () => setDefault(p) }
                                 ></Form.Control>

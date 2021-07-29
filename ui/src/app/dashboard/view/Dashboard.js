@@ -40,7 +40,7 @@ export function Dashboard () {
     }
 
     async function loadSources() {
-        const s = sourceLoader.get();
+        const s = await sourceLoader.get();
         if (response.ok) {
             setSources(s);
         }

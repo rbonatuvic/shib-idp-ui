@@ -33,7 +33,7 @@ import java.nio.file.Files
  * @author Bill Smith (wsmith@unicon.net)
  */
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, MyConfig, PlaceholderResolverComponentsConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, MyConfig, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)

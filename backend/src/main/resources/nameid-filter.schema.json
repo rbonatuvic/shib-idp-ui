@@ -21,7 +21,7 @@
             "type": "object",
             "properties": {
                 "nameIdFormatFilterTargetType": {
-                    "title": "",
+                    "title": "label.filter-target-type",
                     "type": "string",
                     "default": "ENTITY",
                     "enum": [

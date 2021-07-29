@@ -2,7 +2,10 @@
     "type": "object",
     "required": [
         "name",
-        "attributeType"
+        "attributeType",
+        "attributeFriendlyName",
+        "attributeName",
+        "displayName"
     ],
     "properties": {
         "name": {
@@ -10,7 +13,8 @@
             "description": "tooltip.entity-attribute-name",
             "type": "string",
             "minLength": 1,
-            "maxLength": 255
+            "maxLength": 255,
+            "pattern": "^[a-zA-Z0-9:]*$"
         },
         "attributeType": {
             "title": "label.entity-attribute-type",
@@ -19,13 +23,42 @@
             "enum": [
                 "STRING",
                 "BOOLEAN",
-                "SELECTION_LIST"
+                "SELECTION_LIST",
+                "LONG",
+                "DOUBLE",
+                "DURATION",
+                "SPRING_BEAN_ID"
             ],
             "enumNames": [
                 "value.string",
                 "value.boolean",
-                "value.list"
+                "value.list",
+                "value.long",
+                "value.double",
+                "value.duration",
+                "value.spring-bean-id"
             ]
+        },
+        "attributeFriendlyName": {
+            "type": "string",
+            "title": "label.entity-attribute-friendly-name",
+            "description": "tooltip.entity-attribute-friendly-name",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "attributeName": {
+            "type": "string",
+            "title": "label.entity-attribute-attr-name",
+            "description": "tooltip.entity-attribute-attr-name",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "displayName": {
+            "type": "string",
+            "title": "label.entity-attribute-display-name",
+            "description": "tooltip.entity-attribute-display-name",
+            "minLength": 1,
+            "maxLength": 255
         },
         "helpText": {
             "title": "label.entity-attribute-help",
@@ -45,7 +78,7 @@
                                 "STRING"
                             ]
                         },
-                        "defaultValueString": {
+                        "defaultValue": {
                             "title": "label.entity-attribute-default",
                             "description": "tooltip.entity-attribute-default",
                             "type": "string"
@@ -53,6 +86,23 @@
                     }
                 },
                 {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "SPRING_BEAN_ID"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "required": [
+                        "persistValue"
+                    ],
                     "properties": {
                         "attributeType": {
                             "enum": [
@@ -65,6 +115,82 @@
                             "type": "boolean",
                             "default": true,
                             "enumNames": ["True", "False"]
+                        },
+                        "persistValue": {
+                            "type": "string",
+                            "title": "label.entity-attribute-persist-value",
+                            "description": "tooltip.entity-attribute-persist-value",
+                            "minLength": 1,
+                            "maxLength": 255
+                        },
+                        "persistType": {
+                            "type": "string",
+                            "title": "label.entity-attribute-persist-type",
+                            "description": "tooltip.entity-attribute-persist-type",
+                            "default": "string"
+                        },
+                        "invert": {
+                            "type": "boolean",
+                            "title": "label.entity-attribute-invert",
+                            "description": "tooltip.entity-attribute-invert"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "DURATION"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string",
+                            "pattern": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "LONG"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "DOUBLE"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "attributeType": {
+                            "enum": [
+                                "INTEGER"
+                            ]
+                        },
+                        "defaultValue": {
+                            "title": "label.entity-attribute-default",
+                            "description": "tooltip.entity-attribute-default",
+                            "type": "string",
+                            "pattern": "^\\d+$"
                         }
                     }
                 },
