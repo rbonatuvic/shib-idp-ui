@@ -50,6 +50,7 @@ public class RestControllersSupport {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorResponse> handleAllOtherExceptions(Exception ex) {
+        System.err.println(ex);
         ErrorResponse errorResponse = new ErrorResponse("400", ex.getLocalizedMessage(), ex.getCause() == null ? null : ex.getCause().getLocalizedMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
