@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { UserConfirmation, ConfirmWindow } from './UserConfirmation';
 
 jest.mock('../../i18n/hooks', () => ({

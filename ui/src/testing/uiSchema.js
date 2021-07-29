@@ -11,7 +11,6 @@ const schema = {
                 "fields": [
                     "serviceProviderName",
                     "entityId",
-                    "serviceEnabled",
                     "organization"
                 ]
             },
@@ -208,7 +207,6 @@ const schema = {
     },
     "serviceProviderName": {},
     "entityId": {},
-    "serviceEnabled": {},
     "organization": {},
     "ui:disabled": false
 };
