@@ -2,6 +2,9 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import java.util.List;
@@ -53,5 +56,7 @@ public interface EntityDescriptorService {
      * @return a map of String->Object (property name -> property value) based on the given list of attributes
      */
     Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
+
+    EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException;
 
 }

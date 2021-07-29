@@ -42,7 +42,10 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
@@ -76,8 +79,8 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
  * @since 1.0
  */
 public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JPAEntityDescriptorServiceImpl.class);
+    @Autowired
+    private EntityDescriptorRepository entityDescriptorRepository;
 
     @Autowired
     private OpenSamlObjects openSamlObjects;
@@ -708,5 +711,20 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList) {
         return ModelRepresentationConversions.getRelyingPartyOverridesRepresentationFromAttributeList(attributeList);
+    }
+
+    @Override
+    public EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            throw new EntityNotFoundException("Entity with resourceid[" + resourceId + "] was not found for update");
+        }
+        // @TODO: when merged with groups, this should maybe be merged with group check as they have to have the role in the right group
+        if (!userService.currentUserHasExpectedRole(Arrays.asList(new String[] { "ROLE_ADMIN", "ROLE_ENABLE" }))) {
+            throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this entity descriptor.");
+        }
+        ed.setServiceEnabled(status);
+        ed = entityDescriptorRepository.save(ed);
+        return createRepresentationFromDescriptor(ed);
     }
 }

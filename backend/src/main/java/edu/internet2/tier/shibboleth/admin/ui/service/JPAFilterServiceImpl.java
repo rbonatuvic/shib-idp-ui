@@ -1,13 +1,24 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import javax.script.ScriptException;
 
 /**
  * Default implementation of {@link FilterService}
@@ -16,18 +27,27 @@ import java.util.List;
  * @author Bill Smith (wsmith@unicon.net)
  */
 public class JPAFilterServiceImpl implements FilterService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JPAFilterServiceImpl.class);
-
     @Autowired
     EntityDescriptorService entityDescriptorService;
-
+    
     @Autowired
     EntityService entityService;
 
     @Autowired
-    FilterTargetService filterTargetService;
+    FilterRepository filterRepository;
 
+    @Autowired
+    FilterTargetService filterTargetService;
+    
+    @Autowired
+    private MetadataResolverRepository metadataResolverRepository;
+    
+    @Autowired
+    private MetadataResolverService metadataResolverService;
+
+    @Autowired
+    private UserService userService;
+    
     @Override
     public EntityAttributesFilter createFilterFromRepresentation(FilterRepresentation representation) {
         //TODO? use OpenSamlObjects.buildDefaultInstanceOfType(EntityAttributesFilter.class)?
@@ -65,5 +85,53 @@ public class JPAFilterServiceImpl implements FilterService {
 
         representation.setVersion(entityAttributesFilter.hashCode());
         return representation;
+    }
+
+    private void reloadFiltersAndHandleScriptException(String resolverResourceId) throws ScriptException {
+        try {
+            metadataResolverService.reloadFilters(resolverResourceId);
+        } catch (Throwable ex) {
+            //explicitly mark transaction for rollback when we get ScriptException as we call reloadFilters
+            //after persistence call. Then re-throw the exception with pertinent message
+            if (ex instanceof ScriptException) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                throw new ScriptException("Caught invalid script parsing error when reloading filters. Please fix the script data");
+            }
+        }
+    }
+    
+    /**
+     * Logic taken directly from the MetadataFiltersController and then modified slightly.
+     */
+    @Override
+    public MetadataFilter updateFilterEnabledStatus(String metadataResolverId, String resourceId, boolean status)
+                    throws EntityNotFoundException, ForbiddenException, ScriptException {
+        
+        MetadataResolver metadataResolver = metadataResolverRepository.findByResourceId(metadataResolverId);
+        // Now we operate directly on the filter attached to MetadataResolver,
+        // Instead of fetching filter separately, to accommodate correct envers versioning with uni-directional one-to-many
+        Optional<MetadataFilter> filterTobeUpdatedOptional = metadataResolver.getMetadataFilters().stream()
+                        .filter(it -> it.getResourceId().equals(resourceId)).findFirst();
+        if (filterTobeUpdatedOptional.isEmpty()) {
+            throw new EntityNotFoundException("Filter with resource id[" + resourceId + "] not found");
+        }
+        
+        // @TODO: when merged with groups, this should maybe be merged with group check as they have to have the role in the right group
+        if (!userService.currentUserHasExpectedRole(Arrays.asList(new String[] { "ROLE_ADMIN", "ROLE_ENABLE" }))) {
+            throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this filter.");
+        }
+        
+        MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();
+        filterTobeUpdated.setFilterEnabled(status);
+        MetadataFilter persistedFilter = filterRepository.save(filterTobeUpdated);
+
+        // To support envers versioning from MetadataResolver side
+        metadataResolver.markAsModified();
+        metadataResolverRepository.save(metadataResolver);
+
+        // TODO: do we need to reload filters here?
+        reloadFiltersAndHandleScriptException(metadataResolver.getResourceId());
+
+        return persistedFilter;
     }
 }

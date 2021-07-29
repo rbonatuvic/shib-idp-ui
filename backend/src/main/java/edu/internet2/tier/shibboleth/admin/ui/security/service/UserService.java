@@ -1,15 +1,17 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
@@ -69,5 +71,13 @@ public class UserService {
              user.get().getRoles().forEach(role -> result.add(role.getName()));
         }
         return result;
+    }
+    
+    /**
+     * Current logic is pretty dumb, this will need to change/expand once a user can have more than one role.
+     */
+    public boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
+        User user = getCurrentUser();
+        return acceptedRoles.contains(user.getRole());
     }
 }
