@@ -170,6 +170,13 @@
       ],
       "value": ""
     }, {
+      "id": "46c49fae-b4f5-45fd-a925-5892d1d6295f",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=role-admin",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "c8600f21-db2e-442a-89bf-7c7d003d5e41",
       "comment": "",
       "command": "assertValue",

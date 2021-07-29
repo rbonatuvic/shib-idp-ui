@@ -138,6 +138,13 @@
       ],
       "value": ""
     }, {
+      "id": "e3684ceb-a44e-47f8-bb52-c745d8188e9e",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//td[contains(.,'Test Group')]",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "331aeb76-c245-4a12-a3e9-dfca504b3ca6",
       "comment": "",
       "command": "assertText",
@@ -171,6 +178,13 @@
       ],
       "value": ""
     }, {
+      "id": "c75ac961-05b0-4cf9-9436-5ec38ed1b410",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_name",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "d4711afb-8e77-48fa-827d-db0098bd9601",
       "comment": "",
       "command": "type",
@@ -183,6 +197,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Edited Test Group"
+    }, {
+      "id": "dec991dd-5efc-436b-a5ec-f63c9f80e8ad",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_description",
+      "targets": [],
+      "value": ""
     }, {
       "id": "93ff4a1e-5895-4533-ab5e-b1455266cd14",
       "comment": "",
@@ -209,6 +230,13 @@
         ["xpath=//button[contains(.,' Save')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "00c5a40f-006a-41a4-a931-e7c6b563d8fb",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//td[contains(.,'Edited Test Group')]",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "40ccad28-e2e1-48ac-8aa5-cf0d90a7e6ac",
       "comment": "",

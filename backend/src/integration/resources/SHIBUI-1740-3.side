@@ -53,7 +53,7 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
-      "id": "2b5fd1e0-6987-4663-9b28-d8551ae5a161",
+      "id": "b64a0533-2175-4578-baeb-7ca4e97e0e23",
       "comment": "",
       "command": "open",
       "target": "/api/heheheheheheheWipeout",
@@ -70,7 +70,7 @@
       "id": "cafc23ea-1ffa-4708-9d14-9771031699a6",
       "comment": "",
       "command": "open",
-      "target": "/dashboard",
+      "target": "/",
       "targets": [],
       "value": ""
     }, {
@@ -101,6 +101,13 @@
       ],
       "value": ""
     }, {
+      "id": "e981fc0b-47e9-4360-a457-704e25babb84",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=root_serviceProviderName",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "b34f2194-a1bd-48a5-9f75-b8936ba6082a",
       "comment": "",
       "command": "type",
@@ -112,7 +119,7 @@
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/div/form/div/div/div/div/div/div/div/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "Selenium Test2"
+      "value": "Selenium Test"
     }, {
       "id": "6d4f04c3-c45c-4eed-b744-ba847c9af1f9",
       "comment": "",
@@ -125,7 +132,7 @@
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[3]/div/div/form/div/div/div/div/div/div[2]/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/input", "xpath:position"]
       ],
-      "value": "test2"
+      "value": "test"
     }, {
       "id": "edb46777-bbd0-4e59-8859-093af94477f1",
       "comment": "",
@@ -246,6 +253,13 @@
         ["xpath=//li[3]/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "94c6632a-eea4-4dcf-bbf2-8347879bd248",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "linkText=Selenium Test",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "fbf5739f-bc42-44c6-9b04-4b3e8d195718",
       "comment": "",
