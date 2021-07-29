@@ -12,9 +12,5 @@ export function useRole(id) {
 }
 
 export function useRoleUiSchema() {
-    return {
-        description: {
-            'ui:widget': 'textarea'
-        }
-    };
+    return {};
 }

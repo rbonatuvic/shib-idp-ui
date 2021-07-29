@@ -3,7 +3,7 @@ import { useRole } from '../hooks';
 
 export function RoleProvider({ id, children }) {
 
-    const [role, setRole] = React.useState();
+    const [role, setRole] = React.useState({id: 'foo'});
     const { get, response } = useRole(id);
 
     async function loadRole() {
