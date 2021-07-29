@@ -26,6 +26,7 @@ import { NewProvider } from './metadata/new/NewProvider';
 import { Filter } from './metadata/Filter';
 import { Contention } from './metadata/contention/ContentionContext';
 import { SessionModal } from './core/user/SessionModal';
+import { Roles } from './admin/Roles';
 import Button from 'react-bootstrap/Button';
 
 
@@ -79,6 +80,7 @@ function App() {
                                                     <Route path="/metadata/attributes" component={Attribute} />
                                                     <Route path={`/metadata/provider/:id/filter`} component={Filter} />
                                                     <Route path="/metadata/:type/:id" component={Metadata} />
+                                                    <Route path="/roles" component={Roles} />
                                                     <Route path="*">
                                                         <Redirect to="/dashboard" />
                                                     </Route>

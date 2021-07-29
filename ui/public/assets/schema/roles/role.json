@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.role-name",
+            "description": "tooltip.role-name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        }
+    }
+}

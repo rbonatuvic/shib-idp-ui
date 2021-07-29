@@ -1,5 +1,5 @@
 import React from 'react';
-import { DeleteConfirmation } from '../../metadata/component/DeleteConfirmation';
+import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 import { useMetadataEntity } from '../../metadata/hooks/api';
 
 import { NotificationContext, createNotificationAction } from '../../notifications/hoc/Notifications';

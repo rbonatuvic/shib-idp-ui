@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { Translate } from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
 
-import { DeleteConfirmation } from '../component/DeleteConfirmation';
+import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
 
 export function MetadataAttributeList ({entities, onDelete}) {
 
