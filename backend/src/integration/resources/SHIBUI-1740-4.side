@@ -7,11 +7,86 @@
     "id": "6932d7f8-1e1b-4c60-9a8b-09769eb17b62",
     "name": "SHIBUI-1740-4",
     "commands": [{
-      "id": "515af1b7-ed2c-4a89-8ac3-34446a0bc871",
+      "id": "916f36cc-eaee-4ab1-b14b-90caf6aa46cc",
       "comment": "",
       "command": "open",
       "target": "/login",
       "targets": [],
+      "value": ""
+    }, {
+      "id": "2fdfe733-4a6d-4189-bfe2-a588e6b95400",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "2ae3301d-5ba7-4eef-b765-64b3c7b61924",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//p[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "4d329c94-2200-44d2-8861-6f3b9e739fd7",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//p[2]/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "76210fb2-ebed-430b-bc73-7c114fef2c34",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2efd32dd-9894-4b6c-8730-5337c11b512a",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "6ba7a536-1307-4321-a4f4-009d3715afa0",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "15f111a8-69c3-48a1-921e-6f73d2bb5722",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Logout",
+      "targets": [
+        ["linkText=Logout", "linkText"],
+        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
+        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
+      ],
       "value": ""
     }, {
       "id": "72231d87-3efa-4e65-af79-11b9e7dea105",
@@ -52,27 +127,6 @@
         ["xpath=//p[2]/input", "xpath:position"]
       ],
       "value": "${KEY_ENTER}"
-    }, {
-      "id": "d54e0170-3343-47d5-8541-b613372ef431",
-      "comment": "",
-      "command": "open",
-      "target": "/api/heheheheheheheWipeout",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "74ecfbbb-07d0-420f-abb9-895b68015645",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
-      "targets": [],
-      "value": "yes, you did it"
-    }, {
-      "id": "299da7ff-9249-4d12-82f8-492eb1739d2b",
-      "comment": "",
-      "command": "open",
-      "target": "/",
-      "targets": [],
-      "value": ""
     }, {
       "id": "6fb9efa3-c73e-4d27-82e6-28b25bf4fb60",
       "comment": "",
