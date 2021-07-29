@@ -53,24 +53,10 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
-      "id": "3cbf8848-2e22-42cc-b5f9-aa289ad5cab6",
-      "comment": "",
-      "command": "pause",
-      "target": "5000",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "b64a0533-2175-4578-baeb-7ca4e97e0e23",
       "comment": "",
       "command": "open",
       "target": "/api/heheheheheheheWipeout",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "70533c84-e78f-491e-aa4e-1c1e9f48b62e",
-      "comment": "",
-      "command": "pause",
-      "target": "5000",
       "targets": [],
       "value": ""
     }, {

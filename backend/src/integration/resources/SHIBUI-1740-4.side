@@ -53,6 +53,27 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "d54e0170-3343-47d5-8541-b613372ef431",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "74ecfbbb-07d0-420f-abb9-895b68015645",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "299da7ff-9249-4d12-82f8-492eb1739d2b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "6fb9efa3-c73e-4d27-82e6-28b25bf4fb60",
       "comment": "",
       "command": "click",
