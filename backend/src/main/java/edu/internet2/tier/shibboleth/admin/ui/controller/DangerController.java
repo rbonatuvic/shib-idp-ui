@@ -8,16 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping(value = "/api/heheheheheheheWipeout")
 @Profile("very-dangerous")
+@Slf4j
 public class DangerController {
     @Autowired
     private EntityDescriptorService entityDescriptorService;
@@ -29,6 +31,9 @@ public class DangerController {
     private FilterRepository filterRepository;
     
     @Autowired
+    private IGroupService groupService;
+    
+    @Autowired
     private MetadataResolverRepository metadataResolverRepository;
     
     @Autowired
@@ -36,17 +41,18 @@ public class DangerController {
 
     @Transactional
     @GetMapping
-    public ResponseEntity<?> wipeOut() throws ForbiddenException {
+    public ResponseEntity<?> wipeOut() {
         edRepo.findAll().forEach(ed -> {
             try {
                 ed.setServiceEnabled(false);
                 edRepo.save(ed);
+                groupService.removeEntityFromGroup(ed);
                 entityDescriptorService.delete(ed.getResourceId());
             }
             catch (Throwable e) {
+                System.out.println("@@@@@@ error deleting" + e.getMessage());
             }
         });
-        
         this.metadataResolverRepository.deleteAll();
         this.filterRepository.deleteAll();
         this.metadataResolversPositionOrderContainerRepository.deleteAll();
