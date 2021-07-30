@@ -11,6 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import javax.script.ScriptException;
  * @since 1.0
  * @author Bill Smith (wsmith@unicon.net)
  */
+@Service
 public class JPAFilterServiceImpl implements FilterService {
     @Autowired
     EntityDescriptorService entityDescriptorService;

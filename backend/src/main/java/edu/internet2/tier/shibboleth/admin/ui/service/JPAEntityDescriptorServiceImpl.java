@@ -58,6 +58,7 @@ import org.opensaml.xmlsec.signature.X509Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -78,6 +79,7 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
  *
  * @since 1.0
  */
+@Service
 public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     private EntityDescriptorRepository entityDescriptorRepository;
@@ -88,6 +90,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     private EntityService entityService;
 
+    @Autowired
     private UserService userService;
 
     public JPAEntityDescriptorServiceImpl(OpenSamlObjects openSamlObjects, EntityService entityService, UserService userService) {

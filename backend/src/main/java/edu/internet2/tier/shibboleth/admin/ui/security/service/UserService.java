@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -79,5 +81,11 @@ public class UserService {
     public boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
         User user = getCurrentUser();
         return acceptedRoles.contains(user.getRole());
+    }
+    
+    @Transactional
+    public User save(User user) {
+        // NOTE: REPLACE ENTIRELY WITH 1740 code
+        return userRepository.save(user);
     }
 }

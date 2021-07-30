@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
@@ -51,7 +50,7 @@ import spock.lang.Unroll
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, MetadataResolverConverterConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,Config])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,Config])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)

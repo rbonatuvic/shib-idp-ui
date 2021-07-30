@@ -1,6 +1,27 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.util.UrlPathHelper;
+
 import com.fasterxml.jackson.databind.Module;
+
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -13,49 +34,25 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
-import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
 import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
-import org.apache.lucene.analysis.Analyzer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.core.io.Resource;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.util.UrlPathHelper;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Configuration
+@Import(SearchConfiguration.class)
+@ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.service }")
 @EnableConfigurationProperties({CustomPropertiesConfiguration.class, ShibUIConfiguration.class})
 public class CoreShibUiConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(CoreShibUiConfiguration.class);
-
     @Bean
     public OpenSamlObjects openSamlObjects() {
         return new OpenSamlObjects();
@@ -66,25 +63,25 @@ public class CoreShibUiConfiguration {
         return new JPAEntityServiceImpl(openSamlObjects());
     }
 
-    @Bean
-    public EntityDescriptorService jpaEntityDescriptorService(UserService userService) {
-        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService(), userService);
-    }
+//    @Bean
+//    public EntityDescriptorService JPAEntityDescriptorServiceImpl(UserService userService) {
+//        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService(), userService);
+//    }
 
-    @Bean
-    public FilterService jpaFilterService() {
-        return new JPAFilterServiceImpl();
-    }
+//    @Bean
+//    public FilterService jpaFilterService() {
+//        return new JPAFilterServiceImpl();
+//    }
 
     @Bean
     public FilterTargetService jpaFilterTargetService() {
         return new JPAFilterTargetServiceImpl();
     }
 
-    @Bean
-    public MetadataResolverService metadataResolverService() {
-        return new JPAMetadataResolverServiceImpl();
-    }
+//    @Bean
+//    public MetadataResolverService metadataResolverService() {
+//        return new JPAMetadataResolverServiceImpl();
+//    }
 
     @Bean
     public AttributeUtility attributeUtility() {
