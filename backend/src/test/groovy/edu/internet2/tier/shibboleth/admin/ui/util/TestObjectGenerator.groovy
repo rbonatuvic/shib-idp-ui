@@ -507,6 +507,7 @@ class TestObjectGenerator {
             it.name = 'FilesystemMetadata'
             it.xmlId = 'FilesystemMetadata'
             it.metadataFile = 'metadata/metadata.xml'
+            it.doInitialization = Boolean.FALSE // Removed the default setting, added back to keep tests the same.
 
             it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
                 it
