@@ -7,7 +7,12 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.matching.matcher.Matcher;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.saml.profile.SAML2Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,116 +27,102 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Bill Smith (wsmith@unicon.net)
- */
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AddNewUserFilter implements Filter {
-
-    private static final Logger logger = LoggerFactory.getLogger(AddNewUserFilter.class);
-
     private static final String ROLE_NONE = "ROLE_NONE";
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
     private Optional<EmailService> emailService;
-
     private Pac4jConfigurationProperties pac4jConfigurationProperties;
+    private RoleRepository roleRepository;
+    private Pac4jConfigurationProperties.SimpleProfileMapping simpleProfileMapping;
+    private UserRepository userRepository;
+    private Matcher matcher;
 
-    private Pac4jConfigurationProperties.SAML2ProfileMapping saml2ProfileMapping;
-
-    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, Optional<EmailService> emailService) {
+    public AddNewUserFilter(Pac4jConfigurationProperties pac4jConfigurationProperties, UserRepository userRepository, RoleRepository roleRepository, Matcher matcher, Optional<EmailService> emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
         this.pac4jConfigurationProperties = pac4jConfigurationProperties;
-        saml2ProfileMapping = this.pac4jConfigurationProperties.getSaml2ProfileMapping();
+        this.matcher = matcher;
+        simpleProfileMapping = this.pac4jConfigurationProperties.getSimpleProfileMapping();
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
-    private User buildAndPersistNewUserFromProfile(SAML2Profile profile) {
-        Role noRole = roleRepository.findByName(ROLE_NONE).orElse(new Role(ROLE_NONE));
-        roleRepository.save(noRole);
+    @Transactional
+    private User buildAndPersistNewUserFromProfile(CommonProfile profile) {
+        Optional<Role> noRole = roleRepository.findByName(ROLE_NONE);
+        Role newUserRole;
+        if (noRole.isEmpty()) {
+            newUserRole = new Role(ROLE_NONE);
+            newUserRole = roleRepository.save(newUserRole);
+        }
+        newUserRole = noRole.get();
 
         User user = new User();
-        user.getRoles().add(noRole);
-        user.setUsername(getAttributeFromProfile(profile, "username"));
+        user.getRoles().add(newUserRole);
+        user.setUsername(profile.getUsername());
         user.setPassword(BCrypt.hashpw(RandomStringUtils.randomAlphanumeric(20), BCrypt.gensalt()));
-        user.setFirstName(getAttributeFromProfile(profile, "firstName"));
-        user.setLastName(getAttributeFromProfile(profile, "lastName"));
-        user.setEmailAddress(getAttributeFromProfile(profile, "email"));
+        user.setFirstName(profile.getFirstName());
+        user.setLastName(profile.getFamilyName());
+        user.setEmailAddress(profile.getEmail());
         User persistedUser = userRepository.save(user);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Persisted new user:\n" + user);
+        if (log.isDebugEnabled()) {
+            log.debug("Persisted new user:\n" + user);
         }
         return persistedUser;
-    }
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SAML2Profile profile = (SAML2Profile) authentication.getPrincipal();
-        if (profile != null) {
-            String username = getAttributeFromProfile(profile, "username");
-            if (username != null) {
-                Optional<User> persistedUser = userRepository.findByUsername(username);
-                User user;
-                if (!persistedUser.isPresent()) {
-                    user = buildAndPersistNewUserFromProfile(profile);
-                    emailService.ifPresent(e -> {
-                        try {
-                            e.sendNewUserMail(username);
-                        } catch (MessagingException e1) {
-                            logger.warn(String.format("Unable to send new user email for user [%s]", username), e);
-                        }
-                    });
-                } else {
-                    user = persistedUser.get();
-                }
-                if (user.getRole().equals(ROLE_NONE)) {
-                    ((HttpServletResponse) response).sendRedirect("/unsecured/error.html");
-                } else {
-                    chain.doFilter(request, response); // else, user is in the system already, carry on
-                }
-            }
-        }
     }
 
     @Override
     public void destroy() {
     }
 
-    private String getAttributeFromProfile(SAML2Profile profile, String stringKey) {
-        String attribute = null;
-        switch (stringKey) {
-            case "username":
-                attribute = saml2ProfileMapping.getUsername();
-                break;
-            case "firstName":
-                attribute = saml2ProfileMapping.getFirstName();
-                break;
-            case "lastName":
-                attribute = saml2ProfileMapping.getLastName();
-                break;
-            case "email":
-                attribute = saml2ProfileMapping.getEmail();
-                break;
-            default:
-                // do we care? Not yet.
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        JEEContext context = new JEEContext((HttpServletRequest)request, (HttpServletResponse)response);
+        if (!matcher.matches(context, JEESessionStore.INSTANCE)) {
+            return;
         }
-        List<String> attributeList = (List<String>) profile.getAttribute(attribute);
-        return attributeList.size() < 1 ? null : attributeList.get(0);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            CommonProfile profile = (CommonProfile) authentication.getPrincipal();
+            if (profile != null) {
+                String username = profile.getUsername();
+                if (username != null) {
+                    Optional<User> persistedUser = userRepository.findByUsername(username);
+                    User user;
+                    if (persistedUser.isEmpty()) {
+                        user = buildAndPersistNewUserFromProfile(profile);
+                        emailService.ifPresent(e -> {
+                            try {
+                                e.sendNewUserMail(username);
+                            }
+                            catch (MessagingException e1) {
+                                log.warn(String.format("Unable to send new user email for user [%s]", username), e);
+                            }
+                        });
+                    } else {
+                        user = persistedUser.get();
+                    }
+                    if (user.getRole().equals(ROLE_NONE)) {
+                        ((HttpServletResponse) response).sendRedirect("/unsecured/error.html");
+                    } else {
+                        chain.doFilter(request, response); // else, user is in the system already, carry on
+                    }
+                }
+            }
+        }
     }
 
-    private byte[] getJsonResponseBytes(ErrorResponse eErrorResponse) throws IOException {
-        String errorResponseJson = new ObjectMapper().writeValueAsString(eErrorResponse);
-        return errorResponseJson.getBytes();
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
     }
 }
