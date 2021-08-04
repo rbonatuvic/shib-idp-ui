@@ -35,7 +35,7 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
 
     public OpenSamlFileBackedHTTPMetadataResolver(ParserPool parserPool,
                                                   IndexWriter indexWriter,
-                                                  FileBackedHttpMetadataResolver sourceResolver) throws ResolverException {
+                    FileBackedHttpMetadataResolver sourceResolver) throws ResolverException {
         super(HttpClients.createMinimal(), sourceResolver.getMetadataURL(), sourceResolver.getBackingFile());
         this.indexWriter = indexWriter;
         this.sourceResolver = sourceResolver;
@@ -43,21 +43,21 @@ public class OpenSamlFileBackedHTTPMetadataResolver extends FileBackedHTTPMetada
 
         this.setId(sourceResolver.getResourceId());
 
-        OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromHttpMetadataResolverAttributes(
-                this, sourceResolver.getHttpMetadataResolverAttributes());
-        OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(
-                this, sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
+        OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromHttpMetadataResolverAttributes(this,
+                        sourceResolver.getHttpMetadataResolverAttributes());
+        OpenSamlMetadataResolverConstructorHelper.updateOpenSamlMetadataResolverFromReloadableMetadataResolverAttributes(this,
+                        sourceResolver.getReloadableMetadataResolverAttributes(), parserPool);
 
-        this.setBackupFile(placeholderResolverService()
-                .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackingFile()));
+        this.setBackupFile(placeholderResolverService().resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackingFile()));
         this.setBackupFileInitNextRefreshDelay(toMillis(placeholderResolverService()
-                .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
-
-        this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
+                        .resolveValueFromPossibleTokenPlaceholder(sourceResolver.getBackupFileInitNextRefreshDelay())));
+        if (sourceResolver.getInitializeFromBackupFile() != null) {
+            this.setInitializeFromBackupFile(sourceResolver.getInitializeFromBackupFile());
+        }
 
         this.setMetadataFilter(new MetadataFilterChain());
 
-        //TODO: Where does this get set in OpenSAML land?
+        // TODO: Where does this get set in OpenSAML land?
         // sourceResolver.getMetadataURL();
     }
 

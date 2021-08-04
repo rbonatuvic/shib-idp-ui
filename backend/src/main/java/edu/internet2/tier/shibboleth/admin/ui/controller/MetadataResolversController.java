@@ -202,7 +202,7 @@ public class MetadataResolversController {
 
     private void doResolverInitialization(MetadataResolver persistedResolver) throws
             ComponentInitializationException, ResolverException, IOException {
-        if (persistedResolver.getDoInitialization()) {
+        if (persistedResolver.getDoInitialization() != null && persistedResolver.getDoInitialization()) {
             org.opensaml.saml.metadata.resolver.MetadataResolver openSamlRepresentation = null;
             try {
                 openSamlRepresentation = metadataResolverConverterService.convertToOpenSamlRepresentation(persistedResolver);
