@@ -85,7 +85,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         
         then:
         // Missing non-nullable field should thrown error
-        final def exception = thrown(javax.persistence.PersistenceException)
+        final def exception = thrown(org.springframework.dao.DataIntegrityViolationException)
     }
         
     def "basic CRUD operations validated"() {
