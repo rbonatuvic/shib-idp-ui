@@ -92,7 +92,7 @@ class MetadataFiltersControllerIntegrationTests extends Specification {
                 createRequestHttpEntityFor { JsonOutput.toJson(existingFilterMap) }, String)
 
         then:
-        updatedResultFromPUT.statusCode.value() == 200
+         updatedResultFromPUT.statusCode.value() == 200
     }
 
     def "PUT EntityAttributesFilter and update it"() {
