@@ -34,7 +34,7 @@ export function SourcesTab () {
     async function changeSourceGroup(source, group) {
         await updater.put(`/${source.id}`, {
             ...source,
-            groupId: group
+            idOfOwner: group
         });
         if (updater.response.ok) {
             loadSources();

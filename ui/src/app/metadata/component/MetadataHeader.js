@@ -24,7 +24,7 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
         let toast;
         const resp = await put(`/${s.id}`, {
             ...s,
-            groupId: group
+            idOfOwner: group
         });
         if (response.ok) {
             toast = createNotificationAction(`Updated group successfully.`, NotificationTypes.SUCCESS);
@@ -64,7 +64,7 @@ export function MetadataHeader ({ showGroup, model, current = true, enabled = tr
                                             name={`group-${model.id}`}
                                             className="form-control form-control-sm"
                                             onChange={(event) => changeSourceGroup(model, event.target.value)}
-                                            value={model.groupId}
+                                            value={model.idOfOwner}
                                             disabled={loadingGroups}
                                             disablevalidation="true">
                                             <option>Select Group</option>
