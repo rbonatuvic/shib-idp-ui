@@ -7,6 +7,7 @@ import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class UserUpdatedEntityListener implements ILazyLoaderHelper {
     /**
      * @see https://stackoverflow.com/questions/12155632/injecting-a-spring-dependency-into-a-jpa-entitylistener
      */
+    @Autowired
     public void init(OwnershipRepository repo, GroupsRepository groupRepo) {
         UserUpdatedEntityListener.ownershipRepository = repo;
         UserUpdatedEntityListener.groupRepository = groupRepo;
