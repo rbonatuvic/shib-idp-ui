@@ -51,7 +51,7 @@ class UserBootstrapTests extends Specification {
         setup:
         shibUIConfiguration.roles = []
         shibUIConfiguration.userBootstrapResource = new ClassPathResource('/conf/1044.csv')
-        def userBootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService)
+        def userBootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService, groupService)
 
         when:
         userBootstrap.bootstrapUsersAndRoles(null)
@@ -65,7 +65,7 @@ class UserBootstrapTests extends Specification {
     def "bootstrap roles"() {
         setup:
         shibUIConfiguration.roles = ['ROLE_ADMIN', 'ROLE_USER']
-        def userbootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService)
+        def userbootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService, groupService)
 
         when:
         userbootstrap.bootstrapUsersAndRoles(null)

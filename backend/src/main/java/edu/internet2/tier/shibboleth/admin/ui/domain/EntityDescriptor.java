@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import lombok.EqualsAndHashCode;

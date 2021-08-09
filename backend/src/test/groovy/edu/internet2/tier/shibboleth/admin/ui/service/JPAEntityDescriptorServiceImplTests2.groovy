@@ -112,7 +112,7 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         def result = entityDescriptorService.createNew(entityDescriptor)
         
         then:
-        ((EntityDescriptorRepresentation)result).getGroupId() == "testingGroupBBB"
+        ((EntityDescriptorRepresentation)result).getIdOfOwner() == "testingGroupBBB"
     }
     
     @TestConfiguration
