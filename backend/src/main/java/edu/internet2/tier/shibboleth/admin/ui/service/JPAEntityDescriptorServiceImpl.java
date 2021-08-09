@@ -326,7 +326,6 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public void delete(String resourceId) throws ForbiddenException, EntityNotFoundException {
         EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
-        // @TODO - need authorization check for group? The controller probably is only allowing admins to delete
         if (ed.isServiceEnabled()) {
             throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
         }
