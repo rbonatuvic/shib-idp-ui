@@ -14,6 +14,13 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
 
 public interface OwnershipRepository extends JpaRepository<Ownership, String> {
     /**
+     * Clear out anything owned by any group
+     */
+    @Query("DELETE FROM ownership o WHERE o.ownerType = 'GROUP'")
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    void clearAllOwnedByGroup();
+    
+    /**
      * Delete the user from any groups they may in.
      */
     @Query("DELETE FROM ownership o WHERE o.ownedId = :username AND o.ownedType = 'USER' AND o.ownerType = 'GROUP'")

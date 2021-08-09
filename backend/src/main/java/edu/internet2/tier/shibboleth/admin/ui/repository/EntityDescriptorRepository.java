@@ -22,16 +22,16 @@ public interface EntityDescriptorRepository extends JpaRepository<EntityDescript
     @Query("select e from EntityDescriptor e")
     Stream<EntityDescriptor> findAllStreamByCustomQuery();
 
+    Stream<EntityDescriptor> findAllStreamByIdOfOwner(String ownerId);
+    
     @Query("select e from EntityDescriptor e, User u join u.roles r " +
             "where e.createdBy = u.username and e.serviceEnabled = false and r.name in ('ROLE_USER', 'ROLE_NONE')")
     Stream<EntityDescriptor> findAllDisabledAndNotOwnedByAdmin();
-
-    Stream<EntityDescriptor> findAllStreamByGroup_resourceId(String resourceId);
- 
+    
     /**
      * SHIBUI-1740 This is here to aid in migration of systems using the SHIBUI prior to group functionality being added
      * @deprecated - this is intended to be removed at some future date and is here only for migration purposes.
      */
     @Deprecated
-    List<EntityDescriptor> findAllByGroupIsNull();
+    List<EntityDescriptor> findAllByIdOfOwnerIsNull();
 }

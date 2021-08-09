@@ -2,10 +2,14 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.context.annotation.PropertySource
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 
@@ -17,26 +21,31 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import spock.lang.Specification
 
-@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration, LocalConfig])
 @SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @PropertySource("classpath:application.yml")
 @DirtiesContext
+@ActiveProfiles(value="local")
 class JPAEntityDescriptorServiceImplTests2 extends Specification {
     
     @Autowired
-    IGroupService groupService
+    GroupServiceForTesting groupService
 
     @Autowired
     RoleRepository roleRepository
     
     @Autowired
-    JPAEntityDescriptorServiceImpl service
+    JPAEntityDescriptorServiceImpl entityDescriptorService
         
     @Autowired
     UserRepository userRepository
@@ -100,9 +109,23 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         def entityDescriptor = new EntityDescriptor(resourceId: expectedUUID, entityID: expectedEntityId, serviceProviderName: expectedSpName, serviceEnabled: false)
         
         when:
-        def result = service.createNew(entityDescriptor)
+        def result = entityDescriptorService.createNew(entityDescriptor)
         
         then:
         ((EntityDescriptorRepresentation)result).getGroupId() == "testingGroupBBB"
+    }
+    
+    @TestConfiguration
+    @Profile("local")
+    static class LocalConfig {
+        @Bean
+        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
+            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
+                it.groupRepository = repo
+                it.ownershipRepository = ownershipRepository
+                return it
+            })
+            return result
+        }
     }
 }

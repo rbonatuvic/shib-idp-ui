@@ -23,6 +23,7 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
@@ -48,7 +49,7 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 
 @Slf4j
 @Service
-public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, InitializingBean {
+public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository;
     
@@ -57,31 +58,16 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
     
     @Autowired
     private OpenSamlObjects openSamlObjects;
+    
+    @Autowired
+    private OwnershipRepository ownershipRepository;
 
     @Autowired
     UserService userService;
     
-    @Override
-    @Transactional
-    public void afterPropertiesSet() {
-        // SHIBUI-1740: Adding admin group to all existing entity descriptors that do not have a group already. 
-        // Because this class has a GroupService, we assume the ADMIN_GROUP has already been setup prior to being
-        // autowired into this class.
-        try {
-            entityDescriptorRepository.findAllByGroupIsNull().forEach(ed -> {
-                ed.setGroup(Group.ADMIN_GROUP);
-                entityDescriptorRepository.save(ed);
-            });
-        }
-        catch (NullPointerException e) {
-            // This block was added due to a number of mock test where NPEs happened. Rather than wire more mock junk
-            // into tests that are only trying to compensate for this migration, this is here
-        }
-    }
-
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         ed.setEntityID(representation.getEntityId());
-        ed.setGroup(groupService.find(representation.getGroupId()));
+        ed.setIdOfOwner(representation.getIdOfOwner());
 
         setupSPSSODescriptor(ed, representation);
         ed.setServiceProviderName(representation.getServiceProviderName());
@@ -123,7 +109,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
         }
         
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
-        ed.setGroup(userService.getCurrentUserGroup());
+        ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
         return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
     }
 
@@ -141,7 +127,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
         representation.setVersion(ed.hashCode());
         representation.setCreatedBy(ed.getCreatedBy());
         representation.setCurrent(ed.isCurrent());
-        representation.setGroupId(ed.getGroup().getResourceId());
+        representation.setIdOfOwner(ed.getIdOfOwner());
 
         if (ed.getSPSSODescriptor("") != null && ed.getSPSSODescriptor("").getSupportedProtocols().size() > 0) {
             ServiceProviderSsoDescriptorRepresentation serviceProviderSsoDescriptorRepresentation = representation.getServiceProviderSsoDescriptor(true);
@@ -340,11 +326,11 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
     @Override
     public void delete(String resourceId) throws ForbiddenException, EntityNotFoundException {
         EntityDescriptor ed = getEntityDescriptorByResourceId(resourceId);
+        // @TODO - need authorization check for group? The controller probably is only allowing admins to delete
         if (ed.isServiceEnabled()) {
             throw new ForbiddenException("Deleting an enabled Metadata Source is not allowed. Disable the source and try again.");
         }
-        groupService.removeEntityFromGroup(ed);
-        ed.setGroup(null);
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
         entityDescriptorRepository.delete(ed);
         
     }
@@ -366,8 +352,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
         case GROUP:
             User user = userService.getCurrentUser();
             Group group = user.getGroup();
-            return entityDescriptorRepository
-                            .findAllStreamByGroup_resourceId(group.getResourceId())
+            return entityDescriptorRepository.findAllStreamByIdOfOwner(group.getOwnerId())
                             .map(ed -> createRepresentationFromDescriptor(ed)).collect(Collectors.toList());
         default:
             throw new ForbiddenException();
@@ -385,7 +370,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
         if (ed == null) {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found.", resourceId));
         }
-        if (!userService.isAuthorizedFor(ed.getGroup())) {
+        if (!userService.isAuthorizedFor(ed)) {
             throw new ForbiddenException();
         }     
         return ed;
@@ -405,7 +390,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService, 
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
-        if (!userService.isAuthorizedFor(existingEd.getGroup())) {
+        if (!userService.isAuthorizedFor(existingEd)) {
             throw new ForbiddenException();
         }        
         // Verify we're the only one attempting to update the EntityDescriptor

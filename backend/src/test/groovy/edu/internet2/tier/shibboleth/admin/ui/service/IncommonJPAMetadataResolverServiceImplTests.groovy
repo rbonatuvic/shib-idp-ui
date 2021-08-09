@@ -12,6 +12,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
@@ -24,7 +25,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 
 import spock.lang.Specification
@@ -35,6 +38,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@ActiveProfiles(value = "local")
 class IncommonJPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverService metadataResolverService
@@ -106,8 +110,8 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         }
     }
 
-    //TODO: check that this configuration is sufficient
     @TestConfiguration
+    @Profile("local")
     static class LocalConfig {
         @Autowired
         OpenSamlObjects openSamlObjects
@@ -151,9 +155,10 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         }
         
         @Bean
-        GroupServiceImpl groupService(GroupsRepository repo) {
+        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             new GroupServiceImpl().with {
-                it.repo = repo
+                it.groupRepository = repo
+                it.ownershipRepository = ownershipRepository
                 return it
             }
         }

@@ -5,6 +5,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +38,7 @@ import java.util.stream.Collectors;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Audited
-public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor {
+public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor, Ownable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entitydesc_addlmetdatlocations_id")
     @OrderColumn
@@ -61,18 +63,15 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
 
     private String entityID;
     
-    @ManyToOne
-    @JoinColumn(name = "group_resource_id")
-    @EqualsAndHashCode.Exclude
-    @Setter
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-    private Group group;
-
     private String localId;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Organization organization;
 
+    @Getter
+    @Setter
+    private String idOfOwner;
+    
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
     private PDPDescriptor pdpDescriptor;
@@ -144,10 +143,6 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .orElse(null);
     }
 
-    public Group getGroup() {
-        return group == null ? Group.ADMIN_GROUP : group;
-    }
-    
     @Transient
     public Optional<SPSSODescriptor> getOptionalSPSSODescriptor() {
         return this.getOptionalSPSSODescriptor("");
@@ -301,5 +296,13 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 //  .add("organization", organization)
                 .add("id", id)
                 .toString();
+    }
+    
+    public String getObjectId() {
+        return entityID;
+    }
+    
+    public OwnableType getOwnableType() {
+        return OwnableType.ENTITY_DESCRIPTOR;
     }
 }

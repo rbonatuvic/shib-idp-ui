@@ -36,7 +36,8 @@ public class EntityDescriptorRepresentation implements Serializable {
     private String entityId;
 
     @Setter
-    private String groupId;
+    @Getter
+    private String idOfOwner;
     
     private String id;
 
@@ -110,7 +111,7 @@ public class EntityDescriptorRepresentation implements Serializable {
     }
 
     public String getGroupId() {
-        return groupId == null ? Group.ADMIN_GROUP.getResourceId() : groupId;
+        return idOfOwner == null ? Group.ADMIN_GROUP.getResourceId() : idOfOwner;
     }
     
     public List<LogoutEndpointRepresentation> getLogoutEndpoints() {

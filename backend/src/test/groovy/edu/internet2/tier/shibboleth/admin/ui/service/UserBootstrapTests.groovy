@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -37,9 +38,13 @@ class UserBootstrapTests extends Specification {
     
     @Autowired
     UserService userService
+    
+    @Autowired
+    IGroupService groupService
 
     def setup() {
-        roleRepository.deleteAll();
+        groupService.ensureAdminGroupExists()
+        roleRepository.deleteAll()
     }
     
     def "simple test"() {

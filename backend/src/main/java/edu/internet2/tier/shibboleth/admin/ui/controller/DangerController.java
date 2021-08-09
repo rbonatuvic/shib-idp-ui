@@ -12,6 +12,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,9 @@ public class DangerController {
     @Autowired
     private MetadataResolversPositionOrderContainerRepository metadataResolversPositionOrderContainerRepository;
 
+    @Autowired
+    private OwnershipRepository ownershipRepository;
+    
     @Transactional
     @GetMapping
     public ResponseEntity<?> wipeOut() {
@@ -46,7 +50,7 @@ public class DangerController {
             try {
                 ed.setServiceEnabled(false);
                 edRepo.save(ed);
-                groupService.removeEntityFromGroup(ed);
+                ownershipRepository.deleteEntriesForOwnedObject(ed);
                 entityDescriptorService.delete(ed.getResourceId());
             }
             catch (Throwable e) {

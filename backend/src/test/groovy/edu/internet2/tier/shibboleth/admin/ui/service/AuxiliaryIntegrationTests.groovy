@@ -40,7 +40,7 @@ class AuxiliaryIntegrationTests extends Specification {
             it
         }
         def entityDescriptor = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1723-1.xml').bytes) as EntityDescriptor
-        entityDescriptor.group = group
+        entityDescriptor.idOfOwner = "foo"
         
         def entityDescriptorRepresentation = entityDescriptorService.createRepresentationFromDescriptor(entityDescriptor).with {
             it.serviceProviderName = 'testme'

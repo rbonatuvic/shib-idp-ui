@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDe
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.domain.AuditorAware
 import org.springframework.mail.javamail.JavaMailSender
@@ -122,9 +124,10 @@ class TestConfiguration {
     }
     
     @Bean
-    GroupServiceImpl groupService(GroupsRepository repo) {
+    GroupServiceImpl groupServiceImpl(GroupsRepository repo, OwnershipRepository ownershipRepository) {
         new GroupServiceImpl().with {
-            it.repo = repo
+            it.groupRepository = repo
+            it.ownershipRepository = ownershipRepository
             return it
         }
     }

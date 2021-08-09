@@ -28,8 +28,13 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
 import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
 import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
@@ -201,8 +206,8 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public UserService userService(RoleRepository roleRepository, UserRepository userRepository) {
-        return new UserService(roleRepository, userRepository);
+    public UserService userService(IGroupService groupService, OwnershipRepository ownershipRepository, RoleRepository roleRepository, UserRepository userRepository) {
+        return new UserService(groupService, ownershipRepository, roleRepository, userRepository);
     }
 
     @Bean
@@ -215,5 +220,19 @@ public class CoreShibUiConfiguration {
         EntityDescriptorConversionUtils.setEntityService(entityService);
         EntityDescriptorConversionUtils.setOpenSamlObjects(oso);
         return new EntityDescriptorConversionUtils();
+    }
+    
+    @Bean
+    public GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
+        GroupUpdatedEntityListener listener = new GroupUpdatedEntityListener();
+        listener.init(repo);
+        return listener;
+    }
+    
+    @Bean
+    public UserUpdatedEntityListener userUpdatedEntityListener(OwnershipRepository repo, GroupsRepository groupRepo) {
+        UserUpdatedEntityListener listener = new UserUpdatedEntityListener();
+        listener.init(repo, groupRepo);
+        return listener;
     }
 }

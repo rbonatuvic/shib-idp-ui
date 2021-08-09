@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
@@ -24,8 +25,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Profile
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
@@ -41,6 +44,7 @@ import javax.persistence.EntityManager
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+@ActiveProfiles(value = "local")
 class EntityDescriptorRepositoryTest extends Specification {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
@@ -99,47 +103,45 @@ class EntityDescriptorRepositoryTest extends Specification {
         noExceptionThrown()
     }
     
-    def "SHIBUI-1849 - extend data model for group ownership"() {
+    def "SHIBUI-1849 - extend data model for ownership"() {
         given:
         def group = new Group().with {
             it.name = "group-name"
             it.description = "some description"
             it
         }
-        groupRepository.save(group)
-        entityManager.flush()
-        entityManager.clear()
+        group = groupRepository.saveAndFlush(group)
+
         def gList = groupRepository.findAll()
         def groupFromDb = gList.get(0).asType(Group)
         
         def ed = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-553.2.xml').bytes) as EntityDescriptor
         ed.with {
-            it.group = groupFromDb
+            it.idOfOwner = groupFromDb.resourceId
         }
-        entityDescriptorRepository.save(ed)
-        entityManager.flush()
-        entityManager.clear()
+        entityDescriptorRepository.saveAndFlush(ed)
         
         when:
-        def edStreamFromDb = entityDescriptorRepository.findAllStreamByGroup_resourceId(null);
+        def edStreamFromDb = entityDescriptorRepository.findAllStreamByIdOfOwner(null);
         
         then:
         ((Stream)edStreamFromDb).count() == 0
         
         when:
-        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByGroup_resourceId("random value");
+        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByIdOfOwner("random value");
         
         then:
         ((Stream)edStreamFromDb2).count() == 0
         
         when:
-        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByGroup_resourceId(groupFromDb.resourceId);
+        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByIdOfOwner(groupFromDb.resourceId);
         
         then:
         ((Stream)edStreamFromDb3).count() == 1
     }
 
     @TestConfiguration
+    @Profile("local")
     static class LocalConfig {
         @Bean
         MetadataResolver metadataResolver() {
@@ -156,9 +158,10 @@ class EntityDescriptorRepositoryTest extends Specification {
         }
         
         @Bean
-        GroupServiceImpl groupService(GroupsRepository repo) {
+        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             new GroupServiceImpl().with {
-                it.repo = repo
+                it.groupRepository = repo
+                it.ownershipRepository = ownershipRepository
                 return it
             }
         }
