@@ -4,67 +4,75 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.ILazyLoaderHelper;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.EqualsAndHashCode.Exclude;
+import lombok.NoArgsConstructor;
 
-@Entity(name = "user_groups")
 @Data
-public class Group {
+@NoArgsConstructor
+@EntityListeners(GroupUpdatedEntityListener.class)
+@Entity(name = "user_groups")
+public class Group implements Owner {
     @Transient
     @JsonIgnore
     public static Group ADMIN_GROUP;
-    
+
     @Column(name = "group_description", nullable = true)
     String description;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Transient
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    Set<EntityDescriptor> entityDescriptors = new HashSet<>();
-    
+    @Exclude
+    private ILazyLoaderHelper lazyLoaderHelper;
+
     @Column(nullable = false)
-    String name;
+    private String name;
+
+    @Transient
+    @JsonIgnore
+    private Set<Ownership> ownedItems = new HashSet<>();
 
     @Id
     @Column(name = "resource_id")
-    String resourceId = UUID.randomUUID().toString();
+    private String resourceId = UUID.randomUUID().toString();
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    private Set<UserGroup> userGroups = new HashSet<>();
-    
-    public Group() {
-    }
-    
+    /**
+     * Define a Group object based on the user
+     */
     public Group(User user) {
         resourceId = user.getUsername();
         name = user.getUsername();
         description = "default user-group";
-    }    
-
-    public void addUser(User user) {
-        if (userGroups == null) {
-            userGroups = new HashSet<>();
-        }
-        userGroups.add(new UserGroup(this, user));
     }
-        
-    public Set<UserGroup> getUserGroups() {
-        if (userGroups == null) {
-            userGroups = new HashSet<>();
+
+    @Override
+    public String getOwnerId() {
+        return resourceId;
+    }
+
+    @Override
+    public OwnerType getOwnerType() {
+        return OwnerType.GROUP;
+    }
+
+    public void registerLoader(ILazyLoaderHelper lazyLoaderHelper) {
+        this.lazyLoaderHelper = lazyLoaderHelper;
+    }
+
+    public Set<Ownership> getOwnedItems() {
+        if (lazyLoaderHelper != null) {
+            lazyLoaderHelper.loadOwnedItems(this);
         }
-        return userGroups;
+        return ownedItems;
     }
 }

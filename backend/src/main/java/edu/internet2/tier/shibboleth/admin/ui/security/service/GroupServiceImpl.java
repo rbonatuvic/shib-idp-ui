@@ -1,59 +1,31 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.UserGroup;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserGroupRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
+import lombok.NoArgsConstructor;
 
 @Service
-public class GroupServiceImpl implements IGroupService, InitializingBean {
+@NoArgsConstructor
+public class GroupServiceImpl implements IGroupService {
     @Autowired
-    private GroupsRepository repo;
+    protected GroupsRepository groupRepository;
     
     @Autowired
-    private UserGroupRepository userGroupRepo;
+    protected OwnershipRepository ownershipRepository;
     
-    public GroupServiceImpl() {        
-    }
-    
-    public GroupServiceImpl(GroupsRepository repo) {
-        this.repo = repo;
-    }
-    
-    /**
-     * Ensure (mostly for migrations) that we have defined a default admin group
-     */
-    @Override
-    @Transactional
-    public void afterPropertiesSet() {
-        Group g = repo.findByResourceId("admingroup");
-        if (g == null) {
-            g = new Group();
-            g.setName("ADMIN-GROUP");
-            g.setResourceId("admingroup");
-            g = repo.save(g);
-        }
-        Group.ADMIN_GROUP = g;
-    }
-    
-    @Override
-    public void clearAllForTesting() {
-        repo.deleteAll();
-        afterPropertiesSet();
+    public GroupServiceImpl(GroupsRepository repo, OwnershipRepository ownershipRepository) {
+        this.groupRepository = repo;
+        this.ownershipRepository = ownershipRepository;
     }
 
     @Override
@@ -66,46 +38,43 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
                             String.format("Call update (PUT) to modify the group with resource id: [%s] and name: [%s]",
                                             foundGroup.getResourceId(), foundGroup.getName()));
         }
-        return repo.save(group);
+        return groupRepository.save(group);
     }
 
     @Override
     @Transactional
     public void deleteDefinition(String resourceId) throws EntityNotFoundException, GroupDeleteException {
-        Group g = find(resourceId);
-        List<UserGroup> userGroups = userGroupRepo.findAllByGroup(g);
-        if (!userGroups.isEmpty() || !g.getEntityDescriptors().isEmpty()) {
+        Group group = find(resourceId);
+        if (!ownershipRepository.findAllByOwner(group).isEmpty()) {
             throw new GroupDeleteException(String.format(
-                            "Unable to delete group with resource id: [%s] - remove all users and entities from group first",
+                            "Unable to delete group with resource id: [%s] - remove all items owned by / associated with the group first",
                             resourceId));
         }
-        repo.delete(g);
+        groupRepository.delete(group);
+    }
+
+    @Override
+    @Transactional
+    public void ensureAdminGroupExists() {
+        Group g = groupRepository.findByResourceId("admingroup");
+        if (g == null) {
+            g = new Group();
+            g.setName("ADMIN-GROUP");
+            g.setResourceId("admingroup");
+            g = groupRepository.save(g);
+        }
+        Group.ADMIN_GROUP = g;
     }
 
     @Override
     @Transactional
     public Group find(String resourceId) {
-        return repo.findByResourceId(resourceId);
+        return groupRepository.findByResourceId(resourceId);
     }
 
     @Override
     public List<Group> findAll() {
-        return repo.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void removeEntityFromGroup(final EntityDescriptor ed) {
-        Group g = repo.findByResourceId(ed.getGroup().getResourceId());
-        Set<EntityDescriptor> eds = g.getEntityDescriptors();
-        final HashSet<EntityDescriptor> updatedSet = new HashSet<>();
-        eds.forEach(entityDesc -> {
-            if (!entityDesc.getEntityID().equals(ed.getEntityID())) {
-                updatedSet.add(entityDesc);
-            }
-        });
-        g.setEntityDescriptors(updatedSet);
-        repo.save(g);
+        return groupRepository.findAll();
     }
 
     @Override
@@ -115,6 +84,6 @@ public class GroupServiceImpl implements IGroupService, InitializingBean {
             throw new EntityNotFoundException(String.format("Unable to find group with resource id: [%s] and name: [%s]",
                             group.getResourceId(), group.getName()));
         }
-        return repo.save(group);
+        return groupRepository.save(group);
     }
 }

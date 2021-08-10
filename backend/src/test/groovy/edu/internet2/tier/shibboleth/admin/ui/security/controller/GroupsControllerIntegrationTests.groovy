@@ -65,6 +65,8 @@ class GroupsControllerIntegrationTests extends Specification {
     def MockMvc mockMvc
         
     def setup() {
+        groupService.ensureAdminGroupExists()
+        
         def GroupController groupController = new GroupController().with ({  
             it.groupService = this.groupService
             it

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +35,8 @@ public class EntityDescriptorRepresentation implements Serializable {
     private String entityId;
 
     @Setter
-    private String groupId;
+    @Getter
+    private String idOfOwner;
     
     private String id;
 
@@ -107,10 +107,6 @@ public class EntityDescriptorRepresentation implements Serializable {
 
     public String getId() {
         return id;
-    }
-
-    public String getGroupId() {
-        return groupId == null ? Group.ADMIN_GROUP.getResourceId() : groupId;
     }
     
     public List<LogoutEndpointRepresentation> getLogoutEndpoints() {

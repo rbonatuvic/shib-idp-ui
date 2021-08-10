@@ -1,20 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
-import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import groovy.util.logging.Slf4j;
-import jline.internal.Log;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,11 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import edu.internet2.tier.shibboleth.admin.ui.controller.ErrorResponse;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+import groovy.util.logging.Slf4j;
+import jline.internal.Log;
 
 /**
  * Implementation of the REST resource endpoints exposing system users.
@@ -43,16 +38,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/api/admin/users")
 @Slf4j
 public class UsersController {
-    @Autowired
-    private GroupsRepository groupRepo;
-    
-    @Autowired
-    private IGroupService groupService; 
-    
     private UserRepository userRepository;
     private UserService userService;
 
-    public UsersController(UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
+    public UsersController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }
@@ -67,12 +56,15 @@ public class UsersController {
         catch (EntityNotFoundException e) { 
             throw new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username));
         }
+        catch (OwnershipConflictException e) {
+            throw new HttpClientErrorException(HttpStatus.CONFLICT, e.getMessage());
+        }
         return ResponseEntity.noContent().build();
     }
 
     private User findUserOrThrowHttp404(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username)));
+        Optional<User> result = userRepository.findByUsername(username);
+        return result.orElseThrow(() -> new HttpClientErrorException(NOT_FOUND, String.format("User with username [%s] not found", username)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -134,6 +126,7 @@ public class UsersController {
     @PatchMapping("/{username}")
     ResponseEntity<?> updateOne(@PathVariable(value = "username") String username, @RequestBody User user) {
         User persistedUser = findUserOrThrowHttp404(username);
+        
         if (StringUtils.isNotBlank(user.getFirstName())) {
             persistedUser.setFirstName(user.getFirstName());
         }
@@ -147,8 +140,10 @@ public class UsersController {
             persistedUser.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
         }
         if (StringUtils.isNotBlank(user.getRole())) {
-            persistedUser.setRole(user.getRole());
-            userService.updateUserRole(persistedUser);
+            if (!user.getRole().equals(persistedUser.getRole())) {
+                persistedUser.setRole(user.getRole());
+                userService.updateUserRole(persistedUser);
+            }
         }
         persistedUser.setGroupId(user.getGroupId());
         User savedUser = userService.save(persistedUser);

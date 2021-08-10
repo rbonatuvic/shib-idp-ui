@@ -10,17 +10,15 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
 public interface IGroupService {
 
-    void clearAllForTesting();
-
     Group createGroup(Group group) throws GroupExistsConflictException;
 
     void deleteDefinition(String resourceId) throws EntityNotFoundException, GroupDeleteException;
 
+    void ensureAdminGroupExists();
+    
     Group find(String resourceId);
 
     List<Group> findAll();
-
-    void removeEntityFromGroup(EntityDescriptor ed);
 
     Group updateGroup(Group g) throws EntityNotFoundException;
 

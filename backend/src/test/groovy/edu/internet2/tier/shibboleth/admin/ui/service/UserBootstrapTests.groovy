@@ -7,6 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -37,16 +38,20 @@ class UserBootstrapTests extends Specification {
     
     @Autowired
     UserService userService
+    
+    @Autowired
+    IGroupService groupService
 
     def setup() {
-        roleRepository.deleteAll();
+        groupService.ensureAdminGroupExists()
+        roleRepository.deleteAll()
     }
     
     def "simple test"() {
         setup:
         shibUIConfiguration.roles = []
         shibUIConfiguration.userBootstrapResource = new ClassPathResource('/conf/1044.csv')
-        def userBootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService)
+        def userBootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService, groupService)
 
         when:
         userBootstrap.bootstrapUsersAndRoles(null)
@@ -60,7 +65,7 @@ class UserBootstrapTests extends Specification {
     def "bootstrap roles"() {
         setup:
         shibUIConfiguration.roles = ['ROLE_ADMIN', 'ROLE_USER']
-        def userbootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService)
+        def userbootstrap = new UserBootstrap(shibUIConfiguration, userRepository, roleRepository, userService, groupService)
 
         when:
         userbootstrap.bootstrapUsersAndRoles(null)

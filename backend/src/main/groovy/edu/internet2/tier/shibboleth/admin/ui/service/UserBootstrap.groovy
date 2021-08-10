@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import groovy.util.logging.Slf4j
 import org.springframework.boot.context.event.ApplicationStartedEvent
@@ -22,11 +23,12 @@ class UserBootstrap {
     private final RoleRepository roleRepository
     private final UserService userService
 
-    UserBootstrap(ShibUIConfiguration shibUIConfiguration, UserRepository userRepository, RoleRepository roleRepository, UserService userService) {
+    UserBootstrap(ShibUIConfiguration shibUIConfiguration, UserRepository userRepository, RoleRepository roleRepository, UserService userService, IGroupService groupService) {
         this.shibUIConfiguration = shibUIConfiguration
         this.userRepository = userRepository
         this.roleRepository = roleRepository
         this.userService = userService
+        groupService.ensureAdminGroupExists()
     }
 
     @Transactional

@@ -79,7 +79,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                             name={`group-${source.id}`}
                                                             className="form-control"
                                                             onChange={(event) => onChangeGroup(source, event.target.value)}
-                                                            value={source.groupId ? source.groupId : ''}
+                                                            value={source.idOfOwner ? source.idOfOwner : ''}
                                                             disabled={loadingGroups}
                                                             disablevalidation="true">
                                                             <option>Select Group</option>

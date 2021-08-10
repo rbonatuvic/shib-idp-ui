@@ -18,6 +18,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 
@@ -47,7 +48,8 @@ class DevConfig {
               MetadataResolverRepository metadataResolverRepository,
               RoleRepository roleRepository,
               EntityDescriptorRepository entityDescriptorRepository,
-              OpenSamlObjects openSamlObjects) {
+              OpenSamlObjects openSamlObjects, 
+              IGroupService groupService) {
 
         this.userRepository = adminUserRepository
         this.metadataResolverRepository = metadataResolverRepository
@@ -55,6 +57,8 @@ class DevConfig {
         this.entityDescriptorRepository = entityDescriptorRepository
         this.openSamlObjects = openSamlObjects
         this.groupsRepository = groupsRepository
+        
+        groupService.ensureAdminGroupExists()
     }
 
     @Transactional

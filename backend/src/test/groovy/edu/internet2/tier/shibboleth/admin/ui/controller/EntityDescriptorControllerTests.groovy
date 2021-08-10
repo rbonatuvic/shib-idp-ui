@@ -12,11 +12,15 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
@@ -42,7 +46,9 @@ import org.springframework.beans.factory.support.RootBeanDefinition
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Profile
 import org.springframework.context.support.StaticApplicationContext
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.core.Authentication
@@ -51,8 +57,10 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
@@ -73,9 +81,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration, LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
+@DirtiesContext
+@ActiveProfiles(["local"])
 class EntityDescriptorControllerTests extends Specification {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
@@ -85,6 +95,12 @@ class EntityDescriptorControllerTests extends Specification {
     
     @Autowired
     EntityService entityService
+    
+    @Autowired
+    GroupServiceForTesting groupService
+    
+    @Autowired
+    OwnershipRepository ownershipRepository
     
     @Autowired
     RoleRepository roleRepository
@@ -118,9 +134,10 @@ class EntityDescriptorControllerTests extends Specification {
     Authentication authentication = Mock()
     SecurityContext securityContext = Mock()    
     EntityDescriptorVersionService versionService = Mock()
-    IGroupService groupService = Mock()
     
+    @Transactional
     def setup() {
+        groupService.ensureAdminGroupExists()
         generator = new TestObjectGenerator()
         randomGenerator = new RandomGenerator()
         mapper = new ObjectMapper()
@@ -161,7 +178,6 @@ class EntityDescriptorControllerTests extends Specification {
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
         userService.save(user)
-        entityManager.flush()
         
         EntityDescriptorConversionUtils.setOpenSamlObjects(openSamlObjects)
         EntityDescriptorConversionUtils.setEntityService(entityService)
@@ -172,7 +188,6 @@ class EntityDescriptorControllerTests extends Specification {
     def 'DELETE as admin'() {
         given:
         authentication.getName() >> 'admin'
-        groupService.find("admingroup") >> Group.ADMIN_GROUP
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false)
         entityDescriptorRepository.save(entityDescriptor)
         
@@ -215,10 +230,9 @@ class EntityDescriptorControllerTests extends Specification {
     def 'GET /EntityDescriptors with 1 record in repository as admin'() {
         given:
         authentication.getName() >> 'admin'
-        groupService.find("admingroup") >> Group.ADMIN_GROUP
-        def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true)       
-        entityDescriptorRepository.save(entityDescriptor)
-        entityManager.flush()
+        
+        def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")       
+        entityDescriptorRepository.saveAndFlush(entityDescriptor)
         
         def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
@@ -231,7 +245,7 @@ class EntityDescriptorControllerTests extends Specification {
                               .andExpect(jsonPath("\$.[0].id").value("uuid-1"))
                               .andExpect(jsonPath("\$.[0].entityId").value("eid1"))
                               .andExpect(jsonPath("\$.[0].serviceEnabled").value(true))
-                              .andExpect(jsonPath("\$.[0].groupId").value("admingroup"))
+                              .andExpect(jsonPath("\$.[0].idOfOwner").value("admingroup"))
     }
 
     @Rollback
@@ -239,14 +253,13 @@ class EntityDescriptorControllerTests extends Specification {
     def 'GET /EntityDescriptors with 2 records in repository as admin'() {
         given:
         authentication.getName() >> 'admin'
-        groupService.find("admingroup") >> Group.ADMIN_GROUP
-
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true)
-        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false)
         
-        entityDescriptorRepository.save(entityDescriptorOne)
-        entityDescriptorRepository.save(entityDescriptorTwo)
-        entityManager.flush()
+
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: "admingroup")
+        
+        entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        entityDescriptorRepository.saveAndFlush(entityDescriptorTwo)
         
         def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
@@ -260,11 +273,11 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.[0].id").value("uuid-1"))
               .andExpect(jsonPath("\$.[0].entityId").value("eid1"))
               .andExpect(jsonPath("\$.[0].serviceEnabled").value(true))
-              .andExpect(jsonPath("\$.[0].groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.[0].idOfOwner").value("admingroup"))
               .andExpect(jsonPath("\$.[1].id").value("uuid-2"))
               .andExpect(jsonPath("\$.[1].entityId").value("eid2"))
               .andExpect(jsonPath("\$.[1].serviceEnabled").value(false))
-              .andExpect(jsonPath("\$.[1].groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.[1].idOfOwner").value("admingroup"))
     }  
  
     @Rollback
@@ -272,8 +285,7 @@ class EntityDescriptorControllerTests extends Specification {
     def 'POST /EntityDescriptor and successfully create new record'() {
         given:
         authentication.getName() >> 'admin'        
-        groupService.find("admingroup") >> Group.ADMIN_GROUP
-        
+                
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
         def expectedResponseHeader = 'Location'
@@ -304,7 +316,7 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(header().string(expectedResponseHeader, containsString(expectedResponseHeaderValue)))
               .andExpect(jsonPath("\$.entityId").value("https://shib"))
               .andExpect(jsonPath("\$.serviceEnabled").value(true))
-              .andExpect(jsonPath("\$.groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
     }
 
     @Rollback
@@ -409,7 +421,7 @@ class EntityDescriptorControllerTests extends Specification {
     def 'GET /EntityDescriptor/{resourceId} existing'() {
         given:
         authentication.getName() >> 'admin'
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true)
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")
         entityDescriptorRepository.save(entityDescriptorOne)
         entityManager.flush()
         
@@ -421,7 +433,7 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.entityId").value("eid1"))
               .andExpect(jsonPath("\$.serviceProviderName").value("sp1"))
               .andExpect(jsonPath("\$.serviceEnabled").value(true))
-              .andExpect(jsonPath("\$.groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
     }
 
     @Rollback
@@ -431,12 +443,15 @@ class EntityDescriptorControllerTests extends Specification {
         authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, group: g)
-        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, group: Group.ADMIN_GROUP)
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "someUser")
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
         
-        entityDescriptorRepository.save(entityDescriptorOne)
-        entityDescriptorRepository.save(entityDescriptorTwo)
-        entityManager.flush()
+        entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        entityDescriptorRepository.saveAndFlush(entityDescriptorTwo)
+        
+        ownershipRepository.saveAndFlush(new Ownership(g, entityDescriptorOne))
+        ownershipRepository.saveAndFlush(new Ownership(Group.ADMIN_GROUP, entityDescriptorTwo))
+        
         
         when:
         def result = mockMvc.perform(get("/api/EntityDescriptor/uuid-1"))
@@ -446,7 +461,7 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.entityId").value("eid1"))
               .andExpect(jsonPath("\$.serviceProviderName").value("sp1"))
               .andExpect(jsonPath("\$.serviceEnabled").value(true))
-              .andExpect(jsonPath("\$.groupId").value("someUser"))
+              .andExpect(jsonPath("\$.idOfOwner").value("someUser"))
     }
 
     @Rollback
@@ -456,12 +471,14 @@ class EntityDescriptorControllerTests extends Specification {
         authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, group: g)
-        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, group: Group.ADMIN_GROUP)
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
         
-        entityDescriptorRepository.save(entityDescriptorOne)
-        entityDescriptorRepository.save(entityDescriptorTwo)
-        entityManager.flush()
+        entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        entityDescriptorRepository.saveAndFlush(entityDescriptorTwo)
+        
+        ownershipRepository.saveAndFlush(new Ownership(g, entityDescriptorOne))
+        ownershipRepository.saveAndFlush(new Ownership(Group.ADMIN_GROUP, entityDescriptorTwo))
 
         then:
         try {
@@ -502,12 +519,12 @@ class EntityDescriptorControllerTests extends Specification {
         authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, group: g)
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
         entityDescriptorOne.setElementLocalName("EntityDescriptor")
         entityDescriptorOne.setNamespacePrefix("md")
         entityDescriptorOne.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
-        entityDescriptorRepository.save(entityDescriptorOne)
-        entityManager.flush()
+        entityDescriptorOne = entityDescriptorRepository.saveAndFlush(entityDescriptorOne)
+        ownershipRepository.saveAndFlush(new Ownership(g,entityDescriptorOne))
 
         def expectedXML = """<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor
@@ -527,7 +544,7 @@ class EntityDescriptorControllerTests extends Specification {
         authentication.getName() >> 'someUser'
         Group g = Group.ADMIN_GROUP
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, group: g)
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
         entityDescriptorOne.setElementLocalName("EntityDescriptor")
         entityDescriptorOne.setNamespacePrefix("md")
         entityDescriptorOne.setNamespaceURI("urn:oasis:names:tc:SAML:2.0:metadata")
@@ -547,8 +564,7 @@ class EntityDescriptorControllerTests extends Specification {
     @WithMockUser(value = "admin", roles = ["ADMIN"])
     def "POST /EntityDescriptor handles XML happily"() {
         given:
-        authentication.getName() >> 'admin'        
-        groupService.find("admingroup") >> Group.ADMIN_GROUP
+        authentication.getName() >> 'admin'
         
         def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
@@ -581,7 +597,7 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(header().string(expectedResponseHeader, containsString(expectedResponseHeaderValue)))
               .andExpect(jsonPath("\$.entityId").value("http://test.scaldingspoon.org/test1"))
               .andExpect(jsonPath("\$.serviceEnabled").value(false))
-              .andExpect(jsonPath("\$.groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
               .andExpect(jsonPath("\$.serviceProviderSsoDescriptor.protocolSupportEnum").value("SAML 2"))
               .andExpect(jsonPath("\$.serviceProviderSsoDescriptor.nameIdFormats[0]").value("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"))              
               .andExpect(jsonPath("\$.assertionConsumerServices[0].binding").value("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"))
@@ -637,7 +653,7 @@ class EntityDescriptorControllerTests extends Specification {
         given:
         authentication.getName() >> 'admin'
                                 
-        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, group: Group.ADMIN_GROUP)
+        def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
         
         entityDescriptorTwo = entityDescriptorRepository.save(entityDescriptorTwo)
         entityManager.flush()
@@ -654,7 +670,7 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().isOk())
               .andExpect(jsonPath("\$.entityId").value("eid2"))
               .andExpect(jsonPath("\$.serviceEnabled").value(false))
-              .andExpect(jsonPath("\$.groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
               .andExpect(jsonPath("\$.serviceProviderName").value("newName"))
     }
 
@@ -665,7 +681,7 @@ class EntityDescriptorControllerTests extends Specification {
         authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false, group: g)        
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false, idOfOwner: g.getOwnerId())        
         entityDescriptorOne = entityDescriptorRepository.save(entityDescriptorOne)
         entityManager.flush()
 
@@ -692,7 +708,7 @@ class EntityDescriptorControllerTests extends Specification {
         authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, group: g)        
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())        
         entityDescriptorOne = entityDescriptorRepository.save(entityDescriptorOne)
         entityManager.flush()
 
@@ -718,7 +734,7 @@ class EntityDescriptorControllerTests extends Specification {
                 given:
         authentication.getName() >> 'admin'
                         
-        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, group: Group.ADMIN_GROUP)        
+        def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: Group.ADMIN_GROUP.getOwnerId())        
         entityDescriptorOne = entityDescriptorRepository.save(entityDescriptorOne)
         entityManager.flush()
 
@@ -737,4 +753,28 @@ class EntityDescriptorControllerTests extends Specification {
           e instanceof ConcurrentModificationException == true
         }
     }
+    
+    @org.springframework.boot.test.context.TestConfiguration
+    @Profile(value = "local")
+    static class LocalConfig {
+        @Bean
+        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
+            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
+                it.groupRepository = repo
+                it.ownershipRepository = ownershipRepository
+                return it
+            })
+            result.ensureAdminGroupExists()
+            return result
+        }
+    }
 }
+
+//when:
+//def Set<Ownership> ownerships = ownershipRepository.findOwnableObjectOwners(ed)
+//
+//then:
+//ownerships.size() == 1
+//ownerships.each {
+//    it.ownerId == groupFromDb.resourceId
+//}
