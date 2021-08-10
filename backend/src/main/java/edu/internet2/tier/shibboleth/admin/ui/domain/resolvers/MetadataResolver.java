@@ -58,21 +58,21 @@ public class MetadataResolver extends AbstractAuditable {
     @Column(unique = true)
     private String xmlId;
 
-    private Boolean enabled = true;
+    private Boolean enabled;
 
-    private Boolean requireValidMetadata = true;
+    private Boolean requireValidMetadata;
 
-    private Boolean failFastInitialization = true;
+    private Boolean failFastInitialization;
 
     private Integer sortKey;
 
     private String criterionPredicateRegistryRef;
 
-    private Boolean useDefaultPredicateRegistry = true;
+    private Boolean useDefaultPredicateRegistry;
 
-    private Boolean satisfyAnyPredicates = false;
+    private Boolean satisfyAnyPredicates;
 
-    private Boolean doInitialization = true;
+    private Boolean doInitialization;
 
     @JsonIgnore
     private Long versionModifiedTimestamp;

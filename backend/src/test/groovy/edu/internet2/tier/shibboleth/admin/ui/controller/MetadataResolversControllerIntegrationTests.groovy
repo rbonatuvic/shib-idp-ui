@@ -206,6 +206,25 @@ class MetadataResolversControllerIntegrationTests extends Specification {
             'ResourceBacked' | _
             'Filesystem'     | _
     }
+    
+    @DirtiesContext
+    def "SHIBUI-1992 - error creating FileBackedHTTPMetadata"() {
+        def resolver = new FileBackedHttpMetadataResolver().with {
+            it.name = 'FBHMR'
+            it.xmlId = '1'
+            it.backingFile = 'tmp/foo'
+            it.metadataURL = 'https://nexus.microsoftonline-p.com/federationmetadata/saml20/federationmetadata.xml'
+            it.backupFileInitNextRefreshDelay = 'PT4H'
+            it.enabled = Boolean.FALSE
+            it
+        }
+
+        when:
+        def result = this.restTemplate.postForEntity(BASE_URI, createRequestHttpEntityFor { mapper.writeValueAsString(resolver) }, String)
+
+        then:
+        result.statusCodeValue == 201
+    }
 
     @Unroll
     def "PUT concrete MetadataResolver of type #resolverType with updated changes -> /api/MetadataResolvers/{resourceId}"(String resolverType) {

@@ -46,9 +46,6 @@ public class DynamicHttpMetadataResolver extends MetadataResolver {
     public DynamicHttpMetadataResolver() {
         type = "DynamicHttpMetadataResolver";
         this.httpMetadataResolverAttributes = new HttpMetadataResolverAttributes();
-        this.httpMetadataResolverAttributes.setConnectionRequestTimeout(DEFAULT_TIMEOUT);
-        this.httpMetadataResolverAttributes.setConnectionTimeout(DEFAULT_TIMEOUT);
-        this.httpMetadataResolverAttributes.setSocketTimeout(DEFAULT_TIMEOUT);
         this.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes();
     }
 }

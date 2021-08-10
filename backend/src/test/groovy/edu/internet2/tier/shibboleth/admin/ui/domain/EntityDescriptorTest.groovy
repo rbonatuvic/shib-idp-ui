@@ -68,7 +68,8 @@ class EntityDescriptorTest extends Specification {
                                 metadataURL: 'https://idp.unicon.net/idp/shibboleth',
                                 backingFile: "%{idp.home}/metadata/test.xml",
                                 reloadableMetadataResolverAttributes: new ReloadableMetadataResolverAttributes(),
-                                httpMetadataResolverAttributes: new HttpMetadataResolverAttributes()
+                                httpMetadataResolverAttributes: new HttpMetadataResolverAttributes(),
+                                initializeFromBackupFile: Boolean.TRUE
                         )
                 ).with {
                     it.initialize()

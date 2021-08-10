@@ -9,3 +9,4 @@
                       metadataFile="metadata/metadata.xml"
                       xsi:type="FilesystemMetadataProvider"/>
 </MetadataProvider>
+                 

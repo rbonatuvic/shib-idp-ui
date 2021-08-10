@@ -37,9 +37,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -50,10 +52,11 @@ import spock.lang.Unroll
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
 @DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,Config])
+@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, PlaceholderResolverComponentsConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration , LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles(["local"])
 class JPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
@@ -396,6 +399,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
                 it.content = 'http://mdq-beta.incommon.org/global'
                 it
             }
+            it.enabled = Boolean.TRUE
             it
         }
         metadataResolverRepository.save(resolver)
@@ -410,7 +414,25 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-    def 'test namespace protection in nonURL resolver'() {
+    def 'test namespace protection in nonURL resolver with resolver setting enabled=true'() {
+        setup:
+        shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
+        def resolver = new LocalDynamicMetadataResolver().with {
+            it.xmlId = 'LocalDynamic'
+            it.sourceDirectory = '/tmp'
+            it.enabled = Boolean.TRUE
+            it
+        }
+
+        when:
+        metadataResolverRepository.save(resolver)
+
+        then:
+        generatedXmlIsTheSameAsExpectedXml('/conf/1059-enabled.xml', metadataResolverService.generateConfiguration())
+    }
+    
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    def 'test namespace protection in nonURL resolver with resolver setting enabled not set'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
         def resolver = new LocalDynamicMetadataResolver().with {
@@ -423,7 +445,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
         metadataResolverRepository.save(resolver)
 
         then:
-        generatedXmlIsTheSameAsExpectedXml('/conf/1059.xml', metadataResolverService.generateConfiguration())
+        generatedXmlIsTheSameAsExpectedXml('/conf/1059-disabled.xml', metadataResolverService.generateConfiguration())
     }
 
     @Ignore('there is a bug in org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter.applyFilter')
@@ -459,7 +481,8 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @TestConfiguration
-    static class Config {
+    @Profile("local")
+    static class LocalConfig {
         @Autowired
         OpenSamlObjects openSamlObjects
 
