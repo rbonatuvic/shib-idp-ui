@@ -13,7 +13,9 @@ import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { Scroller } from '../../../../dashboard/component/Scroller';
 import { useTranslator } from '../../../../i18n/hooks';
+import { DeleteSourceConfirmation } from './DeleteSourceConfirmation';
 import { useIsAdmin } from '../../../../core/user/UserContext';
+import { GroupsProvider } from '../../../../admin/hoc/GroupsProvider';
 
 export default function SourceList({ entities, onDelete, onEnable }) {
 
@@ -27,11 +29,12 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                     <table className="table table-striped w-100 table-hover">
                         <thead>
                             <tr>
-                                <th><Translate value="label.title">Title</Translate></th>
-                                <th className="w-40"><Translate value="label.entity-id">Entity ID</Translate></th>
-                                <th className="w-15"><Translate value="label.author">Author</Translate></th>
-                                <th className="w-15"><Translate value="label.creation-date">Created Date</Translate></th>
-                                <th className="text-center w-15"><Translate value="label.enabled">Enabled</Translate></th>
+                                <th className="w-25"><Translate value="label.title">Title</Translate></th>
+                                <th className="w-25"><Translate value="label.entity-id">Entity ID</Translate></th>
+                                <th className=""><Translate value="label.author">Author</Translate></th>
+                                <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
+                                <th className=""><Translate value="label.enabled">Enabled</Translate></th>
+                                {isAdmin && onChangeGroup && <th className=""><Translate value="label.group">Group</Translate></th> }
                                 {onDelete && <th className="w-auto"></th>}
                             </tr>
                         </thead>
@@ -48,26 +51,50 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                         {source.createdBy}
                                     </td>
                                     <td><FormattedDate date={source.createdDate} /></td>
-                                    <td className="text-center">
-                                        <span className="d-flex justify-content-center">
-                                            {onEnable && isAdmin ?
-                                                <Form.Check
-                                                    type="switch"
-                                                    id="custom-switch"
-                                                    size="lg"
-                                                    aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}
-                                                    onChange={({ target: { checked } }) => onEnable(source, checked)}
-                                                    checked={source.serviceEnabled}
-                                                >
-                                                </Form.Check>
-                                                :
-                                                <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
-                                                    <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                                </Badge>
-                                            }
-                                        </span>
+                                    <td className="">
+                                        {onEnable && isAdmin ?
+                                            <Button
+                                                variant="success"
+                                                size="sm"
+                                                checked={source.serviceEnabled}
+                                                onClick={() => onEnable(source)}
+                                                onChange={({ target: { checked } }) => onEnable(source, checked)}
+                                                aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}>
+                                                <Translate value={ source.enabled ? 'label.disable' : 'label.enable' }>Disable</Translate>
+                                                {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
+                                            </Button>
+                                            :
+                                            <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
+                                                <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                            </Badge>
+                                        }
                                     </td>
-                                    {onDelete && <td className="text-right">
+                                    {isAdmin && onChangeGroup &&
+                                    <td className="">
+                                        <GroupsProvider>
+                                            {(groups, removeGroup, loadingGroups) =>
+                                                <React.Fragment>
+                                                    <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
+                                                    <select
+                                                        id={`group-${source.id}`}
+                                                        name={`group-${source.id}`}
+                                                        className="form-control"
+                                                        onChange={(event) => onChangeGroup(source, event.target.value)}
+                                                        value={source.idOfOwner ? source.idOfOwner : ''}
+                                                        disabled={loadingGroups}
+                                                        disablevalidation="true">
+                                                        <option>Select Group</option>
+                                                        {groups.map((g, ridx) => (
+                                                            <option key={ridx} value={g.resourceId}>{g.name}</option>
+                                                        ))}
+                                                    </select>
+                                                </React.Fragment>
+                                            }
+                                        </GroupsProvider>
+                                    </td>
+                                    }
+                                    {onDelete &&
+                                    <td className="text-right">
                                         <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
                                             overlay={
                                                 <Popover id={`delete-source-btn-${idx}`}>

@@ -35,7 +35,7 @@ public class Role extends AbstractAuditable {
     private String name;
 
     @Column(name = "ROLE_RANK")
-    private int rank;
+    private int rank; // 0=ADMIN, additional ranks are higher
 
     @Column(name = "resource_id")
     String resourceId = UUID.randomUUID().toString();

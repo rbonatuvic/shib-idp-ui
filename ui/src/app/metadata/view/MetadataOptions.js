@@ -62,42 +62,37 @@ export function MetadataOptions ({reload}) {
                 <MetadataHeader
                     current={true}
                     enabled={type === 'source' ? metadata.serviceEnabled : metadata.enabled}
-                    model={metadata}>
+                    model={metadata}
+                    showGroup={type === 'source'}>
                     <div className="d-flex align-items-start btn-group">
-                        {/*enable &&
-                            <Form.Check
-                                type="switch"
-                                inline="true"
-                                id="custom-switch"
-                                className="mr-2"
-                                size="lg"
-                                label={translator((type === 'source' ? metadata.serviceEnabled : metadata.enabled) ? 'label.disable' : 'label.enable')}
-                                aria-label={translator((type === 'source' ? metadata.serviceEnabled : metadata.enabled) ? 'label.disable' : 'label.enable')}
-                                onChange={({ target: { checked } }) => enable(metadata, checked, reload)}
-                                checked={(type === 'source' ? metadata.serviceEnabled : metadata.enabled)}
-                            >
-                            </Form.Check>
-                        */}
                         {enable &&
-                                    <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
+                        <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
                                 onClick={() => enable(metadata, !enabled, reload)}>
-                                    <span className=" mr-1">
-                                        <Translate value={enabled ? 'label.disable' : 'label.enable'} />
-                                    </span>
-                                    <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
-                            </Button>
+                                     <span className=" mr-1">
+                                         <Translate value={enabled ? 'label.disable' : 'label.enable'} />
+                                     </span>
+                            <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
+                        </Button>
                         }
                         {type === 'source' && remove &&
-                            <Button
-                                size="sm"
-                                variant={ 'danger' }
-                                disabled={enabled}
-                                onClick={() => remove(metadata.id, redirectOnDelete)}>
-                                <Translate value="action.delete" />
-                                <FontAwesomeIcon icon={faTrash} className="ml-2" />
-                            </Button>
+                        <Button
+                            size="sm"
+                            variant={ 'danger' }
+                            disabled={enabled}
+                            onClick={() => remove(metadata.id, redirectOnDelete)}>
+                            <Translate value="action.delete" />
+                            <FontAwesomeIcon icon={faTrash} className="ml-2" />
+                        </Button>
                         }
                     </div>
+                    {type === 'source' && remove &&
+                    <Button className="btn btn-outline btn-sm btn-danger align-self-start"
+                            disabled={metadata.serviceEnabled}
+                            onClick={() => remove(metadata.id, redirectOnDelete)}>
+                        <Translate value="action.delete" />
+                        <FontAwesomeIcon icon={faTrash} className="ml-2" />
+                    </Button>
+                    }
                 </MetadataHeader>
                 <div className="px-3 my-3 d-flex justify-content-between" id="navigation">
                     <div>

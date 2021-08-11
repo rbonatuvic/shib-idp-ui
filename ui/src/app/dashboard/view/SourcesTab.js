@@ -3,7 +3,7 @@ import { MetadataActions } from '../../admin/container/MetadataActions';
 import Translate from '../../i18n/components/translate';
 
 import SourceList from '../../metadata/domain/source/component/SourceList';
-import { useMetadataEntities } from '../../metadata/hooks/api';
+import { useMetadataEntities, useMetadataEntity } from '../../metadata/hooks/api';
 import { Search } from '../component/Search';
 
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
@@ -16,6 +16,10 @@ export function SourcesTab () {
         cachePolicy: 'no-cache'
     });
 
+    const updater = useMetadataEntity('source', {
+        cachePolicy: 'no-cache'
+    })
+
     async function loadSources() {
         const sources = await get('');
         if (response.ok) {
@@ -25,6 +29,16 @@ export function SourcesTab () {
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadSources() }, []);
+
+    async function changeSourceGroup(source, group) {
+        await updater.put(`/${source.id}`, {
+            ...source,
+            idOfOwner: group
+        });
+        if (updater.response.ok) {
+            loadSources();
+        }
+    }
 
     return (
         <section className="section">
@@ -38,11 +52,12 @@ export function SourcesTab () {
                     <Search entities={sources} searchable={searchProps}>
                         {(searched) =>
                             <MetadataActions type="source">
-                                {(enable, remove) => 
+                                {(enable, remove) =>
                                     <SourceList
                                         entities={sources}
                                         onDelete={(id) => remove(id, loadSources)}
-                                        onEnable={(s, e) => enable(s, e, loadSources) } />
+                                        onEnable={(s, e) => enable(s, e, loadSources) }
+                                        onChangeGroup={changeSourceGroup} />
                                 }
                             </MetadataActions>
                         }
