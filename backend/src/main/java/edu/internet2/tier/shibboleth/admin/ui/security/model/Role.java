@@ -42,7 +42,7 @@ public class Role extends AbstractAuditable {
     private String name;
 
     @Column(name = "ROLE_RANK")
-    private int rank;
+    private int rank; // 0=ADMIN, additional ranks are higher
 
     //Ignore properties annotation here is to prevent stack overflow recursive error during JSON serialization
     @JsonIgnoreProperties("roles")

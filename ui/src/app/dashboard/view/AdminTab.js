@@ -39,8 +39,13 @@ export function AdminTab () {
                 </div>
                 <div className="p-3">
                     <UserManagement users={users} reload={loadUsers}>
-                        {(u, roles, onChangeUserRole, onDeleteUser) =>
-                            <UserMaintenance users={ u } roles={roles} onChangeUserRole={onChangeUserRole} onDeleteUser={onDeleteUser} />}
+                        {(u, roles, onChangeUserRole, onChangeUserGroup, onDeleteUser, loading) =>
+                            <UserMaintenance users={ u }
+                                roles={roles}
+                                loading={loading}
+                                onChangeUserRole={onChangeUserRole}
+                                onDeleteUser={onDeleteUser}
+                                onChangeUserGroup={onChangeUserGroup} />}
                     </UserManagement>
                 </div>
             </div>

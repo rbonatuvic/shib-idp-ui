@@ -1,9 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,31 +17,57 @@ import java.util.Map;
  * @since 1.0
  */
 public interface EntityDescriptorService {
-
     /**
      * Map from front-end data representation of entity descriptor to opensaml implementation of entity descriptor model
      *
      * @param representation of entity descriptor coming from front end layer
-     * @return EntityDescriptor
+     * @return org.opensaml.saml.saml2.metadata.EntityDescriptor opensaml model
      */
-    EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation);
+    org.opensaml.saml.saml2.metadata.EntityDescriptor createDescriptorFromRepresentation(final EntityDescriptorRepresentation representation);
 
+    /**
+     * @param ed - JPA EntityDescriptor to base creation on
+     * @return EntityDescriptorRepresentation of the created object
+     * @throws ForbiddenException If user is unauthorized to perform this operation
+     * @throws EntityIdExistsException If any EntityDescriptor already exists with the same EntityId
+     */
+    EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, EntityIdExistsException;
+
+    /**
+     * @param edRepresentation Incoming representation to save
+     * @return EntityDescriptorRepresentation
+     * @throws ForbiddenException If user is unauthorized to perform this operation
+     * @throws EntityIdExistsException If the entity already exists
+     */
+    EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityIdExistsException;
+    
     /**
      * Map from opensaml implementation of entity descriptor model to front-end data representation of entity descriptor
      *
-     * @param entityDescriptor opensaml model
+     * @param org.opensaml.saml.saml2.metadata.EntityDescriptor opensaml model
      * @return EntityDescriptorRepresentation
      */
-    EntityDescriptorRepresentation createRepresentationFromDescriptor(final EntityDescriptor entityDescriptor);
+    EntityDescriptorRepresentation createRepresentationFromDescriptor(final org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor);
 
     /**
-     * Update an instance of entity descriptor with information from the front-end representation
-     *
-     * @param entityDescriptor opensaml model instance to update
-     * @param representation   front end representation to use to update
+     * @param resourceId - id of the JPA EntityDescriptor
+     * @throws ForbiddenException If user is unauthorized to perform this operation
+     * @throws EntityNotFoundException If the db entity is not found
      */
-    void updateDescriptorFromRepresentation(final EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
+    void delete(String resourceId) throws ForbiddenException, EntityNotFoundException;
 
+    /**
+     * @return - Iterable set of EntityDescriptorRepresentations of those items which are NOT enabled and not owned by
+     * "admin"
+     * @throws ForbiddenException - If user is not an ADMIN
+     */
+    Iterable<EntityDescriptorRepresentation> getAllDisabledAndNotOwnedByAdmin() throws ForbiddenException;
+
+    /**
+     * @return a list of EntityDescriptorRepresentations that a user has the rights to access
+     */
+    List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException;
+    
     /**
      * Given a list of attributes, generate an AttributeReleaseList
      *
@@ -47,11 +77,36 @@ public interface EntityDescriptorService {
     List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList);
 
     /**
+     * @param resourceId - id of the JPA EntityDescriptor
+     * @return JPA EntityDescriptor
+     * @throws ForbiddenException If user is unauthorized to perform this operation
+     * @throws EntityNotFoundException If the db entity is not found
+     */
+    EntityDescriptor getEntityDescriptorByResourceId(String resourceId) throws EntityNotFoundException, ForbiddenException;
+
+    /**
      * Given a list of attributes, generate a map of relying party overrides
      *
      * @param attributeList the list of attributes to generate from
      * @return a map of String->Object (property name -> property value) based on the given list of attributes
      */
     Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
+
+    /**
+     * @param edRepresentation Incoming representation to save
+     * @return EntityDescriptorRepresentation
+     * @throws ForbiddenException If user is unauthorized to perform this operation
+     * @throws EntityIdExistsException If the entity already exists
+     * @throws ConcurrentModificationException If the entity was already modified by another user
+     */
+    EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException;
+
+    /**
+     * Update an instance of entity descriptor with information from the front-end representation
+     *
+     * @param entityDescriptor opensaml model instance to update
+     * @param representation front end representation to use to update
+     */
+    void updateDescriptorFromRepresentation(final org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
 
 }

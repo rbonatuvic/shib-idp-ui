@@ -1,44 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration;
 
-import com.fasterxml.jackson.databind.Module;
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
-import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
-import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
-import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
-import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
-import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
-import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
-import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
-import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService;
-import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
-import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
-import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl;
-import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
-import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
-import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
-import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.lucene.analysis.Analyzer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
@@ -49,13 +20,47 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
-import javax.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.databind.Module;
+
+import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
+import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository;
+import edu.internet2.tier.shibboleth.admin.ui.scheduled.EntityDescriptorFilesScheduledTasks;
+import edu.internet2.tier.shibboleth.admin.ui.scheduled.MetadataProvidersScheduledTasks;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService;
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService;
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchService;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityIdsSearchServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.EntityService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FileWritingService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FilterService;
+import edu.internet2.tier.shibboleth.admin.ui.service.FilterTargetService;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAFilterTargetServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService;
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility;
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils;
+import edu.internet2.tier.shibboleth.admin.util.LuceneUtility;
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 
 @Configuration
-@EnableConfigurationProperties({CustomPropertiesConfiguration.class, ShibUIConfiguration.class})
+@ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.service }")
+@EnableConfigurationProperties({ CustomPropertiesConfiguration.class, ShibUIConfiguration.class })
 public class CoreShibUiConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(CoreShibUiConfiguration.class);
-
     @Bean
     public OpenSamlObjects openSamlObjects() {
         return new OpenSamlObjects();
@@ -65,12 +70,7 @@ public class CoreShibUiConfiguration {
     public EntityService jpaEntityService() {
         return new JPAEntityServiceImpl(openSamlObjects());
     }
-
-    @Bean
-    public EntityDescriptorService jpaEntityDescriptorService(UserService userService) {
-        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService(), userService);
-    }
-
+    
     @Bean
     public FilterService jpaFilterService() {
         return new JPAFilterServiceImpl();
@@ -99,13 +99,18 @@ public class CoreShibUiConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "shibui.metadata-dir")
-    public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(EntityDescriptorRepository entityDescriptorRepository, @Value("${shibui.metadata-dir}") final String metadataDir) {
-        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects(), fileWritingService());
+    public EntityDescriptorFilesScheduledTasks entityDescriptorFilesScheduledTasks(
+                    EntityDescriptorRepository entityDescriptorRepository,
+                    @Value("${shibui.metadata-dir}") final String metadataDir) {
+        return new EntityDescriptorFilesScheduledTasks(metadataDir, entityDescriptorRepository, openSamlObjects(),
+                        fileWritingService());
     }
 
     @Bean
     @ConditionalOnProperty(name = "shibui.metadataProviders.target")
-    public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(@Value("${shibui.metadataProviders.target}") final Resource resource, final MetadataResolverService metadataResolverService) {
+    public MetadataProvidersScheduledTasks metadataProvidersScheduledTasks(
+                    @Value("${shibui.metadataProviders.target}") final Resource resource,
+                    final MetadataResolverService metadataResolverService) {
         return new MetadataProvidersScheduledTasks(resource, metadataResolverService, fileWritingService());
     }
 
@@ -124,7 +129,8 @@ public class CoreShibUiConfiguration {
     /**
      * A WebMvcConfigurer that won't mangle the path for the entities endpoint.
      *
-     * inspired by [ https://stackoverflow.com/questions/13482020/encoded-slash-2f-with-spring-requestmapping-path-param-gives-http-400 ]
+     * inspired by [
+     * https://stackoverflow.com/questions/13482020/encoded-slash-2f-with-spring-requestmapping-path-param-gives-http-400 ]
      *
      * @return configurer
      */
@@ -166,10 +172,9 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public MetadataResolversPositionOrderContainerService
-        metadataResolversPositionOrderContainerService(MetadataResolversPositionOrderContainerRepository
-                                                               positionOrderContainerRepository,
-                                                       MetadataResolverRepository resolverRepository) {
+    public MetadataResolversPositionOrderContainerService metadataResolversPositionOrderContainerService(
+                    MetadataResolversPositionOrderContainerRepository positionOrderContainerRepository,
+                    MetadataResolverRepository resolverRepository) {
 
         return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository);
 
@@ -201,12 +206,33 @@ public class CoreShibUiConfiguration {
     }
 
     @Bean
-    public UserService userService(RoleRepository roleRepository, UserRepository userRepository) {
-        return new UserService(roleRepository, userRepository);
+    public UserService userService(IGroupService groupService, OwnershipRepository ownershipRepository, RoleRepository roleRepository, UserRepository userRepository) {
+        return new UserService(groupService, ownershipRepository, roleRepository, userRepository);
     }
 
     @Bean
     public FileWritingService fileWritingService() {
         return new FileCheckingFileWritingService();
+    }
+
+    @Bean
+    public EntityDescriptorConversionUtils EntityDescriptorConverstionUtilsInit(EntityService entityService, OpenSamlObjects oso) {
+        EntityDescriptorConversionUtils.setEntityService(entityService);
+        EntityDescriptorConversionUtils.setOpenSamlObjects(oso);
+        return new EntityDescriptorConversionUtils();
+    }
+    
+    @Bean
+    public GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
+        GroupUpdatedEntityListener listener = new GroupUpdatedEntityListener();
+        listener.init(repo);
+        return listener;
+    }
+    
+    @Bean
+    public UserUpdatedEntityListener userUpdatedEntityListener(OwnershipRepository repo, GroupsRepository groupRepo) {
+        UserUpdatedEntityListener listener = new UserUpdatedEntityListener();
+        listener.init(repo, groupRepo);
+        return listener;
     }
 }

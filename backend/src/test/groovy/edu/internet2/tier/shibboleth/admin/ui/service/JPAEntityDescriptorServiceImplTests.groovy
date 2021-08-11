@@ -22,16 +22,20 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSso
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
+
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.json.JacksonTester
 import org.springframework.context.annotation.PropertySource
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -42,42 +46,33 @@ import spock.lang.Specification
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
 @SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @PropertySource("classpath:application.yml")
-class JPAEntityDescriptorServiceImplTests extends Specification {
-
+@DirtiesContext
+class JPAEntityDescriptorServiceImplTests extends Specification {   
     @Autowired
-    CustomPropertiesConfiguration customPropertiesConfiguration
+    EntityService entityService;
+    
+    @Autowired
+    JPAEntityDescriptorServiceImpl service
 
     def testObjectGenerator
-
+    
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         init()
         it
     }
-
-    JPAEntityDescriptorServiceImpl service
-
+    
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
-
     ObjectMapper mapper
-
     RandomGenerator generator
-
-    @Autowired
-    RoleRepository roleRepository
-
-    @Autowired
-    UserRepository userRepository
-
-    def setup() {
-        service = new JPAEntityDescriptorServiceImpl(openSamlObjects,
-                new JPAEntityServiceImpl(openSamlObjects, new AttributeUtility(openSamlObjects), customPropertiesConfiguration), new UserService(roleRepository, userRepository))
+    
+    def setup() {        
         mapper = new ObjectMapper()
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator()
+        EntityDescriptorConversionUtils.openSamlObjects = openSamlObjects
+        EntityDescriptorConversionUtils.entityService = entityService
     }
-
-
 
     def "simple Entity Descriptor"() {
         when:
@@ -683,95 +678,6 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         assert descriptor.getSPSSODescriptor('').getKeyDescriptors()[0].getUse() == null
     }
 
-    def "createAttributeWithBooleanValue properly adds booleans to attributes"() {
-        given:
-        def expectedName = "someName"
-        def expectedFriendlyName = "someFriendlyName"
-        def randomBoolean = generator.randomBoolean()
-
-        when:
-        def attribute = service.createAttributeWithBooleanValue(expectedName, expectedFriendlyName, randomBoolean)
-
-        then:
-        expectedName == attribute.getName()
-        expectedFriendlyName == attribute.getFriendlyName()
-        attribute.getAttributeValues().size() == 1
-        attribute.getAttributeValues().get(0) instanceof XSBoolean
-        Boolean.parseBoolean(((XSBoolean)attribute.getAttributeValues().get(0)).getStoredValue()) == randomBoolean
-
-        where:
-        i << (1..5)
-    }
-
-    def "createAttributeWithArbitraryValues properly adds additional attributes"() {
-        given:
-        def expectedName = "someName"
-        def expectedFriendlyName = "someFriendlyName"
-        def attributesArray = []
-        for (int index = 0; index < testRunIndex; index++) {
-            attributesArray.add("additionalAttributes" + index)
-        }
-
-
-        when:
-        def attribute = service.createAttributeWithArbitraryValues(expectedName,
-                expectedFriendlyName,
-                attributesArray)
-
-        then:
-        expectedName == attribute.getName()
-        expectedFriendlyName == attribute.getFriendlyName()
-        attribute.getAttributeValues().size() == testRunIndex
-        for (int index = 0; index < testRunIndex; index++) {
-            attribute.getAttributeValues().get(index) instanceof XSAny
-            ((XSAny)attribute.getAttributeValues().get(index)).getTextContent() == "additionalAttributes" + index
-        }
-
-        where:
-        testRunIndex << (1..5)
-    }
-
-    def "createAttributeWithArbitraryValues adds no attributes when passed no attributes"() {
-        given:
-        def expectedName = "someName"
-        def expectedFriendlyName = "someFriendlyName"
-
-        when:
-        def attribute = service.createAttributeWithArbitraryValues(expectedName, expectedFriendlyName)
-
-        then:
-        expectedName == attribute.getName()
-        expectedFriendlyName == attribute.getFriendlyName()
-        attribute.getAttributeValues().size() == 0
-    }
-
-    def "createAttributeWithArbitraryValues doesn't explode when passed a list of strings"() {
-        given:
-        def expectedName = "someName"
-        def expectedFriendlyName = "someFriendlyName"
-        List<String> attributesList = new ArrayList<String>()
-        for (int index = 0; index < testRunIndex; index++) {
-            attributesList.add("additionalAttributes" + index)
-        }
-
-        when:
-        def attribute = service.createAttributeWithArbitraryValues(expectedName,
-                expectedFriendlyName,
-                attributesList)
-
-        then:
-        expectedName == attribute.getName()
-        expectedFriendlyName == attribute.getFriendlyName()
-        attribute.getAttributeValues().size() == testRunIndex
-        for (int index = 0; index < testRunIndex; index++) {
-            attribute.getAttributeValues().get(index) instanceof XSAny
-            ((XSAny)attribute.getAttributeValues().get(index)).getTextContent() == "additionalAttributes" + index
-        }
-
-        where:
-        testRunIndex << (1..5)
-    }
-
     def "updateDescriptorFromRepresentation updates descriptor properly"() {
         given:
         def randomEntityDescriptor = generateRandomEntityDescriptor()
@@ -804,48 +710,6 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         then:
         def actualVersion = representation.version
         expectedVersion == actualVersion
-    }
-
-    def "SHIBUI-1220 getValueFromXMLObject handles XSAny"() {
-        given:
-        def builder = new XSAnyBuilder()
-        def xsAny = builder.buildObject('namespace', 'localname', 'prefix')
-        def expectedTextContent = 'expectedTextContent'
-        xsAny.setTextContent(expectedTextContent)
-
-        when:
-        def result = service.getValueFromXMLObject(xsAny)
-
-        then:
-        result == expectedTextContent
-    }
-
-    def "SHIBUI-1220 getValueFromXMLObject handles XSString"() {
-        given:
-        def builder = new XSStringBuilder()
-        def xsString = builder.buildObject('namespace', 'localname', 'prefix')
-        def expectedValue = 'expectedValue'
-        xsString.setValue(expectedValue)
-
-        when:
-        def result = service.getValueFromXMLObject(xsString)
-
-        then:
-        result == expectedValue
-    }
-
-    def "SHIBUI-1220 getValueFromXMLObject handles XSBoolean"() {
-        given:
-        def builder = new XSBooleanBuilder()
-        def xsBoolean = builder.buildObject('namespace', 'localname', 'prefix')
-        def expectedValue = 'true'
-        xsBoolean.setStoredValue(expectedValue)
-
-        when:
-        def result = service.getValueFromXMLObject(xsBoolean)
-
-        then:
-        result == expectedValue
     }
 
     def "SHIBUI-1220 getValueFromXMLObject throws RuntimeException for unhandled object type"() {

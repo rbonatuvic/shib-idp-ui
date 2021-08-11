@@ -21,6 +21,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers
@@ -38,9 +41,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -55,6 +60,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles(value = "local")
 class JPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverRepository metadataResolverRepository
@@ -479,6 +485,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @TestConfiguration
+    @Profile("local")
     static class Config {
         @Autowired
         OpenSamlObjects openSamlObjects
@@ -507,6 +514,15 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 //                it.resolvers = []
                 it.initialize()
                 it
+            }
+        }
+        
+        @Bean
+        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
+            new GroupServiceImpl().with {
+                it.groupRepository = repo
+                it.ownershipRepository = ownershipRepository
+                return it
             }
         }
     }

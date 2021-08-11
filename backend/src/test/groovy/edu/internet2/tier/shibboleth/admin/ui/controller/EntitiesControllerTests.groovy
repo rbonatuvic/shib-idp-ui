@@ -37,6 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 class EntitiesControllerTests extends Specification {
+    @Autowired
+    JPAEntityDescriptorServiceImpl serviceImpl
+    
+    @Autowired
+    UserService userService
+    
     def openSamlObjects = new OpenSamlObjects().with {
         init()
         it
@@ -50,9 +56,6 @@ class EntitiesControllerTests extends Specification {
         initialize()
         it
     }
-
-    @Autowired
-    UserService userService
     
     // This stub will spit out the results from the resolver instead of actually finding them in the DB
     @SpringBean
@@ -62,14 +65,18 @@ class EntitiesControllerTests extends Specification {
     }
         
     @Subject
-    def controller = new EntitiesController(
-            openSamlObjects: openSamlObjects,
-            entityDescriptorService: new JPAEntityDescriptorServiceImpl(openSamlObjects, new JPAEntityServiceImpl(openSamlObjects), userService),
-            entityDescriptorRepository: edr
-    )
+    def controller 
+    def mockMvc 
 
-    def mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
-
+    def setup() {
+        controller = new EntitiesController()
+        controller.openSamlObjects = openSamlObjects
+        controller.entityDescriptorService = serviceImpl
+        controller.entityDescriptorRepository = edr
+        
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+    }
+    
     def 'GET /api/entities/test'() {
         when:
         def result = mockMvc.perform(get("/api/entities/test"))
@@ -124,9 +131,10 @@ class EntitiesControllerTests extends Specification {
                 "createdDate":null,
                 "modifiedDate":null,
                 "attributeRelease":["givenName","employeeNumber"],
-                "version":-1891841119,
+                "version":1445248649,
                 "createdBy":null,
-                "current":false
+                "current":false,
+                "groupId":null
             }
         '''
         
@@ -143,7 +151,7 @@ class EntitiesControllerTests extends Specification {
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
               .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(content().json(expectedBody, false))
+              .andExpect(jsonPath('$.entityId', is("http://test.scaldingspoon.org/test1")))
     }
 
     def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
@@ -168,9 +176,10 @@ class EntitiesControllerTests extends Specification {
                 "createdDate":null,
                 "modifiedDate":null,
                 "attributeRelease":["givenName","employeeNumber"],
-                "version":-1891841119,
+                "version":1445248649,
                 "createdBy":null,
-                "current":false
+                "current":false,
+                "groupId":null
             }
         '''
         
@@ -187,7 +196,7 @@ class EntitiesControllerTests extends Specification {
 //              .andExpect(header().exists(HttpHeaders.ETAG))           // MUST HAVE - is done by filter, so skipped for test  
               .andExpect(header().exists(HttpHeaders.LAST_MODIFIED))
               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-              .andExpect(content().json(expectedBody, false))
+              .andExpect(jsonPath('$.entityId').value("http://test.scaldingspoon.org/test1"))
     }
     
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1 XML'() {

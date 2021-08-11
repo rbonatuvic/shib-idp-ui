@@ -10,13 +10,13 @@ import Translate from '../../i18n/components/translate';
 import API_BASE_PATH from '../../App.constant';
 import { NotificationContext, createNotificationAction} from '../../notifications/hoc/Notifications';
 
-export default function UserManagement({ users, children, reload }) {
+export default function UserManagement({ users, children, reload}) {
 
     const [roles, setRoles] = React.useState([]);
 
     const { dispatch } = React.useContext(NotificationContext);
 
-    const { get, patch, del, response } = useFetch(`${API_BASE_PATH}`, {});
+    const { get, patch, del, response, loading } = useFetch(`${API_BASE_PATH}`, {});
 
     async function loadRoles() {
         const roles = await get('/supportedRoles')
@@ -26,9 +26,24 @@ export default function UserManagement({ users, children, reload }) {
     }
 
     async function setUserRoleRequest(user, role) {
+        user.role = role;
         await patch(`/admin/users/${user.username}`, {
             ...user,
             role
+        });
+        if (response.ok && reload) {
+            dispatch(createNotificationAction(
+                `User update successful for ${user.username}.`
+            ));
+            reload();
+        }
+    }
+
+    async function setUserGroupRequest(user, groupId) {
+        user.groupId = groupId;
+        await patch(`/admin/users/${user.username}`, {
+            ...user,
+            groupId
         });
         if (response.ok && reload) {
             dispatch(createNotificationAction(
@@ -66,7 +81,7 @@ export default function UserManagement({ users, children, reload }) {
 
     return (
         <div className="user-management">
-            {children(users, roles, setUserRoleRequest, (id) => setDeleting(id))}
+            {children(users, roles, setUserRoleRequest, setUserGroupRequest, (id) => setDeleting(id), loading)}
             <Modal show={!!deleting} onHide={() => setDeleting(null)}>
                 <Modal.Header toggle={toggle}><Translate value="message.delete-user-title">Delete User?</Translate></Modal.Header>
                 <Modal.Body className="d-flex align-content-center">
