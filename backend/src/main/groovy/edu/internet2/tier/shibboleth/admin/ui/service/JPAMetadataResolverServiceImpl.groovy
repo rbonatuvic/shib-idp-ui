@@ -3,22 +3,9 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.google.common.base.Predicate
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.opensaml.OpenSamlNameIdFormatFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataRequestURLConstructionScheme
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.Refilterable
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
@@ -44,20 +31,14 @@ import org.springframework.stereotype.Service
 import org.w3c.dom.Document
 
 import javax.annotation.Nonnull
-import javax.transaction.Transactional
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.CONDITION_SCRIPT
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.REGEX
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.*
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
 
 @Slf4j
 @Service
 class JPAMetadataResolverServiceImpl implements MetadataResolverService {
-    
-    @Autowired
-    org.opensaml.saml.metadata.resolver.MetadataResolver chainingMetadataResolver
 
     @Autowired
     private MetadataResolver metadataResolver
@@ -67,16 +48,16 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     @Autowired
     private MetadataResolverRepository metadataResolverRepository
-    
+
     @Autowired
     private OpenSamlObjects openSamlObjects
-    
+
     @Autowired
     private MetadataResolversPositionOrderContainerService resolversPositionOrderContainerService
-    
+
     @Autowired
     private ShibUIConfiguration shibUIConfiguration
-    
+
     @Autowired
     private UserService userService
 
@@ -141,6 +122,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             }
         }
     }
+
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
         def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
@@ -429,7 +411,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         return result
     }
 
-    // TODO: enhance
     @Override
     Document generateConfiguration() {
         // TODO: this can probably be a better writer
@@ -481,7 +462,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     private String protectedNamespaceScript() {
         return """(function (attribute) {
                 "use strict";
-                var namespaces = [${shibUIConfiguration.protectedAttributeNamespaces.collect({"\"${it}\""}).join(', ')}];
+                var namespaces = [${shibUIConfiguration.protectedAttributeNamespaces.collect({ "\"${it}\"" }).join(', ')}];
                 // check the parameter
                 if (attribute === null) { return true; }
                 for (var i in namespaces) {
@@ -492,8 +473,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 return true;
             }(input));"""
     }
-    
-    // TODO: enhance
+
     @Override
     void reloadFilters(String metadataResolverResourceId) {
         OpenSamlChainingMetadataResolver chainingMetadataResolver = (OpenSamlChainingMetadataResolver) metadataResolver
@@ -577,15 +557,15 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             log.warn("Target resolver is not a Refilterable resolver. Skipping refilter()")
         }
     }
-    
+
     public edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updateMetadataResolverEnabledStatus(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updatedResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
         // @TODO: when merged with groups, this should maybe be merged with group check as they have to have the role in the right group
         if (!userService.currentUserHasExpectedRole(["ROLE_ADMIN", "ROLE_ENABLE"])) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this filter.")
         }
-        
+
         edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver persistedResolver = metadataResolverRepository.save(updatedResolver)
-        
+
         if (persistedResolver.getDoInitialization()) {
             MetadataResolver openSamlRepresentation = null
             try {
@@ -600,9 +580,9 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 throw new InitializationException(e);
             }
         }
-    
+
     }
-    
+
     private class ScriptedPredicate extends net.shibboleth.utilities.java.support.logic.ScriptedPredicate<EntityDescriptor> {
         protected ScriptedPredicate(@Nonnull EvaluableScript theScript) {
             super(theScript)
