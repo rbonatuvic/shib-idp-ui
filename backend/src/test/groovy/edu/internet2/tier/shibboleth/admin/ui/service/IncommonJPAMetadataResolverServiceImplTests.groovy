@@ -11,6 +11,9 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilF
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.xml.XmlUtil
@@ -35,7 +38,7 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 @ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles(["local"])
+@ActiveProfiles(value = "local")
 class IncommonJPAMetadataResolverServiceImplTests extends Specification {
     @Autowired
     MetadataResolverService metadataResolverService
@@ -107,7 +110,6 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
         }
     }
 
-    //TODO: check that this configuration is sufficient
     @TestConfiguration
     @Profile("local")
     static class LocalConfig {
@@ -150,6 +152,15 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
             }
 
             return resolver
+        }
+
+        @Bean
+        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
+            new GroupServiceImpl().with {
+                it.groupRepository = repo
+                it.ownershipRepository = ownershipRepository
+                return it
+            }
         }
     }
 }

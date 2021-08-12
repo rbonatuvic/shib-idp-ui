@@ -5,6 +5,9 @@ import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDefinitionRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.DefaultAuditorAware
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
 import net.shibboleth.ext.spring.resource.ResourceHelper
@@ -26,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.core.io.ClassPathResource
 import org.springframework.data.domain.AuditorAware
 import org.springframework.mail.javamail.JavaMailSender
@@ -41,7 +45,7 @@ class TestConfiguration {
 
     final OpenSamlObjects openSamlObjects
     final MetadataResolverRepository metadataResolverRepository
-    final Logger logger = LoggerFactory.getLogger(TestConfiguration.class);
+    final Logger logger = LoggerFactory.getLogger(TestConfiguration.class)
 
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;
@@ -87,12 +91,12 @@ class TestConfiguration {
 
                 for (String entityId: this.getBackingStore().getIndexedDescriptors().keySet()) {
                     Document document = new Document();
-                    document.add(new StringField("id", entityId, Field.Store.YES));
-                    document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
+                    document.add(new StringField("id", entityId, Field.Store.YES))
+                    document.add(new TextField("content", entityId, Field.Store.YES)) // TODO: change entityId to be content of entity descriptor block
                     try {
-                        indexWriter.addDocument(document);
+                        indexWriter.addDocument(document)
                     } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
+                        logger.error(e.getMessage(), e)
                     }
                 }
                 try {
@@ -117,5 +121,14 @@ class TestConfiguration {
     @Bean
     AuditorAware<String> defaultAuditorAware() {
         return new DefaultAuditorAware()
+    }
+    
+    @Bean
+    GroupServiceImpl groupServiceImpl(GroupsRepository repo, OwnershipRepository ownershipRepository) {
+        new GroupServiceImpl().with {
+            it.groupRepository = repo
+            it.ownershipRepository = ownershipRepository
+            return it
+        }
     }
 }

@@ -15,7 +15,7 @@ import java.nio.file.Paths
 
 //TODO: make config configurable
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [ShibbolethUiApplication])
-@ActiveProfiles(['dev'])
+@ActiveProfiles(['dev', 'very-dangerous'])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD, methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class SeleniumSIDETest extends Specification {
     @Value('${local.server.port}')
@@ -101,7 +101,7 @@ class SeleniumSIDETest extends Specification {
         // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:
         name                                                                | file
-        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+/*        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
         'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
@@ -124,9 +124,13 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-        'SHIBUI-1503: Non-admin can create metadata source'               | '/SHIBUI-1503-1.side'
-        'SHIBUI-1503: User can be deleted'                                | '/SHIBUI-1503-2.side'
-        'SHIBUI-1503: User can be enabled'                                | '/SHIBUI-1503-3.side'
+        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
+        'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side'
+        'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'*/
+        'SHIBUI-1740: Group can be created, edited, deleted'                | '/SHIBUI-1740-1.side'
+        'SHIBUI-1740: Verify dev profile group membership'                  | '/SHIBUI-1740-2.side'
+        'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
+        'SHIBUI-1740: Verify nonadmin-owned resource visibility'            | '/SHIBUI-1740-4.side'
     }
 }
 

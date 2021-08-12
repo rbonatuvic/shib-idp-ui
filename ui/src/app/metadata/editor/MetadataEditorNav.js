@@ -5,14 +5,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 
 import Translate from '../../i18n/components/translate';
-// import { usePagesWithErrors } from '../hoc/MetadataFormContext';
 
 export function MetadataEditorNav ({ definition, current, children, format = 'tabs', onNavigate }) {
 
     const [routes, setRoutes] = React.useState([]);
     const [active, setActive] = React.useState(null);
-
-    // const errors = usePagesWithErrors(definition);
 
     React.useEffect(() => {
         setRoutes(definition ? definition.steps.map(step => ({ path: step.id, label: step.label })) : [])

@@ -1,0 +1,22 @@
+{
+    "type": "object",
+    "required": [
+        "name"
+    ],
+    "properties": {
+        "name": {
+            "title": "label.group-name",
+            "description": "tooltip.group-name",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "description": {
+            "title": "label.group-description",
+            "description": "tooltip.group-description",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        }
+    }
+}

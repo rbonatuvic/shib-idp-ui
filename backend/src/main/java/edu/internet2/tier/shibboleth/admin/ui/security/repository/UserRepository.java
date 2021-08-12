@@ -12,7 +12,6 @@ import java.util.Set;
  * @author Dmitriy Kopylenko
  */
 public interface UserRepository extends JpaRepository<User, Long> {
-
     Optional<User> findByUsername(String username);
     Set<User> findByRoles_Name(String roleName);
 }
