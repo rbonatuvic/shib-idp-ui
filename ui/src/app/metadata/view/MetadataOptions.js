@@ -85,14 +85,6 @@ export function MetadataOptions ({reload}) {
                         </Button>
                         }
                     </div>
-                    {type === 'source' && remove &&
-                    <Button className="btn btn-outline btn-sm btn-danger align-self-start"
-                            disabled={metadata.serviceEnabled}
-                            onClick={() => remove(metadata.id, redirectOnDelete)}>
-                        <Translate value="action.delete" />
-                        <FontAwesomeIcon icon={faTrash} className="ml-2" />
-                    </Button>
-                    }
                 </MetadataHeader>
                 <div className="px-3 my-3 d-flex justify-content-between" id="navigation">
                     <div>

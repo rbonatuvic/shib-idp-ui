@@ -7,17 +7,16 @@ import Form from 'react-bootstrap/Form';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { Scroller } from '../../../../dashboard/component/Scroller';
 import { useTranslator } from '../../../../i18n/hooks';
-import { DeleteSourceConfirmation } from './DeleteSourceConfirmation';
 import { useIsAdmin } from '../../../../core/user/UserContext';
 import { GroupsProvider } from '../../../../admin/hoc/GroupsProvider';
 
-export default function SourceList({ entities, onDelete, onEnable }) {
+export default function SourceList({ entities, onDelete, onEnable, onChangeGroup }) {
 
     const translator = useTranslator();
     const isAdmin = useIsAdmin();
@@ -33,7 +32,7 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                 <th className="w-25"><Translate value="label.entity-id">Entity ID</Translate></th>
                                 <th className=""><Translate value="label.author">Author</Translate></th>
                                 <th className=""><Translate value="label.creation-date">Created Date</Translate></th>
-                                <th className=""><Translate value="label.enabled">Enabled</Translate></th>
+                                <th className="text-center"><Translate value="label.enabled">Enabled</Translate></th>
                                 {isAdmin && onChangeGroup && <th className=""><Translate value="label.group">Group</Translate></th> }
                                 {onDelete && <th className="w-auto"></th>}
                             </tr>
@@ -41,36 +40,37 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                         <tbody>
                             {limited.map((source, idx) =>
                                 <tr key={idx}>
-                                    <td>
+                                    <td className="align-middle">
                                         <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName}</Link>
                                     </td>
-                                    <td>
+                                    <td className="align-middle">
                                         {source.entityId}
                                     </td>
-                                    <td>
+                                    <td className="align-middle">
                                         {source.createdBy}
                                     </td>
-                                    <td><FormattedDate date={source.createdDate} /></td>
-                                    <td className="">
+                                    <td className="align-middle"><FormattedDate date={source.createdDate} /></td>
+                                    <td className="text-center align-middle">
+                                        <span className="d-flex justify-content-center align-items-center">
                                         {onEnable && isAdmin ?
-                                            <Button
-                                                variant="success"
-                                                size="sm"
-                                                checked={source.serviceEnabled}
-                                                onClick={() => onEnable(source)}
+                                            <Form.Check
+                                                type="switch"
+                                                id="custom-switch"
+                                                size="lg"
+                                                aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}
                                                 onChange={({ target: { checked } }) => onEnable(source, checked)}
-                                                aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}>
-                                                <Translate value={ source.enabled ? 'label.disable' : 'label.enable' }>Disable</Translate>
-                                                {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
-                                            </Button>
+                                                checked={source.serviceEnabled}
+                                            >
+                                            </Form.Check>
                                             :
                                             <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
                                                 <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
                                             </Badge>
                                         }
+                                        </span>
                                     </td>
                                     {isAdmin && onChangeGroup &&
-                                    <td className="">
+                                    <td className="align-middle">
                                         <GroupsProvider>
                                             {(groups, removeGroup, loadingGroups) =>
                                                 <React.Fragment>
@@ -94,7 +94,7 @@ export default function SourceList({ entities, onDelete, onEnable }) {
                                     </td>
                                     }
                                     {onDelete &&
-                                    <td className="text-right">
+                                    <td className="text-right align-middle">
                                         <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
                                             overlay={
                                                 <Popover id={`delete-source-btn-${idx}`}>

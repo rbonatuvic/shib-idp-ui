@@ -68,7 +68,7 @@ export function ProviderList({ entities, reorder = true, first, last, onEnable, 
                             <td className="align-middle">{ provider['@type'] }</td>
                             <td className="align-middle">{ provider.createdBy }</td>
                             <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
-                            <td className="">
+                            <td className="align-middle">
                                 <span className="d-flex justify-content-end">
                                 {onEnable && isAdmin ?
                                     <Form.Check
