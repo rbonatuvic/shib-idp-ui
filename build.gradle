@@ -22,3 +22,4 @@ githubRelease {
 }
 
 afterReleaseBuild.dependsOn project.getTasksByName('githubRelease', false)
+afterReleaseBuild.dependsOn project.getTasksByName('dockerTagsPush', false)
