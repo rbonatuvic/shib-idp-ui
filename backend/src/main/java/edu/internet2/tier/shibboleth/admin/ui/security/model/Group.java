@@ -35,7 +35,7 @@ public class Group implements Owner {
     @Exclude
     private ILazyLoaderHelper lazyLoaderHelper;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Transient
