@@ -391,8 +391,8 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (ed == null) {
             throw new EntityNotFoundException("Entity with resourceid[" + resourceId + "] was not found for update");
         }
-        // @TODO: when merged with groups, this should maybe be merged with group check as they have to have the role in the right group
-        if (!userService.currentUserHasExpectedRole(Arrays.asList(new String[] { "ROLE_ADMIN", "ROLE_ENABLE" }))) {
+        if (!userService.currentUserCanEnable(ed)) {
+//        if (!userService.currentUserHasExpectedRole(Arrays.asList(new String[] { "ROLE_ADMIN", "ROLE_ENABLE" }))) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this entity descriptor.");
         }
         ed.setServiceEnabled(status);

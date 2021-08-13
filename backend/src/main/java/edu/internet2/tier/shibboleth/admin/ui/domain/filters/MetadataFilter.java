@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 import java.util.UUID;
+
+import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.*;
 
 /**
  * Domain class to store information about {@link org.opensaml.saml.metadata.resolver.filter.MetadataFilter}
@@ -38,21 +42,25 @@ import java.util.UUID;
         @JsonSubTypes.Type(value=NameIdFormatFilter.class, name="NameIDFormat")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
-public abstract class MetadataFilter extends AbstractAuditable implements IConcreteMetadataFilterType<MetadataFilter> {
+public abstract class MetadataFilter extends AbstractAuditable implements IConcreteMetadataFilterType<MetadataFilter>, IActivatable {
 
-    @JsonProperty("@type")
-    @Transient
-    String type;
+    private boolean filterEnabled;
 
     private String name;
 
     @Column(unique=true)
     private String resourceId = UUID.randomUUID().toString();
 
-    private boolean filterEnabled;
+    @JsonProperty("@type")
+    @Transient
+    String type;
 
     @Transient
     private transient Integer version;
+
+    public ActivatableType getActivatableType() {
+        return FILTER;
+    }
 
     @JsonGetter("version")
     public int getVersion() {
@@ -60,5 +68,9 @@ public abstract class MetadataFilter extends AbstractAuditable implements IConcr
             return this.version;
         }
         return this.hashCode();
+    }
+
+    public void setEnabled(Boolean serviceEnabled) {
+        this.filterEnabled = (serviceEnabled == null) ? false : serviceEnabled;
     }
 }

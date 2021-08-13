@@ -1,10 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +24,8 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepos
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
 import lombok.NoArgsConstructor;
+
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.*;
 
 @Service
 @NoArgsConstructor
@@ -47,10 +49,25 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public boolean currentUserCanEnable(IActivatable activatableObject) {
+        switch (activatableObject.getActivatableType()) {
+        case ENTITY_DESCRIPTOR: {
+            if (getCurrentUserAccess() == ADMIN) { return true; }
+            if (currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner())) {
+                return true;
+            }
+        }
+        case FILTER:
+        case METADATA_RESOLVER:
+            return currentUserHasExpectedRole(Arrays.asList("ROLE_ADMIN", "ROLE_ENABLE" ));
+        }
+        return false;
+    }
+
     /**
-     * Current logic is pretty dumb, this will need to change/expand once a user can have more than one role.
+     * This basic logic assumes users only have a single role (despite users having a list of roles, we assume only 1 currently)
      */
-    public boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
+    private boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
         User user = getCurrentUser();
         return acceptedRoles.contains(user.getRole());
     }
@@ -91,15 +108,15 @@ public class UserService {
     public UserAccess getCurrentUserAccess() {
         User user = getCurrentUser();
         if (user == null) {
-            return UserAccess.NONE;
+            return NONE;
         }
         if (user.getRole().equals("ROLE_ADMIN")) {
-            return UserAccess.ADMIN;
+            return ADMIN;
         }
         if (user.getRole().equals("ROLE_USER")) {
-            return UserAccess.GROUP;
+            return GROUP;
         }
-        return UserAccess.NONE;
+        return NONE;
     }
 
     public Group getCurrentUserGroup() {
