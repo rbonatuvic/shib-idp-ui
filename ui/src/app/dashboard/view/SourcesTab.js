@@ -41,9 +41,7 @@ export function SourcesTab () {
             idOfOwner: group
         });
         if (updater.response.ok) {
-            dispatch(createNotificationAction(
-                `Updated group successfully.`
-            ));
+            dispatch(createNotificationAction(`Updated group successfully.`));
             loadSources();
         }
     }
