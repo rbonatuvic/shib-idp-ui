@@ -10,7 +10,7 @@ subprojects {
     }
 }
 
-tasks.findByName('release').dependsOn project.getTasksByName('test', true)
+// tasks.findByName('release').dependsOn project.getTasksByName('test', true)
 
 githubRelease {
     token project.'i2.github.token'
@@ -21,4 +21,11 @@ githubRelease {
     apiEndpoint project.'i2.github.apiEndpoint'
 }
 
+release {
+    git {
+        putToRemote = 'i2'
+    }
+}
+
 afterReleaseBuild.dependsOn project.getTasksByName('githubRelease', false)
+afterReleaseBuild.dependsOn project.getTasksByName('dockerTagsPush', false)
