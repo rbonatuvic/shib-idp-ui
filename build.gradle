@@ -23,7 +23,7 @@ githubRelease {
 
 release {
     git {
-        putToRemote = 'i2'
+        pushToRemote = 'i2'
     }
 }
 
