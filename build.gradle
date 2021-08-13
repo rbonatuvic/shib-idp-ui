@@ -10,7 +10,7 @@ subprojects {
     }
 }
 
-tasks.findByName('release').dependsOn project.getTasksByName('test', true)
+// tasks.findByName('release').dependsOn project.getTasksByName('test', true)
 
 githubRelease {
     token project.'i2.github.token'
@@ -19,6 +19,12 @@ githubRelease {
     releaseAssets project('backend').getTasksByName('bootWar', false).outputs
     overwrite true
     apiEndpoint project.'i2.github.apiEndpoint'
+}
+
+release {
+    git {
+        putToRemote = 'i2'
+    }
 }
 
 afterReleaseBuild.dependsOn project.getTasksByName('githubRelease', false)
