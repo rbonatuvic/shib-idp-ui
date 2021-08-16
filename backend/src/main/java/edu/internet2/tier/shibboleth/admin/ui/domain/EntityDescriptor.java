@@ -33,11 +33,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.ENTITY_DESCRIPTOR;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Audited
-public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor, Ownable {
+public class EntityDescriptor extends AbstractDescriptor implements org.opensaml.saml.saml2.metadata.EntityDescriptor, Ownable, IActivatable {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entitydesc_addlmetdatlocations_id")
     @OrderColumn
@@ -47,7 +48,7 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
     private AffiliationDescriptor affiliationDescriptor;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
     private AttributeAuthorityDescriptor attributeAuthorityDescriptor;
@@ -61,7 +62,7 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     private List<ContactPerson> contactPersons = new ArrayList<>();
 
     private String entityID;
-    
+
     private String localId;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -70,7 +71,7 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
     @Getter
     @Setter
     private String idOfOwner;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
     @NotAudited
     private PDPDescriptor pdpDescriptor;
@@ -254,6 +255,10 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
         this.entityID = entityID;
     }
 
+    public void setEnabled(Boolean serviceEnabled) {
+        this.serviceEnabled = (serviceEnabled == null) ? false : serviceEnabled;
+    }
+
     @Override
     public void setID(String id) {
         this.localId = id;
@@ -296,12 +301,16 @@ public class EntityDescriptor extends AbstractDescriptor implements org.opensaml
                 .add("id", id)
                 .toString();
     }
-    
+
     public String getObjectId() {
         return entityID;
     }
-    
+
     public OwnableType getOwnableType() {
         return OwnableType.ENTITY_DESCRIPTOR;
+    }
+
+    @Override public ActivatableType getActivatableType() {
+        return ENTITY_DESCRIPTOR;
     }
 }

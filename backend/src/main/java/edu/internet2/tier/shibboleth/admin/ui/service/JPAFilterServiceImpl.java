@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation;
@@ -117,13 +118,13 @@ public class JPAFilterServiceImpl implements FilterService {
         if (filterTobeUpdatedOptional.isEmpty()) {
             throw new EntityNotFoundException("Filter with resource id[" + resourceId + "] not found");
         }
-        
-        // @TODO: when merged with groups, this should maybe be merged with group check as they have to have the role in the right group
-        if (!userService.currentUserHasExpectedRole(Arrays.asList(new String[] { "ROLE_ADMIN", "ROLE_ENABLE" }))) {
+
+        MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();
+
+        if (!userService.currentUserCanEnable(filterTobeUpdated)) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this filter.");
         }
-        
-        MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();
+
         filterTobeUpdated.setFilterEnabled(status);
         MetadataFilter persistedFilter = filterRepository.save(filterTobeUpdated);
 
