@@ -104,7 +104,9 @@ public class MetadataResolver extends AbstractAuditable implements IActivatable 
                         .forEach(EntityAttributesFilter::intoTransientRepresentation);
     }
 
-    @Override public ActivatableType getActivatableType() {
+    @Override
+    @JsonIgnore
+    public ActivatableType getActivatableType() {
         return METADATA_RESOLVER;
     }
 

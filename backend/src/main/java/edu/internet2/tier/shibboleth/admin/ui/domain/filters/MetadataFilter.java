@@ -1,9 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
@@ -58,6 +55,7 @@ public abstract class MetadataFilter extends AbstractAuditable implements IConcr
     @Transient
     private transient Integer version;
 
+    @JsonIgnore
     public ActivatableType getActivatableType() {
         return FILTER;
     }

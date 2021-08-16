@@ -560,7 +560,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
 
     public edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updateMetadataResolverEnabledStatus(edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver updatedResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
         if (!userService.currentUserCanEnable(updatedResolver)) {
-//        if (!userService.currentUserHasExpectedRole(["ROLE_ADMIN", "ROLE_ENABLE"])) {
             throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this filter.")
         }
 

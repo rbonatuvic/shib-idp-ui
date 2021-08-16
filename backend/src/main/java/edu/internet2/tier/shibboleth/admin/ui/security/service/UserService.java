@@ -50,18 +50,18 @@ public class UserService {
     }
 
     public boolean currentUserCanEnable(IActivatable activatableObject) {
+        if (currentUserIsAdmin()) { return true; }
         switch (activatableObject.getActivatableType()) {
         case ENTITY_DESCRIPTOR: {
-            if (getCurrentUserAccess() == ADMIN) { return true; }
-            if (currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner())) {
-                return true;
-            }
+            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner());
         }
+        // Currently filters and providers dont have ownership, so we just look for the right role
         case FILTER:
         case METADATA_RESOLVER:
-            return currentUserHasExpectedRole(Arrays.asList("ROLE_ADMIN", "ROLE_ENABLE" ));
+            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" ));
+        default:
+            return false;
         }
-        return false;
     }
 
     /**
@@ -137,6 +137,7 @@ public class UserService {
         return result;
     }
 
+     // @TODO - probably delegate this out to something plugable at some point
     public boolean isAuthorizedFor(Ownable ownableObject) {
         switch (getCurrentUserAccess()) {
         case ADMIN: // Pure admin is authorized to do anything
