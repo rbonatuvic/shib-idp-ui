@@ -46,13 +46,16 @@ public class Group implements Owner {
     @Column(name = "resource_id")
     private String resourceId = UUID.randomUUID().toString();
 
+    @Column(name = "validation_regex")
+    private String validationRegex = "/*";
+
     /**
      * Define a Group object based on the user
      */
     public Group(User user) {
         resourceId = user.getUsername();
         name = user.getUsername();
-        description = "default user-group";
+        description = "default user-group";new String().matches("");
     }
 
     @Override
