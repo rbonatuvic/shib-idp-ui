@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class GroupController {
     @Secured("ROLE_ADMIN")
     @PostMapping
     @Transactional
-    public ResponseEntity<?> create(@RequestBody Group group) throws GroupExistsConflictException {
+    public ResponseEntity<?> create(@RequestBody Group group) throws GroupExistsConflictException, InvalidGroupRegexException {
         Group result = groupService.createGroup(group);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
@@ -64,7 +65,7 @@ public class GroupController {
     @Secured("ROLE_ADMIN")
     @PutMapping
     @Transactional
-    public ResponseEntity<?> update(@RequestBody Group group) throws EntityNotFoundException {
+    public ResponseEntity<?> update(@RequestBody Group group) throws EntityNotFoundException, InvalidGroupRegexException {
         Group result = groupService.updateGroup(group);
         return ResponseEntity.ok(result);
     }

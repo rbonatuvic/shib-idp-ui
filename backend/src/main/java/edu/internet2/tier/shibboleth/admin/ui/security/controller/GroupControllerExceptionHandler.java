@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,4 +44,14 @@ public class GroupControllerExceptionHandler extends ResponseEntityExceptionHand
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).headers(headers)
                         .body(new ErrorResponse(String.valueOf(HttpStatus.METHOD_NOT_ALLOWED.value()), e.getMessage()));
     }
+
+    @ExceptionHandler({ InvalidGroupRegexException.class })
+    public ResponseEntity<?> handleInvalidGroupRegexException(InvalidGroupRegexException e, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ServletUriComponentsBuilder.fromCurrentServletMapping().path("/api/admin/groups").build().toUri());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers)
+                        .body(new ErrorResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), e.getMessage()));
+    }
+
 }

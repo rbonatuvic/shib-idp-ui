@@ -23,6 +23,8 @@ import lombok.NoArgsConstructor;
 @EntityListeners(GroupUpdatedEntityListener.class)
 @Entity(name = "user_groups")
 public class Group implements Owner {
+    public static final String DEFAULT_REGEX = "/(?:)/"; //non-capturing
+
     @Transient
     @JsonIgnore
     public static Group ADMIN_GROUP;
@@ -47,7 +49,7 @@ public class Group implements Owner {
     private String resourceId = UUID.randomUUID().toString();
 
     @Column(name = "validation_regex")
-    private String validationRegex = "/*";
+    private String validationRegex = DEFAULT_REGEX;
 
     /**
      * Define a Group object based on the user
@@ -55,7 +57,8 @@ public class Group implements Owner {
     public Group(User user) {
         resourceId = user.getUsername();
         name = user.getUsername();
-        description = "default user-group";new String().matches("");
+        description = "default user-group";
+        validationRegex = DEFAULT_REGEX;
     }
 
     @Override
