@@ -1,18 +1,20 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @NoArgsConstructor
@@ -30,7 +32,7 @@ public class GroupServiceImpl implements IGroupService {
 
     @Override
     @Transactional
-    public Group createGroup(Group group) throws GroupExistsConflictException {
+    public Group createGroup(Group group) throws GroupExistsConflictException, InvalidGroupRegexException {
         Group foundGroup = find(group.getResourceId());
         // If already defined, we don't want to create a new one, nor do we want this call update the definition
         if (foundGroup != null) {
@@ -38,6 +40,7 @@ public class GroupServiceImpl implements IGroupService {
                             String.format("Call update (PUT) to modify the group with resource id: [%s] and name: [%s]",
                                             foundGroup.getResourceId(), foundGroup.getName()));
         }
+        validateGroupRegex(group);
         return groupRepository.save(group);
     }
 
@@ -61,6 +64,7 @@ public class GroupServiceImpl implements IGroupService {
             g = new Group();
             g.setName("ADMIN-GROUP");
             g.setResourceId("admingroup");
+            g.setValidationRegex("/*"); // Everything
             g = groupRepository.save(g);
         }
         Group.ADMIN_GROUP = g;
@@ -78,12 +82,29 @@ public class GroupServiceImpl implements IGroupService {
     }
 
     @Override
-    public Group updateGroup(Group group) throws EntityNotFoundException {
+    public Group updateGroup(Group group) throws EntityNotFoundException, InvalidGroupRegexException {
         Group g = find(group.getResourceId());
         if (g == null) {
             throw new EntityNotFoundException(String.format("Unable to find group with resource id: [%s] and name: [%s]",
                             group.getResourceId(), group.getName()));
         }
+        validateGroupRegex(group);
         return groupRepository.save(group);
+    }
+
+    /**
+     * If the regex is missing, go with the default "anything goes" regex, otherwise validate that the pattern is valid to use.
+     */
+    private void validateGroupRegex(Group group) throws InvalidGroupRegexException {
+        if (StringUtils.isEmpty(group.getValidationRegex())) {
+            group.setValidationRegex(Group.DEFAULT_REGEX);
+            return;
+        }
+        try {
+            Pattern.compile(group.getValidationRegex());
+        }
+        catch (Exception e) {
+            throw new InvalidGroupRegexException("Invalid Regular Expression [ " + group.getValidationRegex() + " ]");
+        }
     }
 }

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -147,7 +148,8 @@ public class UserService {
                 try {
                     g = groupService.createGroup(g);
                 }
-                catch (GroupExistsConflictException e) {
+                catch (GroupExistsConflictException | InvalidGroupRegexException e) {
+                    // Invalid shouldn't happen for a group created this way.
                     g = groupService.find(user.getUsername());
                 }
             } else {
@@ -165,8 +167,8 @@ public class UserService {
                         Ownership o = ownershipRepository.saveAndFlush(new Ownership(newGroup, user));
                         g = groupService.createGroup(newGroup);
                     }
-                    catch (GroupExistsConflictException e) {
-                        // we just checked, this shouldn't happen
+                    catch (GroupExistsConflictException | InvalidGroupRegexException e) {
+                        // this shouldn't happen
                         g = ug;
                     }
                 }

@@ -258,7 +258,7 @@ class UserServiceTests extends Specification {
         gbUpdated.ownedItems.size() == 1
     }
     
-    @org.springframework.boot.test.context.TestConfiguration
+    @TestConfiguration
     @Profile("local")
     static class LocalConfig {
         @Bean
