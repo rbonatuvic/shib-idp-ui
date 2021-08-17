@@ -5,9 +5,13 @@ import SourceList from '../../metadata/domain/source/component/SourceList';
 import { useMetadataEntities, useMetadataEntity } from '../../metadata/hooks/api';
 import { Search } from '../component/Search';
 
+import { NotificationContext, createNotificationAction } from '../../notifications/hoc/Notifications';
+
 const searchProps = ['serviceProviderName', 'entityId', 'createdBy'];
 
 export function SourcesTab () {
+
+    const { dispatch } = React.useContext(NotificationContext);
 
     const [sources, setSources] = React.useState([]);
 
@@ -37,6 +41,7 @@ export function SourcesTab () {
             idOfOwner: group
         });
         if (updater.response.ok) {
+            dispatch(createNotificationAction(`Updated group successfully.`));
             loadSources();
         }
     }
