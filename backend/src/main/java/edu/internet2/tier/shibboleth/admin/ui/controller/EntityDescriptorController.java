@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.versioning.Version;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidUrlMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
@@ -73,7 +74,8 @@ public class EntityDescriptorController {
 
     @PostMapping("/EntityDescriptor")
     @Transactional
-    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityIdExistsException {
+    public ResponseEntity<?> create(@RequestBody EntityDescriptorRepresentation edRepresentation)
+                    throws ForbiddenException, EntityIdExistsException, InvalidUrlMatchException {
         EntityDescriptorRepresentation persistedEd = entityDescriptorService.createNew(edRepresentation);            
         return ResponseEntity.created(getResourceUriFor(persistedEd.getId())).body(persistedEd);
     }
@@ -145,7 +147,8 @@ public class EntityDescriptorController {
 
     @PutMapping("/EntityDescriptor/{resourceId}")
     @Transactional
-    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId) throws ForbiddenException, ConcurrentModificationException, EntityNotFoundException {
+    public ResponseEntity<?> update(@RequestBody EntityDescriptorRepresentation edRepresentation, @PathVariable String resourceId)
+                    throws ForbiddenException, ConcurrentModificationException, EntityNotFoundException, InvalidUrlMatchException {
         edRepresentation.setId(resourceId); // This should be the same already, but just to be safe...
         EntityDescriptorRepresentation result = entityDescriptorService.update(edRepresentation);
         return ResponseEntity.ok().body(result);

@@ -63,11 +63,12 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         Group ga = new Group()
         ga.setResourceId("testingGroup")
         ga.setName("Group A")
-        ga = groupService.createGroup(ga)
+        groupService.createGroup(ga)
                
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
+        gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
         gb = groupService.createGroup(gb)
         
         def roles = [new Role().with {
@@ -100,12 +101,9 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         User current = userService.getCurrentUser()
         current.setGroupId("testingGroupBBB")
 
-        def expectedCreationDate = '2017-10-23T11:11:11'
-        def expectedEntityId = 'https://shib'
+        def expectedEntityId = 'https://shib.org/blah'
         def expectedSpName = 'sp1'
         def expectedUUID = 'uuid-1'
-        def expectedResponseHeader = 'Location'
-        def expectedResponseHeaderValue = "/api/EntityDescriptor/$expectedUUID"
         def entityDescriptor = new EntityDescriptor(resourceId: expectedUUID, entityID: expectedEntityId, serviceProviderName: expectedSpName, serviceEnabled: false)
         
         when:
