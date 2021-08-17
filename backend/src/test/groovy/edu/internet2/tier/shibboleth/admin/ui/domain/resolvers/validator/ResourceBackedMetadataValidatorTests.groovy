@@ -1,12 +1,18 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers
+package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.ResourceBackedIMetadataResolverValidator
 import spock.lang.Specification
 
 class ResourceBackedMetadataValidatorTests extends Specification {
 
     def "Does not support foreign resolver type"() {
         given:
-        MetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedMetadataResolverValidator()
+        IMetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedIMetadataResolverValidator()
         FileBackedHttpMetadataResolver resolver = new FileBackedHttpMetadataResolver()
 
         expect:
@@ -15,7 +21,7 @@ class ResourceBackedMetadataValidatorTests extends Specification {
 
     def "Passes validation"() {
         given:
-        MetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedMetadataResolverValidator()
+        IMetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedIMetadataResolverValidator()
         ResourceBackedMetadataResolver resolver = new ResourceBackedMetadataResolver().with {
             it.classpathMetadataResource = new ClasspathMetadataResource()
             it
@@ -28,7 +34,7 @@ class ResourceBackedMetadataValidatorTests extends Specification {
 
     def "Does not pass validation with both resource types missing"() {
         given:
-        MetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedMetadataResolverValidator()
+        IMetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedIMetadataResolverValidator()
         ResourceBackedMetadataResolver resolver = new ResourceBackedMetadataResolver()
 
         expect:
@@ -38,7 +44,7 @@ class ResourceBackedMetadataValidatorTests extends Specification {
 
     def "Does not pass validation with both resource types present"() {
         given:
-        MetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedMetadataResolverValidator()
+        IMetadataResolverValidator<ResourceBackedMetadataResolver> validator = new ResourceBackedIMetadataResolverValidator()
         ResourceBackedMetadataResolver resolver = new ResourceBackedMetadataResolver().with {
             it.classpathMetadataResource = new ClasspathMetadataResource()
             it.svnMetadataResource = new SvnMetadataResource()

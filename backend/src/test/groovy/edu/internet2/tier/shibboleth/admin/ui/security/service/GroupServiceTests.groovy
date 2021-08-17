@@ -48,12 +48,6 @@ class GroupServiceTests extends Specification {
     @Transactional
     def setup() {
         groupService.ensureAdminGroupExists()
-//        Group g = new Group()
-//        g.setResourceId("twitter")
-//        g.setName("twitter")
-//        // This is valid for a url with "twitter" in it
-//        g.setValidationRegex("")
-//        g = groupService.createGroup(g)
 
         if (roleRepository.count() == 0) {
             def roles = [new Role().with {
