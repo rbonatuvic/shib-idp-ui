@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.configuration
 
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.DynamicHttpMetadataResolverValidator
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.FileBackedHttpMetadataResolverValidator
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.IMetadataResolverValidator
@@ -14,6 +15,12 @@ import org.springframework.context.annotation.Profile
 
 @Configuration
 class TestMetadataResolverValidationConfiguration {
+
+    @Bean
+    @Profile("dh-test")
+    DynamicHttpMetadataResolverValidator dynamicHttpMetadataResolverValidator(IGroupService groupService, UserService userService) {
+        new DynamicHttpMetadataResolverValidator(groupService, userService)
+    }
 
     @Bean
     @Profile("fbh-test")
