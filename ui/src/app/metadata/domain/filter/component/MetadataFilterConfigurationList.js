@@ -2,13 +2,12 @@ import React from 'react';
 
 import { Ordered } from '../../../../dashboard/component/Ordered';
 import { Translate } from '../../../../i18n/components/translate';
-import { MetadataFilters, MetadataFiltersContext } from './MetadataFilters';
+import { MetadataFilters } from './MetadataFilters';
 
 import { MetadataFilterConfigurationListItem } from './MetadataFilterConfigurationListItem';
 import { MetadataFilterTypes } from '..';
 
-export function MetadataFilterConfigurationList ({provider, onDelete, editable = true}) {
-    // const filters = React.useContext(MetadataFiltersContext);
+export function MetadataFilterConfigurationList ({provider, editable = true}) {
 
     return (
         <MetadataFilters providerId={provider.resourceId} types={MetadataFilterTypes}>

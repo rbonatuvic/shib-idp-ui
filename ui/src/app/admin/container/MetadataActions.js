@@ -1,6 +1,6 @@
 import React from 'react';
 import { DeleteConfirmation } from '../../core/components/DeleteConfirmation';
-import { useMetadataEntity } from '../../metadata/hooks/api';
+import { useMetadataActivator, useMetadataEntity } from '../../metadata/hooks/api';
 
 import { NotificationContext, createNotificationAction } from '../../notifications/hoc/Notifications';
 
@@ -8,16 +8,15 @@ export function MetadataActions ({type, children}) {
 
     const { dispatch } = React.useContext(NotificationContext);
 
-    const { del, put, response } = useMetadataEntity(type, {
+    const { del, response } = useMetadataEntity(type, {
         cachePolicy: 'no-cache'
     });
 
+    const activator = useMetadataActivator(type);
+
     async function enableEntity(entity, enabled, cb = () => {}) {
-        await put(`/${type === 'source' ? entity.id : entity.resourceId}`, {
-            ...entity,
-            [type === 'source' ? 'serviceEnabled' : 'enabled']: enabled
-        });
-        if (response.ok) {
+        await activator.patch(`/${type === 'source' ? entity.id : entity.resourceId}/${enabled ? 'enable' : 'disable'}`);
+        if (activator?.response.ok) {
             dispatch(createNotificationAction(
                 `Metadata ${type} has been ${enabled ? 'enabled' : 'disabled'}.`
             ));

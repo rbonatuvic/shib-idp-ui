@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMetadataFilters } from '../../../hooks/api';
+import { useMetadataFilters, useFilterActivator } from '../../../hooks/api';
 import { DeleteConfirmation } from '../../../../core/components/DeleteConfirmation';
 import { NotificationContext, createNotificationAction } from '../../../../notifications/hoc/Notifications';
 
@@ -10,6 +10,10 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
     const { dispatch } = React.useContext(NotificationContext);
 
     const { put, del, get, response, loading } = useMetadataFilters(providerId, {
+        cachePolicy: 'no-cache'
+    });
+
+    const { patch } = useFilterActivator(providerId, {
         cachePolicy: 'no-cache'
     });
 
@@ -33,7 +37,7 @@ export function MetadataFilters ({ providerId, types = [], filters, children }) 
     }
 
     async function enableFilter(filter, enabled) {
-        await put(`/${filter.resourceId}`, {
+        await patch(`/${filter.resourceId}/${enabled ? 'enable' : 'disable'}`, {
             ...filter,
             filterEnabled: enabled
         });
