@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -31,7 +32,8 @@ public interface EntityDescriptorService {
      * @throws ForbiddenException If user is unauthorized to perform this operation
      * @throws EntityIdExistsException If any EntityDescriptor already exists with the same EntityId
      */
-    EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, EntityIdExistsException;
+    EntityDescriptorRepresentation createNew(EntityDescriptor ed)
+                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException;
 
     /**
      * @param edRepresentation Incoming representation to save
@@ -39,7 +41,8 @@ public interface EntityDescriptorService {
      * @throws ForbiddenException If user is unauthorized to perform this operation
      * @throws EntityIdExistsException If the entity already exists
      */
-    EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityIdExistsException;
+    EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation)
+                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException;
     
     /**
      * Map from opensaml implementation of entity descriptor model to front-end data representation of entity descriptor
@@ -93,13 +96,14 @@ public interface EntityDescriptorService {
     Map<String, Object> getRelyingPartyOverridesRepresentationFromAttributeList(List<Attribute> attributeList);
 
     /**
-     * @param edRepresentation Incoming representation to save
-     * @return EntityDescriptorRepresentation
-     * @throws ForbiddenException If user is unauthorized to perform this operation
-     * @throws EntityIdExistsException If the entity already exists
-     * @throws ConcurrentModificationException If the entity was already modified by another user
+     * @throws ForbiddenException If the user is not permitted to perform the action
+     * @throws EntityNotFoundException If the entity doesn't already exist in the database
+     * @throws ConcurrentModificationException IF the entity is being modified in another session
+     * @throws InvalidPatternMatchException If the entity id or the ACS location urls don't match the supplied regex
      */
-    EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException;
+    EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation)
+                    throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException,
+                    InvalidPatternMatchException;
 
     /**
      * Update an instance of entity descriptor with information from the front-end representation

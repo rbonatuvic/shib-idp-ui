@@ -1,4 +1,4 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers
+package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestMetadataResolverValidationConfiguration
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,8 +17,8 @@ class MetadataResolverValidationServiceConfigurationTests extends Specification 
     MetadataResolverValidationService metadataResolverValidationServiceNoValidators
 
     @Autowired
-    @Qualifier("metadataResolverValidationServiceOneValidator")
-    MetadataResolverValidationService metadataResolverValidationServiceOneValidator
+    @Qualifier("metadataResolverValidationService")
+    MetadataResolverValidationService metadataResolverValidationService
 
     def "Validation service with no validators"() {
         expect:
@@ -27,6 +27,6 @@ class MetadataResolverValidationServiceConfigurationTests extends Specification 
 
     def "Validation service with one validator"() {
         expect:
-        !metadataResolverValidationServiceOneValidator.noValidatorsConfigured()
+        !metadataResolverValidationService.noValidatorsConfigured()
     }
 }

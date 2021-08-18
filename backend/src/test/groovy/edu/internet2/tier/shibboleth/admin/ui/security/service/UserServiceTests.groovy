@@ -1,61 +1,46 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-import javax.persistence.EntityManager
-
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
-import org.springframework.context.annotation.PropertySource
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
-
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-
-import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
-import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
-import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import spock.lang.Specification
+
+import javax.persistence.EntityManager
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @DataJpaTest
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration, LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext
-@ActiveProfiles(["test", "local"])
+@ActiveProfiles(["test", "us-test"])
 @ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.configuration }")
 class UserServiceTests extends Specification {
     
@@ -106,17 +91,17 @@ class UserServiceTests extends Specification {
     @Rollback
     def "When creating user, user is set to the correct group"() {
         given:
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
         
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
-        def User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
         user.setGroup(gb)
         
         when:        
-        def User result = userService.save(user)
+        User result = userService.save(user)
         
         then:
         result.groupId == "testingGroupBBB"
@@ -124,12 +109,12 @@ class UserServiceTests extends Specification {
         result.userGroups.size() == 1
         
         // Raw check that the DB is correct for ownership
-        def Set<Ownership> users = ownershipRepository.findUsersByOwner(gb)
+        Set<Ownership> users = ownershipRepository.findUsersByOwner(gb)
         users.size() == 1
-        users.getAt(0).ownedId == "someUser"
+        users[0].ownedId == "someUser"
         
         // Validate that loading the group has the correct list as well
-        Group g = groupService.find("testingGroupBBB");
+        Group g = groupService.find("testingGroupBBB")
         g.ownedItems.size() == 1
     }
 
@@ -141,19 +126,19 @@ class UserServiceTests extends Specification {
         ga.setName("Group A")
         ga = groupService.createGroup(ga)
         
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
         
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
-        def User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
+        User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
         user.setGroup(gb)
-        def User userInB = userService.save(user)
+        User userInB = userService.save(user)
         
         when:
         userInB.setGroupId("testingGroup") // changing groups will happen by updating the user's groupid (from the ui)
-        def User result = userService.save(userInB)
+        User result = userService.save(userInB)
                 
         then:
         result.groupId == "testingGroup"
@@ -161,19 +146,19 @@ class UserServiceTests extends Specification {
         result.userGroups.size() == 1
         
         // Raw check that the DB is correct for ownership
-        def Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
+        Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
         users.size() == 1
-        users.getAt(0).ownedId == "someUser"
+        users[0].ownedId == "someUser"
         
         // check db is correct for the previous group as well
-        def Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
+        Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
         users2.size() == 0
 
         // Validate that loading the group has the correct list as well
-        Group g = groupService.find("testingGroup");
+        Group g = groupService.find("testingGroup")
         g.ownedItems.size() == 1
         
-        Group g2 = groupService.find("testingGroupBBB");
+        Group g2 = groupService.find("testingGroupBBB")
         g2.ownedItems.size() == 0
     }
         
@@ -186,16 +171,16 @@ class UserServiceTests extends Specification {
         ga = groupService.createGroup(ga)
         
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
-        def User user = new User(username: "someUser", firstName: "Fred", lastName: "Flintstone", roles:[userRole.get()], password: "foo")
+        User user = new User(username: "someUser", firstName: "Fred", lastName: "Flintstone", roles:[userRole.get()], password: "foo")
         user.setGroup(ga)
         userService.save(user)
         
         when:
-        def User flintstoneUser = userRepository.findByUsername("someUser").get()
+        User flintstoneUser = userRepository.findByUsername("someUser").get()
         flintstoneUser.setFirstName("Wilma")
         flintstoneUser.setGroupId("testingGroup")
         
-        def User result = userService.save(flintstoneUser)
+        User result = userService.save(flintstoneUser)
                 
         then:
         result.groupId == "testingGroup"
@@ -212,7 +197,7 @@ class UserServiceTests extends Specification {
         ga.setName("Group A")
         ga = groupService.createGroup(ga)
         
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb = groupService.createGroup(gb)
@@ -237,16 +222,16 @@ class UserServiceTests extends Specification {
         result.userGroups.size() == 2
         
         // Raw check that the DB is correct for ownership
-        def Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
+        Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
         users.size() == 1
-        users.getAt(0).ownedId == "someUser"
+        users[0].ownedId == "someUser"
         
-        def Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
+        Set<Ownership> users2 = ownershipRepository.findUsersByOwner(gb)
         users2.size() == 1
-        users2.getAt(0).ownedId == "someUser"
+        users2[0].ownedId == "someUser"
         
         when:
-        def userFromDb = userRepository.findById(result.id).get();
+        def userFromDb = userRepository.findById(result.id).get()
         
         then:
         userFromDb.getUserGroups().size() == 2
@@ -259,9 +244,10 @@ class UserServiceTests extends Specification {
     }
     
     @TestConfiguration
-    @Profile("local")
+    @Profile("us-test")
     static class LocalConfig {
         @Bean
+        @Primary
         GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
                 it.groupRepository = repo

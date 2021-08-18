@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
@@ -34,7 +35,7 @@ import spock.lang.Specification
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext
-@ActiveProfiles(["local"])
+@ActiveProfiles(["gs-test"])
 class GroupServiceTests extends Specification {
     @Autowired
     GroupServiceForTesting groupService
@@ -48,12 +49,6 @@ class GroupServiceTests extends Specification {
     @Transactional
     def setup() {
         groupService.ensureAdminGroupExists()
-//        Group g = new Group()
-//        g.setResourceId("twitter")
-//        g.setName("twitter")
-//        // This is valid for a url with "twitter" in it
-//        g.setValidationRegex("")
-//        g = groupService.createGroup(g)
 
         if (roleRepository.count() == 0) {
             def roles = [new Role().with {
@@ -132,9 +127,10 @@ class GroupServiceTests extends Specification {
     }
 
     @TestConfiguration
-    @Profile("local")
+    @Profile("gs-test")
     static class LocalConfig {
         @Bean
+        @Primary
         GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
                 it.groupRepository = repo

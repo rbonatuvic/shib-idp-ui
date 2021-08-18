@@ -1,6 +1,9 @@
-package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers;
+package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator;
 
-public class ResourceBackedMetadataResolverValidator implements MetadataResolverValidator<ResourceBackedMetadataResolver> {
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver;
+
+public class ResourceBackedIMetadataResolverValidator implements IMetadataResolverValidator<ResourceBackedMetadataResolver> {
 
     @Override
     public boolean supports(MetadataResolver resolver) {
