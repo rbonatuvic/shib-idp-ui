@@ -5,7 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidUrlMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
@@ -73,13 +73,13 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptor ed)
-                    throws ForbiddenException, EntityIdExistsException, InvalidUrlMatchException {
+                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException {
         return createNew(createRepresentationFromDescriptor(ed));
     }
     
     @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, EntityIdExistsException, InvalidUrlMatchException {
+                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
@@ -368,7 +368,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRep)
-                    throws ForbiddenException, EntityNotFoundException, InvalidUrlMatchException {
+                    throws ForbiddenException, EntityNotFoundException, InvalidPatternMatchException {
         EntityDescriptor existingEd = entityDescriptorRepository.findByResourceId(edRep.getId());
         if (existingEd == null) {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
@@ -397,17 +397,17 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
     }
 
-    private void validateEntityIdAndACSUrls(EntityDescriptorRepresentation edRep) throws InvalidUrlMatchException {
+    private void validateEntityIdAndACSUrls(EntityDescriptorRepresentation edRep) throws InvalidPatternMatchException {
         // Check the entity id first
         if (!groupService.doesStringMatchGroupPattern(edRep.getIdOfOwner(), edRep.getEntityId())) {
-            throw new InvalidUrlMatchException("EntityId is not a pattern match to the group");
+            throw new InvalidPatternMatchException("EntityId is not a pattern match to the group");
         }
 
         // Check the ACS locations
         if (edRep.getAssertionConsumerServices() != null && edRep.getAssertionConsumerServices().size() > 0) {
             for (AssertionConsumerServiceRepresentation acs : edRep.getAssertionConsumerServices()) {
                 if (!groupService.doesStringMatchGroupPattern(edRep.getIdOfOwner(), acs.getLocationUrl())) {
-                    throw new InvalidUrlMatchException(
+                    throw new InvalidPatternMatchException(
                                     "ACS location [ " + acs.getLocationUrl() + " ] is not a pattern match to the group");
                 }
             }

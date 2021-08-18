@@ -6,7 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidUrlMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -33,7 +33,7 @@ public interface EntityDescriptorService {
      * @throws EntityIdExistsException If any EntityDescriptor already exists with the same EntityId
      */
     EntityDescriptorRepresentation createNew(EntityDescriptor ed)
-                    throws ForbiddenException, EntityIdExistsException, InvalidUrlMatchException;
+                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException;
 
     /**
      * @param edRepresentation Incoming representation to save
@@ -42,7 +42,7 @@ public interface EntityDescriptorService {
      * @throws EntityIdExistsException If the entity already exists
      */
     EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, EntityIdExistsException, InvalidUrlMatchException;
+                    throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException;
     
     /**
      * Map from opensaml implementation of entity descriptor model to front-end data representation of entity descriptor
@@ -99,10 +99,11 @@ public interface EntityDescriptorService {
      * @throws ForbiddenException If the user is not permitted to perform the action
      * @throws EntityNotFoundException If the entity doesn't already exist in the database
      * @throws ConcurrentModificationException IF the entity is being modified in another session
-     * @throws InvalidUrlMatchException If the entity id or the ACS location urls don't match the supplied regex
+     * @throws InvalidPatternMatchException If the entity id or the ACS location urls don't match the supplied regex
      */
     EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation)
-                    throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException, InvalidUrlMatchException;
+                    throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException,
+                    InvalidPatternMatchException;
 
     /**
      * Update an instance of entity descriptor with information from the front-end representation

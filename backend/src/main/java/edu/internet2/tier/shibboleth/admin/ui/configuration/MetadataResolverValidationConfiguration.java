@@ -11,8 +11,8 @@ import java.util.List;
 @Configuration
 public class MetadataResolverValidationConfiguration {
 
-    @Bean ResourceBackedIMetadataResolverValidator resourceBackedMetadataResolverValidator() {
-        return new ResourceBackedIMetadataResolverValidator();
+    @Bean DurationMetadataResolverValidator durationMetadataResolverValidator() {
+        return new DurationMetadataResolverValidator();
     }
 
     @Bean DynamicHttpMetadataResolverValidator dynamicHttpMetadataResolverValidator(IGroupService groupService, UserService userService) {
@@ -30,7 +30,7 @@ public class MetadataResolverValidationConfiguration {
         return new MetadataResolverValidationService(IMetadataResolverValidators);
     }
 
-    @Bean DurationMetadataResolverValidator durationMetadataResolverValidator() {
-        return new DurationMetadataResolverValidator();
+    @Bean ResourceBackedIMetadataResolverValidator resourceBackedMetadataResolverValidator() {
+        return new ResourceBackedIMetadataResolverValidator();
     }
 }

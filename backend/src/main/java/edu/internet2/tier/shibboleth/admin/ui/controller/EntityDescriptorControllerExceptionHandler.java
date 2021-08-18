@@ -3,7 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
-import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidUrlMatchException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +43,8 @@ public class EntityDescriptorControllerExceptionHandler extends ResponseEntityEx
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN, e.getMessage()));
     }
 
-    @ExceptionHandler({ InvalidUrlMatchException.class })
-    public ResponseEntity<?> handleInvalidUrlMatchException(InvalidUrlMatchException e, WebRequest request) {
+    @ExceptionHandler({ InvalidPatternMatchException.class })
+    public ResponseEntity<?> handleInvalidUrlMatchException(InvalidPatternMatchException e, WebRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 }

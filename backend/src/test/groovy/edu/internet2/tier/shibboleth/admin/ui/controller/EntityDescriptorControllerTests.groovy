@@ -11,7 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRe
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
-import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidUrlMatchException
+import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
@@ -24,35 +24,18 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
-import edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
-
-import org.skyscreamer.jsonassert.Customization
-import org.skyscreamer.jsonassert.JSONAssert
-import org.skyscreamer.jsonassert.JSONCompareMode
-import org.skyscreamer.jsonassert.ValueMatcher
-import org.skyscreamer.jsonassert.comparator.CustomComparator
-import org.skyscreamer.jsonassert.comparator.JSONCompareUtil
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.support.RootBeanDefinition
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Profile
-import org.springframework.context.support.StaticApplicationContext
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
@@ -65,16 +48,9 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver
 import org.springframework.web.util.NestedServletException
-import spock.lang.Ignore
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
-
-import java.time.LocalDateTime
 
 import javax.persistence.EntityManager
 
@@ -341,7 +317,7 @@ class EntityDescriptorControllerTests extends Specification {
             mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(edRepJson))
             false
         } catch (NestedServletException expected) {
-            expected.getCause() instanceof InvalidUrlMatchException
+            expected.getCause() instanceof InvalidPatternMatchException
         }
     }
 
