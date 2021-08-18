@@ -34,7 +34,7 @@ import spock.lang.Specification
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext
-@ActiveProfiles(["local"])
+@ActiveProfiles(["gs-test"])
 class GroupServiceTests extends Specification {
     @Autowired
     GroupServiceForTesting groupService
@@ -126,7 +126,7 @@ class GroupServiceTests extends Specification {
     }
 
     @TestConfiguration
-    @Profile("local")
+    @Profile("gs-test")
     static class LocalConfig {
         @Bean
         GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
