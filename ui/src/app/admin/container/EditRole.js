@@ -27,7 +27,7 @@ export function EditRole() {
 
     async function save(role) {
         let toast;
-        const resp = await put(``, role);
+        const resp = await put(`/${role.resourceId}`, role);
         if (response.ok) {
             gotoDetail({ refresh: true });
             toast = createNotificationAction(`Updated role successfully.`, NotificationTypes.SUCCESS);

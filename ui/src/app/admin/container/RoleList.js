@@ -46,20 +46,22 @@ export function RoleList({ roles, onDelete }) {
                                         <tbody>
                                             {(roles?.length > 0) ? roles.map((role, i) =>
                                                 <tr key={i}>
-                                                    <td>{role.name}</td>
+                                                    <td className="align-middle">{role.name}</td>
                                                     <td className="text-right">
-                                                        <Link to={`../roles/${role.resourceId}/edit`} className="btn btn-link text-primary">
-                                                            <FontAwesomeIcon icon={faEdit} size="lg" />
-                                                            <span className="sr-only">
-                                                                <Translate value="action.edit">Edit</Translate>
-                                                            </span>
-                                                        </Link>
-                                                        <Button variant="link" className="text-danger" onClick={() => block(() => remove(role.resourceId))}>
-                                                            <FontAwesomeIcon icon={faTrash} size="lg" />
-                                                            <span className="sr-only">
-                                                                <Translate value="action.delete">Delete</Translate>
-                                                            </span>
-                                                        </Button>
+                                                        <React.Fragment>
+                                                            <Link disabled={role.name === 'ROLE_ADMIN'} to={`../roles/${role.resourceId}/edit`} className={`btn btn-link text-primary ${role.name === 'ROLE_ADMIN' ? 'disabled' : ''}`}>
+                                                                <FontAwesomeIcon icon={faEdit} size="lg" />
+                                                                <span className="sr-only">
+                                                                    <Translate value="action.edit">Edit</Translate>
+                                                                </span>
+                                                            </Link>
+                                                            <Button disabled={role.name === 'ROLE_ADMIN'} variant="link" className="text-danger" onClick={() => block(() => remove(role.resourceId))}>
+                                                                <FontAwesomeIcon icon={faTrash} size="lg" />
+                                                                <span className="sr-only">
+                                                                    <Translate value="action.delete">Delete</Translate>
+                                                                </span>
+                                                            </Button>
+                                                        </React.Fragment>
                                                     </td>
                                                 </tr>
                                             ) : <tr>
