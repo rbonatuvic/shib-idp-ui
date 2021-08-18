@@ -16,6 +16,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -375,6 +376,9 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         }
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
+        }
+        if (StringUtils.isEmpty(edRep.getIdOfOwner())) {
+            edRep.setIdOfOwner(StringUtils.isNotEmpty(existingEd.getIdOfOwner()) ? existingEd.getIdOfOwner() :  userService.getCurrentUserGroup().getOwnerId());
         }
         if (!userService.isAuthorizedFor(existingEd)) {
             throw new ForbiddenException();
