@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.DirtiesContext
@@ -129,6 +130,7 @@ class GroupServiceTests extends Specification {
     @Profile("gs-test")
     static class LocalConfig {
         @Bean
+        @Primary
         GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
                 it.groupRepository = repo

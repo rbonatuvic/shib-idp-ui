@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.security.core.Authentication
@@ -64,7 +65,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @DirtiesContext
-@ActiveProfiles(["local"])
+@ActiveProfiles(["edc-test"])
 class EntityDescriptorControllerTests extends Specification {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
@@ -796,9 +797,10 @@ class EntityDescriptorControllerTests extends Specification {
     }
     
     @org.springframework.boot.test.context.TestConfiguration
-    @Profile(value = "local")
+    @Profile(value = "edc-test")
     static class LocalConfig {
         @Bean
+        @Primary
         GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
                 it.groupRepository = repo
