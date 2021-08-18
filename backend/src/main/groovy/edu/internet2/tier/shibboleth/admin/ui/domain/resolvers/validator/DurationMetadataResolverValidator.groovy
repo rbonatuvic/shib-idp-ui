@@ -5,7 +5,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.util.DurationUtility
 
-class DurationIMetadataResolverValidator implements IMetadataResolverValidator {
+class DurationMetadataResolverValidator implements IMetadataResolverValidator {
     boolean supports(MetadataResolver resolver) {
         return resolver.hasProperty('dynamicMetadataResolverAttributes') || resolver.hasProperty('reloadableMetadataResolverAttributes')
     }

@@ -30,7 +30,7 @@ public class MetadataResolverValidationConfiguration {
         return new MetadataResolverValidationService(IMetadataResolverValidators);
     }
 
-    @Bean DurationIMetadataResolverValidator durationMetadataResolverValidator() {
-        return new DurationIMetadataResolverValidator();
+    @Bean DurationMetadataResolverValidator durationMetadataResolverValidator() {
+        return new DurationMetadataResolverValidator();
     }
 }
