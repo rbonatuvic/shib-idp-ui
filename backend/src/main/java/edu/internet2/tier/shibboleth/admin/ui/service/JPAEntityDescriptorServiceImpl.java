@@ -399,14 +399,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     private void validateEntityIdAndACSUrls(EntityDescriptorRepresentation edRep) throws InvalidUrlMatchException {
         // Check the entity id first
-        if (!groupService.doesUrlMatchGroupPattern(edRep.getIdOfOwner(), edRep.getEntityId())) {
+        if (!groupService.doesStringMatchGroupPattern(edRep.getIdOfOwner(), edRep.getEntityId())) {
             throw new InvalidUrlMatchException("EntityId is not a pattern match to the group");
         }
 
         // Check the ACS locations
         if (edRep.getAssertionConsumerServices() != null && edRep.getAssertionConsumerServices().size() > 0) {
             for (AssertionConsumerServiceRepresentation acs : edRep.getAssertionConsumerServices()) {
-                if (!groupService.doesUrlMatchGroupPattern(edRep.getIdOfOwner(), acs.getLocationUrl())) {
+                if (!groupService.doesStringMatchGroupPattern(edRep.getIdOfOwner(), acs.getLocationUrl())) {
                     throw new InvalidUrlMatchException(
                                     "ACS location [ " + acs.getLocationUrl() + " ] is not a pattern match to the group");
                 }

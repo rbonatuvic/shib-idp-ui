@@ -23,5 +23,5 @@ public interface IGroupService {
 
     Group updateGroup(Group g) throws EntityNotFoundException, InvalidGroupRegexException;
 
-    boolean doesUrlMatchGroupPattern(String groupId, String uri);
+    boolean doesStringMatchGroupPattern(String groupId, String uri);
 }

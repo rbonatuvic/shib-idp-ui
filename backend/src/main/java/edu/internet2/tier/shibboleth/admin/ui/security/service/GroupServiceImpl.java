@@ -61,7 +61,7 @@ public class GroupServiceImpl implements IGroupService {
      * Designed usage is that this would be a URL or an entity Id (which is a URI that does not have to follow the URL conventions)
      */
     @Override
-    public boolean doesUrlMatchGroupPattern(String groupId, String uri) {
+    public boolean doesStringMatchGroupPattern(String groupId, String uri) {
         Group group = find(groupId);
         return Pattern.matches(group.getValidationRegex(), uri);
     }

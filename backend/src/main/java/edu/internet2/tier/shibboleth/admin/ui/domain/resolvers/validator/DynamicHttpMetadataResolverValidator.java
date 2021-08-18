@@ -7,9 +7,11 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DynamicHttpMetadataResolverValidator implements IMetadataResolverValidator {
-    @Autowired IGroupService groupService;
+    @Autowired
+    private IGroupService groupService;
 
-    @Autowired UserService userService;
+    @Autowired
+    private UserService userService;
 
     public DynamicHttpMetadataResolverValidator(IGroupService groupService, UserService userService) {
         this.groupService = groupService;
@@ -22,7 +24,7 @@ public class DynamicHttpMetadataResolverValidator implements IMetadataResolverVa
         DynamicHttpMetadataResolver dynamicResolver = (DynamicHttpMetadataResolver) resolver;
         if ("MetadataQueryProtocol".equals(dynamicResolver.getMetadataRequestURLConstructionScheme().getType())) {
             String url = dynamicResolver.getMetadataRequestURLConstructionScheme().getContent();
-            if (!groupService.doesUrlMatchGroupPattern(userService.getCurrentUser().getGroupId(), url)) {
+            if (!groupService.doesStringMatchGroupPattern(userService.getCurrentUser().getGroupId(), url)) {
                 return new ValidationResult("Metadata Query Protocol URL not acceptable for user's group");
             }
         }
