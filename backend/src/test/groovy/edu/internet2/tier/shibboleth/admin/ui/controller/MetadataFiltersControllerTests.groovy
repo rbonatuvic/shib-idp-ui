@@ -13,6 +13,11 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
+import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.FilterService
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
@@ -24,8 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
 import org.w3c.dom.Document
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -53,6 +60,15 @@ class MetadataFiltersControllerTests extends Specification {
     @Autowired
     FilterService filterService
 
+    @Autowired
+    IGroupService groupService
+
+    @Autowired
+    RoleRepository roleRepository
+
+    @Autowired
+    UserService userService
+
     TestObjectGenerator testObjectGenerator
     RandomGenerator randomGenerator
     ObjectMapper mapper
@@ -67,7 +83,9 @@ class MetadataFiltersControllerTests extends Specification {
 
     static BASE_URI = '/api/MetadataResolvers'
 
+    @Transactional
     def setup() {
+        groupService.ensureAdminGroupExists()
         randomGenerator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
         mapper = new ObjectMapper()
@@ -76,6 +94,8 @@ class MetadataFiltersControllerTests extends Specification {
         controller = new MetadataFiltersController (
                 repository: metadataResolverRepository,
                 filterRepository: metadataFilterRepository,
+                groupService: groupService,
+                userService: userService,
                 metadataResolverService: new MetadataResolverService() {
                     @Override
                     void reloadFilters(String metadataResolverName) {
@@ -94,8 +114,33 @@ class MetadataFiltersControllerTests extends Specification {
                     it
                 }
         )
-
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+
+        roleRepository.deleteAll()
+        roleRepository.flush()
+        if (roleRepository.count() == 0) {
+            def roles = [new Role().with {
+                name = 'ROLE_ADMIN'
+                it
+            }]
+            roles.each {
+                roleRepository.save(it)
+            }
+        }
+        roleRepository.flush()
+
+        def users = [new User().with {
+            username = 'admin'
+            password = '{noop}adminpass'
+            firstName = 'Joe'
+            lastName = 'Doe'
+            emailAddress = 'joe@institution.edu'
+            roles.add(roleRepository.findByName('ROLE_ADMIN').get())
+            it
+        }]
+        users.each {
+            it = userService.save(it)
+        }
     }
 
     def "FilterController.getAll gets all available types of filters"() {
@@ -139,6 +184,7 @@ class MetadataFiltersControllerTests extends Specification {
     }
 
     @Unroll
+    @WithMockUser(value = "admin", roles = ["ADMIN"])
     def "FilterController.create creates the desired filter (filterType: #filterType)"(String filterType) {
         given:
         def randomFilter = testObjectGenerator.buildRandomFilterOfType(filterType)
@@ -161,10 +207,9 @@ class MetadataFiltersControllerTests extends Specification {
         def postedJsonBody = expectedJsonBody - ~/"id":.*?,/ // remove the "id:<foo>,"
 
         when:
-        def result = mockMvc.perform(
-                post("$BASE_URI/foo/Filters")
-                        .contentType(APPLICATION_JSON)
-                        .content(postedJsonBody))
+        def result = mockMvc.perform(post("$BASE_URI/foo/Filters")
+                                        .contentType(APPLICATION_JSON)
+                                        .content(postedJsonBody))
 
         then:
         println postedJsonBody
@@ -182,6 +227,7 @@ class MetadataFiltersControllerTests extends Specification {
     }
 
     @Unroll
+    @WithMockUser(value = "admin", roles = ["ADMIN"])
     def "FilterController.update updates the target #filterType filter as desired"(String filterType) {
         given:
         def originalFilter = testObjectGenerator.buildRandomFilterOfType(filterType)

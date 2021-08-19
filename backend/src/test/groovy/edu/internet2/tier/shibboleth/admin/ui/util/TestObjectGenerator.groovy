@@ -275,6 +275,7 @@ class TestObjectGenerator {
             it.setEntityAttributesFilterTarget(entityAttributesFilter.entityAttributesFilterTarget)
             it.setAttributes(entityAttributesFilter.attributes)
             it.intoTransientRepresentation()
+            it.setEntityAttributesFilterTarget(entityAttributesFilter.getEntityAttributesFilterTarget())
             it
         }
     }
@@ -285,6 +286,7 @@ class TestObjectGenerator {
             it.resourceId = nameIdFormatFilter.resourceId
             it.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
             it.formats = nameIdFormatFilter.formats
+            it.setNameIdFormatFilterTarget(nameIdFormatFilter.getNameIdFormatFilterTarget())
             it
         }
     }

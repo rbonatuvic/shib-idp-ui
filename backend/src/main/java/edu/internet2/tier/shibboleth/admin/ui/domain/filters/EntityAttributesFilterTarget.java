@@ -1,15 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain.filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OrderColumn;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +16,7 @@ import java.util.List;
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
 @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
-public class EntityAttributesFilterTarget extends AbstractAuditable {
-    public enum EntityAttributesFilterTargetType {
-        ENTITY, CONDITION_SCRIPT, CONDITION_REF, REGEX
-    }
+public class EntityAttributesFilterTarget extends AbstractAuditable implements IFilterTarget {
 
     private EntityAttributesFilterTargetType entityAttributesFilterTargetType;
 
@@ -34,12 +29,18 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
         return entityAttributesFilterTargetType;
     }
 
-    public void setEntityAttributesFilterTargetType(EntityAttributesFilterTargetType entityAttributesFilterTarget) {
-        this.entityAttributesFilterTargetType = entityAttributesFilterTarget;
+    @Override
+    @JsonIgnore
+    public String getTargetTypeValue() {
+        return entityAttributesFilterTargetType.name();
     }
 
     public List<String> getValue() {
         return value;
+    }
+
+    public void setEntityAttributesFilterTargetType(EntityAttributesFilterTargetType entityAttributesFilterTarget) {
+        this.entityAttributesFilterTargetType = entityAttributesFilterTarget;
     }
 
     public void setSingleValue(String value) {
@@ -58,5 +59,9 @@ public class EntityAttributesFilterTarget extends AbstractAuditable {
                 "entityAttributesFilterTargetType=" + entityAttributesFilterTargetType +
                 ", value=" + value +
                 '}';
+    }
+
+    public enum EntityAttributesFilterTargetType {
+        ENTITY, CONDITION_SCRIPT, CONDITION_REF, REGEX
     }
 }

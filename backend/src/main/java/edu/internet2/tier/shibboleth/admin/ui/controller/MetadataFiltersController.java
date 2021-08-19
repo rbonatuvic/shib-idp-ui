@@ -1,6 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.ITargetable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
@@ -234,10 +235,10 @@ public class MetadataFiltersController {
      * IF the filter is of type "EntityAttributes" AND the target is "ENTITY" THEN check each of the values (which are entityIds)
      */
     private void validateFilterOrThrowHttp400(MetadataFilter createdFilter) {
-        if ("EntityAttributes".equals(createdFilter.getType())) {
-            EntityAttributesFilter filter = (EntityAttributesFilter) createdFilter;
-            if ("ENTITY".equals(filter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType())) {
-                for (String entityId : filter.getEntityAttributesFilterTarget().getValue()) {
+        if (createdFilter instanceof ITargetable){
+            ITargetable filter = (ITargetable) createdFilter;
+            if ("ENTITY".equals(filter.getTarget().getTargetTypeValue())) {
+                for (String entityId : filter.getTarget().getValue()) {
                     if (!groupService.doesStringMatchGroupPattern(userService.getCurrentUser().getGroupId(), entityId)) {
                         throw HTTP_400_BAD_REQUEST_EXCEPTION.get();
                     }
