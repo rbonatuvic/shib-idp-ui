@@ -82,7 +82,6 @@ public class User extends AbstractAuditable implements Owner, Ownable {
      * @return the initial implementation, while supporting a user having multiple groups in the db side, acts as if the
      * user can only belong to a single group
      */
-    @JsonIgnore
     public Group getGroup() {
         return getUserGroups().isEmpty() ? null : (Group) userGroups.toArray()[0];
     }
