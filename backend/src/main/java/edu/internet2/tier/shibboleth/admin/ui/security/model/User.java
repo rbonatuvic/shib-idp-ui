@@ -130,7 +130,8 @@ public class User extends AbstractAuditable implements Owner, Ownable {
         }
         return userGroups;
     }
-    
+
+    @JsonIgnore
     public void setGroup(Group g) {
         groupId = g.getResourceId();
         userGroups.clear();
