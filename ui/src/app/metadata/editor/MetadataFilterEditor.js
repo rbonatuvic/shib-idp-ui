@@ -13,10 +13,12 @@ import { MetadataEditorNav } from './MetadataEditorNav';
 import { useMetadataFilters } from '../hooks/api';
 import { MetadataFilterContext } from '../hoc/MetadataFilterSelector';
 import { checkChanges } from '../hooks/utility';
+import { useUserGroup } from '../../core/user/UserContext';
 
 export function MetadataFilterEditor({children, onNavigate, block}) {
 
     const { id, section } = useParams();
+    const group = useUserGroup();
 
     const { data } = useMetadataFilters(id, {}, []);
     const definition = React.useContext(MetadataDefinitionContext);
@@ -32,7 +34,7 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
         block(checkChanges(metadata, changes.formData));
     };
 
-    const validator = definition.validator(data, current);
+    const validator = definition.validator(data, current, group);
 
     const warnings = definition.warnings && definition.warnings(metadata);
 

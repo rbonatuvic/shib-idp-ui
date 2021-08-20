@@ -7,23 +7,33 @@ const UserContext = React.createContext();
 const { Provider, Consumer } = UserContext;
 
 const path = '/admin/users/current';
+const group = {
+    "name": "ADMIN-GROUP",
+    "resourceId": "admingroup",
+    "validationRegex": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
+    "ownerType": "GROUP",
+    "ownerId": "admingroup"
+};
 
 /*eslint-disable react-hooks/exhaustive-deps*/
 function UserProvider({ children }) {
 
     const { get, response } = useFetch(`${API_BASE_PATH}`, {
-        cacheLife: 10000,
-        cachePolicy: 'cache-first'
+        cachePolicy: 'no-cache'
     });
 
     React.useEffect(() => { loadUser() }, []);
 
     async function loadUser() {
         const user = await get(`${path}`);
-        if (response.ok) setUser(user);
+        if (response.ok) setUser({
+            ...user,
+            group
+        });
     }
 
     const [user, setUser] = React.useState({});
+
     return (
         <Provider value={user}>{children}</Provider>
     );
@@ -50,5 +60,24 @@ function useIsAdminOrInGroup() {
     return isAdmin || isInGroup;
 }
 
+function useUserGroup() {
+    const user = useCurrentUser();
+    return user?.group;
+}
 
-export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin, useIsAdminOrInGroup };
+function useUserGroupRegexValidator () {
+    const user = useCurrentUser();
+    return user?.group?.validationRegex;
+}
+
+
+export {
+    UserContext,
+    UserProvider,
+    Consumer as UserConsumer,
+    useCurrentUser,
+    useIsAdmin,
+    useIsAdminOrInGroup,
+    useUserGroupRegexValidator,
+    useUserGroup
+};

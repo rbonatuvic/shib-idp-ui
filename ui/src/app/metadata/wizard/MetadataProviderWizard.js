@@ -12,10 +12,12 @@ import { Prompt, useHistory } from 'react-router';
 import { removeNull } from '../../core/utility/remove_null';
 
 import { useNotificationDispatcher, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
+import { useUserGroup } from '../../core/user/UserContext';
 
 export function MetadataProviderWizard({onRestart}) {
 
     const { data } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
+    const group = useUserGroup();
 
     const { post, loading, response } = useMetadataEntity('provider');
     const history = useHistory();
@@ -51,7 +53,7 @@ export function MetadataProviderWizard({onRestart}) {
         // console.log(form);
     }
 
-    const validator = definition.validator(data);
+    const validator = definition.validator(data, null, group);
 
     async function save() {
         const body = removeNull(definition.parser(metadata), true);

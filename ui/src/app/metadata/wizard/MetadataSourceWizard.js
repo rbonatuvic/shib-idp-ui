@@ -18,12 +18,14 @@ import { removeNull } from '../../core/utility/remove_null';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
+import { useUserGroup } from '../../core/user/UserContext';
 
 
 export function MetadataSourceWizard ({ onShowNav }) {
 
     const { post, loading, response } = useMetadataEntity('source');
     const history = useHistory();
+    const group = useUserGroup();
 
     const { data } = useMetadataSources({
         cachePolicy: 'no-cache'
@@ -72,7 +74,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
 
     const [blocking, setBlocking] = React.useState(false);
 
-    const validator = definition.validator(data);
+    const validator = definition.validator(data, null, group);
     const warnings = definition.warnings && definition.warnings(metadata);
 
     return (

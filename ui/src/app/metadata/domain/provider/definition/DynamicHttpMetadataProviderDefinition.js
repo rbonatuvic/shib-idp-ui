@@ -9,8 +9,11 @@ export const DynamicHttpMetadataProviderWizard = {
     label: 'DynamicHttpMetadataProvider',
     type: 'DynamicHttpMetadataResolver',
     schema: `${API_BASE_PATH}/ui/MetadataResolver/DynamicHttpMetadataResolver`,
-    validator: (data = [], current = { resourceId: null }) => {
-        const base = BaseProviderDefinition.validator(data, current);
+    validator: (data = [], current = { resourceId: null }, group) => {
+        const base = BaseProviderDefinition.validator(data, current, group);
+
+        const pattern = group?.validationRegex ? new RegExp(group?.validationRegex) : null;
+
         return (formData, errors) => {
             const errorList = base(formData, errors);
             if (formData?.metadataRequestURLConstructionScheme['@type'] === 'Regex') {
@@ -18,6 +21,12 @@ export const DynamicHttpMetadataProviderWizard = {
                 const isValid = isValidRegex(match);
                 if (!isValid) {
                     errors.metadataRequestURLConstructionScheme.match.addError('message.invalid-regex-pattern');
+                }
+            }
+
+            if (formData?.metadataRequestURLConstructionScheme['@type'] === 'MetadataQueryProtocol') {
+                if (pattern && !pattern.test(formData?.metadataRequestURLConstructionScheme?.content)) {
+                    errors?.metadataRequestURLConstructionScheme?.content?.addError('message.group-pattern-fail');
                 }
             }
 

@@ -19,10 +19,12 @@ import { MetadataObjectContext } from '../hoc/MetadataSelector';
 import { FilterableProviders } from '../domain/provider';
 import { checkChanges } from '../hooks/utility';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
+import { useUserGroup } from '../../core/user/UserContext';
 
 export function MetadataEditor ({ current }) {
 
     const translator = useTranslator();
+    const group = useUserGroup();
 
     const { type, id, section } = useParams();
 
@@ -77,7 +79,7 @@ export function MetadataEditor ({ current }) {
 
     const [blocking, setBlocking] = React.useState(false);
 
-    const validator = definition.validator(data, current);
+    const validator = definition.validator(data, current, group);
 
     const warnings = definition.warnings && definition.warnings(metadata);
 

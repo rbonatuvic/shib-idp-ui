@@ -2,8 +2,6 @@ import defaultsDeep from "lodash/defaultsDeep";
 import API_BASE_PATH from "../../../../App.constant";
 import { BaseFilterDefinition } from "./BaseFilterDefinition";
 
-import { isValidRegex } from '../../../../core/utility/is_valid_regex';
-
 export const NameIDFilterWizard = {
     ...BaseFilterDefinition,
     uiSchema: defaultsDeep({
@@ -24,32 +22,8 @@ export const NameIDFilterWizard = {
     type: 'NameIDFormat',
     schema: `${API_BASE_PATH}/ui/NameIdFormatFilter`,
     steps: [],
-    validator: (data = [], current = { resourceId: null }) => {
-
-        const filters = current ? data.filter(s => s.resourceId !== current.resourceId) : data;
-        const names = filters.map(s => s.name);
-
-        return (formData, errors) => {
-            if (names.indexOf(formData.name) > -1) {
-                errors.name.addError('message.name-unique');
-            }
-
-            if (formData?.nameIdFormatFilterTarget?.nameIdFormatFilterTargetType === 'REGEX') {
-                const { nameIdFormatFilterTarget: { value } } = formData;
-                const isValid = isValidRegex(value[0]);
-                if (!isValid) {
-                    errors.nameIdFormatFilterTarget.value.addError('message.invalid-regex-pattern');
-                }
-            }
-
-            if (formData?.nameIdFormatFilterTarget?.nameIdFormatFilterTargetType === 'CONDITION_SCRIPT') {
-                const { nameIdFormatFilterTarget: { value } } = formData;
-                if (!value[0]) {
-                    errors.nameIdFormatFilterTarget.value.addError('message.required-for-scripts');
-                }
-            }
-            return errors;
-        }
+    validator: (data = [], current = { resourceId: null }, group) => {
+        return BaseFilterDefinition.validator(data, current, group, 'nameIdFormatFilterTarget', 'nameIdFormatFilterTargetType')
     },
     formatter: (changes) => ({
         ...changes,

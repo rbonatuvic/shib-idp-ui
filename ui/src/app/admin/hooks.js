@@ -22,9 +22,7 @@ export function useGroupUiSchema () {
 }
 
 export function useGroupUiValidator() {
-    console.log('hi')
     return (formData, errors) => {
-        console.log(formData, errors)
         if (!isNil(formData?.validationRegex)) {
             const isValid = isValidRegex(formData.validationRegex);
             if (!isValid) {

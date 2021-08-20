@@ -5,6 +5,7 @@ import defaultsDeep from 'lodash/defaultsDeep';
 import API_BASE_PATH from '../../../../App.constant';
 import {removeNull} from '../../../../core/utility/remove_null';
 import { detailedDiff } from 'deep-object-diff';
+import isNil from 'lodash/isNil';
 
 export const SourceBase = {
     label: 'Metadata Source',
@@ -18,18 +19,31 @@ export const SourceBase = {
 
     display: (changes) => changes,
 
-    validator: (data = [], current = {id: null}) => {
+    validator: (data = [], current = {id: null}, group) => {
 
         const sources = current ? data.filter(s => s.id !== current.id) : data;
         const entityIds = sources.map(s => s.entityId);
+        const pattern = group?.validationRegex ? new RegExp(group?.validationRegex) : null;
 
         return (formData, errors) => {
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
             }
 
+            if (pattern && !pattern.test(formData.entityId)) {
+                errors.entityId.addError('message.group-pattern-fail');
+            }
+
             if (formData?.serviceProviderSsoDescriptor?.nameIdFormats?.length > 0 && !formData.serviceProviderSsoDescriptor.protocolSupportEnum) {
                 errors.serviceProviderSsoDescriptor.protocolSupportEnum.addError('message.protocol-support-required')
+            }
+
+            if (Array.isArray(formData?.assertionConsumerServices)) {
+                formData.assertionConsumerServices.forEach((acs, idx) => {
+                    if (!isNil(acs?.locationUrl) && !pattern.test(acs.locationUrl)) {
+                        errors.assertionConsumerServices[idx].locationUrl.addError('message.group-pattern-fail')
+                    }
+                });
             }
 
             return errors;
