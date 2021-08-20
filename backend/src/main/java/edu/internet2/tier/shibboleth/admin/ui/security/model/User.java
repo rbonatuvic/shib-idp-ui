@@ -71,7 +71,7 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     private Set<Role> roles = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
-    @JsonIgnore
+    // @JsonIgnore
     @Transient
     private Set<Group> userGroups = new HashSet<>();
     

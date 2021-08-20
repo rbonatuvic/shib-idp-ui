@@ -7,13 +7,6 @@ const UserContext = React.createContext();
 const { Provider, Consumer } = UserContext;
 
 const path = '/admin/users/current';
-const group = {
-    "name": "ADMIN-GROUP",
-    "resourceId": "admingroup",
-    "validationRegex": "^(R\\d*\\/)?P(?:\\d+(?:\\.\\d+)?Y)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?W)?(?:\\d+(?:\\.\\d+)?D)?(?:T(?:\\d+(?:\\.\\d+)?H)?(?:\\d+(?:\\.\\d+)?M)?(?:\\d+(?:\\.\\d+)?S)?)?$",
-    "ownerType": "GROUP",
-    "ownerId": "admingroup"
-};
 
 /*eslint-disable react-hooks/exhaustive-deps*/
 function UserProvider({ children }) {
@@ -26,10 +19,7 @@ function UserProvider({ children }) {
 
     async function loadUser() {
         const user = await get(`${path}`);
-        if (response.ok) setUser({
-            ...user,
-            group
-        });
+        if (response.ok) setUser(user);
     }
 
     const [user, setUser] = React.useState({});
@@ -62,12 +52,12 @@ function useIsAdminOrInGroup() {
 
 function useUserGroup() {
     const user = useCurrentUser();
-    return user?.group;
+    return user?.userGroups[0];
 }
 
 function useUserGroupRegexValidator () {
     const user = useCurrentUser();
-    return user?.group?.validationRegex;
+    return (user?.userGroups && user.userGroups.length > 0) ? user?.userGroups[0].validationRegex : null;
 }
 
 
