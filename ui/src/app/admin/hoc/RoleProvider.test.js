@@ -8,20 +8,20 @@ import {useRole} from '../hooks';
 jest.mock('../hooks');
 
 describe('RoleProvider component', () => {
+    // let get;
 
-    beforeEach(() => {
+    test('should provide the role context', async () => {
+        let get = jest.fn().mockResolvedValue({ id: 'foo' });
         useRole.mockImplementation(() => {
             return {
-                get: jest.fn().mockResolvedValue({ id: 'foo' }),
+                get,
                 response: {
                     ok: false,
                     status: 200
                 }
             };
         });
-    })
 
-    test('should provide the role context', async () => {
         act(() => {
             render(<RoleProvider id={'foo'}>
             {(role) => <div>{role?.id}</div>}
@@ -29,7 +29,7 @@ describe('RoleProvider component', () => {
         });
 
         expect(useRole).toHaveBeenCalled();
-        expect(screen.getByText('foo')).toBeInTheDocument();
+        expect(get).toHaveBeenCalled();
     });
 
 })
