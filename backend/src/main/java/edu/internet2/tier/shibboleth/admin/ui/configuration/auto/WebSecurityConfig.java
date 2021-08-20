@@ -9,7 +9,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +36,9 @@ import javax.transaction.Transactional;
 @Configuration
 @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class WebSecurityConfig {
+
+    @Value("${shibui.roles.authenticated}")
+    private String[] acceptedAuthenticationRoles;
 
     @Value("${shibui.logout-url:/dashboard}")
     private String logoutUrl;
@@ -76,7 +78,7 @@ public class WebSecurityConfig {
                         .and()
                         .authorizeRequests()
                         .antMatchers("/unsecured/**/*").permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole(acceptedAuthenticationRoles)
                         .and()
                         .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))
                         .and()
@@ -158,4 +160,3 @@ public class WebSecurityConfig {
         };
     }
 }
-
