@@ -55,25 +55,10 @@ public class CoreShibUiConfiguration {
         return new JPAEntityServiceImpl(openSamlObjects());
     }
 
-//    @Bean
-//    public EntityDescriptorService JPAEntityDescriptorServiceImpl(UserService userService) {
-//        return new JPAEntityDescriptorServiceImpl(openSamlObjects(), jpaEntityService(), userService);
-//    }
-
-//    @Bean
-//    public FilterService jpaFilterService() {
-//        return new JPAFilterServiceImpl();
-//    }
-
     @Bean
     public FilterTargetService jpaFilterTargetService() {
         return new JPAFilterTargetServiceImpl();
     }
-
-//    @Bean
-//    public MetadataResolverService metadataResolverService() {
-//        return new JPAMetadataResolverServiceImpl();
-//    }
 
     @Bean
     public AttributeUtility attributeUtility() {
