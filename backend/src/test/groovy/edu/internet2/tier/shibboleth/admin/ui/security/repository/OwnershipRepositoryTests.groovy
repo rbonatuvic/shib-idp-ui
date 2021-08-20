@@ -83,7 +83,7 @@ class OwnershipRepositoryTests extends Specification {
     @Rollback
     def "test clearUsersGroups"() {
         when: "remove entries where the user is the owned object of a group"
-        repo.clearUsersGroups("aaa");
+        repo.clearUsersGroups("aaa")
         def result = repo.findAllGroupsForUser("aaa")
         
         then:
@@ -102,7 +102,7 @@ class OwnershipRepositoryTests extends Specification {
         }
         
         when: "remove entries where the user is the owned object of groups"
-        repo.clearUsersGroups("ccc");
+        repo.clearUsersGroups("ccc")
         result = repo.findAllGroupsForUser("ccc")
         
         then:
@@ -113,9 +113,8 @@ class OwnershipRepositoryTests extends Specification {
     def "test deleteEntriesForOwnedObject"() {
         when: "remove entries where the user is the owned object of a group"
         repo.deleteEntriesForOwnedObject(new Ownable() {
-                public String getObjectId() { return "aaa"  }
-    
-                public OwnableType getOwnableType() { OwnableType.USER }
+                String getObjectId() { return "aaa"  }
+                OwnableType getOwnableType() { OwnableType.USER }
             })
         def result = repo.findAllGroupsForUser("aaa")
         
@@ -136,10 +135,9 @@ class OwnershipRepositoryTests extends Specification {
         
         when: "remove entries where the user is the owned object of groups"
         repo.deleteEntriesForOwnedObject(new Ownable() {
-                public String getObjectId() { return "ccc"  }
-    
-                public OwnableType getOwnableType() { OwnableType.USER }
-            });
+                String getObjectId() { return "ccc"  }
+                OwnableType getOwnableType() { OwnableType.USER }
+            })
         result = repo.findAllGroupsForUser("ccc")
         
         then:
@@ -153,9 +151,8 @@ class OwnershipRepositoryTests extends Specification {
         userIds.add("bbb")
         userIds.add("ccc")
         def result = repo.findUsersByOwner(new Owner() {
-            public String getOwnerId() { return "g1" }
-            
-            public OwnerType getOwnerType() { OwnerType.GROUP }
+            String getOwnerId() { return "g1" }
+            OwnerType getOwnerType() { OwnerType.GROUP }
         })
         
         then:
@@ -167,9 +164,8 @@ class OwnershipRepositoryTests extends Specification {
         
         when:
         result = repo.findUsersByOwner(new Owner() {
-            public String getOwnerId() { return "aaa" }
-            
-            public OwnerType getOwnerType() { return OwnerType.USER }
+            String getOwnerId() { return "aaa" }
+            OwnerType getOwnerType() { return OwnerType.USER }
         })
         
         then:
@@ -196,8 +192,8 @@ class OwnershipRepositoryTests extends Specification {
         groupIds.add("g1")
         groupIds.add("g2")
         def result = repo.findOwnableObjectOwners(new Ownable() {
-            public String getObjectId() { return "ccc" }
-            public OwnableType getOwnableType() { return OwnableType.USER }
+            String getObjectId() { return "ccc" }
+            OwnableType getOwnableType() { return OwnableType.USER }
         })
         
         then:
@@ -242,9 +238,8 @@ class OwnershipRepositoryTests extends Specification {
         userIds.add("bbb")
         userIds.add("ccc")
         def result = repo.findAllByOwner(new Owner() {
-            public String getOwnerId() { return "g1" }
-            
-            public OwnerType getOwnerType() { return OwnerType.GROUP }
+            String getOwnerId() { return "g1" }
+            OwnerType getOwnerType() { return OwnerType.GROUP }
         })
         
         then: 
@@ -256,9 +251,8 @@ class OwnershipRepositoryTests extends Specification {
         
         when: "Find all items owned by user aaa"
         result = repo.findAllByOwner(new Owner() {
-            public String getOwnerId() { return "aaa" }
-            
-            public OwnerType getOwnerType() { return OwnerType.USER }
+            String getOwnerId() { return "aaa" }
+            OwnerType getOwnerType() { return OwnerType.USER }
         })
         
         then:

@@ -1,22 +1,23 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
-import javax.persistence.EntityManager
-import javax.transaction.Transactional
-
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.context.annotation.Bean
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.domain.EntityScan
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+
+import javax.transaction.Transactional
 
 /**
  * Tests to validate the repo and model for groups
@@ -26,7 +27,7 @@ import spock.lang.Specification
 @ContextConfiguration(classes=[InternationalizationConfiguration, LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles("test")
+@ActiveProfiles(["test","gr-tests"])
 class GroupsRepositoryTests extends Specification {
     @Autowired
     GroupsRepository groupsRepo
@@ -95,8 +96,8 @@ class GroupsRepositoryTests extends Specification {
             it.resourceId = "g1"
             it
         }
-        def Group savedGroup = groupsRepo.saveAndFlush(group)
-        def Collection all = ownershipRepository.findAllByOwner(savedGroup)
+        Group savedGroup = groupsRepo.saveAndFlush(group)
+        Collection all = ownershipRepository.findAllByOwner(savedGroup)
         
         then:
         all.size() == 3
@@ -131,7 +132,7 @@ class GroupsRepositoryTests extends Specification {
         def gList = groupsRepo.findAll()
         gList.size() == 1
         def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group) == true
+        groupFromDb.equals(group)
       
         // fetch checks
         groupsRepo.findByResourceId("not an id") == null
@@ -158,7 +159,7 @@ class GroupsRepositoryTests extends Specification {
         
         then:
         // Missing non-nullable field (name) should thrown error
-        final def exception = thrown(org.springframework.dao.DataIntegrityViolationException)
+        final def exception = thrown(DataIntegrityViolationException)
     }
     
     @Rollback
@@ -212,13 +213,14 @@ class GroupsRepositoryTests extends Specification {
         groupsRepo.findAll().size() == 0
         
         when:
-        def nothingThere = groupsRepo.findByResourceId(null);
+        def nothingThere = groupsRepo.findByResourceId(null)
         
         then:
         nothingThere == null
     }
     
-    @org.springframework.boot.test.context.TestConfiguration
+    @TestConfiguration
+    @Profile("gr-tests")
     static class LocalConfig {
         @Bean
         GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {

@@ -56,6 +56,16 @@ public class GroupServiceImpl implements IGroupService {
         groupRepository.delete(group);
     }
 
+    /**
+     * Though the name URI is used here, any string value that we want to validate against the group's regex is accepted and checked.
+     * Designed usage is that this would be a URL or an entity Id (which is a URI that does not have to follow the URL conventions)
+     */
+    @Override
+    public boolean doesStringMatchGroupPattern(String groupId, String uri) {
+        Group group = find(groupId);
+        return Pattern.matches(group.getValidationRegex(), uri);
+    }
+
     @Override
     @Transactional
     public void ensureAdminGroupExists() {
@@ -64,7 +74,7 @@ public class GroupServiceImpl implements IGroupService {
             g = new Group();
             g.setName("ADMIN-GROUP");
             g.setResourceId("admingroup");
-            g.setValidationRegex("/*"); // Everything
+            g.setValidationRegex("^.+$"); // Just about everything
             g = groupRepository.save(g);
         }
         Group.ADMIN_GROUP = g;
