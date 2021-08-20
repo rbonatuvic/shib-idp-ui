@@ -1,18 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
-import org.springframework.context.annotation.PropertySource
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.transaction.annotation.Transactional
-
 import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
@@ -27,15 +14,27 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
+import org.springframework.context.annotation.PropertySource
+import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 @ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration, LocalConfig])
 @SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @PropertySource("classpath:application.yml")
 @DirtiesContext
-@ActiveProfiles(value="local")
+@ActiveProfiles(value="jpaeds2-test")
 class JPAEntityDescriptorServiceImplTests2 extends Specification {
     
     @Autowired
@@ -65,7 +64,7 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         ga.setName("Group A")
         groupService.createGroup(ga)
                
-        Group gb = new Group();
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         groupService.createGroup(gb)
@@ -95,16 +94,15 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
 
     @WithMockUser(value = "someUser", roles = ["USER"])
     @Rollback
+    @Transactional
     def "When creating Entity Descriptor, ED is assigned to the user's group"() {
         given:
         User current = userService.getCurrentUser()
         current.setGroupId("testingGroupBBB")
 
-        def expectedCreationDate = '2017-10-23T11:11:11'
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
         def expectedUUID = 'uuid-1'
-        def expectedResponseHeader = 'Location'
         def entityDescriptor = new EntityDescriptor(resourceId: expectedUUID, entityID: expectedEntityId, serviceProviderName: expectedSpName, serviceEnabled: false)
         
         when:
@@ -115,9 +113,10 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
     }
     
     @TestConfiguration
-    @Profile("local")
+    @Profile("jpaeds2-test")
     static class LocalConfig {
         @Bean
+        @Primary
         GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
                 it.groupRepository = repo

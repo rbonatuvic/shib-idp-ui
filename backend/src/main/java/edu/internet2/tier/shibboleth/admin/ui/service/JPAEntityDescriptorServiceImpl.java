@@ -7,10 +7,8 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.*;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
@@ -29,9 +27,6 @@ import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConver
 public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
     private EntityDescriptorRepository entityDescriptorRepository;
-
-    @Autowired
-    private IGroupService groupService;
 
     @Autowired
     private OpenSamlObjects openSamlObjects;
@@ -87,7 +82,12 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
         ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
-        return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
+        ed = entityDescriptorRepository.save(ed);
+
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
+        ownershipRepository.save(new Ownership(userService.getCurrentUserGroup(), ed));
+
+        return createRepresentationFromDescriptor(ed);
     }
 
     @Override
@@ -374,10 +374,17 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
             throw new ConcurrentModificationException(String.format("A concurrent modification has occured on entity descriptor with entity id [%s]. Please refresh and try again", edRep.getId()));
         }
         updateDescriptorFromRepresentation(existingEd, edRep);
-        return createRepresentationFromDescriptor(entityDescriptorRepository.save(existingEd));
+        existingEd = entityDescriptorRepository.save(existingEd);
+        ownershipRepository.deleteEntriesForOwnedObject(existingEd);
+        ownershipRepository.save(new Ownership(new Owner() {
+            public String getOwnerId() { return edRep.getIdOfOwner(); }
+            public OwnerType getOwnerType() { return OwnerType.GROUP; }
+        }, existingEd));
+        return createRepresentationFromDescriptor(existingEd);
     }
 
     @Override
+    // This should be private, but we use it in a couple different test classes not sure we should keep...
     public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
         if (!(entityDescriptor instanceof EntityDescriptor)) {
             throw new UnsupportedOperationException("not yet implemented");

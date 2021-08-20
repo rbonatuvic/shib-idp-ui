@@ -113,7 +113,7 @@ public class UserService {
         if (user.getRole().equals("ROLE_ADMIN")) {
             return ADMIN;
         }
-        if (user.getRole().equals("ROLE_USER")) {
+        if (user.getRole().equals("ROLE_USER") || user.getRole().equals("ROLE_ENABLE")) {
             return GROUP;
         }
         return NONE;
@@ -131,9 +131,7 @@ public class UserService {
     public Set<String> getUserRoles(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         HashSet<String> result = new HashSet<>();
-        if (user.isPresent() ) {
-             user.get().getRoles().forEach(role -> result.add(role.getName()));
-        }
+        user.ifPresent(value -> value.getRoles().forEach(role -> result.add(role.getName())));
         return result;
     }
 
@@ -209,7 +207,6 @@ public class UserService {
      * This currently exists because users should only ever have one role in the system at this time. However, user
      * roles are persisted as a set of roles (for future-proofing). Once we start allowing a user to have multiple roles,
      * this method and User.role can go away.
-     * @param user
      */
     public void updateUserRole(User user) {
         if (StringUtils.isNotBlank(user.getRole())) {
