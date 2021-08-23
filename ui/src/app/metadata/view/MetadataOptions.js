@@ -20,7 +20,7 @@ import { MetadataFilterConfigurationList } from '../domain/filter/component/Meta
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
-import { useCanEnable } from '../../core/user/UserContext';
+import { useCanEnable, useIsAdmin } from '../../core/user/UserContext';
 
 export function MetadataOptions ({reload}) {
 
@@ -53,6 +53,7 @@ export function MetadataOptions ({reload}) {
     const enabled = type === 'source' ? metadata.serviceEnabled : metadata.enabled;
 
     const canEnable = useCanEnable();
+    const isAdmin = useIsAdmin();
 
     return (
         <MetadataActions type={type}>
@@ -77,7 +78,7 @@ export function MetadataOptions ({reload}) {
                             <FontAwesomeIcon size="lg" icon={enabled ? faToggleOn : faToggleOff} />
                         </Button>
                         }
-                        {type === 'source' && remove &&
+                        {type === 'source' && remove && isAdmin &&
                         <Button
                             size="sm"
                             variant={ 'danger' }
