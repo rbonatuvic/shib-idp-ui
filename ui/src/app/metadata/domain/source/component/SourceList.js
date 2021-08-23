@@ -13,13 +13,14 @@ import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { Scroller } from '../../../../dashboard/component/Scroller';
 import { useTranslator } from '../../../../i18n/hooks';
-import { useIsAdmin } from '../../../../core/user/UserContext';
+import { useCanEnable, useIsAdmin } from '../../../../core/user/UserContext';
 import { GroupsProvider } from '../../../../admin/hoc/GroupsProvider';
 
 export default function SourceList({ entities, onDelete, onEnable, onChangeGroup }) {
 
     const translator = useTranslator();
     const isAdmin = useIsAdmin();
+    const canEnable = useCanEnable();
 
     return (
         <Scroller entities={entities}>
@@ -52,7 +53,7 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                     <td className="align-middle"><FormattedDate date={source.createdDate} /></td>
                                     <td className="text-center align-middle">
                                         <span className="d-flex justify-content-center align-items-center">
-                                        {onEnable && isAdmin ?
+                                        {onEnable && canEnable ?
                                             <Form.Check
                                                 type="switch"
                                                 id={`enable-switch-${source.id}`}

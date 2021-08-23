@@ -20,6 +20,7 @@ import { MetadataFilterConfigurationList } from '../domain/filter/component/Meta
 import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
+import { useCanEnable } from '../../core/user/UserContext';
 
 export function MetadataOptions ({reload}) {
 
@@ -51,6 +52,8 @@ export function MetadataOptions ({reload}) {
 
     const enabled = type === 'source' ? metadata.serviceEnabled : metadata.enabled;
 
+    const canEnable = useCanEnable();
+
     return (
         <MetadataActions type={type}>
             {(enable, remove) =>
@@ -65,7 +68,7 @@ export function MetadataOptions ({reload}) {
                     model={metadata}
                     showGroup={type === 'source'}>
                     <div className="d-flex align-items-start btn-group">
-                        {enable &&
+                        {enable && canEnable &&
                         <Button variant={enabled ? 'outline-secondary' : 'outline-secondary' } size="sm" className=""
                                 onClick={() => enable(metadata, !enabled, reload)}>
                                      <span className=" mr-1">
