@@ -40,8 +40,8 @@ public class Pac4jConfigurationProperties {
     public static class SimpleProfileMapping {
         private String email;
         private String firstName;
+        private String groupsName;
         private String lastName;
         private String username;
-    } 
+    }
 }
-

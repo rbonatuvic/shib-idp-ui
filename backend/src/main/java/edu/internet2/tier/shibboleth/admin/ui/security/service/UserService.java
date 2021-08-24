@@ -50,20 +50,24 @@ public class UserService {
         User user = getCurrentUser();
         return user != null && user.getRole().equals("ROLE_ADMIN");
     }
-      
+
     @Transactional
     public void delete(String username) throws EntityNotFoundException, OwnershipConflictException {
         Optional<User> userToRemove = userRepository.findByUsername(username);
         if (userToRemove.isEmpty()) throw new EntityNotFoundException("User does not exist");
         if (!ownershipRepository.findOwnedByUser(username).isEmpty()) throw new OwnershipConflictException("User ["+username+"] has ownership of entities in the system. Please remove all items before attemtping to delete the user.");
-        
+
         // ok, user exists and doesn't own anything in the system, so delete them
         // If the user is owned by anything, clear that first
         ownershipRepository.clearUsersGroups(username);
-        User user = userToRemove.get();               
+        User user = userToRemove.get();
         userRepository.delete(user);
     }
-    
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public User getCurrentUser() {
         //TODO: Consider returning an Optional here
         User user = null;
@@ -82,7 +86,7 @@ public class UserService {
     public UserAccess getCurrentUserAccess() {
         User user = getCurrentUser();
         if (user == null) {
-            return UserAccess.NONE;    
+            return UserAccess.NONE;
         }
         if (user.getRole().equals("ROLE_ADMIN")) {
             return UserAccess.ADMIN;
@@ -92,7 +96,7 @@ public class UserService {
         }
         return UserAccess.NONE;
     }
-    
+
     public Group getCurrentUserGroup() {
         switch (getCurrentUserAccess()) {
         case ADMIN:
@@ -101,13 +105,11 @@ public class UserService {
             return getCurrentUser().getGroup();
         }
     }
-    
+
     public Set<String> getUserRoles(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         HashSet<String> result = new HashSet<>();
-        if (user.isPresent() ) {
-             user.get().getRoles().forEach(role -> result.add(role.getName()));
-        }
+        user.ifPresent(value -> value.getRoles().forEach(role -> result.add(role.getName())));
         return result;
     }
 
@@ -128,7 +130,7 @@ public class UserService {
             return false;
         }
     }
-    
+
     /**
      * Creating users should always have a group. If the user isn't assigned to a group, create one based on their name.
      * If the user has the ADMIN role, they are always solely assigned to the admin group.
@@ -175,14 +177,13 @@ public class UserService {
         }
         return userRepository.saveAndFlush(user);
     }
-    
+
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
      *
      * This currently exists because users should only ever have one role in the system at this time. However, user
      * roles are persisted as a set of roles (for future-proofing). Once we start allowing a user to have multiple roles,
      * this method and User.role can go away.
-     * @param user
      */
     public void updateUserRole(User user) {
         if (StringUtils.isNotBlank(user.getRole())) {
