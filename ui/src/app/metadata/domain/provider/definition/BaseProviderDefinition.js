@@ -24,14 +24,21 @@ export const BaseProviderDefinition = {
     },
     parser: (changes, base) => {
 
-        const baseFilters = base ? base.metadataFilters.filter(f => MetadataFilterTypes.indexOf(f['@type']) > -1) : []
+        const baseFilters = base ? base.metadataFilters.filter(f => MetadataFilterTypes.indexOf(f['@type']) > -1) : [];
 
         const parsed = (changes.metadataFilters ? ({
             ...changes,
             metadataFilters: [
-                ...changes.metadataFilters.filter((filter, filterName) => (
-                    Object.keys(filter).filter(k => k !== '@type').length > 0
-                )),
+                ...changes.metadataFilters.filter((filter, filterName) => {
+
+                    if (filter['@type'] === 'RequiredValidUntil') {
+                        if (!filter.maxValidityInterval || filter.maxValidityInterval === "") {
+                            return false;
+                        }
+                    }
+
+                    return Object.keys(filter).filter(k => k !== '@type').length > 0;
+                }),
                 ...baseFilters
             ]
         }) : changes);
@@ -43,7 +50,7 @@ export const BaseProviderDefinition = {
         if (!filterSchema || !changes) {
             return changes;
         }
-
+        
         const formatted = (changes.metadataFilters ? ({
             ...changes,
             metadataFilters: Object.values(filterSchema.items).map(item => {

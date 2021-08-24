@@ -269,7 +269,7 @@ const FilterTargetField = ({
                                 <FilterTargetPreview entityId={id}>
                                     {(preview, loading, xml) => (
                                         <React.Fragment>
-                                            {id}
+                                            <span tabIndex="0">{id}</span>
                                             <span>
                                                 {preview &&
                                                     <Button disabled={loading || !xml} type="button" 
