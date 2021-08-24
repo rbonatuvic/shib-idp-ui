@@ -84,6 +84,26 @@ public class MetadataResolver extends AbstractAuditable {
     @Transient
     private Integer version;
 
+    public void addFilter(MetadataFilter metadataFilter) {
+        //To make sure that Spring Data auditing infrastructure recognizes update and "touched" modifiedDate
+        markAsModified();
+        this.metadataFilters.add(metadataFilter);
+    }
+
+    public void entityAttributesFilterIntoTransientRepresentation() {
+        //expose explicit API to call to convert into transient representation
+        //used in unit/integration tests where JPA's @PostLoad callback execution engine is not available
+        this.metadataFilters
+                        .stream()
+                        .filter(EntityAttributesFilter.class::isInstance)
+                        .map(EntityAttributesFilter.class::cast)
+                        .forEach(EntityAttributesFilter::intoTransientRepresentation);
+    }
+
+    public Boolean getDoInitialization() {
+        return doInitialization == null ? false : doInitialization;
+    }
+
     @JsonGetter("version")
     public int getVersion() {
         if (this.version != null && this.version != 0 ) {
@@ -92,23 +112,7 @@ public class MetadataResolver extends AbstractAuditable {
         return this.hashCode();
     }
 
-    public void addFilter(MetadataFilter metadataFilter) {
-        //To make sure that Spring Data auditing infrastructure recognizes update and "touched" modifiedDate
-        markAsModified();
-        this.metadataFilters.add(metadataFilter);
-    }
-
     public void markAsModified() {
         this.versionModifiedTimestamp = System.currentTimeMillis();
-    }
-
-    public void entityAttributesFilterIntoTransientRepresentation() {
-        //expose explicit API to call to convert into transient representation
-        //used in unit/integration tests where JPA's @PostLoad callback execution engine is not available
-        this.metadataFilters
-                .stream()
-                .filter(EntityAttributesFilter.class::isInstance)
-                .map(EntityAttributesFilter.class::cast)
-                .forEach(EntityAttributesFilter::intoTransientRepresentation);
     }
 }

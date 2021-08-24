@@ -114,7 +114,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 if (metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
                     NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
-                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats == null ? false : nameIdFormatFilter.removeExistingFormats
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
                     def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
                     def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
