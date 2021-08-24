@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMetadataFilters } from '../../../hooks/api';
-import { DeleteConfirmation } from '../../../component/DeleteConfirmation';
+import { DeleteConfirmation } from '../../../../core/components/DeleteConfirmation';
 
 export const MetadataFiltersContext = React.createContext();
 

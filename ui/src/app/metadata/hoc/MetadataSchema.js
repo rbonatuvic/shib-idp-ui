@@ -9,7 +9,9 @@ export function MetadataSchema({ type, children, wizard = false }) {
 
     const definition = React.useMemo(() => wizard ? getWizard(type) : getDefinition(type), [type, wizard]);
 
-    const { get, response } = useFetch(``, {}, []);
+    const { get, response } = useFetch(``, {
+        cachePolicy: 'no-cache'
+    });
 
     const [schema, setSchema] = React.useState();
 

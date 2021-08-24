@@ -6,6 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
@@ -108,15 +109,20 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
         v2EdRepresentation.id == ed.resourceId
     }
 
-    def "versioning service returns null for non existent version number"() {
+    def "versioning service throws EntityNotFoundException for non existent version number"() {
         when: 'Initial version'
         EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1', createdBy: 'anonymousUser')
         ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
-        def edRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, '1000')
-
+        
         then:
-        !edRepresentation
+        try { 
+            def edRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, '1000')
+            1 == 2
+        }
+        catch (EntityNotFoundException expected) {
+            1 == 1
+        }
     }
 }

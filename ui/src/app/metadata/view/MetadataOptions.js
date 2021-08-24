@@ -21,6 +21,7 @@ import { MetadataFilterTypes } from '../domain/filter';
 import { useMetadataSchema } from '../hooks/schema';
 import { FilterableProviders } from '../domain/provider';
 
+
 export function MetadataOptions () {
 
     const metadata = React.useContext(MetadataObjectContext);
@@ -60,7 +61,8 @@ export function MetadataOptions () {
                 <MetadataHeader
                     current={true}
                     enabled={type === 'source' ? metadata.serviceEnabled : metadata.enabled}
-                    model={metadata}>
+                    model={metadata}
+                    showGroup={type === 'source'}>
                     {type === 'source' && onDeleteSource &&
                         <Button className="btn btn-outline btn-sm btn-danger align-self-start"
                             disabled={metadata.serviceEnabled}

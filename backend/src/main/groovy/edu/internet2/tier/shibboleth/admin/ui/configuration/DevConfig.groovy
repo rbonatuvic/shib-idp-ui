@@ -12,12 +12,17 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadat
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
+import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
@@ -28,30 +33,59 @@ import javax.annotation.PostConstruct
 @Component
 @Profile('dev')
 class DevConfig {
-    private final UserRepository adminUserRepository
-    private final RoleRepository roleRepository
-
-    private final MetadataResolverRepository metadataResolverRepository
     private final EntityDescriptorRepository entityDescriptorRepository
-
+    private final GroupsRepository groupsRepository
+    private final MetadataResolverRepository metadataResolverRepository
     private final OpenSamlObjects openSamlObjects
+    private final RoleRepository roleRepository
+    private final UserRepository userRepository
+    
+    @Autowired
+    private UserService userService
 
     DevConfig(UserRepository adminUserRepository,
+              GroupsRepository groupsRepository,
               MetadataResolverRepository metadataResolverRepository,
               RoleRepository roleRepository,
               EntityDescriptorRepository entityDescriptorRepository,
-              OpenSamlObjects openSamlObjects) {
+              OpenSamlObjects openSamlObjects, 
+              IGroupService groupService) {
 
-        this.adminUserRepository = adminUserRepository
+        this.userRepository = adminUserRepository
         this.metadataResolverRepository = metadataResolverRepository
         this.roleRepository = roleRepository
         this.entityDescriptorRepository = entityDescriptorRepository
         this.openSamlObjects = openSamlObjects
+        this.groupsRepository = groupsRepository
+        
+        groupService.ensureAdminGroupExists()
     }
 
     @Transactional
     @PostConstruct
-    void createDevUsers() {
+    void createDevUsersAndGroups() {
+        def groups = [
+            new Group().with {
+                it.name = "A1"
+                it.description = "AAA Group"
+                it.resourceId = "AAA"
+                it
+            },
+            new Group().with {
+                it.name = "B1"
+                it.description = "BBB Group"
+                it.resourceId = "BBB"                    
+                it
+            }]
+        groups.each {
+            try {
+                groupsRepository.save(it)
+            } catch (Throwable e) {
+                // Must already exist (from a unit test)
+            }
+        }            
+        groupsRepository.flush()
+        
         if (roleRepository.count() == 0) {
             def roles = [new Role().with {
                 name = 'ROLE_ADMIN'
@@ -68,7 +102,7 @@ class DevConfig {
             }
         }
         roleRepository.flush()
-        if (adminUserRepository.count() == 0) {
+        if (userRepository.count() == 0) {
             def users = [new User().with {
                 username = 'admin'
                 password = '{noop}adminpass'
@@ -111,38 +145,9 @@ class DevConfig {
                 it
             }]
             users.each {
-                adminUserRepository.save(it)
+                userService.save(it)
             }
-            adminUserRepository.flush()
         }
-    }
-
-    @Transactional
-    @Profile('fbhmr')
-    @Bean
-    MetadataResolver fbhmr(ModelRepresentationConversions modelRepresentationConversions) {
-        return this.metadataResolverRepository.save(new FileBackedHttpMetadataResolver().with {
-            enabled = true
-            xmlId = 'test-fbhmr'
-            name = 'test-fbhmr'
-            metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
-            backingFile = '%{idp.home}/test-fbhmr.xml'
-            reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes()
-            httpMetadataResolverAttributes = new HttpMetadataResolverAttributes()
-            it.metadataFilters.add(new EntityAttributesFilter().with {
-                it.name = 'test'
-                it.filterEnabled = true
-                it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
-                    it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
-                    it.value = ["https://carmenwiki.osu.edu/shibboleth"]
-                    return it
-                }
-                it.attributeRelease = ['eduPersonPrincipalName', 'givenName', 'surname', 'mail']
-                it.relyingPartyOverrides = null
-                return it
-            })
-            return it
-        })
     }
 
     @Profile('dhmr')
@@ -180,6 +185,34 @@ class DevConfig {
             it.serviceEnabled = true
             it.serviceProviderName = 'testSP'
             it
+        })
+    }
+
+    @Transactional
+    @Profile('fbhmr')
+    @Bean
+    MetadataResolver fbhmr(ModelRepresentationConversions modelRepresentationConversions) {
+        return this.metadataResolverRepository.save(new FileBackedHttpMetadataResolver().with {
+            enabled = true
+            xmlId = 'test-fbhmr'
+            name = 'test-fbhmr'
+            metadataURL = 'http://md.incommon.org/InCommon/InCommon-metadata.xml'
+            backingFile = '%{idp.home}/test-fbhmr.xml'
+            reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes()
+            httpMetadataResolverAttributes = new HttpMetadataResolverAttributes()
+            it.metadataFilters.add(new EntityAttributesFilter().with {
+                it.name = 'test'
+                it.filterEnabled = true
+                it.entityAttributesFilterTarget = new EntityAttributesFilterTarget().with {
+                    it.entityAttributesFilterTargetType = EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY
+                    it.value = ["https://carmenwiki.osu.edu/shibboleth"]
+                    return it
+                }
+                it.attributeRelease = ['eduPersonPrincipalName', 'givenName', 'surname', 'mail']
+                it.relyingPartyOverrides = null
+                return it
+            })
+            return it
         })
     }
 }

@@ -42,6 +42,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSso
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService
+import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -80,6 +81,10 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
     @Autowired
     OpenSamlObjects openSamlObjects
+        
+    def setup() {
+        EntityDescriptorConversionUtils.openSamlObjects = openSamlObjects
+    }
 
     def "test versioning with contact persons"() {
         setup:
@@ -303,7 +308,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityManager)
 
         //Groovy FTW - able to call any private methods on ANY object. Get first revision
-        UIInfo uiinfo = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        UIInfo uiinfo = EntityDescriptorConversionUtils.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 1
@@ -336,9 +341,9 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityManager)
 
         //Get second revision
-        uiinfo = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+        uiinfo = EntityDescriptorConversionUtils.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
         //And initial revision
-        def uiinfoInitialRevision = entityDescriptorService.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        def uiinfoInitialRevision = EntityDescriptorConversionUtils.getUIInfo(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 2
@@ -389,7 +394,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         //Get initial revision
         SPSSODescriptor spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
 
         KeyDescriptor keyDescriptor = spssoDescriptor.keyDescriptors[0]
         X509Certificate x509cert = keyDescriptor.keyInfo.x509Datas[0].x509Certificates[0]
@@ -421,7 +426,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
 
         //Get second revision
-        SPSSODescriptor spssoDescriptor_second = entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
+        SPSSODescriptor spssoDescriptor_second = EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
 
         KeyDescriptor keyDescriptor_second1 = spssoDescriptor_second.keyDescriptors[0]
         X509Certificate x509cert_second1 = keyDescriptor_second1.keyInfo.x509Datas[0].x509Certificates[0]
@@ -431,7 +436,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
 
         //Get initial revision
         spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
 
         keyDescriptor = spssoDescriptor.keyDescriptors[0]
         x509cert = keyDescriptor.keyInfo.x509Datas[0].x509Certificates[0]
@@ -475,7 +480,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityManager)
 
         SPSSODescriptor spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
         AssertionConsumerService acs = spssoDescriptor.assertionConsumerServices[0]
 
         then:
@@ -500,12 +505,12 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityManager)
 
         SPSSODescriptor spssoDescriptor2 =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,1))
         def (acs1, acs2) = [spssoDescriptor2.assertionConsumerServices[0], spssoDescriptor2.assertionConsumerServices[1]]
 
         //Initial revision
         spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory,0))
         acs = spssoDescriptor.assertionConsumerServices[0]
 
         then:
@@ -543,7 +548,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityManager)
 
         SPSSODescriptor spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
         SingleLogoutService slo = spssoDescriptor.singleLogoutServices[0]
 
         then:
@@ -565,12 +570,12 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 entityManager)
 
         SPSSODescriptor spssoDescriptor2 =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
         def (slo1, slo2) = [spssoDescriptor2.singleLogoutServices[0], spssoDescriptor2.singleLogoutServices[1]]
 
         //Initial revision
         spssoDescriptor =
-                entityDescriptorService.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+                EntityDescriptorConversionUtils.getSPSSODescriptorFromEntityDescriptor(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
         slo = spssoDescriptor.singleLogoutServices[0]
 
         then:
@@ -608,7 +613,7 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 txMgr,
                 entityManager)
 
-        EntityAttributes attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        EntityAttributes attrs = EntityDescriptorConversionUtils.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         then:
         entityDescriptorHistory.size() == 1
@@ -628,10 +633,10 @@ class EntityDescriptorEnversVersioningTests extends Specification {
                 txMgr,
                 entityManager)
 
-        EntityAttributes attrs2 = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
+        EntityAttributes attrs2 = EntityDescriptorConversionUtils.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 1))
 
         //Initial revision
-        attrs = entityDescriptorService.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
+        attrs = EntityDescriptorConversionUtils.getEntityAttributes(getTargetEntityForRevisionIndex(entityDescriptorHistory, 0))
 
         expectedModifiedPersistentEntities = [EntityDescriptor.name,
                                               EntityAttributes.name,

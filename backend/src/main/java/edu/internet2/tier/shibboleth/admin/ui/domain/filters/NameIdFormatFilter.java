@@ -27,7 +27,7 @@ public class NameIdFormatFilter extends MetadataFilter {
         type = "NameIDFormat";
     }
 
-    private Boolean removeExistingFormats = false;
+    private Boolean removeExistingFormats;
 
     @ElementCollection
     @OrderColumn
