@@ -98,7 +98,6 @@ class SeleniumSIDETest extends Specification {
         cleanup:
         runner.getWrappedDriver().quit()
 
-        // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:
         name                                                                | file
         'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
@@ -124,7 +123,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side' // bug, see SHIBUI-1974
+        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
         'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side' // Note that this script can only be run once successfully (per startup of the app) without first having to add the Bad Robot user back in to the system
         'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'
         'SHIBUI-1740: Group can be created, edited, deleted'                | '/SHIBUI-1740-1.side'
