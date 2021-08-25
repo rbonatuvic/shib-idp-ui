@@ -1203,17 +1203,6 @@
       ],
       "value": "PT10M"
     }, {
-      "id": "5279bf64-46c1-4376-a527-e19e217b42fa",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=.mb-4:nth-child(5) div:nth-child(1) > .d-flex > .d-block:nth-child(2)",
-      "targets": [
-        ["css=.mb-4:nth-child(5) div:nth-child(1) > .d-flex > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section[4]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:idRelative"],
-        ["xpath=//section[4]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:position"]
-      ],
-      "value": "false"
-    }, {
       "id": "a77b2cf6-c88d-458b-9421-2745634180a7",
       "comment": "",
       "command": "close",
