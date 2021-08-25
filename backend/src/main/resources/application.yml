@@ -1,4 +1,5 @@
 #shibui:
+#  default-rootuser=root
 #  pac4j-enabled: true
 #  pac4j:
 #    keystorePath: "/etc/shibui/samlKeystore.jks"
