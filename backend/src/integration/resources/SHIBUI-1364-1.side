@@ -50,6 +50,13 @@
       ],
       "value": ""
     }, {
+      "id": "cefca51c-9ff6-4548-90c8-294fa0e2a6a0",
+      "comment": "",
+      "command": "pause",
+      "target": "3000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "4ec2c493-85e4-403b-9b09-031c5728f498",
       "comment": "",
       "command": "open",
@@ -123,6 +130,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "File Backed HTTP Metadata Provider"
+    }, {
+      "id": "3334358f-2562-4fb9-9d1d-cb0d3e8504c0",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=type",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "94f84e8a-a971-495e-a3d8-67bbb5e2d332",
       "comment": "",
@@ -664,10 +678,10 @@
     }, {
       "id": "f62f8d1d-8c53-4cb5-bc19-84f68fee870d",
       "comment": "",
-      "command": "waitForElementPresent",
-      "target": "name=type",
+      "command": "pause",
+      "target": "5000",
       "targets": [],
-      "value": "30000"
+      "value": ""
     }, {
       "id": "dc41b26d-b101-4ead-866f-482df0bfee04",
       "comment": "",

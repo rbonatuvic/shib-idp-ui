@@ -123,8 +123,8 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-//        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side' //TODO Check with Ryan, might be a bug here.
-        'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side' // Note that this script can only be run once successfully (per startup of the app) without first having to add the Bad Robot user back in to the system
+//        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side' //TODO https://todos.internet2.edu/browse/SHIBUI-2041
+//        'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side' //TODO https://todos.internet2.edu/browse/SHIBUI-2040 Note that this script can only be run once successfully (per startup of the app) without first having to add the Bad Robot user back in to the system
         'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'
         'SHIBUI-1740: Group can be created, edited, deleted'                | '/SHIBUI-1740-1.side'
         'SHIBUI-1740: Verify dev profile group membership'                  | '/SHIBUI-1740-2.side'
