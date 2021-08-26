@@ -39,80 +39,85 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                             </tr>
                         </thead>
                         <tbody>
-                            {limited.map((source, idx) =>
-                                <tr key={idx}>
-                                    <td>
-                                        <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName}</Link>
-                                    </td>
-                                    <td>
-                                        {source.entityId}
-                                    </td>
-                                    <td>
-                                        {source.createdBy}
-                                    </td>
-                                    <td><FormattedDate date={source.createdDate} /></td>
-                                    <td className="">
-                                        {onEnable ?
-                                            <Button
-                                                variant="success"
-                                                size="sm"
-                                                onClick={() => onEnable(source)}
-                                                aria-label="Enable this service provider">
-                                                <Translate value={ source.enabled ? 'label.disable' : 'label.enable' }>Disable</Translate>
-                                                {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
-                                            </Button>
-                                            :
-                                            <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
-                                                <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                            </Badge>
-                                        }
-                                    </td>
-                                    
-                                    {isAdmin && onChangeGroup &&
-                                        <td className="">
-                                            <GroupsProvider>
-                                                {(groups, removeGroup, loadingGroups) =>
-                                                    <React.Fragment>
-                                                        <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
-                                                        <select
-                                                            id={`group-${source.id}`}
-                                                            name={`group-${source.id}`}
-                                                            className="form-control"
-                                                            onChange={(event) => onChangeGroup(source, event.target.value)}
-                                                            value={source.idOfOwner ? source.idOfOwner : ''}
-                                                            disabled={loadingGroups}
-                                                            disablevalidation="true">
-                                                            <option>Select Group</option>
-                                                            {groups.map((g, ridx) => (
-                                                                <option key={ridx} value={g.resourceId}>{g.name}</option>
-                                                            ))}
-                                                        </select>
-                                                    </React.Fragment>
-                                                }
-                                            </GroupsProvider>
-                                        </td>
-                                    }
-                                    {onDeleteSource &&
-                                    <td className="text-right">
-                                        <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
-                                            overlay={
-                                                <Popover id={`delete-source-btn-${idx}`}>
-                                                    <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
-                                                </Popover>
-                                            }>
-                                                <span className="d-inline-block">
-                                                    <Button variant="danger" size="sm"
-                                                        type="button"
-                                                        disabled={source.serviceEnabled}
-                                                        onClick={() => onDeleteSource(source.id, onDelete)}>
-                                                        <span className="sr-only">Delete</span>
-                                                        <FontAwesomeIcon icon={faTrash} />
+                            <GroupsProvider>
+                                {(groups, removeGroup, loadingGroups) =>
+                                    <React.Fragment>
+                                    {limited.map((source, idx) =>
+                                        <tr key={idx}>
+                                            <td>
+                                                <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName}</Link>
+                                            </td>
+                                            <td>
+                                                {source.entityId}
+                                            </td>
+                                            <td>
+                                                {source.createdBy}
+                                            </td>
+                                            <td><FormattedDate date={source.createdDate} /></td>
+                                            <td className="">
+                                                {onEnable ?
+                                                    <Button
+                                                        variant="success"
+                                                        size="sm"
+                                                        onClick={() => onEnable(source)}
+                                                        aria-label="Enable this service provider">
+                                                        <Translate value={ source.enabled ? 'label.disable' : 'label.enable' }>Disable</Translate>
+                                                        {!source.enabled && <>&nbsp;<FontAwesomeIcon icon={faCheck} size="lg" /></> }
                                                     </Button>
-                                                </span>
-                                        </OverlayTrigger>
-                                    </td>}
-                                </tr>
-                            )}
+                                                    :
+                                                    <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
+                                                        <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                                    </Badge>
+                                                }
+                                            </td>
+                                            
+                                            {isAdmin && onChangeGroup &&
+                                                <td className="">
+                                                    
+                                                        
+                                                            <React.Fragment>
+                                                                <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
+                                                                <select
+                                                                    id={`group-${source.id}`}
+                                                                    name={`group-${source.id}`}
+                                                                    className="form-control"
+                                                                    onChange={(event) => onChangeGroup(source, event.target.value)}
+                                                                    value={source.idOfOwner ? source.idOfOwner : ''}
+                                                                    disabled={loadingGroups}
+                                                                    disablevalidation="true">
+                                                                    <option>Select Group</option>
+                                                                    {groups.map((g, ridx) => (
+                                                                        <option key={ridx} value={g.resourceId}>{g.name}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </React.Fragment>
+                                                        
+                                                </td>
+                                            }
+                                            {onDeleteSource &&
+                                            <td className="text-right">
+                                                <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
+                                                    overlay={
+                                                        <Popover id={`delete-source-btn-${idx}`}>
+                                                            <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
+                                                        </Popover>
+                                                    }>
+                                                        <span className="d-inline-block">
+                                                            <Button variant="danger" size="sm"
+                                                                type="button"
+                                                                disabled={source.serviceEnabled}
+                                                                onClick={() => onDeleteSource(source.id, onDelete)}>
+                                                                <span className="sr-only">Delete</span>
+                                                                <FontAwesomeIcon icon={faTrash} />
+                                                            </Button>
+                                                        </span>
+                                                </OverlayTrigger>
+                                            </td>}
+                                        </tr>
+                                    )}
+                                </React.Fragment>
+                            }
+                            </GroupsProvider>
                         </tbody>
                     </table>
                 </div>

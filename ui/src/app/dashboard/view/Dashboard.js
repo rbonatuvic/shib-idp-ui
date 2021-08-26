@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Nav from 'react-bootstrap/Nav';
-import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, Redirect, useRouteMatch, useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 import Translate from '../../i18n/components/translate';
@@ -19,6 +19,7 @@ import { useNonAdminSources } from '../../metadata/hooks/api';
 export function Dashboard () {
 
     const { path } = useRouteMatch();
+    const location = useLocation();
 
     const isAdmin = useIsAdmin();
 
@@ -50,7 +51,7 @@ export function Dashboard () {
     React.useEffect(() => {
         loadSources();
         loadUsers();
-    }, []);
+    }, [location]);
 
     React.useEffect(() => {
         setActions(users.length + sources.length);
