@@ -51,6 +51,7 @@ const OptionWidget = ({
 
     const _onChange = (selected) => {
         const sel = selected[0];
+        
         const val = typeof sel === 'object' && sel.label ? sel.label : sel;
         setInputValue(val);
         onChange(val);
