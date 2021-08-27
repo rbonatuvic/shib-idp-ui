@@ -506,7 +506,7 @@ class TestObjectGenerator {
 
     FilesystemMetadataResolver filesystemMetadataResolver() {
         new FilesystemMetadataResolver().with {
-            it.name = 'FilesystemMetadata'
+            it.name = 'Filesystem'
             it.xmlId = 'FilesystemMetadata'
             it.metadataFile = 'metadata/metadata.xml'
             it.doInitialization = Boolean.FALSE // Removed the default setting, added back to keep tests the same.
@@ -520,7 +520,7 @@ class TestObjectGenerator {
 
     FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
         new FileBackedHttpMetadataResolver().with {
-            it.name = 'HTTPMetadata'
+            it.name = 'FileBacked'
             it.xmlId = 'HTTPMetadata'
             it.backingFile = '%{idp.home}/metadata/metadata.xml'
             it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
@@ -539,7 +539,7 @@ class TestObjectGenerator {
 
     DynamicHttpMetadataResolver dynamicHttpMetadataResolver() {
         new DynamicHttpMetadataResolver().with {
-            it.name = 'DynamicHTTP'
+            it.name = 'DynamicHttp'
             it.xmlId = 'DynamicHTTP'
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
@@ -594,7 +594,7 @@ class TestObjectGenerator {
 
     ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
         new ResourceBackedMetadataResolver().with {
-            it.name = 'ClasspathResourceMetadata'
+            it.name = 'ResourceBacked'
             it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
                 it.file = 'metadata/metadata.xml'

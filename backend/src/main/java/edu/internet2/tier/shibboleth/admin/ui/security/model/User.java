@@ -87,6 +87,9 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     }
         
     public String getGroupId() {
+        if (getRole().equals("ROLE_ADMIN")) {
+            groupId = Group.ADMIN_GROUP.getResourceId();
+        }
         if (groupId == null) {
             groupId = getUserGroups().isEmpty() ? null : getGroup().getResourceId();
         }
