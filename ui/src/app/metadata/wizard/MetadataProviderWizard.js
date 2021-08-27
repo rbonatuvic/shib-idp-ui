@@ -2,7 +2,7 @@ import React from 'react';
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsLastPage, useWizardDispatcher } from './Wizard';
-import { useMetadataDefinitionContext, useMetadataSchemaContext } from '../hoc/MetadataSchema';
+import { useMetadataDefinitionContext, useMetadataDefinitionValidator, useMetadataSchemaContext } from '../hoc/MetadataSchema';
 import { checkChanges, useMetadataSchema } from '../hooks/schema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
@@ -53,7 +53,7 @@ export function MetadataProviderWizard({onRestart}) {
         // console.log(form);
     }
 
-    const validator = definition.validator(data, null, group);
+    const validator = useMetadataDefinitionValidator(data, null, group);
 
     async function save() {
         const body = removeNull(definition.parser(metadata), true);

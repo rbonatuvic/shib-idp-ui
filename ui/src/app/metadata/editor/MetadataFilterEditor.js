@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 
 import Translate from '../../i18n/components/translate';
 import { MetadataFormContext, setFormDataAction, setFormErrorAction } from '../hoc/MetadataFormContext';
-import { MetadataDefinitionContext, MetadataSchemaContext } from '../hoc/MetadataSchema';
+import { MetadataDefinitionContext, MetadataSchemaContext, useMetadataDefinitionValidator } from '../hoc/MetadataSchema';
 
 import { MetadataEditorForm } from './MetadataEditorForm';
 import { MetadataEditorNav } from './MetadataEditorNav';
@@ -34,7 +34,7 @@ export function MetadataFilterEditor({children, onNavigate, block}) {
         block(checkChanges(metadata, changes.formData));
     };
 
-    const validator = definition.validator(data, current, group);
+    const validator = useMetadataDefinitionValidator(data, current, group);
 
     const warnings = definition.warnings && definition.warnings(metadata);
 

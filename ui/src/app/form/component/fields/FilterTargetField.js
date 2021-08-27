@@ -197,7 +197,7 @@ const FilterTargetField = ({
                                             </small>
                                             :
                                             <small className="text-danger">
-                                                <Translate value="message.group-pattern-fail">
+                                                <Translate value="message.group-pattern-fail" params={{regex: group?.validationRegex}}>
                                                     Invalid URL
                                                 </Translate>
                                             </small>

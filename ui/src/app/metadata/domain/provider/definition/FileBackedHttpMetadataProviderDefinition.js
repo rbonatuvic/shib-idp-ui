@@ -8,7 +8,7 @@ export const FileBackedHttpMetadataProviderWizard = {
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
     schema: '/assets/schema/provider/filebacked-http.schema.json',
-    validator: (data = [], current = { resourceId: null }, group) => {
+    validator: (data = [], current = { resourceId: null }, group, translator) => {
         const base = BaseProviderDefinition.validator(data, current, group);
 
         const pattern = group?.validationRegex ? new RegExp(group?.validationRegex) : null;
@@ -17,7 +17,7 @@ export const FileBackedHttpMetadataProviderWizard = {
             const errorList = base(formData, errors);
             if (formData?.metadataURL) {
                 if (pattern && !pattern.test(formData?.metadataURL)) {
-                    errors?.metadataURL?.addError('message.group-pattern-fail');
+                    errors?.metadataURL?.addError(translator('message.group-pattern-fail', { regex: group?.validationRegex }));
                 }
             }
 

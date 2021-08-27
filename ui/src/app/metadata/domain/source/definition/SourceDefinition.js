@@ -19,19 +19,22 @@ export const SourceBase = {
 
     display: (changes) => changes,
 
-    validator: (data = [], current = {id: null}, group) => {
+    validator: (data = [], current = {id: null}, group, translator) => {
 
         const sources = current ? data.filter(s => s.id !== current.id) : data;
         const entityIds = sources.map(s => s.entityId);
         const pattern = group?.validationRegex ? new RegExp(group?.validationRegex) : null;
 
         return (formData, errors) => {
+
+            console.log(errors)
+
             if (entityIds.indexOf(formData.entityId) > -1) {
                 errors.entityId.addError('message.id-unique');
             }
 
             if (pattern && !pattern.test(formData.entityId)) {
-                errors.entityId.addError('message.group-pattern-fail');
+                errors.entityId.addError(translator('message.group-pattern-fail', {regex: group?.validationRegex}));
             }
 
             if (formData?.serviceProviderSsoDescriptor?.nameIdFormats?.length > 0 && !formData.serviceProviderSsoDescriptor.protocolSupportEnum) {
@@ -41,7 +44,7 @@ export const SourceBase = {
             if (Array.isArray(formData?.assertionConsumerServices)) {
                 formData.assertionConsumerServices.forEach((acs, idx) => {
                     if (!isNil(acs?.locationUrl) && !pattern.test(acs.locationUrl)) {
-                        errors.assertionConsumerServices[idx].locationUrl.addError('message.group-pattern-fail')
+                        errors.assertionConsumerServices[idx].locationUrl.addError(translator('message.group-pattern-fail', { regex: group?.validationRegex }))
                     }
                 });
             }
