@@ -1,6 +1,7 @@
 import React from 'react';
 import { getDefinition, getWizard } from '../domain/index';
 import useFetch from 'use-http';
+import { useTranslator } from '../../i18n/hooks';
 
 export const MetadataSchemaContext = React.createContext();
 export const MetadataDefinitionContext = React.createContext();
@@ -45,6 +46,12 @@ export function useMetadataSchemaContext () {
 
 export function useMetadataDefinitionContext() {
     return React.useContext(MetadataDefinitionContext);
+}
+
+export function useMetadataDefinitionValidator(data, current, group) {
+    const definition = useMetadataDefinitionContext();
+    const translator = useTranslator();
+    return definition.validator(data, current, group, translator);
 }
 
 //getConfigurationSections

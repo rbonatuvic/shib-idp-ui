@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import { WizardNav } from './WizardNav';
 import { MetadataWizardForm } from './MetadataWizardForm';
 import { setWizardIndexAction, useCurrentIndex, useIsFirstPage, useIsLastPage, useWizardDispatcher } from './Wizard';
-import { useMetadataDefinitionContext, useMetadataSchemaContext } from '../hoc/MetadataSchema';
+import { useMetadataDefinitionContext, useMetadataSchemaContext, useMetadataDefinitionValidator } from '../hoc/MetadataSchema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
@@ -74,7 +74,7 @@ export function MetadataSourceWizard ({ onShowNav }) {
 
     const [blocking, setBlocking] = React.useState(false);
 
-    const validator = definition.validator(data, null, group);
+    const validator = useMetadataDefinitionValidator(data, null, group);
     const warnings = definition.warnings && definition.warnings(metadata);
 
     return (
