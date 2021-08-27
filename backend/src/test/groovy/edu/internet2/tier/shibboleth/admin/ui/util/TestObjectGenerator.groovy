@@ -275,7 +275,6 @@ class TestObjectGenerator {
             it.setEntityAttributesFilterTarget(entityAttributesFilter.entityAttributesFilterTarget)
             it.setAttributes(entityAttributesFilter.attributes)
             it.intoTransientRepresentation()
-            it.setEntityAttributesFilterTarget(entityAttributesFilter.getEntityAttributesFilterTarget())
             it
         }
     }
@@ -286,7 +285,6 @@ class TestObjectGenerator {
             it.resourceId = nameIdFormatFilter.resourceId
             it.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
             it.formats = nameIdFormatFilter.formats
-            it.setNameIdFormatFilterTarget(nameIdFormatFilter.getNameIdFormatFilterTarget())
             it
         }
     }
@@ -506,7 +504,7 @@ class TestObjectGenerator {
 
     FilesystemMetadataResolver filesystemMetadataResolver() {
         new FilesystemMetadataResolver().with {
-            it.name = 'Filesystem'
+            it.name = 'FilesystemMetadata'
             it.xmlId = 'FilesystemMetadata'
             it.metadataFile = 'metadata/metadata.xml'
             it.doInitialization = Boolean.FALSE // Removed the default setting, added back to keep tests the same.
@@ -520,7 +518,7 @@ class TestObjectGenerator {
 
     FileBackedHttpMetadataResolver fileBackedHttpMetadataResolver() {
         new FileBackedHttpMetadataResolver().with {
-            it.name = 'FileBacked'
+            it.name = 'HTTPMetadata'
             it.xmlId = 'HTTPMetadata'
             it.backingFile = '%{idp.home}/metadata/metadata.xml'
             it.metadataURL = 'https://idp.unicon.net/idp/shibboleth'
@@ -539,7 +537,7 @@ class TestObjectGenerator {
 
     DynamicHttpMetadataResolver dynamicHttpMetadataResolver() {
         new DynamicHttpMetadataResolver().with {
-            it.name = 'DynamicHttp'
+            it.name = 'DynamicHTTP'
             it.xmlId = 'DynamicHTTP'
             it.dynamicMetadataResolverAttributes = new DynamicMetadataResolverAttributes().with {
                 it
@@ -594,7 +592,7 @@ class TestObjectGenerator {
 
     ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
         new ResourceBackedMetadataResolver().with {
-            it.name = 'ResourceBacked'
+            it.name = 'ClasspathResourceMetadata'
             it.xmlId = 'ClasspathResourceMetadata'
             it.classpathMetadataResource = new ClasspathMetadataResource().with {
                 it.file = 'metadata/metadata.xml'
