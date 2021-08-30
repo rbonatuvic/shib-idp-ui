@@ -486,7 +486,7 @@ class JPAMetadataResolverServiceImplTests extends Specification {
 
     @TestConfiguration
     @Profile("local")
-    static class Config {
+    private static class Config {
         @Autowired
         OpenSamlObjects openSamlObjects
 

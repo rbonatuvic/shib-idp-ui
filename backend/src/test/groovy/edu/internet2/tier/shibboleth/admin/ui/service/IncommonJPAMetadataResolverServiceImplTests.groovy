@@ -112,7 +112,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
     @TestConfiguration
     @Profile("local")
-    static class LocalConfig {
+    private static class LocalConfig {
         @Autowired
         OpenSamlObjects openSamlObjects
 

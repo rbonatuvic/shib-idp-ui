@@ -1,21 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
-import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
-import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
-import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.*;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
@@ -29,23 +15,14 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.*;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.*;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 
 @Slf4j
 @Service
