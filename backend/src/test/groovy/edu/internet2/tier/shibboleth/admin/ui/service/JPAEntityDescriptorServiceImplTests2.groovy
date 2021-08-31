@@ -37,40 +37,40 @@ import spock.lang.Specification
 @DirtiesContext
 @ActiveProfiles(value="local")
 class JPAEntityDescriptorServiceImplTests2 extends Specification {
-    
+
     @Autowired
     GroupServiceForTesting groupService
 
     @Autowired
     RoleRepository roleRepository
-    
+
     @Autowired
     JPAEntityDescriptorServiceImpl entityDescriptorService
-        
+
     @Autowired
     UserRepository userRepository
 
     @Autowired
     UserService userService
-        
+
     @Transactional
     def setup() {
         // ensure we start fresh with only expected users and roles and groups
         userRepository.deleteAll()
         roleRepository.deleteAll()
         groupService.clearAllForTesting()
-        
+
         Group ga = new Group()
         ga.setResourceId("testingGroup")
         ga.setName("Group A")
         groupService.createGroup(ga)
-               
+
         Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
         gb = groupService.createGroup(gb)
-        
+
         def roles = [new Role().with {
             name = 'ROLE_ADMIN'
             it
@@ -83,12 +83,12 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         }]
         roles.each {
             roleRepository.save(it)
-        }      
-        
+        }
+
         Optional<Role> adminRole = roleRepository.findByName("ROLE_ADMIN")
         User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")
         userService.save(adminUser)
-        
+
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User(username: "someUser", roles:[userRole.get()], password: "foo", group: gb)
         userService.save(user)
@@ -105,14 +105,14 @@ class JPAEntityDescriptorServiceImplTests2 extends Specification {
         def expectedSpName = 'sp1'
         def expectedUUID = 'uuid-1'
         def entityDescriptor = new EntityDescriptor(resourceId: expectedUUID, entityID: expectedEntityId, serviceProviderName: expectedSpName, serviceEnabled: false)
-        
+
         when:
         def result = entityDescriptorService.createNew(entityDescriptor)
-        
+
         then:
         ((EntityDescriptorRepresentation)result).getIdOfOwner() == "testingGroupBBB"
     }
-    
+
     @TestConfiguration
     @Profile("local")
     static class LocalConfig {

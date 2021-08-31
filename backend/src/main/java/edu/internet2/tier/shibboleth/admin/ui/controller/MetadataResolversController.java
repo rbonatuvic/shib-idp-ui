@@ -151,7 +151,7 @@ public class MetadataResolversController {
         MetadataResolver persistedResolver = resolverRepository.save(updatedResolver);
         doResolverInitialization(persistedResolver);
 
-        return ResponseEntity.ok(persistedResolver);
+        return ResponseEntity.ok(resolverRepository.findByResourceId(resourceId));
     }
 
     //Versioning endpoints
