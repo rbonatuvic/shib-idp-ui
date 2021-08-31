@@ -11,7 +11,7 @@ const path = '/admin/users/current';
 /*eslint-disable react-hooks/exhaustive-deps*/
 function UserProvider({ children }) {
 
-    const { get, response } = useFetch(`${API_BASE_PATH}`, {
+    const { get, response, loading } = useFetch(`${API_BASE_PATH}`, {
         cacheLife: 10000,
         cachePolicy: 'cache-first'
     });
@@ -20,18 +20,28 @@ function UserProvider({ children }) {
 
     async function loadUser() {
         const user = await get(`${path}`);
-        if (response.ok) setUser(user);
+        if (response.ok) {
+            setUser(user);
+        }
     }
 
     const [user, setUser] = React.useState({});
+
+    const providerValue = React.useMemo(() => ({ user, loading }), [user, loading]);
+
     return (
-        <Provider value={user}>{children}</Provider>
+        <Provider value={providerValue}>{children}</Provider>
     );
 }
 
 function useCurrentUser() {
-    const context = React.useContext(UserContext);
-    return context;
+    const { user } = React.useContext(UserContext);
+    return user;
+}
+
+function useCurrentUserLoading() {
+    const { loading } = React.useContext(UserContext);
+    return loading;
 }
 
 function useIsAdmin() {
@@ -51,4 +61,4 @@ function useIsAdminOrInGroup() {
 }
 
 
-export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin, useIsAdminOrInGroup };
+export { UserContext, UserProvider, Consumer as UserConsumer, useCurrentUser, useIsAdmin, useIsAdminOrInGroup, useCurrentUserLoading };

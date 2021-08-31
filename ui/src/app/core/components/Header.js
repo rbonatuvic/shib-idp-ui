@@ -6,19 +6,22 @@ import Navbar from 'react-bootstrap/Navbar';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faUser, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
 
 import { brand } from '../../app.brand';
-import { useIsAdmin } from '../user/UserContext';
+import { useCurrentUser, useCurrentUserLoading, useIsAdmin } from '../user/UserContext';
 
 export function Header () {
 
     const translator = useTranslator();
 
     const isAdmin = useIsAdmin();
+
+    const { username, groupId } = useCurrentUser();
+    const loading = useCurrentUserLoading();
 
     return (
         <Navbar expand="md" fixed="top" bg="">
@@ -27,12 +30,41 @@ export function Header () {
                 <span className="d-lg-inline d-none"><Translate value={brand.logo.link.label}></Translate></span>
             </Navbar.Brand>
             <Navbar.Text><Translate value={brand.header.title}></Translate></Navbar.Text>
+            {loading ?
+            <div className="d-flex justify-content-end flex-fill">
+                <FontAwesomeIcon icon={faSpinner} spin={true} pulse={true} size="lg" />
+            </div>
+            :
+            <>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto align-items-center" navbar>
+                    <div className="border-md-right px-2">
+                        <Link to="/dashboard" className="btn btn-link btn-sm" aria-label="Metadata Dashboard">
+                            <i className="fa fa-th fa-fw" aria-hidden="true"></i>
+                            <FontAwesomeIcon icon={faTh} className="mr-2" />
+                            <Translate value="action.dashboard">Dashboard</Translate>
+                        </Link>
+                    </div>
+                    <Dropdown className="border-md-right px-2" id="basic-nav-dropdown">
+                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
+                            <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
+                            <Translate value={'action.add-new'} />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item as={Link} to="/metadata/source/new" className="text-primary py-2">
+                                <FontAwesomeIcon icon={faCube} className="mr-2" />
+                                <Translate value="action.add-new-source" />
+                            </Dropdown.Item>
+                            {isAdmin && <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2">
+                                <FontAwesomeIcon icon={faCubes} className="mr-2" />
+                                <Translate value="action.add-new-provider" />
+                            </Dropdown.Item> }
+                        </Dropdown.Menu>
+                    </Dropdown>
                     {isAdmin &&
-                    <Dropdown className="mr-2" id="basic-nav-dropdown">
-                        <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
+                    <Dropdown className="border-md-right px-2" id="basic-nav-dropdown">
+                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
                             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
                             <Translate value={'action.advanced'} />
                         </Dropdown.Toggle>
@@ -48,33 +80,23 @@ export function Header () {
                         </Dropdown.Menu>
                     </Dropdown>
                     }
-                    <Dropdown className="" id="basic-nav-dropdown">
-                        <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" size="sm">
-                            <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
-                            <Translate value={'action.add-new'} />
+                    
+                    <Dropdown className="pl-2" id="basic-nav-dropdown">
+                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
+                            <FontAwesomeIcon icon={faUser} className="mr-2" />
+                            <Translate value={'action.logged-in'} params={{ username, group: groupId }} />
                         </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to="/metadata/source/new" className="text-primary py-2">
-                                <FontAwesomeIcon icon={faCube} className="mr-2" />
-                                <Translate value="action.add-new-source" />
+                        <Dropdown.Menu alignRight={true}>
+                            <Dropdown.Item as={Nav.Link} href="/logout" target="_self" className="text-primary py-2" aria-label={translator('action.logout')}>
+                                <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+                                <Translate value="action.logout">Logout</Translate>
                             </Dropdown.Item>
-                            {isAdmin && <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2">
-                                <FontAwesomeIcon icon={faCubes} className="mr-2" />
-                                <Translate value="action.add-new-provider" />
-                            </Dropdown.Item> }
                         </Dropdown.Menu>
                     </Dropdown>
-                    <Link to="/dashboard" className="nav-link" aria-label="Metadata Dashboard">
-                        <i className="fa fa-th fa-fw" aria-hidden="true"></i>
-                        <FontAwesomeIcon icon={faTh} className="mr-2" />
-                        <Translate value="action.dashboard">Dashboard</Translate>
-                    </Link>
-                    <Nav.Link href="/logout" target="_self" aria-label={translator('action.logout')}>
-                        <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-                        <Translate value="action.logout">Logout</Translate>
-                    </Nav.Link>
                 </Nav>
             </Navbar.Collapse>
+            </>
+            }
         </Navbar>
     );
 }
