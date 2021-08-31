@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Dropdown from 'react-bootstrap/Dropdown';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faUser, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faUser, faSpinner, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
@@ -38,7 +40,7 @@ export function Header () {
             <>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ml-auto align-items-center" navbar>
+                <Nav className="ml-auto align-items-md-center" navbar>
                     <div className="border-md-right px-2">
                         <Link to="/dashboard" className="btn btn-link btn-sm" aria-label="Metadata Dashboard">
                             <i className="fa fa-th fa-fw" aria-hidden="true"></i>
@@ -80,14 +82,16 @@ export function Header () {
                         </Dropdown.Menu>
                     </Dropdown>
                     }
-                    
                     <Dropdown className="pl-2" id="basic-nav-dropdown">
-                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
-                            <FontAwesomeIcon icon={faUser} className="mr-2" />
-                            <Translate value={'action.logged-in'} params={{ username, group: groupId }} />
+                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm" bsPrefix="dropdown-toggle-shibui">
+                            <FontAwesomeIcon icon={faUserCircle} size="" className="mr-2" />
+                            <Translate value={'action.logged-in'} params={{ username }} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu alignRight={true}>
-                            <Dropdown.Item as={Nav.Link} href="/logout" target="_self" className="text-primary py-2" aria-label={translator('action.logout')}>
+                            <Dropdown.Header>Groups</Dropdown.Header>
+                            <Dropdown.ItemText>{groupId}</Dropdown.ItemText>
+                            <div class="dropdown-divider"></div>
+                            <Dropdown.Item href="/logout" target="_self" className="text-primary" aria-label={translator('action.logout')}>
                                 <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                                 <Translate value="action.logout">Logout</Translate>
                             </Dropdown.Item>
