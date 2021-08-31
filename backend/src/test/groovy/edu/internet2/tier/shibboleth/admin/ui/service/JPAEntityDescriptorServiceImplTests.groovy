@@ -1,77 +1,53 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.ShibbolethUiApplication
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSAny
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSAnyBuilder
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSBooleanBuilder
-import edu.internet2.tier.shibboleth.admin.ui.domain.XSStringBuilder
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
-
-import org.opensaml.saml.ext.saml2mdattr.EntityAttributes
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.json.JacksonTester
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.PropertySource
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
-import spock.lang.Specification
+import spock.lang.Ignore
 
-@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration])
-@SpringBootTest(classes = ShibbolethUiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ContextConfiguration(classes=[JPAEDSILocalConfig])
 @PropertySource("classpath:application.yml")
-@DirtiesContext
-class JPAEntityDescriptorServiceImplTests extends Specification {   
+class JPAEntityDescriptorServiceImplTests extends BaseDataJpaTestSetup {
     @Autowired
-    EntityService entityService;
-    
+    EntityService entityService
+
+    @Autowired
+    OpenSamlObjects openSamlObjects
+
     @Autowired
     JPAEntityDescriptorServiceImpl service
 
-    def testObjectGenerator
-    
-    OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
-        init()
-        it
-    }
-    
-    JacksonTester<EntityDescriptorRepresentation> jacksonTester
-    ObjectMapper mapper
     RandomGenerator generator
-    
+    JacksonTester<EntityDescriptorRepresentation> jacksonTester
+    ObjectMapper mapper = new ObjectMapper()
+    def testObjectGenerator
+
     def setup() {        
-        mapper = new ObjectMapper()
         JacksonTester.initFields(this, mapper)
         generator = new RandomGenerator()
         testObjectGenerator = new TestObjectGenerator()
         EntityDescriptorConversionUtils.openSamlObjects = openSamlObjects
         EntityDescriptorConversionUtils.entityService = entityService
+        openSamlObjects.init()
     }
 
     def "simple Entity Descriptor"() {
@@ -627,7 +603,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         def output = service.createRepresentationFromDescriptor(service.createDescriptorFromRepresentation(representation))
 
         then:
-        assert output.securityInfo?.authenticationRequestsSigned == true
+        assert output.securityInfo?.authenticationRequestsSigned
     }
 
     def "SHIBUI-219-3"() {
@@ -651,6 +627,7 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         assert output.assertionConsumerServices[0].binding == 'urn:oasis:names:tc:SAML:1.0:profiles:browser-post'
     }
 
+    @Ignore
     def "payload mapping round trip: JSON->FrontendModel->BackendModel->FrontendModel->JSON"() {
         when:
         EntityDescriptorRepresentation inputRepresentation = jacksonTester.readObject('/json/SHIBUI-219-3.json')
@@ -782,5 +759,19 @@ class JPAEntityDescriptorServiceImplTests extends Specification {
         //TODO: Finish fleshing out this thing
 
         return ed
+    }
+
+    @TestConfiguration
+    private static class JPAEDSILocalConfig {
+        @Bean
+        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
+                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
+        }
+
+        @Bean
+        ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new ModelRepresentationConversions(customPropertiesConfiguration)
+        }
     }
 }

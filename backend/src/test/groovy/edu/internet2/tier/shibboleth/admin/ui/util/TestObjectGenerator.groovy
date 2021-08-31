@@ -223,12 +223,7 @@ class TestObjectGenerator {
         return new NameIdFormatFilter().with {
             it.name = "NameIDFormat"
             it.formats = ['urn:oasis:names:tc:SAML:2.0:nameid-format:persistent']
-            it.nameIdFormatFilterTarget = new NameIdFormatFilterTarget(nameIdFormatFilterTargetType: ENTITY, singleValue: 'https://sp1.example.org')
-
-            /*it.name = "NameIDFormat"
-            it.formats = ['urn:oasis:names:tc:SAML:2.0:nameid-format:persistent', 'urn:oasis:names:tc:SAML:2.0:nameid-format:email']
-            it.nameIdFormatFilterTarget = new NameIdFormatFilterTarget(nameIdFormatFilterTargetType: CONDITION_SCRIPT, singleValue: 'eval(true);')*/
-
+            it.setNameIdFormatFilterTarget(new NameIdFormatFilterTarget(nameIdFormatFilterTargetType: ENTITY, singleValue: 'https://sp1.example.org'))
             it
         }
     }
@@ -285,6 +280,7 @@ class TestObjectGenerator {
             it.resourceId = nameIdFormatFilter.resourceId
             it.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
             it.formats = nameIdFormatFilter.formats
+            it.nameIdFormatFilterTarget = nameIdFormatFilter.nameIdFormatFilterTarget
             it
         }
     }

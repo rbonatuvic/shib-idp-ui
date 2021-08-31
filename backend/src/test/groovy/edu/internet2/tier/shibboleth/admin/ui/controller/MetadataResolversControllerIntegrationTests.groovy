@@ -6,7 +6,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.configuration.*
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.MetadataResolverValidationService
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository
@@ -35,10 +39,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ContextConfiguration(classes=[MetadataResolverValidationConfiguration, MetadataResolverConverterConfiguration,
-                               SearchConfiguration, MetadataResolverConfiguration, EntitiesVersioningConfiguration,
+                               MetadataResolverConfiguration, EntitiesVersioningConfiguration,
                                edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration,
-                               PlaceholderResolverComponentsConfiguration, MRCILocalConfig, CustomPropertiesConfiguration])
-@ActiveProfiles(["no-auth"])
+                               PlaceholderResolverComponentsConfiguration, MRCILocalConfig])
 class MetadataResolversControllerIntegrationTests extends BaseDataJpaTestSetup {
     @Autowired
     AttributeUtility attributeUtility
@@ -352,11 +355,6 @@ class MetadataResolversControllerIntegrationTests extends BaseDataJpaTestSetup {
     @TestConfiguration
     private static class MRCILocalConfig {
         @Bean
-        public AttributeUtility attributeUtility(OpenSamlObjects openSamlObjects) {
-            return new AttributeUtility(openSamlObjects);
-        }
-
-        @Bean
         DirectoryService directoryService() {
             return new DirectoryServiceImpl()
         }
@@ -395,14 +393,14 @@ class MetadataResolversControllerIntegrationTests extends BaseDataJpaTestSetup {
         }
 
         @Bean
-        public ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new ModelRepresentationConversions(customPropertiesConfiguration);
+        ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new ModelRepresentationConversions(customPropertiesConfiguration)
         }
 
         @Bean
-        public MetadataResolversPositionOrderContainerService metadataResolversPositionOrderContainerService(MetadataResolversPositionOrderContainerRepository positionOrderContainerRepository,
-                                                                                                             MetadataResolverRepository resolverRepository) {
-            return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository);
+        MetadataResolversPositionOrderContainerService metadataResolversPositionOrderContainerService(MetadataResolversPositionOrderContainerRepository positionOrderContainerRepository,
+                                                                                                      MetadataResolverRepository resolverRepository) {
+            return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository)
         }
     }
 }

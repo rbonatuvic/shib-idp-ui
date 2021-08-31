@@ -2,6 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -10,26 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-@SpringBootTest
-class PolymorphicFiltersJacksonHandlingTests extends Specification {
-
-    ObjectMapper mapper
-
+class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
+    @Autowired
     AttributeUtility attributeUtility
 
     @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
 
+    ObjectMapper mapper
     TestObjectGenerator testObjectGenerator
 
     def setup() {
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
 
-        attributeUtility = new AttributeUtility(new OpenSamlObjects().with {
-            it.init()
-            it
-        })
         testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 

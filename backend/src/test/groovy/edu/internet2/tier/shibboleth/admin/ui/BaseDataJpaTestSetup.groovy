@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
-
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
-import spock.lang.Shared
 import spock.lang.Specification
 
 @DataJpaTest
@@ -22,8 +20,6 @@ import spock.lang.Specification
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 abstract class BaseDataJpaTestSetup extends Specification {
-    static boolean setupRun = false
-
     @Autowired
     GroupServiceForTesting groupService
 
@@ -39,15 +35,9 @@ abstract class BaseDataJpaTestSetup extends Specification {
     @Autowired
     UserService userService
 
-    def setup() {
-        runOnce()
-    }
-
-    // One time setup to ensure roles are in a known good state and that we have an admin user and group
+    // ensure roles are in a known good state and that we have an admin user and group
     @Transactional
-    runOnce() {
-        if (setupRun) return
-
+    def setup() {
         groupService.clearAllForTesting()
         userRepository.deleteAll()
         ownershipRepository.deleteAll()
@@ -77,6 +67,5 @@ abstract class BaseDataJpaTestSetup extends Specification {
             User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")
             userService.save(adminUser)
         }
-        setupRun = true
     }
 }

@@ -1,83 +1,44 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.http.MediaType
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.transaction.annotation.Transactional
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
-import spock.lang.Specification
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.http.MediaType
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.test.annotation.Rollback
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.HttpClientErrorException
+import org.springframework.web.util.NestedServletException
 
-import static org.springframework.http.MediaType.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, TestConfiguration, InternationalizationConfiguration, SearchConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext
-@ActiveProfiles(["no-auth", "local"])
-@ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.configuration }")
-class UsersControllerIntegrationTests extends Specification {
+@ContextConfiguration(classes=[UCILocalConfig])
+class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
     @Autowired
     GroupsRepository groupsRepository
-    
+
     @Autowired
-    GroupServiceForTesting groupService
+    ObjectMapper mapper
     
-    @Autowired
-    def ObjectMapper mapper
-    
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
-    @Autowired
-    RoleRepository roleRepository
-    
-    @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    UserService userService
-    
-    def MockMvc mockMvc
+    MockMvc mockMvc
     def users
     
     static RESOURCE_URI = '/api/admin/users'
@@ -95,10 +56,6 @@ class UsersControllerIntegrationTests extends Specification {
         }
         userRepository.flush()
         
-        roleRepository.deleteAll()
-        roleRepository.flush()
-        groupService.clearAllForTesting() //leaves us just the admingroup
-                
         def groups = [
             new Group().with {
                 it.name = "A1"
@@ -116,27 +73,11 @@ class UsersControllerIntegrationTests extends Specification {
             try {
                 groupsRepository.save(it)
             } catch (Throwable e) {
-                // Must already exist (from a unit test)
+                // ???
             }
         }
         groupsRepository.flush()
         
-        if (roleRepository.count() == 0) {
-            def roles = [new Role().with {
-                name = 'ROLE_ADMIN'
-                it
-            }, new Role().with {
-                name = 'ROLE_USER'
-                it
-            }, new Role().with {
-                name = 'ROLE_NONE'
-                it
-            }]
-            roles.each {
-                roleRepository.save(it)
-            }
-        }
-        roleRepository.flush()
         if (userRepository.count() == 0) {
             users = [new User().with {
                 username = 'admin'
@@ -172,12 +113,12 @@ class UsersControllerIntegrationTests extends Specification {
                 it
             }]
             users.each {
-                it = userService.save(it)
+                userService.save(it)
             }
         }
     }
     
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET ALL users (when there are existing users)'() {
         // given: users created in setup
 
@@ -204,7 +145,7 @@ class UsersControllerIntegrationTests extends Specification {
               .andExpect(jsonPath("\$.[3].groupId").value("admingroup"))
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET ONE existing user'() {
         when: 'GET request is made for one existing user'
         def result = mockMvc.perform(get("$RESOURCE_URI/admin"))
@@ -218,7 +159,7 @@ class UsersControllerIntegrationTests extends Specification {
                 .andExpect(jsonPath("\$.groupId").value("admingroup"))
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET ONE NON-existing user'() {
         when: 'GET request is made for one NON-existing user'
         def result = mockMvc.perform(get("$RESOURCE_URI/bogus"))
@@ -228,7 +169,7 @@ class UsersControllerIntegrationTests extends Specification {
     }
 
     @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'DELETE ONE existing user'() {
         when: 'GET request is made for one existing user'
         def result = mockMvc.perform(get("$RESOURCE_URI/nonadmin"))
@@ -244,16 +185,16 @@ class UsersControllerIntegrationTests extends Specification {
 
         // 'GET request is made for the deleted user'
         try {
-            result = mockMvc.perform(get("$RESOURCE_URI/nonadmin"))
+            mockMvc.perform(get("$RESOURCE_URI/nonadmin"))
             false
         }
-        catch (org.springframework.web.util.NestedServletException expectedResult) {
-            expectedResult.getCause() instanceof org.springframework.web.client.HttpClientErrorException
+        catch (NestedServletException expectedResult) {
+            expectedResult.getCause() instanceof HttpClientErrorException
         }
     }
 
     @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'POST new user persists properly'() {
         given:
         def newUser = [firstName: 'Foo',
@@ -274,7 +215,7 @@ class UsersControllerIntegrationTests extends Specification {
     }
 
     @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'POST new duplicate username returns 409'() {
         given:
         def newUser = [firstName: 'Foo',
@@ -299,11 +240,11 @@ class UsersControllerIntegrationTests extends Specification {
     }
 
     @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'PATCH updates user properly'() {
         given:
-        def String userString = mockMvc.perform(get("$RESOURCE_URI/none")).andReturn().getResponse().getContentAsString()
-        def User user = mapper.readValue(userString, User.class);
+        String userString = mockMvc.perform(get("$RESOURCE_URI/none")).andReturn().getResponse().getContentAsString()
+        User user = mapper.readValue(userString, User.class)
         user.setFirstName("somethingnew")
         
         when:
@@ -344,7 +285,7 @@ class UsersControllerIntegrationTests extends Specification {
          
     }
 
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'PATCH detects unknown username'() {
         given:
         def newUser = [firstName: 'Foo',
@@ -363,26 +304,14 @@ class UsersControllerIntegrationTests extends Specification {
         result.andExpect(status().isNotFound())
     }
     
-    @org.springframework.boot.test.context.TestConfiguration
-    @Profile(value = "local")
-    static class LocalConfig {
-        @Bean
-        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            })
-            result.ensureAdminGroupExists()
-            return result
-        }
-        
+    @TestConfiguration
+    private static class UCILocalConfig {
         @Bean
         ObjectMapper objectMapper() {
             JavaTimeModule module = new JavaTimeModule()
             LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"))
             module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
-            
+
             return Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
         }
     }

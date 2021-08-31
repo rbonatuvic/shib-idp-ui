@@ -1,10 +1,8 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
@@ -18,109 +16,68 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
-import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
+import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Primary
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.NestedServletException
-import spock.lang.Specification
 import spock.lang.Subject
 
 import javax.persistence.EntityManager
 
 import static org.hamcrest.CoreMatchers.containsString
-import static org.springframework.http.MediaType.*
+import static org.springframework.http.MediaType.APPLICATION_JSON
+import static org.springframework.http.MediaType.APPLICATION_XML
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext
-@ActiveProfiles(["edc-test"])
-class EntityDescriptorControllerTests extends Specification {
+@ContextConfiguration(classes=[EDCLocalConfig])
+class EntityDescriptorControllerTests extends BaseDataJpaTestSetup {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
     EntityManager entityManager
-    
+
     @Autowired
     EntityService entityService
-    
-    @Autowired
-    GroupServiceForTesting groupService
-    
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
-    @Autowired
-    RoleRepository roleRepository
 
     @Autowired
-    JPAEntityDescriptorServiceImpl service
-        
+    OpenSamlObjects openSamlObjects
+
     @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    UserService userService
-          
+    JPAEntityDescriptorServiceImpl jpaEntityDescriptorService
+
     RandomGenerator randomGenerator
     TestObjectGenerator generator
-
     def mapper
-    
     def mockRestTemplate = Mock(RestTemplate)
-
-    def openSamlObjects = new OpenSamlObjects().with {
-        init()
-        it
-    }
-
     def mockMvc
 
     @Subject
     def controller
 
-    Authentication authentication = Mock()
-    SecurityContext securityContext = Mock()    
     EntityDescriptorVersionService versionService = Mock()
     
     @Transactional
     def setup() {
-        groupService.clearAllForTesting()
-        groupService.ensureAdminGroupExists()
-
-        Group gb = new Group();
+        openSamlObjects.init()
+        
+        Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
         gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
@@ -130,38 +87,12 @@ class EntityDescriptorControllerTests extends Specification {
         randomGenerator = new RandomGenerator()
         mapper = new ObjectMapper()
 
-        service.userService = userService
-        service.groupService = groupService
-
         controller = new EntityDescriptorController(versionService)
         controller.openSamlObjects = openSamlObjects
-        controller.entityDescriptorService = service
+        controller.entityDescriptorService = jpaEntityDescriptorService
         controller.restTemplate = mockRestTemplate
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        
-        securityContext.getAuthentication() >> authentication
-        SecurityContextHolder.setContext(securityContext)
-                
-        if (roleRepository.count() == 0) {
-            def roles = [new Role().with {
-                name = 'ROLE_ADMIN'
-                it
-            }, new Role().with {
-                name = 'ROLE_USER'
-                it
-            }, new Role().with {
-                name = 'ROLE_NONE'
-                it
-            }]
-            roles.each {
-                roleRepository.save(it)
-            }
-        }
-        
-        Optional<Role> adminRole = roleRepository.findByName("ROLE_ADMIN")
-        User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")
-        userService.save(adminUser)
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
         
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
@@ -172,11 +103,9 @@ class EntityDescriptorControllerTests extends Specification {
         EntityDescriptorConversionUtils.setEntityService(entityService)
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'DELETE as admin'() {
         given:
-        authentication.getName() >> 'admin'
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false)
         entityDescriptorRepository.save(entityDescriptor)
 
@@ -195,12 +124,9 @@ class EntityDescriptorControllerTests extends Specification {
         entityDescriptorRepository.findAll().size() == 0
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET /EntityDescriptors with empty repository as admin'() {
         given:
-        authentication.getName() >> 'admin'
-
         def expectedEmptyListResponseBody = '[]'
         def expectedResponseContentType = APPLICATION_JSON
         def expectedHttpResponseStatus = status().isOk()
@@ -214,12 +140,9 @@ class EntityDescriptorControllerTests extends Specification {
                 .andExpect(content().json(expectedEmptyListResponseBody))
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET /EntityDescriptors with 1 record in repository as admin'() {
         given:
-        authentication.getName() >> 'admin'
-
         def entityDescriptor = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")
         entityDescriptorRepository.saveAndFlush(entityDescriptor)
 
@@ -230,20 +153,16 @@ class EntityDescriptorControllerTests extends Specification {
         def result = mockMvc.perform(get('/api/EntityDescriptors'))
 
         then:
-        def mvcResult = result.andExpect(expectedHttpResponseStatus).andExpect(content().contentType(expectedResponseContentType))
-                              .andExpect(jsonPath("\$.[0].id").value("uuid-1"))
-                              .andExpect(jsonPath("\$.[0].entityId").value("eid1"))
-                              .andExpect(jsonPath("\$.[0].serviceEnabled").value(true))
-                              .andExpect(jsonPath("\$.[0].idOfOwner").value("admingroup"))
+        result.andExpect(expectedHttpResponseStatus).andExpect(content().contentType(expectedResponseContentType))
+              .andExpect(jsonPath("\$.[0].id").value("uuid-1"))
+              .andExpect(jsonPath("\$.[0].entityId").value("eid1"))
+              .andExpect(jsonPath("\$.[0].serviceEnabled").value(true))
+              .andExpect(jsonPath("\$.[0].idOfOwner").value("admingroup"))
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET /EntityDescriptors with 2 records in repository as admin'() {
         given:
-        authentication.getName() >> 'admin'
-
-
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")
         def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: "admingroup")
 
@@ -269,12 +188,9 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.[1].idOfOwner").value("admingroup"))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'POST create new - verifying validation on entityID and ACS locations'() {
         given:
-        authentication.getName() >> 'someUser'
-
         def expectedEntityId = 'https://shib.org/blah/blah'
         EntityDescriptorRepresentation edRep = new EntityDescriptorRepresentation()
         edRep.setEntityId(expectedEntityId)
@@ -322,12 +238,9 @@ class EntityDescriptorControllerTests extends Specification {
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'POST /EntityDescriptor and successfully create new record'() {
         given:
-        authentication.getName() >> 'admin'
-
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
         def expectedResponseHeader = 'Location'
@@ -361,12 +274,9 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'POST /EntityDescriptor as user disallows enabling'() {
         given:
-        authentication.getName() >> 'someUser'
-
         def expectedEntityId = 'https://shib'
         def expectedSpName = 'sp1'
 
@@ -393,19 +303,16 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
+            mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-            e instanceof ForbiddenException == true
+            e instanceof ForbiddenException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'POST /EntityDescriptor record already exists'() {
         given:
-        authentication.getName() >> 'admin'
-
         def postedJsonBody = """
               {
 	            "serviceProviderName": "sp1",
@@ -436,33 +343,27 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
+            mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-            e instanceof EntityIdExistsException == true
+            e instanceof EntityIdExistsException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET /EntityDescriptor/{resourceId} non-existent'() {
-        when:
-        authentication.getName() >> 'admin'
-
-        then:
+        expect:
         try {
-            def exceptionExpected = mockMvc.perform(get("/api/EntityDescriptor/uuid-1"))
+            mockMvc.perform(get("/api/EntityDescriptor/uuid-1"))
         }
         catch (Exception e) {
-            e instanceof EntityNotFoundException == true
+            e instanceof EntityNotFoundException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET /EntityDescriptor/{resourceId} existing'() {
         given:
-        authentication.getName() >> 'admin'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "admingroup")
         entityDescriptorRepository.save(entityDescriptorOne)
         entityManager.flush()
@@ -478,11 +379,9 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.idOfOwner").value("admingroup"))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'GET /EntityDescriptor/{resourceId} existing, validate group access'() {
         given:
-        authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
 
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: "someUser")
@@ -493,7 +392,6 @@ class EntityDescriptorControllerTests extends Specification {
 
         ownershipRepository.saveAndFlush(new Ownership(g, entityDescriptorOne))
         ownershipRepository.saveAndFlush(new Ownership(Group.ADMIN_GROUP, entityDescriptorTwo))
-
 
         when:
         def result = mockMvc.perform(get("/api/EntityDescriptor/uuid-1"))
@@ -506,11 +404,9 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.idOfOwner").value("someUser"))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'GET /EntityDescriptor/{resourceId} existing, owned by some other user'() {
         when:
-        authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
 
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
@@ -524,18 +420,16 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(get("/api/EntityDescriptor/uuid-2"))
+            mockMvc.perform(get("/api/EntityDescriptor/uuid-2"))
         }
         catch (Exception e) {
-            e instanceof ForbiddenException == true
+            e instanceof ForbiddenException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def 'GET /EntityDescriptor/{resourceId} existing (xml)'() {
         given:
-        authentication.getName() >> 'admin'
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true)
         entityDescriptorOne.setElementLocalName("EntityDescriptor")
         entityDescriptorOne.setNamespacePrefix("md")
@@ -554,11 +448,9 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().isOk()).andExpect(content().xml(expectedXML))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'GET /EntityDescriptor/{resourceId} existing (xml), user-owned'() {
         given:
-        authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
 
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
@@ -579,11 +471,9 @@ class EntityDescriptorControllerTests extends Specification {
         result.andExpect(status().isOk()).andExpect(content().xml(expectedXML))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def 'GET /EntityDescriptor/{resourceId} existing (xml), other user-owned'() {
         when:
-        authentication.getName() >> 'someUser'
         Group g = Group.ADMIN_GROUP
 
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
@@ -595,19 +485,16 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId").accept(APPLICATION_XML))
+            mockMvc.perform(get("/api/EntityDescriptor/$providedResourceId").accept(APPLICATION_XML))
         }
         catch (Exception e) {
-            e instanceof ForbiddenException == true
+            e instanceof ForbiddenException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def "POST /EntityDescriptor handles XML happily"() {
         given:
-        authentication.getName() >> 'admin'
-
         def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
   <md:Extensions>
@@ -648,11 +535,9 @@ class EntityDescriptorControllerTests extends Specification {
 
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def "POST /EntityDescriptor returns error for duplicate entity id"() {
         when:
-        authentication.getName() >> 'admin'
         def postedBody = '''<?xml version="1.0" encoding="UTF-8"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://test.scaldingspoon.org/test1">
   <md:Extensions>
@@ -682,26 +567,23 @@ class EntityDescriptorControllerTests extends Specification {
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
+            mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
         }
         catch (Exception e) {
-            e instanceof EntityIdExistsException == true
+            e instanceof EntityIdExistsException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def "PUT /EntityDescriptor updates entity descriptors properly as admin"() {
         given:
-        authentication.getName() >> 'admin'
-
         def entityDescriptorTwo = new EntityDescriptor(resourceId: 'uuid-2', entityID: 'eid2', serviceProviderName: 'sp2', serviceEnabled: false, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
 
         entityDescriptorTwo = entityDescriptorRepository.save(entityDescriptorTwo)
         entityManager.flush()
         entityManager.clear()
 
-        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(entityDescriptorTwo)
+        def updatedEntityDescriptorRepresentation = jpaEntityDescriptorService.createRepresentationFromDescriptor(entityDescriptorTwo)
         updatedEntityDescriptorRepresentation.setServiceProviderName("newName")
         def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
 
@@ -716,11 +598,9 @@ class EntityDescriptorControllerTests extends Specification {
               .andExpect(jsonPath("\$.serviceProviderName").value("newName"))
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def "PUT /EntityDescriptor disallows non-admin user from enabling"() {
         given:
-        authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
 
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: false, idOfOwner: g.getOwnerId())
@@ -730,24 +610,22 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         entityDescriptorOne.serviceEnabled = true
         entityDescriptorOne.resourceId = 'uuid-1'
-        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(entityDescriptorOne)
+        def updatedEntityDescriptorRepresentation = jpaEntityDescriptorService.createRepresentationFromDescriptor(entityDescriptorOne)
         updatedEntityDescriptorRepresentation.version = entityDescriptorOne.hashCode()
         def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(put("/api/EntityDescriptor/uuid-1").contentType(APPLICATION_JSON).content(postedJsonBody))
+            mockMvc.perform(put("/api/EntityDescriptor/uuid-1").contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-            e instanceof ForbiddenException == true
+            e instanceof ForbiddenException
         }
     }
 
-    @Rollback
     @WithMockUser(value = "someUser", roles = ["USER"])
     def "PUT /EntityDescriptor denies the request if the PUTing user is not an ADMIN and not the createdBy user"() {
         given:
-        authentication.getName() >> 'someUser'
         Group g = userService.getCurrentUserGroup()
 
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: g.getOwnerId())
@@ -757,25 +635,22 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         entityDescriptorOne.serviceProviderName = 'foo'
         entityDescriptorOne.resourceId = 'uuid-1'
-        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(entityDescriptorOne)
+        def updatedEntityDescriptorRepresentation = jpaEntityDescriptorService.createRepresentationFromDescriptor(entityDescriptorOne)
         updatedEntityDescriptorRepresentation.version = entityDescriptorOne.hashCode()
         def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
 
         then:
         try {
-            def exceptionExpected = mockMvc.perform(put("/api/EntityDescriptor/uuid-1").contentType(APPLICATION_JSON).content(postedJsonBody))
+            mockMvc.perform(put("/api/EntityDescriptor/uuid-1").contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-            e instanceof ForbiddenException == true
+            e instanceof ForbiddenException
         }
     }
 
-    @Rollback
-    @WithMockUser(value = "admin", roles = ["ADMIN"])
+    @WithMockAdmin
     def "PUT /EntityDescriptor throws a concurrent mod exception if the version numbers don't match"() {
-                given:
-        authentication.getName() >> 'admin'
-
+        given:
         def entityDescriptorOne = new EntityDescriptor(resourceId: 'uuid-1', entityID: 'eid1', serviceProviderName: 'sp1', serviceEnabled: true, idOfOwner: Group.ADMIN_GROUP.getOwnerId())
         entityDescriptorOne = entityDescriptorRepository.save(entityDescriptorOne)
         entityManager.flush()
@@ -783,32 +658,30 @@ class EntityDescriptorControllerTests extends Specification {
         when:
         entityDescriptorOne.serviceProviderName = 'foo'
         entityDescriptorOne.resourceId = 'uuid-1'
-        def updatedEntityDescriptorRepresentation = service.createRepresentationFromDescriptor(entityDescriptorOne)
+        def updatedEntityDescriptorRepresentation = jpaEntityDescriptorService.createRepresentationFromDescriptor(entityDescriptorOne)
 
         def postedJsonBody = mapper.writeValueAsString(updatedEntityDescriptorRepresentation)
 
         then:
         try {
-            def exception = mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody))
+            mockMvc.perform(put("/api/EntityDescriptor/$resourceId").contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-          e instanceof ConcurrentModificationException == true
+            e instanceof ConcurrentModificationException
         }
     }
-    
-    @org.springframework.boot.test.context.TestConfiguration
-    @Profile(value = "edc-test")
-    static class LocalConfig {
+
+    @TestConfiguration
+    private static class EDCLocalConfig {
         @Bean
-        @Primary
-        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            })
-            result.ensureAdminGroupExists()
-            return result
+        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
+                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
+        }
+
+        @Bean
+        ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
+            return new ModelRepresentationConversions(customPropertiesConfiguration)
         }
     }
 }

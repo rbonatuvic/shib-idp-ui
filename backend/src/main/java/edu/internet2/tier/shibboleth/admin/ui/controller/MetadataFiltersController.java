@@ -1,6 +1,5 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.ITargetable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver;
@@ -9,21 +8,12 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverReposit
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -137,7 +127,7 @@ public class MetadataFiltersController {
     @GetMapping("/Filters/{resourceId}")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getOne(@PathVariable String metadataResolverId, @PathVariable String resourceId) {
-        MetadataResolver resolver = findResolverOrThrowHttp404(metadataResolverId);
+        findResolverOrThrowHttp404(metadataResolverId);
         return ResponseEntity.ok(findFilterOrThrowHttp404(resourceId));
     }
 
@@ -199,7 +189,7 @@ public class MetadataFiltersController {
                         .stream()
                         .filter(it -> it.getResourceId().equals(resourceId))
                         .findFirst();
-        if (!filterTobeUpdatedOptional.isPresent()) {
+        if (filterTobeUpdatedOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         MetadataFilter filterTobeUpdated = filterTobeUpdatedOptional.get();

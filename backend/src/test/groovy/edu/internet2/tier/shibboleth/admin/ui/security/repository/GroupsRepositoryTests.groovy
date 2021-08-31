@@ -1,21 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
-import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
 
 import javax.transaction.Transactional
 
@@ -23,18 +13,10 @@ import javax.transaction.Transactional
  * Tests to validate the repo and model for groups
  * @author chasegawa
  */
-@DataJpaTest
-@ContextConfiguration(classes=[InternationalizationConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles(["test","gr-tests"])
-class GroupsRepositoryTests extends Specification {
+class GroupsRepositoryTests extends BaseDataJpaTestSetup {
     @Autowired
     GroupsRepository groupsRepo
-    
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
+
     @Transactional
     def setup() {
         groupsRepo.deleteAll()
@@ -87,7 +69,7 @@ class GroupsRepositoryTests extends Specification {
            ownershipRepository.save(it)
        }
     }
-    
+
     def "group ownership tests"() {
         when: "Simple create test"
         def group = new Group().with {
@@ -107,7 +89,6 @@ class GroupsRepositoryTests extends Specification {
         }
     }
     
-    @Rollback
     def "simple create test"() {
         given:
         def group = new Group().with {
@@ -131,12 +112,12 @@ class GroupsRepositoryTests extends Specification {
         // save check
         def gList = groupsRepo.findAll()
         gList.size() == 1
-        def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group)
+        def groupFromDb = gList.get(0) as Group
+        groupFromDb == group
       
         // fetch checks
         groupsRepo.findByResourceId("not an id") == null
-        groupsRepo.findByResourceId(groupFromDb.resourceId).equals(group)       
+        groupsRepo.findByResourceId(groupFromDb.resourceId) == group
     }
 
     def "expected error"() {
@@ -155,14 +136,13 @@ class GroupsRepositoryTests extends Specification {
         
         // save check
         when:
-        def savedGroup = groupsRepo.save(group)
+        groupsRepo.save(group)
         
         then:
         // Missing non-nullable field (name) should thrown error
-        final def exception = thrown(DataIntegrityViolationException)
+        thrown(DataIntegrityViolationException)
     }
     
-    @Rollback
     def "basic CRUD operations validated"() {
         given:
         def group = new Group().with {
@@ -186,8 +166,8 @@ class GroupsRepositoryTests extends Specification {
         // save check
         def gList = groupsRepo.findAll()
         gList.size() == 1
-        def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group) == true
+        def groupFromDb = gList.get(0) as Group
+        groupFromDb == group
              
         // update check
         groupFromDb.with {
@@ -201,9 +181,9 @@ class GroupsRepositoryTests extends Specification {
         then:
         def gList2 = groupsRepo.findAll()
         gList2.size() == 1
-        def groupFromDb2 = gList2.get(0).asType(Group)
+        def groupFromDb2 = gList2.get(0) as Group
         groupFromDb2.equals(group) == false
-        groupFromDb2.equals(groupFromDb) == true
+        groupFromDb2 == groupFromDb
         
         // delete tests
         when:
@@ -217,16 +197,5 @@ class GroupsRepositoryTests extends Specification {
         
         then:
         nothingThere == null
-    }
-    
-    @TestConfiguration
-    @Profile("gr-tests")
-    static class LocalConfig {
-        @Bean
-        GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {
-            GroupUpdatedEntityListener result = new GroupUpdatedEntityListener()
-            result.init(repo)
-            return result            
-        }
     }
 }

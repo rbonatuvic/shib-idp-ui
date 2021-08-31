@@ -4,91 +4,31 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Primary
-import org.springframework.context.annotation.Profile
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.Rollback
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
-import spock.lang.Specification
 
-import javax.persistence.EntityManager
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, CustomPropertiesConfiguration, LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@DirtiesContext
-@ActiveProfiles(["test", "us-test"])
-@ComponentScan(basePackages="{ edu.internet2.tier.shibboleth.admin.ui.configuration }")
-class UserServiceTests extends Specification {
-    
-    @Autowired
-    EntityManager entityManager
-    
-    @Autowired
-    GroupServiceForTesting groupService
-
-    @Autowired
-    OwnershipRepository ownershipRepository
-    
-    @Autowired
-    RoleRepository roleRepository
-        
-    @Autowired
-    UserRepository userRepository
-    
-    @Autowired
-    UserService userService
-        
+class UserServiceTests extends BaseDataJpaTestSetup {
     @Transactional
     def setup() {
         userRepository.findAll().forEach {
             userService.delete(it.getUsername())
         }
         userRepository.flush()
-        
-        roleRepository.deleteAll()
-        roleRepository.flush()
+
         groupService.clearAllForTesting() //leaves us just the admingroup
-        
-        def roles = [new Role().with {
-            name = 'ROLE_ADMIN'
-            it
-        }, new Role().with {
-            name = 'ROLE_USER'
-            it
-        }, new Role().with {
-            name = 'ROLE_NONE'
-            it
-        }]
-        roles.each {
-            roleRepository.save(it)
-        }      
     }
     
-    @Rollback
     def "When creating user, user is set to the correct group"() {
         given:
         Group gb = new Group()
@@ -118,7 +58,6 @@ class UserServiceTests extends Specification {
         g.ownedItems.size() == 1
     }
 
-    @Rollback
     def "When updating user, user is set to the correct group"() {
         given:
         Group ga = new Group()
@@ -162,7 +101,6 @@ class UserServiceTests extends Specification {
         g2.ownedItems.size() == 0
     }
         
-    @Rollback
     def "logically try to match user controller test causing headaches"() {
         given:
         Group ga = new Group()
@@ -189,7 +127,6 @@ class UserServiceTests extends Specification {
         result.firstName == "Wilma"
     }
     
-    @Rollback
     def "When creating user, user with multiple groups is saved correctly"() {
         given:
         Group ga = new Group()
@@ -244,20 +181,7 @@ class UserServiceTests extends Specification {
     }
     
     @TestConfiguration
-    @Profile("us-test")
     static class LocalConfig {
-        @Bean
-        @Primary
-        GroupServiceForTesting groupServiceForTesting(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            GroupServiceForTesting result = new GroupServiceForTesting(new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            })
-            result.ensureAdminGroupExists()
-            return result
-        }
-
         @Bean
         ObjectMapper objectMapper() {
             JavaTimeModule module = new JavaTimeModule()

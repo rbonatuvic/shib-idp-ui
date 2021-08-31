@@ -1,8 +1,10 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
@@ -11,6 +13,7 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilF
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
+import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
@@ -34,20 +37,16 @@ import spock.lang.Specification
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
 
-@DataJpaTest
-@ContextConfiguration(classes = [CoreShibUiConfiguration, SearchConfiguration, InternationalizationConfiguration, edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration ,LocalConfig])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles(value = "local")
-class IncommonJPAMetadataResolverServiceImplTests extends Specification {
+@ContextConfiguration(classes = [IJPAMRSILocalConfig])
+class IncommonJPAMetadataResolverServiceImplTests extends BaseDataJpaTestSetup {
+    @Autowired
+    AttributeUtility attributeUtility
+
     @Autowired
     MetadataResolverService metadataResolverService
 
     @Autowired
     MetadataResolverRepository metadataResolverRepository
-
-    @Autowired
-    AttributeUtility attributeUtility
 
     def cleanup() {
         metadataResolverRepository.deleteAll()
@@ -111,19 +110,28 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
     }
 
     @TestConfiguration
-    @Profile("local")
-    private static class LocalConfig {
-        @Autowired
-        OpenSamlObjects openSamlObjects
-
-        @Autowired
-        MetadataResolverRepository metadataResolverRepository
-
-        @Autowired
-        AttributeUtility attributeUtility
+    private static class IJPAMRSILocalConfig {
+//        @Bean
+//        DirectoryService directoryService() {
+//            return new DirectoryServiceImpl()
+//        }
 
         @Bean
-        MetadataResolver metadataResolver() {
+        JPAMetadataResolverServiceImpl jpaMetadataResolverService(MetadataResolver metadataResolver, MetadataResolverRepository metadataResolverRepository,
+                                                                  OpenSamlObjects openSamlObjects, MetadataResolversPositionOrderContainerService resolversPositionOrderContainerService,
+                                                                  ShibUIConfiguration shibUIConfiguration) {
+            return new JPAMetadataResolverServiceImpl().with {
+                it.metadataResolver = metadataResolver
+                it.metadataResolverRepository = metadataResolverRepository
+                it.openSamlObjects = openSamlObjects
+                it.resolversPositionOrderContainerService = resolversPositionOrderContainerService
+                it.shibUIConfiguration = shibUIConfiguration
+                it
+            }
+        }
+
+        @Bean
+        MetadataResolver metadataResolver(AttributeUtility attributeUtility, MetadataResolverRepository metadataResolverRepository) {
             def resolver = new ChainingMetadataResolver().with {
                 it.id = 'chain'
 
@@ -153,14 +161,11 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
             return resolver
         }
-        
+
         @Bean
-        GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
-            new GroupServiceImpl().with {
-                it.groupRepository = repo
-                it.ownershipRepository = ownershipRepository
-                return it
-            }
+        MetadataResolversPositionOrderContainerService metadataResolversPositionOrderContainerService(MetadataResolversPositionOrderContainerRepository positionOrderContainerRepository,
+                                                                                                      MetadataResolverRepository resolverRepository) {
+            return new DefaultMetadataResolversPositionOrderContainerService(positionOrderContainerRepository, resolverRepository)
         }
     }
 }
