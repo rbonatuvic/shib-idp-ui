@@ -7,7 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faSpinner, faUserCircle, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faFileArchive } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
