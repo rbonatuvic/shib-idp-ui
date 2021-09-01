@@ -44,8 +44,12 @@ public class UserUpdatedEntityListener implements ILazyLoaderHelper {
         user.setLazyLoaderHelper(null);
         Set<Ownership> ownerships = ownershipRepository.findAllGroupsForUser(user.getUsername());
         HashSet<Group> groups = new HashSet<>();
-        ownerships.forEach(ownership -> {
-            groups.add(groupRepository.findByResourceId(ownership.getOwnerId()));
+        final boolean isAdmin = user.getRole().equals("ROLE_ADMIN");
+        ownerships.stream().map(ownership -> groupRepository.findByResourceId(ownership.getOwnerId())).forEach(userGroup -> {
+            if (isAdmin) {
+                userGroup.setValidationRegex(null);
+            }
+            groups.add(userGroup);
         });
         user.setGroups(groups);
     }

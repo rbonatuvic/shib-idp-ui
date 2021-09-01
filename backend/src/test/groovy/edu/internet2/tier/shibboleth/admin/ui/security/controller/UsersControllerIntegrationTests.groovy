@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
@@ -31,7 +31,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @ContextConfiguration(classes=[UCILocalConfig])
-class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
+@Rollback
+class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
     GroupsRepository groupsRepository
 
@@ -42,6 +43,7 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
     def users
     
     static RESOURCE_URI = '/api/admin/users'
+    static VALIDATION_REGEX = "^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$"
     
     def setup() {
         def controller = new UsersController(userRepository, userService)
@@ -61,12 +63,14 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
                 it.name = "A1"
                 it.description = "AAA Group"
                 it.resourceId = "AAA"
+                it.validationRegex = VALIDATION_REGEX
                 it
             },
             new Group().with {
                 it.name = "B1"
                 it.description = "BBB Group"
                 it.resourceId = "BBB"
+                it.validationRegex = VALIDATION_REGEX
                 it
             }]
         groups.each {
@@ -131,18 +135,22 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
               .andExpect(jsonPath("\$.[0].emailAddress").value("joe@institution.edu"))
               .andExpect(jsonPath("\$.[0].role").value("ROLE_ADMIN"))
               .andExpect(jsonPath("\$.[0].groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.[0].userGroups.[0].validationRegex").isEmpty())
               .andExpect(jsonPath("\$.[1].username").value("nonadmin"))
               .andExpect(jsonPath("\$.[1].emailAddress").value("peter@institution.edu"))
               .andExpect(jsonPath("\$.[1].role").value("ROLE_USER"))
-              .andExpect(jsonPath("\$.[1].groupId").value("nonadmin"))              
+              .andExpect(jsonPath("\$.[1].groupId").value("nonadmin"))
+              .andExpect(jsonPath("\$.[1].userGroups.[0].validationRegex").value("/(?:)/"))
               .andExpect(jsonPath("\$.[2].username").value("none"))
               .andExpect(jsonPath("\$.[2].emailAddress").value("badboy@institution.edu"))
               .andExpect(jsonPath("\$.[2].role").value("ROLE_NONE"))
-              .andExpect(jsonPath("\$.[2].groupId").value("none"))                       
+              .andExpect(jsonPath("\$.[2].groupId").value("none"))
+              .andExpect(jsonPath("\$.[2].userGroups.[0].validationRegex").value("/(?:)/"))
               .andExpect(jsonPath("\$.[3].username").value("anonymousUser"))
               .andExpect(jsonPath("\$.[3].emailAddress").value("anon@institution.edu"))
               .andExpect(jsonPath("\$.[3].role").value("ROLE_ADMIN"))
               .andExpect(jsonPath("\$.[3].groupId").value("admingroup"))
+              .andExpect(jsonPath("\$.[3].userGroups.[0].validationRegex").isEmpty())
     }
 
     @WithMockAdmin
@@ -157,6 +165,7 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
                 .andExpect(jsonPath("\$.emailAddress").value("joe@institution.edu"))
                 .andExpect(jsonPath("\$.role").value("ROLE_ADMIN"))
                 .andExpect(jsonPath("\$.groupId").value("admingroup"))
+                .andExpect(jsonPath("\$.userGroups.[0].validationRegex").isEmpty())
     }
 
     @WithMockAdmin
@@ -168,7 +177,6 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
         result.andExpect(status().isNotFound())
     }
 
-    @Rollback
     @WithMockAdmin
     def 'DELETE ONE existing user'() {
         when: 'GET request is made for one existing user'
@@ -193,7 +201,6 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
         }
     }
 
-    @Rollback
     @WithMockAdmin
     def 'POST new user persists properly'() {
         given:
@@ -214,7 +221,6 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
         result.andExpect(status().isOk())
     }
 
-    @Rollback
     @WithMockAdmin
     def 'POST new duplicate username returns 409'() {
         given:
@@ -239,14 +245,13 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
         result.andExpect(status().isConflict())
     }
 
-    @Rollback
     @WithMockAdmin
     def 'PATCH updates user properly'() {
         given:
         String userString = mockMvc.perform(get("$RESOURCE_URI/none")).andReturn().getResponse().getContentAsString()
         User user = mapper.readValue(userString, User.class)
         user.setFirstName("somethingnew")
-        
+
         when:
         def result = mockMvc.perform(patch("$RESOURCE_URI/$user.username")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -255,34 +260,36 @@ class UsersControllerIntegrationTests extends BaseDataJpaTestSetup {
 
         then:
         result.andExpect(status().isOk())
-        
+
         when:
         user.setGroupId("AAA")
         def resultNewGroup = mockMvc.perform(patch("$RESOURCE_URI/$user.username").contentType(MediaType.APPLICATION_JSON)
                                     .content(mapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON))
-        
+
         then:
         resultNewGroup.andExpect(status().isOk())
                       .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                       .andExpect(jsonPath("\$.groupId").value("AAA"))
-                      
-        def groups = ownershipRepository.findAllGroupsForUser(user.username) 
+                      .andExpect(jsonPath("\$.userGroups.[0].validationRegex").value(VALIDATION_REGEX))
+
+        def groups = ownershipRepository.findAllGroupsForUser(user.username)
         groups.size() == 1
-        
+
         when: 'Updating user role to admin puts the user in the admin group'
         user.setRole("ROLE_ADMIN")
         user.setGroupId("AAA") // Dont care that this is different, ROLE_ADMIN should take precedence
         def resultUserNewRole = mockMvc.perform(patch("$RESOURCE_URI/$user.username").contentType(MediaType.APPLICATION_JSON)
             .content(mapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON))
-        
+
         then:
         resultUserNewRole.andExpect(status().isOk())
-                      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                      .andExpect(jsonPath("\$.groupId").value("admingroup"))
-                      
+                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                         .andExpect(jsonPath("\$.groupId").value("admingroup"))
+                         .andExpect(jsonPath("\$.userGroups.[0].validationRegex").isEmpty())
+
         def groupsCheck = ownershipRepository.findAllGroupsForUser(user.username)
         groupsCheck.size() == 1
-         
+
     }
 
     @WithMockAdmin

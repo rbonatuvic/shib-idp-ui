@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +13,8 @@ import javax.transaction.Transactional
  * Tests to validate the repo and model for groups
  * @author chasegawa
  */
-class GroupsRepositoryTests extends BaseDataJpaTestSetup {
+@Rollback
+class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
     @Autowired
     GroupsRepository groupsRepo
 

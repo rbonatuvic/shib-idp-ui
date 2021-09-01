@@ -11,7 +11,6 @@ import spock.lang.Specification
  */
 @ContextConfiguration(classes=[TestMetadataResolverValidationConfiguration])
 class MetadataResolverValidationServiceConfigurationTests extends Specification {
-
     @Autowired
     @Qualifier("metadataResolverValidationServiceEmpty")
     MetadataResolverValidationService metadataResolverValidationServiceNoValidators

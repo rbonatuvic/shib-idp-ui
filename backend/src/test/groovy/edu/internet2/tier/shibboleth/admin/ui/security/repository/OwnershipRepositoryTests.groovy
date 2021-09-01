@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.security.model.*
 import org.springframework.transaction.annotation.Transactional
 
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
  * Tests to validate the repo and model for groups
  * @author chasegawa
  */
-class OwnershipRepositoryTests extends BaseDataJpaTestSetup {
+class OwnershipRepositoryTests extends AbstractBaseDataJpaTest {
     @Transactional
     def setup() {
         ownershipRepository.deleteAll()

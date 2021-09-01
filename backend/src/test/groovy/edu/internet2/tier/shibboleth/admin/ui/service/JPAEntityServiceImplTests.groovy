@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -18,16 +18,7 @@ import org.springframework.test.context.ContextConfiguration
  * @author Bill Smith (wsmith@unicon.net)
  */
 @ContextConfiguration(classes=[JPAESILocalConfig])
-class JPAEntityServiceImplTests extends BaseDataJpaTestSetup {
-//    @Autowired
-//    AttributeUtility attributeUtility
-//
-//    @Autowired
-//    CustomPropertiesConfiguration customPropertiesConfiguration
-//
-//    @Autowired
-//    OpenSamlObjects openSamlObjects
-
+class JPAEntityServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
     EntityService service
 

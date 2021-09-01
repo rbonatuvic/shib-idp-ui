@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.resolvers
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
@@ -10,7 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
 
-class PolymorphicResolversJacksonHandlingTests extends BaseDataJpaTestSetup {
+class PolymorphicResolversJacksonHandlingTests extends AbstractBaseDataJpaTest {
     @Autowired
     AttributeUtility attributeUtility
 

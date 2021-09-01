@@ -1,50 +1,34 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import net.shibboleth.ext.spring.resource.ResourceHelper
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet
-
 import org.opensaml.core.criterion.EntityIdCriterion
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.core.io.ClassPathResource
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import spock.lang.Specification
 import spock.lang.Subject
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-class EntitiesControllerTests extends Specification {
+class EntitiesControllerTests extends AbstractBaseDataJpaTest {
     @Autowired
     JPAEntityDescriptorServiceImpl serviceImpl
-    
-    @Autowired
-    UserService userService
-    
-    def openSamlObjects = new OpenSamlObjects().with {
-        init()
+
+    OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
+        it.init()
         it
     }
 
@@ -56,7 +40,7 @@ class EntitiesControllerTests extends Specification {
         initialize()
         it
     }
-    
+
     // This stub will spit out the results from the resolver instead of actually finding them in the DB
     @SpringBean
     EntityDescriptorRepository edr =  Stub(EntityDescriptorRepository) {
@@ -66,7 +50,8 @@ class EntitiesControllerTests extends Specification {
         
     @Subject
     def controller 
-    def mockMvc 
+    def mockMvc
+
 
     def setup() {
         controller = new EntitiesController()
@@ -110,34 +95,6 @@ class EntitiesControllerTests extends Specification {
     }
 
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
-        given:
-        def expectedBody = '''
-            {
-                "id":null,
-                "serviceProviderName":null,
-                "entityId":"http://test.scaldingspoon.org/test1",
-                "organization": {},
-                "contacts":null,
-                "serviceProviderSsoDescriptor": {
-                    "protocolSupportEnum":"SAML 2",
-                    "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
-                },
-                "logoutEndpoints":null,
-                "securityInfo":null,
-                "assertionConsumerServices":[
-                    {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
-                ],
-                "serviceEnabled":false,
-                "createdDate":null,
-                "modifiedDate":null,
-                "attributeRelease":["givenName","employeeNumber"],
-                "version":1445248649,
-                "createdBy":null,
-                "current":false,
-                "groupId":null
-            }
-        '''
-        
         when:
         def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 
@@ -155,34 +112,6 @@ class EntitiesControllerTests extends Specification {
     }
 
     def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
-        given:
-        def expectedBody = '''
-            {
-                "id":null,
-                "serviceProviderName":null,
-                "entityId":"http://test.scaldingspoon.org/test1",
-                "organization": {},
-                "contacts":null,
-                "serviceProviderSsoDescriptor": {
-                    "protocolSupportEnum":"SAML 2",
-                    "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
-                },
-                "logoutEndpoints":null,
-                "securityInfo":null,
-                "assertionConsumerServices":[
-                    {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
-                ],
-                "serviceEnabled":false,
-                "createdDate":null,
-                "modifiedDate":null,
-                "attributeRelease":["givenName","employeeNumber"],
-                "version":1445248649,
-                "createdBy":null,
-                "current":false,
-                "groupId":null
-            }
-        '''
-        
         when:
         def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 

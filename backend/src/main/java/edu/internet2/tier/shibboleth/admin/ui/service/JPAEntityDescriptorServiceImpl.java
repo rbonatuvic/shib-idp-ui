@@ -347,6 +347,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
+        if (attributeList == null) {
+            return new ArrayList<String>();
+        }
+        attributeList.removeIf(Objects::isNull);
         return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
     }
 

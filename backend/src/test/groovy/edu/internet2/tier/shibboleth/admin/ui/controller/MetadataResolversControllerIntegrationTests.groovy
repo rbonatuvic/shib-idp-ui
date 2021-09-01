@@ -3,8 +3,15 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
-import edu.internet2.tier.shibboleth.admin.ui.configuration.*
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.EntitiesVersioningConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverValidationConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.StringTrimModule
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
@@ -14,18 +21,24 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.validator.Metadat
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository
-import edu.internet2.tier.shibboleth.admin.ui.service.*
+import edu.internet2.tier.shibboleth.admin.ui.service.DefaultMetadataResolversPositionOrderContainerService
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryService
+import edu.internet2.tier.shibboleth.admin.ui.service.DirectoryServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.IndexWriterService
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAMetadataResolverServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverConverterService
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolversPositionOrderContainerService
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import groovy.json.JsonSlurper
 import org.opensaml.saml.metadata.resolver.MetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
@@ -35,14 +48,18 @@ import spock.lang.Unroll
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ContextConfiguration(classes=[MetadataResolverValidationConfiguration, MetadataResolverConverterConfiguration,
                                MetadataResolverConfiguration, EntitiesVersioningConfiguration,
                                edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration,
                                PlaceholderResolverComponentsConfiguration, MRCILocalConfig])
-class MetadataResolversControllerIntegrationTests extends BaseDataJpaTestSetup {
+class MetadataResolversControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
     AttributeUtility attributeUtility
 
@@ -390,11 +407,6 @@ class MetadataResolversControllerIntegrationTests extends BaseDataJpaTestSetup {
                 it
             }
             return mrc
-        }
-
-        @Bean
-        ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new ModelRepresentationConversions(customPropertiesConfiguration)
         }
 
         @Bean

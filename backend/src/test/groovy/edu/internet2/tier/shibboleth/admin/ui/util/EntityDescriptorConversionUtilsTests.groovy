@@ -1,40 +1,18 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
-import org.opensaml.saml.common.xml.SAMLConstants
-import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration
-
-import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
-import edu.internet2.tier.shibboleth.admin.ui.domain.Description
-import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName
-import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress
-import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
-import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
-import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL
-import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.Logo
-import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat
-import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL
-import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
-import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
+import org.opensaml.saml.common.xml.SAMLConstants
+import org.opensaml.saml.saml2.metadata.ContactPersonTypeEnumeration
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.*
-
 class EntityDescriptorConversionUtilsTests extends Specification {
     @Shared
-    def OpenSamlObjects openSAMLObjects
+    OpenSamlObjects openSAMLObjects
     
     def setup() {
         openSAMLObjects = new OpenSamlObjects().with {
@@ -42,7 +20,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
             it
         }
 
-        def EntityDescriptorConversionUtils utilsUnderTest = new EntityDescriptorConversionUtils().with {
+        new EntityDescriptorConversionUtils().with {
             it.openSamlObjects = openSAMLObjects
             it
         }
@@ -81,7 +59,6 @@ class EntityDescriptorConversionUtilsTests extends Specification {
 
         when:
         def keyDescriptor = EntityDescriptorConversionUtils.createKeyDescriptor('testName', 'both', 'testValue')
-        def x = openSAMLObjects.marshalToXmlString(keyDescriptor)
         then:
         assert keyDescriptor == expected
     }
@@ -92,7 +69,7 @@ class EntityDescriptorConversionUtilsTests extends Specification {
         def key2 = EntityDescriptorConversionUtils.createKeyDescriptor('test', 'signing', 'test')
 
         then:
-        assert key1.equals(key2)
+        assert key1 == key2
     }
     
     @Unroll

@@ -2,16 +2,14 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import spock.lang.Specification
 
-class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
+class PolymorphicFiltersJacksonHandlingTests extends AbstractBaseDataJpaTest {
     @Autowired
     AttributeUtility attributeUtility
 
@@ -28,6 +26,7 @@ class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
         testObjectGenerator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
+    @WithMockAdmin
     def "Correct polymorphic serialization of EntityRoleWhiteListFilter"() {
         given:
         def givenFilterJson = """
@@ -63,6 +62,7 @@ class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
         roundTripFilter instanceof EntityRoleWhiteListFilter
     }
 
+    @WithMockAdmin
     def "Correct polymorphic serialization of EntityAttributesFilter"() {
         given:
         def simulatedPersistentFilter = testObjectGenerator.entityAttributesFilter()
@@ -76,6 +76,7 @@ class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
         simulatedPersistentFilter.attributes.size() == simulatedPrePersistentFilter.attributes.size()
     }
 
+    @WithMockAdmin
     def "Correct polymorphic serialization of RequiredValidUntilFilter"() {
         given:
         def givenFilterJson = """
@@ -108,6 +109,7 @@ class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
         roundTripFilter instanceof RequiredValidUntilFilter
     }
 
+    @WithMockAdmin
     def "List of filters with correct types"() {
         given:
         def filters = testObjectGenerator.buildAllTypesOfFilterList()
@@ -124,6 +126,7 @@ class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
 
     }
 
+    @WithMockAdmin
     def "Deserialization of EntityAttributes filter"() {
         given:
         def filterJson = """
@@ -171,6 +174,7 @@ class PolymorphicFiltersJacksonHandlingTests extends BaseDataJpaTestSetup {
         EntityAttributesFilter.class.cast(filter).entityAttributesFilterTarget.value == ['GATCCLk32V']
     }
 
+    @WithMockAdmin
     def "Correct polymorphic serialization of NameIdFormatFilter"() {
         given:
         def givenFilterJson = """

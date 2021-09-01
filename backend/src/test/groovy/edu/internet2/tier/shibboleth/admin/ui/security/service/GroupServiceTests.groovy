@@ -1,10 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.InvalidGroupRegexException
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
+import org.springframework.test.annotation.Rollback
 
-class GroupServiceTests extends BaseDataJpaTestSetup {
+@Rollback
+class GroupServiceTests extends AbstractBaseDataJpaTest {
     def "Test setting group regex works"() {
         given:
         Group g = new Group()

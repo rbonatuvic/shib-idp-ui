@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.controller
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupDeleteException
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException
@@ -12,6 +12,7 @@ import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.Rollback
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
@@ -19,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-class GroupsControllerIntegrationTests extends BaseDataJpaTestSetup {
+@Rollback
+class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
     @Autowired
     GroupsRepository groupsRepository
 

@@ -1,13 +1,19 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.RegexScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.TemplateScheme
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
@@ -26,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.core.io.ClassPathResource
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
@@ -35,8 +40,8 @@ import spock.lang.Unroll
 
 import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
-@ContextConfiguration(classes=[PlaceholderResolverComponentsConfiguration])
-class JPAMetadataResolverServiceImplTests extends BaseDataJpaTestSetup {
+@ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration ])
+class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
     AttributeUtility attributeUtility
 
@@ -363,7 +368,6 @@ class JPAMetadataResolverServiceImplTests extends BaseDataJpaTestSetup {
     }
 
     @Unroll
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'test namespace protection [#namespaces]'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = namespaces
@@ -387,7 +391,6 @@ class JPAMetadataResolverServiceImplTests extends BaseDataJpaTestSetup {
         ['http://shibboleth.net/ns/profiles', 'http://scaldingspoon.com/iam'] | '/conf/984-2.xml'
     }
 
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'test namespace protection in nonURL resolver with resolver setting enabled=true'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
@@ -405,7 +408,6 @@ class JPAMetadataResolverServiceImplTests extends BaseDataJpaTestSetup {
         generatedXmlIsTheSameAsExpectedXml('/conf/1059-enabled.xml', metadataResolverService.generateConfiguration())
     }
     
-    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     def 'test namespace protection in nonURL resolver with resolver setting enabled not set'() {
         setup:
         shibUIConfiguration.protectedAttributeNamespaces = ['http://shibboleth.net/ns/profiles']
@@ -455,11 +457,10 @@ class JPAMetadataResolverServiceImplTests extends BaseDataJpaTestSetup {
     }
 
     @TestConfiguration
-    private static class Config {
+    private static class JPAMRSIConfig {
         @Bean
         MetadataResolver metadataResolver(OpenSamlObjects openSamlObjects) {
-            def resource = ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))
-            def aggregate = new ResourceBackedMetadataResolver(resource){
+            def aggregate = new ResourceBackedMetadataResolver(ResourceHelper.of(new ClassPathResource("/metadata/aggregate.xml"))){
                 @Override
                 DateTime getLastRefresh() {
                     return null

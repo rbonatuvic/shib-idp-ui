@@ -1,7 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
 
 @ContextConfiguration(classes=[MRCSILocalConfig, PlaceholderResolverComponentsConfiguration])
-class MetadataResolverConverterServiceImplTests extends BaseDataJpaTestSetup {
+class MetadataResolverConverterServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
     MetadataResolverConverterService mrConverterServiceUnderTest
 

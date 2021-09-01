@@ -1,24 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import org.springframework.test.annotation.Rollback
 import org.springframework.transaction.annotation.Transactional
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
-class UserServiceTests extends BaseDataJpaTestSetup {
+class UserServiceTests extends AbstractBaseDataJpaTest {
     @Transactional
     def setup() {
         userRepository.findAll().forEach {
@@ -178,16 +167,5 @@ class UserServiceTests extends BaseDataJpaTestSetup {
         
         then:
         gbUpdated.ownedItems.size() == 1
-    }
-    
-    @TestConfiguration
-    static class LocalConfig {
-        @Bean
-        ObjectMapper objectMapper() {
-            JavaTimeModule module = new JavaTimeModule()
-            LocalDateTimeDeserializer localDateTimeDeserializer =  new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"))
-            module.addDeserializer(LocalDateTime.class, localDateTimeDeserializer)
-            return Jackson2ObjectMapperBuilder.json().modules(module).featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).build()
-        }
     }
 }

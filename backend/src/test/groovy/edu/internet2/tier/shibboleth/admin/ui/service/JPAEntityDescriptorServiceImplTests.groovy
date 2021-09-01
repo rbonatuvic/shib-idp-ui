@@ -1,16 +1,22 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
-import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
@@ -26,7 +32,7 @@ import spock.lang.Ignore
 
 @ContextConfiguration(classes=[JPAEDSILocalConfig])
 @PropertySource("classpath:application.yml")
-class JPAEntityDescriptorServiceImplTests extends BaseDataJpaTestSetup {
+class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
     EntityService entityService
 
@@ -767,11 +773,6 @@ class JPAEntityDescriptorServiceImplTests extends BaseDataJpaTestSetup {
         JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
                                               CustomPropertiesConfiguration customPropertiesConfiguration) {
             return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
-        }
-
-        @Bean
-        ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new ModelRepresentationConversions(customPropertiesConfiguration)
         }
     }
 }

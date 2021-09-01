@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
@@ -10,12 +10,13 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
-import edu.internet2.tier.shibboleth.admin.ui.service.*
+import edu.internet2.tier.shibboleth.admin.ui.service.FilterService
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverService
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,11 +30,15 @@ import spock.lang.Unroll
 
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.http.MediaType.APPLICATION_JSON
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@ContextConfiguration(classes=[MFCLocalConfig])
-class MetadataFiltersControllerTests extends BaseDataJpaTestSetup {
+@ContextConfiguration(classes=[ MFCLocalConfig ])
+class MetadataFiltersControllerTests extends AbstractBaseDataJpaTest {
 
     @Autowired
     AttributeUtility attributeUtility
@@ -250,30 +255,9 @@ class MetadataFiltersControllerTests extends BaseDataJpaTestSetup {
     @TestConfiguration
     private static class MFCLocalConfig {
         @Bean
-        JPAFilterTargetServiceImpl jpaFilterTargetService() {
-            return new JPAFilterTargetServiceImpl()
-        }
-
-        @Bean
         JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
                                               CustomPropertiesConfiguration customPropertiesConfiguration) {
             return new JPAEntityServiceImpl(openSamlObjects, attributeUtility,customPropertiesConfiguration)
-        }
-
-        @Bean
-        JPAFilterServiceImpl jpaFilterService(EntityDescriptorService entityDescriptorService, EntityService entityService,
-                                              FilterTargetService filterTargetService) {
-            return new JPAFilterServiceImpl().with {
-                it.entityDescriptorService = entityDescriptorService
-                it.entityService = entityService
-                it.filterTargetService = filterTargetService
-                it
-            }
-        }
-
-        @Bean
-        ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new ModelRepresentationConversions(customPropertiesConfiguration)
         }
     }
 }

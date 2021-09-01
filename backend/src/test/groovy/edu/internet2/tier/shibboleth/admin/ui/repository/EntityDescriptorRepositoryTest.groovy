@@ -1,6 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
-import edu.internet2.tier.shibboleth.admin.ui.BaseDataJpaTestSetup
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -19,7 +19,7 @@ import javax.persistence.EntityManager
 import java.util.stream.Stream
 
 @ContextConfiguration(classes = [EDRLocalConfig])
-class EntityDescriptorRepositoryTest extends BaseDataJpaTestSetup {
+class EntityDescriptorRepositoryTest extends AbstractBaseDataJpaTest {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
 

@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 @DataJpaTest
-@ContextConfiguration(classes = [BaseDataJpaTestSetupConfiguration])
+@ContextConfiguration(classes = [BaseDataJpaTestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-abstract class BaseDataJpaTestSetup extends Specification {
+abstract class AbstractBaseDataJpaTest extends Specification {
     @Autowired
     GroupServiceForTesting groupService
 
@@ -62,6 +62,10 @@ abstract class BaseDataJpaTestSetup extends Specification {
             }
         }
 
+        createAdminUser()
+    }
+
+    protected createAdminUser() {
         if (userRepository.findByUsername("admin").isEmpty()) {
             Optional<Role> adminRole = roleRepository.findByName("ROLE_ADMIN")
             User adminUser = new User(username: "admin", roles: [adminRole.get()], password: "foo")

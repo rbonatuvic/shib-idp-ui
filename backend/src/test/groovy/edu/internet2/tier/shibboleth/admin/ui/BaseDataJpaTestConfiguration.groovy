@@ -11,7 +11,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepos
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
-import io.micrometer.core.instrument.search.Search
+import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Primary
 @Configuration
 @Import([ShibUIConfiguration.class, CustomPropertiesConfiguration.class, SearchConfiguration.class])
 @ComponentScan(basePackages=[ "edu.internet2.tier.shibboleth.admin.ui.service", "edu.internet2.tier.shibboleth.admin.ui.security.service" ])
-class BaseDataJpaTestSetupConfiguration {
+class BaseDataJpaTestConfiguration {
     @Bean
     AttributeUtility attributeUtility(OpenSamlObjects openSamlObjects) {
         return new AttributeUtility(openSamlObjects)
@@ -47,8 +47,16 @@ class BaseDataJpaTestSetupConfiguration {
     }
 
     @Bean
+    ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
+        return new ModelRepresentationConversions(customPropertiesConfiguration)
+    }
+
+    @Bean
+    @Primary
     OpenSamlObjects openSamlObjects() {
-        return new OpenSamlObjects()
+        OpenSamlObjects result = new OpenSamlObjects()
+        result.init()
+        return result
     }
 
     @Bean
