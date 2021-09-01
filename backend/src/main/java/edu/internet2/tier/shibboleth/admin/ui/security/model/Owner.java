@@ -4,10 +4,10 @@ public interface Owner {
     /**
      * @return representation of the id of the owner. This is likely (but not limited to) the resource id of the owner
      */
-    public String getOwnerId();
+    String getOwnerId();
 
     /**
      * @return the type describing the owner
      */
-    public OwnerType getOwnerType();
+    OwnerType getOwnerType();
 }

@@ -52,9 +52,7 @@ export const FileBackedHttpMetadataProviderWizard = {
             label: 'label.finished',
             index: 5,
             initialValues: [],
-            fields: [
-                'enabled'
-            ]
+            fields: []
         }
     ],
     uiSchema: defaultsDeep({
@@ -66,12 +64,6 @@ export const FileBackedHttpMetadataProviderWizard = {
                     fields: [
                         'name',
                         '@type'
-                    ]
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
                     ]
                 },
                 {
@@ -181,7 +173,6 @@ export const FileBackedHttpMetadataProviderEditor = {
             fields: [
                 'name',
                 '@type',
-                'enabled',
                 'xmlId',
                 'metadataURL',
                 'initializeFromBackupFile',

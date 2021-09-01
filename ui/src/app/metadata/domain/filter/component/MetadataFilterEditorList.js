@@ -9,7 +9,7 @@ import { faArrowCircleDown, faArrowCircleUp, faEdit, faTrash } from '@fortawesom
 import { Ordered } from '../../../../dashboard/component/Ordered';
 import { Translate } from '../../../../i18n/components/translate';
 
-export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate, loading}) {
+export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate, onEnable, loading}) {
 
     return (
         <Ordered path={`/MetadataResolvers/${provider.resourceId}/FiltersPositionOrder` } entities={filters}>
@@ -51,7 +51,7 @@ export function MetadataFilterEditorList ({provider, filters, onDelete, onUpdate
                                             label={<span className="sr-only">Toggle this switch element</span>}
                                             checked={filter.filterEnabled}
                                             disabled={loading}
-                                            onChange={() => onUpdate({ ...filter, filterEnabled: !filter.filterEnabled })} />
+                                            onChange={({target: { checked }}) => onEnable(filter, checked)} />
                                         {filter.disabled && <i className="fa fa-spinner fa-pulse fa-lg fa-fw"></i>}
                                     </div>
                                 </td>

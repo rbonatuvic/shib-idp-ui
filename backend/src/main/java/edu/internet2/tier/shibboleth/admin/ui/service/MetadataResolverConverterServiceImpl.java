@@ -22,6 +22,7 @@ import org.opensaml.core.xml.persist.XMLObjectLoadSaveManager;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ import static edu.internet2.tier.shibboleth.admin.util.TokenPlaceholderResolvers
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
+@Service
 public class MetadataResolverConverterServiceImpl implements MetadataResolverConverterService {
 
     @Autowired

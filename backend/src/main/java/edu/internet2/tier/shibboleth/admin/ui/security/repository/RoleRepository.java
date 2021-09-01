@@ -12,5 +12,9 @@ import java.util.Optional;
  */
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
+    void deleteByResourceId(String resourceId);
+
     Optional<Role> findByName(final String name);
+
+    Optional<Role> findByResourceId(String resourceId);
 }

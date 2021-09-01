@@ -28,7 +28,7 @@ test('Delete confirmation', () => {
             <DeleteConfirmation title={`message.delete-filter-title`} body={`message.delete-filter-body`}>
                 {(block) => <button onClick={() => block(() => noop())}></button>}
             </DeleteConfirmation>,
-        container);
+            container);
     });
 
     const initiator = container.querySelector('button');

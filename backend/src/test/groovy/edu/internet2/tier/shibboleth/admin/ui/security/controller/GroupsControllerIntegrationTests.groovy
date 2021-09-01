@@ -62,16 +62,16 @@ class GroupsControllerIntegrationTests extends Specification {
     
     static RESOURCE_URI = '/api/admin/groups'
 
-    def MockMvc mockMvc
+    MockMvc mockMvc
         
     def setup() {
         groupService.ensureAdminGroupExists()
         
-        def GroupController groupController = new GroupController().with ({  
+        GroupController groupController = new GroupController().with ({
             it.groupService = this.groupService
             it
         })
-        mockMvc = MockMvcBuilders.standaloneSetup(groupController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(groupController).build()
         
         if (roleRepository.count() == 0) {
             def roles = [new Role().with {
@@ -95,7 +95,7 @@ class GroupsControllerIntegrationTests extends Specification {
         
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")
         User user = new User(username: "someUser", roles:[userRole.get()], password: "foo")
-        user = userService.save(user)
+        userService.save(user)
         entityManager.flush()
     }
     
@@ -141,7 +141,7 @@ class GroupsControllerIntegrationTests extends Specification {
     def 'PUT (update) existing group persists properly'() {
         given:
         groupsRepository.deleteByResourceId("AAA")
-        def Group groupAAA = new Group().with({
+        Group groupAAA = new Group().with({
             it.name = "AAA"
             it.description = "AAA"
             it.resourceId = "AAA"
@@ -184,14 +184,14 @@ class GroupsControllerIntegrationTests extends Specification {
         given:
         groupsRepository.deleteByResourceId("AAA")
         groupsRepository.deleteByResourceId("BBB")
-        def Group groupAAA = new Group().with({
+        Group groupAAA = new Group().with({
             it.name = "AAA"
             it.description = "AAA"
             it.resourceId = "AAA"
             it
         }) 
         groupsRepository.save(groupAAA)
-        def Group groupBBB = new Group().with({
+        Group groupBBB = new Group().with({
             it.name = "BBB"
             it.description = "BBB"
             it.resourceId = "BBB"
@@ -239,7 +239,7 @@ class GroupsControllerIntegrationTests extends Specification {
         }
         
         when:
-        def Group groupAAA = new Group().with({
+        Group groupAAA = new Group().with({
             it.name = "AAA"
             it.description = "AAA"
             it.resourceId = "AAA"
@@ -247,7 +247,7 @@ class GroupsControllerIntegrationTests extends Specification {
         })
         groupAAA = groupsRepository.save(groupAAA)
         
-        def User user = userRepository.findByUsername("someUser").get()
+        User user = userRepository.findByUsername("someUser").get()
         user.setGroup(groupAAA)
         userService.save(user)
         

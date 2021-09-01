@@ -1,4 +1,5 @@
 import React from 'react';
+import { MetadataActions } from '../../admin/container/MetadataActions';
 import Translate from '../../i18n/components/translate';
 
 import SourceList from '../../metadata/domain/source/component/SourceList';
@@ -30,8 +31,6 @@ export function SourcesTab () {
         }
     }
 
-    const updateSources = () => loadSources();
-
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => { loadSources() }, []);
 
@@ -56,7 +55,17 @@ export function SourcesTab () {
                 </div>
                 <div className="p-3">
                     <Search entities={sources} searchable={searchProps}>
-                        {(searched) => <SourceList entities={ searched } onDelete={ updateSources } onChangeGroup={changeSourceGroup}></SourceList>}
+                        {(searched) =>
+                            <MetadataActions type="source">
+                                {(enable, remove) =>
+                                    <SourceList
+                                        entities={sources}
+                                        onDelete={(id) => remove(id, loadSources)}
+                                        onEnable={(s, e) => enable(s, e, loadSources) }
+                                        onChangeGroup={changeSourceGroup} />
+                                }
+                            </MetadataActions>
+                        }
                     </Search>
                 </div>
             </div>
