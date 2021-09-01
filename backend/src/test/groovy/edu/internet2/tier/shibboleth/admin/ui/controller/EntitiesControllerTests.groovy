@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 import spock.lang.Subject
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.is
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -110,34 +110,6 @@ class EntitiesControllerTests extends Specification {
     }
 
     def 'GET /api/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
-        given:
-        def expectedBody = '''
-            {
-                "id":null,
-                "serviceProviderName":null,
-                "entityId":"http://test.scaldingspoon.org/test1",
-                "organization": {},
-                "contacts":null,
-                "serviceProviderSsoDescriptor": {
-                    "protocolSupportEnum":"SAML 2",
-                    "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
-                },
-                "logoutEndpoints":null,
-                "securityInfo":null,
-                "assertionConsumerServices":[
-                    {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
-                ],
-                "serviceEnabled":false,
-                "createdDate":null,
-                "modifiedDate":null,
-                "attributeRelease":["givenName","employeeNumber"],
-                "version":1445248649,
-                "createdBy":null,
-                "current":false,
-                "groupId":null
-            }
-        '''
-        
         when:
         def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 
@@ -155,34 +127,6 @@ class EntitiesControllerTests extends Specification {
     }
 
     def 'GET /entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'() {
-        given:
-        def expectedBody = '''
-            {
-                "id":null,
-                "serviceProviderName":null,
-                "entityId":"http://test.scaldingspoon.org/test1",
-                "organization": {},
-                "contacts":null,
-                "serviceProviderSsoDescriptor": {
-                    "protocolSupportEnum":"SAML 2",
-                    "nameIdFormats":["urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"]
-                },
-                "logoutEndpoints":null,
-                "securityInfo":null,
-                "assertionConsumerServices":[
-                    {"locationUrl":"https://test.scaldingspoon.org/test1/acs","binding":"urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST","makeDefault":false}
-                ],
-                "serviceEnabled":false,
-                "createdDate":null,
-                "modifiedDate":null,
-                "attributeRelease":["givenName","employeeNumber"],
-                "version":1445248649,
-                "createdBy":null,
-                "current":false,
-                "groupId":null
-            }
-        '''
-        
         when:
         def result = mockMvc.perform(get('/entities/http%3A%2F%2Ftest.scaldingspoon.org%2Ftest1'))
 

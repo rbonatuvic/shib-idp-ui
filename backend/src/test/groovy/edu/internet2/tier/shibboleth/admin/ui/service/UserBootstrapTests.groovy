@@ -35,10 +35,10 @@ class UserBootstrapTests extends Specification {
 
     @Autowired
     RoleRepository roleRepository
-    
+
     @Autowired
     UserService userService
-    
+
     @Autowired
     IGroupService groupService
 
@@ -46,7 +46,7 @@ class UserBootstrapTests extends Specification {
         groupService.ensureAdminGroupExists()
         roleRepository.deleteAll()
     }
-    
+
     def "simple test"() {
         setup:
         shibUIConfiguration.roles = []

@@ -36,6 +36,9 @@ import java.util.Collections;
 @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class WebSecurityConfig {
 
+    @Value("${shibui.roles.authenticated}")
+    private String[] acceptedAuthenticationRoles;
+
     @Value("${shibui.default-password:}")
     private String defaultPassword;
 
@@ -85,7 +88,7 @@ public class WebSecurityConfig {
                         .and()
                         .authorizeRequests()
                         .antMatchers("/unsecured/**/*").permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole(acceptedAuthenticationRoles)
                         .and()
                         .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))
                         .and()

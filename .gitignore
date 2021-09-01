@@ -407,3 +407,4 @@ beacon/spring/out
 *.settings
 *.project
 *bin
+/a.json

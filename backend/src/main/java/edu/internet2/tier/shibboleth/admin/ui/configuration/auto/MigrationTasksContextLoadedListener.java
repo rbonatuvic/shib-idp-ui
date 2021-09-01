@@ -40,7 +40,7 @@ public class MigrationTasksContextLoadedListener implements ApplicationListener<
     }
 
     @Transactional
-    private void doshibui_1740_migration() {
+    void doshibui_1740_migration() {
         groupService.ensureAdminGroupExists();  // do first
 
         // SHIBUI-1740: Adding admin group to all existing entity descriptors that do not have a group already.
