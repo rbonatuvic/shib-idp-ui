@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Dropdown from 'react-bootstrap/Dropdown';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faUser, faSpinner, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faLayerGroup, faFileArchive } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
@@ -67,13 +65,17 @@ export function Header () {
                     {isAdmin &&
                     <Dropdown className="border-md-right px-2" id="basic-nav-dropdown">
                         <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
-                            <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
+                            <FontAwesomeIcon icon={faCog} className="mr-2" />
                             <Translate value={'action.advanced'} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                             <Dropdown.Item as={Link} to="/metadata/attributes" className="text-primary py-2">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.custom-entity-attributes" />
+                            </Dropdown.Item>
+                            <Dropdown.Item as={Link} to="/metadata/attributes/bundles" className="text-primary py-2">
+                                <FontAwesomeIcon icon={faFileArchive} className="mr-2" />
+                                <Translate value="action.attribute-bundles" />
                             </Dropdown.Item>
                             <Dropdown.Item as={Link} to="/groups" className="text-primary py-2">
                                 <FontAwesomeIcon icon={faUsersCog} className="mr-2" />
@@ -84,7 +86,7 @@ export function Header () {
                     }
                     <Dropdown className="pl-2" id="basic-nav-dropdown">
                         <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm" bsPrefix="dropdown-toggle-shibui">
-                            <FontAwesomeIcon icon={faUserCircle} size="" className="mr-2" />
+                            <FontAwesomeIcon icon={faUserCircle} size="lg" className="mr-2" />
                             <Translate value={'action.logged-in'} params={{ username }} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu alignRight={true}>
