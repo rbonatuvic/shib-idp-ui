@@ -59,11 +59,13 @@ class FilterRepositoryTests extends AbstractBaseDataJpaTest {
         def filter = new ObjectMapper().readValue(entityAttributesFilterJson.bytes, EntityAttributesFilter)
         def persistedFilter = filterRepository.save(filter)
         entityManager.flush()
+        entityManager.clear()
 
         then:
-        def item1 = filterRepository.findByResourceId(persistedFilter.resourceId)
+        def item1 = filterRepository.findByResourceId("29a5d409-562a-41cd-acee-e9b3d7098d05")
+        entityManager.flush()
         entityManager.clear()
-        def item2 = filterRepository.findByResourceId(persistedFilter.resourceId)
+        def item2 = filterRepository.findByResourceId("29a5d409-562a-41cd-acee-e9b3d7098d05")
 
         item1.hashCode() == item2.hashCode()
     }

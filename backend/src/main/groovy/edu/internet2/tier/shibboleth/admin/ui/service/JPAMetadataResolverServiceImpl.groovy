@@ -38,8 +38,8 @@ import org.w3c.dom.Document
 
 import javax.annotation.Nonnull
 
-import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
 import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.CONDITION_SCRIPT
+import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.ENTITY
 import static edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget.NameIdFormatFilterTargetType.REGEX
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.CLASSPATH
 import static edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver.ResourceType.SVN
@@ -114,7 +114,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 if (metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
                     NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
-                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats == null ? false : nameIdFormatFilter.removeExistingFormats
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
                     def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
                     def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
@@ -543,7 +543,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                         'username': resolver.svnMetadataResource.username,
                         'password': resolver.svnMetadataResource.password,
                         'proxyHost': resolver.svnMetadataResource.proxyHost,
-                        'proxyPort': resolver.svnMetadataResource.proxyHost,
+                        'proxyPort': resolver.svnMetadataResource.proxyPort,
                         'proxyUserName': resolver.svnMetadataResource.proxyUserName,
                         'proxyPassword': resolver.svnMetadataResource.proxyPassword)
 

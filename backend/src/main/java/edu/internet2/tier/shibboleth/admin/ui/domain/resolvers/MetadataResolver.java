@@ -84,6 +84,10 @@ public class MetadataResolver extends AbstractAuditable {
     @Transient
     private Integer version;
 
+    public Boolean getDoInitialization() {
+        return doInitialization == null ? false : doInitialization;
+    }
+
     @JsonGetter("version")
     public int getVersion() {
         if (this.version != null && this.version != 0 ) {

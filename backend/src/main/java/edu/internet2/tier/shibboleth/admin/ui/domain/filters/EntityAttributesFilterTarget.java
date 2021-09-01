@@ -20,7 +20,7 @@ public class EntityAttributesFilterTarget extends AbstractAuditable implements I
 
     private EntityAttributesFilterTargetType entityAttributesFilterTargetType;
 
-    @ElementCollection
+    @ElementCollection (fetch = FetchType.EAGER)
     @OrderColumn
     @Column(length = 760)
     private List<String> value;
@@ -32,11 +32,12 @@ public class EntityAttributesFilterTarget extends AbstractAuditable implements I
     @Override
     @JsonIgnore
     public String getTargetTypeValue() {
-        return entityAttributesFilterTargetType.name();
+        return entityAttributesFilterTargetType == null ? "NONE" : entityAttributesFilterTargetType.name();
     }
 
+    @Override
     public List<String> getValue() {
-        return value;
+        return value == null ? new ArrayList<>() : value;
     }
 
     public void setEntityAttributesFilterTargetType(EntityAttributesFilterTargetType entityAttributesFilterTarget) {

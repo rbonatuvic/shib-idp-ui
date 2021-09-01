@@ -33,7 +33,7 @@ public class EntityAttributesFilter extends MetadataFilter implements ITargetabl
     @Transient
     private List<String> attributeRelease = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private EntityAttributesFilterTarget entityAttributesFilterTarget;
 
     @Transient
