@@ -132,6 +132,18 @@ export function useMetadataUpdater (path, current) {
     }
 }
 
+export function useMetadataActivator(type, opts = {
+    cachePolicy: 'no-cache'
+}) {
+    return useFetch(`${API_BASE_PATH}/activate/${type === 'source' ? 'entityDescriptor' : 'MetadataResolvers'}/`, opts);
+}
+
+export function useFilterActivator(providerId, opts = {
+    cachePolicy: 'no-cache'
+}) {
+    return useFetch(`${API_BASE_PATH}/activate${getMetadataPath('provider')}/${providerId}/Filter`, opts);
+}
+
 export function useMetadataAttributes (opts = {}, onMount) {
     //
     return useFetch(`${API_BASE_PATH}/custom/entity/attributes`, opts, onMount);

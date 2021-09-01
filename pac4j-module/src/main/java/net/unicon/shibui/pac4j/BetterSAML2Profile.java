@@ -29,7 +29,7 @@ public class BetterSAML2Profile extends SAML2Profile {
     }
 
     public List<String> getGroups() {
-        return (List<String>) getAttribute(profileMapping.getGroupsName());
+        return (List<String>) getAttribute(profileMapping.getGroups());
     }
 
     @Override

@@ -6,4 +6,4 @@ shibui:
       firstName: givenName
       lastName: sn
       email: mail
-      groupsName: urn:oid:1.3.6.1.4.1.5923.1.5.1.1 # attributeId - isMemberOf
+      groups: urn:oid:1.3.6.1.4.1.5923.1.5.1.1 # attributeId - isMemberOf

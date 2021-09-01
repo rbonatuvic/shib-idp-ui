@@ -123,7 +123,7 @@ class AddNewUserFilterTests extends Specification {
          'FirstName': 'New',
          'LastName': 'User',
          'Email': 'newuser@institution.edu',
-         'GroupsName':'AAAGroup'
+         'Groups':'AAAGroup'
         ].each { key, value ->
             saml2Profile.getAttribute(profileMapping."get${key}"()) >> [value]
         }

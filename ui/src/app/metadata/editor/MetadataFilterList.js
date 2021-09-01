@@ -90,12 +90,13 @@ export function MetadataFilterList() {
                         <div className="col-lg-9">
                             {definition && schema && current &&
                                 <MetadataFilters providerId={current.resourceId} types={MetadataFilterTypes}>
-                                    {(filters, onUpdate, onDelete, loading) =>
+                                    {(filters, onUpdate, onDelete, onEnable, loading) =>
                                         <MetadataFilterEditorList
                                             editable={true}
                                             loading={loading}
                                             provider={current}
                                             filters={filters}
+                                            onEnable={onEnable}
                                             onUpdate={onUpdate}
                                             onDelete={onDelete} />
                                     }

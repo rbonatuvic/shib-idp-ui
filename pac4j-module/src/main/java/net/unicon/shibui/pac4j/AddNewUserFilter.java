@@ -67,7 +67,7 @@ public class AddNewUserFilter implements Filter {
         user.setEmailAddress(profile.getEmail());
 
         // get profile attribute for groups
-        Object obj = profile.getAttribute(simpleProfileMapping.getGroupsName());
+        Object obj = profile.getAttribute(simpleProfileMapping.getGroups());
         if (obj != null) {
             final ArrayList<String> groupNames = new ArrayList<>();
             if (obj instanceof String) {

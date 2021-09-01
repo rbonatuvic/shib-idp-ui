@@ -1,9 +1,13 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
+
 import spock.lang.Specification
 
 @SpringBootTest

@@ -35,9 +35,7 @@ export const FileSystemMetadataProviderWizard = {
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            fields: [
-                'enabled'
-            ]
+            fields: []
         }
     ],
     uiSchema: defaultsDeep({
@@ -49,12 +47,6 @@ export const FileSystemMetadataProviderWizard = {
                     fields: [
                         'name',
                         '@type'
-                    ]
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
                     ]
                 },
                 {
@@ -115,7 +107,6 @@ export const FileSystemMetadataProviderEditor = {
                 'xmlId',
                 '@type',
                 'metadataFile',
-                'enabled',
                 'doInitialization'
             ],
             override: {
@@ -140,7 +131,6 @@ export const FileSystemMetadataProviderEditor = {
                     type: 'group-lg',
                     class: ['col-12'],
                     fields: [
-                        'enabled',
                         'xmlId',
                         'metadataFile',
                         'doInitialization'
