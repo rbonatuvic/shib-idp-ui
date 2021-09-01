@@ -41,36 +41,36 @@ export function Header () {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ml-auto align-items-md-center" navbar>
                     <div className="border-md-right px-2">
-                        <Link to="/dashboard" className="btn btn-link btn-sm" aria-label="Metadata Dashboard">
+                        <Link id="dashboard-nav" to="/dashboard" className="btn btn-link btn-sm" aria-label="Metadata Dashboard">
                             <i className="fa fa-th fa-fw" aria-hidden="true"></i>
                             <FontAwesomeIcon icon={faTh} className="mr-2" />
                             <Translate value="action.dashboard">Dashboard</Translate>
                         </Link>
                     </div>
-                    <Dropdown className="border-md-right px-2" id="basic-nav-dropdown">
-                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
+                    <Dropdown className="border-md-right px-2" id="metadata-nav-dropdown">
+                        <Dropdown.Toggle variant="link" id="metadata-nav-dropdown-toggle" size="sm">
                             <FontAwesomeIcon icon={faPlusCircle} className="mr-2" />
                             <Translate value={'action.add-new'} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to="/metadata/source/new" className="text-primary py-2">
+                            <Dropdown.Item as={Link} to="/metadata/source/new" className="text-primary py-2" id="metadata-nav-dropdown-source">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.add-new-source" />
                             </Dropdown.Item>
-                            {isAdmin && <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2">
+                            {isAdmin && <Dropdown.Item as={Link} to="/metadata/provider/new" className="text-primary py-2" id="metadata-nav-dropdown-provider">
                                 <FontAwesomeIcon icon={faCubes} className="mr-2" />
                                 <Translate value="action.add-new-provider" />
                             </Dropdown.Item> }
                         </Dropdown.Menu>
                     </Dropdown>
                     {isAdmin &&
-                    <Dropdown className="border-md-right px-2" id="basic-nav-dropdown">
-                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm">
+                    <Dropdown className="border-md-right px-2" id="advanced-nav-dropdown">
+                        <Dropdown.Toggle variant="link" id="advanced-nav-dropdown-toggle" size="sm">
                             <FontAwesomeIcon icon={faCog} className="mr-2" />
                             <Translate value={'action.advanced'} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to="/metadata/attributes" className="text-primary py-2">
+                            <Dropdown.Item as={Link} to="/metadata/attributes" className="text-primary py-2" id="advanced-nav-dropdown-attr">
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.custom-entity-attributes" />
                             </Dropdown.Item>
@@ -78,23 +78,24 @@ export function Header () {
                                 <FontAwesomeIcon icon={faFileArchive} className="mr-2" />
                                 <Translate value="action.attribute-bundles" />
                             </Dropdown.Item>
-                            <Dropdown.Item as={Link} to="/groups" className="text-primary py-2">
+                            <Dropdown.Item as={Link} to="/groups" className="text-primary py-2" id="advanced-nav-dropdown-groups">
                                 <FontAwesomeIcon icon={faUsersCog} className="mr-2" />
                                 <Translate value="action.groups" />
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                     }
-                    <Dropdown className="pl-2" id="basic-nav-dropdown">
-                        <Dropdown.Toggle variant="link" id="dropdown-basic" size="sm" bsPrefix="dropdown-toggle-shibui">
+                    <Dropdown className="pl-2" id="user-nav-dropdown">
+                        <Dropdown.Toggle variant="link" id="user-nav-dropdown-toggle" size="sm" bsPrefix="dropdown-toggle-shibui">
                             <FontAwesomeIcon icon={faUserCircle} size="lg" className="mr-2" />
                             <Translate value={'action.logged-in'} params={{ username }} />
                         </Dropdown.Toggle>
                         <Dropdown.Menu alignRight={true}>
                             <Dropdown.Header>Groups</Dropdown.Header>
-                            <Dropdown.ItemText>{groupId}</Dropdown.ItemText>
+                            <Dropdown.ItemText id="advanced-nav-dropdown-groups">{groupId}</Dropdown.ItemText>
                             <div class="dropdown-divider"></div>
-                            <Dropdown.Item href="/logout" target="_self" className="text-primary" aria-label={translator('action.logout')}>
+                            <Dropdown.Item href="/logout" target="_self" className="text-primary" aria-label={translator('action.logout')}
+                                id="user-nav-dropdown-logout">
                                 <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                                 <Translate value="action.logout">Logout</Translate>
                             </Dropdown.Item>
