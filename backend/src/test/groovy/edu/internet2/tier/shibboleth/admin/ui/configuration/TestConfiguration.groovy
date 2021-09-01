@@ -45,7 +45,7 @@ class TestConfiguration {
 
     final OpenSamlObjects openSamlObjects
     final MetadataResolverRepository metadataResolverRepository
-    final Logger logger = LoggerFactory.getLogger(TestConfiguration.class);
+    final Logger logger = LoggerFactory.getLogger(TestConfiguration.class)
 
     @Autowired
     private CustomEntityAttributeDefinitionRepository repository;
@@ -91,12 +91,12 @@ class TestConfiguration {
 
                 for (String entityId: this.getBackingStore().getIndexedDescriptors().keySet()) {
                     Document document = new Document();
-                    document.add(new StringField("id", entityId, Field.Store.YES));
-                    document.add(new TextField("content", entityId, Field.Store.YES)); // TODO: change entityId to be content of entity descriptor block
+                    document.add(new StringField("id", entityId, Field.Store.YES))
+                    document.add(new TextField("content", entityId, Field.Store.YES)) // TODO: change entityId to be content of entity descriptor block
                     try {
-                        indexWriter.addDocument(document);
+                        indexWriter.addDocument(document)
                     } catch (IOException e) {
-                        logger.error(e.getMessage(), e);
+                        logger.error(e.getMessage(), e)
                     }
                 }
                 try {

@@ -37,7 +37,7 @@ export function DeleteConfirmation({ children, body, title }) {
                 <Modal.Body className="d-flex align-content-center">
                     <FontAwesomeIcon className="text-danger mr-4" size="4x" icon={faExclamationTriangle} />
                     <p className="text-danger font-weight-bold mb-0">
-                        <Translate value={ body }>You are deleting an entity. This cannot be undone. Continue?</Translate>
+                        <Translate value={body}>You are deleting an entity. This cannot be undone. Continue?</Translate>
                     </p>
                 </Modal.Body>
                 <Modal.Footer>

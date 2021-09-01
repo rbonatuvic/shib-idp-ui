@@ -40,7 +40,7 @@ public interface EntityDescriptorService {
      * @throws EntityIdExistsException If the entity already exists
      */
     EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityIdExistsException;
-    
+
     /**
      * Map from opensaml implementation of entity descriptor model to front-end data representation of entity descriptor
      *
@@ -67,7 +67,7 @@ public interface EntityDescriptorService {
      * @return a list of EntityDescriptorRepresentations that a user has the rights to access
      */
     List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException;
-    
+
     /**
      * Given a list of attributes, generate an AttributeReleaseList
      *
@@ -96,7 +96,6 @@ public interface EntityDescriptorService {
      * @param edRepresentation Incoming representation to save
      * @return EntityDescriptorRepresentation
      * @throws ForbiddenException If user is unauthorized to perform this operation
-     * @throws EntityIdExistsException If the entity already exists
      * @throws ConcurrentModificationException If the entity was already modified by another user
      */
     EntityDescriptorRepresentation update(EntityDescriptorRepresentation edRepresentation) throws ForbiddenException, EntityNotFoundException, ConcurrentModificationException;
@@ -109,4 +108,5 @@ public interface EntityDescriptorService {
      */
     void updateDescriptorFromRepresentation(final org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
 
+    EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException;
 }

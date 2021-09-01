@@ -7,7 +7,7 @@ import {Search} from '../component/Search';
 import { Ordered } from '../component/Ordered';
 import { useIsAdmin } from '../../core/user/UserContext';
 import Alert from 'react-bootstrap/Alert';
-
+import { MetadataActions } from '../../admin/container/MetadataActions';
 const searchProps = ['name', '@type', 'createdBy'];
 
 export function ProvidersTab () {
@@ -44,13 +44,20 @@ export function ProvidersTab () {
                         <Ordered entities={providers} prop="resourceIds">
                             {(ordered, first, last, onOrderUp, onOrderDown) =>
                             <Search entities={ordered} searchable={searchProps}>
-                                {(searched) => <ProviderList
-                                    entities={searched}
-                                    reorder={providers.length === searched.length}
-                                    first={first}
-                                    last={last}
-                                    onOrderUp={onOrderUp}
-                                    onOrderDown={onOrderDown}></ProviderList>}
+                                {(searched) =>
+                                <MetadataActions type="provider">
+                                    {(enable) =>
+                                        <ProviderList
+                                            entities={searched}
+                                            reorder={providers.length === searched.length}
+                                            first={first}
+                                            last={last}
+                                            onEnable={(p, e) => enable(p, e, loadProviders)}
+                                            onOrderUp={onOrderUp}
+                                            onOrderDown={onOrderDown}></ProviderList>
+                                    }
+                                </MetadataActions>
+                                }
                             </Search>
                             }
                         </Ordered>

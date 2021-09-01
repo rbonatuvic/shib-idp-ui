@@ -7,18 +7,13 @@ import { checkChanges, useMetadataSchema } from '../hooks/schema';
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
-import { useMetadataEntity, useMetadataProviders } from '../hooks/api';
-import { Prompt, useHistory } from 'react-router';
+import { useMetadataProviders } from '../hooks/api';
+
 import { removeNull } from '../../core/utility/remove_null';
 
-import { useNotificationDispatcher, createNotificationAction, NotificationTypes } from '../../notifications/hoc/Notifications';
-
-export function MetadataProviderWizard({onRestart}) {
+export function MetadataProviderWizard({onSave, loading, block}) {
 
     const { data } = useMetadataProviders({cachePolicy: 'no-cache'}, []);
-
-    const { post, loading, response } = useMetadataEntity('provider');
-    const history = useHistory();
 
     const definition = useMetadataDefinitionContext();
     const schema = useMetadataSchemaContext();
@@ -33,56 +28,30 @@ export function MetadataProviderWizard({onRestart}) {
 
     const wizardDispatch = useWizardDispatcher();
 
-    const notificationDispatch = useNotificationDispatcher();
-
     const current = useCurrentIndex();
 
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
         formDispatch(setFormErrorAction(changes.errors));
-        setBlocking(checkChanges(metadata, changes.formData));
+        block(checkChanges(metadata, changes.formData));
     };
 
     const onEditFromSummary = (idx) => {
         wizardDispatch(setWizardIndexAction(idx));
     };
 
-    const onBlur = (form) => {
-        // console.log(form);
-    }
-
     const validator = definition.validator(data);
 
-    async function save() {
-        const body = removeNull(definition.parser(metadata), true);
-        await post('', body);
-        if (response.ok) {
-            setBlocking(false);
-            history.push('/dashboard/metadata/manager/providers');
-        } else {
-            const { errorCode, errorMessage, cause } = response.data;
-            notificationDispatch(createNotificationAction(
-                `${errorCode}: ${errorMessage} ${cause ? `-${cause}` : ''}`,
-                NotificationTypes.ERROR
-            ));
-        }
-    }
-
-    const [blocking, setBlocking] = React.useState(false);
+    const save = () => onSave(removeNull(definition.parser(metadata), true))
 
     return (
         <>
-            <Prompt
-                when={blocking}
-                message={location =>
-                    `message.unsaved-editor`
-                }
-            />
+            
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save}
-                        onRestart={onRestart}
-                        disabled={errors.length > 0 || loading} saving={loading} />
+                        disabled={errors.length > 0 || loading}
+                        saving={loading} />
                 </div>
             </div>
             <hr />
@@ -94,7 +63,6 @@ export function MetadataProviderWizard({onRestart}) {
                         schema={schema || {}}
                         current={current}
                         onChange={onChange}
-                        onBlur={onBlur}
                         validator={ validator } />
                 </div>
             </div>

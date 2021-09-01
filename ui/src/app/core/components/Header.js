@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faFileArchive } from '@fortawesome/free-solid-svg-icons';
+import { faTh, faSignOutAlt, faPlusCircle, faCube, faCubes, faUsersCog, faSpinner, faUserCircle, faCog, faFileArchive, faUserTag } from '@fortawesome/free-solid-svg-icons';
 
 import Translate from '../../i18n/components/translate';
 import { useTranslator } from '../../i18n/hooks';
@@ -73,13 +73,13 @@ export function Header () {
                                 <FontAwesomeIcon icon={faCube} className="mr-2" />
                                 <Translate value="action.custom-entity-attributes" />
                             </Dropdown.Item>
-                            <Dropdown.Item as={Link} to="/metadata/attributes/bundles" className="text-primary py-2" id="advanced-nav-dropdown-bundles">
-                                <FontAwesomeIcon icon={faFileArchive} className="mr-2" />
-                                <Translate value="action.attribute-bundles" />
-                            </Dropdown.Item>
                             <Dropdown.Item as={Link} to="/groups" className="text-primary py-2" id="advanced-nav-dropdown-groups">
                                 <FontAwesomeIcon icon={faUsersCog} className="mr-2" />
                                 <Translate value="action.groups" />
+                            </Dropdown.Item>
+                            <Dropdown.Item as={Link} to="/roles" className="text-primary py-2">
+                                <FontAwesomeIcon icon={faUserTag} className="mr-2" />
+                                <Translate value="action.roles" />
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

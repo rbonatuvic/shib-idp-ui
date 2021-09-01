@@ -1,0 +1,462 @@
+{
+  "id": "913c2183-c59c-4c54-8434-5866b49a982b",
+  "version": "2.0",
+  "name": "SHIBUI-1742-2",
+  "url": "http://localhost:10101",
+  "tests": [{
+    "id": "629ba6a4-486d-4dbe-9ea1-4727a1e35567",
+    "name": "SHIBUI-1742-2",
+    "commands": [{
+      "id": "252698e5-62bc-4087-b465-6cce517e4f42",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "68e6f41c-273d-47d5-a3bc-3886f3bb0361",
+      "comment": "",
+      "command": "type",
+      "target": "id=username",
+      "targets": [
+        ["id=username", "id"],
+        ["name=username", "name"],
+        ["css=#username", "css:finder"],
+        ["xpath=//input[@id='username']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "890b33ad-e28f-430d-a8f1-99d028c16c1e",
+      "comment": "",
+      "command": "type",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//p[2]/input", "xpath:position"]
+      ],
+      "value": "adminpass"
+    }, {
+      "id": "52216d6c-70de-47ee-a385-8b015e244b42",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "id=password",
+      "targets": [
+        ["id=password", "id"],
+        ["name=password", "name"],
+        ["css=#password", "css:finder"],
+        ["xpath=//input[@id='password']", "xpath:attributes"],
+        ["xpath=//p[2]/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "53ffb74f-8635-453b-8b3e-22c0a11e0902",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c820e378-569c-44ba-834a-c7d6203d3e12",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//button[text()='Advanced']",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "8f1af018-7f7f-441c-bb59-9591469cc0da",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Roles",
+      "targets": [
+        ["linkText=Roles", "linkText"],
+        ["css=.text-primary:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Roles')]", "xpath:link"],
+        ["xpath=//div[@id='basic-nav-dropdown']/div/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/roles')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Roles')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "be331a79-e161-460b-87e5-0458bd6d87bc",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Add new role",
+      "targets": [
+        ["linkText=Add new role", "linkText"],
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/roles/new')]", "xpath:href"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'  Add new role')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9f67743-c715-4db6-9380-77c39f23bc89",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_name",
+      "targets": [
+        ["id=root_name", "id"],
+        ["css=#root_name", "css:finder"],
+        ["xpath=//input[@id='root_name']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div/form/div/div/div/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test"
+    }, {
+      "id": "548d864c-87ba-4889-823e-3e9729d596db",
+      "comment": "",
+      "command": "click",
+      "target": "css=.fa-save",
+      "targets": [
+        ["css=.fa-save", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "5a6af58f-5509-4d8c-ab15-11bb8ea124fc",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"Added role successfully.\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "7721b7e5-53d3-4000-b9b3-7553f517a3e2",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(5) .text-primary > .svg-inline--fa",
+      "targets": [
+        ["css=tr:nth-child(5) .text-primary > .svg-inline--fa", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "49fd8a6e-9483-483a-9a51-cc41a58b8f8e",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_name",
+      "targets": [
+        ["id=root_name", "id"],
+        ["css=#root_name", "css:finder"],
+        ["xpath=//input[@id='root_name']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div/form/div/div/div/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "905bf81b-a0c1-4ec4-a874-621b2deea715",
+      "comment": "",
+      "command": "type",
+      "target": "id=root_name",
+      "targets": [
+        ["id=root_name", "id"],
+        ["css=#root_name", "css:finder"],
+        ["xpath=//input[@id='root_name']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div/form/div/div/div/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "test role"
+    }, {
+      "id": "a2365448-e076-49ed-8fe6-daf35dc6e800",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-info",
+      "targets": [
+        ["css=.btn-info", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Save')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "159a7bf1-39e9-460f-890f-47c42d3e22ce",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"Updated role successfully.\")]",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2317a47a-e308-4c1f-bd08-50360950c082",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "targets": [
+        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
+        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cfe9cc6f-d96a-48ad-a273-d03eba7cefce",
+      "comment": "",
+      "command": "click",
+      "target": "id=dropdown-basic",
+      "targets": [
+        ["id=dropdown-basic", "id"],
+        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
+        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "231fa40a-bb22-4d83-99e2-9a5a9d3ff823",
+      "comment": "",
+      "command": "click",
+      "target": "css=.p-3 > .d-flex",
+      "targets": [
+        ["css=.p-3 > .d-flex", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div", "xpath:idRelative"],
+        ["xpath=//section/div/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e20c0727-c04f-465d-a7dc-7c7a9210c47b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Dashboard",
+      "targets": [
+        ["linkText=Dashboard", "linkText"],
+        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Dashboard')]", "xpath:link"],
+        ["xpath=//div[@id='basic-navbar-nav']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard')]", "xpath:href"],
+        ["xpath=//nav/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Dashboard')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "733d176c-c0a3-4427-a7dd-1bc5ed42d96e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Admin",
+      "targets": [
+        ["linkText=Admin", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Admin')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/management')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a5c105ee-9b6c-4226-bda6-fc17a77f2b35",
+      "comment": "",
+      "command": "click",
+      "target": "id=role-nonadmin",
+      "targets": [
+        ["id=role-nonadmin", "id"],
+        ["name=role-nonadmin", "name"],
+        ["css=#role-nonadmin", "css:finder"],
+        ["xpath=//select[@id='role-nonadmin']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[2]/td[4]/select", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[4]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eb737ab9-42bf-45c4-82c0-04c14fa26e63",
+      "comment": "",
+      "command": "select",
+      "target": "id=role-nonadmin",
+      "targets": [],
+      "value": "label=test role"
+    }, {
+      "id": "aada4cb0-0f3f-436c-b342-f83ea1e35ba4",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "//div[@role=\"alert\" and contains(., \"User update successful for nonadmin\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "e8bedd18-aafa-4bff-85a4-ba36d7685225",
+      "comment": "",
+      "command": "click",
+      "target": "id=dropdown-basic",
+      "targets": [
+        ["id=dropdown-basic", "id"],
+        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
+        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e091ca7a-286d-4982-80e3-b180cf03a233",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Roles",
+      "targets": [
+        ["linkText=Roles", "linkText"],
+        ["css=.text-primary:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Roles')]", "xpath:link"],
+        ["xpath=//div[@id='basic-nav-dropdown']/div/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/roles')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Roles')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a378e628-4227-451b-9fb6-ef9edb7fc4fa",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(5) .text-danger path",
+      "targets": [
+        ["css=tr:nth-child(5) .text-danger path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "0c411e9d-b9de-40e4-a39d-99a3b734f6a1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger",
+      "targets": [
+        ["css=.btn-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[9]", "xpath:attributes"],
+        ["xpath=//div[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "22bbdc62-995b-43e4-abe1-24d7035b1d49",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"remove role from all users first\")]",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e704f343-5942-4053-aed7-1fa94e13320c",
+      "comment": "",
+      "command": "click",
+      "target": "id=dropdown-basic",
+      "targets": [
+        ["id=dropdown-basic", "id"],
+        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
+        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "78b2edf1-a85d-4a0e-9880-33a2bdef7b68",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Dashboard",
+      "targets": [
+        ["linkText=Dashboard", "linkText"],
+        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Dashboard')]", "xpath:link"],
+        ["xpath=//div[@id='basic-navbar-nav']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard')]", "xpath:href"],
+        ["xpath=//nav/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Dashboard')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "28b88c8a-a4f1-49ad-9f7c-0d81a75c25e9",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Admin",
+      "targets": [
+        ["linkText=Admin", "linkText"],
+        ["css=.nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Admin')]", "xpath:link"],
+        ["xpath=//div[@id='root']/div/main/div/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/management')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "246af097-6ab4-4173-a7cb-c4054e572fc5",
+      "comment": "",
+      "command": "click",
+      "target": "id=role-nonadmin",
+      "targets": [
+        ["id=role-nonadmin", "id"],
+        ["name=role-nonadmin", "name"],
+        ["css=#role-nonadmin", "css:finder"],
+        ["xpath=//select[@id='role-nonadmin']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/table/tbody/tr[2]/td[4]/select", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[4]/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dd177cf2-605d-4e49-934d-6d88b3efa7b6",
+      "comment": "",
+      "command": "select",
+      "target": "id=role-nonadmin",
+      "targets": [],
+      "value": "label=ROLE_USER"
+    }, {
+      "id": "2f499bda-2230-45d2-85c5-efee606c5121",
+      "comment": "",
+      "command": "click",
+      "target": "id=dropdown-basic",
+      "targets": [
+        ["id=dropdown-basic", "id"],
+        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
+        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e59ac7eb-4100-4c7f-8666-5aeb7980362b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Roles",
+      "targets": [
+        ["linkText=Roles", "linkText"],
+        ["css=.text-primary:nth-child(3)", "css:finder"],
+        ["xpath=//a[contains(text(),'Roles')]", "xpath:link"],
+        ["xpath=//div[@id='basic-nav-dropdown']/div/a[3]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/roles')]", "xpath:href"],
+        ["xpath=//a[3]", "xpath:position"],
+        ["xpath=//a[contains(.,'Roles')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f4201d01-e582-4071-921b-ede543ce181a",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(5) .text-danger path",
+      "targets": [
+        ["css=tr:nth-child(5) .text-danger path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ff656ef-a5c1-4d32-abc6-bac132c45349",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-danger",
+      "targets": [
+        ["css=.btn-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[9]", "xpath:attributes"],
+        ["xpath=//div[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7092ea4b-e3ea-4ef4-9172-dbf84910ec3c",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"Deleted role successfully.\")]",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "2feb47ff-b645-47f5-9128-6b3a51eca540",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["629ba6a4-486d-4dbe-9ea1-4727a1e35567"]
+  }],
+  "urls": ["http://localhost:10101/"],
+  "plugins": []
+}
