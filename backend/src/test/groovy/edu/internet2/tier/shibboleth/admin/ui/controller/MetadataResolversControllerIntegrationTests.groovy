@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.StringTrimModule
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.test.annotation.DirtiesContext
@@ -63,6 +65,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
         mapper.setSerializationInclusion(NON_NULL)
         mapper.registerModule(new JavaTimeModule())
+        mapper.registerModule(new StringTrimModule())
         metadataResolverRepository.deleteAll()
     }
 
@@ -206,7 +209,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
             'ResourceBacked' | _
             'Filesystem'     | _
     }
-    
+
     @DirtiesContext
     def "SHIBUI-1992 - error creating FileBackedHTTPMetadata"() {
         def resolver = new FileBackedHttpMetadataResolver().with {
@@ -360,7 +363,7 @@ class MetadataResolversControllerIntegrationTests extends Specification {
     }
 
     @TestConfiguration
-    static class Config {
+    static class LocalConfig {
         @Bean
         MetadataResolver metadataResolver() {
             new OpenSamlChainingMetadataResolver()

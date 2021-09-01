@@ -1,8 +1,9 @@
 import React from 'react';
-import { SourcesActions } from '../../admin/container/SourcesActions';
+import { MetadataActions } from '../../admin/container/MetadataActions';
 import UserActions from '../../admin/container/UserActions';
 
 import Translate from '../../i18n/components/translate';
+import SourceList from '../../metadata/domain/source/component/SourceList';
 
 export function ActionsTab({ sources, users, reloadSources, reloadUsers }) {
 
@@ -18,7 +19,11 @@ export function ActionsTab({ sources, users, reloadSources, reloadUsers }) {
                         </div>
                     </div>
                     <div className="p-3">
-                        <SourcesActions sources={sources} reloadSources={reloadSources} />
+                        <MetadataActions type="source">
+                            {(enable) =>
+                                <SourceList entities={sources} onDelete={reloadSources} onEnable={(s, e) => enable(s, e, reloadSources)} />
+                            }
+                        </MetadataActions>
                     </div>
                 </div>
             </section>

@@ -35,9 +35,7 @@ export const LocalDynamicMetadataProviderWizard = {
             label: 'label.finished',
             index: 4,
             initialValues: [],
-            fields: [
-                'enabled'
-            ]
+            fields: []
         }
     ],
     uiSchema: defaultsDeep({
@@ -49,12 +47,6 @@ export const LocalDynamicMetadataProviderWizard = {
                     fields: [
                         'name',
                         '@type'
-                    ]
-                },
-                {
-                    size: 8,
-                    fields: [
-                        'enabled'
                     ]
                 },
                 {
@@ -125,7 +117,6 @@ export const LocalDynamicMetadataProviderEditor = {
             fields: [
                 'name',
                 '@type',
-                'enabled',
                 'xmlId',
                 'sourceDirectory',
             ],
@@ -150,7 +141,6 @@ export const LocalDynamicMetadataProviderEditor = {
                     type: 'group-lg',
                     class: ['col-12'],
                     fields: [
-                        'enabled',
                         'xmlId',
                         'sourceDirectory',
                     ]

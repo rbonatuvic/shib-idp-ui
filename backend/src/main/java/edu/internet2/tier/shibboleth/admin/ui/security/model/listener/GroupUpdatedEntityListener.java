@@ -16,7 +16,7 @@ public class GroupUpdatedEntityListener implements ILazyLoaderHelper {
     private static OwnershipRepository ownershipRepository;
 
     /**
-     * @see https://stackoverflow.com/questions/12155632/injecting-a-spring-dependency-into-a-jpa-entitylistener
+     * see https://stackoverflow.com/questions/12155632/injecting-a-spring-dependency-into-a-jpa-entitylistener
      */
     @Autowired
     public void init(OwnershipRepository repo) {

@@ -23,10 +23,10 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                 <thead>
                     <tr>
                         <th scope="col"><Translate value="label.user-id">UserId</Translate></th>
-                        <th scope="col" ><Translate value="label.name">Name</Translate></th>
+                        <th scope="col"><Translate value="label.name">Name</Translate></th>
                         <th scope="col"><Translate value="label.email">Email</Translate></th>
-                        <th scope="col" ><Translate value="label.role">Role</Translate></th>
-                        <th scope="col" ><Translate value="label.group">Group</Translate></th>
+                        <th scope="col"><Translate value="label.role">Role</Translate></th>
+                        <th scope="col"><Translate value="label.group">Group</Translate></th>
                         <th scope="col"><Translate value="label.delete">Delete?</Translate></th>
                     </tr>
                 </thead>
@@ -36,10 +36,10 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                             <React.Fragment>
                                 {users.map((user, idx) =>
                                     <tr key={idx}>
-                                        <th>{user.username}</th>
-                                        <td>{user.firstName} {user.lastName}</td>
-                                        <td>{user.emailAddress}</td>
-                                        <td>
+                                        <td className="align-middle">{user.username}</td>
+                                        <td className="align-middle">{user.firstName} {user.lastName}</td>
+                                        <td className="align-middle">{user.emailAddress}</td>
+                                        <td className="align-middle">
                                             <label htmlFor={`role-${user.username}`} className="sr-only"><Translate value="action.user-role">User role</Translate></label>
                                             <select
                                                 id={`role-${user.username}`}
@@ -54,7 +54,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                                 ))}
                                             </select>
                                         </td>
-                                        <td>
+                                        <td className="align-middle">
                                             <OverlayTrigger
                                                 trigger={user.role === 'ROLE_ADMIN' ? ['hover', 'focus'] : []}
                                                 overlay={
@@ -79,7 +79,7 @@ export default function UserMaintenance({ users, roles, loading, onDeleteUser, o
                                             </OverlayTrigger>
                                             
                                         </td>
-                                        <td>
+                                        <td className="align-middle">
                                             {currentUser.username !== user.username &&
                                                 <Button className="text-danger" variant="link" onClick={() => onDeleteUser(user.username)}>
                                                     <span className="sr-only">

@@ -50,7 +50,7 @@ class EntityDescriptorRepositoryTest extends Specification {
     EntityDescriptorRepository entityDescriptorRepository
 
     @Autowired
-    private CustomEntityAttributeDefinitionRepository repository;
+    private CustomEntityAttributeDefinitionRepository repository
     
     @Autowired
     EntityManager entityManager
@@ -110,7 +110,7 @@ class EntityDescriptorRepositoryTest extends Specification {
             it.description = "some description"
             it
         }
-        group = groupRepository.saveAndFlush(group)
+        groupRepository.saveAndFlush(group)
 
         def gList = groupRepository.findAll()
         def groupFromDb = gList.get(0).asType(Group)
@@ -122,19 +122,19 @@ class EntityDescriptorRepositoryTest extends Specification {
         entityDescriptorRepository.saveAndFlush(ed)
         
         when:
-        def edStreamFromDb = entityDescriptorRepository.findAllStreamByIdOfOwner(null);
+        def edStreamFromDb = entityDescriptorRepository.findAllStreamByIdOfOwner(null)
         
         then:
         ((Stream)edStreamFromDb).count() == 0
         
         when:
-        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByIdOfOwner("random value");
+        def edStreamFromDb2 = entityDescriptorRepository.findAllStreamByIdOfOwner("random value")
         
         then:
         ((Stream)edStreamFromDb2).count() == 0
         
         when:
-        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByIdOfOwner(groupFromDb.resourceId);
+        def edStreamFromDb3 = entityDescriptorRepository.findAllStreamByIdOfOwner(groupFromDb.resourceId)
         
         then:
         ((Stream)edStreamFromDb3).count() == 1

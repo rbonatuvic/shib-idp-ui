@@ -22,7 +22,7 @@ public class UserUpdatedEntityListener implements ILazyLoaderHelper {
     private static OwnershipRepository ownershipRepository;
 
     /**
-     * @see https://stackoverflow.com/questions/12155632/injecting-a-spring-dependency-into-a-jpa-entitylistener
+     * see https://stackoverflow.com/questions/12155632/injecting-a-spring-dependency-into-a-jpa-entitylistener
      */
     @Autowired
     public void init(OwnershipRepository repo, GroupsRepository groupRepo) {
@@ -44,9 +44,7 @@ public class UserUpdatedEntityListener implements ILazyLoaderHelper {
         user.setLazyLoaderHelper(null);
         Set<Ownership> ownerships = ownershipRepository.findAllGroupsForUser(user.getUsername());
         HashSet<Group> groups = new HashSet<>();
-        ownerships.forEach(ownership -> {
-            groups.add(groupRepository.findByResourceId(ownership.getOwnerId()));
-        });
+        ownerships.forEach(ownership -> groups.add(groupRepository.findByResourceId(ownership.getOwnerId())));
         user.setGroups(groups);
     }
 }
