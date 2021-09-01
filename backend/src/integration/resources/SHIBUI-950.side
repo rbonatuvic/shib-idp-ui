@@ -50,30 +50,60 @@
       ],
       "value": "${KEY_ENTER}"
     }, {
+      "id": "6cfc4462-7d98-42ad-9503-1420238af405",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "563df7e6-3968-4107-a698-3fd7e52f18bc",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "78c92dcb-4104-482d-8997-3b33c29ec2cf",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "694012a7-3480-4af9-9dbc-2879ffd4d8b1",
       "comment": "",
       "command": "click",
-      "target": "css=#addNewDropdown > translate-i18n",
+      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
       "targets": [
-        ["css=#addNewDropdown > translate-i18n", "css:finder"],
-        ["xpath=//button[@id='addNewDropdown']/translate-i18n", "xpath:idRelative"],
-        ["xpath=//translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Add New')]", "xpath:innerText"]
+        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
+        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
       "id": "d000a81f-a776-44f6-80c4-dfb5ec892dc0",
       "comment": "",
       "command": "click",
-      "target": "linkText=Metadata Source",
+      "target": "linkText=Add a new metadata source",
       "targets": [
-        ["linkText=Metadata Source", "linkText"],
-        ["css=.dropdown-menu > .nav-link:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='navbar']/ul/li/div/a", "xpath:idRelative"],
-        ["xpath=(//a[contains(@href, '')])[2]", "xpath:href"],
-        ["xpath=//div/a", "xpath:position"]
+        ["linkText=Add a new metadata source", "linkText"],
+        ["css=.text-primary:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'Add a new metadata source')]", "xpath:link"],
+        ["xpath=//div[@id='basic-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/source/new')]", "xpath:href"],
+        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Add a new metadata source')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "2a074ac0-d142-4124-83c1-792d5e744605",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.resolver-nav-option:nth-child(1) > .btn",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "1e8aba21-e7f4-45ef-b004-4aedcf2ab74e",
       "comment": "",
@@ -86,6 +116,13 @@
         ["xpath=//button[contains(.,'Upload/URL')]", "xpath:innerText"]
       ],
       "value": ""
+    }, {
+      "id": "c23d44f2-0896-4c5e-a574-3444c4c89e7e",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "id=serviceProviderName",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "d1ab5623-6daa-4ccb-bc06-e16a3f504e1d",
       "comment": "",
@@ -114,7 +151,7 @@
       "id": "e5d771f5-57e2-4f11-af50-124c2121d36b",
       "comment": "",
       "command": "attachFile",
-      "target": "id=fileInput",
+      "target": "id=custom-file",
       "targets": [],
       "value": "${SHIBUI950}"
     }, {
@@ -131,11 +168,12 @@
       "id": "cf4285d3-6f70-499e-ad3a-85278e27dbf0",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr > .text-right",
+      "target": "css=td:nth-child(1)",
       "targets": [
-        ["css=tr > .text-right", "css:finder"],
-        ["xpath=//td[5]", "xpath:position"],
-        ["xpath=//td[contains(.,'Disabled')]", "xpath:innerText"]
+        ["css=td:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td", "xpath:idRelative"],
+        ["xpath=//td", "xpath:position"],
+        ["xpath=//td[contains(.,'File Upload Test')]", "xpath:innerText"]
       ],
       "value": "10000"
     }, {
@@ -147,7 +185,8 @@
         ["linkText=File Upload Test", "linkText"],
         ["css=td > a", "css:finder"],
         ["xpath=//a[contains(text(),'File Upload Test')]", "xpath:link"],
-        ["xpath=//a[contains(@href, '/metadata/resolver/144a49cd-37f1-4399-9a4a-7f820aab724b/configuration/options')]", "xpath:href"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/metadata/source/3d0fdd1b-e3b1-48d5-9e44-8fe84bd0c1dd/configuration/options')]", "xpath:href"],
         ["xpath=//td/a", "xpath:position"],
         ["xpath=//a[contains(.,'File Upload Test')]", "xpath:innerText"]
       ],
@@ -159,6 +198,7 @@
       "target": "css=td:nth-child(2)",
       "targets": [
         ["css=td:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td[2]", "xpath:idRelative"],
         ["xpath=//td[2]", "xpath:position"],
         ["xpath=//td[contains(.,'https://wiki.shibboleth.net/shibboleth')]", "xpath:innerText"]
       ],

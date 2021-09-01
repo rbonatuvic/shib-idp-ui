@@ -41,40 +41,70 @@
       "id": "624d4f0a-ddb6-4047-a25e-43cbde644fb5",
       "comment": "",
       "command": "click",
-      "target": "name=submit",
+      "target": "css=.btn",
       "targets": [
-        ["name=submit", "name"],
-        ["css=td:nth-child(1) > input", "css:finder"],
-        ["xpath=//input[@name='submit']", "xpath:attributes"],
-        ["xpath=//tr[3]/td/input", "xpath:position"]
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Sign in')]", "xpath:innerText"]
       ],
+      "value": ""
+    }, {
+      "id": "542a3c38-af18-4c51-9f66-16931e3dd599",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "834f4ef3-d429-490d-8e86-96b67ce66e06",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "756d4f66-1698-4e0f-8f99-0ababf12e981",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
       "value": ""
     }, {
       "id": "812843b9-c71a-4141-b204-3387f0fee39a",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.nav-link > translate-i18n:nth-child(1)",
-      "targets": [],
+      "target": "css=.nav-item > .d-flex",
+      "targets": [
+        ["css=.nav-item > .d-flex", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/div[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/actions')]", "xpath:href"],
+        ["xpath=//div[4]/a", "xpath:position"]
+      ],
       "value": "30000"
     }, {
       "id": "473db033-9a76-4173-9a70-daa255f99b1d",
       "comment": "",
       "command": "click",
-      "target": "css=.nav-link > translate-i18n:nth-child(1)",
+      "target": "css=.nav-item > .d-flex",
       "targets": [
-        ["css=.nav-link > translate-i18n:nth-child(1)", "css:finder"],
-        ["xpath=//li[4]/a/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Action Required')]", "xpath:innerText"]
+        ["css=.nav-item > .d-flex", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/div/div[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/dashboard/admin/actions')]", "xpath:href"],
+        ["xpath=//div[4]/a", "xpath:position"]
       ],
       "value": ""
     }, {
       "id": "a98143b5-647f-4e7e-b920-f6e6875d7372",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-trash",
+      "target": "css=.btn-danger",
       "targets": [
-        ["css=.fa-trash", "css:finder"],
-        ["xpath=//div[2]/button/i", "xpath:position"]
+        ["css=.btn-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section[2]/div/div[2]/div/div/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,' Delete Request')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -84,38 +114,23 @@
       "target": "css=.modal-footer > .btn-danger",
       "targets": [
         ["css=.modal-footer > .btn-danger", "css:finder"],
-        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
         ["xpath=//div[3]/button", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "2d8da370-0a5a-4048-a8bd-f68210a271c5",
-      "comment": "",
-      "command": "waitForElementVisible",
-      "target": "css=.text-center",
-      "targets": [],
-      "value": "30000"
-    }, {
-      "id": "d5a65352-5897-49cf-9046-3afc5397f193",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=.text-center",
-      "targets": [
-        ["css=.text-center", "css:finder"],
-        ["xpath=//p", "xpath:position"],
-        ["xpath=//p[contains(.,'There are no new user requests at this time.')]", "xpath:innerText"]
-      ],
-      "value": "There are no new user requests at this time."
-    }, {
       "id": "ede68bbe-2236-457d-93d7-9e7cde5d5176",
       "comment": "",
       "command": "click",
-      "target": "css=li:nth-child(3) > .nav-link > translate-i18n",
+      "target": "linkText=Logout",
       "targets": [
-        ["css=li:nth-child(3) > .nav-link > translate-i18n", "css:finder"],
-        ["xpath=//div[@id='navbar']/ul/li[3]/a/translate-i18n", "xpath:idRelative"],
-        ["xpath=//li[3]/a/translate-i18n", "xpath:position"],
-        ["xpath=//translate-i18n[contains(.,'Logout')]", "xpath:innerText"]
+        ["linkText=Logout", "linkText"],
+        ["css=.nav-link:nth-child(4)", "css:finder"],
+        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
+        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -153,7 +168,7 @@
       "id": "6c4429c8-7d82-4d87-a58d-a587cff891f6",
       "comment": "",
       "command": "click",
-      "target": "name=submit",
+      "target": "css=.btn",
       "targets": [
         ["name=submit", "name"],
         ["css=td:nth-child(1) > input", "css:finder"],
@@ -165,19 +180,22 @@
       "id": "3eb77106-8fb7-43aa-a72a-27f2960d5393",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=p",
-      "targets": [],
+      "target": "css=.alert",
+      "targets": [
+        ["css=.alert", "css:finder"],
+        ["xpath=//form/div", "xpath:position"]
+      ],
       "value": "30000"
     }, {
       "id": "b826ed10-31a4-487b-ba80-c633ff037839",
       "comment": "",
       "command": "assertText",
-      "target": "css=p",
+      "target": "css=.alert",
       "targets": [
-        ["css=p", "css:finder"],
-        ["xpath=//p", "xpath:position"]
+        ["css=.alert", "css:finder"],
+        ["xpath=//form/div", "xpath:position"]
       ],
-      "value": "Your login attempt was not successful, try again.\n\nReason: Bad credentials"
+      "value": "Bad credentials"
     }, {
       "id": "5b421e75-d5db-44ff-ac57-2fd8f91c2478",
       "comment": "",

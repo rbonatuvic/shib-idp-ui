@@ -226,6 +226,7 @@ task integrationTest(type: Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
     systemProperties = System.properties
     systemProperties['user.dir'] = workingDir
+    systemProperties['spring.profiles.include'] = 'very-dangerous'
 }
 
 task enversTest(type: Test) {

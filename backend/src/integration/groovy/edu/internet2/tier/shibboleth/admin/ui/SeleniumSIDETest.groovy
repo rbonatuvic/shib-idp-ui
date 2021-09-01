@@ -98,10 +98,9 @@ class SeleniumSIDETest extends Specification {
         cleanup:
         runner.getWrappedDriver().quit()
 
-        // TODO: Uncomment the below commented tests once they've been updated to use the new configuration screen
         where:
         name                                                                | file
-/*        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
+        'SHIBUI-1364: Compare FBHTTPMP with filters'                        | '/SHIBUI-1364-1.side'
         'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
@@ -114,19 +113,19 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
         'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
         'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
-        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side'
-        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side'
+        'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side' // adding filters to this resolver type was removed in the react update
+        'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side' // adding filters to this resolver type was removed in the react update
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
         'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
-        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side'
+        'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug in the IDE where it thinks there is a missing ')'.
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
         'SHIBUI-1391: Regex Validation'                                     | '/SHIBUI-1391.side'
         'SHIBUI-1407: Metadata source comparison highlights'                | '/SHIBUI-1407-1.side'
         'SHIBUI-1407: Metadata provider comparison highlights'              | '/SHIBUI-1407-2.side'
-        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side'
-        'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side'
-        'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'*/
+//        'SHIBUI-1503: Non-admin can create metadata source'                 | '/SHIBUI-1503-1.side' //TODO https://todos.internet2.edu/browse/SHIBUI-2041
+//        'SHIBUI-1503: User can be deleted'                                  | '/SHIBUI-1503-2.side' //TODO https://todos.internet2.edu/browse/SHIBUI-2040 Note that this script can only be run once successfully (per startup of the app) without first having to add the Bad Robot user back in to the system
+        'SHIBUI-1503: User can be enabled'                                  | '/SHIBUI-1503-3.side'
         'SHIBUI-1740: Group can be created, edited, deleted'                | '/SHIBUI-1740-1.side'
         'SHIBUI-1740: Verify dev profile group membership'                  | '/SHIBUI-1740-2.side'
         'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
@@ -135,4 +134,3 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'
     }
 }
-
