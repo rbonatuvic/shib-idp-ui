@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
+import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.METADATA_RESOLVER;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
@@ -43,7 +46,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = ResourceBackedMetadataResolver.class, name = "ResourceBackedMetadataResolver")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
-public class MetadataResolver extends AbstractAuditable {
+public class MetadataResolver extends AbstractAuditable implements IActivatable {
 
     @JsonProperty("@type")
     @Transient
@@ -98,6 +101,12 @@ public class MetadataResolver extends AbstractAuditable {
                         .filter(EntityAttributesFilter.class::isInstance)
                         .map(EntityAttributesFilter.class::cast)
                         .forEach(EntityAttributesFilter::intoTransientRepresentation);
+    }
+
+    @Override
+    @JsonIgnore
+    public ActivatableType getActivatableType() {
+        return METADATA_RESOLVER;
     }
 
     public Boolean getDoInitialization() {

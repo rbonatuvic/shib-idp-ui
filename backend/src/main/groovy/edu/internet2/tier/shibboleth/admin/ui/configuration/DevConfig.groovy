@@ -96,6 +96,9 @@ class DevConfig {
             }, new Role().with {
                 name = 'ROLE_NONE'
                 it
+            }, new Role().with {
+                name = 'ROLE_ENABLE'
+                it
             }]
             roles.each {
                 roleRepository.save(it)
