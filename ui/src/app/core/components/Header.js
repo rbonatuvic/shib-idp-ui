@@ -77,7 +77,7 @@ export function Header () {
                                 <FontAwesomeIcon icon={faUsersCog} className="mr-2" />
                                 <Translate value="action.groups" />
                             </Dropdown.Item>
-                            <Dropdown.Item as={Link} to="/roles" className="text-primary py-2">
+                            <Dropdown.Item as={Link} to="/roles" className="text-primary py-2" id="advanced-nav-dropdown-roles">
                                 <FontAwesomeIcon icon={faUserTag} className="mr-2" />
                                 <Translate value="action.roles" />
                             </Dropdown.Item>
