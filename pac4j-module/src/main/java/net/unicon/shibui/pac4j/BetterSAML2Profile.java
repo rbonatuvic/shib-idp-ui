@@ -1,10 +1,10 @@
 package net.unicon.shibui.pac4j;
 
+import net.unicon.shibui.pac4j.Pac4jConfigurationProperties.SimpleProfileMapping;
 import org.pac4j.saml.profile.SAML2Profile;
 
-import net.unicon.shibui.pac4j.Pac4jConfigurationProperties.SimpleProfileMapping;
-
 import java.util.Collection;
+import java.util.List;
 
 public class BetterSAML2Profile extends SAML2Profile {
     private SimpleProfileMapping profileMapping;
@@ -26,6 +26,10 @@ public class BetterSAML2Profile extends SAML2Profile {
     @Override
     public String getFirstName() {
         return (String) getAttribute(profileMapping.getFirstName());
+    }
+
+    public List<String> getGroups() {
+        return (List<String>) getAttribute(profileMapping.getGroups());
     }
 
     @Override

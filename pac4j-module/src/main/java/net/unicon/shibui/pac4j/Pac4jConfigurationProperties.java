@@ -1,15 +1,11 @@
 package net.unicon.shibui.pac4j;
 
-import javax.servlet.Filter;
-
-import org.pac4j.springframework.security.web.CallbackFilter;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Component
 @ConfigurationProperties(prefix = "shibui.pac4j")
@@ -40,8 +36,8 @@ public class Pac4jConfigurationProperties {
     public static class SimpleProfileMapping {
         private String email;
         private String firstName;
+        private String groups;
         private String lastName;
         private String username;
-    } 
+    }
 }
-
