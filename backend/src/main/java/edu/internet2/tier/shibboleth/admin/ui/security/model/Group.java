@@ -78,6 +78,7 @@ public class Group implements Owner {
     public Set<Ownership> getOwnedItems() {
         if (lazyLoaderHelper != null) {
             lazyLoaderHelper.loadOwnedItems(this);
+            lazyLoaderHelper = null;
         }
         return ownedItems;
     }

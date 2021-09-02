@@ -15,11 +15,16 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+import javax.persistence.EntityManager
+
 @DataJpaTest
 @ContextConfiguration(classes = [BaseDataJpaTestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 abstract class AbstractBaseDataJpaTest extends Specification {
+    @Autowired
+    EntityManager entityManager
+
     @Autowired
     GroupServiceForTesting groupService
 
@@ -63,6 +68,10 @@ abstract class AbstractBaseDataJpaTest extends Specification {
         }
 
         createAdminUser()
+    }
+
+    def cleanup() {
+        entityManager.clear()
     }
 
     protected createAdminUser() {

@@ -6,8 +6,9 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.test.annotation.Rollback
+import org.springframework.transaction.annotation.Transactional
 
-import javax.transaction.Transactional
+import javax.persistence.EntityManager
 
 /**
  * Tests to validate the repo and model for groups
@@ -84,7 +85,7 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         
         then:
         all.size() == 3
-        savedGroup.ownedItems.size() == 3
+        savedGroup.getOwnedItems().size() == 3
         all.each {
             savedGroup.ownedItems.contains(it)
         }
@@ -133,7 +134,7 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         def gList = groupsRepo.findAll()
 
         then:
-        gList.size() == 0
+        gList.isEmpty()
         
         // save check
         when:
@@ -142,6 +143,8 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         then:
         // Missing non-nullable field (name) should thrown error
         thrown(DataIntegrityViolationException)
+        entityManager.clear()
+        groupsRepo.findAll().isEmpty()
     }
     
     def "basic CRUD operations validated"() {
@@ -191,7 +194,7 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
         groupsRepo.delete(groupFromDb2)
        
         then:
-        groupsRepo.findAll().size() == 0
+        groupsRepo.findAll().isEmpty()
         
         when:
         def nothingThere = groupsRepo.findByResourceId(null)

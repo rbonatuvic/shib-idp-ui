@@ -71,7 +71,6 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     private Set<Role> roles = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
-    // @JsonIgnore
     @Transient
     private Set<Group> userGroups = new HashSet<>();
     
@@ -130,6 +129,7 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     public Set<Group> getUserGroups() {
         if (lazyLoaderHelper != null) {
             lazyLoaderHelper.loadGroups(this);
+            lazyLoaderHelper = null;
         }
         return userGroups;
     }
