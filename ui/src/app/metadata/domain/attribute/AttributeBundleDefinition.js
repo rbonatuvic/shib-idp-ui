@@ -7,7 +7,9 @@ export const AttributeBundleDefinition = {
     schema: `/assets/schema/attribute/bundle.schema.json`,
 
     uiSchema: {
-        
+        attributes: {
+            'ui:widget': 'AttributeReleaseWidget'
+        }
     },
 
     parser: (data) => {

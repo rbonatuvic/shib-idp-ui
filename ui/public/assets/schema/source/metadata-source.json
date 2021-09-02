@@ -219,6 +219,7 @@
                 "type": "string",
                 "enum": [
                     "eduPersonPrincipalName",
+                    {"name": "foo", "attributes": []},
                     "uid",
                     "mail",
                     "surname",

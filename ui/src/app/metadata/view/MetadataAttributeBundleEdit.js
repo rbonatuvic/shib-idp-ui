@@ -27,7 +27,7 @@ export function MetadataAttributeBundleEdit() {
 
     const gotoDetail = (state = null) => {
         setBlocking(false);
-        history.push(`/metadata/attributes`, state);
+        history.push(`/metadata/attributes/bundles`, state);
     };
 
     return (
@@ -58,15 +58,15 @@ export function MetadataAttributeBundleEdit() {
                                                 <React.Fragment>
                                                     <Button variant="info" className="mr-2"
                                                         type="button"
-                                                        onClick={() => save(filter)}
+                                                        onClick={() => update(filter)}
                                                         disabled={errors.length > 0 || loading}
-                                                        aria-label="Save changes to the metadata source. You will return to the dashboard">
+                                                        aria-label="Save changes to the bundle">
                                                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;
                                                         <Translate value="action.save">Save</Translate>
                                                     </Button>
                                                     <Button variant="secondary"
                                                         type="button"
-                                                        onClick={() => cancel()} aria-label="Cancel changes, go back to dashboard">
+                                                        onClick={() => cancel()} aria-label="Cancel changes, go back to bundle list">
                                                         <Translate value="action.cancel">Cancel</Translate>
                                                     </Button>
                                                 </React.Fragment>

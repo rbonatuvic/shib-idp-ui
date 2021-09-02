@@ -5,6 +5,8 @@ import { NewAttribute } from './new/NewAttribute';
 import { MetadataAttributeEdit } from './view/MetadataAttributeEdit';
 import { MetadataAttributeList } from './view/MetadataAttributeList';
 import { MetadataAttributeBundles } from './view/MetadataAttributeBundles';
+import { NewBundle } from './new/NewBundle';
+import { MetadataAttributeBundleEdit } from './view/MetadataAttributeBundleEdit';
 
 export function Attribute() {
 
@@ -25,8 +27,14 @@ export function Attribute() {
             <Route path={`${path}/:id/edit`} render={() =>
                 <MetadataAttributeEdit />
             } />
-            <Route path={`${path}/bundles`} render={() =>
+            <Route exact path={`${path}/bundles`} render={() =>
                 <MetadataAttributeBundles />
+            } />
+            <Route exact path={`${path}/bundles/new`} render={() =>
+                <NewBundle />
+            } />
+            <Route exact path={`${path}/bundles/:id/edit`} render={() =>
+                <MetadataAttributeBundleEdit />
             } />
             <Redirect exact path={`${path}`} to={`${path}/list`} />
         </Switch>

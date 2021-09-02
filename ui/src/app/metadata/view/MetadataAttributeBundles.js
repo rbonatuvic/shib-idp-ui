@@ -31,7 +31,7 @@ export function MetadataAttributeBundles({ entities, onDelete }) {
                                 </div>
                                     <div className="p-3">
                                         <div className="d-flex justify-content-end w-100">
-                                            <Link to="./new" className="btn btn-sm btn-success">
+                                            <Link to="./bundles/new" className="btn btn-sm btn-success">
                                                 <FontAwesomeIcon icon={faPlusCircle} /> &nbsp;
                                                 <Translate value="action.add-new-bundle">Add new bundle</Translate>
                                             </Link>
