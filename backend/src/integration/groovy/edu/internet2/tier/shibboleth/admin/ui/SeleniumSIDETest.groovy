@@ -104,7 +104,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1364: Compare FSMP with filters'                            | '/SHIBUI-1364-2.side'
         'SHIBUI-1364: Compare LDMP with filters'                            | '/SHIBUI-1364-3.side'
         'SHIBUI-1364: Compare DHTTPMP with filters'                         | '/SHIBUI-1364-4.side'
-        'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
+/*        'SHIBUI-1281: Metadata Source Dashboard'                            | '/SHIBUI-1281.side'
         'SHIBUI-1311: Metadata Provider Dashboard'                          | '/SHIBUI-1311.side'
         'SHIBUI-950: Metadata Source from XML w/ digest'                    | '/SHIBUI-950.side'
         'SHIBUI-1352: Create LocalDynamic provider'                         | '/SHIBUI-1352-1.side'
@@ -131,6 +131,6 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
         'SHIBUI-1740: Verify nonadmin-owned resource visibility'            | '/SHIBUI-1740-4.side'
         'SHIBUI-1742: Verify enabler role allows enabling'                  | '/SHIBUI-1742-1.side'
-        'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'
+        'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'*/
     }
 }
