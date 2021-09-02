@@ -22,8 +22,7 @@
         "serviceEnabled": {
             "title": "label.enable-this-service",
             "description": "tooltip.enable-this-service-upon-saving",
-            "type": "boolean",
-            "default": false
+            "type": "boolean"
         },
         "organization": {
             "$ref": "#/definitions/Organization"
@@ -76,8 +75,7 @@
             },
             "properties": {
                 "x509CertificateAvailable": {
-                    "type": "boolean",
-                    "default": true
+                    "type": "boolean"
                 },
                 "authenticationRequestsSigned": {
                     "title": "label.authentication-requests-signed",
@@ -161,11 +159,16 @@
                     "type": "boolean",
                     "default": false
                 },
-                "dontSignResponse": {
-                    "title": "label.dont-sign-the-response",
-                    "description": "tooltip.dont-sign-response",
-                    "type": "boolean",
-                    "default": false
+                "nameIdFormats": {
+                    "$ref": "#/definitions/nameIdFormats"
+                },
+                "responderId": {
+                    "title": "label.responder-id",
+                    "description": "tooltip.responder-id",
+                    "type": "string"
+                },
+                "authenticationMethods": {
+                    "$ref": "#/definitions/authenticationMethods"
                 },
                 "turnOffEncryption": {
                     "title": "label.turn-off-encryption-of-response",
@@ -173,9 +176,15 @@
                     "type": "boolean",
                     "default": false
                 },
-                "useSha": {
-                    "title": "label.use-sha1-signing-algorithm",
-                    "description": "tooltip.usa-sha-algorithm",
+                "forceAuthn": {
+                    "title": "label.force-authn",
+                    "description": "tooltip.force-authn",
+                    "type": "boolean",
+                    "default": false
+                },
+                "dontSignResponse": {
+                    "title": "label.dont-sign-the-response",
+                    "description": "tooltip.dont-sign-response",
                     "type": "boolean",
                     "default": false
                 },
@@ -185,27 +194,15 @@
                     "type": "boolean",
                     "default": false
                 },
-                "omitNotBefore": {
-                    "title": "label.omit-not-before-condition",
-                    "description": "tooltip.omit-not-before-condition",
+                "useSha": {
+                    "title": "label.use-sha1-signing-algorithm",
+                    "description": "tooltip.usa-sha-algorithm",
                     "type": "boolean",
                     "default": false
                 },
-                "responderId": {
-                    "title": "label.responder-id",
-                    "description": "tooltip.responder-id",
-                    "type": "string",
-                    "default": ""
-                },
-                "nameIdFormats": {
-                    "$ref": "#/definitions/nameIdFormats"
-                },
-                "authenticationMethods": {
-                    "$ref": "#/definitions/authenticationMethods"
-                },
-                "forceAuthn": {
-                    "title": "label.force-authn",
-                    "description": "tooltip.force-authn",
+                "omitNotBefore": {
+                    "title": "label.omit-not-before-condition",
+                    "description": "tooltip.omit-not-before-condition",
                     "type": "boolean",
                     "default": false
                 }
@@ -218,8 +215,19 @@
             "items": {
                 "type": "string",
                 "enum": [
+                    [
+                        "givenName",
+                        "eduPersonAffiliation",
+                        "eduPersonScopedAffiliation",
+                        "employeeNumber"
+                    ],
+                    [
+                        "uid",
+                        "surname",
+                        "eduPersonAffiliation",
+                        "employeeNumber"
+                    ],
                     "eduPersonPrincipalName",
-                    {"name": "foo", "attributes": []},
                     "uid",
                     "mail",
                     "surname",
@@ -231,6 +239,10 @@
                     "eduPersonAssurance",
                     "eduPersonUniqueId",
                     "employeeNumber"
+                ],
+                "enumNames": [
+                    "Bundle 1",
+                    "Bundle 2"
                 ]
             },
             "uniqueItems": true

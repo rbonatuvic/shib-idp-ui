@@ -4,6 +4,7 @@ import Translate from "../../../i18n/components/translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
+import { useTranslator } from "../../../i18n/hooks";
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
@@ -59,6 +60,17 @@ const AttributeReleaseWidget = ({
 
         onChange(update);
     }
+
+    const onCheckBundle = (option) => {
+        const all = (enumOptions).map(({ value }) => value);
+        let update = [
+            ...value
+        ];
+        (option.value).forEach(v => update = selectValue(v, update, all));
+
+        onChange(update);
+    }
+
     const onClearAll = () => {
         onChange([]);
     }
@@ -78,11 +90,21 @@ const AttributeReleaseWidget = ({
                         const checked = value.indexOf(option.value) !== -1;
                         const itemDisabled =
                             enumDisabled && (enumDisabled).indexOf(option.value) !== -1;
+                        const bundled = typeof option.value === 'string' ? false : true;
                         return (
-                            <tr key={index}>
-                                <td><Translate value={`label.attribute-${option.label}`} /></td>
+                            <tr key={index} className={bundled ? 'bg-secondary border-bottom py-4 text-white' : ''}>
+                                <td className="align-middle">{bundled ?
+                                    <strong>{option.label}</strong>
+                                    :
+                                    <Translate value={`label.attribute-${option.label}`}>{option.label}</Translate>
+                                }</td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
+                                    {bundled ? 
+                                        <Button variant="outline-primary bg-light" size="sm"
+                                            onClick={() => onCheckBundle(option)}
+                                            >Select</Button>
+                                    :
                                         <div className="custom-control custom-checkbox">
                                             <Form.Check
                                                 custom
@@ -98,6 +120,7 @@ const AttributeReleaseWidget = ({
                                                 disabled={disabled || itemDisabled || readonly}
                                             />
                                         </div>
+                                    }
                                     </fieldset>
                                 </td>
                             </tr>
