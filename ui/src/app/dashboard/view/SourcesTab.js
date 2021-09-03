@@ -59,7 +59,7 @@ export function SourcesTab () {
                             <MetadataActions type="source">
                                 {(enable, remove) =>
                                     <SourceList
-                                        entities={sources}
+                                        entities={searched}
                                         onDelete={(id) => remove(id, loadSources)}
                                         onEnable={(s, e) => enable(s, e, loadSources) }
                                         onChangeGroup={changeSourceGroup} />
