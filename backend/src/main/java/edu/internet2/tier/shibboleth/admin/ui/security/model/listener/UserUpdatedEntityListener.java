@@ -6,8 +6,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
@@ -40,11 +38,12 @@ public class UserUpdatedEntityListener implements ILazyLoaderHelper {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void loadGroups(User user) {
         Set<Ownership> ownerships = ownershipRepository.findAllGroupsForUser(user.getUsername());
         HashSet<Group> groups = new HashSet<>();
         final boolean isAdmin = user.getRole().equals("ROLE_ADMIN");
+
+        // if the user is an admin, clear out the regex value so it isn't sent out to the UI
         ownerships.stream().map(ownership -> groupRepository.findByResourceId(ownership.getOwnerId())).forEach(userGroup -> {
             if (isAdmin) {
                 userGroup.setValidationRegex(null);

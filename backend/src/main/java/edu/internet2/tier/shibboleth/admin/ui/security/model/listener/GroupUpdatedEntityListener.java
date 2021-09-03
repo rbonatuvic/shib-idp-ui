@@ -1,19 +1,15 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.model.listener;
 
-import java.util.Set;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
+import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
-import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Set;
 
 public class GroupUpdatedEntityListener implements ILazyLoaderHelper {
     private static OwnershipRepository ownershipRepository;
@@ -37,7 +33,6 @@ public class GroupUpdatedEntityListener implements ILazyLoaderHelper {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void loadOwnedItems(Group group) {
       Set<Ownership> ownedItems = ownershipRepository.findAllByOwner(group);
       group.setOwnedItems(ownedItems);

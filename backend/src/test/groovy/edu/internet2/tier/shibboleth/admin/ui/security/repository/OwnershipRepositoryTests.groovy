@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional
 class OwnershipRepositoryTests extends AbstractBaseDataJpaTest {
     @Transactional
     def setup() {
-        ownershipRepository.deleteAll()
         def ownerships = [
             new Ownership().with {
                it.ownedId = "aaa"

@@ -1,50 +1,23 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.FilterType
 import org.springframework.core.io.ClassPathResource
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
+import org.springframework.transaction.annotation.Transactional
 
-@DataJpaTest
-@ContextConfiguration(classes=[CoreShibUiConfiguration, SearchConfiguration, TestConfiguration, InternationalizationConfiguration, ShibUIConfiguration])
-@EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
-@EntityScan(["edu.internet2.tier.shibboleth.admin.ui", "edu.internet2.tier.shibboleth.admin.ui.security.model"])
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD, classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @ComponentScan(excludeFilters = [@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = [UserBootstrap])])
-class UserBootstrapTests extends Specification {
+class UserBootstrapTests extends AbstractBaseDataJpaTest {
     @Autowired
     ShibUIConfiguration shibUIConfiguration
 
-    @Autowired
-    UserRepository userRepository
-
-    @Autowired
-    RoleRepository roleRepository
-    
-    @Autowired
-    UserService userService
-    
-    @Autowired
-    IGroupService groupService
-
+    @Transactional
     def setup() {
-        groupService.ensureAdminGroupExists()
         roleRepository.deleteAll()
+        userRepository.deleteAll()
+        entityManager.flush()
     }
     
     def "simple test"() {

@@ -80,14 +80,17 @@ class GroupsRepositoryTests extends AbstractBaseDataJpaTest {
             it.resourceId = "g1"
             it
         }
-        Group savedGroup = groupsRepo.saveAndFlush(group)
-        Collection all = ownershipRepository.findAllByOwner(savedGroup)
+        groupsRepo.saveAndFlush(group)
+        entityManager.clear()
+        Group groupFromDb = groupsRepo.findByResourceId("g1")
+        groupFromDb.getOwnedItems()
+        Collection groupOwnedItems = ownershipRepository.findAllByOwner(groupFromDb)
         
         then:
-        all.size() == 3
-        savedGroup.getOwnedItems().size() == 3
-        all.each {
-            savedGroup.ownedItems.contains(it)
+        groupOwnedItems.size() == 3
+        groupFromDb.getOwnedItems().size() == 3
+        groupOwnedItems.each {
+            groupFromDb.ownedItems.contains(it)
         }
     }
     

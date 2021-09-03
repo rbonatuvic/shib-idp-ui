@@ -33,7 +33,7 @@ class UserServiceTests extends AbstractBaseDataJpaTest {
         then:
         result.groupId == "testingGroupBBB"
         result.username == "someUser"
-        result.userGroups.size() == 1
+        result.getUserGroups().size() == 1
 
         // Raw check that the DB is correct for ownership
         Set<Ownership> users = ownershipRepository.findUsersByOwner(gb)
@@ -68,7 +68,7 @@ class UserServiceTests extends AbstractBaseDataJpaTest {
         then:
         result.groupId == "testingGroup"
         result.username == "someUser"
-        result.userGroups.size() == 1
+        result.getUserGroups().size() == 1
 
         // Raw check that the DB is correct for ownership
         Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)
@@ -108,7 +108,7 @@ class UserServiceTests extends AbstractBaseDataJpaTest {
         then:
         result.groupId == "testingGroup"
         result.username == "someUser"
-        result.userGroups.size() == 1
+        result.getUserGroups().size() == 1
         result.firstName == "Wilma"
     }
 
@@ -140,7 +140,7 @@ class UserServiceTests extends AbstractBaseDataJpaTest {
         def result = userService.save(user)
 
         then:
-        result.userGroups.size() == 2
+        result.getUserGroups().size() == 2
 
         // Raw check that the DB is correct for ownership
         Set<Ownership> users = ownershipRepository.findUsersByOwner(ga)

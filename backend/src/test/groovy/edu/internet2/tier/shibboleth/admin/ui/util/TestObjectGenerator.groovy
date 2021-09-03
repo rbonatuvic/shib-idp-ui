@@ -1,12 +1,36 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.domain.*
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.LocalizedName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
+import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget.EntityAttributesFilterTargetType
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.NameIdFormatFilterTarget
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
+import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.FilterTargetRepresentation
-import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.*
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ClasspathMetadataResource
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.DynamicMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FileBackedHttpMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.FilesystemMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.HttpMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.LocalDynamicMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataQueryProtocolScheme
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ReloadableMetadataResolverAttributes
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.ResourceBackedMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.SvnMetadataResource
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
@@ -379,10 +403,8 @@ class TestObjectGenerator {
 
     EntityAttributesFilterTarget buildEntityAttributesFilterTarget() {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
-
-        entityAttributesFilterTarget.setEntityAttributesFilterTargetType(randomFilterTargetType())
-        entityAttributesFilterTarget.setSingleValue(
-                buildEntityAttributesFilterTargetValueByType(entityAttributesFilterTarget.getEntityAttributesFilterTargetType()))
+        entityAttributesFilterTarget.setEntityAttributesFilterTargetType(EntityAttributesFilterTargetType.ENTITY)
+        entityAttributesFilterTarget.setSingleValue(buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType.ENTITY))
 
         return entityAttributesFilterTarget
     }
@@ -410,16 +432,10 @@ class TestObjectGenerator {
     FilterTargetRepresentation buildFilterTargetRepresentation() {
         FilterTargetRepresentation representation = new FilterTargetRepresentation()
 
-        representation.setType(randomFilterTargetType().toString())
-        representation.setValue([
-                buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType.valueOf(representation.getType()))
-        ])
+        representation.setType(EntityAttributesFilterTargetType.ENTITY.name())
+        representation.setValue([ buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType.ENTITY) ])
 
         return representation
-    }
-
-    EntityAttributesFilterTarget.EntityAttributesFilterTargetType randomFilterTargetType() {
-        EntityAttributesFilterTarget.EntityAttributesFilterTargetType.values()[generator.randomInt(0, 2)]
     }
 
     EntityDescriptor buildEntityDescriptor() {

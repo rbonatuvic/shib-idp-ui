@@ -6,8 +6,6 @@ import edu.internet2.tier.shibboleth.admin.ui.repository.CustomEntityAttributeDe
 import edu.internet2.tier.shibboleth.admin.ui.service.CustomEntityAttributesDefinitionService
 import org.springframework.beans.factory.annotation.Autowired
 
-import javax.persistence.EntityManager
-
 /**
  * Tests for <code>edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration</code>
  */
@@ -21,9 +19,6 @@ class CustomPropertiesConfigurationTests extends AbstractBaseDataJpaTest {
     
     @Autowired
     CustomEntityAttributeDefinitionRepository repository
-    
-    @Autowired
-    EntityManager entityManager
 
     def "Updating Custom Entity Attribute Definitions will update the CustomPropertiesConfiguration automatically"() {
         given: 'Test defaults loaded (ie no CEADs in DB)'

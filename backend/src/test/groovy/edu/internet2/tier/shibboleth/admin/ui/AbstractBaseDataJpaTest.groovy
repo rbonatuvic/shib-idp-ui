@@ -17,11 +17,16 @@ import spock.lang.Specification
 
 import javax.persistence.EntityManager
 
+//@DataJpaTest (properties = ["spring.datasource.url=jdbc:h2:file:/tmp/myApplicationDb;AUTO_SERVER=TRUE",
+//                            "spring.datasource.username=sa",
+//                            "spring.datasource.password=",
+//                            "spring.jpa.hibernate.ddl-auto=create-drop"])
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 @ContextConfiguration(classes = [BaseDataJpaTestConfiguration])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-abstract class AbstractBaseDataJpaTest extends Specification {
+abstract class AbstractBaseDataJpaTest extends Specification implements ResetsDatabase {
     @Autowired
     EntityManager entityManager
 
@@ -43,6 +48,7 @@ abstract class AbstractBaseDataJpaTest extends Specification {
     // ensure roles are in a known good state and that we have an admin user and group
     @Transactional
     def setup() {
+//        dbsetup()
         groupService.clearAllForTesting()
         userRepository.deleteAll()
         ownershipRepository.deleteAll()
@@ -72,6 +78,7 @@ abstract class AbstractBaseDataJpaTest extends Specification {
 
     def cleanup() {
         entityManager.clear()
+//        dbcleanup()
     }
 
     protected createAdminUser() {
