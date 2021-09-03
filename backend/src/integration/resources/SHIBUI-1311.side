@@ -74,10 +74,12 @@
       "id": "e7a98419-36c7-4b0f-a99d-087144f6a417",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -86,12 +88,14 @@
       "id": "74fef022-3979-4bed-9226-b25114514976",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata provider",
+      "target": "id=metadata-nav-dropdown-provider",
       "targets": [
+        ["id=metadata-nav-dropdown-provider", "id"],
         ["linkText=Add a new metadata provider", "linkText"],
-        ["css=.text-primary:nth-child(2)", "css:finder"],
+        ["css=#metadata-nav-dropdown-provider", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata provider')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-provider']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a[2]", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/provider/new')]", "xpath:href"],
         ["xpath=//a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata provider')]", "xpath:innerText"]
@@ -136,6 +140,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Test Metadata Provider"
+    }, {
+      "id": "e907f2a4-db3f-42da-af79-1ccaf6032b9c",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=type",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "add874d5-e3b2-4412-8039-2b9d2619ed19",
       "comment": "",
@@ -591,19 +602,6 @@
       ],
       "value": ""
     }, {
-      "id": "79b96f40-2677-438a-9564-62df0ea2c116",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_enabled",
-      "targets": [
-        ["id=root_enabled", "id"],
-        ["css=#root_enabled", "css:finder"],
-        ["xpath=//input[@id='root_enabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[2]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "52f5680c-c63d-411e-8332-52901f12ea3b",
       "comment": "",
       "command": "assertText",
@@ -681,10 +679,12 @@
       "id": "211711a2-0af5-4f5e-a427-812c2de0264d",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -693,12 +693,14 @@
       "id": "ed69adec-1265-4796-96a9-06ed5930d952",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata provider",
+      "target": "id=metadata-nav-dropdown-provider",
       "targets": [
+        ["id=metadata-nav-dropdown-provider", "id"],
         ["linkText=Add a new metadata provider", "linkText"],
-        ["css=.text-primary:nth-child(2)", "css:finder"],
+        ["css=#metadata-nav-dropdown-provider", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata provider')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-provider']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a[2]", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/provider/new')]", "xpath:href"],
         ["xpath=//a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata provider')]", "xpath:innerText"]
@@ -965,8 +967,13 @@
       "id": "1675c12e-8951-4d07-87b1-15e280699d66",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=tr:nth-child(2) .badge",
-      "targets": [],
+      "target": "css=tr:nth-child(2) > .align-middle:nth-child(2)",
+      "targets": [
+        ["css=tr:nth-child(2) > .align-middle:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr[2]/td[2]", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'Test Provider 2')]", "xpath:innerText"]
+      ],
       "value": "10000"
     }, {
       "id": "b437068f-d3ed-43b5-9975-fb54decaf7ab",
@@ -997,6 +1004,24 @@
       ],
       "value": "Test Provider 2"
     }, {
+      "id": "06dce737-90a1-4c29-ba5e-16dc9ce2b161",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//table/tbody/tr[2]/td[6]/span/div/input",
+      "targets": [
+        ["css=tr:nth-child(1) .custom-control", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr/td[6]/span/div", "xpath:idRelative"],
+        ["xpath=//span/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "56ddb945-e04d-4bf8-84d3-5157e96853f3",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//li[contains(.,'Metadata provider has been enabled.')]",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "b799fede-c85b-4bd3-8e03-347f8a7d188a",
       "comment": "",
       "command": "click",
@@ -1007,17 +1032,24 @@
       ],
       "value": ""
     }, {
+      "id": "dc866249-3245-4baa-af0e-55af28d270cf",
+      "comment": "",
+      "command": "pause",
+      "target": "5000",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "72123a28-c3be-478c-8f30-555e346837e2",
       "comment": "",
-      "command": "assertText",
-      "target": "css=tr:nth-child(2) > .text-right",
+      "command": "assertChecked",
+      "target": "xpath=//table/tbody/tr[1]/td[6]/span/div/input",
       "targets": [
         ["css=tr:nth-child(2) > .text-right", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr[2]/td[6]", "xpath:idRelative"],
         ["xpath=//tr[2]/td[6]", "xpath:position"],
         ["xpath=//td[contains(.,'Enabled')]", "xpath:innerText"]
       ],
-      "value": "Enabled"
+      "value": ""
     }, {
       "id": "664aafa3-9f6f-4eab-9eb6-a4d1a8344c5c",
       "comment": "",
@@ -1031,15 +1063,15 @@
     }, {
       "id": "ad8842de-2a4c-42a4-b919-dd7524a679c6",
       "comment": "",
-      "command": "assertText",
-      "target": "css=tr:nth-child(2) > .text-right",
+      "command": "assertNotChecked",
+      "target": "xpath=//table/tbody/tr[1]/td[6]/span/div/input",
       "targets": [
         ["css=tr:nth-child(2) > .text-right", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div/table/tbody/tr[2]/td[6]", "xpath:idRelative"],
         ["xpath=//tr[2]/td[6]", "xpath:position"],
         ["xpath=//td[contains(.,'Disabled')]", "xpath:innerText"]
       ],
-      "value": "Disabled"
+      "value": ""
     }, {
       "id": "57d0e204-6c28-4be5-9888-28f8d7738508",
       "comment": "",

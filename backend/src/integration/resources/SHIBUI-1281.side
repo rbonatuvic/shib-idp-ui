@@ -74,10 +74,12 @@
       "id": "ad3811ad-f95b-4cca-a5d9-63a10063a652",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -86,14 +88,16 @@
       "id": "1caf8be6-a4d9-4b3b-ace1-0f76d3600d62",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata source",
+      "target": "id=metadata-nav-dropdown-source",
       "targets": [
+        ["id=metadata-nav-dropdown-source", "id"],
         ["linkText=Add a new metadata source", "linkText"],
-        ["css=.text-primary:nth-child(1)", "css:finder"],
+        ["css=#metadata-nav-dropdown-source", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata source')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-source']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/source/new')]", "xpath:href"],
-        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata source')]", "xpath:innerText"]
       ],
       "value": ""
@@ -779,8 +783,17 @@
       "id": "3cfbc4e0-f120-43ca-8a59-8727f91b5a1c",
       "comment": "",
       "command": "click",
-      "target": "css=body",
-      "targets": [],
+      "target": "id=option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4",
+      "targets": [
+        ["id=option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4", "id"],
+        ["linkText=somethingElse", "linkText"],
+        ["css=#option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4", "css:finder"],
+        ["xpath=//a[@id='option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4-item-4']", "xpath:attributes"],
+        ["xpath=//div[@id='option-selector-root_serviceProviderSsoDescriptor_nameIdFormats_4']/a[5]", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[5]", "xpath:href"],
+        ["xpath=//a[5]", "xpath:position"],
+        ["xpath=//a[contains(.,'somethingElse')]", "xpath:innerText"]
+      ],
       "value": ""
     }, {
       "id": "4f61120b-7c6b-4f8e-8543-898298451a56",
@@ -1864,12 +1877,17 @@
       ],
       "value": ""
     }, {
-      "id": "553dd570-b1bb-43bb-a469-63ee08a09794",
+      "id": "12485e9f-5ab1-4c9c-a948-d6d13386b97f",
       "comment": "",
       "command": "click",
-      "target": "css=.fa-check",
+      "target": "id=attributeRelease.checkAll",
       "targets": [
-        ["css=.fa-check", "css:finder"]
+        ["id=attributeRelease.checkAll", "id"],
+        ["css=#attributeRelease\\.checkAll", "css:finder"],
+        ["xpath=//button[@id='attributeRelease.checkAll']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[10]/div/div/fieldset/table/tbody/tr[13]/td[2]/button", "xpath:idRelative"],
+        ["xpath=//td[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Check All Attributes')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -1880,19 +1898,6 @@
       "targets": [
         ["css=.next", "css:finder"],
         ["xpath=//li[3]/button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "14ca713a-313d-4cda-82ca-a0b814ce81dc",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_serviceEnabled",
-      "targets": [
-        ["id=root_serviceEnabled", "id"],
-        ["css=#root_serviceEnabled", "css:finder"],
-        ["xpath=//input[@id='root_serviceEnabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[11]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
       ],
       "value": ""
     }, {
