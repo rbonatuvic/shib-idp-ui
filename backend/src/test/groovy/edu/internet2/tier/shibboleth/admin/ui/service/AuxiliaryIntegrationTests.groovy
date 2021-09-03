@@ -3,6 +3,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.JsonSchemaComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup
 import edu.internet2.tier.shibboleth.admin.ui.jsonschema.LowLevelJsonSchemaValidator
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
@@ -34,11 +35,6 @@ class AuxiliaryIntegrationTests extends Specification {
 
     def "SHIBUI-1723: after enabling saved entity descriptor, it should still have valid xml"() {
         given:
-        def group = new Group().with { 
-            it.name = "foo"
-            it.resourceId = "foo"
-            it
-        }
         def entityDescriptor = openSamlObjects.unmarshalFromXml(this.class.getResource('/metadata/SHIBUI-1723-1.xml').bytes) as EntityDescriptor
         entityDescriptor.idOfOwner = "foo"
         
@@ -52,7 +48,7 @@ class AuxiliaryIntegrationTests extends Specification {
             it
         }
         def json = objectMapper.writeValueAsString(entityDescriptorRepresentation)
-        def schemaUri = edu.internet2.tier.shibboleth.admin.ui.jsonschema.JsonSchemaLocationLookup.metadataSourcesSchema(new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(this.resourceLoader, this.objectMapper)).uri
+        def schemaUri = JsonSchemaLocationLookup.metadataSourcesSchema(new JsonSchemaComponentsConfiguration().jsonSchemaResourceLocationRegistry(this.resourceLoader, this.objectMapper)).uri
 
         when:
         LowLevelJsonSchemaValidator.validatePayloadAgainstSchema(new MockHttpInputMessage(json.bytes), schemaUri)

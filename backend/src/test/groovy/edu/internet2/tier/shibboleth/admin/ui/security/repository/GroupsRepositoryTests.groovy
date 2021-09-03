@@ -1,5 +1,9 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Profile
+import org.springframework.dao.DataIntegrityViolationException
+
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
@@ -26,7 +30,7 @@ import spock.lang.Specification
 @ContextConfiguration(classes=[InternationalizationConfiguration, LocalConfig])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
-@ActiveProfiles("test")
+@ActiveProfiles(["test","local"])
 class GroupsRepositoryTests extends Specification {
     @Autowired
     GroupsRepository groupsRepo
@@ -95,8 +99,8 @@ class GroupsRepositoryTests extends Specification {
             it.resourceId = "g1"
             it
         }
-        def Group savedGroup = groupsRepo.saveAndFlush(group)
-        def Collection all = ownershipRepository.findAllByOwner(savedGroup)
+        Group savedGroup = groupsRepo.saveAndFlush(group)
+        Collection all = ownershipRepository.findAllByOwner(savedGroup)
         
         then:
         all.size() == 3
@@ -131,7 +135,7 @@ class GroupsRepositoryTests extends Specification {
         def gList = groupsRepo.findAll()
         gList.size() == 1
         def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group) == true
+        groupFromDb.equals(group)
       
         // fetch checks
         groupsRepo.findByResourceId("not an id") == null
@@ -154,11 +158,11 @@ class GroupsRepositoryTests extends Specification {
         
         // save check
         when:
-        def savedGroup = groupsRepo.save(group)
+        groupsRepo.save(group)
         
         then:
         // Missing non-nullable field (name) should thrown error
-        final def exception = thrown(org.springframework.dao.DataIntegrityViolationException)
+        thrown(DataIntegrityViolationException)
     }
     
     @Rollback
@@ -186,7 +190,7 @@ class GroupsRepositoryTests extends Specification {
         def gList = groupsRepo.findAll()
         gList.size() == 1
         def groupFromDb = gList.get(0).asType(Group)
-        groupFromDb.equals(group) == true
+        groupFromDb.equals(group)
              
         // update check
         groupFromDb.with {
@@ -202,7 +206,7 @@ class GroupsRepositoryTests extends Specification {
         gList2.size() == 1
         def groupFromDb2 = gList2.get(0).asType(Group)
         groupFromDb2.equals(group) == false
-        groupFromDb2.equals(groupFromDb) == true
+        groupFromDb2.equals(groupFromDb)
         
         // delete tests
         when:
@@ -212,13 +216,14 @@ class GroupsRepositoryTests extends Specification {
         groupsRepo.findAll().size() == 0
         
         when:
-        def nothingThere = groupsRepo.findByResourceId(null);
+        def nothingThere = groupsRepo.findByResourceId(null)
         
         then:
         nothingThere == null
     }
     
-    @org.springframework.boot.test.context.TestConfiguration
+    @TestConfiguration
+    @Profile("local")
     static class LocalConfig {
         @Bean
         GroupUpdatedEntityListener groupUpdatedEntityListener(OwnershipRepository repo) {

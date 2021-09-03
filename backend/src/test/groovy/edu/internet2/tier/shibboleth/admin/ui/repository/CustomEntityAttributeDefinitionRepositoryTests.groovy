@@ -1,5 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.repository
 
+import org.springframework.dao.DataIntegrityViolationException
+
 import javax.persistence.EntityManager
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,7 +57,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def cas = repo.findAll()
         cas.size() == 1
         def caFromDb1 = cas.get(0).asType(CustomEntityAttributeDefinition)
-        caFromDb1.equals(ca) == true
+        caFromDb1.equals(ca)
       
         // fetch checks
         repo.findByName("not a name") == null
@@ -85,7 +87,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         
         then:
         // Missing non-nullable field should thrown error
-        final def exception = thrown(org.springframework.dao.DataIntegrityViolationException)
+        final def exception = thrown(DataIntegrityViolationException)
     }
         
     def "basic CRUD operations validated"() {
@@ -116,7 +118,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def cas = repo.findAll()
         cas.size() == 1
         def caFromDb1 = cas.get(0).asType(CustomEntityAttributeDefinition)
-        caFromDb1.equals(ca) == true
+        caFromDb1.equals(ca)
       
         // fetch checks
         repo.findByName("not a name") == null
@@ -138,7 +140,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         cas2.size() == 1
         def caFromDb2 = cas2.get(0).asType(CustomEntityAttributeDefinition)
         caFromDb2.equals(ca) == false
-        caFromDb2.equals(caFromDb1) == true
+        caFromDb2.equals(caFromDb1)
         
         // delete tests
         when:
@@ -171,7 +173,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
         def cas = repo.findAll()
         cas.size() == 1
         def ca3FromDb = cas.get(0).asType(CustomEntityAttributeDefinition)
-        ca3FromDb.equals(ca3) == true
+        ca3FromDb.equals(ca3)
         
         // now update the attribute list items
         ca3FromDb.with { 
@@ -190,7 +192,7 @@ class CustomEntityAttributeDefinitionRepositoryTests extends Specification {
             it.resourceId = ca3FromDb.resourceId
             it
         }
-        caFromDb4.equals(ca4) == true
+        caFromDb4.equals(ca4)
         
         // now remove items
         ca3FromDb.with {

@@ -1,23 +1,18 @@
 package edu.internet2.tier.shibboleth.admin.ui.scheduled
 
-import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CoreShibUiConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.InternationalizationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
-import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import edu.internet2.tier.shibboleth.admin.ui.service.FileCheckingFileWritingService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -65,7 +60,6 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
         
         service = new JPAEntityDescriptorServiceImpl()
         service.openSamlObjects = openSamlObjects
-        service.groupService = groupService
     }
 
     def "generateEntityDescriptorFiles properly generates a file from an Entity Descriptor"() {
@@ -114,21 +108,6 @@ class EntityDescriptorFilesScheduledTasksTests extends Specification {
 
     def "removeDanglingEntityDescriptorFiles properly deletes files"() {
         given:
-        def expectedXml = '''
-<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-                     xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-                     entityID="http://test.example.org/test1">
-  <md:Organization>
-    <md:OrganizationName xml:lang="en">name</md:OrganizationName>
-    <md:OrganizationDisplayName xml:lang="en">display name</md:OrganizationDisplayName>
-    <md:OrganizationURL xml:lang="en">http://test.example.org</md:OrganizationURL>
-  </md:Organization>
-</md:EntityDescriptor>
-                     '''                   
-
         def entityDescriptor = service.createDescriptorFromRepresentation(new EntityDescriptorRepresentation().with {
             it.entityId = 'http://test.example.org/test1'
             it.organization = new OrganizationRepresentation().with {

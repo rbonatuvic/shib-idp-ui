@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.internet2.tier.shibboleth.admin.ui.domain.AbstractAuditable;
+import edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter;
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
 import lombok.EqualsAndHashCode;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static edu.internet2.tier.shibboleth.admin.ui.domain.ActivatableType.*;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(callSuper = true, exclude = {"version", "versionModifiedTimestamp"})
@@ -43,7 +47,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = ResourceBackedMetadataResolver.class, name = "ResourceBackedMetadataResolver")})
 @Audited
 @AuditOverride(forClass = AbstractAuditable.class)
-public class MetadataResolver extends AbstractAuditable {
+public class MetadataResolver extends AbstractAuditable implements IActivatable {
 
     @JsonProperty("@type")
     @Transient
@@ -84,6 +88,28 @@ public class MetadataResolver extends AbstractAuditable {
     @Transient
     private Integer version;
 
+    public void addFilter(MetadataFilter metadataFilter) {
+        //To make sure that Spring Data auditing infrastructure recognizes update and "touched" modifiedDate
+        markAsModified();
+        this.metadataFilters.add(metadataFilter);
+    }
+
+    public void entityAttributesFilterIntoTransientRepresentation() {
+        //expose explicit API to call to convert into transient representation
+        //used in unit/integration tests where JPA's @PostLoad callback execution engine is not available
+        this.metadataFilters
+                        .stream()
+                        .filter(EntityAttributesFilter.class::isInstance)
+                        .map(EntityAttributesFilter.class::cast)
+                        .forEach(EntityAttributesFilter::intoTransientRepresentation);
+    }
+
+    @Override
+    @JsonIgnore
+    public ActivatableType getActivatableType() {
+        return METADATA_RESOLVER;
+    }
+
     @JsonGetter("version")
     public int getVersion() {
         if (this.version != null && this.version != 0 ) {
@@ -92,23 +118,7 @@ public class MetadataResolver extends AbstractAuditable {
         return this.hashCode();
     }
 
-    public void addFilter(MetadataFilter metadataFilter) {
-        //To make sure that Spring Data auditing infrastructure recognizes update and "touched" modifiedDate
-        markAsModified();
-        this.metadataFilters.add(metadataFilter);
-    }
-
     public void markAsModified() {
         this.versionModifiedTimestamp = System.currentTimeMillis();
-    }
-
-    public void entityAttributesFilterIntoTransientRepresentation() {
-        //expose explicit API to call to convert into transient representation
-        //used in unit/integration tests where JPA's @PostLoad callback execution engine is not available
-        this.metadataFilters
-                .stream()
-                .filter(EntityAttributesFilter.class::isInstance)
-                .map(EntityAttributesFilter.class::cast)
-                .forEach(EntityAttributesFilter::intoTransientRepresentation);
     }
 }

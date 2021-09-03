@@ -9,7 +9,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.security.springsecurity.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +26,8 @@ import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.Collections;
-
 import javax.transaction.Transactional;
+import java.util.Collections;
 
 /**
  * Web security configuration.
@@ -38,20 +36,32 @@ import javax.transaction.Transactional;
 @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class WebSecurityConfig {
 
-    @Value("${shibui.logout-url:/dashboard}")
-    private String logoutUrl;
+    @Value("${shibui.roles.authenticated}")
+    private String[] acceptedAuthenticationRoles;
 
     @Value("${shibui.default-password:}")
     private String defaultPassword;
+
+    @Value("${shibui.logout-url:/dashboard}")
+    private String logoutUrl;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Value("${shibui.default-rootuser:root}")
+    private String rootUser;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
-    
-    @Autowired
-    private RoleRepository roleRepository;
+
+    @Bean
+    @Profile("!no-auth")
+    public AdminUserService adminUserService(UserRepository userRepository) {
+        return new AdminUserService(userRepository);
+    }
 
     private HttpFirewall allowUrlEncodedSlashHttpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
@@ -60,8 +70,10 @@ public class WebSecurityConfig {
         return firewall;
     }
 
-    private HttpFirewall defaultFirewall() {
-        return new DefaultHttpFirewall();
+    @Bean
+    @Profile("!no-auth")
+    public AuditorAware<String> defaultAuditorAware() {
+        return new DefaultAuditorAware();
     }
 
     @Bean
@@ -76,7 +88,7 @@ public class WebSecurityConfig {
                         .and()
                         .authorizeRequests()
                         .antMatchers("/unsecured/**/*").permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole(acceptedAuthenticationRoles)
                         .and()
                         .exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"))
                         .and()
@@ -92,9 +104,9 @@ public class WebSecurityConfig {
                 PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 if (defaultPassword != null && !"".equals(defaultPassword)) {
                     // TODO: yeah, this isn't good, but we gotta initialize this user for now
-                    User adminUser = userRepository.findByUsername("root").orElseGet(() ->{
+                    User adminUser = userRepository.findByUsername(rootUser).orElseGet(() ->{
                         User u = new User();
-                        u.setUsername("root");
+                        u.setUsername(rootUser);
                         u.setPassword(defaultPassword);
                         u.setFirstName("admin");
                         u.setLastName("user");
@@ -127,16 +139,8 @@ public class WebSecurityConfig {
         };
     }
 
-    @Bean
-    @Profile("!no-auth")
-    public AuditorAware<String> defaultAuditorAware() {
-        return new DefaultAuditorAware();
-    }
-
-    @Bean
-    @Profile("!no-auth")
-    public AdminUserService adminUserService(UserRepository userRepository) {
-        return new AdminUserService(userRepository);
+    private HttpFirewall defaultFirewall() {
+        return new DefaultHttpFirewall();
     }
 
     @Bean
@@ -158,4 +162,3 @@ public class WebSecurityConfig {
         };
     }
 }
-

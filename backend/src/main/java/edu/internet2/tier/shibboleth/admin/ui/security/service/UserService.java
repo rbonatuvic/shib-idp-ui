@@ -1,15 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
@@ -22,48 +14,89 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.ADMIN;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.GROUP;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.NONE;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @NoArgsConstructor
 public class UserService {
     @Autowired
     private IGroupService groupService;
-    
+
     @Autowired
     private OwnershipRepository ownershipRepository;
-    
+
     @Autowired
     private RoleRepository roleRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
-    
+
     public UserService(IGroupService groupService, OwnershipRepository ownershipRepository, RoleRepository roleRepository, UserRepository userRepository) {
         this.groupService = groupService;
         this.ownershipRepository = ownershipRepository;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
-    
+
+    public boolean currentUserCanEnable(IActivatable activatableObject) {
+        if (currentUserIsAdmin()) { return true; }
+        switch (activatableObject.getActivatableType()) {
+        case ENTITY_DESCRIPTOR: {
+            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" )) && getCurrentUserGroup().getOwnerId().equals(((EntityDescriptor) activatableObject).getIdOfOwner());
+        }
+        // Currently filters and providers dont have ownership, so we just look for the right role
+        case FILTER:
+        case METADATA_RESOLVER:
+            return currentUserHasExpectedRole(Arrays.asList("ROLE_ENABLE" ));
+        default:
+            return false;
+        }
+    }
+
+    /**
+     * This basic logic assumes users only have a single role (despite users having a list of roles, we assume only 1 currently)
+     */
+    private boolean currentUserHasExpectedRole(List<String> acceptedRoles) {
+        User user = getCurrentUser();
+        return acceptedRoles.contains(user.getRole());
+    }
+
     public boolean currentUserIsAdmin() {
         User user = getCurrentUser();
         return user != null && user.getRole().equals("ROLE_ADMIN");
     }
-      
+
     @Transactional
     public void delete(String username) throws EntityNotFoundException, OwnershipConflictException {
         Optional<User> userToRemove = userRepository.findByUsername(username);
         if (userToRemove.isEmpty()) throw new EntityNotFoundException("User does not exist");
-        if (!ownershipRepository.findOwnedByUser(username).isEmpty()) throw new OwnershipConflictException("User ["+username+"] has ownership of entities in the system. Please remove all items before attemtping to delete the user.");
-        
+        if (!ownershipRepository.findOwnedByUser(username).isEmpty()) throw new OwnershipConflictException("User ["+username+"] has ownership of entities in the system. Please remove all items before attempting to delete the user.");
+
         // ok, user exists and doesn't own anything in the system, so delete them
         // If the user is owned by anything, clear that first
         ownershipRepository.clearUsersGroups(username);
-        User user = userToRemove.get();               
+        User user = userToRemove.get();
         userRepository.delete(user);
     }
-    
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public User getCurrentUser() {
         //TODO: Consider returning an Optional here
         User user = null;
@@ -82,17 +115,17 @@ public class UserService {
     public UserAccess getCurrentUserAccess() {
         User user = getCurrentUser();
         if (user == null) {
-            return UserAccess.NONE;    
+            return NONE;
         }
         if (user.getRole().equals("ROLE_ADMIN")) {
-            return UserAccess.ADMIN;
+            return ADMIN;
         }
-        if (user.getRole().equals("ROLE_USER")) {
-            return UserAccess.GROUP;
+        if (user.getRole().equals("ROLE_USER") || user.getRole().equals("ROLE_ENABLE")) {
+            return GROUP;
         }
-        return UserAccess.NONE;
+        return NONE;
     }
-    
+
     public Group getCurrentUserGroup() {
         switch (getCurrentUserAccess()) {
         case ADMIN:
@@ -101,16 +134,15 @@ public class UserService {
             return getCurrentUser().getGroup();
         }
     }
-    
+
     public Set<String> getUserRoles(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         HashSet<String> result = new HashSet<>();
-        if (user.isPresent() ) {
-             user.get().getRoles().forEach(role -> result.add(role.getName()));
-        }
+        user.ifPresent(value -> value.getRoles().forEach(role -> result.add(role.getName())));
         return result;
     }
 
+     // @TODO - probably delegate this out to something plugable at some point
     public boolean isAuthorizedFor(Ownable ownableObject) {
         switch (getCurrentUserAccess()) {
         case ADMIN: // Pure admin is authorized to do anything
@@ -128,7 +160,7 @@ public class UserService {
             return false;
         }
     }
-    
+
     /**
      * Creating users should always have a group. If the user isn't assigned to a group, create one based on their name.
      * If the user has the ADMIN role, they are always solely assigned to the admin group.
@@ -162,7 +194,7 @@ public class UserService {
                 if (g == null) {
                     try {
                         Group newGroup = ug;
-                        Ownership o = ownershipRepository.saveAndFlush(new Ownership(newGroup, user));
+                        ownershipRepository.saveAndFlush(new Ownership(newGroup, user));
                         g = groupService.createGroup(newGroup);
                     }
                     catch (GroupExistsConflictException e) {
@@ -175,14 +207,13 @@ public class UserService {
         }
         return userRepository.saveAndFlush(user);
     }
-    
+
     /**
      * Given a user with a defined User.role, update the User.roles collection with that role.
      *
      * This currently exists because users should only ever have one role in the system at this time. However, user
      * roles are persisted as a set of roles (for future-proofing). Once we start allowing a user to have multiple roles,
      * this method and User.role can go away.
-     * @param user
      */
     public void updateUserRole(User user) {
         if (StringUtils.isNotBlank(user.getRole())) {
@@ -195,7 +226,7 @@ public class UserService {
                 throw new RuntimeException(String.format("User with username [%s] is defined with role [%s] which does not exist in the system!", user.getUsername(), user.getRole()));
             }
         } else {
-            throw new RuntimeException(String.format("User with username [%s] has no role defined and therefor cannot be updated!", user.getUsername()));
+            throw new RuntimeException(String.format("User with username [%s] has no role defined and therefore cannot be updated!", user.getUsername()));
         }
     }
 }

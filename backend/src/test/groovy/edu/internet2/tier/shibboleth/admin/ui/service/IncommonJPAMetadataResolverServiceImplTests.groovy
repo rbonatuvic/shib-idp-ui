@@ -153,7 +153,7 @@ class IncommonJPAMetadataResolverServiceImplTests extends Specification {
 
             return resolver
         }
-        
+
         @Bean
         GroupServiceImpl groupService(GroupsRepository repo, OwnershipRepository ownershipRepository) {
             new GroupServiceImpl().with {

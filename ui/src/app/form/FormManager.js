@@ -30,7 +30,7 @@ export const setFormErrorAction = (errors) => {
 
 function reducer(state, action) {
     switch (action.type) {
-        
+
         case FormActions.SET_FORM_ERROR:
             return {
                 ...state,
