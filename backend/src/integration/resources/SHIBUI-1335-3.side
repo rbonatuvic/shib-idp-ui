@@ -74,10 +74,12 @@
       "id": "94e01321-ac2d-427f-89a5-7f816cea0f00",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -86,12 +88,14 @@
       "id": "c65500ae-3b08-4c22-8c88-b4116d6e0c9b",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata provider",
+      "target": "id=metadata-nav-dropdown-provider",
       "targets": [
+        ["id=metadata-nav-dropdown-provider", "id"],
         ["linkText=Add a new metadata provider", "linkText"],
-        ["css=.text-primary:nth-child(2)", "css:finder"],
+        ["css=#metadata-nav-dropdown-provider", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata provider')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-provider']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a[2]", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/provider/new')]", "xpath:href"],
         ["xpath=//a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata provider')]", "xpath:innerText"]
@@ -123,6 +127,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Local Dynamic Metadata Provider"
+    }, {
+      "id": "d2ea5b2f-a693-49bb-b644-b1fb35ff54c6",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=type",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "aac150b1-6140-476b-8bdb-ebb83a14812d",
       "comment": "",
@@ -397,19 +408,6 @@
       "targets": [
         ["css=.next", "css:finder"],
         ["xpath=//li[3]/button", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "d02ae356-8086-4794-97ba-980fc75cca79",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_enabled",
-      "targets": [
-        ["id=root_enabled", "id"],
-        ["css=#root_enabled", "css:finder"],
-        ["xpath=//input[@id='root_enabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[2]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
       ],
       "value": ""
     }, {

@@ -675,10 +675,10 @@
     }, {
       "id": "f62f8d1d-8c53-4cb5-bc19-84f68fee870d",
       "comment": "",
-      "command": "pause",
-      "target": "5000",
+      "command": "waitForElementEditable",
+      "target": "name=type",
       "targets": [],
-      "value": ""
+      "value": "30000"
     }, {
       "id": "dc41b26d-b101-4ead-866f-482df0bfee04",
       "comment": "",

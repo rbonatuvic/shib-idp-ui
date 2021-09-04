@@ -74,10 +74,12 @@
       "id": "94e01321-ac2d-427f-89a5-7f816cea0f00",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -86,12 +88,14 @@
       "id": "c65500ae-3b08-4c22-8c88-b4116d6e0c9b",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata provider",
+      "target": "id=metadata-nav-dropdown-provider",
       "targets": [
+        ["id=metadata-nav-dropdown-provider", "id"],
         ["linkText=Add a new metadata provider", "linkText"],
-        ["css=.text-primary:nth-child(2)", "css:finder"],
+        ["css=#metadata-nav-dropdown-provider", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata provider')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-provider']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a[2]", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/provider/new')]", "xpath:href"],
         ["xpath=//a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata provider')]", "xpath:innerText"]
@@ -123,6 +127,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Dynamic Http Metadata Provider"
+    }, {
+      "id": "833f72b8-851b-469c-bd2d-71f1cfbef83e",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=type",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "aac150b1-6140-476b-8bdb-ebb83a14812d",
       "comment": "",
@@ -649,19 +660,6 @@
       ],
       "value": ""
     }, {
-      "id": "c4d98111-537a-45a1-9bfd-e8d780a0c0b3",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_enabled",
-      "targets": [
-        ["id=root_enabled", "id"],
-        ["css=#root_enabled", "css:finder"],
-        ["xpath=//input[@id='root_enabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[2]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "a57a12dd-b641-46eb-afce-4c7be5a8f180",
       "comment": "",
       "command": "click",
@@ -807,19 +805,6 @@
         ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[6]/div/div/div/fieldset/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
         ["xpath=//div[2]/div/div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add Entity ID  ')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "dff6b5d5-02ae-41a1-bae4-6ce39aeca199",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_filterEnabled",
-      "targets": [
-        ["id=root_filterEnabled", "id"],
-        ["css=#root_filterEnabled", "css:finder"],
-        ["xpath=//input[@id='root_filterEnabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div/div[2]/div[2]/div[2]/div/form/div/div/div/div[5]/div/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[5]/div/div/div/div/div/input", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1168,7 +1153,7 @@
       "id": "6b3ec8f1-8b9a-40f5-816f-3a1e415b9d8d",
       "comment": "",
       "command": "pause",
-      "target": "3000",
+      "target": "5000",
       "targets": [],
       "value": ""
     }, {

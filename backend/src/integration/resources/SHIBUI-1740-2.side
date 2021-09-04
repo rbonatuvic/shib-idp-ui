@@ -56,12 +56,13 @@
       "id": "e522436b-e75f-451c-953c-28328dbc3511",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-basic",
+      "target": "id=advanced-nav-dropdown-toggle",
       "targets": [
-        ["id=dropdown-basic", "id"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
+        ["id=advanced-nav-dropdown-toggle", "id"],
+        ["css=#advanced-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='advanced-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
       ],
       "value": ""
@@ -69,12 +70,14 @@
       "id": "a2c27b66-4110-49bd-986c-d21611a39834",
       "comment": "",
       "command": "click",
-      "target": "linkText=Groups",
+      "target": "id=advanced-nav-dropdown-groups",
       "targets": [
+        ["id=advanced-nav-dropdown-groups", "id"],
         ["linkText=Groups", "linkText"],
-        ["css=.text-primary:nth-child(2)", "css:finder"],
+        ["css=#advanced-nav-dropdown-groups", "css:finder"],
         ["xpath=//a[contains(text(),'Groups')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='advanced-nav-dropdown-groups']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/div/a[2]", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/groups')]", "xpath:href"],
         ["xpath=//a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Groups')]", "xpath:innerText"]

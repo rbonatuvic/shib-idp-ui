@@ -95,14 +95,14 @@
       "id": "659e4909-239b-4895-aa54-8bf3a6bd57cd",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "xpath=//table/tbody/tr[th[.='none2']]",
+      "target": "xpath=//table/tbody/tr[td[.='none2']]",
       "targets": [],
       "value": "30000"
     }, {
       "id": "dc06ff49-c076-4f60-95d1-a42514cc6038",
       "comment": "",
       "command": "select",
-      "target": "//table/tbody/tr[th[.='none2']]/td[3]/select",
+      "target": "xpath=//table/tbody/tr[td[.='none2']]/td[4]/select",
       "targets": [],
       "value": "label=ROLE_USER"
     }, {
@@ -116,14 +116,30 @@
       "id": "fb78d880-ffb7-4477-b1af-f9a8593875de",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-toggle",
       "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c52df093-56f2-467c-ba0b-c9441a56e0c6",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-logout",
+      "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(4)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[4]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""

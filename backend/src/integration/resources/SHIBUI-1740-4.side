@@ -74,17 +74,33 @@
       "targets": [],
       "value": ""
     }, {
+      "id": "76475106-daf4-413b-9462-c7da0c44b65f",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "15f111a8-69c3-48a1-921e-6f73d2bb5722",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-logout",
       "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[4]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
@@ -131,13 +147,13 @@
       "id": "6fb9efa3-c73e-4d27-82e6-28b25bf4fb60",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-basic",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["id=dropdown-basic", "id"],
-        ["css=#dropdown-basic", "css:finder"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
       "value": ""
@@ -145,14 +161,16 @@
       "id": "ee100ee8-d619-4d23-8cbc-ef9fa0e4b974",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata source",
+      "target": "id=metadata-nav-dropdown-source",
       "targets": [
+        ["id=metadata-nav-dropdown-source", "id"],
         ["linkText=Add a new metadata source", "linkText"],
-        ["css=.text-primary", "css:finder"],
+        ["css=#metadata-nav-dropdown-source", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata source')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-source']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/source/new')]", "xpath:href"],
-        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata source')]", "xpath:innerText"]
       ],
       "value": ""
@@ -331,17 +349,33 @@
       ],
       "value": "Selenium Test"
     }, {
+      "id": "14005933-29c9-46fd-b874-9a7beabea242",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as nonadmin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "3e1f32d0-3d4d-4dac-95fd-765337b75e44",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-logout",
       "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(3)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[3]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
@@ -478,17 +512,33 @@
       "targets": [],
       "value": "label=A1"
     }, {
+      "id": "021cd81f-f249-4a21-a5f2-6291ef7affac",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "8913d9c6-7cca-42cc-abd5-bd1b014e1853",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-logout",
       "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(4)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[4]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
@@ -553,21 +603,6 @@
         ["css=.table-responsive", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div/div/div", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "1f4dfb86-8969-4f2a-a8f1-0873a501f670",
-      "comment": "",
-      "command": "click",
-      "target": "linkText=Logout",
-      "targets": [
-        ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(3)", "css:finder"],
-        ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
-        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
-        ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
     }]

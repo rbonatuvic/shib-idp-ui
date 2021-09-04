@@ -74,10 +74,12 @@
       "id": "ad3811ad-f95b-4cca-a5d9-63a10063a652",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -86,14 +88,16 @@
       "id": "1caf8be6-a4d9-4b3b-ace1-0f76d3600d62",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata source",
+      "target": "id=metadata-nav-dropdown-source",
       "targets": [
+        ["id=metadata-nav-dropdown-source", "id"],
         ["linkText=Add a new metadata source", "linkText"],
-        ["css=.text-primary:nth-child(1)", "css:finder"],
+        ["css=#metadata-nav-dropdown-source", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata source')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-source']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/source/new')]", "xpath:href"],
-        ["xpath=//div/a", "xpath:position"],
+        ["xpath=//div[2]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata source')]", "xpath:innerText"]
       ],
       "value": ""
@@ -1933,19 +1937,6 @@
       ],
       "value": ""
     }, {
-      "id": "14ca713a-313d-4cda-82ca-a0b814ce81dc",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_serviceEnabled",
-      "targets": [
-        ["id=root_serviceEnabled", "id"],
-        ["css=#root_serviceEnabled", "css:finder"],
-        ["xpath=//input[@id='root_serviceEnabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[11]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "3baa7bd3-55c0-4d10-8aa3-c0daa63ec4d4",
       "comment": "",
       "command": "assertText",
@@ -2198,10 +2189,10 @@
       "id": "3f2c3eab-ecbf-45f3-bcdc-a5cad766b27c",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(5) > .py-2:nth-child(2) > .d-flex:nth-child(3) > .d-block",
+      "target": "css=div:nth-child(2) > div:nth-child(4) > .py-2:nth-child(2) > .d-flex:nth-child(3) > .d-block",
       "targets": [
-        ["css=div:nth-child(5) > .py-2:nth-child(2) > .d-flex:nth-child(3) > .d-block", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[5]/div[2]/div[3]/span", "xpath:idRelative"],
+        ["css=div:nth-child(2) > div:nth-child(4) > .py-2:nth-child(2) > .d-flex:nth-child(3) > .d-block", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[4]/div[2]/div[3]/span", "xpath:idRelative"],
         ["xpath=//div[3]/span", "xpath:position"],
         ["xpath=//span[contains(.,'user@test.org')]", "xpath:innerText"]
       ],

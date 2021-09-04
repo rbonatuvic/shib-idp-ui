@@ -88,10 +88,12 @@
       "id": "e7a98419-36c7-4b0f-a99d-087144f6a417",
       "comment": "",
       "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
+      "target": "id=metadata-nav-dropdown-toggle",
       "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
+        ["id=metadata-nav-dropdown-toggle", "id"],
+        ["css=#metadata-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='metadata-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/button", "xpath:idRelative"],
         ["xpath=//div[2]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
       ],
@@ -100,12 +102,14 @@
       "id": "74fef022-3979-4bed-9226-b25114514976",
       "comment": "",
       "command": "click",
-      "target": "linkText=Add a new metadata provider",
+      "target": "id=metadata-nav-dropdown-provider",
       "targets": [
+        ["id=metadata-nav-dropdown-provider", "id"],
         ["linkText=Add a new metadata provider", "linkText"],
-        ["css=.text-primary:nth-child(2)", "css:finder"],
+        ["css=#metadata-nav-dropdown-provider", "css:finder"],
         ["xpath=//a[contains(text(),'Add a new metadata provider')]", "xpath:link"],
-        ["xpath=//div[@id='basic-nav-dropdown']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='metadata-nav-dropdown-provider']", "xpath:attributes"],
+        ["xpath=//div[@id='metadata-nav-dropdown']/div/a[2]", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/metadata/provider/new')]", "xpath:href"],
         ["xpath=//a[2]", "xpath:position"],
         ["xpath=//a[contains(.,'Add a new metadata provider')]", "xpath:innerText"]
@@ -137,6 +141,13 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "Test Metadata Provider"
+    }, {
+      "id": "ea6f0896-33a5-4e02-b8a9-9d171b83c716",
+      "comment": "",
+      "command": "waitForElementEditable",
+      "target": "name=type",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "add874d5-e3b2-4412-8039-2b9d2619ed19",
       "comment": "",
@@ -594,19 +605,6 @@
       ],
       "value": ""
     }, {
-      "id": "79b96f40-2677-438a-9564-62df0ea2c116",
-      "comment": "",
-      "command": "click",
-      "target": "id=root_enabled",
-      "targets": [
-        ["id=root_enabled", "id"],
-        ["css=#root_enabled", "css:finder"],
-        ["xpath=//input[@id='root_enabled']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section/div[2]/div[2]/div/div/form/div/div/div/div/div[2]/div/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "52f5680c-c63d-411e-8332-52901f12ea3b",
       "comment": "",
       "command": "assertText",
@@ -888,11 +886,11 @@
       "id": "ce328b6a-f6ee-45e9-975c-5a5608f373dc",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=div:nth-child(4) > .bg-diff > .d-block:nth-child(2)",
+      "target": "css=div:nth-child(3) > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(4) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[4]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[4]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(3) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[3]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'123 v2')]", "xpath:innerText"]
       ],
       "value": "10000"
@@ -900,11 +898,11 @@
       "id": "68103f0e-e3f1-419b-903d-5d8c30bc6700",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(4) > .bg-diff > .d-block:nth-child(2)",
+      "target": "css=div:nth-child(3) > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(4) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[4]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[4]/div/span[2]", "xpath:position"],
+        ["css=div:nth-child(3) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[3]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'123 v2')]", "xpath:innerText"]
       ],
       "value": "123 v2"
@@ -912,33 +910,34 @@
       "id": "a13198b9-7827-47e2-ade3-143b981d34ee",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(4) > .bg-diff > .d-block:nth-child(3)",
+      "target": "css=div:nth-child(3) > .bg-diff > .d-block:nth-child(3)",
       "targets": [
-        ["css=div:nth-child(4) > .bg-diff > .d-block:nth-child(3)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[4]/div/span[3]", "xpath:idRelative"],
-        ["xpath=//div[4]/div/span[3]", "xpath:position"]
+        ["css=div:nth-child(3) > .bg-diff > .d-block:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[3]/div/span[3]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/span[3]", "xpath:position"]
       ],
       "value": "123"
     }, {
       "id": "3d83741c-299e-4fcb-9ce6-4b7291c423a4",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(12) > .bg-diff > .d-block:nth-child(2)",
+      "target": "css=div:nth-child(11) > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(12) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[12]/div/span[2]", "xpath:idRelative"],
-        ["xpath=//div[12]/div/span[2]", "xpath:position"]
+        ["css=div:nth-child(11) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[11]/div/span[2]", "xpath:idRelative"],
+        ["xpath=//div[11]/div/span[2]", "xpath:position"]
       ],
       "value": "false"
     }, {
       "id": "190cc157-d427-4046-aff2-180392395ad3",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(12) > .bg-diff > .d-block:nth-child(3)",
+      "target": "css=div:nth-child(11) > .bg-diff > .d-block:nth-child(3)",
       "targets": [
-        ["css=div:nth-child(12) > .bg-diff > .d-block:nth-child(3)", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[12]/div/span[3]", "xpath:idRelative"],
-        ["xpath=//div[12]/div/span[3]", "xpath:position"]
+        ["css=div:nth-child(11) > .bg-diff > .d-block:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div/section/div/div[2]/div[2]/div[11]/div/span[3]", "xpath:idRelative"],
+        ["xpath=//div[11]/div/span[3]", "xpath:position"],
+        ["xpath=//span[contains(.,'true')]", "xpath:innerText"]
       ],
       "value": "true"
     }, {
@@ -1324,9 +1323,9 @@
       "id": "8a2c6435-d77b-4c87-8e0e-e1ae6d4629b9",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(3) > .bg-diff > .d-block:nth-child(2)",
+      "target": "css=div:nth-child(1) > div:nth-child(3) > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(3) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
+        ["css=div:nth-child(1) > div:nth-child(3) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section[4]/div/div[2]/div[2]/div/div[3]/div/span[2]", "xpath:idRelative"],
         ["xpath=//section[4]/div/div[2]/div[2]/div/div[3]/div/span[2]", "xpath:position"]
       ],
@@ -1335,9 +1334,9 @@
       "id": "0687fe3f-c1af-4a5a-9708-09b7b92734bc",
       "comment": "",
       "command": "assertText",
-      "target": "css=div:nth-child(1) > div:nth-child(4) > .d-flex > .d-block:nth-child(2)",
+      "target": "css=div:nth-child(4) > .bg-diff > .d-block:nth-child(2)",
       "targets": [
-        ["css=div:nth-child(1) > div:nth-child(4) > .d-flex > .d-block:nth-child(2)", "css:finder"],
+        ["css=div:nth-child(4) > .bg-diff > .d-block:nth-child(2)", "css:finder"],
         ["xpath=//div[@id='root']/div/main/div/section/div/div/section[4]/div/div[2]/div[2]/div/div[4]/div/span[2]", "xpath:idRelative"],
         ["xpath=//div[2]/div[2]/div/div[4]/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'PT1M')]", "xpath:innerText"]

@@ -180,42 +180,6 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "2317a47a-e308-4c1f-bd08-50360950c082",
-      "comment": "",
-      "command": "click",
-      "target": "xpath=(//button[@id='dropdown-basic'])[2]",
-      "targets": [
-        ["xpath=(//button[@id='dropdown-basic'])[2]", "xpath:attributes"],
-        ["xpath=(//div[@id='basic-nav-dropdown']/button)[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Add New')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "cfe9cc6f-d96a-48ad-a273-d03eba7cefce",
-      "comment": "",
-      "command": "click",
-      "target": "id=dropdown-basic",
-      "targets": [
-        ["id=dropdown-basic", "id"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "231fa40a-bb22-4d83-99e2-9a5a9d3ff823",
-      "comment": "",
-      "command": "click",
-      "target": "css=.p-3 > .d-flex",
-      "targets": [
-        ["css=.p-3 > .d-flex", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div", "xpath:idRelative"],
-        ["xpath=//section/div/div[2]/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "e20c0727-c04f-465d-a7dc-7c7a9210c47b",
       "comment": "",
       "command": "click",
@@ -277,12 +241,13 @@
       "id": "e8bedd18-aafa-4bff-85a4-ba36d7685225",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-basic",
+      "target": "id=advanced-nav-dropdown-toggle",
       "targets": [
-        ["id=dropdown-basic", "id"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
+        ["id=advanced-nav-dropdown-toggle", "id"],
+        ["css=#advanced-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='advanced-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
       ],
       "value": ""
@@ -305,7 +270,7 @@
       "id": "a378e628-4227-451b-9fb6-ef9edb7fc4fa",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(5) .text-danger path",
+      "target": "css=table > tbody > tr:nth-child(5) > td.text-right > button",
       "targets": [
         ["css=tr:nth-child(5) .text-danger path", "css:finder"]
       ],
@@ -327,19 +292,6 @@
       "command": "assertElementPresent",
       "target": "xpath=//div[@role=\"alert\" and contains(., \"remove role from all users first\")]",
       "targets": [],
-      "value": ""
-    }, {
-      "id": "e704f343-5942-4053-aed7-1fa94e13320c",
-      "comment": "",
-      "command": "click",
-      "target": "id=dropdown-basic",
-      "targets": [
-        ["id=dropdown-basic", "id"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
-      ],
       "value": ""
     }, {
       "id": "78b2edf1-a85d-4a0e-9880-33a2bdef7b68",
@@ -396,12 +348,13 @@
       "id": "2f499bda-2230-45d2-85c5-efee606c5121",
       "comment": "",
       "command": "click",
-      "target": "id=dropdown-basic",
+      "target": "id=advanced-nav-dropdown-toggle",
       "targets": [
-        ["id=dropdown-basic", "id"],
-        ["xpath=//button[@id='dropdown-basic']", "xpath:attributes"],
-        ["xpath=//div[@id='basic-nav-dropdown']/button", "xpath:idRelative"],
-        ["xpath=//div/button", "xpath:position"],
+        ["id=advanced-nav-dropdown-toggle", "id"],
+        ["css=#advanced-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='advanced-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='advanced-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
         ["xpath=//button[contains(.,'Advanced')]", "xpath:innerText"]
       ],
       "value": ""
@@ -424,9 +377,12 @@
       "id": "f4201d01-e582-4071-921b-ede543ce181a",
       "comment": "",
       "command": "click",
-      "target": "css=tr:nth-child(5) .text-danger path",
+      "target": "css=table > tbody > tr:nth-child(5) > td.text-right > button",
       "targets": [
-        ["css=tr:nth-child(5) .text-danger path", "css:finder"]
+        ["css=tr:nth-child(5) .text-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[9]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/main/div/section/div/div[2]/div[2]/table/tbody/tr[5]/td[2]/button", "xpath:idRelative"],
+        ["xpath=//tr[5]/td[2]/button", "xpath:position"]
       ],
       "value": ""
     }, {

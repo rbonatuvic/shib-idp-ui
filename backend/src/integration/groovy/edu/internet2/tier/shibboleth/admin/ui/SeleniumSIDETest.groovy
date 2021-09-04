@@ -112,11 +112,10 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1333: Verify metadata source configuration'                 | '/SHIBUI-1333.side'
         'SHIBUI-1334: Verify metadata source versioning'                    | '/SHIBUI-1334-1.side'
         'SHIBUI-1334: Verify metadata provider versioning'                  | '/SHIBUI-1334-2.side'
-/*        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
+        'SHIBUI-1335: Verify File Backed HTTP Metadata Provider Filters'    | '/SHIBUI-1335-1.side'
         'SHIBUI-1335: Verify Filesystem Metadata Provider Filters'          | '/SHIBUI-1335-2.side' // adding filters to this resolver type was removed in the react update
         'SHIBUI-1335: Verify Local Dynamic Metadata Provider Filters'       | '/SHIBUI-1335-3.side' // adding filters to this resolver type was removed in the react update
         'SHIBUI-1335: Verify Dynamic HTTP Metadata Provider Filters'        | '/SHIBUI-1335-4.side'
-        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side'
         'SHIBUI-1361: Verify dates display in proper format'                | '/SHIBUI-1361.side' // Note that this script WILL NOT PASS in the Selenium IDE. There is a bug in the IDE where it thinks there is a missing ')'.
         'SHIBUI-1385: Restore a metadata source version'                    | '/SHIBUI-1385-1.side'
         'SHIBUI-1385: Restore a metadata provider version'                  | '/SHIBUI-1385-2.side'
@@ -131,6 +130,7 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
         'SHIBUI-1740: Verify nonadmin-owned resource visibility'            | '/SHIBUI-1740-4.side'
         'SHIBUI-1742: Verify enabler role allows enabling'                  | '/SHIBUI-1742-1.side'
-        'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'*/
+        'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'
+        'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it
     }
 }
