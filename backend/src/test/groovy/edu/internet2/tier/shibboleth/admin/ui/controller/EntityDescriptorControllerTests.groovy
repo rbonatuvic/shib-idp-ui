@@ -81,7 +81,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     @Transactional
     def setup() {
         openSamlObjects.init()
-        
+
         Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")

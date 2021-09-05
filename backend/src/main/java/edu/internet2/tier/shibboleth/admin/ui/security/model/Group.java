@@ -29,7 +29,7 @@ public class Group implements Owner {
     @JsonIgnore
     public static Group ADMIN_GROUP;
 
-    @Column(name = "group_description", nullable = true)
+    @Column(name = "group_description")
     String description;
 
     @Transient

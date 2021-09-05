@@ -70,7 +70,7 @@ public interface EntityDescriptorService {
      * @return a list of EntityDescriptorRepresentations that a user has the rights to access
      */
     List<EntityDescriptorRepresentation> getAllRepresentationsBasedOnUserAccess() throws ForbiddenException;
-    
+
     /**
      * Given a list of attributes, generate an AttributeReleaseList
      *
@@ -113,4 +113,5 @@ public interface EntityDescriptorService {
      */
     void updateDescriptorFromRepresentation(final org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, final EntityDescriptorRepresentation representation);
 
+    EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException;
 }

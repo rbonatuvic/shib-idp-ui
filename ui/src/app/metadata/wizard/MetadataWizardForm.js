@@ -12,7 +12,7 @@ function ErrorListTemplate () {
     return (<></>);
 }
 
-export function MetadataWizardForm ({ metadata, definition, schema, current, onChange, onBlur = false, validator }) {
+export function MetadataWizardForm ({ metadata, definition, schema, current, onChange, onBlur = () => {}, validator }) {
 
     const {uiSchema} = useUiSchema(definition, schema, current);
 

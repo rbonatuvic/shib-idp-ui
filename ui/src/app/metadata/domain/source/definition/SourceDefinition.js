@@ -106,7 +106,6 @@ export const SourceBase = {
                     fields: [
                         'serviceProviderName',
                         'entityId',
-                        'serviceEnabled',
                         'organization'
                     ]
                 },
@@ -308,7 +307,6 @@ export const SourceEditor = {
             fields: [
                 'serviceProviderName',
                 'entityId',
-                'serviceEnabled',
                 'organization',
                 'contacts'
             ]
@@ -441,9 +439,7 @@ export const SourceWizard = {
                 },
                 {
                     size: 6,
-                    fields: [
-                        'serviceEnabled'
-                    ]
+                    fields: []
                 }
             ]
         }
@@ -527,9 +523,7 @@ export const SourceWizard = {
             index: 10,
             id: 'summary',
             label: 'label.finished',
-            fields: [
-                'serviceEnabled'
-            ]
+            fields: []
         }
     ]
 }

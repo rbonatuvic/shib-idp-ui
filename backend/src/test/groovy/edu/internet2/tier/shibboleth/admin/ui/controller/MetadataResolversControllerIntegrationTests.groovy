@@ -7,7 +7,6 @@ import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.EntitiesVersioningConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConfiguration
-import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverConverterConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.MetadataResolverValidationConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.PlaceholderResolverComponentsConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
@@ -42,7 +41,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Unroll
 

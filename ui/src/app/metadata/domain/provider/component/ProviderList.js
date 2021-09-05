@@ -2,14 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 import FormattedDate from '../../../../core/components/FormattedDate';
 import Translate from '../../../../i18n/components/translate';
 import { Scroller } from '../../../../dashboard/component/Scroller';
+import { useIsAdmin } from '../../../../core/user/UserContext';
+import { useTranslator } from '../../../../i18n/hooks';
 
-export function ProviderList({ entities, reorder = true, first, last, onOrderUp, onOrderDown }) {
+export function ProviderList({ entities, reorder = true, first, last, onEnable, onOrderUp, onOrderDown }) {
+
+    const isAdmin = useIsAdmin();
+    const translator = useTranslator();
+
     return (
         <Scroller entities={entities}>
         {(limited) => <div className="table-responsive mt-3 provider-list!">
@@ -61,10 +68,24 @@ export function ProviderList({ entities, reorder = true, first, last, onOrderUp,
                             <td className="align-middle">{ provider['@type'] }</td>
                             <td className="align-middle">{ provider.createdBy }</td>
                             <td className="align-middle"><FormattedDate date={provider.createdDate} /></td>
-                            <td className="text-right align-middle">
-                                <Badge variant={provider.enabled ? 'success' : 'danger'}>
-                                    <Translate value={provider.enabled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                </Badge>
+                            <td className="align-middle">
+                                <span className="d-flex justify-content-end">
+                                {onEnable && isAdmin ?
+                                    <Form.Check
+                                        size="lg"
+                                        type="switch"
+                                        id="custom-switch"
+                                        aria-label={translator(provider.enabled ? 'label.disable' : 'label.enable')}
+                                        onChange={({ target: { checked } }) => onEnable(provider, checked)}
+                                        checked={provider.enabled}
+                                    >
+                                    </Form.Check>
+                                    :
+                                    <Badge variant={provider.enabled ? 'success' : 'danger'}>
+                                        <Translate value={provider.enabnled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                    </Badge>
+                                }
+                                </span>
                             </td>
                         </tr>
                     )}

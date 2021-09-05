@@ -12,16 +12,14 @@ import { useMetadataDefinitionContext, useMetadataSchemaContext, useMetadataDefi
 import { useMetadataFormDispatcher, setFormDataAction, setFormErrorAction, useMetadataFormData, useMetadataFormErrors } from '../hoc/MetadataFormContext';
 import { MetadataConfiguration } from '../component/MetadataConfiguration';
 import { Configuration } from '../hoc/Configuration';
-import { useMetadataEntity, useMetadataSources } from '../hooks/api';
-import { Prompt, useHistory } from 'react-router';
-import { removeNull } from '../../core/utility/remove_null';
+import { useMetadataSources } from '../hooks/api';
 
 import Translate from '../../i18n/components/translate';
 import { checkChanges } from '../hooks/utility';
 import { useUserGroup } from '../../core/user/UserContext';
 
 
-export function MetadataSourceWizard ({ onShowNav }) {
+export function MetadataSourceWizard ({ onShowNav, onSave, block, loading }) {
 
     const { post, loading, response } = useMetadataEntity('source');
     const history = useHistory();
@@ -52,39 +50,20 @@ export function MetadataSourceWizard ({ onShowNav }) {
     const onChange = (changes) => {
         formDispatch(setFormDataAction(changes.formData));
         formDispatch(setFormErrorAction(changes.errors));
-        setBlocking(checkChanges(metadata, changes.formData));
+        block(checkChanges(metadata, changes.formData));
     };
 
     const onEditFromSummary = (idx) => {
         wizardDispatch(setWizardIndexAction(idx));
     };
 
-    const onBlur = (form) => {
-        // console.log(form);
-    }
-
-    async function save () {
-        const body = removeNull(metadata, true);
-        await post('', body);
-        if (response.ok) {
-            setBlocking(false);
-            history.push('/');
-        }
-    }
-
-    const [blocking, setBlocking] = React.useState(false);
+    const save = () => onSave(definition.parser(metadata));
 
     const validator = useMetadataDefinitionValidator(data, null, group);
     const warnings = definition.warnings && definition.warnings(metadata);
 
     return (
         <>
-            <Prompt
-                when={blocking}
-                message={location =>
-                    `message.unsaved-editor`
-                }
-            />
             <div className="row mb-4">
                 <div className="col-12">
                     <WizardNav onSave={save} disabled={ errors.length > 0 || loading } saving={loading} />
@@ -111,7 +90,6 @@ export function MetadataSourceWizard ({ onShowNav }) {
                         schema={schema || {}}
                         current={current}
                         onChange={onChange}
-                        onBlur={onBlur}
                         validator={validator} />
                 </div>
             </div>

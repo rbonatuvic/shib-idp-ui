@@ -1,4 +1,8 @@
 #shibui:
+## Default password must be set for the default user to be configured and setup
+#  default-rootuser:root
+## need to include the encoding for the password - be sure to quote the entire value as shown
+#  default-password: "{noop}foopassword"
 #  pac4j-enabled: true
 #  pac4j:
 #    keystorePath: "/etc/shibui/samlKeystore.jks"

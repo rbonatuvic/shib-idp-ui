@@ -40,7 +40,6 @@ export const NameIDFilterEditor = {
             index: 1,
             fields: [
                 'name',
-                'filterEnabled',
                 '@type',
                 'resourceId',
                 'nameIdFormatFilterTarget'

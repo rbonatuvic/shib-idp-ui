@@ -58,7 +58,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
 
         when: 'Second version'
         ed.serviceProviderName = 'SP2'
-        ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
         versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
@@ -71,7 +71,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
 
         when: 'Third version'
         ed.serviceProviderName = 'SP3'
-        ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
         versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
@@ -86,7 +86,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
     def "versioning service returns correct entity descriptor for version number"() {
         when: 'Initial version'
         EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1', createdBy: 'anonymousUser')
-        ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
         def versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
@@ -98,7 +98,7 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
 
         when: 'Update the original'
         ed.serviceProviderName = 'SP2'
-        ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
         versions = entityDescriptorVersionService.findVersionsForEntityDescriptor(ed.resourceId)
@@ -112,17 +112,17 @@ class EnversEntityDescriptorVersionServiceTests extends Specification {
     def "versioning service throws EntityNotFoundException for non existent version number"() {
         when: 'Initial version'
         EntityDescriptor ed = new EntityDescriptor(entityID: 'ed', serviceProviderName: 'SP1', createdBy: 'anonymousUser')
-        ed = edu.internet2.tier.shibboleth.admin.ui.repository.envers.EnversTestsSupport.doInExplicitTransaction(txMgr) {
+        ed = EnversTestsSupport.doInExplicitTransaction(txMgr) {
             entityDescriptorRepository.save(ed)
         }
         
         then:
         try { 
             def edRepresentation = entityDescriptorVersionService.findSpecificVersionOfEntityDescriptor(ed.resourceId, '1000')
-            1 == 2
+            false
         }
         catch (EntityNotFoundException expected) {
-            1 == 1
+            true
         }
     }
 }

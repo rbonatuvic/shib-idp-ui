@@ -39,6 +39,11 @@ function useIsAdmin() {
     return user.role === 'ROLE_ADMIN';
 }
 
+function useIsEnabler() {
+    const user = useCurrentUser();
+    return user.role === 'ROLE_ENABLE';
+}
+
 function useIsInGroup(id) {
     const user = useCurrentUser();
     return user.group === id;
@@ -48,6 +53,12 @@ function useIsAdminOrInGroup() {
     const isAdmin = useIsAdmin();
     const isInGroup = useIsInGroup();
     return isAdmin || isInGroup;
+}
+
+function useCanEnable() {
+    const isAdmin = useIsAdmin();
+    const isEnabler = useIsEnabler();
+    return isAdmin || isEnabler;
 }
 
 function useUserGroup() {
@@ -68,6 +79,7 @@ export {
     useCurrentUser,
     useIsAdmin,
     useIsAdminOrInGroup,
+    useCanEnable,
     useUserGroupRegexValidator,
     useUserGroup
 };
