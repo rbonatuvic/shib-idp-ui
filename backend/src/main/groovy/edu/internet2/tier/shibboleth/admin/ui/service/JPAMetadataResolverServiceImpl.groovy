@@ -77,150 +77,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
     private UserService userService
 
     // TODO: enhance
-    @Override
-    void reloadFilters(String metadataResolverResourceId) {
-        OpenSamlChainingMetadataResolver chainingMetadataResolver = (OpenSamlChainingMetadataResolver) metadataResolver
-        MetadataResolver targetMetadataResolver = chainingMetadataResolver.getResolvers().find {
-            it.id == metadataResolverResourceId
-        }
-        edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver jpaMetadataResolver = metadataResolverRepository.findByResourceId(metadataResolverResourceId)
-
-        if (targetMetadataResolver && targetMetadataResolver.getMetadataFilter() instanceof MetadataFilterChain) {
-            MetadataFilterChain metadataFilterChain = (MetadataFilterChain) targetMetadataResolver.getMetadataFilter()
-
-            List<MetadataFilter> metadataFilters = new ArrayList<>()
-
-            // set up namespace protection
-            if (shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0 && targetMetadataResolver && jpaMetadataResolver.type in ['FileBackedHttpMetadataResolver', 'DynamicHttpMetadataResolver']) {
-                def target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
-                target.attributeFilter = new ScriptedPredicate(new EvaluableScript(protectedNamespaceScript()))
-                metadataFilters.add(target)
-            }
-
-            for (edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter metadataFilter : jpaMetadataResolver.getMetadataFilters()) {
-                if (metadataFilter instanceof EntityAttributesFilter) {
-                    EntityAttributesFilter entityAttributesFilter = (EntityAttributesFilter) metadataFilter
-
-                    org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter target = new org.opensaml.saml.metadata.resolver.filter.impl.EntityAttributesFilter()
-                    Map<Predicate<EntityDescriptor>, Collection<Attribute>> rules = new HashMap<>()
-                    switch (entityAttributesFilter.getEntityAttributesFilterTarget().getEntityAttributesFilterTargetType()) {
-                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.ENTITY:
-                            rules.put(
-                                    new EntityIdPredicate(entityAttributesFilter.getEntityAttributesFilterTarget().getValue()),
-                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes()
-                            )
-                            break
-                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.CONDITION_SCRIPT:
-                            rules.put(new ScriptedPredicate(new EvaluableScript(entityAttributesFilter.entityAttributesFilterTarget.value[0])),
-                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
-                            break
-                        case EntityAttributesFilterTarget.EntityAttributesFilterTargetType.REGEX:
-                            rules.put(new ScriptedPredicate(new EvaluableScript(generateJavaScriptRegexScript(entityAttributesFilter.entityAttributesFilterTarget.value[0]))),
-                                    (List<Attribute>) (List<? extends Attribute>) entityAttributesFilter.getAttributes())
-                            break
-                        default:
-                            // do nothing, we'd have exploded elsewhere previously.
-                            break
-                    }
-                    target.setRules(rules)
-                    metadataFilters.add(target)
-                }
-                if (metadataFilter instanceof NameIdFormatFilter) {
-                    NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
-                    NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
-                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats == null ? false : nameIdFormatFilter.removeExistingFormats
-                    Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
-                    def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
-                    def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
-                    switch (type) {
-                        case ENTITY:
-                            predicateRules[new EntityIdPredicate(values)] = nameIdFormatFilter.formats
-                            break
-                        case CONDITION_SCRIPT:
-                            predicateRules[new ScriptedPredicate(new EvaluableScript(values[0]))] = nameIdFormatFilter.formats
-                            break
-                        case REGEX:
-                            predicateRules[new ScriptedPredicate(new EvaluableScript(generateJavaScriptRegexScript(values[0])))] = nameIdFormatFilter.formats
-                            break
-                        default:
-                            // do nothing, we'd have exploded elsewhere previously.
-                            break
-                    }
-                    openSamlTargetFilter.rules = predicateRules
-                    metadataFilters << openSamlTargetFilter
-                }
-            }
-            metadataFilterChain.setFilters(metadataFilters)
-        }
-
-        if (targetMetadataResolver != null && targetMetadataResolver instanceof Refilterable) {
-            (Refilterable) targetMetadataResolver.refilter()
-        } else {
-            //TODO: Do something here if we need to refilter other non-Batch resolvers
-            log.warn("Target resolver is not a Refilterable resolver. Skipping refilter()")
-        }
-    }
-
-    private String protectedNamespaceScript() {
-        return """(function (attribute) {
-                "use strict";
-                var namespaces = [${shibUIConfiguration.protectedAttributeNamespaces.collect({"\"${it}\""}).join(', ')}];
-                // check the parameter
-                if (attribute === null) { return true; }
-                for (var i in namespaces) {
-                    if (attribute.getName().startsWith(namespaces[i])) {
-                        return false;
-                    }
-                }
-                return true;
-            }(input));"""
-    }
-
-    // TODO: enhance
-    @Override
-    Document generateConfiguration() {
-        // TODO: this can probably be a better writer
-        new StringWriter().withCloseable { writer ->
-            def xml = new MarkupBuilder(writer)
-            xml.omitEmptyAttributes = true
-            xml.omitNullAttributes = true
-
-            xml.MetadataProvider(id: 'ShibbolethMetadata',
-                    xmlns: 'urn:mace:shibboleth:2.0:metadata',
-                    'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                    'xsi:type': 'ChainingMetadataProvider',
-                    'xsi:schemaLocation': 'urn:mace:shibboleth:2.0:metadata http://shibboleth.net/schema/idp/shibboleth-metadata.xsd urn:mace:shibboleth:2.0:resource http://shibboleth.net/schema/idp/shibboleth-resource.xsd urn:mace:shibboleth:2.0:security http://shibboleth.net/schema/idp/shibboleth-security.xsd urn:oasis:names:tc:SAML:2.0:metadata http://docs.oasis-open.org/security/saml/v2.0/saml-schema-metadata-2.0.xsd urn:oasis:names:tc:SAML:2.0:assertion http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd'
-            ) {
-
-
-                resolversPositionOrderContainerService.allMetadataResolversInDefinedOrderOrUnordered.each {
-                    edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver mr ->
-                        //TODO: We do not currently marshall the internal incommon chaining resolver (with BaseMetadataResolver type)
-                        if ((mr.type != 'BaseMetadataResolver') && (mr.enabled)) {
-                            constructXmlNodeForResolver(mr, delegate) {
-                                //TODO: enhance
-                                def didNamespaceProtectionFilter = !(shibUIConfiguration.protectedAttributeNamespaces && shibUIConfiguration.protectedAttributeNamespaces.size() > 0)
-                                def doNamespaceProtectionFilter = { def filter ->
-                                    if (mr.type in ['FileBackedMetadataResolver', 'DynamicHttpMetadataResolver'] && (filter == null || filter instanceof EntityAttributesFilter) && !didNamespaceProtectionFilter) {
-                                        constructXmlNodeForEntityAttributeNamespaceProtection(delegate)
-                                        didNamespaceProtectionFilter = true
-                                    }
-                                }
-                                mr.metadataFilters.each { edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter filter ->
-                                    doNamespaceProtectionFilter()
-                                    constructXmlNodeForFilter(filter, delegate)
-                                }
-                                doNamespaceProtectionFilter()
-                            }
-                        }
-                }
-            }
-            return DOMBuilder.newInstance().parseText(writer.toString())
-        }
-    }
-    @Autowired
-    private UserService userService
-
     void constructXmlNodeForEntityAttributeNamespaceProtection(def markupBuilderDelegate) {
         markupBuilderDelegate.MetadataFilter('xsi:type': 'EntityAttributes') {
             AttributeFilterScript() {
@@ -269,6 +125,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
+    // TODO: enhance
     void constructXmlNodeForFilter(EntityRoleWhiteListFilter filter, def markupBuilderDelegate) {
         if (!filter.retainedRoles?.isEmpty()) {
             markupBuilderDelegate.MetadataFilter(
@@ -282,7 +139,6 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
             }
         }
     }
-
 
     void constructXmlNodeForFilter(NameIdFormatFilter filter, def markupBuilderDelegate) {
         def type = filter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
@@ -345,6 +201,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                     'publicKey': filter.publicKey)
         }
     }
+
 
     void constructXmlNodeForResolver(DynamicHttpMetadataResolver resolver, def markupBuilderDelegate, Closure childNodes) {
         markupBuilderDelegate.MetadataProvider(id: resolver.xmlId,
@@ -685,7 +542,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 if (metadataFilter instanceof NameIdFormatFilter) {
                     NameIdFormatFilter nameIdFormatFilter = NameIdFormatFilter.cast(metadataFilter)
                     NameIDFormatFilter openSamlTargetFilter = new OpenSamlNameIdFormatFilter()
-                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats
+                    openSamlTargetFilter.removeExistingFormats = nameIdFormatFilter.removeExistingFormats == null ? false : nameIdFormatFilter.removeExistingFormats
                     Map<Predicate<EntityDescriptor>, Collection<String>> predicateRules = [:]
                     def type = nameIdFormatFilter.nameIdFormatFilterTarget.nameIdFormatFilterTargetType
                     def values = nameIdFormatFilter.nameIdFormatFilterTarget.value
@@ -733,7 +590,7 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
                 throw new MetadataFileNotFoundException("message.file-doesnt-exist")
             }
             try {
-                OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation);
+                OpenSamlChainingMetadataResolverUtil.updateChainingMetadataResolver((OpenSamlChainingMetadataResolver) chainingMetadataResolver, openSamlRepresentation)
             }
             catch (Throwable e) {
                 throw new InitializationException(e);
@@ -748,5 +605,4 @@ class JPAMetadataResolverServiceImpl implements MetadataResolverService {
         }
     }
 
-}
 }

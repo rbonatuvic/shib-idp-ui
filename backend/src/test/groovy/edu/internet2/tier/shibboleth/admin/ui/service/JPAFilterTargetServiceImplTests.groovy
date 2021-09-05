@@ -1,22 +1,23 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
+import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
+import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Specification
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
-class JPAFilterTargetServiceImplTests extends Specification {
-
-    RandomGenerator randomGenerator
+class JPAFilterTargetServiceImplTests extends AbstractBaseDataJpaTest {
+    @Autowired
     TestObjectGenerator testObjectGenerator
 
+    RandomGenerator randomGenerator
     JPAFilterTargetServiceImpl service
 
     def setup() {
         randomGenerator = new RandomGenerator()
-        testObjectGenerator = new TestObjectGenerator()
         service = new JPAFilterTargetServiceImpl()
     }
 

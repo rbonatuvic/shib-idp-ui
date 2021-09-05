@@ -18,7 +18,6 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSaml
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import groovy.xml.DOMBuilder
 import groovy.xml.MarkupBuilder
 import net.shibboleth.ext.spring.resource.ResourceHelper
@@ -42,8 +41,6 @@ import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedX
 
 @ContextConfiguration(classes=[ JPAMRSIConfig, PlaceholderResolverComponentsConfiguration ])
 class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
-    @Autowired
-    AttributeUtility attributeUtility
 
     @Autowired
     EntityService entityService
@@ -66,13 +63,14 @@ class JPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
     ShibUIConfiguration shibUIConfiguration
 
+    @Autowired
     TestObjectGenerator testObjectGenerator
+
     DOMBuilder domBuilder = DOMBuilder.newInstance()
     StringWriter writer = new StringWriter()
     MarkupBuilder markupBuilder
 
     def setup() {
-        testObjectGenerator = new TestObjectGenerator(attributeUtility)
         markupBuilder = new MarkupBuilder(writer)
         markupBuilder.omitNullAttributes = true
         markupBuilder.omitEmptyAttributes = true

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @EntityListeners(GroupUpdatedEntityListener.class)
 @Entity(name = "user_groups")
 public class Group implements Owner {
-    public static final String DEFAULT_REGEX = "/(?:)/"; //non-capturing
+    public static final String DEFAULT_REGEX = "^.+$"; //everything
 
     @Transient
     @JsonIgnore
@@ -78,7 +78,6 @@ public class Group implements Owner {
     public Set<Ownership> getOwnedItems() {
         if (lazyLoaderHelper != null) {
             lazyLoaderHelper.loadOwnedItems(this);
-            lazyLoaderHelper = null;
         }
         return ownedItems;
     }

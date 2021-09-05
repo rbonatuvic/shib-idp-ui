@@ -63,6 +63,7 @@ public class GroupServiceImpl implements IGroupService {
     @Override
     public boolean doesStringMatchGroupPattern(String groupId, String uri) {
         Group group = find(groupId);
+        //@TODO change matching to rhino
         return Pattern.matches(group.getValidationRegex(), uri);
     }
 

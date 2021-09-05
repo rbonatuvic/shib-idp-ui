@@ -1,14 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.XSString
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityAttributesFilterTarget
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.EntityRoleWhiteListFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.RequiredValidUntilFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.SignatureValidationFilter
-import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolversPositionOrderContainerRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
@@ -20,7 +18,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
 
-import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.*
+import static edu.internet2.tier.shibboleth.admin.ui.util.TestHelpers.generatedXmlIsTheSameAsExpectedXml
 
 @ContextConfiguration(classes = [IJPAMRSILocalConfig])
 class IncommonJPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTest {
@@ -96,25 +94,6 @@ class IncommonJPAMetadataResolverServiceImplTests extends AbstractBaseDataJpaTes
 
     @TestConfiguration
     private static class IJPAMRSILocalConfig {
-//        @Bean
-//        DirectoryService directoryService() {
-//            return new DirectoryServiceImpl()
-//        }
-
-        @Bean
-        JPAMetadataResolverServiceImpl jpaMetadataResolverService(MetadataResolver metadataResolver, MetadataResolverRepository metadataResolverRepository,
-                                                                  OpenSamlObjects openSamlObjects, MetadataResolversPositionOrderContainerService resolversPositionOrderContainerService,
-                                                                  ShibUIConfiguration shibUIConfiguration) {
-            return new JPAMetadataResolverServiceImpl().with {
-                it.metadataResolver = metadataResolver
-                it.metadataResolverRepository = metadataResolverRepository
-                it.openSamlObjects = openSamlObjects
-                it.resolversPositionOrderContainerService = resolversPositionOrderContainerService
-                it.shibUIConfiguration = shibUIConfiguration
-                it
-            }
-        }
-
         @Bean
         MetadataResolver metadataResolver(AttributeUtility attributeUtility, MetadataResolverRepository metadataResolverRepository) {
             def resolver = new ChainingMetadataResolver().with {

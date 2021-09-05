@@ -27,8 +27,13 @@ import org.springframework.web.util.NestedServletException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ContextConfiguration(classes=[UCILocalConfig])
 @Rollback
@@ -140,12 +145,12 @@ class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.[1].emailAddress").value("peter@institution.edu"))
               .andExpect(jsonPath("\$.[1].role").value("ROLE_USER"))
               .andExpect(jsonPath("\$.[1].groupId").value("nonadmin"))
-              .andExpect(jsonPath("\$.[1].userGroups.[0].validationRegex").value("/(?:)/"))
+              .andExpect(jsonPath("\$.[1].userGroups.[0].validationRegex").value(Group.DEFAULT_REGEX))
               .andExpect(jsonPath("\$.[2].username").value("none"))
               .andExpect(jsonPath("\$.[2].emailAddress").value("badboy@institution.edu"))
               .andExpect(jsonPath("\$.[2].role").value("ROLE_NONE"))
               .andExpect(jsonPath("\$.[2].groupId").value("none"))
-              .andExpect(jsonPath("\$.[2].userGroups.[0].validationRegex").value("/(?:)/"))
+              .andExpect(jsonPath("\$.[2].userGroups.[0].validationRegex").value(Group.DEFAULT_REGEX))
               .andExpect(jsonPath("\$.[3].username").value("anonymousUser"))
               .andExpect(jsonPath("\$.[3].emailAddress").value("anon@institution.edu"))
               .andExpect(jsonPath("\$.[3].role").value("ROLE_ADMIN"))

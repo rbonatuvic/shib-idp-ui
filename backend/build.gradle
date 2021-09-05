@@ -47,6 +47,23 @@ configurations {
 
 def generatedSrcDir = new File(buildDir, 'generated/src/main/java')
 
+//test {
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/configuration/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/controller/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/domain/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/domain/filters/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/domain/resolvers/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/domain/versioning/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/repository/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/scheduled/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/security/controller/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/security/repository/*.class'
+////    exclude 'edu/internet2/tier/shibboleth/admin/ui/security/service/*.class'
+////    exclude 'edu/internet2/tier/shibboleth/admin/ui/security/springsecurity/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/service/*.class'
+//    exclude 'edu/internet2/tier/shibboleth/admin/ui/util/*.class'
+//}
+
 sourceSets {
     main {
         groovy {

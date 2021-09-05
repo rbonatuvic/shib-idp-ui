@@ -10,6 +10,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsReposito
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.springframework.context.annotation.Bean
@@ -20,7 +21,8 @@ import org.springframework.context.annotation.Primary
 
 @Configuration
 @Import([ShibUIConfiguration.class, CustomPropertiesConfiguration.class, SearchConfiguration.class])
-@ComponentScan(basePackages=[ "edu.internet2.tier.shibboleth.admin.ui.service", "edu.internet2.tier.shibboleth.admin.ui.security.service" ])
+@ComponentScan(basePackages=[ "edu.internet2.tier.shibboleth.admin.ui.service", "edu.internet2.tier.shibboleth.admin.ui.security.service",
+                              "edu.internet2.tier.shibboleth.admin.ui.security.model.listener"])
 class BaseDataJpaTestConfiguration {
     @Bean
     AttributeUtility attributeUtility(OpenSamlObjects openSamlObjects) {
@@ -57,6 +59,12 @@ class BaseDataJpaTestConfiguration {
         OpenSamlObjects result = new OpenSamlObjects()
         result.init()
         return result
+    }
+
+    @Bean
+    @Primary
+    TestObjectGenerator testObjectGenerator (AttributeUtility attributeUtility, CustomPropertiesConfiguration customPropertiesConfiguration) {
+        return new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     @Bean

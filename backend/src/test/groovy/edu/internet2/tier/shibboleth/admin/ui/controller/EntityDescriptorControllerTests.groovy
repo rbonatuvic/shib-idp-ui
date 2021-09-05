@@ -62,13 +62,15 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     EntityService entityService
 
     @Autowired
+    TestObjectGenerator generator
+
+    @Autowired
     OpenSamlObjects openSamlObjects
 
     @Autowired
     JPAEntityDescriptorServiceImpl jpaEntityDescriptorService
 
     RandomGenerator randomGenerator
-    TestObjectGenerator generator
     def mapper
     def mockRestTemplate = Mock(RestTemplate)
     def mockMvc
@@ -88,7 +90,6 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
         gb = groupService.createGroup(gb)
 
-        generator = new TestObjectGenerator()
         randomGenerator = new RandomGenerator()
         mapper = new ObjectMapper()
 

@@ -129,7 +129,6 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     public Set<Group> getUserGroups() {
         if (lazyLoaderHelper != null) {
             lazyLoaderHelper.loadGroups(this);
-            lazyLoaderHelper = null;
         }
         return userGroups;
     }
