@@ -7,7 +7,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
-import org.pac4j.core.matching.matcher.PathMatcher
+import org.pac4j.core.matching.PathMatcher
 import org.pac4j.saml.profile.SAML2Profile
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
