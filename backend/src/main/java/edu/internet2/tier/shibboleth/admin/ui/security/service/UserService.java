@@ -1,16 +1,7 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.service;
 
-import java.util.*;
-
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
 import edu.internet2.tier.shibboleth.admin.ui.domain.IActivatable;
-import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.GroupExistsConflictException;
 import edu.internet2.tier.shibboleth.admin.ui.security.exception.OwnershipConflictException;
@@ -23,9 +14,21 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.ADMIN;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.GROUP;
+import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.NONE;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static edu.internet2.tier.shibboleth.admin.ui.security.service.UserAccess.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @NoArgsConstructor
@@ -81,13 +84,17 @@ public class UserService {
     public void delete(String username) throws EntityNotFoundException, OwnershipConflictException {
         Optional<User> userToRemove = userRepository.findByUsername(username);
         if (userToRemove.isEmpty()) throw new EntityNotFoundException("User does not exist");
-        if (!ownershipRepository.findOwnedByUser(username).isEmpty()) throw new OwnershipConflictException("User ["+username+"] has ownership of entities in the system. Please remove all items before attemtping to delete the user.");
+        if (!ownershipRepository.findOwnedByUser(username).isEmpty()) throw new OwnershipConflictException("User ["+username+"] has ownership of entities in the system. Please remove all items before attempting to delete the user.");
 
         // ok, user exists and doesn't own anything in the system, so delete them
         // If the user is owned by anything, clear that first
         ownershipRepository.clearUsersGroups(username);
         User user = userToRemove.get();
         userRepository.delete(user);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     public User getCurrentUser() {
@@ -187,7 +194,7 @@ public class UserService {
                 if (g == null) {
                     try {
                         Group newGroup = ug;
-                        Ownership o = ownershipRepository.saveAndFlush(new Ownership(newGroup, user));
+                        ownershipRepository.saveAndFlush(new Ownership(newGroup, user));
                         g = groupService.createGroup(newGroup);
                     }
                     catch (GroupExistsConflictException e) {
@@ -219,7 +226,7 @@ public class UserService {
                 throw new RuntimeException(String.format("User with username [%s] is defined with role [%s] which does not exist in the system!", user.getUsername(), user.getRole()));
             }
         } else {
-            throw new RuntimeException(String.format("User with username [%s] has no role defined and therefor cannot be updated!", user.getUsername()));
+            throw new RuntimeException(String.format("User with username [%s] has no role defined and therefore cannot be updated!", user.getUsername()));
         }
     }
 }
