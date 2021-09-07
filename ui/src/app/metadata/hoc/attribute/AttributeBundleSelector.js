@@ -1,9 +1,9 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 export function AttributeBundleSelector({ id, find, children }) {
     const [bundle, setBundle] = React.useState([]);
 
+    /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
         find(id, (item) => setBundle(item));
     }, []);

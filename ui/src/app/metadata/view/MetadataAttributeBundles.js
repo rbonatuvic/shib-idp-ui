@@ -6,15 +6,12 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 import { Translate } from '../../i18n/components/translate';
-import { useTranslator } from '../../i18n/hooks';
 
 import { AttributeBundleApi } from '../hoc/attribute/AttributeBundleApi';
 
 import { AttributeBundleList } from '../hoc/attribute/AttributeBundleList';
 
 export function MetadataAttributeBundles({ entities, onDelete }) {
-
-    const translator = useTranslator();
 
     return (
         <AttributeBundleApi>

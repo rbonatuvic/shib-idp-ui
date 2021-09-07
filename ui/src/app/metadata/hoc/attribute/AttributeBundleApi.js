@@ -5,7 +5,7 @@ import API_BASE_PATH from '../../../App.constant';
 import { DeleteConfirmation } from '../../../core/components/DeleteConfirmation';
 import { createNotificationAction, NotificationContext } from '../../../notifications/hoc/Notifications';
 
-const api = '/custom/entity/bundles'
+const api = '/custom/entity/bundles';
 
 export function AttributeBundleApi({ id, children }) {
 

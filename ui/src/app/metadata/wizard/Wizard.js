@@ -6,7 +6,7 @@ const WizardContext = React.createContext();
 const { Provider, Consumer } = WizardContext;
 
 const initialState = {
-    current: 'attribute',
+    current: 'common',
     disabled: false,
     loading: false
 };

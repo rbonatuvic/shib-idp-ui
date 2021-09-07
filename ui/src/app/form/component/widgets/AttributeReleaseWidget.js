@@ -1,10 +1,10 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import intersection from 'lodash/intersection';
 import Translate from "../../../i18n/components/translate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from 'react-bootstrap/Button';
-import { useTranslator } from "../../../i18n/hooks";
 
 const selectValue = (value, selected, all) => {
     const at = all.indexOf(value);
@@ -71,13 +71,49 @@ const AttributeReleaseWidget = ({
         onChange(update);
     }
 
+    const onUncheckBundle = (option) => {
+        const all = (enumOptions).map(({ value }) => value);
+        let update = [
+            ...value
+        ];
+        (option.value).forEach(v => update = deselectValue(v, update, all));
+
+        onChange(update);
+    }
+
     const onClearAll = () => {
         onChange([]);
     }
 
+    const attrs = React.useMemo(() => enumOptions.filter(e => !(typeof e.value === 'string' ? false : true)), [enumOptions]);
+    const bundles = React.useMemo(() => enumOptions.filter(e => (typeof e.value === 'string' ? false : true)), [enumOptions]);
+
+    const bundlelist = React.useMemo(() => bundles.map((b) => (
+        {
+            ...b,
+            selected: intersection(b.value, value).length === b.value.length
+        }
+    )), [bundles, value]);
+    
     return (
         <fieldset>
             <legend><Translate value={label || schema.title} /></legend>
+            {bundles && bundles.length > 0 &&
+            <ul class="list-group list-group-flush">
+                {(bundlelist).map((option) => (
+                <li class="list-group-item d-flex justify-content-between px-1">
+                    <strong>{option.label}</strong>
+                    <Button variant={option.selected ? 'outline-primary' : 'primary'} size="sm"
+                        onClick={() => option.selected ? onUncheckBundle(option) : onCheckBundle(option) }
+                    >
+                        <span className="sr-only"><Translate value="action.select">Select</Translate></span>
+                        <FontAwesomeIcon icon={faCheck} className="" />
+                    </Button>
+                </li>
+                ))}
+            </ul>
+            }
+
             <table className="table table-striped table-sm">
                 <thead>
                     <tr className="table-secondary">
@@ -86,25 +122,15 @@ const AttributeReleaseWidget = ({
                     </tr>
                 </thead>
                 <tbody>
-                    {(enumOptions).map((option, index) => {
+                    {(attrs).map((option, index) => {
                         const checked = value.indexOf(option.value) !== -1;
                         const itemDisabled =
                             enumDisabled && (enumDisabled).indexOf(option.value) !== -1;
-                        const bundled = typeof option.value === 'string' ? false : true;
                         return (
-                            <tr key={index} className={bundled ? 'bg-secondary border-bottom py-4 text-white' : ''}>
-                                <td className="align-middle">{bundled ?
-                                    <strong>{option.label}</strong>
-                                    :
-                                    <Translate value={`label.attribute-${option.label}`}>{option.label}</Translate>
-                                }</td>
+                            <tr key={index}>
+                                <td className="align-middle"><Translate value={`label.attribute-${option.label}`}>{option.label}</Translate></td>
                                 <td className="">
                                     <fieldset className="d-flex justify-content-end">
-                                    {bundled ? 
-                                        <Button variant="outline-primary bg-light" size="sm"
-                                            onClick={() => onCheckBundle(option)}
-                                            >Select</Button>
-                                    :
                                         <div className="custom-control custom-checkbox">
                                             <Form.Check
                                                 custom
@@ -120,7 +146,6 @@ const AttributeReleaseWidget = ({
                                                 disabled={disabled || itemDisabled || readonly}
                                             />
                                         </div>
-                                    }
                                     </fieldset>
                                 </td>
                             </tr>
