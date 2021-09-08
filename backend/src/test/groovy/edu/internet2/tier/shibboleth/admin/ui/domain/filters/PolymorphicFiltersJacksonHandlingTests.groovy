@@ -3,11 +3,15 @@ package edu.internet2.tier.shibboleth.admin.ui.domain.filters
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
+import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import org.springframework.beans.factory.annotation.Autowired
 
 class PolymorphicFiltersJacksonHandlingTests extends AbstractBaseDataJpaTest {
+
+    @Autowired
+    CustomPropertiesConfiguration customPropertiesConfiguration
 
     @Autowired
     TestObjectGenerator testObjectGenerator
@@ -17,6 +21,8 @@ class PolymorphicFiltersJacksonHandlingTests extends AbstractBaseDataJpaTest {
     def setup() {
         mapper = new ObjectMapper()
         mapper.enable(SerializationFeature.INDENT_OUTPUT)
+
+        customPropertiesConfiguration.postConstruct()
     }
 
     @WithMockAdmin
