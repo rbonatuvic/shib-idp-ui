@@ -7,7 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import java.util.List;
 
 @Entity

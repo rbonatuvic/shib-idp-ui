@@ -8,7 +8,6 @@ import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.controller.support.RestControllersSupport
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
-import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,9 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes=[UCILocalConfig])
 @Rollback
 class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
-    @Autowired
-    GroupsRepository groupsRepository
-
     @Autowired
     ObjectMapper mapper
     
@@ -80,12 +76,12 @@ class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
             }]
         groups.each {
             try {
-                groupsRepository.save(it)
+                groupRepository.save(it)
             } catch (Throwable e) {
                 // ???
             }
         }
-        groupsRepository.flush()
+        groupRepository.flush()
         
         if (userRepository.count() == 0) {
             users = [new User().with {
@@ -315,7 +311,7 @@ class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
         then:
         result.andExpect(status().isNotFound())
     }
-    
+
     @TestConfiguration
     private static class UCILocalConfig {
         @Bean

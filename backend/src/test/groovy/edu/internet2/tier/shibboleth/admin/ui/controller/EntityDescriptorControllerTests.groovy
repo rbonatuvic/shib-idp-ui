@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
@@ -19,17 +18,12 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
@@ -50,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@ContextConfiguration(classes=[EDCLocalConfig])
 class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     @Autowired
     EntityDescriptorRepository entityDescriptorRepository
@@ -675,15 +668,6 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         }
         catch (Exception e) {
             e instanceof ConcurrentModificationException
-        }
-    }
-
-    @TestConfiguration
-    private static class EDCLocalConfig {
-        @Bean
-        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
-                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
         }
     }
 }

@@ -1,7 +1,11 @@
 package edu.internet2.tier.shibboleth.admin.ui.security.repository
 
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.security.model.*
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownable
+import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnableType
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner
+import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership
 import org.springframework.transaction.annotation.Transactional
 
 /**

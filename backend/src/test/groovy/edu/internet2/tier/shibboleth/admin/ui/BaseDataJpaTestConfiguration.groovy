@@ -14,6 +14,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsReposito
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
@@ -55,6 +56,12 @@ class BaseDataJpaTestConfiguration {
     }
 
     @Bean
+    JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
+                                          CustomPropertiesConfiguration customPropertiesConfiguration) {
+        return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
+    }
+
+    @Bean
     ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
         return new ModelRepresentationConversions(customPropertiesConfiguration)
     }
@@ -80,6 +87,7 @@ class BaseDataJpaTestConfiguration {
     @Bean
     @Primary
     TestObjectGenerator testObjectGenerator (AttributeUtility attributeUtility, CustomPropertiesConfiguration customPropertiesConfiguration) {
+        customPropertiesConfiguration.postConstruct()
         return new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 

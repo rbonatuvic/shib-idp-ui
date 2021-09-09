@@ -27,6 +27,7 @@ class EntitiesControllerTests extends AbstractBaseDataJpaTest {
     @Autowired
     JPAEntityDescriptorServiceImpl serviceImpl
 
+    // Yeah, the setup here is dumb, but the order here is important and we don't need to repeat it, so leave all this alone
     OpenSamlObjects openSamlObjects = new OpenSamlObjects().with {
         it.init()
         it
@@ -51,7 +52,6 @@ class EntitiesControllerTests extends AbstractBaseDataJpaTest {
     @Subject
     def controller 
     def mockMvc
-
 
     def setup() {
         controller = new EntitiesController()

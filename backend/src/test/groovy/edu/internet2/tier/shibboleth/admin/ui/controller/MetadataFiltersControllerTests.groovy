@@ -273,7 +273,7 @@ class MetadataFiltersControllerTests extends AbstractBaseDataJpaTest {
         @Bean
         JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
                                               CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility,customPropertiesConfiguration)
+            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
         }
     }
 }

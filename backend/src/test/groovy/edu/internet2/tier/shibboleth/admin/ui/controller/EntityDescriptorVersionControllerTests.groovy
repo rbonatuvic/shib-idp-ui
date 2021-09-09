@@ -2,13 +2,11 @@ package edu.internet2.tier.shibboleth.admin.ui.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.Organization
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationDisplayName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationName
 import edu.internet2.tier.shibboleth.admin.ui.domain.OrganizationURL
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.envers.EnversVersionServiceSupport
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository
@@ -21,14 +19,11 @@ import edu.internet2.tier.shibboleth.admin.ui.service.EntityService
 import edu.internet2.tier.shibboleth.admin.ui.service.EnversEntityDescriptorVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.EnversMetadataResolverVersionService
 import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityDescriptorServiceImpl
-import edu.internet2.tier.shibboleth.admin.ui.service.JPAEntityServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.service.MetadataResolverVersionService
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import org.hamcrest.Matchers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.test.context.TestConfiguration
@@ -44,7 +39,6 @@ import javax.persistence.EntityManager
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ContextConfiguration(classes=[EDCLocalConfig])
@@ -156,12 +150,6 @@ class EntityDescriptorVersionControllerTests extends AbstractBaseDataJpaTest {
 
     @TestConfiguration
     private static class EDCLocalConfig {
-        @Bean
-        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
-                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
-        }
-
         @Bean
         EntityDescriptorVersionService entityDescriptorVersionService(EnversVersionServiceSupport support, EntityDescriptorService entityDescriptorService) {
             return new EnversEntityDescriptorVersionService(support, entityDescriptorService)

@@ -2,7 +2,6 @@ package edu.internet2.tier.shibboleth.admin.ui.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
-import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
@@ -15,22 +14,17 @@ import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSso
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.util.RandomGenerator
 import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
-import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.json.JacksonTester
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.PropertySource
-import org.springframework.test.context.ContextConfiguration
 import org.xmlunit.builder.DiffBuilder
 import org.xmlunit.builder.Input
 import org.xmlunit.diff.DefaultNodeMatcher
 import org.xmlunit.diff.ElementSelectors
 import spock.lang.Ignore
 
-@ContextConfiguration(classes=[JPAEDSILocalConfig])
 @PropertySource("classpath:application.yml")
 class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
     @Autowired
@@ -768,14 +762,5 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
         //TODO: Finish fleshing out this thing
 
         return ed
-    }
-
-    @TestConfiguration
-    private static class JPAEDSILocalConfig {
-        @Bean
-        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
-                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
-        }
     }
 }

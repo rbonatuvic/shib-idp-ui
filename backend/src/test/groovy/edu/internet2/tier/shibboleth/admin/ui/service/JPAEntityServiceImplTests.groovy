@@ -73,12 +73,6 @@ class JPAEntityServiceImplTests extends AbstractBaseDataJpaTest {
     @TestConfiguration
     private static class JPAESILocalConfig {
         @Bean
-        JPAEntityServiceImpl jpaEntityService(OpenSamlObjects openSamlObjects, AttributeUtility attributeUtility,
-                                              CustomPropertiesConfiguration customPropertiesConfiguration) {
-            return new JPAEntityServiceImpl(openSamlObjects, attributeUtility, customPropertiesConfiguration)
-        }
-
-        @Bean
         TestObjectGenerator testObjectGenerator(AttributeUtility attributeUtility, CustomPropertiesConfiguration customPropertiesConfiguration) {
             return new TestObjectGenerator(attributeUtility,customPropertiesConfiguration)
         }
