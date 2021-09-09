@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui
 
 import groovy.sql.Sql
 
-trait ResetsDatabase {
+trait ResetsDatabaseTrait {
     static final String H2_BACKUP_LOCATION = '/tmp/h2backup.sql'
 
     void dbsetup() {

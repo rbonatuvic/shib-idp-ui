@@ -1,7 +1,27 @@
 package edu.internet2.tier.shibboleth.admin.ui.util
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.*
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*
+
+import edu.internet2.tier.shibboleth.admin.ui.domain.ContactPerson
+import edu.internet2.tier.shibboleth.admin.ui.domain.Description
+import edu.internet2.tier.shibboleth.admin.ui.domain.DisplayName
+import edu.internet2.tier.shibboleth.admin.ui.domain.EmailAddress
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Extensions
+import edu.internet2.tier.shibboleth.admin.ui.domain.GivenName
+import edu.internet2.tier.shibboleth.admin.ui.domain.InformationURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.Logo
+import edu.internet2.tier.shibboleth.admin.ui.domain.NameIDFormat
+import edu.internet2.tier.shibboleth.admin.ui.domain.PrivacyStatementURL
+import edu.internet2.tier.shibboleth.admin.ui.domain.SPSSODescriptor
+import edu.internet2.tier.shibboleth.admin.ui.domain.SingleLogoutService
+import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils
 import org.opensaml.saml.common.xml.SAMLConstants

@@ -8,11 +8,6 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
 
 public interface GroupsRepository extends JpaRepository<Group, String> {
     void deleteByResourceId(String resourceId);
-    
-    List<Group> findAll();
-    
+
     Group findByResourceId(String id);
-    
-    @SuppressWarnings("unchecked")
-    Group save(Group group);
 }

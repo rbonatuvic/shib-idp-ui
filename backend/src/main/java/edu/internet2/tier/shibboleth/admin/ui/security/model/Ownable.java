@@ -4,10 +4,10 @@ public interface Ownable {
     /**
      * @return representation of the id of the object. This is likely (but not limited to) the resource id of the object
      */
-    public String getObjectId();
+    String getObjectId();
 
     /**
      * @return the OwnableType that describes the Ownable object
      */
-    public OwnableType getOwnableType();
+    OwnableType getOwnableType();
 }

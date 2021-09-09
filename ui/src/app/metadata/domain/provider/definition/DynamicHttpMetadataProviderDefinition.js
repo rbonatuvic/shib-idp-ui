@@ -70,9 +70,7 @@ export const DynamicHttpMetadataProviderWizard = {
             label: 'label.finished',
             index: 5,
             initialValues: [],
-            fields: [
-                'enabled'
-            ]
+            fields: []
         }
     ],
     uiSchema: defaultsDeep({
@@ -200,7 +198,6 @@ export const DynamicHttpMetadataProviderEditor = {
                 '@type',
                 'xmlId',
                 'metadataRequestURLConstructionScheme',
-                'enabled',
                 'requireValidMetadata',
                 'failFastInitialization'
             ]

@@ -26,6 +26,7 @@ import { NewProvider } from './metadata/new/NewProvider';
 import { Filter } from './metadata/Filter';
 import { Contention } from './metadata/contention/ContentionContext';
 import { SessionModal } from './core/user/SessionModal';
+import { Roles } from './admin/Roles';
 import Button from 'react-bootstrap/Button';
 import { Groups } from './admin/Groups';
 
@@ -66,7 +67,7 @@ function App() {
                                 <UserConfirmation>
                                     {(message, confirm, confirmCallback, setConfirm, getConfirmation) =>
                                         <Router getUserConfirmation={getConfirmation}>
-                                            <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} /> 
+                                            <ConfirmWindow message={message} confirm={confirm} confirmCallback={confirmCallback} setConfirm={setConfirm} />
                                             <QueryParamProvider ReactRouterRoute={Route}>
                                             <Header />
                                             <main className="pad-content">
@@ -80,6 +81,7 @@ function App() {
                                                     <Route path="/metadata/attributes" component={Attribute} />
                                                     <Route path="/metadata/provider/:id/filter" component={Filter} />
                                                     <Route path="/metadata/:type/:id" component={Metadata} />
+                                                    <Route path="/roles" component={Roles} />
                                                     <Route path="/groups" component={Groups} />
                                                     <Route path="*">
                                                         <Redirect to="/dashboard" />

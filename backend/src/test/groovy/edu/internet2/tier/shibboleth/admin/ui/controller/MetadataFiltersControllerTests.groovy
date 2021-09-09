@@ -4,9 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import edu.internet2.tier.shibboleth.admin.ui.AbstractBaseDataJpaTest
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.exceptions.MetadataFileNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.domain.filters.MetadataFilter
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.MetadataResolver
 import edu.internet2.tier.shibboleth.admin.ui.domain.resolvers.opensaml.OpenSamlChainingMetadataResolver
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
+import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
+import edu.internet2.tier.shibboleth.admin.ui.exception.InitializationException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository
@@ -83,6 +87,18 @@ class MetadataFiltersControllerTests extends AbstractBaseDataJpaTest {
 
                     @Override
                     Document generateConfiguration() {
+                        return null
+                    }
+
+                    @Override
+                    MetadataResolver updateMetadataResolverEnabledStatus(MetadataResolver existingResolver) throws ForbiddenException, MetadataFileNotFoundException, InitializationException {
+                        // This won't get called
+                        return null
+                    }
+
+                    @Override
+                    MetadataResolver findByResourceId(String resourceId) throws EntityNotFoundException {
+                        // This won't get called
                         return null
                     }
                 },

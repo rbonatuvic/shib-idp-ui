@@ -1,8 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.StringTrimModule
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener
@@ -10,6 +14,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsReposito
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
+import edu.internet2.tier.shibboleth.admin.ui.util.TestObjectGenerator
 import edu.internet2.tier.shibboleth.admin.util.AttributeUtility
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions
 import org.springframework.context.annotation.Bean
@@ -18,9 +23,12 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Primary
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
+
 @Configuration
 @Import([ShibUIConfiguration.class, CustomPropertiesConfiguration.class, SearchConfiguration.class])
-@ComponentScan(basePackages=[ "edu.internet2.tier.shibboleth.admin.ui.service", "edu.internet2.tier.shibboleth.admin.ui.security.service" ])
+@ComponentScan(basePackages=[ "edu.internet2.tier.shibboleth.admin.ui.service", "edu.internet2.tier.shibboleth.admin.ui.security.service",
+                              "edu.internet2.tier.shibboleth.admin.ui.security.model.listener"])
 class BaseDataJpaTestConfiguration {
     @Bean
     AttributeUtility attributeUtility(OpenSamlObjects openSamlObjects) {
@@ -52,11 +60,27 @@ class BaseDataJpaTestConfiguration {
     }
 
     @Bean
+    ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.setSerializationInclusion(NON_NULL)
+        mapper.registerModule(new JavaTimeModule())
+        mapper.registerModule(new StringTrimModule())
+        return mapper
+    }
+
+    @Bean
     @Primary
     OpenSamlObjects openSamlObjects() {
         OpenSamlObjects result = new OpenSamlObjects()
         result.init()
         return result
+    }
+
+    @Bean
+    @Primary
+    TestObjectGenerator testObjectGenerator (AttributeUtility attributeUtility, CustomPropertiesConfiguration customPropertiesConfiguration) {
+        return new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
     }
 
     @Bean

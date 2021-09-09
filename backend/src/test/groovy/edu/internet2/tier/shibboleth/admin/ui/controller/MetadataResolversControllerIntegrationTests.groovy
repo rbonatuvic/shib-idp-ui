@@ -64,15 +64,17 @@ class MetadataResolversControllerIntegrationTests extends AbstractBaseDataJpaTes
     AttributeUtility attributeUtility
 
     @Autowired
+    MetadataResolversController controller
+
+    @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
 
     @Autowired
-    MetadataResolversController controller
+    ObjectMapper mapper
 
     @Autowired
     MetadataResolverRepository metadataResolverRepository
 
-    ObjectMapper mapper
     TestObjectGenerator generator
     MockMvc mockMvc
 
@@ -81,11 +83,6 @@ class MetadataResolversControllerIntegrationTests extends AbstractBaseDataJpaTes
     @Transactional
     def setup() {
         generator = new TestObjectGenerator(attributeUtility, customPropertiesConfiguration)
-        mapper = new ObjectMapper()
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
-        mapper.setSerializationInclusion(NON_NULL)
-        mapper.registerModule(new JavaTimeModule())
-        mapper.registerModule(new StringTrimModule())
         metadataResolverRepository.deleteAll()
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).setMessageConverters(new MappingJackson2HttpMessageConverter(mapper)).build()
@@ -374,20 +371,6 @@ class MetadataResolversControllerIntegrationTests extends AbstractBaseDataJpaTes
         @Bean
         DirectoryService directoryService() {
             return new DirectoryServiceImpl()
-        }
-
-        @Bean
-        JPAMetadataResolverServiceImpl jpaMetadataResolverService(MetadataResolver metadataResolver, MetadataResolverRepository metadataResolverRepository,
-                                                                  OpenSamlObjects openSamlObjects, MetadataResolversPositionOrderContainerService resolversPositionOrderContainerService,
-                                                                  ShibUIConfiguration shibUIConfiguration) {
-            return new JPAMetadataResolverServiceImpl().with {
-                it.metadataResolver = metadataResolver
-                it.metadataResolverRepository = metadataResolverRepository
-                it.openSamlObjects = openSamlObjects
-                it.resolversPositionOrderContainerService = resolversPositionOrderContainerService
-                it.shibUIConfiguration = shibUIConfiguration
-                it
-            }
         }
 
         @Bean

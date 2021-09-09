@@ -63,25 +63,25 @@ class TestObjectGenerator {
         this.customPropertiesConfiguration = customPropertiesConfiguration
     }
 
-    DynamicHttpMetadataResolver buildDynamicHttpMetadataResolver() {
-        def resolver = new DynamicHttpMetadataResolver().with {
-            it.dynamicMetadataResolverAttributes = buildDynamicMetadataResolverAttributes()
-            it.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
-            it.maxConnectionsPerRoute = generator.randomInt(1, 100)
-            it.maxConnectionsTotal = generator.randomInt(1, 100)
-            it.supportedContentTypes = generator.randomStringList()
-            it.name = generator.randomString(10)
-            it.requireValidMetadata = generator.randomBoolean()
-            it.failFastInitialization = generator.randomBoolean()
-            it.sortKey = generator.randomInt(1, 10)
-            it.criterionPredicateRegistryRef = generator.randomString(10)
-            it.useDefaultPredicateRegistry = generator.randomBoolean()
-            it.satisfyAnyPredicates = generator.randomBoolean()
-            it.metadataFilters = buildAllTypesOfFilterList()
-            it
-        }
-        return resolver
-    }
+//    DynamicHttpMetadataResolver buildDynamicHttpMetadataResolver() {
+//        def resolver = new DynamicHttpMetadataResolver().with {
+//            it.dynamicMetadataResolverAttributes = buildDynamicMetadataResolverAttributes()
+//            it.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
+//            it.maxConnectionsPerRoute = generator.randomInt(1, 100)
+//            it.maxConnectionsTotal = generator.randomInt(1, 100)
+//            it.supportedContentTypes = generator.randomStringList()
+//            it.name = generator.randomString(10)
+//            it.requireValidMetadata = generator.randomBoolean()
+//            it.failFastInitialization = generator.randomBoolean()
+//            it.sortKey = generator.randomInt(1, 10)
+//            it.criterionPredicateRegistryRef = generator.randomString(10)
+//            it.useDefaultPredicateRegistry = generator.randomBoolean()
+//            it.satisfyAnyPredicates = generator.randomBoolean()
+//            it.metadataFilters = buildAllTypesOfFilterList()
+//            it
+//        }
+//        return resolver
+//    }
 
     HttpMetadataResolverAttributes buildHttpMetadataResolverAttributes() {
         def attributes = new HttpMetadataResolverAttributes().with {
@@ -109,24 +109,24 @@ class TestObjectGenerator {
         HttpMetadataResolverAttributes.HttpCachingType.values()[generator.randomInt(0, 2)]
     }
 
-    LocalDynamicMetadataResolver buildLocalDynamicMetadataResolver() {
-        def resolver = new LocalDynamicMetadataResolver().with {
-            it.dynamicMetadataResolverAttributes = buildDynamicMetadataResolverAttributes()
-            it.sourceDirectory = generator.randomString(10)
-            it.sourceKeyGeneratorRef = generator.randomString(10)
-            it.sourceManagerRef = generator.randomString(10)
-            it.failFastInitialization = generator.randomBoolean()
-            it.name = generator.randomString(10)
-            it.requireValidMetadata = generator.randomBoolean()
-            it.useDefaultPredicateRegistry = generator.randomBoolean()
-            it.criterionPredicateRegistryRef = generator.randomString(10)
-            it.satisfyAnyPredicates = generator.randomBoolean()
-            it.sortKey = generator.randomInt(1, 10)
-            it.metadataFilters = buildAllTypesOfFilterList()
-            it
-        }
-        return resolver
-    }
+//    LocalDynamicMetadataResolver buildLocalDynamicMetadataResolver() {
+//        def resolver = new LocalDynamicMetadataResolver().with {
+//            it.dynamicMetadataResolverAttributes = buildDynamicMetadataResolverAttributes()
+//            it.sourceDirectory = generator.randomString(10)
+//            it.sourceKeyGeneratorRef = generator.randomString(10)
+//            it.sourceManagerRef = generator.randomString(10)
+//            it.failFastInitialization = generator.randomBoolean()
+//            it.name = generator.randomString(10)
+//            it.requireValidMetadata = generator.randomBoolean()
+//            it.useDefaultPredicateRegistry = generator.randomBoolean()
+//            it.criterionPredicateRegistryRef = generator.randomString(10)
+//            it.satisfyAnyPredicates = generator.randomBoolean()
+//            it.sortKey = generator.randomInt(1, 10)
+//            it.metadataFilters = buildAllTypesOfFilterList()
+//            it
+//        }
+//        return resolver
+//    }
 
     DynamicMetadataResolverAttributes buildDynamicMetadataResolverAttributes() {
         def attributes = new DynamicMetadataResolverAttributes().with {
@@ -151,13 +151,11 @@ class TestObjectGenerator {
 
     List<MetadataFilter> buildAllTypesOfFilterList() {
         List<MetadataFilter> filterList = new ArrayList<>()
-        (1..generator.randomInt(4, 10)).each {
-            filterList.add(buildFilter { entityAttributesFilter() })
-            filterList.add(buildFilter { entityRoleWhitelistFilter() })
-            filterList.add(buildFilter { signatureValidationFilter() })
-            filterList.add(buildFilter { requiredValidUntilFilter() })
-            filterList.add(buildFilter { nameIdFormatFilter() })
-        }
+        filterList.add(buildFilter { entityAttributesFilter() })
+        filterList.add(buildFilter { entityRoleWhitelistFilter() })
+        filterList.add(buildFilter { signatureValidationFilter() })
+        filterList.add(buildFilter { requiredValidUntilFilter() })
+        filterList.add(buildFilter { nameIdFormatFilter() })
         return filterList
     }
 
@@ -180,7 +178,7 @@ class TestObjectGenerator {
                 randomFilter = nameIdFormatFilter()
                 break
             default:
-                throw new RuntimeException("Did you forget to create a TestObjectGenerator.copyOf method for filtertype: ${filterType} ?");
+                throw new RuntimeException("Did you forget to create a TestObjectGenerator.copyOf method for filtertype: ${filterType} ?")
         }
         randomFilter
     }
@@ -320,33 +318,27 @@ class TestObjectGenerator {
         List<Attribute> attributes = new ArrayList<>()
 
         customPropertiesConfiguration.getOverrides().each { override ->
-            if (generator.randomBoolean()) {
-                switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
-                    case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
-                        if (override.getPersistType() != null &&
-                                override.getPersistType() != override.getDisplayType()) {
-                            attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), override.persistValue))
-                        } else {
-                            attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), Boolean.valueOf(override.invert) ^ true))
-                        }
-                        break
-                    case ModelRepresentationConversions.AttributeTypes.INTEGER:
-                        attributes.add(attributeUtility.createAttributeWithIntegerValue(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomInt(0, 999999)))
-                        break
-                    case ModelRepresentationConversions.AttributeTypes.STRING:
-                        attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
-                        break
-                    case ModelRepresentationConversions.AttributeTypes.SET:
-                    case ModelRepresentationConversions.AttributeTypes.LIST:
-                        attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomStringList()))
-                        break
-                }
+            switch (ModelRepresentationConversions.AttributeTypes.valueOf(override.getDisplayType().toUpperCase())) {
+                case ModelRepresentationConversions.AttributeTypes.BOOLEAN:
+                    if (override.getPersistType() != null && override.getPersistType() != override.getDisplayType()) {
+                        attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), override.persistValue))
+                    } else {
+                        attributes.add(attributeUtility.createAttributeWithBooleanValue(override.getAttributeName(), override.getAttributeFriendlyName(), Boolean.valueOf(override.invert) ^ true))
+                    }
+                    break
+                case ModelRepresentationConversions.AttributeTypes.INTEGER:
+                    attributes.add(attributeUtility.createAttributeWithIntegerValue(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomInt(0, 999999)))
+                    break
+                case ModelRepresentationConversions.AttributeTypes.STRING:
+                    attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomString(30)))
+                    break
+                case ModelRepresentationConversions.AttributeTypes.SET:
+                case ModelRepresentationConversions.AttributeTypes.LIST:
+                    attributes.add(attributeUtility.createAttributeWithStringValues(override.getAttributeName(), override.getAttributeFriendlyName(), generator.randomStringList()))
+                    break
             }
         }
-        if (generator.randomBoolean()) {
-            attributes.add(attributeUtility.createAttributeWithStringValues(MDDCConstants.RELEASE_ATTRIBUTES, generator.randomStringList()))
-        }
-
+        attributes.add(attributeUtility.createAttributeWithStringValues(MDDCConstants.RELEASE_ATTRIBUTES, generator.randomStringList()))
         return attributes
     }
 
@@ -405,7 +397,6 @@ class TestObjectGenerator {
         EntityAttributesFilterTarget entityAttributesFilterTarget = new EntityAttributesFilterTarget()
         entityAttributesFilterTarget.setEntityAttributesFilterTargetType(EntityAttributesFilterTargetType.ENTITY)
         entityAttributesFilterTarget.setSingleValue(buildEntityAttributesFilterTargetValueByType(EntityAttributesFilterTargetType.ENTITY))
-
         return entityAttributesFilterTarget
     }
 
@@ -481,7 +472,7 @@ class TestObjectGenerator {
     }
 
     ContactPerson buildContactPerson() {
-        ContactPerson contactPerson = new ContactPerson();
+        ContactPerson contactPerson = new ContactPerson()
 
         contactPerson.setNamespaceURI(generator.randomString(20))
         contactPerson.setElementLocalName(generator.randomString(20))
@@ -507,9 +498,9 @@ class TestObjectGenerator {
                 break
             case 'Filesystem':
                 randomResolver = filesystemMetadataResolver()
-                break;
+                break
             default:
-                throw new RuntimeException("Did you forget to create a TestObjectGenerator.<type>MetadataResolver method for resolverType: ${metadataResolverType} ?");
+                throw new RuntimeException("Did you forget to create a TestObjectGenerator.<type>MetadataResolver method for resolverType: ${metadataResolverType} ?")
         }
         randomResolver
     }
@@ -582,25 +573,25 @@ class TestObjectGenerator {
         }
     }
 
-    ResourceBackedMetadataResolver resourceBackedMetadataResolverForSVN() {
-        new ResourceBackedMetadataResolver().with {
-            it.name = 'SVNResourceMetadata'
-            it.xmlId = 'SVNResourceMetadata'
-            it.svnMetadataResource = new SvnMetadataResource().with {
-                it.resourceFile = 'entity.xml'
-                it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
-                it.workingCopyDirectory = '%{idp.home}/metadata/svn'
-                it
-            }
-            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
-                it
-            }
-            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
-            it.enabled = Boolean.TRUE
-            it.doInitialization = Boolean.TRUE
-            it
-        }
-    }
+//    ResourceBackedMetadataResolver resourceBackedMetadataResolverForSVN() {
+//        new ResourceBackedMetadataResolver().with {
+//            it.name = 'SVNResourceMetadata'
+//            it.xmlId = 'SVNResourceMetadata'
+//            it.svnMetadataResource = new SvnMetadataResource().with {
+//                it.resourceFile = 'entity.xml'
+//                it.repositoryURL = 'https://svn.example.org/repo/path/to.dir'
+//                it.workingCopyDirectory = '%{idp.home}/metadata/svn'
+//                it
+//            }
+//            it.reloadableMetadataResolverAttributes = new ReloadableMetadataResolverAttributes().with {
+//                it
+//            }
+//            // Changes in MetadataResolver (removing defaults), so adding back those settings here.
+//            it.enabled = Boolean.TRUE
+//            it.doInitialization = Boolean.TRUE
+//            it
+//        }
+//    }
 
     ResourceBackedMetadataResolver resourceBackedMetadataResolverForClasspath() {
         new ResourceBackedMetadataResolver().with {
@@ -630,7 +621,7 @@ class TestObjectGenerator {
         resolver.criterionPredicateRegistryRef = generator.randomString(10)
         resolver.useDefaultPredicateRegistry = generator.randomBoolean()
         resolver.satisfyAnyPredicates = generator.randomBoolean()
-        resolver.metadataFilters = []
+        resolver.metadataFilters = [entityAttributesFilter(), entityRoleWhitelistFilter()]
         resolver.reloadableMetadataResolverAttributes = buildReloadableMetadataResolverAttributes()
         resolver.httpMetadataResolverAttributes = buildHttpMetadataResolverAttributes()
         return resolver

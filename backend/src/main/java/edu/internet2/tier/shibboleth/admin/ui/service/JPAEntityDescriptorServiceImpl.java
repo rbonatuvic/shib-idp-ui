@@ -1,7 +1,21 @@
 package edu.internet2.tier.shibboleth.admin.ui.service;
 
-import edu.internet2.tier.shibboleth.admin.ui.domain.*;
-import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*;
+import edu.internet2.tier.shibboleth.admin.ui.domain.Attribute;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityAttributes;
+import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty;
+import edu.internet2.tier.shibboleth.admin.ui.domain.KeyDescriptor;
+import edu.internet2.tier.shibboleth.admin.ui.domain.UIInfo;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSBoolean;
+import edu.internet2.tier.shibboleth.admin.ui.domain.XSInteger;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.AssertionConsumerServiceRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ContactRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.EntityDescriptorRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.LogoutEndpointRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.MduiRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.OrganizationRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.SecurityInfoRepresentation;
+import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.ServiceProviderSsoDescriptorRepresentation;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
@@ -9,41 +23,56 @@ import edu.internet2.tier.shibboleth.admin.ui.exception.InvalidPatternMatchExcep
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Group;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Owner;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.OwnerType;
+import edu.internet2.tier.shibboleth.admin.ui.security.model.Ownership;
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User;
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepository;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupACSs;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupContacts;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupLogout;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupOrganization;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupRelyingPartyOverrides;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSPSSODescriptor;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupSecurity;
+import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.setupUIInfo;
 import edu.internet2.tier.shibboleth.admin.util.MDDCConstants;
 import edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions;
+import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static edu.internet2.tier.shibboleth.admin.util.EntityDescriptorConversionUtils.*;
-import static edu.internet2.tier.shibboleth.admin.util.ModelRepresentationConversions.getStringListOfAttributeValues;
 
 @Slf4j
 @Service
 public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Autowired
-    EntityDescriptorRepository entityDescriptorRepository;
-    
+    private EntityDescriptorRepository entityDescriptorRepository;
+
     @Autowired
     IGroupService groupService;
-    
+
     @Autowired
     private OpenSamlObjects openSamlObjects;
-    
+
     @Autowired
     private OwnershipRepository ownershipRepository;
 
     @Autowired
-    UserService userService;
-    
+    private UserService userService;
+
     private EntityDescriptor buildDescriptorFromRepresentation(final EntityDescriptor ed, final EntityDescriptorRepresentation representation) {
         ed.setEntityID(representation.getEntityId());
         ed.setIdOfOwner(representation.getIdOfOwner());
@@ -77,14 +106,14 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
                     throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException {
         return createNew(createRepresentationFromDescriptor(ed));
     }
-    
+
     @Override
     public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep)
                     throws ForbiddenException, EntityIdExistsException, InvalidPatternMatchException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
-        
+
         if (entityDescriptorRepository.findByEntityID(edRep.getEntityId()) != null) {
             throw new EntityIdExistsException(edRep.getEntityId());
         }
@@ -95,7 +124,10 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         validateEntityIdAndACSUrls(edRep);
 
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
-        ed.setIdOfOwner(ownerId);
+        ed.setIdOfOwner(userService.getCurrentUserGroup().getOwnerId());
+
+        ownershipRepository.deleteEntriesForOwnedObject(ed);
+        ownershipRepository.save(new Ownership(userService.getCurrentUserGroup(), ed));
 
         return createRepresentationFromDescriptor(entityDescriptorRepository.save(ed));
     }
@@ -348,7 +380,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     @Override
     public List<String> getAttributeReleaseListFromAttributeList(List<Attribute> attributeList) {
         if (attributeList == null) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         attributeList.removeIf(Objects::isNull);
         return ModelRepresentationConversions.getAttributeReleaseListFromAttributeList(attributeList);
@@ -378,7 +410,7 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
         if (existingEd == null) {
             throw new EntityNotFoundException(String.format("The entity descriptor with entity id [%s] was not found for update.", edRep.getId()));
         }
-        if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
+        if (edRep.isServiceEnabled() && !userService.currentUserCanEnable(existingEd)) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
         if (StringUtils.isEmpty(edRep.getIdOfOwner())) {
@@ -394,15 +426,36 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
 
         validateEntityIdAndACSUrls(edRep);
         updateDescriptorFromRepresentation(existingEd, edRep);
-        return createRepresentationFromDescriptor(entityDescriptorRepository.save(existingEd));
+        existingEd = entityDescriptorRepository.save(existingEd);
+        ownershipRepository.deleteEntriesForOwnedObject(existingEd);
+        ownershipRepository.save(new Ownership(new Owner() {
+            public String getOwnerId() { return edRep.getIdOfOwner(); }
+            public OwnerType getOwnerType() { return OwnerType.GROUP; }
+        }, existingEd));
+        return createRepresentationFromDescriptor(existingEd);
     }
 
     @Override
+    // This should be private, but we use it in a couple different test classes not sure we should keep...
     public void updateDescriptorFromRepresentation(org.opensaml.saml.saml2.metadata.EntityDescriptor entityDescriptor, EntityDescriptorRepresentation representation) {
         if (!(entityDescriptor instanceof EntityDescriptor)) {
             throw new UnsupportedOperationException("not yet implemented");
         }
         buildDescriptorFromRepresentation((EntityDescriptor) entityDescriptor, representation);
+    }
+
+    @Override
+    public EntityDescriptorRepresentation updateEntityDescriptorEnabledStatus(String resourceId, boolean status) throws EntityNotFoundException, ForbiddenException {
+        EntityDescriptor ed = entityDescriptorRepository.findByResourceId(resourceId);
+        if (ed == null) {
+            throw new EntityNotFoundException("Entity with resourceid[" + resourceId + "] was not found for update");
+        }
+        if (!userService.currentUserCanEnable(ed)) {
+            throw new ForbiddenException("You do not have the permissions necessary to change the enable status of this entity descriptor.");
+        }
+        ed.setServiceEnabled(status);
+        ed = entityDescriptorRepository.save(ed);
+        return createRepresentationFromDescriptor(ed);
     }
 
     private void validateEntityIdAndACSUrls(EntityDescriptorRepresentation edRep) throws InvalidPatternMatchException {
