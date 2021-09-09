@@ -1,8 +1,12 @@
 package edu.internet2.tier.shibboleth.admin.ui
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.configuration.StringTrimModule
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.GroupUpdatedEntityListener
 import edu.internet2.tier.shibboleth.admin.ui.security.model.listener.UserUpdatedEntityListener
@@ -18,6 +22,8 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Primary
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 
 @Configuration
 @Import([ShibUIConfiguration.class, CustomPropertiesConfiguration.class, SearchConfiguration.class])
@@ -51,6 +57,16 @@ class BaseDataJpaTestConfiguration {
     @Bean
     ModelRepresentationConversions modelRepresentationConversions(CustomPropertiesConfiguration customPropertiesConfiguration) {
         return new ModelRepresentationConversions(customPropertiesConfiguration)
+    }
+
+    @Bean
+    ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper()
+        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+        mapper.setSerializationInclusion(NON_NULL)
+        mapper.registerModule(new JavaTimeModule())
+        mapper.registerModule(new StringTrimModule())
+        return mapper
     }
 
     @Bean

@@ -65,13 +65,15 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
     TestObjectGenerator generator
 
     @Autowired
+    ObjectMapper mapper
+
+    @Autowired
     OpenSamlObjects openSamlObjects
 
     @Autowired
     JPAEntityDescriptorServiceImpl jpaEntityDescriptorService
 
     RandomGenerator randomGenerator
-    def mapper
     def mockRestTemplate = Mock(RestTemplate)
     def mockMvc
 
@@ -91,7 +93,6 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         gb = groupService.createGroup(gb)
 
         randomGenerator = new RandomGenerator()
-        mapper = new ObjectMapper()
 
         controller = new EntityDescriptorController(versionService)
         controller.openSamlObjects = openSamlObjects

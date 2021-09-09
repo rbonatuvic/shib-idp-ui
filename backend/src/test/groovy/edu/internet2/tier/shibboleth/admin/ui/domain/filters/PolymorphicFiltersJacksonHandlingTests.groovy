@@ -14,14 +14,12 @@ class PolymorphicFiltersJacksonHandlingTests extends AbstractBaseDataJpaTest {
     CustomPropertiesConfiguration customPropertiesConfiguration
 
     @Autowired
-    TestObjectGenerator testObjectGenerator
-
     ObjectMapper mapper
 
-    def setup() {
-        mapper = new ObjectMapper()
-        mapper.enable(SerializationFeature.INDENT_OUTPUT)
+    @Autowired
+    TestObjectGenerator testObjectGenerator
 
+    def setup() {
         customPropertiesConfiguration.postConstruct()
     }
 

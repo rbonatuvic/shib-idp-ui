@@ -116,11 +116,11 @@ public class EntityDescriptorController {
     }
 
     @GetMapping("/EntityDescriptor/{resourceId}/Versions/{versionId}")
-    @Transactional
     public ResponseEntity<?> getSpecificVersion(@PathVariable String resourceId, @PathVariable String versionId) throws EntityNotFoundException, ForbiddenException {
         // this "get by resource id" verifies that both the ED exists and the user has proper access, so needs to remain
         EntityDescriptor ed = entityDescriptorService.getEntityDescriptorByResourceId(resourceId);
-        return ResponseEntity.ok(versionService.findSpecificVersionOfEntityDescriptor(ed.getResourceId(), versionId));
+        EntityDescriptorRepresentation result = versionService.findSpecificVersionOfEntityDescriptor(ed.getResourceId(), versionId);
+        return ResponseEntity.ok(result);
     }
   
     private ResponseEntity<?> handleUploadingEntityDescriptorXml(byte[] rawXmlBytes, String spName) throws Exception {

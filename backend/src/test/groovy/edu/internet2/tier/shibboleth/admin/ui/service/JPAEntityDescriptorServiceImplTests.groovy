@@ -37,6 +37,9 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
     EntityService entityService
 
     @Autowired
+    ObjectMapper mapper
+
+    @Autowired
     OpenSamlObjects openSamlObjects
 
     @Autowired
@@ -47,7 +50,6 @@ class JPAEntityDescriptorServiceImplTests extends AbstractBaseDataJpaTest {
 
     RandomGenerator generator
     JacksonTester<EntityDescriptorRepresentation> jacksonTester
-    ObjectMapper mapper = new ObjectMapper()
 
     def setup() {        
         JacksonTester.initFields(this, mapper)
