@@ -13,18 +13,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Service
 @NoArgsConstructor
 public class GroupServiceImpl implements IGroupService {
+    private static final String CHECK_REGEX = "function isValid(exp){try{new RegExp(exp);return true;}catch(e){return false;}};isValid(rgx);";
+    private static final String REGEX_MATCHER = "function validate(r, s){ return (r).test(s);};validate(rgx, str);";
+    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("js");
+
     @Autowired
     protected GroupsRepository groupRepository;
-    
+
     @Autowired
     protected OwnershipRepository ownershipRepository;
-    
+
     public GroupServiceImpl(GroupsRepository repo, OwnershipRepository ownershipRepository) {
         this.groupRepository = repo;
         this.ownershipRepository = ownershipRepository;
@@ -63,8 +69,18 @@ public class GroupServiceImpl implements IGroupService {
     @Override
     public boolean doesStringMatchGroupPattern(String groupId, String uri) {
         Group group = find(groupId);
-        //@TODO change matching to rhino
-        return Pattern.matches(group.getValidationRegex(), uri);
+
+        String regExp = group.getValidationRegex();
+        engine.put("str", uri);
+        try {
+            engine.eval("var rgx=" + regExp);
+            Object value = engine.eval(REGEX_MATCHER);
+            return Boolean.valueOf(value.toString());
+        }
+        catch (ScriptException e) {
+            return false;
+        }
+
     }
 
     @Override
@@ -75,7 +91,7 @@ public class GroupServiceImpl implements IGroupService {
             g = new Group();
             g.setName("ADMIN-GROUP");
             g.setResourceId("admingroup");
-            g.setValidationRegex("^.+$"); // Just about everything
+            g.setValidationRegex(Group.DEFAULT_REGEX);
             g = groupRepository.save(g);
         }
         Group.ADMIN_GROUP = g;
@@ -112,9 +128,13 @@ public class GroupServiceImpl implements IGroupService {
             return;
         }
         try {
-            Pattern.compile(group.getValidationRegex());
+            engine.eval("var rgx=" + group.getValidationRegex());
+            Object value = engine.eval(CHECK_REGEX);
+            if (!Boolean.valueOf(value.toString())) {
+                throw new InvalidGroupRegexException("Invalid Regular Expression [ " + group.getValidationRegex() + " ]");
+            }
         }
-        catch (Exception e) {
+        catch (ScriptException e) {
             throw new InvalidGroupRegexException("Invalid Regular Expression [ " + group.getValidationRegex() + " ]");
         }
     }

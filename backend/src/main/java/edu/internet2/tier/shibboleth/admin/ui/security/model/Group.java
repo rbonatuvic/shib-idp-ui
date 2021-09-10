@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @EntityListeners(GroupUpdatedEntityListener.class)
 @Entity(name = "user_groups")
 public class Group implements Owner {
-    public static final String DEFAULT_REGEX = "^.+$"; //everything
+    public static final String DEFAULT_REGEX = "/(?!^()$)^(.*)$/"; //everything except an empty string
 
     @Transient
     @JsonIgnore

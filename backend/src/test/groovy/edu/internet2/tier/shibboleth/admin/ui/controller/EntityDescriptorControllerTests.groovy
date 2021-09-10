@@ -82,7 +82,7 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
         Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
-        gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
+        gb.setValidationRegex("/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/")
         gb = groupService.createGroup(gb)
 
         randomGenerator = new RandomGenerator()
@@ -186,6 +186,25 @@ class EntityDescriptorControllerTests extends AbstractBaseDataJpaTest {
               .andExpect(jsonPath("\$.[1].entityId").value("eid2"))
               .andExpect(jsonPath("\$.[1].serviceEnabled").value(false))
               .andExpect(jsonPath("\$.[1].idOfOwner").value("admingroup"))
+    }
+
+    @WithMockUser(value = "someUser", roles = ["USER"])
+    def 'POST create new - entity id does not match pattern'() {
+        when:
+        def expectedEntityId = 'https://google.com/blah/blah'
+        EntityDescriptorRepresentation edRep = new EntityDescriptorRepresentation()
+        edRep.setEntityId(expectedEntityId)
+        edRep.setServiceProviderName("spName")
+
+        def edRepJson = mapper.writeValueAsString(edRep)
+
+        then:
+        try {
+            mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(edRepJson))
+            false
+        } catch (NestedServletException expected) {
+            expected.getCause() instanceof InvalidPatternMatchException
+        }
     }
 
     @WithMockUser(value = "someUser", roles = ["USER"])

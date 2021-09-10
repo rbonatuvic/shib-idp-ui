@@ -25,7 +25,7 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
         g.getValidationRegex() == Group.DEFAULT_REGEX
 
         when:
-        g.setValidationRegex("/*")
+        g.setValidationRegex("/\\w\\b\\w/")
         try {
             g = groupService.updateGroup(g)
         } catch (Exception shouldNotOccur) {
@@ -33,10 +33,10 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
         }
 
         then:
-        g.getValidationRegex() == "/*"
+        g.getValidationRegex() == "/\\w\\b\\w/"
 
         when:
-        g.setValidationRegex("^(http:\\\\/\\\\/www\\\\.|https:\\\\/\\\\/www\\\\.|http:\\\\/\\\\/|https:\\\\/\\\\/)?[a-z0-9]+([\\\\-\\\\.]twitter+)\\\\.[a-z]{2,5}(:[0-9]{1,5})?(\\\\/.*)?\\\$")
+        g.setValidationRegex("/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/")
         try {
             g = groupService.updateGroup(g)
         } catch (Exception shouldNotOccur) {
@@ -44,7 +44,7 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
         }
 
         then:
-        g.getValidationRegex() == "^(http:\\\\/\\\\/www\\\\.|https:\\\\/\\\\/www\\\\.|http:\\\\/\\\\/|https:\\\\/\\\\/)?[a-z0-9]+([\\\\-\\\\.]twitter+)\\\\.[a-z]{2,5}(:[0-9]{1,5})?(\\\\/.*)?\\\$"
+        g.getValidationRegex() == "/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/"
 
         when:
         g.setValidationRegex("*")

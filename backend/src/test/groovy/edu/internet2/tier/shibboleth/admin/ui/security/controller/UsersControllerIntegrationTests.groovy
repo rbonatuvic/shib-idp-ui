@@ -44,7 +44,7 @@ class UsersControllerIntegrationTests extends AbstractBaseDataJpaTest {
     def users
     
     static RESOURCE_URI = '/api/admin/users'
-    static VALIDATION_REGEX = "^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$"
+    static VALIDATION_REGEX = "/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/"
     
     def setup() {
         def controller = new UsersController(userRepository, userService)
