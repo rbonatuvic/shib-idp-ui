@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional
 import javax.annotation.PostConstruct
 
 @Component
-@Profile('dev')
+@Profile(['dev','very-dangerous'])
 class DevConfig {
     private final EntityDescriptorRepository entityDescriptorRepository
     private final GroupsRepository groupsRepository
