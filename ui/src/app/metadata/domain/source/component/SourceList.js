@@ -39,42 +39,42 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                             </tr>
                         </thead>
                         <tbody>
-                            {limited.map((source, idx) =>
-                                <tr key={idx}>
-                                    <td className="align-middle">
-                                        <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName}</Link>
-                                    </td>
-                                    <td className="align-middle">
-                                        {source.entityId}
-                                    </td>
-                                    <td className="align-middle">
-                                        {source.createdBy}
-                                    </td>
-                                    <td className="align-middle"><FormattedDate date={source.createdDate} /></td>
-                                    <td className="text-center align-middle">
-                                        <span className="d-flex justify-content-center align-items-center">
-                                        {onEnable && canEnable ?
-                                            <Form.Check
-                                                type="switch"
-                                                id={`enable-switch-${source.id}`}
-                                                size="lg"
-                                                aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}
-                                                onChange={({ target: { checked } }) => onEnable(source, checked)}
-                                                checked={source.serviceEnabled}
-                                            >
-                                            </Form.Check>
-                                            :
-                                            <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
-                                                <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
-                                            </Badge>
-                                        }
-                                        </span>
-                                    </td>
-                                    {isAdmin && onChangeGroup &&
-                                    <td className="align-middle">
-                                        <GroupsProvider>
-                                            {(groups, removeGroup, loadingGroups) =>
-                                                <React.Fragment>
+                            <GroupsProvider>
+                                {(groups, removeGroup, loadingGroups) =>
+                                    <React.Fragment>
+                                        {limited.map((source, idx) =>
+                                        <tr key={idx}>
+                                            <td className="align-middle">
+                                                <Link to={`/metadata/source/${source.id}/configuration/options`}>{source.serviceProviderName}</Link>
+                                            </td>
+                                            <td className="align-middle">
+                                                {source.entityId}
+                                            </td>
+                                            <td className="align-middle">
+                                                {source.createdBy}
+                                            </td>
+                                            <td className="align-middle"><FormattedDate date={source.createdDate} /></td>
+                                            <td className="text-center align-middle">
+                                                <span className="d-flex justify-content-center align-items-center">
+                                                {onEnable && canEnable ?
+                                                    <Form.Check
+                                                        type="switch"
+                                                        id={`enable-switch-${source.id}`}
+                                                        size="lg"
+                                                        aria-label={translator(source.serviceEnabled ? 'label.disable' : 'label.enable')}
+                                                        onChange={({ target: { checked } }) => onEnable(source, checked)}
+                                                        checked={source.serviceEnabled}
+                                                    >
+                                                    </Form.Check>
+                                                    :
+                                                    <Badge variant={source.serviceEnabled ? 'success' : 'danger'}>
+                                                        <Translate value={source.serviceEnabled ? 'value.enabled' : 'value.disabled'}></Translate>
+                                                    </Badge>
+                                                }
+                                                </span>
+                                            </td>
+                                            {isAdmin && onChangeGroup &&
+                                                <td className="align-middle">
                                                     <label htmlFor={`group-${source.serviceProviderName}`} className="sr-only"><Translate value="action.source-group">Group</Translate></label>
                                                     <select
                                                         id={`group-${source.id}`}
@@ -89,32 +89,33 @@ export default function SourceList({ entities, onDelete, onEnable, onChangeGroup
                                                             <option key={ridx} value={g.resourceId}>{g.name}</option>
                                                         ))}
                                                     </select>
-                                                </React.Fragment>
+                                                </td>
                                             }
-                                        </GroupsProvider>
-                                    </td>
-                                    }
-                                    {onDelete && isAdmin &&
-                                    <td className="text-right align-middle">
-                                        <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
-                                            overlay={
-                                                <Popover id={`delete-source-btn-${idx}`}>
-                                                    <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
-                                                </Popover>
-                                            }>
-                                            <span className="d-inline-block">
-                                                <Button variant="danger" size="sm"
-                                                    type="button"
-                                                    disabled={source.serviceEnabled}
-                                                    onClick={() => onDelete(source.id, onDelete)}>
-                                                    <span className="sr-only">Delete</span>
-                                                    <FontAwesomeIcon icon={faTrash} />
-                                                </Button>
-                                            </span>
-                                        </OverlayTrigger>
-                                    </td>}
-                                </tr>
-                            )}
+                                            {onDelete && isAdmin &&
+                                                <td className="text-right align-middle">
+                                                    <OverlayTrigger trigger={source.serviceEnabled ? ['hover', 'focus'] : []} placement="left"
+                                                        overlay={
+                                                            <Popover id={`delete-source-btn-${idx}`}>
+                                                                <Popover.Content>A metadata source must be disabled before it can be deleted.</Popover.Content>
+                                                            </Popover>
+                                                        }>
+                                                        <span className="d-inline-block">
+                                                            <Button variant="danger" size="sm"
+                                                                type="button"
+                                                                disabled={source.serviceEnabled}
+                                                                onClick={() => onDelete(source.id, onDelete)}>
+                                                                <span className="sr-only">Delete</span>
+                                                                <FontAwesomeIcon icon={faTrash} />
+                                                            </Button>
+                                                        </span>
+                                                    </OverlayTrigger>
+                                                </td>
+                                                }
+                                        </tr>
+                                        )}
+                                    </React.Fragment>
+                                }
+                            </GroupsProvider>
                         </tbody>
                     </table>
                 </div>
