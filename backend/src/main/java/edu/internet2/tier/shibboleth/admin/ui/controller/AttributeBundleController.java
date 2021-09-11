@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,12 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AttributeBundleController {
     @Autowired AttributeBundleService attributeBundleService;
-
-    @GetMapping
-    @Transactional(readOnly = true)
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(attributeBundleService.findAll());
-    }
 
     @Secured("ROLE_ADMIN")
     @PostMapping
@@ -49,5 +44,17 @@ public class AttributeBundleController {
         return ResponseEntity.noContent().build();
     }
 
-    //PUT
+    @GetMapping
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getAll() {
+        return ResponseEntity.ok(attributeBundleService.findAll());
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PutMapping
+    @Transactional
+    public ResponseEntity<?> update(@RequestBody AttributeBundle bundle) throws EntityNotFoundException {
+        AttributeBundle result = attributeBundleService.updateBundle(bundle);
+        return ResponseEntity.ok(result);
+    }
 }

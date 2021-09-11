@@ -20,14 +20,13 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.util.NestedServletException
 import spock.lang.Specification
 
-import static org.hamcrest.CoreMatchers.containsString
 import static org.hamcrest.Matchers.containsInAnyOrder
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -42,10 +41,7 @@ class AttributeBundleControllerTests extends Specification {
     @Autowired
     AttributeBundleRepository attributeBundleRepository
 
-    ObjectMapper objectMapper = new ObjectMapper().with {
-        it.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
-        it
-    }
+    ObjectMapper objectMapper = new ObjectMapper()
 
     def MockMvc
 
@@ -161,6 +157,49 @@ class AttributeBundleControllerTests extends Specification {
         then:
         result.andExpect(status().isNoContent())
         attributeBundleRepository.findAll().isEmpty()
+    }
+
+    def "Update checks" () {
+        expect:
+        attributeBundleRepository.findAll().isEmpty()
+
+        when: "add a bundle"
+        def json = """            
+              {
+	            "name": "bundleName",
+	            "resourceId": "randomIDVal",
+	            "attributes": ["eduPersonPrincipalName", "surname", "givenName"]
+              }                
+        """
+        AttributeBundle bundle = objectMapper.readValue(json, AttributeBundle.class)
+        attributeBundleRepository.saveAndFlush(bundle)
+
+        then: "bundle doesn't exist"
+        bundle.setResourceId("foo")
+        try {
+            mockMvc.perform(put('/api/custom/entity/bundles').contentType(APPLICATION_JSON).content(objectMapper.writeValueAsString(bundle)))
+            false
+        } catch (NestedServletException expected) {
+            expected.getCause() instanceof EntityNotFoundException
+        }
+
+        when: "update bundle"
+        json = """            
+              {
+	            "name": "bundle2",
+	            "resourceId": "randomIDVal",
+	            "attributes": ["eduPersonUniqueId", "employeeNumber", "givenName"]
+              }                
+        """
+
+        def result = mockMvc.perform(put('/api/custom/entity/bundles').contentType(APPLICATION_JSON).content(json))
+
+        then:
+        result.andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("\$.name").value("bundle2"))
+                .andExpect(jsonPath("\$.resourceId").value("randomIDVal"))
+                .andExpect(jsonPath("\$.attributes", containsInAnyOrder("eduPersonUniqueId", "employeeNumber", "givenName")))
     }
 
     // can go away with merge to develop and this extends the base test class

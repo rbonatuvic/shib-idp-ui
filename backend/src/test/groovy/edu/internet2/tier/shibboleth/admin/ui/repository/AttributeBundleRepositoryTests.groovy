@@ -19,10 +19,7 @@ class AttributeBundleRepositoryTests extends Specification {
     @Autowired
     AttributeBundleRepository attributeBundleRepository
 
-    ObjectMapper objectMapper = new ObjectMapper().with {
-        it.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
-        it
-    }
+    ObjectMapper objectMapper = new ObjectMapper()
 
     def "test create and fetch" () {
         given:
