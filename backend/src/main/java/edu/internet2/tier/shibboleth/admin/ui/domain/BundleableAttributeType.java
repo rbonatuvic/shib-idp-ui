@@ -1,5 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import edu.internet2.tier.shibboleth.admin.util.BundleableAttributeTypeValueSerializer;
 
@@ -26,9 +27,10 @@ public enum BundleableAttributeType {
 
     public String label() {return label;}
 
+    @JsonCreator
     public static BundleableAttributeType valueOfLabel(String label) {
         for (BundleableAttributeType e : values()) {
-            if (e.name().equals(label)) {
+            if (e.label.equals(label)) {
                 return e;
             }
         }

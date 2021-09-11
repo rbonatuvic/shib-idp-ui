@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.repository.AttributeBundleRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.AttributeBundleService
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,16 +16,20 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.util.NestedServletException
 import spock.lang.Specification
 
+import static org.hamcrest.CoreMatchers.containsString
 import static org.hamcrest.Matchers.containsInAnyOrder
 import static org.springframework.http.MediaType.APPLICATION_JSON
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@DataJpaTest
+@DataJpaTest(properties = ["spring.jackson.mapper.accept-case-insensitive-enums=true"])
 @EnableJpaRepositories(basePackages = ["edu.internet2.tier.shibboleth.admin.ui"])
 @EntityScan("edu.internet2.tier.shibboleth.admin.ui")
 @ContextConfiguration(classes = [ShibUIConfiguration, ABCTConfig])
@@ -81,7 +86,48 @@ class AttributeBundleControllerTests extends Specification {
                 .andExpect(jsonPath("\$.[0].attributes", containsInAnyOrder("eduPersonPrincipalName", "surname", "givenName")))
     }
 
-    // can go away with merge to develop...
+    def "CREATE checks" () {
+        expect:
+        attributeBundleRepository.findAll().isEmpty()
+
+        when: "add a bundle"
+        def json = """            
+              {
+	            "name": "bundleName",
+	            "resourceId": "randomIDVal",
+	            "attributes": ["eduPersonPrincipalName", "surname", "givenName"]
+              }                
+        """
+        AttributeBundle bundle = objectMapper.readValue(json, AttributeBundle.class)
+        attributeBundleRepository.saveAndFlush(bundle)
+
+        then: "bundle already exists"
+        try {
+            mockMvc.perform(post('/api/custom/entity/bundles').contentType(APPLICATION_JSON).content(json))
+            false
+        } catch (NestedServletException expected) {
+            expected.getCause() instanceof ObjectIdExistsException
+        }
+
+        when: "new bundle"
+        json = """            
+              {
+	            "name": "bundle2",
+	            "resourceId": "differentResourceId",
+	            "attributes": ["eduPersonPrincipalName", "surname", "givenName"]
+              }                
+        """
+
+        def result = mockMvc.perform(post('/api/custom/entity/bundles').contentType(APPLICATION_JSON).content(json))
+        then:
+             result.andExpect(status().isCreated())
+                   .andExpect(content().contentType(APPLICATION_JSON))
+                   .andExpect(jsonPath("\$.name").value("bundle2"))
+                   .andExpect(jsonPath("\$.resourceId").value("differentResourceId"))
+                   .andExpect(jsonPath("\$.attributes", containsInAnyOrder("eduPersonPrincipalName", "surname", "givenName")))
+    }
+
+    // can go away with merge to develop and this extends the base test class
     @TestConfiguration
     private static class ABCTConfig {
         @Bean

@@ -2,7 +2,7 @@ package edu.internet2.tier.shibboleth.admin.ui.service;
 
 import edu.internet2.tier.shibboleth.admin.ui.domain.*;
 import edu.internet2.tier.shibboleth.admin.ui.domain.frontend.*;
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException;
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException;
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException;
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects;
@@ -66,18 +66,19 @@ public class JPAEntityDescriptorServiceImpl implements EntityDescriptorService {
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, EntityIdExistsException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptor ed) throws ForbiddenException, ObjectIdExistsException {
         return createNew(createRepresentationFromDescriptor(ed));
     }
 
     @Override
-    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException, EntityIdExistsException {
+    public EntityDescriptorRepresentation createNew(EntityDescriptorRepresentation edRep) throws ForbiddenException,
+                    ObjectIdExistsException {
         if (edRep.isServiceEnabled() && !userService.currentUserIsAdmin()) {
             throw new ForbiddenException("You do not have the permissions necessary to enable this service.");
         }
 
         if (entityDescriptorRepository.findByEntityID(edRep.getEntityId()) != null) {
-            throw new EntityIdExistsException(edRep.getEntityId());
+            throw new ObjectIdExistsException(edRep.getEntityId());
         }
 
         EntityDescriptor ed = (EntityDescriptor) createDescriptorFromRepresentation(edRep);
