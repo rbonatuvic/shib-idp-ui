@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.internet2.tier.shibboleth.admin.ui.configuration.ShibUIConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle
+import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.repository.AttributeBundleRepository
 import edu.internet2.tier.shibboleth.admin.ui.service.AttributeBundleService
@@ -22,6 +23,7 @@ import spock.lang.Specification
 import static org.hamcrest.CoreMatchers.containsString
 import static org.hamcrest.Matchers.containsInAnyOrder
 import static org.springframework.http.MediaType.APPLICATION_JSON
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -125,6 +127,40 @@ class AttributeBundleControllerTests extends Specification {
                    .andExpect(jsonPath("\$.name").value("bundle2"))
                    .andExpect(jsonPath("\$.resourceId").value("differentResourceId"))
                    .andExpect(jsonPath("\$.attributes", containsInAnyOrder("eduPersonPrincipalName", "surname", "givenName")))
+    }
+
+    def "test delete" () {
+        expect:
+        attributeBundleRepository.findAll().isEmpty()
+
+        when:
+        def json = """            
+              {
+	            "name": "bundleName",
+	            "resourceId": "randomIDVal",
+	            "attributes": ["eduPersonPrincipalName", "surname", "givenName"]
+              }                
+        """
+        AttributeBundle bundle = objectMapper.readValue(json, AttributeBundle.class)
+        attributeBundleRepository.save(bundle)
+
+        then:
+        attributeBundleRepository.findAll().size() == 1
+
+        // Delete something doesn't exist
+        try {
+            mockMvc.perform(delete("/api/custom/entity/bundles/randomIDValdoesntexist"))
+            false
+        } catch (NestedServletException expected) {
+            expected instanceof EntityNotFoundException
+        }
+
+        when: "Delete what does exist"
+        def result = mockMvc.perform(delete("/api/custom/entity/bundles/randomIDVal"))
+
+        then:
+        result.andExpect(status().isNoContent())
+        attributeBundleRepository.findAll().isEmpty()
     }
 
     // can go away with merge to develop and this extends the base test class

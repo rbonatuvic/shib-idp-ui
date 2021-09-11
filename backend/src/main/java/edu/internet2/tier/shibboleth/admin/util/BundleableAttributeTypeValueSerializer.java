@@ -10,8 +10,7 @@ import java.io.IOException;
 /**
  * This simplifies translation to the front end. We use the ENUM on the backend, but the <code>BundleableAttributeType</code>
  * is tagged to serialize using this helper.
- * Note: The deserialize is done naturally by setting <code>spring.jackson.mapper.accept-case-insensitive-enums=true</code> in
- * the application.properties and by the setup of the ENUM itself
+ * Note: The deserialize is done by the setup of the ENUM itself
  */
 public class BundleableAttributeTypeValueSerializer extends StdSerializer<BundleableAttributeType> {
     public BundleableAttributeTypeValueSerializer() {

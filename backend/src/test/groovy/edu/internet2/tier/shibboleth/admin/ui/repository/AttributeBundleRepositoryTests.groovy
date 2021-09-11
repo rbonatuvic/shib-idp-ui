@@ -17,7 +17,7 @@ import spock.lang.Specification
 @ContextConfiguration(classes = [ShibUIConfiguration])
 class AttributeBundleRepositoryTests extends Specification {
     @Autowired
-    AttributeBundleRepository abRepo
+    AttributeBundleRepository attributeBundleRepository
 
     ObjectMapper objectMapper = new ObjectMapper().with {
         it.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
@@ -37,7 +37,7 @@ class AttributeBundleRepositoryTests extends Specification {
         AttributeBundle bundle = objectMapper.readValue(json, AttributeBundle.class)
 
         when:
-        def result = abRepo.save(bundle)
+        def result = attributeBundleRepository.save(bundle)
 
         then:
         result == bundle
