@@ -113,12 +113,15 @@ public class User extends AbstractAuditable implements Owner, Ownable {
     public OwnerType getOwnerType() {
         return OwnerType.USER;
     }
-    
+
+    /**
+     * @return the FIRST role found for the user or an exception if the user has no roles
+     */
     public String getRole() {
         if (StringUtils.isBlank(this.role)) {
             Set<Role> roles = this.getRoles();
-            if (roles.size() != 1) {
-                throw new RuntimeException(String.format("User with username [%s] has no role or does not have exactly one role!", this.getUsername()));
+            if (roles.isEmpty()) {
+                throw new RuntimeException(String.format("User with username [%s] has no roles", this.getUsername()));
             }
             this.role = roles.iterator().next().getName();
         }

@@ -107,8 +107,6 @@ public class Pac4jConfiguration {
             saml2Config.setForceServiceProviderMetadataGeneration(pac4jConfigProps.isForceServiceProviderMetadataGeneration());
             saml2Config.setWantsAssertionsSigned(pac4jConfigProps.isWantAssertionsSigned());
             saml2Config.setAttributeAsId(pac4jConfigProps.getSimpleProfileMapping().getUsername());
-            //saml2Config.setPostLogoutURL(pac4jConfigProps.getPostLogoutURL()); // consideration needed?
-            //saml2Config.setSpLogoutRequestBindingType(pac4jConfigProps.getSpLogoutRequestBindingType());
 
             final SAML2Client saml2Client = new SAML2Client(saml2Config);
             saml2Client.addAuthorizationGenerator(saml2ModelAuthorizationGenerator);
