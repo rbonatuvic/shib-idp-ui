@@ -1,10 +1,11 @@
 import { defaultsDeep } from "lodash";
+import { BASE_PATH } from "../../../App.constant";
 
 export const CustomAttributeDefinition = {
     label: 'Metadata Attribute',
     type: '@MetadataAttribute',
     steps: [],
-    schema: `/assets/schema/attribute/attribute.schema.json`,
+    schema: `${BASE_PATH}assets/schema/attribute/attribute.schema.json`,
 
     uiSchema: {
         layout: {

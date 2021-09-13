@@ -3,6 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Header } from './Header';
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('../../i18n/hooks', () => ({
     useTranslator: () => (value) => value,
     useTranslation: (value) => value

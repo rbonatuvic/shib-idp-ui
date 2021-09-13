@@ -210,6 +210,7 @@ const FilterTargetField = ({
                                             className="form-control"
                                             type="text"
                                             name="script"
+                                            value={selectedTarget[0]}
                                             onChange={ ({target: { value }}) => handleTextChange(value) } />
                                         {errorSchema?.value?.__errors ?
                                             <small className="form-text text-danger">

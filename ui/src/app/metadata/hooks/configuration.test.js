@@ -5,6 +5,12 @@ import {
     useMetadataConfiguration
 } from './configuration';
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 describe('useMetadataConfiguration hook', () => {
     it('should return an empty object if any parameters are not supplied', () => {
         expect(useMetadataConfiguration(null, {}, {})).toEqual({});

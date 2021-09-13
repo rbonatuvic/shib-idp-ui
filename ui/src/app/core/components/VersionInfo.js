@@ -1,6 +1,7 @@
 import React from 'react';
 
 import useFetch from 'use-http';
+import { BASE_PATH } from '../../App.constant';
 
 import Translate from '../../i18n/components/translate';
 
@@ -11,7 +12,7 @@ const params = { year };
 
 export function VersionInfo () {
 
-    const { data = {} } = useFetch('/actuator/info', {}, []);
+    const { data = {} } = useFetch(`${BASE_PATH}actuator/info`, {}, []);
 
     const [ versionData, setVersionData ] = React.useState('');
     

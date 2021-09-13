@@ -11,13 +11,14 @@ import { getDefinition } from '../../../domain/index';
 import { MetadataConfiguration } from '../../../component/MetadataConfiguration';
 import { useMetadataConfiguration } from '../../../hooks/configuration';
 import useFetch from 'use-http';
+import { BASE_PATH } from '../../../../App.constant';
 
 export function MetadataFilterConfigurationListItem ({ filter, isLast, isFirst, onOrderUp, onOrderDown, onEnable, editable, onRemove, loading, index }) {
     const [open, setOpen] = React.useState(false);
 
     const definition = React.useMemo(() => getDefinition(filter['@type'], ), [filter]);
 
-    const { get, response } = useFetch('');
+    const { get, response } = useFetch(`${BASE_PATH}`);
 
     const [schema, setSchema] = React.useState();
 
