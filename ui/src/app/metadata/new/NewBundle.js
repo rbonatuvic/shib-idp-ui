@@ -15,8 +15,6 @@ import { AttributeBundleApi } from '../hoc/attribute/AttributeBundleApi';
 export function NewBundle() {
     const history = useHistory();
 
-    console.log('hi')
-
     const definition = AttributeBundleDefinition;
 
     const [blocking, setBlocking] = React.useState(false);
@@ -56,7 +54,7 @@ export function NewBundle() {
                                             <React.Fragment>
                                                 <Button variant="info" className="mr-2"
                                                     type="button"
-                                                    onClick={() => create(bundle)}
+                                                    onClick={() => create(bundle, gotoDetail)}
                                                     disabled={errors.length > 0 || loading}
                                                     aria-label="Save changes to the metadata source. You will return to the dashboard">
                                                     <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;

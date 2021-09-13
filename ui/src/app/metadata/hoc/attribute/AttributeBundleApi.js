@@ -5,13 +5,11 @@ import API_BASE_PATH from '../../../App.constant';
 import { DeleteConfirmation } from '../../../core/components/DeleteConfirmation';
 import { createNotificationAction, NotificationContext } from '../../../notifications/hoc/Notifications';
 
-const api = '/custom/entity/bundles';
-
 export function AttributeBundleApi({ id, children }) {
 
     const { dispatch } = React.useContext(NotificationContext);
 
-    const { get, put, post, del, response, loading } = useFetch(`/data/bundles.json`, {
+    const { get, put, post, del, response, loading } = useFetch(`${API_BASE_PATH}/custom/entity/bundles`, {
         cachePolicy: 'no-cache'
     });
 
