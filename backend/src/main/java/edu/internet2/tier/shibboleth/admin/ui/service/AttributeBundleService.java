@@ -43,4 +43,12 @@ public class AttributeBundleService {
         bundleToUpdate.setAttributes(bundle.getAttributes());
         return attributeBundleRepository.save(bundleToUpdate);
     }
+
+    public AttributeBundle findByResourceId(String resourceId) throws EntityNotFoundException {
+        Optional<AttributeBundle> result = attributeBundleRepository.findByResourceId(resourceId);
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Unable to find attribute bundle with resource id: [%s] for deletion", resourceId));
+        }
+        return result.get();
+    }
 }
