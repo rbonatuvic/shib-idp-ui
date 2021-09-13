@@ -6,6 +6,12 @@ import {
 import useFetch from 'use-http';
 import API_BASE_PATH from '../App.constant';
 
+jest.mock('../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('use-http');
 
 describe('api hooks', () => {
