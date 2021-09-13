@@ -27,6 +27,12 @@ import API_BASE_PATH from '../../App.constant';
 import { MetadataFilterTypes } from '../domain/filter';
 import { useContentionDispatcher } from '../contention/ContentionContext';
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('use-http');
 jest.mock('../contention/ContentionContext');
 

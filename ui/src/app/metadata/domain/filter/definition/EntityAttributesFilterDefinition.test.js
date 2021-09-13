@@ -1,4 +1,11 @@
 import { EntityAttributesFilterWizard } from "./EntityAttributesFilterDefinition";
+
+jest.mock('../../../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 const addErrorMockFn = jest.fn();
 
 const filters = [

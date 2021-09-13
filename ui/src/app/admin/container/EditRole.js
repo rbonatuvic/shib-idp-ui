@@ -11,6 +11,7 @@ import { RoleForm } from '../component/RoleForm';
 import { RoleProvider } from '../hoc/RoleProvider';
 import { createNotificationAction, NotificationTypes, useNotificationDispatcher } from '../../notifications/hoc/Notifications';
 import { useTranslator } from '../../i18n/hooks';
+import { BASE_PATH } from '../../App.constant';
 
 export function EditRole() {
 
@@ -67,7 +68,7 @@ export function EditRole() {
                 <div className="section-body p-4 border border-top-0 border-info">
                     <RoleProvider id={id}>
                         {(role) =>
-                            <Schema path={`/assets/schema/roles/role.json`}>
+                            <Schema path={`/${BASE_PATH}assets/schema/roles/role.json`}>
                                 {(schema) =>
                                     <>{role &&
                                         <FormManager initial={role}>
