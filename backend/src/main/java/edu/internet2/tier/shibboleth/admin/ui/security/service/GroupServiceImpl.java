@@ -68,6 +68,9 @@ public class GroupServiceImpl implements IGroupService {
      */
     @Override
     public boolean doesStringMatchGroupPattern(String groupId, String uri) {
+        if (Group.ADMIN_GROUP.getResourceId().equals(groupId)) {
+            return true;
+        }
         Group group = find(groupId);
 
         String regExp = group.getValidationRegex();
