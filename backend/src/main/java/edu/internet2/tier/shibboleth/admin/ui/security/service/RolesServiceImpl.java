@@ -17,7 +17,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 @Service
 public class RolesServiceImpl implements IRolesService {
     @Autowired
-    private RoleRepository roleRepository;
+    RoleRepository roleRepository;
     
     @Override
     public Role createRole(Role role) throws RoleExistsConflictException {
@@ -61,7 +61,7 @@ public class RolesServiceImpl implements IRolesService {
     @Override
     public Set<Role> getAndCreateAllRoles(Set<String> roleNames) {
         HashSet<Role> result = new HashSet<>();
-        if (roleNames.isEmpty()) {
+        if (roleNames == null || roleNames.isEmpty()) {
             Role r = getRoleNone();
             result.add(r);
             return result;

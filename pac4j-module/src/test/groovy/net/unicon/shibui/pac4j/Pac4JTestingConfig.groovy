@@ -9,6 +9,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.UserRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceForTesting
 import edu.internet2.tier.shibboleth.admin.ui.security.service.GroupServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
+import edu.internet2.tier.shibboleth.admin.ui.security.service.RolesServiceImpl
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -48,5 +49,13 @@ class Pac4JTestingConfig {
     @Primary
     UserService userService(IGroupService groupService, OwnershipRepository ownershipRepository, RoleRepository roleRepository, UserRepository userRepository) {
         return new UserService(groupService, ownershipRepository, roleRepository, userRepository)
+    }
+
+    @Bean
+    RolesServiceImpl rolesServiceImpl(RoleRepository roleRepository) {
+        new RolesServiceImpl().with {
+            it.roleRepository = roleRepository
+            it
+        }
     }
 }
