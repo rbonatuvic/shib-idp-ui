@@ -25,7 +25,7 @@ shibui:
 #    forceServiceProviderMetadataGeneration: false
 #    callbackUrl: "https://localhost:8443/callback"
 #    maximumAuthenticationLifetime: 3600000
-#    requireAssertedRoleForNewUsers: false
+#    requireAssertedRoleForNewUsers: false #default
 #    saml2ProfileMapping:
 #      username: urn:oid:0.9.2342.19200300.100.1.1
 #      firstname: urn:oid:2.5.4.42
