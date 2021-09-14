@@ -22,16 +22,16 @@ services:
       - "8443:8443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./reverse-proxy/:/configuration/
-      - ./reverse-proxy/certs/:/certs/
+      - ../reverse-proxy/:/configuration/
+      - ../reverse-proxy/certs/:/certs/
   directory:
-    build: ./directory
+    build: ../directory
     networks:
       - idp
     volumes:
       - directory_data:/var/lib/ldap
       - directory_config:/etc/ldap/slapd.d
-      - ./directory/certs:/container/service/slapd/assets/certs
+      - ../directory/certs:/container/service/slapd/assets/certs
     environment:
       LDAP_BASE_DN: "dc=unicon,dc=local"
       LDAP_DOMAIN: "unicon.local"
@@ -52,7 +52,7 @@ services:
       - reverse-proxy
       - idp
     volumes:
-      - ./directory/certs/ca.crt:/opt/shibboleth-idp/credentials/ldap-server.crt
+      - ../directory/certs/ca.crt:/opt/shibboleth-idp/credentials/ldap-server.crt
       - ./shibboleth-idp/metadata/dynamic:/opt/shibboleth-idp/metadata/dynamic
     healthcheck:
       disable: true
