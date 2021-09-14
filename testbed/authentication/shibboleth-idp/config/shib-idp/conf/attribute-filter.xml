@@ -129,6 +129,9 @@
         <AttributeRule attributeID="mail">
             <PermitValueRule xsi:type="ANY" />
         </AttributeRule>
+        <AttributeRule attributeID="eduPersonEntitlement">
+            <PermitValueRule xsi:type="ANY" />
+        </AttributeRule>
     </AttributeFilterPolicy>
 
     <!-- Attribute release for all InCommon SPs -->

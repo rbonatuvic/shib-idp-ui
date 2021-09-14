@@ -50,6 +50,7 @@ businessCategory:Law
 userPassword: password
 eduPersonAffiliation: member
 eduPersonAffiliation: student
+eduPersonEntitlement: ROLE_ADMIN
 
 dn: uid=whenderson,ou=People,dc=unicon,dc=local
 objectClass: organizationalPerson
@@ -65,6 +66,7 @@ mail: whenderson@unicon.local
 businessCategory:Advising
 userPassword: password
 eduPersonAffiliation: community
+eduPersonEntitlement: ROLE_USER
 
 dn: uid=ddavis,ou=People,dc=unicon,dc=local
 objectClass: organizationalPerson
