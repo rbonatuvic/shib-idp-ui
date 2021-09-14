@@ -50,6 +50,12 @@ public class AttributeBundleController {
         return ResponseEntity.ok(attributeBundleService.findAll());
     }
 
+    @GetMapping("/{resourceId}")
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> getOne(@PathVariable String resourceId) throws EntityNotFoundException {
+        return ResponseEntity.ok(attributeBundleService.findByResourceId(resourceId));
+    }
+
     @Secured("ROLE_ADMIN")
     @PutMapping
     @Transactional
