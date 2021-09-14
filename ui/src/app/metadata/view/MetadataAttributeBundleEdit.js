@@ -54,11 +54,11 @@ export function MetadataAttributeBundleEdit() {
                                 {bundle &&
                                     <MetadataForm initial={bundle}>
                                         <MetadataAttributeEditor definition={definition}>
-                                            {(filter, errors) =>
+                                            {(data, errors) =>
                                                 <React.Fragment>
                                                     <Button variant="info" className="mr-2"
                                                         type="button"
-                                                        onClick={() => update(filter)}
+                                                        onClick={() => update(data.resourceId, data, gotoDetail)}
                                                         disabled={errors.length > 0 || loading}
                                                         aria-label="Save changes to the bundle">
                                                         <FontAwesomeIcon icon={loading ? faSpinner : faSave} pulse={loading} />&nbsp;

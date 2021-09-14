@@ -10,6 +10,7 @@ import { Translate } from '../../i18n/components/translate';
 import { AttributeBundleApi } from '../hoc/attribute/AttributeBundleApi';
 
 import { AttributeBundleList } from '../hoc/attribute/AttributeBundleList';
+import { TruncateText } from '../../core/components/TruncateText';
 
 export function MetadataAttributeBundles({ entities, onDelete }) {
 
@@ -40,13 +41,15 @@ export function MetadataAttributeBundles({ entities, onDelete }) {
                                                         <th>
                                                             <Translate value="label.bundle-name">Bundle Name</Translate>
                                                         </th>
+                                                        <th><Translate value="label.bundled-attributes">Bundled Attributes</Translate></th>
                                                         <th><span className="sr-only"><Translate value="label.actions">Actions</Translate></span></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {bundles.map((bundle, i) =>
                                                         <tr key={i}>
-                                                            <td>{bundle.name}</td>
+                                                            <td>{ bundle.name }</td>
+                                                            <td><TruncateText text={ bundle?.attributes?.join(', ') } /></td>
                                                             <td className="text-right">
                                                                 <Link to={`../attributes/bundles/${bundle.resourceId}/edit`} className="btn btn-link text-primary">
                                                                     <FontAwesomeIcon icon={faEdit} size="lg" />

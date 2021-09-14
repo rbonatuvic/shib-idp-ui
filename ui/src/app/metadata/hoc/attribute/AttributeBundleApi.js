@@ -28,7 +28,7 @@ export function AttributeBundleApi({ id, children }) {
     }
 
     async function update(id, body, cb) {
-        const b = await put(`/${id}`, body);
+        const b = await put(``, body);
         if (response.ok) {
             dispatch(createNotificationAction(
                 `Bundle has been updated.`

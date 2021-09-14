@@ -1,7 +1,7 @@
 import React from 'react';
 
 export function AttributeBundleSelector({ id, find, children }) {
-    const [bundle, setBundle] = React.useState([]);
+    const [bundle, setBundle] = React.useState();
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
