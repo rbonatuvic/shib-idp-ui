@@ -74,6 +74,10 @@ public class GroupServiceImpl implements IGroupService {
         Group group = find(groupId);
 
         String regExp = group.getValidationRegex();
+        if (StringUtils.isEmpty(regExp)) {
+            return true;
+        }
+
         engine.put("str", uri);
         try {
             engine.eval("var rgx=" + regExp);
@@ -123,11 +127,10 @@ public class GroupServiceImpl implements IGroupService {
     }
 
     /**
-     * If the regex is missing, go with the default "anything goes" regex, otherwise validate that the pattern is valid to use.
+     * If the regex is blank simply return
      */
     private void validateGroupRegex(Group group) throws InvalidGroupRegexException {
         if (StringUtils.isEmpty(group.getValidationRegex())) {
-            group.setValidationRegex(Group.DEFAULT_REGEX);
             return;
         }
         try {

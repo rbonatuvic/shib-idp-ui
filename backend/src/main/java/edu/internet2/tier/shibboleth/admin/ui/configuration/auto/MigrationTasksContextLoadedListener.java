@@ -66,17 +66,5 @@ public class MigrationTasksContextLoadedListener implements ApplicationListener<
                 userService.save(user); // this will ensure group is set as the default user group
             }
         });
-
-        // SHIBUI-1743: Adding regex expression to groups
-        groupService.findAll().forEach(g -> {
-            g.setValidationRegex(Group.DEFAULT_REGEX);
-            try {
-                groupService.updateGroup(g);
-            }
-            catch (Exception e) {
-                // Shouldn't happen
-                e.printStackTrace();
-            }
-        });
     }
 }

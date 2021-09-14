@@ -22,7 +22,7 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
         }
 
         then:
-        g.getValidationRegex() == Group.DEFAULT_REGEX
+        g.getValidationRegex() == null
 
         when:
         g.setValidationRegex("/\\w\\b\\w/")
