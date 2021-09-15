@@ -57,4 +57,27 @@ class GroupServiceTests extends AbstractBaseDataJpaTest {
             true
         }
     }
+
+    def "Group regex evaluates properly" () {
+        when:
+        Group g = new Group()
+        g.setResourceId("AAA")
+        g.setName("AAA")
+        g.setValidationRegex("/foo.*/")
+        groupRepository.saveAndFlush(g)
+
+        then:
+        !groupService.doesStringMatchGroupPattern("AAA", "foobar")
+        !groupService.doesStringMatchGroupPattern("AAA", "something")
+        groupService.doesStringMatchGroupPattern("AAA", "/foobar/")
+
+        when:
+        g.setValidationRegex("foo.*")
+        groupRepository.saveAndFlush(g)
+
+        then:
+        groupService.doesStringMatchGroupPattern("AAA", "foobar")
+        !groupService.doesStringMatchGroupPattern("AAA", "something")
+        groupService.doesStringMatchGroupPattern("AAA", "/foobar/")
+    }
 }

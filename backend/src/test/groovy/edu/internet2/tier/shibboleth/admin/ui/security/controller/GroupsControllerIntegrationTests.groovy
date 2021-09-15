@@ -8,6 +8,7 @@ import edu.internet2.tier.shibboleth.admin.ui.security.model.Group
 import edu.internet2.tier.shibboleth.admin.ui.security.model.Role
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.repository.GroupsRepository
+import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService
 import edu.internet2.tier.shibboleth.admin.ui.util.WithMockAdmin
 import groovy.json.JsonOutput
 import org.springframework.beans.factory.annotation.Autowired
@@ -190,5 +191,33 @@ class GroupsControllerIntegrationTests extends AbstractBaseDataJpaTest {
         
         then:
         mockMvc.perform(delete("$RESOURCE_URI/someUser"))
+    }
+
+    def 'group regex checks'() {
+        given:
+        groupsRepository.deleteByResourceId("AAA")
+        Group groupAAA = new Group().with({
+            it.name = "AAA"
+            it.description = "AAA"
+            it.resourceId = "AAA"
+            it.validationRegex = "/foo.*/"
+            it
+        })
+
+        when:
+        def result = mockMvc.perform(post(RESOURCE_URI).contentType(MediaType.APPLICATION_JSON)
+                                          .content(JsonOutput.toJson(groupAAA)).accept(MediaType.APPLICATION_JSON))
+
+        then:
+        result.andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("\$.name").value("AAA"))
+                .andExpect(jsonPath("\$.resourceId").value("AAA"))
+                .andExpect(jsonPath("\$.description").value("AAA"))
+                .andExpect(jsonPath("\$.validationRegex").value("/foo.*/"))
+
+        !groupService.doesStringMatchGroupPattern("AAA", "foobar")
+        !groupService.doesStringMatchGroupPattern("AAA", "something")
+        groupService.doesStringMatchGroupPattern("AAA", "/foobar/")
     }
 }

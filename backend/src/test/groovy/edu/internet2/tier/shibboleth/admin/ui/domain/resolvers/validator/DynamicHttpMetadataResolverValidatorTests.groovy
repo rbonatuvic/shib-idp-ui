@@ -27,7 +27,7 @@ class DynamicHttpMetadataResolverValidatorTests extends AbstractBaseDataJpaTest 
         g.setResourceId("shib")
         g.setName("shib")
         // This is valid for a url with "shib.org" in it
-        g.setValidationRegex("/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/")
+        g.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
         g = groupServiceForTesting.createGroup(g)
 
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")

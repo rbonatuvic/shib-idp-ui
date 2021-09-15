@@ -23,7 +23,7 @@ class JPAEntityDescriptorServiceImplTests2 extends AbstractBaseDataJpaTest {
         Group gb = new Group()
         gb.setResourceId("testingGroupBBB")
         gb.setName("Group BBB")
-        gb.setValidationRegex("/^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$/")
+        gb.setValidationRegex("^(?:https?:\\/\\/)?(?:[^.]+\\.)?shib\\.org(\\/.*)?\$")
         gb = groupService.createGroup(gb)
 
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER")

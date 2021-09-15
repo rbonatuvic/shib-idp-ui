@@ -22,8 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 public class GroupServiceImpl implements IGroupService {
     private static final String CHECK_REGEX = "function isValid(exp){try{new RegExp(exp);return true;}catch(e){return false;}};isValid(rgx);";
-    private static final String REGEX_MATCHER = "function validate(r, s){ return (r).test(s);};validate(rgx, str);";
-    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("js");
+    private static final String REGEX_MATCHER = "function validate(r, s){ return RegExp(r).test(s);};validate(rgx, str);";
+    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
     @Autowired
     protected GroupsRepository groupRepository;
@@ -80,7 +80,7 @@ public class GroupServiceImpl implements IGroupService {
 
         engine.put("str", uri);
         try {
-            engine.eval("var rgx=" + regExp);
+            engine.put("rgx", regExp );
             Object value = engine.eval(REGEX_MATCHER);
             return Boolean.valueOf(value.toString());
         }
@@ -134,7 +134,7 @@ public class GroupServiceImpl implements IGroupService {
             return;
         }
         try {
-            engine.eval("var rgx=" + group.getValidationRegex());
+            engine.put("rgx", group.getValidationRegex());
             Object value = engine.eval(CHECK_REGEX);
             if (!Boolean.valueOf(value.toString())) {
                 throw new InvalidGroupRegexException("Invalid Regular Expression [ " + group.getValidationRegex() + " ]");
