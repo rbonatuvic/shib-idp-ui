@@ -118,9 +118,16 @@
       ],
       "value": ""
     }, {
-      "id": "5a6af58f-5509-4d8c-ab15-11bb8ea124fc",
+      "id": "621c4c28-069b-471b-a108-059286f7f8bb",
       "comment": "",
       "command": "waitForElementVisible",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"Added role successfully.\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "5a6af58f-5509-4d8c-ab15-11bb8ea124fc",
+      "comment": "",
+      "command": "waitForElementNotVisible",
       "target": "xpath=//div[@role=\"alert\" and contains(., \"Added role successfully.\")]",
       "targets": [],
       "value": "30000"
@@ -274,6 +281,13 @@
       "targets": [],
       "value": "30000"
     }, {
+      "id": "366addaf-4484-44a9-ba5f-3e11cd6d6aac",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "//div[@role=\"alert\" and contains(., \"User update successful for nonadmin\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
       "id": "e8bedd18-aafa-4bff-85a4-ba36d7685225",
       "comment": "",
       "command": "click",
@@ -328,6 +342,13 @@
       "target": "xpath=//div[@role=\"alert\" and contains(., \"remove role from all users first\")]",
       "targets": [],
       "value": ""
+    }, {
+      "id": "7e787d11-c053-492a-95fc-35b9b98adafb",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"remove role from all users first\")]",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "e704f343-5942-4053-aed7-1fa94e13320c",
       "comment": "",
