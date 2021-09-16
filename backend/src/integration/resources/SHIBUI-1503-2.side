@@ -50,27 +50,6 @@
       ],
       "value": ""
     }, {
-      "id": "542a3c38-af18-4c51-9f66-16931e3dd599",
-      "comment": "",
-      "command": "open",
-      "target": "/api/heheheheheheheWipeout",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "834f4ef3-d429-490d-8e86-96b67ce66e06",
-      "comment": "",
-      "command": "assertText",
-      "target": "css=body",
-      "targets": [],
-      "value": "yes, you did it"
-    }, {
-      "id": "756d4f66-1698-4e0f-8f99-0ababf12e981",
-      "comment": "",
-      "command": "open",
-      "target": "/",
-      "targets": [],
-      "value": ""
-    }, {
       "id": "812843b9-c71a-4141-b204-3387f0fee39a",
       "comment": "",
       "command": "waitForElementVisible",
@@ -83,28 +62,22 @@
       ],
       "value": "30000"
     }, {
-      "id": "473db033-9a76-4173-9a70-daa255f99b1d",
+      "id": "3e45a4ea-cdf8-4087-9d5d-d8ee43dccf70",
       "comment": "",
       "command": "click",
       "target": "css=.nav-item > .d-flex",
-      "targets": [
-        ["css=.nav-item > .d-flex", "css:finder"],
-        ["xpath=//div[@id='root']/div/main/div/div/div[4]/a", "xpath:idRelative"],
-        ["xpath=//a[contains(@href, '/dashboard/admin/actions')]", "xpath:href"],
-        ["xpath=//div[4]/a", "xpath:position"]
-      ],
+      "targets": [],
       "value": ""
     }, {
       "id": "a98143b5-647f-4e7e-b920-f6e6875d7372",
       "comment": "",
       "command": "click",
-      "target": "css=.btn-danger",
+      "target": "css=.btn > span",
       "targets": [
-        ["css=.btn-danger", "css:finder"],
-        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/main/div/section[2]/div/div[2]/div/div/div/div[2]/button", "xpath:idRelative"],
-        ["xpath=//div/div/div/div[2]/button", "xpath:position"],
-        ["xpath=//button[contains(.,' Delete Request')]", "xpath:innerText"]
+        ["css=.btn > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section[2]/div/div[2]/div/div/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Delete Request')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -114,12 +87,35 @@
       "target": "css=.modal-footer > .btn-danger",
       "targets": [
         ["css=.modal-footer > .btn-danger", "css:finder"],
-        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
         ["xpath=//div[3]/button", "xpath:position"]
       ],
       "value": ""
     }, {
-      "id": "ede68bbe-2236-457d-93d7-9e7cde5d5176",
+      "id": "2d8da370-0a5a-4048-a8bd-f68210a271c5",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "css=.text-center:nth-child(1)",
+      "targets": [
+        ["css=.text-center:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section[2]/div/div[2]/div/div/p", "xpath:idRelative"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'There are no new user requests at this time.')]", "xpath:innerText"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "d5a65352-5897-49cf-9046-3afc5397f193",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.text-center:nth-child(1)",
+      "targets": [
+        ["css=.text-center", "css:finder"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'There are no new user requests at this time.')]", "xpath:innerText"]
+      ],
+      "value": "There are no new user requests at this time."
+    }, {
+      "id": "e6d6cac9-cc9a-424d-b89e-90b9eb899b7a",
       "comment": "",
       "command": "click",
       "target": "linkText=Logout",
@@ -170,21 +166,18 @@
       "command": "click",
       "target": "css=.btn",
       "targets": [
-        ["name=submit", "name"],
-        ["css=td:nth-child(1) > input", "css:finder"],
-        ["xpath=//input[@name='submit']", "xpath:attributes"],
-        ["xpath=//tr[3]/td/input", "xpath:position"]
+        ["css=.btn", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//button", "xpath:position"],
+        ["xpath=//button[contains(.,'Sign in')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
       "id": "3eb77106-8fb7-43aa-a72a-27f2960d5393",
       "comment": "",
       "command": "waitForElementVisible",
-      "target": "css=.alert",
-      "targets": [
-        ["css=.alert", "css:finder"],
-        ["xpath=//form/div", "xpath:position"]
-      ],
+      "target": "css=p",
+      "targets": [],
       "value": "30000"
     }, {
       "id": "b826ed10-31a4-487b-ba80-c633ff037839",

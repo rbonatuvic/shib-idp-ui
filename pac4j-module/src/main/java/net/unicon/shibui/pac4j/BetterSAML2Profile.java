@@ -13,19 +13,26 @@ public class BetterSAML2Profile extends SAML2Profile {
         this.profileMapping = simpleProfileMapping;
     }
 
+    private String getSingleAttributeValue(Object attribute) {
+        if (attribute instanceof Collection) {
+            return (String) ((Collection)attribute).toArray()[0];
+        }
+        return (String) attribute;
+    }
+
     @Override
     public String getEmail() {
-        return (String) getAttribute(profileMapping.getEmail());
+        return getSingleAttributeValue(getAttribute(profileMapping.getEmail()));
     }
 
     @Override
     public String getFamilyName() {
-        return (String) getAttribute(profileMapping.getLastName());
+        return getSingleAttributeValue(getAttribute(profileMapping.getLastName()));
     }
 
     @Override
     public String getFirstName() {
-        return (String) getAttribute(profileMapping.getFirstName());
+        return getSingleAttributeValue(getAttribute(profileMapping.getFirstName()));
     }
 
     public List<String> getGroups() {
