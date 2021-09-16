@@ -50,6 +50,27 @@
       ],
       "value": ""
     }, {
+      "id": "ba3c21fe-bd14-45c9-a77c-47db7f261e89",
+      "comment": "",
+      "command": "open",
+      "target": "/api/heheheheheheheWipeout",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5486f406-5e1d-49e4-989b-58b164778110",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=body",
+      "targets": [],
+      "value": "yes, you did it"
+    }, {
+      "id": "c1397f74-17dd-4cf2-b49d-391b89c877a4",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
       "id": "812843b9-c71a-4141-b204-3387f0fee39a",
       "comment": "",
       "command": "waitForElementVisible",
@@ -87,10 +108,61 @@
       "target": "css=.modal-footer > .btn-danger",
       "targets": [
         ["css=.modal-footer > .btn-danger", "css:finder"],
-        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
-        ["xpath=//div[3]/button", "xpath:position"]
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//div[5]/div/div/div[3]/button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "a024bec1-b14e-456a-9f59-3a08b49f463a",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"User deleted.\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "d995f269-813b-487d-98dc-e730911643c1",
+      "comment": "",
+      "command": "waitForElementNotPresent",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"User deleted.\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "fc07efd6-4f50-42d1-88ac-538fb9a02ce4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn > span",
+      "targets": [
+        ["css=.btn > span", "css:finder"],
+        ["xpath=//div[@id='root']/div/main/div/section[2]/div/div[2]/div/div/div/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Delete Request')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cd32d898-adab-4ac8-8cf6-cf1a3b970396",
+      "comment": "",
+      "command": "click",
+      "target": "css=.modal-footer > .btn-danger",
+      "targets": [
+        ["css=.modal-footer > .btn-danger", "css:finder"],
+        ["xpath=(//button[@type='button'])[7]", "xpath:attributes"],
+        ["xpath=//div[5]/div/div/div[3]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "43bd7acf-67cf-4b52-87f8-0c049f7ec707",
+      "comment": "",
+      "command": "waitForElementVisible",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"User deleted.\")]",
+      "targets": [],
+      "value": "30000"
+    }, {
+      "id": "617dd2b1-f8e4-4d8d-ad2c-ce2ec1b9ad13",
+      "comment": "",
+      "command": "waitForElementNotPresent",
+      "target": "xpath=//div[@role=\"alert\" and contains(., \"User deleted.\")]",
+      "targets": [],
+      "value": "30000"
     }, {
       "id": "2d8da370-0a5a-4048-a8bd-f68210a271c5",
       "comment": "",
@@ -115,17 +187,33 @@
       ],
       "value": "There are no new user requests at this time."
     }, {
+      "id": "e406c422-d086-43e8-9c31-1b83177368ac",
+      "comment": "",
+      "command": "click",
+      "target": "id=user-nav-dropdown-toggle",
+      "targets": [
+        ["id=user-nav-dropdown-toggle", "id"],
+        ["css=#user-nav-dropdown-toggle", "css:finder"],
+        ["xpath=//button[@id='user-nav-dropdown-toggle']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Logged in as admin')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
       "id": "e6d6cac9-cc9a-424d-b89e-90b9eb899b7a",
       "comment": "",
       "command": "click",
-      "target": "linkText=Logout",
+      "target": "id=user-nav-dropdown-logout",
       "targets": [
+        ["id=user-nav-dropdown-logout", "id"],
         ["linkText=Logout", "linkText"],
-        ["css=.nav-link:nth-child(4)", "css:finder"],
+        ["css=#user-nav-dropdown-logout", "css:finder"],
         ["xpath=//a[contains(text(),'Logout')]", "xpath:link"],
-        ["xpath=//div[@id='basic-navbar-nav']/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[@id='user-nav-dropdown-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='user-nav-dropdown']/div/a", "xpath:idRelative"],
         ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
-        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//div[4]/div/a", "xpath:position"],
         ["xpath=//a[contains(.,'Logout')]", "xpath:innerText"]
       ],
       "value": ""
