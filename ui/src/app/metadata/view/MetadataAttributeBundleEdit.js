@@ -45,7 +45,7 @@ export function MetadataAttributeBundleEdit() {
                         <div className="section-header bg-info p-2 text-white">
                             <div className="row justify-content-between">
                                 <div className="col-md-12">
-                                    <span className="display-6"><Translate value="label.new-attribute">Add a new metadata attribute</Translate></span>
+                                    <span className="display-6"><Translate value="label.edit-attribute-bundle">Edit attribute bundle</Translate></span>
                                 </div>
                             </div>
                         </div>

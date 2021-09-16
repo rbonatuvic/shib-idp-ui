@@ -102,7 +102,7 @@ const AttributeReleaseWidget = ({
             <ul class="list-group list-group-flush">
                 {(bundlelist).map((option) => (
                 <li class="list-group-item d-flex justify-content-between px-1">
-                    <strong>{option.label}</strong>
+                    <strong><Translate value="label.bundle-disp" params={{name: option.label}}></Translate></strong>
                     <Button variant={option.selected ? 'outline-primary' : 'primary'} size="sm"
                         onClick={() => option.selected ? onUncheckBundle(option) : onCheckBundle(option) }
                     >
