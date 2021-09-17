@@ -12,19 +12,19 @@ import { AttributeBundleApi } from '../hoc/attribute/AttributeBundleApi';
 import { AttributeBundleList } from '../hoc/attribute/AttributeBundleList';
 import { TruncateText } from '../../core/components/TruncateText';
 
-export function MetadataAttributeBundles({ entities, onDelete }) {
+export function MetadataAttributeBundles({}) {
 
     return (
         <AttributeBundleApi>
             {(load, find, create, update, remove, loading) =>
                 <AttributeBundleList load={load}>
-                    {(bundles) => 
+                    {(bundles, reload) => 
                     <div className="container-fluid p-3">
                         <section className="section">
                             <div className="section-body border border-top-0 border-primary">
                                 <div className="section-header bg-primary p-2 text-light">
                                     <span className="lead">
-                                        <Translate value="label.custom-entity-attributes">Attribute Bundles</Translate>
+                                        <Translate value="label.attribute-bundles">Attribute Bundles</Translate>
                                     </span>
                                 </div>
                                     <div className="p-3">
@@ -57,7 +57,7 @@ export function MetadataAttributeBundles({ entities, onDelete }) {
                                                                         <Translate value="action.edit">Edit</Translate>
                                                                     </span>
                                                                 </Link>
-                                                                <Button variant="link" className="text-danger" onClick={() => remove(bundle.resourceId)}>
+                                                                <Button variant="link" className="text-danger" onClick={() => remove(bundle.resourceId, reload)}>
                                                                     <FontAwesomeIcon icon={faTrash} size="lg" />
                                                                     <span className="sr-only">
                                                                         <Translate value="action.delete">Delete</Translate>

@@ -6,10 +6,14 @@ export function AttributeBundleList({ load, children }) {
 
     /*eslint-disable react-hooks/exhaustive-deps*/
     React.useEffect(() => {
-        load((list) => setBundles(list));
+        reload();
     }, []);
 
+    const reload = () => {
+        load((list) => setBundles(list));
+    };
+
     return (
-        <React.Fragment>{children(bundles)}</React.Fragment>
+        <React.Fragment>{children(bundles, reload)}</React.Fragment>
     );
 }

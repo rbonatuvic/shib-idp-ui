@@ -53,14 +53,14 @@ export function AttributeBundleApi({ id, children }) {
             dispatch(createNotificationAction(
                 `Bundle has been deleted.`
             ));
-            cb();
+            cb && cb();
         }
     }
 
     return (
         <DeleteConfirmation title={`message.delete-attribute-title`} body={`message.delete-attribute-body`}>
             {(block) =>
-                <div>{children(load, find, create, update, (id) => block(() => remove(id)), loading)}</div>
+                <div>{children(load, find, create, update, (id, cb) => block(() => remove(id, cb)), loading)}</div>
             }
         </DeleteConfirmation>
     );
