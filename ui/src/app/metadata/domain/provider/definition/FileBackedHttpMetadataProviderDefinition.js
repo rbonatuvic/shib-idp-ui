@@ -2,12 +2,13 @@ import defaultsDeep from 'lodash/defaultsDeep';
 import { BaseProviderDefinition, HttpMetadataResolverAttributesSchema, MetadataFilterPluginsSchema } from './BaseProviderDefinition';
 
 import { DurationOptions } from '../../data';
+import { BASE_PATH } from '../../../../App.constant';
 
 export const FileBackedHttpMetadataProviderWizard = {
     ...BaseProviderDefinition,
     label: 'FileBackedHttpMetadataProvider',
     type: 'FileBackedHttpMetadataResolver',
-    schema: '/assets/schema/provider/filebacked-http.schema.json',
+    schema: '${BASE_PATH}assets/schema/provider/filebacked-http.schema.json',
     validator: (data = [], current = { resourceId: null }, group, translator) => {
         const base = BaseProviderDefinition.validator(data, current, group);
 

@@ -6,6 +6,12 @@ import { RolesProvider } from './RolesProvider';
 import { useRoles } from '../hooks';
 import { useNotificationDispatcher } from "../../notifications/hoc/Notifications";
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('../hooks');
 
 jest.mock('../../notifications/hoc/Notifications');

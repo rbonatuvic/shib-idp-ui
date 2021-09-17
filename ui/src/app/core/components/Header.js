@@ -13,6 +13,7 @@ import { useTranslator } from '../../i18n/hooks';
 
 import { brand } from '../../app.brand';
 import { useIsAdmin } from '../user/UserContext';
+import { BASE_PATH } from '../../App.constant';
 
 export function Header () {
 
@@ -73,7 +74,7 @@ export function Header () {
                         <FontAwesomeIcon icon={faTh} className="mr-2" />
                         <Translate value="action.dashboard">Dashboard</Translate>
                     </Link>
-                    <Nav.Link href="/logout" target="_self" aria-label={translator('action.logout')}>
+                    <Nav.Link href={`/${BASE_PATH}logout`} target="_self" aria-label={translator('action.logout')}>
                         <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                         <Translate value="action.logout">Logout</Translate>
                     </Nav.Link>

@@ -9,6 +9,12 @@ import uiSchemaResult from '../../../testing/uiSchema';
 import { useIsAdmin } from '../../core/user/UserContext';
 jest.mock('../../core/user/UserContext');
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 describe('useUiSchema', () => {
     let realUseMemo;
     let useMemoMock;
