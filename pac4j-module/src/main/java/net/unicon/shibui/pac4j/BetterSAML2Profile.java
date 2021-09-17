@@ -42,8 +42,12 @@ public class BetterSAML2Profile extends SAML2Profile {
     }
 
     public Set<String> getRoles() {
-        Set<String> result = (Set<String>) getAttribute(profileMapping.getRoles());
-        return result == null ? new HashSet<>() : result;
+        Set<String> result = new HashSet<>();
+        List<String> assertedRoles = (List<String>) getAttribute(profileMapping.getRoles());
+        if (assertedRoles != null) {
+            result.addAll(assertedRoles);
+        }
+        return result;
     }
 
     @Override
