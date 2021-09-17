@@ -2,6 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Footer } from './Footer';
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('../../i18n/hooks', () => ({
     useTranslation: (value) => value
 }));

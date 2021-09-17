@@ -132,9 +132,8 @@ class SeleniumSIDETest extends Specification {
 //        'SHIBUI-1740: Verify admin-owned resource not visible to nonadmins' | '/SHIBUI-1740-3.side'
 //        'SHIBUI-1740: Verify nonadmin-owned resource visibility'            | '/SHIBUI-1740-4.side'
 //        'SHIBUI-1742: Verify enabler role allows enabling'                  | '/SHIBUI-1742-1.side'
-        'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'
-//        'SHIBUI-1743: Verify group regex CRUD operations'                   | '/SHIBUI-1743-1.side'
-//        'SHIBUI-1743: Verify nonadmin group regex validation'               | '/SHIBUI-1743-2.side'
+//        'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'
+        'SHIBUI-1743: Verify group regex CRUD operations'                   | '/SHIBUI-1743-1.side'
+        'SHIBUI-1743: Verify nonadmin group regex validation'               | '/SHIBUI-1743-2.side'
     }
 }
-

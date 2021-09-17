@@ -1,5 +1,11 @@
 import { SourceBase } from './SourceDefinition';
 
+jest.mock('../../../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 describe('SourceDefinition', () => {
     describe('parser', () => {
         it('should remove null values', () => {

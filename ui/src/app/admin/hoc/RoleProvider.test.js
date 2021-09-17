@@ -5,6 +5,12 @@ import {RoleProvider} from './RoleProvider';
 
 import {useRole} from '../hooks';
 
+jest.mock('../../App.constant', () => ({
+    get API_BASE_PATH() {
+        return '/';
+    }
+}));
+
 jest.mock('../hooks');
 
 describe('RoleProvider component', () => {

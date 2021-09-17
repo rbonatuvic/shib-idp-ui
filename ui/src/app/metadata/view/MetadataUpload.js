@@ -37,7 +37,7 @@ export function MetadataUpload() {
             type = 'application/x-www-form-urlencoded';
         }
 
-        const response = await fetch(`${API_BASE_PATH}${getMetadataPath('source')}?spName=${serviceProviderName}`, {
+        const response = await fetch(`/${API_BASE_PATH}${getMetadataPath('source')}?spName=${serviceProviderName}`, {
             method: 'POST',
             cache: 'no-cache',
             headers: {

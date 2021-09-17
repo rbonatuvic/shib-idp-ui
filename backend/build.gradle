@@ -117,6 +117,13 @@ dependencies {
         compile "org.opensaml:${it}:${project.'opensaml.version'}"
     }
 
+//    Left here to save time later - when pac4j is/was updated, I needed all of these to get the runtime right with the SAML2 client
+//    runtimeOnly "org.bouncycastle:bcprov-jdk15on:1.69"
+//    runtimeOnly "org.bouncycastle:bcprov-ext-jdk15on:1.69"
+//    runtimeOnly "org.bouncycastle:bcutil-jdk15on:1.69"
+//    runtimeOnly "org.bouncycastle:bcpkix-jdk15on:1.69"
+
+
     // shibboleth idp deps
     ['idp-profile-spring', 'idp-profile-api'].each {
         compile "net.shibboleth.idp:${it}:${project.'shibboleth.version'}"

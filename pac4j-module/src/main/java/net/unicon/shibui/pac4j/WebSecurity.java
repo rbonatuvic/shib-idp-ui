@@ -5,8 +5,10 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.RoleRepository
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EmailService;
+import static net.unicon.shibui.pac4j.Pac4jConfiguration.PAC4J_CLIENT_NAME;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.matching.matcher.Matcher;
+
+import org.pac4j.core.matching.Matcher;
 import org.pac4j.springframework.security.web.CallbackFilter;
 import org.pac4j.springframework.security.web.SecurityFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -61,15 +63,16 @@ public class WebSecurity {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/unsecured/**/*").permitAll();
 
-            final SecurityFilter securityFilter = new SecurityFilter(this.config, "Saml2Client");
+            final SecurityFilter securityFilter = new SecurityFilter(this.config, PAC4J_CLIENT_NAME);
 
             // add filter based on auth type 
             http.antMatcher("/**").addFilterBefore(getFilter(config, pac4jConfigurationProperties.getTypeOfAuth()), BasicAuthenticationFilter.class);
             http.antMatcher("/**").addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
             // add the new user filter
             http.addFilterAfter(new AddNewUserFilter(pac4jConfigurationProperties, userService, roleRepository, getPathMatcher("exclude-paths-matcher"), groupService, emailService), SecurityFilter.class);
-            
-            http.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> response.sendRedirect("/unsecured/error.html"));
+
+            http.authorizeRequests().anyRequest().fullyAuthenticated();
+
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
             http.csrf().disable();
             http.headers().frameOptions().disable();
@@ -84,7 +87,7 @@ public class WebSecurity {
             case "SAML2":
                 return new CallbackFilter(this.config);
             case "HEADER":
-                final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config, Pac4jConfiguration.PAC4J_CLIENT_NAME);
+                final SecurityFilter securityFilterForHeader = new SecurityFilter(this.config, PAC4J_CLIENT_NAME);
                 securityFilterForHeader.setMatchers("exclude-paths-matcher");
                 return securityFilterForHeader;
             }
