@@ -506,7 +506,7 @@
         <bean parent="shibboleth.TranscodingProperties">
             <property name="properties">
                 <props merge="true">
-                    <prop key="id">businessCategofy</prop>
+                    <prop key="id">businessCategory</prop>
                     <prop key="transcoder">SAML2StringTranscoder SAML1StringTranscoder</prop>
                     <prop key="saml2.name">urn:oid:2.5.4.15</prop>
                     <prop key="saml1.name">urn:mace:dir:attribute-def:businessCategory</prop>

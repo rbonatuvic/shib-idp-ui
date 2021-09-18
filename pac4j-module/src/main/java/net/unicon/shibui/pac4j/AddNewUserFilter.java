@@ -71,6 +71,7 @@ public class AddNewUserFilter implements Filter {
 
         // get profile attribute for groups
         Object obj = profile.getAttribute(simpleProfileMapping.getGroups());
+        log.debug("User's incoming group from mapping: [{}]", obj);
         if (obj != null) {
             final ArrayList<String> groupNames = new ArrayList<>();
             if (obj instanceof String) {

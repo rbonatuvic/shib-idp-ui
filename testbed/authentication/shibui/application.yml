@@ -6,7 +6,7 @@ spring:
     include:
 shibui:
   user-bootstrap-resource: file:/conf/users.csv
-  roles: ROLE_ADMIN,ROLE_NONE,ROLE_USER,ROLE_PONY
+  roles: ROLE_ADMIN,ROLE_NONE,ROLE_USER,ROLE_ENABLE,ROLE_PONY
   pac4j-enabled: true
   pac4j:
     keystorePath: "/conf/samlKeystore.jks"
@@ -23,5 +23,5 @@ shibui:
       firstName: urn:oid:2.5.4.42
       lastName: urn:oid:2.5.4.4
       email: urn:oid:0.9.2342.19200300.100.1.3
-      groups: businessCategory
-      roles: urn:oid:1.3.6.1.4.1.5923.1.1.1.7
+      groups: urn:oid:2.5.4.15  # businessCategory
+      roles: urn:oid:1.3.6.1.4.1.5923.1.1.1.7  # eduPersonEntitlement
