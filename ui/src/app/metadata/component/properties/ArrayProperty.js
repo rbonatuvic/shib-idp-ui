@@ -64,9 +64,12 @@ export function ArrayProperty ({ property, columns, preview }) {
                     { property?.items?.enum?.length && property.uniqueItems ?
                         <>
                             {dataList.map((item, itemIdx) => 
+                                (
+                                    !Array.isArray(item.key) &&
                                 <div className={`d-flex justify-content-start border-bottom border-light ${ property.differences ? 'bg-diff' : '' }`} tabIndex="0" key={itemIdx}>
                                     {item.differences && <span className="sr-only">Changed:</span> }
-                                    <span className="p-2" role="term" style={ {width} }><Translate value={item.label}>{ item.label }</Translate></span>
+                                    <span className="p-2" role="term" style={ {width} }>
+                                        <Translate value={item.label}>{ item.label }</Translate></span>
                                     { property.value.map((v, vIdx) =>
                                         <div className="py-2" style={ {width} } key={vIdx}>
                                             {v && v.indexOf(item.key) > -1 && <span><Translate value="value.true">true</Translate></span> }
@@ -74,6 +77,7 @@ export function ArrayProperty ({ property, columns, preview }) {
                                         </div>
                                     )}
                                 </div>
+                                )
                             )}
                         </>
                     :
