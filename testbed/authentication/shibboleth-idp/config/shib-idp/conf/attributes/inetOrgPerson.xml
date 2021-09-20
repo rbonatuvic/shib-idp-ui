@@ -511,6 +511,7 @@
                     <prop key="saml2.name">urn:oid:2.5.4.15</prop>
                     <prop key="saml1.name">urn:mace:dir:attribute-def:businessCategory</prop>
                     <prop key="displayName.en">Business Category</prop>
+                    <prop key="description.en">Business Category</prop>
                 </props>
             </property>
         </bean>
