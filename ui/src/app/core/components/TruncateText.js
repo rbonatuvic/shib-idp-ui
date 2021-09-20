@@ -16,7 +16,7 @@ export function TruncateText ({text}) {
         <OverlayTrigger
             placement="top"
             overlay={
-                <Popover id="foo">
+                <Popover id="attribute-bundle-descr-popover">
                     <Popover.Content>
                         {text}
                     </Popover.Content>

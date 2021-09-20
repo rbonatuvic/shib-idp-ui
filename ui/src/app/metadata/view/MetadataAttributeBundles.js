@@ -12,7 +12,7 @@ import { AttributeBundleApi } from '../hoc/attribute/AttributeBundleApi';
 import { AttributeBundleList } from '../hoc/attribute/AttributeBundleList';
 import { TruncateText } from '../../core/components/TruncateText';
 
-export function MetadataAttributeBundles({}) {
+export function MetadataAttributeBundles() {
 
     return (
         <AttributeBundleApi>
