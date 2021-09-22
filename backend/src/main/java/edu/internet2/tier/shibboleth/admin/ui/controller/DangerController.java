@@ -1,13 +1,6 @@
 package edu.internet2.tier.shibboleth.admin.ui.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import edu.internet2.tier.shibboleth.admin.ui.repository.AttributeBundleRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.EntityDescriptorRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.FilterRepository;
 import edu.internet2.tier.shibboleth.admin.ui.repository.MetadataResolverRepository;
@@ -16,12 +9,22 @@ import edu.internet2.tier.shibboleth.admin.ui.security.repository.OwnershipRepos
 import edu.internet2.tier.shibboleth.admin.ui.security.service.IGroupService;
 import edu.internet2.tier.shibboleth.admin.ui.service.EntityDescriptorService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/api/heheheheheheheWipeout")
 @Profile("very-dangerous")
 @Slf4j
 public class DangerController {
+    @Autowired
+    private AttributeBundleRepository attributeBundleRepository;
+
     @Autowired
     private EntityDescriptorService entityDescriptorService;
     
@@ -60,6 +63,7 @@ public class DangerController {
         this.metadataResolverRepository.deleteAll();
         this.filterRepository.deleteAll();
         this.metadataResolversPositionOrderContainerRepository.deleteAll();
+        this.attributeBundleRepository.deleteAll();
         return ResponseEntity.ok("yes, you did it");
     }
 }

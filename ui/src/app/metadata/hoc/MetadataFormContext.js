@@ -64,7 +64,6 @@ function MetadataForm({ children, initial = {} }) {
         metadata
     });
 
-
     const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
     return (
@@ -113,6 +112,7 @@ function useFormattedMetadata(initial = {}) {
     const definition = React.useContext(MetadataDefinitionContext);
     const schema = React.useContext(MetadataSchemaContext);
     const obj = React.useContext(MetadataObjectContext);
+
     return definition.formatter(initial ? initial : obj, schema);
 }
 

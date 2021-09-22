@@ -1,29 +1,41 @@
 package edu.internet2.tier.shibboleth.admin.ui.service
 
 import edu.internet2.tier.shibboleth.admin.ui.configuration.CustomPropertiesConfiguration
+import edu.internet2.tier.shibboleth.admin.ui.domain.AttributeBundle
 import edu.internet2.tier.shibboleth.admin.ui.domain.IRelyingPartyOverrideProperty
 import edu.internet2.tier.shibboleth.admin.ui.security.model.User
 import edu.internet2.tier.shibboleth.admin.ui.security.service.UserService
+import lombok.NoArgsConstructor
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author Bill Smith (wsmith@unicon.net)
  */
+@NoArgsConstructor
 class JsonSchemaBuilderService {
+    @Autowired
+    AttributeBundleService attributeBundleService
 
     @Autowired
     CustomPropertiesConfiguration customPropertiesConfiguration
 
+    @Autowired
     UserService userService
 
-    JsonSchemaBuilderService(UserService userService) {
-        this.userService = userService
-    }
-
     void addReleaseAttributesToJson(Object json) {
-        json['enum'] = customPropertiesConfiguration.getAttributes().collect {
+        List<Object> result = new ArrayList<>()
+        List<String> resultNames = new ArrayList<>()
+        attributeBundleService.findAll().forEach({ bundle ->
+            result.add(bundle.getAttributes())
+            resultNames.add(bundle.getName())
+        })
+
+        result.addAll(customPropertiesConfiguration.getAttributes().collect {
             it['name']
-        }
+        })
+
+        json['enum'] = result
+        json['enumNames'] = resultNames
     }
 
     void addRelyingPartyOverridesToJson(Object json) {
