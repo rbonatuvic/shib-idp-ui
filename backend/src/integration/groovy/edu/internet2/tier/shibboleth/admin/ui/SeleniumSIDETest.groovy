@@ -132,6 +132,9 @@ class SeleniumSIDETest extends Specification {
         'SHIBUI-1740: Verify nonadmin-owned resource visibility'            | '/SHIBUI-1740-4.side'
         'SHIBUI-1742: Verify enabler role allows enabling'                  | '/SHIBUI-1742-1.side'
         'SHIBUI-1742: Verify role CRUD operations'                          | '/SHIBUI-1742-2.side'
+        'SHIBUI-1744: Verify attribute bundle CRUD operations'              | '/SHIBUI-1744-1.side'
+        'SHIBUI-1744: Verify attribute bundles in metadata sources'         | '/SHIBUI-1744-2.side'
+        'SHIBUI-1744: Verify attribute bundles in entity attribute filters' | '/SHIBUI-1744-3.side'
         'SHIBUI-1392: Verify provider with script filter is persistable'    | '/SHIBUI-1392.side' // Something about this test breaks all the other ones after it
     }
 }
