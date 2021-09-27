@@ -2614,7 +2614,7 @@
         ["xpath=//section[2]/div/div[2]/div[2]/div/div/div/span[2]", "xpath:position"],
         ["xpath=//span[contains(.,'Display Name v3')]", "xpath:innerText"]
       ],
-      "value": "10000"
+      "value": "30000"
     }, {
       "id": "5a976e2c-dc5f-4021-9cc6-3cad12e771ea",
       "comment": "",
