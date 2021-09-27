@@ -6,7 +6,7 @@ import edu.internet2.tier.shibboleth.admin.ui.configuration.Internationalization
 import edu.internet2.tier.shibboleth.admin.ui.configuration.SearchConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.configuration.TestConfiguration
 import edu.internet2.tier.shibboleth.admin.ui.domain.EntityDescriptor
-import edu.internet2.tier.shibboleth.admin.ui.exception.EntityIdExistsException
+import edu.internet2.tier.shibboleth.admin.ui.exception.ObjectIdExistsException
 import edu.internet2.tier.shibboleth.admin.ui.exception.EntityNotFoundException
 import edu.internet2.tier.shibboleth.admin.ui.exception.ForbiddenException
 import edu.internet2.tier.shibboleth.admin.ui.opensaml.OpenSamlObjects
@@ -372,7 +372,7 @@ class EntityDescriptorControllerTests extends Specification {
             mockMvc.perform(post('/api/EntityDescriptor').contentType(APPLICATION_JSON).content(postedJsonBody))
         }
         catch (Exception e) {
-            e instanceof EntityIdExistsException
+            e instanceof ObjectIdExistsException
         }
     }
     
@@ -618,7 +618,7 @@ class EntityDescriptorControllerTests extends Specification {
             mockMvc.perform(post("/api/EntityDescriptor").contentType(APPLICATION_XML).content(postedBody).param("spName", spName))
         }
         catch (Exception e) {
-            e instanceof EntityIdExistsException
+            e instanceof ObjectIdExistsException
         }
     }
 
